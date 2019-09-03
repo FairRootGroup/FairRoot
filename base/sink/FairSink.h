@@ -61,6 +61,8 @@ class FairSink
     virtual void WriteObject(TObject* f, const char*, Int_t option = 0) = 0;
     virtual void WriteGeometry() = 0;
 
+    virtual FairSink*   CloneSink() = 0;
+
   protected:
     struct TypeAddressPair {
       TypeAddressPair(const std::type_info& oi, const std::type_info& pi, void* a) : origtypeinfo(oi), persistenttypeinfo(pi), ptraddr(a) {}

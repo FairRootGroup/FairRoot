@@ -133,13 +133,8 @@ void FairTutorialDet2::Register()
   */
   auto mgr = FairRootManager::Instance();
 
-  if (! gMC->IsMT()) {
-    mgr->Register("TutorialDetPoint", "TutorialDet",
-                  fFairTutorialDet2PointCollection, kTRUE);
-  } else {
-    mgr->RegisterAny("TutorialDetPoint",
-                     fFairTutorialDet2PointCollection, kTRUE);
-  }
+  mgr->Register("TutorialDetPoint", "TutorialDet",
+                fFairTutorialDet2PointCollection, kTRUE);
 
   // example how to register any type T
   mgr->RegisterAny("TutorialCustomData", fCustomData, kTRUE);

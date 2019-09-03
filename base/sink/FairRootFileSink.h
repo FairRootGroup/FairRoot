@@ -68,7 +68,9 @@ class FairRootFileSink : public FairSink
     virtual void      WriteObject(TObject* f, const char*, Int_t option = 0);
     virtual void      WriteGeometry();
 
-  private:
+    virtual FairSink*   CloneSink();
+
+private:
     /** Title of input sink, could be input, background or signal*/
     TString fOutputTitle;
     /** ROOT file */

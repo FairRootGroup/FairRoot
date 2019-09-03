@@ -302,7 +302,7 @@ void FairStack::Reset()
 
 void FairStack::Register()
 {
-  if ( gMC && ( ! gMC->IsMT() ) ) {
+  if ( gMC ) {
     FairRootManager::Instance()->Register("MCTrack", "Stack", fTracks,kTRUE);
   } else {
     FairRootManager::Instance()->RegisterAny("MCTrack",fTracks,kTRUE);

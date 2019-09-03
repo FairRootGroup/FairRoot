@@ -129,13 +129,8 @@ void FairTutorialDet1::Register()
       only during the simulation.
   */
 
-  if (! gMC->IsMT() ) {
     FairRootManager::Instance()->Register("TutorialDetPoint", "TutorialDet",
                                           fFairTutorialDet1PointCollection, kTRUE);
-  } else {
-    FairRootManager::Instance()->RegisterAny("TutorialDetPoint",
-                                             fFairTutorialDet1PointCollection, kTRUE);
-  }
 }
 
 TClonesArray* FairTutorialDet1::GetCollection(Int_t iColl) const

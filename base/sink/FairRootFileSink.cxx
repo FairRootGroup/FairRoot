@@ -108,7 +108,7 @@ Bool_t FairRootFileSink::InitSink()
 
     //FairRun* fRun = FairRun::Instance();
     /**Check if a simulation run!*/
-    fOutFolder= gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
+    fOutFolder= gROOT->GetRootFolder()->AddFolder(Form("%s_%d",FairRootManager::GetFolderName(),FairRootManager::Instance()->GetInstanceId()), "Main Folder");
     gROOT->GetListOfBrowsables()->Add(fOutFolder);
 
     LOG(info) << "FairRootFileSink initialized.";
@@ -256,11 +256,11 @@ void FairRootFileSink::RegisterAny(const char* brname, const std::type_info &oi,
 
 void FairRootFileSink::WriteFolder() {
   fRootFile->cd();
-  if (fOutFolder!=0) {
-    fOutFolder->Write();
+  if(fOutFolder!=0) {
+    fOutFolder->Write(FairRootManager::GetFolderName());
 
     //FairRun* fRun = FairRun::Instance();
-    fOutTree =new TTree(FairRootManager::GetTreeName(), Form("/%s", FairRootManager::GetFolderName()), 99);
+    fOutTree =new TTree(FairRootManager::GetTreeName(), Form("/%s_%d",FairRootManager::GetFolderName(),FairRootManager::Instance()->GetInstanceId()), 99);
     TruncateBranchNames();
     CreatePersistentBranchesAny();
   }
@@ -346,5 +346,19 @@ Int_t FairRootFileSink::Write(const char*, Int_t, Int_t)
   }
   return 0;
 }
+//_____________________________________________________________________________
+
+//_____________________________________________________________________________
+FairSink*  FairRootFileSink::CloneSink() {
+    FairRootManager* tempMan = FairRootManager::Instance();
+
+    TString workerFileName = fRootFile->GetName();
+    tempMan->UpdateFileName(workerFileName);
+    FairRootFileSink* newSink = new FairRootFileSink(workerFileName);
+
+    LOG(info) << "FairRootFileSink::CloneSink(). manager " << tempMan->GetInstanceId();
+    return newSink;
+}
+//_____________________________________________________________________________
 
 ClassImp(FairRootFileSink)

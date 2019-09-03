@@ -125,13 +125,8 @@ void FairRutherford::Register()
       only during the simulation.
   */
 
-  if ( ! gMC->IsMT() ) {
     FairRootManager::Instance()->Register("FairRutherfordPoint", "FairRutherford",
                                           fFairRutherfordPointCollection, kTRUE);
-  } else {
-    FairRootManager::Instance()->RegisterAny("FairRutherfordPoint",
-                                             fFairRutherfordPointCollection, kTRUE);
-  }
 }
 
 TClonesArray* FairRutherford::GetCollection(Int_t iColl) const
