@@ -1,42 +1,48 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libBase" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-Set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/fairtools/MCConfigurator
-  ${CMAKE_SOURCE_DIR}/examples/common/mcstack
-  ${CMAKE_SOURCE_DIR}/examples/common/gconfig
-  ${YAML_CPP_INCLUDE_DIR}
-)
+set(target GConfig) # TODO: where is this target used?
 
-Include_Directories(${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM  ${SYSTEM_INCLUDE_DIRECTORIES})
-
-Set(LINK_DIRECTORIES
-  ${ROOT_LIBRARY_DIR}
-  ${SIMPATH}/lib/
-)
- 
-Link_Directories(${LINK_DIRECTORIES})
-
-Set(HEADERS
-  FairVMCConfig.h
-)
-
-Set(SRCS
+set(sources
   FairVMCConfig.cxx
 )
 
-Set(LINKDEF GConfigLinkDef.h)
-Set(LIBRARY_NAME GConfig)
-Set(DEPENDENCIES Base MCConfigurator)
+set(headers
+  FairVMCConfig.h
+)
 
-GENERATE_LIBRARY()
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/examples/common/mcstack>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
+)
+
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
+)
+
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base # FairRunIdGenerator
+  FairRoot::FairTools # FairLogger
+  FairRoot::MCConfigurator
+)
+
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF GConfigLinkDef.h
+)
+
+install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
