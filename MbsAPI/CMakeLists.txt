@@ -61,9 +61,7 @@ target_compile_definitions(${target} PRIVATE
 )
 
 install(TARGETS ${target}
-  LIBRARY DESTINATION lib
-  # TODO: change to?:
-  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR}
 )
 
 install(FILES ${headers}

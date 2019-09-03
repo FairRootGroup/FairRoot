@@ -10,6 +10,7 @@ set(sources
 
 add_library(${target} SHARED ${sources})
 add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -30,7 +31,5 @@ target_link_libraries(${target} PUBLIC
 )
 
 install(TARGETS ${target}
-  LIBRARY DESTINATION lib
-  # TODO: change to?:
-  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR}
 )

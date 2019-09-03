@@ -20,6 +20,7 @@ set(headers
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -44,9 +45,7 @@ target_link_libraries(${target} PUBLIC
 )
 
 install(TARGETS ${target}
-  LIBRARY DESTINATION lib
-  # TODO: change to?:
-  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR}
 )
 
 install(FILES ${headers}
@@ -57,8 +56,6 @@ add_executable(parmq-server runParameterMQServer.cxx)
 target_link_libraries(parmq-server PRIVATE ParMQ)
 
 install(TARGETS parmq-server
-  LIBRARY DESTINATION lib
+  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR}
   RUNTIME DESTINATION bin
-  # TODO: change to?:
-  # LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 )
