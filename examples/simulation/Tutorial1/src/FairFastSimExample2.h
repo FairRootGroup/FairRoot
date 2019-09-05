@@ -54,8 +54,9 @@ class FairFastSimExample2 : public FairFastSimDetector
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.
     */
-
     virtual void EndOfEvent();
+
+    virtual Bool_t      CheckIfSensitive(std::string name);
 
     virtual FairModule* CloneModule() const;
 
