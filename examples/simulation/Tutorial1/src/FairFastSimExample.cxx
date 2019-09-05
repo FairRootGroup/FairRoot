@@ -78,18 +78,23 @@ void FairFastSimExample::FastSimProcessParticle()
     TVirtualMC::GetMC()->TrackMomentum(fMom);
 
     FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
+    fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
 
-    stack->FastSimPushSecondary(fTrackID,11,-12.5,-12.5,20.+5.+0.1,fPos.T(),
-                                0.1,0.1,1.0,1.0,0.,0.,0.,kPHadronic,1,0);
-    stack->FastSimPushSecondary(fTrackID,11,-12.5,-12.5,20.+5.+0.1,fPos.T(),
-                                -0.1,-0.1,1.0,1.0,0.,0.,0.,kPHadronic,1,0);
+    if ( TVirtualMC::GetMC()->TrackPid() == 211 ) { // let only pion create secondaries
+        stack->FastSimPushSecondary(fTrackID,11,-12.5,-12.5,20.+5.+0.1,fPos.T(),
+                                    0.1,0.1,1.0,1.0,0.,0.,0.,kPHadronic,1,0);
+        stack->FastSimPushSecondary(fTrackID,11,-12.5,-12.5,20.+5.+0.1,fPos.T(),
+                                    -0.1,-0.1,1.0,1.0,0.,0.,0.,kPHadronic,1,0);
+    }
     stack->FastSimMoveParticleTo(
-        12.5, 12.5, 20. + 5. + 0.1, TVirtualMC::GetMC()->TrackTime(), fMom.X(), fMom.Y(), fMom.Z(), fMom.E());
+        12.5, 12.5, 20. + 5. + 0.1, TVirtualMC::GetMC()->TrackTime(), fMom.X(), fMom.Y(), fMom.Z(), 0.99*fMom.E());
 
-    stack->FastSimPushSecondary(fTrackID,11,-12.5,-12.5,20.+5.+0.1,fPos.T(),
-                                -0.1,0.1,1.0,1.0,0.,0.,0.,kPHadronic,1,0);
-    stack->FastSimPushSecondary(fTrackID,11,-12.5,-12.5,20.+5.+0.1,fPos.T(),
-                                0.1,-0.1,1.0,1.0,0.,0.,0.,kPHadronic,1,0);
+    if ( TVirtualMC::GetMC()->TrackPid() == 211 ) { // let only pion create secondaries
+        stack->FastSimPushSecondary(fTrackID,11,-12.5,-12.5,20.+5.+0.1,fPos.T(),
+                                    -0.1,0.1,1.0,1.0,0.,0.,0.,kPHadronic,1,0);
+        stack->FastSimPushSecondary(fTrackID,11,-12.5,-12.5,20.+5.+0.1,fPos.T(),
+                                    0.1,-0.1,1.0,1.0,0.,0.,0.,kPHadronic,1,0);
+    }
 
 //    stack->FastSimMoveParticleTo(
 //        25., 25., 20. + 0.1, TVirtualMC::GetMC()->TrackTime(), fMom.X(), fMom.Y(), fMom.Z(), fMom.E());
@@ -97,7 +102,6 @@ void FairFastSimExample::FastSimProcessParticle()
 //    stack->FastSimMoveParticleTo(
 //        24., 24., 50. + 0.1, TVirtualMC::GetMC()->TrackTime(), fMom.X(), fMom.Y(), fMom.Z(), fMom.E());
 
-    fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
     fVolumeID = 0;
     fTime = TVirtualMC::GetMC()->TrackTime() * 1.0e09;
     fLength = TVirtualMC::GetMC()->TrackLength();
