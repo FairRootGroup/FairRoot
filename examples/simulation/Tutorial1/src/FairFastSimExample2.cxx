@@ -80,7 +80,7 @@ void FairFastSimExample2::FastSimProcessParticle()
     FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
 
     stack->FastSimMoveParticleTo(
-        24., 24., 50. + 5. + 0.1, TVirtualMC::GetMC()->TrackTime(), fMom.X(), fMom.Y(), fMom.Z(), fMom.E());
+        24., 24., 50. + 5. + 0.1, TVirtualMC::GetMC()->TrackTime(), fMom.X(), fMom.Y(), fMom.Z(), 0.99*fMom.E());
 
     fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
     fVolumeID = 0;
