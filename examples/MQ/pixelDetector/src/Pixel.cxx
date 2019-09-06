@@ -177,11 +177,10 @@ void Pixel::ConstructGeometry()
 
 Bool_t Pixel::CheckIfSensitive(std::string name)
 {
-  TString tsname = name;
-  if (tsname.Contains("Pixel")) {
-    return kTRUE;
-  }
-  return kFALSE;
+    if ( name.find("Pixel") != std::string::npos ) {
+        return kTRUE;
+    }
+    return kFALSE;
 }
 
 void Pixel::ModifyGeometry() {  

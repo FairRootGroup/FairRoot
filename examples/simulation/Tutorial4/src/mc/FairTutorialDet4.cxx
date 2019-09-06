@@ -249,11 +249,10 @@ void FairTutorialDet4::ConstructGeometry()
 
 Bool_t FairTutorialDet4::CheckIfSensitive(std::string name)
 {
-  TString tsname = name;
-  if (tsname.Contains("tut4")) {
-    return kTRUE;
-  }
-  return kFALSE;
+    if ( name.find("tut4") != std::string::npos ) {
+        return kTRUE;
+    }
+    return kFALSE;
 }
 
 void FairTutorialDet4::ConstructASCIIGeometry()
