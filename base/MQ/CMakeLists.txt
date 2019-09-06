@@ -60,7 +60,6 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairTask
   FairRoot::FairTools
   FairMQ::FairMQ
-  Boost::boost
   Boost::serialization
   Boost::filesystem
   # TODO: clean the following
