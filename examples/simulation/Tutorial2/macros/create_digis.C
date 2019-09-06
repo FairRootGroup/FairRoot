@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 void create_digis(){
@@ -36,7 +36,7 @@ void create_digis(){
     FairRuntimeDb* rtdb=fRun->GetRuntimeDb();
     FairParRootFileIo* io1=new FairParRootFileIo();
     io1->open(parFile.Data(),"UPDATE");
- 
+
     FairParAsciiFileIo* parInput2 = new FairParAsciiFileIo();
     TString tutDetDigiFile = gSystem->Getenv("VMCWORKDIR");
     tutDetDigiFile += "/simulation/Tutorial2/parameters/tutdet.digi.par";
@@ -54,13 +54,13 @@ void create_digis(){
     // add the task
     fRun->AddTask( digi );
     // add another task (to test reading data from in memory branches)
-    fRun->AddTask( new FairTutorialDet2CustomTask() );    
+    fRun->AddTask( new FairTutorialDet2CustomTask() );
 
     fRun->Init();
 
     rtdb->getContainer("FairTutorialDet2DigiPar")->print();
 
-    FairTutorialDet2DigiPar* DigiPar = (FairTutorialDet2DigiPar*) 
+    FairTutorialDet2DigiPar* DigiPar = (FairTutorialDet2DigiPar*)
                                       rtdb->getContainer("FairTutorialDet2DigiPar");
 
     DigiPar->setChanged();

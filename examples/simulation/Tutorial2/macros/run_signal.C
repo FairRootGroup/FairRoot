@@ -1,6 +1,5 @@
-void run_bg(Int_t nEvents = 130)
+void run_signal(Int_t fileNr, Int_t nEvents = 10)
 {
-  
   TString dir = getenv("VMCWORKDIR");
   TString tutdir = dir + "/simulation/Tutorial2";
 
@@ -13,7 +12,7 @@ void run_bg(Int_t nEvents = 130)
   TString partName[] = {"pions","eplus","proton"};
   Int_t   partPdgC[] = {    211,     11,    2212};
   Int_t chosenPart  = 0;
-  
+
   Double_t momentum = 2.;
 
   Double_t theta    = 0.;
@@ -21,20 +20,22 @@ void run_bg(Int_t nEvents = 130)
   TString outDir = "./";
 
   // Output file name
-  TString outFile = Form("%s/tutorial2_%s.mc_p%1.3f_t%1.0f_n%d.bg.root",
-			 outDir.Data(),
-			 partName[chosenPart].Data(),
-			 momentum,
-			 theta,
-			 nEvents);
-  
+  TString outFile = Form("%s/tutorial2_%s.mc_p%1.3f_t%1.0f_n%d.sg%d.root",
+                         outDir.Data(),
+                         partName[chosenPart].Data(),
+                         momentum,
+                         theta,
+                         nEvents,
+                         fileNr);
+
   // Parameter file name
-  TString parFile = Form("%s/tutorial2_%s.params_p%1.3f_t%1.0f_n%d.bg.root",
-			 outDir.Data(),
-			 partName[chosenPart].Data(),
-			 momentum,
-			 theta,
-			 nEvents);
+  TString parFile = Form("%s/tutorial2_%s.params_p%1.3f_t%1.0f_n%d.sg%d.root",
+                         outDir.Data(),
+                         partName[chosenPart].Data(),
+                         momentum,
+                         theta,
+                         nEvents,
+                         fileNr);
 
   // In general, the following parts need not be touched
   // ========================================================================
@@ -54,18 +55,18 @@ void run_bg(Int_t nEvents = 130)
   run->SetSink(new FairRootFileSink(outFile));          // Output file
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------
-  
+
   // -----   Create media   -------------------------------------------------
   run->SetMaterials("media.geo");       // Materials
   // ------------------------------------------------------------------------
-  
+
   // -----   Create geometry   ----------------------------------------------
   FairModule* cave= new  FairCave("CAVE");
-  cave->SetGeometryFileName("cave_vacuum.geo"); 
+  cave->SetGeometryFileName("cave_vacuum.geo");
   run->AddModule(cave);
 
   FairDetector* tutdet = new FairTutorialDet2("TUTDET", kTRUE);
-  tutdet->SetGeometryFileName("double_sector.geo"); 
+  tutdet->SetGeometryFileName("double_sector.geo");
   run->AddModule(tutdet);
   // ------------------------------------------------------------------------
 
@@ -94,11 +95,11 @@ void run_bg(Int_t nEvents = 130)
   rtdb->saveOutput();
   rtdb->print();
   // ------------------------------------------------------------------------
-   
+
   // -----   Start run   ----------------------------------------------------
   run->Run(nEvents);
   // ------------------------------------------------------------------------
-  
+
   // -----   Finish   -------------------------------------------------------
 
   cout << endl << endl;
@@ -129,5 +130,3 @@ void run_bg(Int_t nEvents = 130)
 
   // ------------------------------------------------------------------------
 }
-
-
