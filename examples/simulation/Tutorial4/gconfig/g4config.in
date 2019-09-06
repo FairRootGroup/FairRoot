@@ -7,7 +7,7 @@
 
 #/process/eLoss/subsec  false
 #/process/eLoss/minsubsec 2 cm
-  
+
 
 # B field -> 0
 #/mcDet/fieldType None
@@ -35,11 +35,9 @@
 #/mcVerbose/physicsList 2
 /tracking/verbose 0
 
-#/control/manual   
-#/control/createHTML  
+#/control/manual
+#/control/createHTML
 
 # Limit max number of Cerenkov photons per step
 # (Needed as Cerenkov process does not limit step itself)
 #
-
-

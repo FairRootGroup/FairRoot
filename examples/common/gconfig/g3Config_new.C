@@ -1,13 +1,13 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // $Id: g3Config.C,v 1.1.1.1 2005/06/23 07:14:09 dbertini Exp $
 //
-// Configuration macro for Geant3 VirtualMC 
+// Configuration macro for Geant3 VirtualMC
 
 void Config()
 {
@@ -64,14 +64,10 @@ void Config()
     Float_t cut3 =50.e-6 ; // Threshold for delta electrons
 
     Float_t cut5[5] ={0,0,0,0,0};
-    // set cuts here 
+    // set cuts here
     //             GAM ELEC NHAD CHAD MUON EBREM MUHAB EDEL MUDEL MUPA TOFMAX
 //    geant3->SetCUTS(cut2, cut2, cut2, cut2, cut, cut2, cut2, cut3, cut2, cut2,
 //                    tofmax);
     geant3->SetCUTS(cut2, cut2, cut2, cut2, cut, cut2, cut2, cut2, cut2, cut2,
                     tofmax,cut5);
-
-   
 }
-
-

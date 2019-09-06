@@ -19,6 +19,5 @@ void DecayConfigPythia8() {
 }
 
 void DecayConfig() {
-  DecayConfigPythia8(); 
+  DecayConfigPythia8();
 }
-

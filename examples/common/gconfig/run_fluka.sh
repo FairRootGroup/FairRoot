@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 #------------------------------------------------
 # The Virtual Monte Carlo examples
 # Copyright (C) 2007, Ivana Hrivnacova
@@ -10,12 +10,12 @@
 
 #
 # Macro for preparing working directory for Fluka
-# Adapted macro AliRoot/TFluka/scripts/runflukageo.sh 
+# Adapted macro AliRoot/TFluka/scripts/runflukageo.sh
 # by Andreas Morsch
 
 # Adapted to FairRoot by M. Al-Turany
 
-echo "Preparing Fluka working directory ..." 
+echo "Preparing Fluka working directory ..."
 
 CURDIR=`pwd`
 WORKDIR=$CURDIR"/fluka_out"
@@ -42,4 +42,4 @@ ln -s fluka.out fort.11
 ln -fs $VMCWORKDIR/gconfig/flConfig.C flConfig.C
 cp $FLUVMC/input/coreFlukaVmc.inp coreFlukaVmc.inp
 
-echo "Preparing Fluka working directory ... finished" 
+echo "Preparing Fluka working directory ... finished"

@@ -372,33 +372,33 @@ if(BUILD_UNITTESTS)
 endif()
 
 if(BUILD_EXAMPLES)
-  Install(DIRECTORY examples/common/gconfig examples/common/geometry
-          DESTINATION share/fairbase/examples/common
-          PATTERN ".svn" EXCLUDE)
+  install(DIRECTORY
+    examples/common/gconfig
+    examples/common/geometry
+    DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/common
+  )
 endif(BUILD_EXAMPLES)
 
-Install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
-        DESTINATION bin
-        RENAME FairRootConfig.sh
-       )
-
-
-Install(FILES ${CMAKE_BINARY_DIR}/check_system.sh
-          DESTINATION bin
-                )
-Install(FILES ${CMAKE_BINARY_DIR}/FairVersion.h
-          DESTINATION include
-                )
-Install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
-          DESTINATION bin
-          RENAME FairRootConfig.csh
-               )
-Install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
-          DESTINATION bin
-                )
-   Install(DIRECTORY cmake
-          DESTINATION share/fairbase
-              PATTERN ".svn" EXCLUDE)
+install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
+  DESTINATION bin
+  RENAME FairRootConfig.sh
+)
+install(FILES ${CMAKE_BINARY_DIR}/check_system.sh
+  DESTINATION bin
+)
+install(FILES ${CMAKE_BINARY_DIR}/FairVersion.h
+  DESTINATION include
+)
+install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
+  DESTINATION bin
+  RENAME FairRootConfig.csh
+)
+install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
+  DESTINATION bin
+)
+install(DIRECTORY cmake
+  DESTINATION ${PROJECT_INSTALL_DATADIR}
+)
 
 find_package(Git)
 set (Git_VERSION ${GIT_VERSION_STRING})
@@ -414,9 +414,9 @@ Else()
 EndIf()
 Configure_File(${CMAKE_SOURCE_DIR}/cmake/scripts/fairroot-config.in ${CMAKE_BINARY_DIR}/fairroot-config @ONLY)
 
-Install(PROGRAMS ${CMAKE_BINARY_DIR}/fairroot-config
-        DESTINATION bin
-       )
+install(PROGRAMS ${CMAKE_BINARY_DIR}/fairroot-config
+  DESTINATION bin
+)
 
 
 WRITE_CONFIG_FILE(config.sh)

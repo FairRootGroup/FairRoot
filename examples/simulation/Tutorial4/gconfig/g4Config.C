@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // Configuration macro for Geant4 VirtualMC
@@ -25,7 +25,7 @@ void Config()
 ///
 /// The third argument activates the special processes in the TG4SpecialPhysicsList,
 /// which implement VMC features:
-/// - stepLimiter       - step limiter (default) 
+/// - stepLimiter       - step limiter (default)
 /// - specialCuts       - VMC cuts
 /// - specialControls   - VMC controls for activation/inactivation selected processes
 /// - stackPopper       - stackPopper process
@@ -34,16 +34,16 @@ void Config()
 
    Bool_t mtMode = FairRunSim::Instance()->IsMT();
    Bool_t specialStacking = false;
-   TG4RunConfiguration* runConfiguration 
+   TG4RunConfiguration* runConfiguration
            = new TG4RunConfiguration("geomRoot", "QGSP_BERT_EMV", "stepLimiter+specialCuts+specialControls",
                                       specialStacking, mtMode);
 
-/// Create the G4 VMC 
+/// Create the G4 VMC
    TGeant4* geant4 = new TGeant4("TGeant4", "The Geant4 Monte Carlo", runConfiguration);
    cout << "Geant4 has been created." << endl;
 
 /// create the Specific stack
-   FairStack *stack = new FairStack(1000); 
+   FairStack *stack = new FairStack(1000);
    stack->StoreSecondaries(kTRUE);
    stack->SetMinPoints(0);
    geant4->SetStack(stack);
@@ -52,7 +52,7 @@ void Config()
       TVirtualMCDecayer* decayer = TPythia6Decayer::Instance();
       geant4->SetExternalDecayer(decayer);
    }
-  
+
 /// Customise Geant4 setting
 /// (verbose level, global range cut, ..)
 

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 void create_misalign_parameter(Int_t nrOfDetLayers=40)
@@ -31,7 +31,7 @@ void create_misalign_parameter(Int_t nrOfDetLayers=40)
     RotZ[iLayer] = 0.;
   }
 
-  Int_t lastEntry = nrOfDetLayers-1; 
+  Int_t lastEntry = nrOfDetLayers-1;
 
   for (Int_t iLayer = 1; iLayer<lastEntry; ++iLayer) {
 
@@ -63,7 +63,7 @@ void create_misalign_parameter(Int_t nrOfDetLayers=40)
   myfile << "NrOfDetectors:  Int_t "<< nrOfDetLayers << endl;
   myfile << "ShiftX:  Double_t \\ "<< endl;
 
-  Int_t counter = 0; 
+  Int_t counter = 0;
 
   myfile <<"  ";
   for (Int_t iLayer = 0; iLayer<nrOfDetLayers; ++iLayer) {
@@ -80,7 +80,7 @@ void create_misalign_parameter(Int_t nrOfDetLayers=40)
 
   myfile << "ShiftY:  Double_t \\ "<< endl;
 
-  counter = 0; 
+  counter = 0;
 
   myfile <<"  ";
   for (Int_t iLayer = 0; iLayer<nrOfDetLayers; ++iLayer) {
@@ -97,7 +97,7 @@ void create_misalign_parameter(Int_t nrOfDetLayers=40)
 
   myfile << "ShiftZ:  Double_t \\ "<< endl;
 
-  counter = 0; 
+  counter = 0;
 
   myfile <<"  ";
   for (Int_t iLayer = 0; iLayer<nrOfDetLayers; ++iLayer) {
@@ -114,7 +114,7 @@ void create_misalign_parameter(Int_t nrOfDetLayers=40)
 
   myfile << "RotationX:  Double_t \\ "<< endl;
 
-  counter = 0; 
+  counter = 0;
 
   myfile <<"  ";
   for (Int_t iLayer = 0; iLayer<nrOfDetLayers; ++iLayer) {
@@ -131,7 +131,7 @@ void create_misalign_parameter(Int_t nrOfDetLayers=40)
 
   myfile << "RotationY:  Double_t \\ "<< endl;
 
-  counter = 0; 
+  counter = 0;
 
   myfile <<"  ";
   for (Int_t iLayer = 0; iLayer<nrOfDetLayers; ++iLayer) {
@@ -148,7 +148,7 @@ void create_misalign_parameter(Int_t nrOfDetLayers=40)
 
   myfile << "RotationZ:  Double_t \\ "<< endl;
 
-  counter = 0; 
+  counter = 0;
 
   myfile <<"  ";
   for (Int_t iLayer = 0; iLayer<nrOfDetLayers; ++iLayer) {
@@ -164,7 +164,7 @@ void create_misalign_parameter(Int_t nrOfDetLayers=40)
   myfile<<endl;
 
   myfile << "##############################################################################" << endl;
-  
+
   myfile.close();
 
   ofstream myfile;
@@ -178,7 +178,7 @@ void create_misalign_parameter(Int_t nrOfDetLayers=40)
       if (rotY) myfile << iLayer+401 << "   " << RotY[iLayer] <<endl;
       if (rotZ) myfile << iLayer+501 << "   " << RotZ[iLayer] <<endl;
   }
- 
+
   myfile.close();
 
 }

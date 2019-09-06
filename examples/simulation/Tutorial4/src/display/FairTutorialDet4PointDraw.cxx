@@ -128,8 +128,8 @@ void FairTutorialDet4PointDraw::Exec(Option_t* /*option*/)
         fGeoHandler->LocalToGlobal(local, global, detID);
 
         x = global[0];
-	y = global[1];
-	z = global[2];
+        y = global[1];
+        z = global[2];
       }
       q->SetNextPoint(x, y, z);
       //     q->SetPointId(GetValue(p, i));

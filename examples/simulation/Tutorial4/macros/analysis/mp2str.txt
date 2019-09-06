@@ -1,6 +1,6 @@
 *            Default test steering file
 fortranfiles ! following bin files are fortran
-mp2con.txt   ! constraints text file 
+mp2con.txt   ! constraints text file
 Cfiles       ! following bin files are Cfiles
 mp2tst.bin   ! binary data file
 *hugecut 50.0     !cut factor in iteration 0
@@ -15,14 +15,14 @@ mp2tst.bin   ! binary data file
 *presigma           0.01 ! default value for presigma
 *regularisation 1.0      ! regularisation factor
 *regularisation 1.0 0.01 ! regularisation factor, pre-sigma
- 
+
 *bandwidth 0         ! width of precond. band matrix
-method diagonalization 3 0.001 ! diagonalization      
-method fullMINRES       3 0.01 ! minimal residual     
-method sparseMINRES     3 0.01 ! minimal residual     
+method diagonalization 3 0.001 ! diagonalization
+method fullMINRES       3 0.01 ! minimal residual
+method sparseMINRES     3 0.01 ! minimal residual
 *mrestol      1.0D-8          ! epsilon for MINRES
 method inversion       3 0.001 ! Gauss matrix inversion
 * last method is applied
 *matiter      3  ! recalculate matrix in iterations
- 
+
 end ! optional for end-of-data
