@@ -51,6 +51,5 @@ add_executable(parmq-server runParameterMQServer.cxx)
 target_link_libraries(parmq-server PRIVATE ParMQ)
 
 install(TARGETS parmq-server
-  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR}
   RUNTIME DESTINATION bin
 )

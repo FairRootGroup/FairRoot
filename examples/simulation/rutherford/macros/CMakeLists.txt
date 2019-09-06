@@ -6,8 +6,8 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_rutherford.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_rad.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_rutherford.C)
 
 set(maxTestTime 60)
 
@@ -25,6 +25,5 @@ install(FILES
   run_rutherford.C
   run_rad.C
   eventDisplay.C
-  DESTINATION
-  ${PROJECT_INSTALL_DATADIR}/examples/simulation/rutherford
+  DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/simulation/rutherford
 )

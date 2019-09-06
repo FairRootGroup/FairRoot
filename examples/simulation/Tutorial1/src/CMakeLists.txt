@@ -1,71 +1,77 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libTutorial1" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-Set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/examples/simulation/Tutorial1/src
-  ${CMAKE_SOURCE_DIR}/examples/common/mcstack
-  ${CMAKE_SOURCE_DIR}/examples/common/passive
-  ${CMAKE_SOURCE_DIR}/generators
-  ${CMAKE_SOURCE_DIR}/base/sim/fastsim
-  ${FairLogger_INCDIR}
-)
+set(target Tutorial1)
 
-Include_Directories(${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-Set(LINK_DIRECTORIES
-  ${ROOT_LIBRARY_DIR}
-  ${SIMPATH}/lib
-)
-
-Link_Directories(${LINK_DIRECTORIES})
-
-Set(SRCS
+set(sources
+  FairFastSimExample.cxx
+  FairFastSimExample2.cxx
+  FairSimConfig.cxx
   FairTutorialDet1.cxx
   FairTutorialDet1ContFact.cxx
   FairTutorialDet1Geo.cxx
   FairTutorialDet1GeoPar.cxx
   FairTutorialDet1Point.cxx
-  FairSimConfig.cxx
-  FairFastSimExample.cxx
-  FairFastSimExample2.cxx
 )
 
-Set(HEADERS )
-Set(LINKDEF Tutorial1LinkDef.h)
-Set(LIBRARY_NAME Tutorial1)
-Set(DEPENDENCIES MCStack Base FairFastSim Boost::program_options)
-
-GENERATE_LIBRARY()
-
-Set(Exe_Names
-  runTutorial1
+set(headers
+  FairFastSimExample.h
+  FairFastSimExample2.h
+  FairSimConfig.h
+  FairTutorialDet1.h
+  FairTutorialDet1ContFact.h
+  FairTutorialDet1Geo.h
+  FairTutorialDet1GeoPar.h
+  FairTutorialDet1Point.h
 )
 
-Set(Exe_Source
-  runTutorial1.cxx
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
 )
 
-List(LENGTH Exe_Names _length)
-Math(EXPR _length ${_length}-1)
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
+)
 
-set(BIN_DESTINATION share/fairbase/examples/simulation/Tutorial1/bin)
-set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/examples/simulation/Tutorial1")
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base # FairRunIdGenerator
+  FairRoot::FairFastSim
+  FairRoot::FairTools # FairLogger
+  FairRoot::MCStack
+  FairRoot::Passive
+  FairRoot::Gen
+  Boost::program_options
 
-ForEach(_file RANGE 0 ${_length})
-  List(GET Exe_Names ${_file} _name)
-  List(GET Exe_Source ${_file} _src)
-  Set(EXE_NAME ${_name})
-  Set(SRCS ${_src})
-  Set(DEPENDENCIES Tutorial1 Passive Gen ${FairLogger_LIBRARIES})
-  GENERATE_EXECUTABLE()
-EndForEach(_file RANGE 0 ${_length})
+  # TODO: clean this
+  Core
+  Geom
+)
+
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF Tutorial1LinkDef.h
+)
+
+install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+add_executable(runTutorial1 runTutorial1.cxx)
+target_link_libraries(runTutorial1 PRIVATE Tutorial1)
+set_target_properties(runTutorial1 PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../")
+
+install(TARGETS runTutorial1
+  RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/simulation/Tutorial1/bin
+)
