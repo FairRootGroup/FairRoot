@@ -1,31 +1,14 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libFairRutherford" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-Set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/examples/simulation/rutherford/src
-  ${CMAKE_SOURCE_DIR}/examples/common/mcstack
-  ${FairLogger_INCDIR}
-)
+set(target FairRutherford)
 
-Include_Directories(${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-Set(LINK_DIRECTORIES
-  ${ROOT_LIBRARY_DIR}
-) 
-
-Link_Directories(${LINK_DIRECTORIES})
-
-Set(SRCS
+set(sources
   FairRutherford.cxx
   FairRutherfordContFact.cxx
   FairRutherfordGeo.cxx
@@ -33,10 +16,45 @@ Set(SRCS
   FairRutherfordPoint.cxx
 )
 
+set(headers
+  FairRutherford.h
+  FairRutherfordContFact.h
+  FairRutherfordGeo.h
+  FairRutherfordGeoPar.h
+  FairRutherfordPoint.h
+)
 
-Set(HEADERS )
-Set(LINKDEF FairRutherfordLinkDef.h)
-Set(LIBRARY_NAME FairRutherford)
-Set(DEPENDENCIES Base MCStack GeoBase ParBase VMC Physics Core)
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 
-GENERATE_LIBRARY()
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
+)
+
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
+)
+
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base # FairRunIdGenerator
+  FairRoot::FairTools # FairLogger
+  FairRoot::MCStack
+  FairRoot::GeoBase
+  FairRoot::ParBase
+
+  # TODO: clean the following
+  VMC Physics Core
+)
+
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF FairRutherfordLinkDef.h
+)
+
+install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

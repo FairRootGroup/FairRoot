@@ -37,6 +37,7 @@ include(FairRootTargetRootDictionary)
 # Define install dirs
 set(PROJECT_INSTALL_BINDIR ${CMAKE_INSTALL_BINDIR})
 set(PROJECT_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR})
+set(PROJECT_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/fairbase) # TODO: change 'fairbase' to ${PROJECT_NAME_LOWER}
 
 # https://cmake.org/Wiki/CMake_RPATH_handling
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)

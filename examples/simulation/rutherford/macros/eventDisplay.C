@@ -16,7 +16,7 @@ eventDisplay(TString mcEngine="TGeant3")
   FairRunAna *fRun= new FairRunAna();
   FairFileSource *fFileSource = new FairFileSource(inFile);
   fRun->SetSource(fFileSource);
-  
+
   fRun->SetSink(new FairRootFileSink(outFile));
 
   // -----  Parameter database   --------------------------------------------
