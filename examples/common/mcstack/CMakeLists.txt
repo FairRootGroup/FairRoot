@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target MCStack) # TODO: where is this target used?
+set(target MCStack)
 
 set(sources
   FairMCTrack.cxx
