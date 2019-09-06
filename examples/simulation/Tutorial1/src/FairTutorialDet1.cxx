@@ -146,11 +146,10 @@ void FairTutorialDet1::Reset()
 
 Bool_t FairTutorialDet1::CheckIfSensitive(std::string name)
 {
-  TString tsname = name;
-  if (tsname.Contains("tutdet")) {
-    return kTRUE;
-  }
-  return kFALSE;
+    if ( name.find("tutdet") != std::string::npos ) {
+        return kTRUE;
+    }
+    return kFALSE;
 }
 
 void FairTutorialDet1::ConstructGeometry()

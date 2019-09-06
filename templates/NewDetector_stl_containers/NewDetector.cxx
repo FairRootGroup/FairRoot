@@ -259,8 +259,7 @@ void NewDetector::DefineSensitiveVolumes()
 
 Bool_t NewDetector::CheckIfSensitive(std::string name)
 {
-    if (TString(name).Contains("Det"))
-    {
+    if ( name.find("Det") != std::string::npos ) {
         return kTRUE;
     }
     return kFALSE;

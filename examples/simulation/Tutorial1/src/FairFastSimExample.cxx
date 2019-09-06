@@ -183,11 +183,7 @@ FairTutorialDet1Point* FairFastSimExample::AddHit(Int_t trackID,
 
 Bool_t FairFastSimExample::CheckIfSensitive(std::string name)
 {
-  TString tsname = name;
-  if ( tsname.CompareTo("fast_sim_vol") == 0 ) {
-    return kTRUE;
-  }
-  return kFALSE;
+    return name == "fast_sim_vol";
 }
 
 FairModule* FairFastSimExample::CloneModule() const { return new FairFastSimExample(*this); }
