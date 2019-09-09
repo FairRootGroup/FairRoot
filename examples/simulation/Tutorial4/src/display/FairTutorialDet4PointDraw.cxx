@@ -9,17 +9,17 @@
 #include "FairTutorialDet4Point.h"
 #include "FairTutorialDet4GeoHandler.h"
 
-#include "FairEventManager.h"           // for FairEventManager
-#include "FairRootManager.h"            // for FairRootManager
-#include "FairRun.h"                    // for FairRunAna
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
+#include "FairEventManager.h" // for FairEventManager
+#include "FairRootManager.h"  // for FairRootManager
+#include "FairRun.h"          // for FairRunAna
+#include "FairRuntimeDb.h"    // for FairRuntimeDb
 #include "FairLogger.h"
 
-#include <iosfwd>                       // for ostream
-#include "TClonesArray.h"               // for TClonesArray
-#include "TEvePointSet.h"                 // for TEveBoxSet, etc
-#include "TEveManager.h"                // for TEveManager, gEve
-#include "TVector3.h"                   // for TVector3
+#include <iosfwd>             // for ostream
+#include "TClonesArray.h"     // for TClonesArray
+#include "TEvePointSet.h"     // for TEveBoxSet, etc
+#include "TEveManager.h"      // for TEveManager, gEve
+#include "TVector3.h"         // for TVector3
 
 
 // -----   Default constructor   -------------------------------------------

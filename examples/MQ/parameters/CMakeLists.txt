@@ -1,82 +1,74 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/start-mq-ex-params.sh.in ${CMAKE_BINARY_DIR}/bin/examples/MQ/parameters/start-mq-ex-params.sh)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/test-mq-ex-params.sh.in ${CMAKE_BINARY_DIR}/bin/examples/MQ/parameters/test-mq-ex-params.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mq_ex_params.root ${CMAKE_BINARY_DIR}/examples/MQ/parameters/mq_ex_params.root COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mq_ex_params.root ${CMAKE_CURRENT_BINARY_DIR}/mq_ex_params.root COPYONLY)
 
-Set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${FairMQ_INCDIR}
-  ${FairMQ_INCDIR}/fairmq
-  ${CMAKE_SOURCE_DIR}/examples/MQ/parameters
-  ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
-  ${CMAKE_CURRENT_BINARY_DIR}
+set(target FairMQExParameters)
+
+set(sources
+  FairMQExParamsClient.cxx
+  FairMQExParamsContFact.cxx
+  FairMQExParamsParOne.cxx
 )
 
-Include_Directories(${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+set(headers
+  FairMQExParamsClient.h
+  FairMQExParamsContFact.h
+  FairMQExParamsParOne.h
+)
 
-Set(LINK_DIRECTORIES
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
+)
+
+target_link_directories(${target} PUBLIC
   ${ROOT_LIBRARY_DIR}
 )
 
-Link_Directories(${LINK_DIRECTORIES})
-
-set(SRCS
-  "FairMQExParamsParOne.cxx"
-  "FairMQExParamsContFact.cxx"
-)
-
-Set(NO_DICT_SRCS
-  "FairMQExParamsClient.cxx"
-)
-
-set(DEPENDENCIES
-  ${DEPENDENCIES}
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base # FairRunIdGenerator
+  FairRoot::BaseMQ # Serialization policies
+  FairRoot::FairTools # FairLogger
+  FairRoot::ParBase
   FairMQ::FairMQ
-  FairRoot::Base
-  MCStack
-  Net # TMessage
+  # TODO: clean the following
+  Core
 )
 
-set(LINKDEF "FairMQExParamsLinkDef.h")
-
-set(LIBRARY_NAME FairMQExParameters)
-
-GENERATE_LIBRARY()
-
-set(Exe_Names
-  ex-params-client
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF FairMQExParamsLinkDef.h
 )
 
-set(Exe_Source
-  runExParamsClient.cxx
+install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+add_executable(ex-params-client runExParamsClient.cxx)
+target_link_libraries(ex-params-client PRIVATE FairRoot::ParMQ FairRoot::FairMQExParameters)
+set_target_properties(ex-params-client PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/examples/MQ/parameters/")
+
+install(TARGETS ex-params-client
+  RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/parameters/bin
 )
 
-list(LENGTH Exe_Names _length)
-math(EXPR _length ${_length}-1)
-
-set(BIN_DESTINATION share/fairbase/examples/MQ/parameters/bin)
-set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/examples/MQ/parameters")
-
-ForEach(_file RANGE 0 ${_length})
-  list(GET Exe_Names ${_file} _name)
-  list(GET Exe_Source ${_file} _src)
-  set(EXE_NAME ${_name})
-  set(SRCS ${_src})
-  set(DEPENDENCIES FairMQExParameters)
-  GENERATE_EXECUTABLE()
-EndForEach(_file RANGE 0 ${_length})
-
-add_test(NAME MQ.ex-parameterss COMMAND ${CMAKE_BINARY_DIR}/bin/examples/MQ/parameters/test-mq-ex-params.sh)
-set_tests_properties(MQ.ex-parameterss PROPERTIES
-    TIMEOUT "30"
-    RUN_SERIAL true
-    PASS_REGULAR_EXPRESSION "Received parameter from the server:"
+add_test(NAME ex_MQ_parameters COMMAND ${CMAKE_BINARY_DIR}/bin/examples/MQ/parameters/test-mq-ex-params.sh)
+set_tests_properties(ex_MQ_parameters PROPERTIES
+  TIMEOUT "30"
+  RUN_SERIAL true
+  PASS_REGULAR_EXPRESSION "Received parameter from the server:"
 )

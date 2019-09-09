@@ -16,13 +16,17 @@ set(maxTestTime 60)
 
 foreach(mcEngine IN ITEMS TGeant3 TGeant4)
   add_test(tutorial4_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial4.sh 10 \"${mcEngine}\")
-  set_tests_properties(tutorial4_${mcEngine} PROPERTIES TIMEOUT ${maxTestTime})
-  set_tests_properties(tutorial4_${mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
+  set_tests_properties(tutorial4_${mcEngine} PROPERTIES
+    TIMEOUT ${maxTestTime}
+    PASS_REGULAR_EXPRESSION "Macro finished successfully"
+  )
 
   add_test(tutorial4_reco_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_reco.sh \"${mcEngine}\")
-  set_tests_properties(tutorial4_reco_${mcEngine} PROPERTIES DEPENDS run_tutorial4_${mcEngine})
-  set_tests_properties(tutorial4_reco_${mcEngine} PROPERTIES TIMEOUT ${maxTestTime})
-  set_tests_properties(tutorial4_reco_${mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
+  set_tests_properties(tutorial4_reco_${mcEngine} PROPERTIES
+    DEPENDS run_tutorial4_${mcEngine}
+    TIMEOUT ${maxTestTime}
+    PASS_REGULAR_EXPRESSION "Macro finished successfully"
+  )
 endforeach(mcEngine IN ITEMS TGeant3 TGeant4)
 
 install(FILES

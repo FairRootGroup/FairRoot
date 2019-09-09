@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -21,7 +21,7 @@
 #include "TVirtualMC.h"                 // for TVirtualMC
 
 #include <stdio.h>                      // for printf
-#include <string.h>                     // for NULL, strlen, strncpy
+#include <string.h>                     // for nullptr, strlen, strncpy
 #include <map>                          // for map
 #include <utility>                      // for pair
 
@@ -33,10 +33,10 @@ FairTutorialDet4GeoHandler::FairTutorialDet4GeoHandler()
     fIsSimulation(kFALSE),
     fLastUsedDetectorID(0),
     fGeoPathHash(0),
-    fCurrentVolume(NULL),
-    fVolumeShape(NULL),
+    fCurrentVolume(nullptr),
+    fVolumeShape(nullptr),
     fGlobal(),
-    fGlobalMatrix(NULL)
+    fGlobalMatrix(nullptr)
 {
 }
 
@@ -72,7 +72,6 @@ Int_t FairTutorialDet4GeoHandler::GetUniqueDetectorId(TString volName)
   return GetUniqueDetectorId();
 }
 
-
 Int_t FairTutorialDet4GeoHandler::GetUniqueDetectorId()
 {
 
@@ -81,10 +80,7 @@ Int_t FairTutorialDet4GeoHandler::GetUniqueDetectorId()
   CurrentVolOffID(0, detectorNr);
 
   return detectorNr;
-
-
 }
-
 
 Int_t FairTutorialDet4GeoHandler::VolIdGeo(const char* name) const
 {
@@ -201,6 +197,5 @@ void FairTutorialDet4GeoHandler::NavigateTo(TString volName)
 //    fGlobalMatrix = gGeoManager->GetCurrentMatrix();
   }
 }
-
 
 ClassImp(FairTutorialDet4GeoHandler)

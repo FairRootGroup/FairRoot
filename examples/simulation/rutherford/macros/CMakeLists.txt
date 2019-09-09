@@ -13,12 +13,16 @@ set(maxTestTime 60)
 
 foreach(mcEngine IN ITEMS TGeant3 TGeant4)
   add_test(run_rutherford_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_rutherford.sh 10 \"${mcEngine}\")
-  set_tests_properties(run_rutherford_${mcEngine} PROPERTIES TIMEOUT ${maxTestTime})
-  set_tests_properties(run_rutherford_${mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
+  set_tests_properties(run_rutherford_${mcEngine} PROPERTIES
+    TIMEOUT ${maxTestTime}
+    PASS_REGULAR_EXPRESSION "Macro finished successfully"
+  )
 
   add_test(run_rad_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_rad.sh 100 \"${mcEngine}\")
-  set_tests_properties(run_rad_${mcEngine} PROPERTIES TIMEOUT ${maxTestTime})
-  set_tests_properties(run_rad_${mcEngine} PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
+  set_tests_properties(run_rad_${mcEngine} PROPERTIES
+    TIMEOUT ${maxTestTime}
+    PASS_REGULAR_EXPRESSION "Macro finished successfully"
+  )
 endforeach()
 
 install(FILES

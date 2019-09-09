@@ -21,3 +21,11 @@ This example shows how to send a multipart message from one device to the other.
 ## pixelAlternative: Transport FairRoot data between devices, implement special devices to analyze data
 
 This example shows how to send a multipart message from one device to the other. (two parts message parts - header and body).
+
+## histogramServer
+
+TODO: fill me.
+
+## serialization
+
+TODO: fill me.
