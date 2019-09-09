@@ -1,78 +1,73 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-Set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${FairMQ_INCDIR}
-  ${FairMQ_INCDIR}/fairmq
-  ${CMAKE_SOURCE_DIR}/examples/MQ/histogramServer
-  ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
-  ${CMAKE_CURRENT_BINARY_DIR}
+set(target FairMQExHistogramServer)
+
+set(sources
+  FairMQExHistoCanvasDrawer.cxx
+  FairMQExHistoCanvasDrawerExample.cxx
+  FairMQExHistoDevice.cxx
+  FairMQExHistoServer.cxx
 )
 
-Include_Directories(${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+set(headers
+  FairMQExHistoCanvasDrawer.h
+  FairMQExHistoCanvasDrawerExample.h
+  FairMQExHistoDevice.h
+  FairMQExHistoServer.h
+)
 
-Set(LINK_DIRECTORIES
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
+)
+
+target_link_directories(${target} PUBLIC
   ${ROOT_LIBRARY_DIR}
 )
 
-Link_Directories(${LINK_DIRECTORIES})
-
-set(SRCS
-)
-
-Set(NO_DICT_SRCS
-  "FairMQExHistoDevice.cxx"
-  "FairMQExHistoServer.cxx"
-  "FairMQExHistoCanvasDrawer.cxx"
-  "FairMQExHistoCanvasDrawerExample.cxx"
-)
-
-set(DEPENDENCIES
-  ${DEPENDENCIES}
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base # FairRunIdGenerator
+  FairRoot::BaseMQ # Serialization policies
+  FairRoot::FairTools # FairLogger
+  FairRoot::ParBase
   FairMQ::FairMQ
-  FairRoot::Base
-  Net # TMessage
+  # TODO: clean the following
+  Core
+  Gpad
+  RHTTP
+  Hist
+  MathCore
 )
 
-set(LINKDEF "FairMQExHistoLinkDef.h")
-
-set(LIBRARY_NAME FairMQExHistogramServer)
-
-GENERATE_LIBRARY()
-
-set(Exe_Names
-  ex-histo-device
-  ex-histo-server
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF FairMQExHistoLinkDef.h
 )
 
-set(Exe_Source
-  runExHistoDevice.cxx
-  runExHistoCanvasDrawer.cxx
+install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+add_executable(ex-histo-device runExHistoDevice.cxx)
+target_link_libraries(ex-histo-device PRIVATE FairRoot::FairMQExHistogramServer)
+
+add_executable(ex-histo-server runExHistoCanvasDrawer.cxx)
+target_link_libraries(ex-histo-server PRIVATE FairRoot::FairMQExHistogramServer)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/fairmq-start-ex-histo.sh.in ${CMAKE_CURRENT_BINARY_DIR}/fairmq-start-ex-histo.sh)
+
+install(TARGETS ex-histo-device ex-histo-server
+  RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/histogramServer/bin
 )
-
-list(LENGTH Exe_Names _length)
-math(EXPR _length ${_length}-1)
-
-set(BIN_DESTINATION share/fairbase/examples/MQ/histogramServer/bin)
-set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/examples/MQ/histogramServer")
-
-ForEach(_file RANGE 0 ${_length})
-  list(GET Exe_Names ${_file} _name)
-  list(GET Exe_Source ${_file} _src)
-  set(EXE_NAME ${_name})
-  set(SRCS ${_src})
-  set(DEPENDENCIES FairMQExHistogramServer)
-  GENERATE_EXECUTABLE()
-EndForEach(_file RANGE 0 ${_length})
-
-set(EX_BIN_DIR ${EXECUTABLE_OUTPUT_PATH})
-set(MAIN_BINARY_DIR ${CMAKE_BINARY_DIR})
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/fairmq-start-ex-histo.sh.in ${EXECUTABLE_OUTPUT_PATH}/fairmq-start-ex-histo.sh)
-

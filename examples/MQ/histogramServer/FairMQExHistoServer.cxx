@@ -12,10 +12,7 @@
 #include "FairLogger.h"
 #include "RootSerializer.h"
 
-#include "TObjArray.h"
 #include "TH1.h"
-#include "TMessage.h"
-#include "THttpServer.h"
 
 std::mutex mtx;
 
