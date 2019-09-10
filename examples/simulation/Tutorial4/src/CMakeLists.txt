@@ -48,15 +48,24 @@ reco/FairTutorialDet4StraightLineFitter.cxx
 reco/FairTutorialDet4MilleWriter.cxx
 
 tools/FairTutorialDet4GeoHandler.cxx
-
-display/FairTutorialDet4PointDraw.cxx
 )
+
+If (${ROOT_HAS_OPENGL} MATCHES "yes")
+  set(SRCS
+      ${SRCS}
+      display/FairTutorialDet4PointDraw.cxx
+     )
+EndIf (${ROOT_HAS_OPENGL} MATCHES "yes")
 
 set(NO_DICT_SRCS tools/Mille.cc)
 Set(HEADERS )
 Set(LINKDEF Tutorial4LinkDef.h)
 Set(LIBRARY_NAME Tutorial4)
-Set(DEPENDENCIES Base MCStack GeoBase ParBase VMC Physics Core Eve)
+Set(DEPENDENCIES Base MCStack GeoBase ParBase VMC Physics Core)
+
+If (${ROOT_HAS_OPENGL} MATCHES "yes")
+  set(DEPENDENCIES ${DEPENDENCIES} Eve)
+EndIf (${ROOT_HAS_OPENGL} MATCHES "yes")
 
 GENERATE_LIBRARY()
 
