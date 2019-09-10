@@ -27,8 +27,10 @@
 #include "PixelPoint.h"
 
 // -----   Default constructor   -------------------------------------------
-FairGeaneTr::FairGeaneTr() :
-  FairTask("FairGeanePropagator") { }
+FairGeaneTr::FairGeaneTr()
+    : FairTask("FairGeanePropagator")
+    , fPro(0)
+{ }
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
@@ -59,7 +61,7 @@ InitStatus FairGeaneTr::Init() {
 
     // Get input array
 
-    fPointArray = (TClonesArray*) ioman->GetObject("PixelPoint");
+    fPointArray = static_cast<TClonesArray*>(ioman->GetObject("PixelPoint"));
 
     // Create and register output array
 
@@ -83,13 +85,13 @@ void FairGeaneTr::Exec(Option_t*) {
     Int_t NoOfEntries=fPointArray->GetEntriesFast();
     LOG(debug) << "fPointArray has " << NoOfEntries << " entries";
     for (Int_t i=0; i<NoOfEntries; i++)	{
-        fPoint1 = (PixelPoint *)fPointArray->At(i);
+        fPoint1 = static_cast<PixelPoint*>(fPointArray->At(i));
         if ( fPoint1->GetZ() > 6. ) continue;
         LOG(debug) << "first loop for " << i << "from "<< NoOfEntries << " entries ";
         Int_t trId=fPoint1->GetTrackID();
         fPoint2=0;
         for (Int_t k=0; k<NoOfEntries; k++)	{
-            fPoint2 = (PixelPoint *)fPointArray->At(k);
+            fPoint2 = static_cast<PixelPoint*>(fPointArray->At(k));
             if ( fPoint2->GetZ() < 15. ) continue;
             LOG(debug) << "second loop for " << k;
             if(fPoint2->GetTrackID()==trId) break;
