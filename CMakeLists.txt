@@ -112,7 +112,7 @@ If(${POS_C++11} EQUAL -1)
 EndIf()
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
-set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin")
+set(EXECUTABLE_OUTPUT_PATH "${CMAKE_BINARY_DIR}/bin") # TODO: delete me, use default paths
 
 Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are used." OFF)
 

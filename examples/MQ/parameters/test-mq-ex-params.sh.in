@@ -11,7 +11,7 @@ CLIENT+=" --verbosity veryhigh"
 CLIENT+=" --control static --color false"
 CLIENT+=" --max-iterations 1"
 CLIENT+=" --channel-config name=data,type=req,method=connect,address=tcp://localhost:5005,rateLogging=0"
-@CMAKE_BINARY_DIR@/bin/examples/MQ/parameters/$CLIENT &
+@CMAKE_CURRENT_BINARY_DIR@/$CLIENT &
 CLIENT_PID=$!
 
 PARAMETERSERVER="parmq-server"
@@ -20,7 +20,7 @@ PARAMETERSERVER+=" --verbosity veryhigh"
 PARAMETERSERVER+=" --control static --color false"
 PARAMETERSERVER+=" --channel-name data"
 PARAMETERSERVER+=" --channel-config name=data,type=rep,method=bind,rateLogging=0,address=tcp://*:5005"
-PARAMETERSERVER+=" --first-input-name @CMAKE_BINARY_DIR@/examples/MQ/parameters/mq_ex_params.root"
+PARAMETERSERVER+=" --first-input-name @CMAKE_CURRENT_BINARY_DIR@/mq_ex_params.root"
 @CMAKE_BINARY_DIR@/bin/$PARAMETERSERVER &
 PARAMETERSERVER_PID=$!
 

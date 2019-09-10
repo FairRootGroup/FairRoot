@@ -49,6 +49,7 @@ install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(parmq-server runParameterMQServer.cxx)
 target_link_libraries(parmq-server PRIVATE ParMQ)
+set_target_properties(parmq-server PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin/")
 
 install(TARGETS parmq-server
   RUNTIME DESTINATION bin

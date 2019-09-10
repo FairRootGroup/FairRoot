@@ -6,9 +6,9 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/start-mq-ex-params.sh.in ${CMAKE_BINARY_DIR}/bin/examples/MQ/parameters/start-mq-ex-params.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/test-mq-ex-params.sh.in ${CMAKE_BINARY_DIR}/bin/examples/MQ/parameters/test-mq-ex-params.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mq_ex_params.root ${CMAKE_CURRENT_BINARY_DIR}/mq_ex_params.root COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/start-mq-ex-params.sh.in ${CMAKE_CURRENT_BINARY_DIR}/start-mq-ex-params.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/test-mq-ex-params.sh.in  ${CMAKE_CURRENT_BINARY_DIR}/test-mq-ex-params.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mq_ex_params.root        ${CMAKE_CURRENT_BINARY_DIR}/mq_ex_params.root COPYONLY)
 
 set(target FairMQExParameters)
 
@@ -60,7 +60,7 @@ install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(ex-params-client runExParamsClient.cxx)
 target_link_libraries(ex-params-client PRIVATE FairRoot::ParMQ FairRoot::FairMQExParameters)
-set_target_properties(ex-params-client PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/examples/MQ/parameters/")
+set_target_properties(ex-params-client PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 install(TARGETS ex-params-client
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/parameters/bin
