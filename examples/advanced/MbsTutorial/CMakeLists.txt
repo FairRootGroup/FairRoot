@@ -1,49 +1,67 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libMbsTutorial"
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-set(INCLUDE_DIRECTORIES
-    ${BASE_INCLUDE_DIRECTORIES}
-    ${CMAKE_SOURCE_DIR}/examples/advanced/MbsTutorial
-    ${CMAKE_SOURCE_DIR}/examples/advanced/MbsTutorial/src
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/sample_data_2.lmd  ${CMAKE_CURRENT_BINARY_DIR}/sample_data_2.lmd COPYONLY)
+
+set(target MbsTutorial)
+
+set(sources
+  FairMBSUnpack.cxx
+  FairMBSRawItem.cxx
+  FairMBSTask.cxx
 )
 
-Set(SYSTEM_INCLUDE_DIRECTORIES
-    ${SYSTEM_INCLUDE_DIRECTORIES}
+set(headers
+  FairMBSUnpack.h
+  FairMBSRawItem.h
+  FairMBSTask.h
 )
 
-include_directories(${INCLUDE_DIRECTORIES})
-include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
-set(LINK_DIRECTORIES
-    ${ROOT_LIBRARY_DIR}
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
 )
 
-link_directories(${LINK_DIRECTORIES})
-
-Set(SRCS
-    src/FairMBSUnpack.cxx
-    src/FairMBSRawItem.cxx
-    src/FairMBSTask.cxx
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
 )
 
-CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base
+  FairRoot::FairTools # FairLogger
+  FairRoot::MbsAPI
 
-Set(LINKDEF MbsTutorialLinkDef.h)
-Set(LIBRARY_NAME MbsTutorial)
-
-Set(DEPENDENCIES
-    Base MbsAPI
+  # TODO: clean the following
+  Core
+  Hist
+  Gpad
 )
 
-GENERATE_LIBRARY()
-Install(DIRECTORY data
-           DESTINATION share/fairbase/examples/advanced/MbsTutorial
-          )
-add_subdirectory(macros)
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF MbsTutorialLinkDef.h
+)
+
+install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(FILES sample_data_2.lmd unpack_mbs.C DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/advanced/MbsTutorial)
+
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/unpack_mbs.C)
+
+add_test(ex_unpack_mbs ${CMAKE_CURRENT_BINARY_DIR}/unpack_mbs.sh)
+set_tests_properties(ex_unpack_mbs PROPERTIES
+  TIMEOUT "30"
+  PASS_REGULAR_EXPRESSION "Macro finished successfully"
+)

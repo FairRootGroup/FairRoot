@@ -19,11 +19,11 @@
 
 FairMBSTask::FairMBSTask(const char* name, Int_t iVerbose)
     : FairTask(name, iVerbose)
-    , fRawData(NULL)
-    , fhQdc(NULL)
-    , fhTac(NULL)
-    , fhClock(NULL)
-    , fhTacCh(NULL)
+    , fRawData(nullptr)
+    , fhQdc(nullptr)
+    , fhTac(nullptr)
+    , fhClock(nullptr)
+    , fhTacCh(nullptr)
 {
 }
 
@@ -34,13 +34,13 @@ FairMBSTask::~FairMBSTask()
 InitStatus FairMBSTask::Init()
 {
     FairRootManager* mgr = FairRootManager::Instance();
-    if (NULL == mgr)
+    if (nullptr == mgr)
     {
         return kFATAL;
     }
 
     fRawData = static_cast<TClonesArray*>(mgr->GetObject("MBSRawItem"));
-    if (NULL == fRawData)
+    if (nullptr == fRawData)
     {
         return kERROR;
     }
@@ -51,14 +51,14 @@ InitStatus FairMBSTask::Init()
     fhTacCh = new TH1F("hTacCh", "Raw TAC Channel distribution", 20, 0., 20.);
 
     FairRunOnline* run = FairRunOnline::Instance();
-    if (NULL == run)
+    if (nullptr == run)
     {
         return kERROR;
     }
 
     run->AddObject(fhQdc);
     run->RegisterHttpCommand("/Reset_hQdc", "/hQdc/->Reset()");
-    
+
     TCanvas *c1 = new TCanvas("c1", "", 10, 10, 500, 500);
     c1->Divide(2, 2);
     c1->cd(1);
@@ -71,7 +71,7 @@ InitStatus FairMBSTask::Init()
     fhTacCh->Draw();
     c1->cd(0);
     run->AddObject(c1);
-    
+
     TFolder *folder = new TFolder("MbsDetFolder", "Example Folder");
     folder->Add(fhQdc);
     folder->Add(fhTac);
@@ -84,7 +84,7 @@ InitStatus FairMBSTask::Init()
 
 void FairMBSTask::Exec(Option_t*)
 {
-    if (NULL == fRawData)
+    if (nullptr == fRawData)
     {
         return;
     }
@@ -93,7 +93,7 @@ void FairMBSTask::Exec(Option_t*)
     for (Int_t i = 0; i < nItems; i++)
     {
         item = static_cast<FairMBSRawItem*>(fRawData->At(i));
-        if (NULL == item)
+        if (nullptr == item)
         {
             continue;
         }

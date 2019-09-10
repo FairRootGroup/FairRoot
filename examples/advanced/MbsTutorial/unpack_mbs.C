@@ -9,7 +9,7 @@ void unpack_mbs()
     TString tutdir = dir + "/advanced/MbsTutorial";
 
     FairLmdSource* source = new FairLmdSource();
-    source->AddFile("../data/sample_data_2.lmd");
+    source->AddFile("sample_data_2.lmd");
 
     // NeuLAND MBS parameters -------------------------------
     Short_t type = 94;

@@ -80,11 +80,10 @@ ENDMACRO()
 
 ################################################################################
 #
-#Exchange file extention of LIST from
-#FILE_EXT1 to FILE_EXT2 and assign the
-#newly created list to OUTVAR.The input
-#list LIST is not changed at all
-#Ex : CHANGE_FILE_EXTENSION(*.cxx *.h TRD_HEADERS "${TRD_SRCS}")
+# Exchange file extention of LIST from FILE_EXT1 to FILE_EXT2
+# and assign the newly created list to OUTVAR.
+# The input list LIST is not changed at all
+# Ex : CHANGE_FILE_EXTENSION(*.cxx *.h TRD_HEADERS "${TRD_SRCS}")
 #
 ################################################################################
 MACRO (CHANGE_FILE_EXTENSION FILE_EXT1 FILE_EXT2 OUTVAR LIST)
