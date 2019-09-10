@@ -10,8 +10,7 @@
 
 void Config()
 {
-
-  gMC3= new  TGeant3TGeo("C++ Interface to Geant3");
+  TGeant3TGeo* gMC3= new  TGeant3TGeo("C++ Interface to Geant3");
   cout << "-I- G3Config: Geant3 with TGeo has been created for Geane."
        << endl;
   // create Fair Specific Stack
