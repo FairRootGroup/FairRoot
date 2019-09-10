@@ -2,14 +2,14 @@
 
 trap 'kill -TERM $GENERATE_PID; kill -TERM $SAMPLER_PID; kill -TERM $PROCESSOR1_PID; kill -TERM $FILESINK_PID; wait $GENERATE_PID; wait $SAMPLER_PID; wait $PROCESSOR1_PID; wait $FILESINK_PID;' TERM
 
-INPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/serialization/data_io/testinput2.root"
-OUTPUTFILE="@CMAKE_SOURCE_DIR@/examples/MQ/serialization/data_io/outputEx2Test.root"
+INPUTFILE="@CMAKE_CURRENT_BINARY_DIR@/data_io/testinput2.root"
+OUTPUTFILE="@CMAKE_CURRENT_BINARY_DIR@/data_io/outputEx2Test.root"
 
 ########################## start dummy data generator
 GENERATE="ex-serialization-generate-data"
 GENERATE+=" --output-file $INPUTFILE"
 GENERATE+=" --tree cbmsim"
-@CMAKE_BINARY_DIR@/bin/examples/MQ/serialization/$GENERATE &
+@CMAKE_CURRENT_BINARY_DIR@/$GENERATE &
 GENERATE_PID=$!
 wait $GENERATE_PID
 
@@ -21,7 +21,7 @@ SAMPLER+=" --input-file $INPUTFILE"
 SAMPLER+=" --color false"
 SAMPLER+=" --control static"
 SAMPLER+=" --verbosity veryhigh"
-@CMAKE_BINARY_DIR@/bin/examples/MQ/serialization/$SAMPLER &
+@CMAKE_CURRENT_BINARY_DIR@/$SAMPLER &
 SAMPLER_PID=$!
 
 ########################## start PROCESSOR
@@ -33,7 +33,7 @@ PROCESSOR1+=" --color false"
 PROCESSOR1+=" --control static"
 PROCESSOR1+=" --num-msgs 100"
 PROCESSOR1+=" --verbosity veryhigh"
-@CMAKE_BINARY_DIR@/bin/examples/MQ/serialization/$PROCESSOR1 &
+@CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR1 &
 PROCESSOR1_PID=$!
 
 ########################## start FILESINK
@@ -45,7 +45,7 @@ FILESINK+=" --control static"
 FILESINK+=" --num-msgs 100"
 FILESINK+=" --output-file $OUTPUTFILE"
 FILESINK+=" --verbosity veryhigh"
-@CMAKE_BINARY_DIR@/bin/examples/MQ/serialization/$FILESINK &
+@CMAKE_CURRENT_BINARY_DIR@/$FILESINK &
 FILESINK_PID=$!
 
 wait $SAMPLER_PID

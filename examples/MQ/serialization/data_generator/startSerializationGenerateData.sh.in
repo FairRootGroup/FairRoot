@@ -1,8 +1,8 @@
 #!/bin/bash
 
 GENERATE="ex-serialization-generate-data"
-GENERATE+=" --output-file @CMAKE_SOURCE_DIR@/examples/MQ/serialization/data_io/inputEx.root"
+GENERATE+=" --output-file @CMAKE_CURRENT_BINARY_DIR@/data_io/inputEx.root"
 GENERATE+=" --tree cbmsim"
 # output file -> InputFile of sampler
 
-@CMAKE_BINARY_DIR@/bin/examples/MQ/serialization/$GENERATE
+@CMAKE_CURRENT_BINARY_DIR@/$GENERATE

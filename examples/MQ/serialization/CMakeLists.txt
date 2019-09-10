@@ -1,133 +1,130 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libSerializationExample"
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-set(INCLUDE_DIRECTORIES
-    ${BASE_INCLUDE_DIRECTORIES}
-    ${FairMQ_INCDIR}
-    ${FairMQ_INCDIR}/fairmq
-    ${CMAKE_SOURCE_DIR}/base/MQ
-    ${CMAKE_SOURCE_DIR}/base/MQ/policies/Storage
-    ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
-    ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/data_generator
-    ${CMAKE_CURRENT_SOURCE_DIR}/data_struct
-    ${CMAKE_CURRENT_SOURCE_DIR}/1-simple/
-    ${CMAKE_CURRENT_SOURCE_DIR}/2-multipart/
+set(target SerializationExample)
+
+set(sources
+  data/MyDigi.cxx
+  data/MyHit.cxx
+  data/MyPodData.cxx
 )
 
-include_directories(${INCLUDE_DIRECTORIES})
-include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+set(headers
+  data/MyDigi.h
+  data/MyHit.h
+  data/MyPodData.h
+)
+
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/1-simple>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/2-multipart>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/data>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/data_generator>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
+)
+
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
+)
+
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base # FairRunIdGenerator
+  FairRoot::BaseMQ # Serialization policies
+  FairRoot::FairTools # FairLogger
+  FairRoot::ParBase
+  FairMQ::FairMQ
+  # TODO: clean the following
+  Core
+  MathCore
+  RIO
+  Tree
+  RooFit
+  RooFitCore
+)
+
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF SerializationExampleLinkDef.h
+)
+
+install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+add_executable(ex-serialization1-sampler 1-simple/runEx1Sampler.cxx)
+target_link_libraries(ex-serialization1-sampler PRIVATE FairRoot::SerializationExample FairMQ::FairMQ)
+set_target_properties(ex-serialization1-sampler PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+
+add_executable(ex-serialization1-processor 1-simple/runEx1Processor.cxx)
+target_link_libraries(ex-serialization1-processor PRIVATE FairRoot::SerializationExample FairMQ::FairMQ)
+set_target_properties(ex-serialization1-processor PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+
+add_executable(ex-serialization1-sink 1-simple/runEx1Sink.cxx)
+target_link_libraries(ex-serialization1-sink PRIVATE FairRoot::SerializationExample FairMQ::FairMQ)
+set_target_properties(ex-serialization1-sink PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+
+add_executable(ex-serialization2-sampler 2-multipart/runEx2Sampler.cxx)
+target_link_libraries(ex-serialization2-sampler PRIVATE FairRoot::SerializationExample FairMQ::FairMQ)
+set_target_properties(ex-serialization2-sampler PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+
+add_executable(ex-serialization2-processor 2-multipart/runEx2Processor.cxx)
+target_link_libraries(ex-serialization2-processor PRIVATE FairRoot::SerializationExample FairMQ::FairMQ)
+set_target_properties(ex-serialization2-processor PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+
+add_executable(ex-serialization2-sink 2-multipart/runEx2Sink.cxx)
+target_link_libraries(ex-serialization2-sink PRIVATE FairRoot::SerializationExample FairMQ::FairMQ)
+set_target_properties(ex-serialization2-sink PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+
+add_executable(ex-serialization-generate-data data_generator/runGenerateData.cxx)
+target_link_libraries(ex-serialization-generate-data PRIVATE FairRoot::SerializationExample FairMQ::FairMQ RooFitCore RooFit Core Hist Gpad FairRoot::BaseMQ)
+set_target_properties(ex-serialization-generate-data PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+
+# Create a directory that will hold root input/output data file
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data_io)
 
 # Data generator
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data_generator/startSerializationGenerateData.sh.in
-               ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/startSerializationGenerateData.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data_generator/startSerializationGenerateData.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startSerializationGenerateData.sh)
 
 # start MQ chains
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/1-simple/startSerializationEx1.sh.in
-               ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/startSerializationEx1.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/2-multipart/startSerializationEx2.sh.in
-               ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/startSerializationEx2.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/1-simple/startSerializationEx1.sh.in                ${CMAKE_CURRENT_BINARY_DIR}/startSerializationEx1.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/2-multipart/startSerializationEx2.sh.in             ${CMAKE_CURRENT_BINARY_DIR}/startSerializationEx2.sh)
 
 # test scripts
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/1-simple/testSerializationEx1.sh.in
-               ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/testSerializationEx1.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/2-multipart/testSerializationEx2.sh.in
-               ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/testSerializationEx2.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/1-simple/testSerializationEx1.sh.in                 ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx1.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/2-multipart/testSerializationEx2.sh.in              ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx2.sh)
 
-# Create a default directory that will hold root input/output data file
-file(MAKE_DIRECTORY ${CMAKE_SOURCE_DIR}/examples/MQ/serialization/data_io)
-
-set(LINK_DIRECTORIES
-    ${ROOT_LIBRARY_DIR}
+install(TARGETS
+  ex-serialization1-sampler
+  ex-serialization1-processor
+  ex-serialization1-sink
+  ex-serialization2-sampler
+  ex-serialization2-processor
+  ex-serialization2-sink
+  ex-serialization-generate-data
+  RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/serialization/bin
 )
 
-link_directories(${LINK_DIRECTORIES})
-
-set(SRCS
-    data_struct/MyDigi.cxx
-    data_struct/MyHit.cxx
-    data_struct/MyPodData.cxx
+add_test(NAME ex_MQ_serialization1 COMMAND ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx1.sh)
+set_tests_properties(ex_MQ_serialization1 PROPERTIES
+  TIMEOUT "30"
+  PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
 )
 
-set(LINKDEF SerializationExampleLinkDef.h)
-set(LIBRARY_NAME SerializationExample)
-
-set(DEPENDENCIES
-    Base
-    FairMQ::FairMQ
-    BaseMQ
-    Boost::serialization
-    Boost::program_options
-    Minuit
-    XMLIO
-    MathMore
+add_test(NAME ex_MQ_serialization2 COMMAND ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx2.sh)
+set_tests_properties(ex_MQ_serialization2 PROPERTIES
+  DEPENDS ex_MQ_serialization1
+  TIMEOUT "30"
+  PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
 )
-
-GENERATE_LIBRARY()
-
-set(Exe_Names
-    ex-serialization1-sampler
-    ex-serialization1-processor
-    ex-serialization1-sink
-
-    ex-serialization2-sampler
-    ex-serialization2-processor
-    ex-serialization2-sink
-)
-
-set(Exe_Source
-    1-simple/runEx1Sampler.cxx
-    1-simple/runEx1Processor.cxx
-    1-simple/runEx1Sink.cxx
-
-    2-multipart/runEx2Sampler.cxx
-    2-multipart/runEx2Processor.cxx
-    2-multipart/runEx2Sink.cxx
-)
-
-List(LENGTH Exe_Names _length)
-Math(EXPR _length ${_length}-1)
-
-set(BIN_DESTINATION share/fairbase/examples/MQ/serialization/bin)
-set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/examples/MQ/serialization")
-
-ForEach(_file RANGE 0 ${_length})
-    List(GET Exe_Names ${_file} _name)
-    List(GET Exe_Source ${_file} _src)
-    set(EXE_NAME ${_name})
-    set(SRCS ${_src})
-    # set(DEPENDENCIES SerializationExample ${UBUNTU_GREATERTHAN_v11_LINKER_FLAG})
-    set(DEPENDENCIES SerializationExample)
-    GENERATE_EXECUTABLE()
-EndForEach(_file RANGE 0 ${_length})
-
-set(EXE_NAME ex-serialization-generate-data)
-set(SRCS data_generator/runGenerateData.cxx)
-set(DEPENDENCIES SerializationExample RooFitCore RooFit Foam)
-GENERATE_EXECUTABLE()
-
-add_test(NAME MQ.ex-serialization1 COMMAND ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/testSerializationEx1.sh)
-set_tests_properties(MQ.ex-serialization1 PROPERTIES TIMEOUT "30")
-set_tests_properties(MQ.ex-serialization1 PROPERTIES
-    PASS_REGULAR_EXPRESSION "Data generation successful"
-    PASS_REGULAR_EXPRESSION "Sent 100 messages!"
-    PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
-    PASS_REGULAR_EXPRESSION "Received 100 messages!"
-    )
-
-add_test(NAME MQ.ex-serialization2 COMMAND ${CMAKE_BINARY_DIR}/bin/examples/MQ/serialization/testSerializationEx2.sh)
-set_tests_properties(MQ.ex-serialization2 PROPERTIES DEPENDS MQ.ex-serialization1)
-set_tests_properties(MQ.ex-serialization2 PROPERTIES TIMEOUT "30")
-set_tests_properties(MQ.ex-serialization2 PROPERTIES
-    PASS_REGULAR_EXPRESSION "Data generation successful"
-    PASS_REGULAR_EXPRESSION "Sent 100 messages!"
-    PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
-    PASS_REGULAR_EXPRESSION "Received 100 messages!"
-    )

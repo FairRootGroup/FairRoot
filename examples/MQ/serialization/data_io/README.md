@@ -1,1 +1,0 @@
-# Input and output files produced by the MQ serialization examples
