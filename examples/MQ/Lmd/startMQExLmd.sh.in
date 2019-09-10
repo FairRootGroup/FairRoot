@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LMDFILE="@CMAKE_SOURCE_DIR@/examples/advanced/MbsTutorial/data/sample_data_2.lmd"
+LMDFILE="@CMAKE_SOURCE_DIR@/examples/advanced/MbsTutorial/sample_data_2.lmd"
 SEVERITY="DEBUG"
 
 ########################## start SAMPLER
@@ -15,7 +15,7 @@ SAMPLER+=" --lmd-control 3"
 SAMPLER+=" --lmd-chan-name ToMBSUnpacker"
 SAMPLER+=" --input-file-name $LMDFILE"
 SAMPLER+=" --severity $SEVERITY"
-xterm -geometry 80x30+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/Lmd/$SAMPLER &
+xterm -geometry 80x30+0+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$SAMPLER &
 
 ########################## start Unpacker
 UNPACKER="ex-lmd-mbs-unpacker"
@@ -30,13 +30,13 @@ UNPACKER+=" --lmd-control 3"
 UNPACKER+=" --lmd-chan-name ToMBSUnpacker"
 UNPACKER+=" --out-chan-name data"
 UNPACKER+=" --severity $SEVERITY"
-xterm -geometry 80x30+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/Lmd/$UNPACKER &
+xterm -geometry 80x30+500+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$UNPACKER &
 
 ########################## start FILESINK
 FILESINK="ex-lmd-mbs-sink"
 FILESINK+=" --id sink1"
 FILESINK+=" --channel-config name=data,type=pull,method=bind,address=tcp://*:5570"
 FILESINK+=" --in-chan-name data"
-FILESINK+=" --output-file-name @CMAKE_BINARY_DIR@/bin/examples/MQ/Lmd/ex-lmd-output.root"
+FILESINK+=" --output-file-name @CMAKE_CURRENT_BINARY_DIR@/ex-lmd-output.root"
 FILESINK+=" --severity $SEVERITY"
-xterm -geometry 80x30+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/MQ/Lmd/$FILESINK &
+xterm -geometry 80x30+1000+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$FILESINK &

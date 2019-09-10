@@ -1,87 +1,70 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-set(INCLUDE_DIRECTORIES
-    ${BASE_INCLUDE_DIRECTORIES}
-    ${FairMQ_INCDIR}
-    ${FairMQ_INCDIR}/fairmq
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/startMQExLmd.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startMQExLmd.sh)
 
-    ${CMAKE_SOURCE_DIR}/base/MQ/devices
-    ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
-    ${CMAKE_SOURCE_DIR}/base/MQ/policies/Storage
-    ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
+set(target ExLmd)
 
-    ${CMAKE_SOURCE_DIR}/examples/MQ/Lmd
-    ${CMAKE_SOURCE_DIR}/examples/MQ/Lmd/unpacker
-
-    ${CMAKE_SOURCE_DIR}/MbsAPI
-
-    ${CMAKE_SOURCE_DIR}/examples/advanced/MbsTutorial/src
+set(sources
+  FairMBSUnpacker.cxx
 )
 
-Set(SYSTEM_INCLUDE_DIRECTORIES
-    ${SYSTEM_INCLUDE_DIRECTORIES}
-    ${ZeroMQ_INCLUDE_DIR}
+set(headers
+  FairMBSUnpacker.h
 )
 
-include_directories(${INCLUDE_DIRECTORIES})
-include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 
-configure_file(${CMAKE_SOURCE_DIR}/examples/MQ/Lmd/run/startMQExLmd.sh.in
-               ${CMAKE_BINARY_DIR}/bin/examples/MQ/Lmd/startMQExLmd.sh)
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
-set(LINK_DIRECTORIES
-    ${ROOT_LIBRARY_DIR}
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
 )
 
-link_directories(${LINK_DIRECTORIES})
-
-Set(SRCS
-    unpacker/FairMBSUnpacker.cxx
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
 )
 
-Set(DEPENDENCIES
-  Base MbsAPI MbsTutorial FairMQ::FairMQ Net
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base # FairRunIdGenerator
+  FairRoot::BaseMQ # Serialization policies
+  FairRoot::FairTools # FairLogger
+  FairRoot::MbsAPI
+  FairRoot::MbsTutorial
+  FairMQ::FairMQ
+  # TODO: clean the following
+  Core
 )
 
-Set(LINKDEF LmdLinkDef.h)
-Set(LIBRARY_NAME ExLmd)
-
-GENERATE_LIBRARY()
-
-Set(Exe_Names
-    ex-lmd-sampler
-    ex-lmd-mbs-unpacker
-    ex-lmd-mbs-sink
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF LmdLinkDef.h
 )
 
-set(Exe_Source
-    run/runLmdSampler.cxx
-    run/runMBSMQUnpacker.cxx
-    run/runMBSSink.cxx
+install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+add_executable(ex-lmd-sampler runLmdSampler.cxx)
+target_link_libraries(ex-lmd-sampler PRIVATE FairRoot::ExLmd FairRoot::BaseMQ Core FairRoot::MbsTutorial FairMQ::FairMQ)
+set_target_properties(ex-lmd-sampler PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+
+add_executable(ex-lmd-mbs-unpacker runMBSMQUnpacker.cxx)
+target_link_libraries(ex-lmd-mbs-unpacker PRIVATE FairRoot::ExLmd FairRoot::BaseMQ Core FairRoot::MbsTutorial FairMQ::FairMQ)
+set_target_properties(ex-lmd-mbs-unpacker PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+
+add_executable(ex-lmd-mbs-sink runMBSSink.cxx)
+target_link_libraries(ex-lmd-mbs-sink PRIVATE FairRoot::ExLmd FairRoot::BaseMQ Core FairRoot::MbsTutorial FairMQ::FairMQ)
+set_target_properties(ex-lmd-mbs-sink PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+
+install(TARGETS ex-lmd-sampler ex-lmd-mbs-unpacker ex-lmd-mbs-sink
+  RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/Lmd/bin
 )
-
-List(LENGTH Exe_Names _length)
-Math(EXPR _length ${_length}-1)
-
-set(BIN_DESTINATION share/fairbase/examples/MQ/Lmd/bin)
-set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/examples/MQ/Lmd")
-
-ForEach(_file RANGE 0 ${_length})
-    List(GET Exe_Names ${_file} _name)
-    List(GET Exe_Source ${_file} _src)
-    Set(EXE_NAME ${_name})
-    Set(SRCS ${_src})
-    Set(DEPENDENCIES
-        FairMQ::FairMQ
-        BaseMQ
-        MbsTutorial
-        ExLmd
-    )
-    GENERATE_EXECUTABLE()
-EndForEach(_file RANGE 0 ${_length})

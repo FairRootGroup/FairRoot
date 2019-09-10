@@ -59,7 +59,7 @@ install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(ex-params-client runExParamsClient.cxx)
-target_link_libraries(ex-params-client PRIVATE FairRoot::ParMQ FairRoot::FairMQExParameters)
+target_link_libraries(ex-params-client PRIVATE FairRoot::ParMQ FairRoot::FairMQExParameters FairMQ::FairMQ)
 set_target_properties(ex-params-client PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 install(TARGETS ex-params-client
