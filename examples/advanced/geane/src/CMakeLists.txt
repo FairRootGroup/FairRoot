@@ -1,5 +1,5 @@
  ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
  #              This software is distributed under the terms of the             #
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -12,7 +12,6 @@
 set(INCLUDE_DIRECTORIES
   ${BASE_INCLUDE_DIRECTORIES}
   ${CMAKE_SOURCE_DIR}/examples/advanced/geane/src
-  ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/src
   ${CMAKE_SOURCE_DIR}/examples/common/mcstack
   ${CMAKE_SOURCE_DIR}/geane
   ${CMAKE_SOURCE_DIR}/trackbase
@@ -35,24 +34,34 @@ set(LINK_DIRECTORIES
 link_directories( ${LINK_DIRECTORIES})
 
 set(SRCS
-FairGeaneTr.cxx
+FairTutGeaneContFact.cxx
+FairTutGeaneDet.cxx
+FairTutGeaneField.cxx
+FairTutGeaneGeo.cxx
+FairTutGeaneGeoPar.cxx
+FairTutGeanePoint.cxx
+FairTutGeaneTr.cxx
 )
 
 Set(HEADERS
-FairGeaneTr.h
+FairTutGeaneContFact.h
+FairTutGeaneDet.h
+FairTutGeaneField.h
+FairTutGeaneGeo.h
+FairTutGeaneGeoPar.h
+FairTutGeanePoint.h
+FairTutGeaneTr.h
 )
 
-Set(LINKDEF GeaneExampleLinkDef.h)
+Set(LINKDEF TutGeaneLinkDef.h)
 Set(LIBRARY_NAME GeaneExample)
 Set(DEPENDENCIES
     Base
     GeoBase
     ParBase
     Geane
-    Pixel
     MCStack
     Gen
-    Passive
     TrkBase
 )
 

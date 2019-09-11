@@ -1,19 +1,19 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * FairGeaneTr.h
+ * FairTutGeaneTr.h
  *
  * @since 2019-09-10
  * @author R. Karabowicz
  */
 
-#ifndef FAIRGEANETR_H
-#define FAIRGEANETR_H 1
+#ifndef FAIRTUTGEANETR_H
+#define FAIRTUTGEANETR_H 1
 
 
 #include "FairTask.h"
@@ -24,16 +24,16 @@ class TGeant3;
 class TClonesArray;
 class TTree;
 class TFile;
-class PixelPoint;
+class FairTutGeanePoint;
 
-class FairGeaneTr : public FairTask
+class FairTutGeaneTr : public FairTask
 {
  public:
   /** Default constructor **/
-  FairGeaneTr();
+  FairTutGeaneTr();
 
   /** Destructor **/
-  ~FairGeaneTr();
+  ~FairTutGeaneTr();
 
   /** Virtual method Init **/
   virtual InitStatus Init();
@@ -41,10 +41,15 @@ class FairGeaneTr : public FairTask
   /** Virtual method Exec **/
   virtual void Exec(Option_t* opt);
  private:
+  void Reset();
+
+  /** Finish at the end of run **/
+  virtual void Finish();
+
   /** Input array of Points **/
   TClonesArray* fPointArray;
-  PixelPoint	 *fPoint1;
-  PixelPoint	 *fPoint2;
+  FairTutGeanePoint	 *fPoint1;
+  FairTutGeanePoint	 *fPoint2;
 
   /** Output array of Hits **/
   TClonesArray* fTrackParIni;   // initial MC track parameters
@@ -53,9 +58,10 @@ class FairGeaneTr : public FairTask
   TClonesArray* fTrackParWrong; // demonstrate effect of wrong charge
 
   TGeant3 *gMC3;
-  ClassDef(FairGeaneTr,1);
   Int_t fEvent;
   FairGeanePro *fPro;
+
+  ClassDef(FairTutGeaneTr,1);
 };
 
-#endif //FAIRGEANETR_H
+#endif //FAIRTUTGEANETR_H
