@@ -1,18 +1,18 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * FairGeaneTr.cxx
+ * FairTutGeaneTr.cxx
  *
  * @since 2019-09-10
  * @author R. Karabowicz
  */
 
-#include "FairGeaneTr.h"
+#include "FairTutGeaneTr.h"
 
 #include "TClonesArray.h"
 #include "TGeant3TGeo.h"
@@ -24,26 +24,54 @@
 #include "FairRootManager.h"
 #include "FairLogger.h"
 #include "FairTrackParP.h"
-#include "PixelPoint.h"
+#include "FairTutGeanePoint.h"
 
 // -----   Default constructor   -------------------------------------------
-FairGeaneTr::FairGeaneTr()
-    : FairTask("FairGeanePropagator")
+FairTutGeaneTr::FairTutGeaneTr()
+    : FairTask("FairTutGeaneTr")
+    , gMC3(0)
+    , fPointArray(0)
+    , fPoint1(0)
+    , fPoint2(0)
+    , fTrackParIni(0)
+    , fTrackParFinal(0)
+    , fTrackParGeane(0)
+    , fTrackParWrong(0)
+    , fEvent(0)
     , fPro(0)
 { }
 // -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-FairGeaneTr::~FairGeaneTr() { }
+FairTutGeaneTr::~FairTutGeaneTr()
+{
+  Reset();
+  if ( fTrackParIni ) {
+    fTrackParIni->Delete();
+    delete fTrackParIni;
+  }
+  if ( fTrackParGeane ) {
+    fTrackParGeane->Delete();
+    delete fTrackParGeane;
+  }
+  if ( fTrackParWrong ) {
+    fTrackParWrong->Delete();
+    delete fTrackParWrong;
+  }
+  if ( fTrackParFinal ) {
+    fTrackParFinal->Delete();
+    delete fTrackParFinal;
+  }
+}
 // -------------------------------------------------------------------------
 
 // -----   Public method Init   --------------------------------------------
-InitStatus FairGeaneTr::Init() {
+InitStatus FairTutGeaneTr::Init() {
 
      // Get RootManager
     FairRootManager* ioman = FairRootManager::Instance();
     if ( ! ioman ) {
-        LOG(error) << "FairGeaneTr::Init: RootManager not instantised!";
+        LOG(error) << "FairTutGeaneTr::Init: RootManager not instantised!";
         return kFATAL;
     }
 
@@ -61,7 +89,7 @@ InitStatus FairGeaneTr::Init() {
 
     // Get input array
 
-    fPointArray = static_cast<TClonesArray*>(ioman->GetObject("PixelPoint"));
+    fPointArray = static_cast<TClonesArray*>(ioman->GetObject("FairTutGeanePoint"));
 
     // Create and register output array
 
@@ -79,19 +107,21 @@ InitStatus FairGeaneTr::Init() {
 // -------------------------------------------------------------------------
 
 // -----   Public method Exec   --------------------------------------------
-void FairGeaneTr::Exec(Option_t*) {
-    LOG(debug) << "FairGeaneTr::Exec";
+void FairTutGeaneTr::Exec(Option_t*) {
+    Reset();
+
+    LOG(debug) << "FairTutGeaneTr::Exec";
 
     Int_t NoOfEntries=fPointArray->GetEntriesFast();
     LOG(debug) << "fPointArray has " << NoOfEntries << " entries";
     for (Int_t i=0; i<NoOfEntries; i++)	{
-        fPoint1 = static_cast<PixelPoint*>(fPointArray->At(i));
+        fPoint1 = static_cast<FairTutGeanePoint*>(fPointArray->At(i));
         if ( fPoint1->GetZ() > 6. ) continue;
         LOG(debug) << "first loop for " << i << "from "<< NoOfEntries << " entries ";
         Int_t trId=fPoint1->GetTrackID();
         fPoint2=0;
         for (Int_t k=0; k<NoOfEntries; k++)	{
-            fPoint2 = static_cast<PixelPoint*>(fPointArray->At(k));
+            fPoint2 = static_cast<FairTutGeanePoint*>(fPointArray->At(k));
             if ( fPoint2->GetZ() < 15. ) continue;
             LOG(debug) << "second loop for " << k;
             if(fPoint2->GetTrackID()==trId) break;
@@ -99,17 +129,17 @@ void FairGeaneTr::Exec(Option_t*) {
 
         if(fPoint2==0) break;
 
-        TVector3 StartPos    = TVector3 (fPoint1->GetX(),fPoint1->GetY(),fPoint1->GetZ());
-        //    TVector3 StartPos    = TVector3 (0.,0.,0.);
-        TVector3 StartPosErr = TVector3(0,0,0);
-        TVector3 StartMom    = TVector3 (fPoint1->GetPx(),fPoint1->GetPy(),fPoint1->GetPz());
-        //    TVector3 StartMom    = TVector3 (1.,0.1,0.1);
-        TVector3 StartMomErr = TVector3(0,0,0);
+        TVector3 StartPos   (fPoint1->GetX(),fPoint1->GetY(),fPoint1->GetZ());
+        //    TVector3 StartPos(0.,0.,0.);
+        TVector3 StartPosErr(0,0,0);
+        TVector3 StartMom   (fPoint1->GetPx(),fPoint1->GetPy(),fPoint1->GetPz());
+        //    TVector3 StartMom(1.,0.1,0.1);
+        TVector3 StartMomErr(0,0,0);
 
-        TVector3 EndPos =TVector3 (fPoint2->GetX(),fPoint2->GetY(),fPoint2->GetZ());
-        TVector3 EndPosErr=TVector3(0,0,0);
-        TVector3 EndMom= TVector3 (fPoint2->GetPx(),fPoint2->GetPy(),fPoint2->GetPz());
-        TVector3 EndMomErr=TVector3(0,0,0);
+        TVector3 EndPos   (fPoint2->GetX(),fPoint2->GetY(),fPoint2->GetZ());
+        TVector3 EndPosErr(0,0,0);
+        TVector3 EndMom   (fPoint2->GetPx(),fPoint2->GetPy(),fPoint2->GetPz());
+        TVector3 EndMomErr(0,0,0);
 
         Int_t PDGCode= -13;
 
@@ -145,4 +175,21 @@ void FairGeaneTr::Exec(Option_t*) {
     }
 }
 
-ClassImp(FairGeaneTr)
+// -----   Private method Reset   ------------------------------------------
+void FairTutGeaneTr::Reset() {
+  if ( fTrackParIni   ) fTrackParIni  ->Clear();
+  if ( fTrackParGeane ) fTrackParGeane->Clear();
+  if ( fTrackParWrong ) fTrackParWrong->Clear();
+  if ( fTrackParFinal ) fTrackParFinal->Clear();
+}
+// -------------------------------------------------------------------------
+
+// -----   Public method Finish   ------------------------------------------
+void FairTutGeaneTr::Finish() {
+  if ( fTrackParIni   ) fTrackParIni  ->Delete();
+  if ( fTrackParGeane ) fTrackParGeane->Delete();
+  if ( fTrackParWrong ) fTrackParWrong->Delete();
+  if ( fTrackParFinal ) fTrackParFinal->Delete();
+}
+
+ClassImp(FairTutGeaneTr)

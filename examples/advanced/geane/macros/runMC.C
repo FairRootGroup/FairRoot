@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -68,7 +68,7 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant3", Bool_t isMT=true)
   cave->SetGeometryFileName("cave_vacuum.geo");
   run->AddModule(cave);
 
-  Pixel*  det = new Pixel("PixelDetector", kTRUE);
+  FairTutGeaneDet*  det = new FairTutGeaneDet("TutGeaneDetector", kTRUE);
   det->SetGeometryFileName("pixel.geo");
 //  det->SetMisalignDetector(kTRUE);
   run->AddModule(det);

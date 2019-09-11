@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
  *              This software is distributed under the terms of the             * 
  *              GNU Lesser General Public Licence (LGPL) version 3,             *  
@@ -11,6 +11,12 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class FairGeaneTr+;
+#pragma link C++ class FairTutGeaneContFact+;
+#pragma link C++ class FairTutGeaneDet+;
+#pragma link C++ class FairTutGeaneField+;
+#pragma link C++ class FairTutGeaneGeo+;
+#pragma link C++ class FairTutGeaneGeoPar+;
+#pragma link C++ class FairTutGeanePoint+;
+#pragma link C++ class FairTutGeaneTr+;
 
 #endif
