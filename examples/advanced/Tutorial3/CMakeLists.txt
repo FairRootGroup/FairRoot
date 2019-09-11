@@ -88,12 +88,12 @@ if(Flatbuffers_FOUND)
   list(APPEND defs FLATBUFFERS)
   add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadDigi_generated.h
-    COMMAND ${SIMPATH}/bin/flatc -c -o ${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayloadDigi.fbs
+    COMMAND $<TARGET_FILE:flatbuffers::flatc> -c -o ${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayloadDigi.fbs
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/MQ/data
   )
   add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadHit_generated.h
-    COMMAND ${SIMPATH}/bin/flatc -c -o ${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayloadHit.fbs
+    COMMAND $<TARGET_FILE:flatbuffers::flatc> -c -o ${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayloadHit.fbs
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/MQ/data
   )
 else()
