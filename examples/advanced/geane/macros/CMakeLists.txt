@@ -5,9 +5,9 @@
  #              GNU Lesser General Public Licence (LGPL) version 3,             #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/advanced/geane/macros/runMC.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/advanced/geane/macros/runGeane.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_SOURCE_DIR}/examples/advanced/geane/macros/runPull.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/runMC.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/runGeane.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/runPull.C)
 
 Set(MaxTestTime 60)
 
