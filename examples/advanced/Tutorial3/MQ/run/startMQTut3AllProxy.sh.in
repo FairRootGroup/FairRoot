@@ -46,11 +46,11 @@ SAMPLER+=" --id sampler1"
 SAMPLER+=" --data-format $dataFormat"
 SAMPLER+=" --severity info"
 SAMPLER+=" --chain-input 99"
-SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testdigi_$mcEngine.root"
-SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testparams_$mcEngine.root"
+SAMPLER+=" --input-file @CMAKE_CURRENT_SOURCE_DIR@/macro/data/testdigi_$mcEngine.root"
+SAMPLER+=" --parameter-file @CMAKE_CURRENT_SOURCE_DIR@/macro/data/testparams_$mcEngine.root"
 SAMPLER+=" --channel-config name=data1,type=push,method=connect,address=tcp://localhost:5565"
 SAMPLER+="                  name=ack,type=pull,method=bind,address=tcp://localhost:5999"
-xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$SAMPLER &
+xterm -geometry 80x23+0+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$SAMPLER &
 
 PROXY1="fairmq-proxy"
 PROXY1+=" --id proxy1"
@@ -67,7 +67,7 @@ PROCESSOR1+=" --out-channel data3"
 PROCESSOR1+=" --data-format $dataFormat"
 PROCESSOR1+=" --channel-config name=data2,type=pull,method=connect,address=tcp://localhost:5566"
 PROCESSOR1+="                  name=data3,type=push,method=connect,address=tcp://localhost:5567"
-xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR1 &
+xterm -geometry 80x23+500+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR1 &
 
 PROCESSOR2="tut3-processor"
 PROCESSOR2+=" --id processor2"
@@ -76,7 +76,7 @@ PROCESSOR2+=" --out-channel data3"
 PROCESSOR2+=" --data-format $dataFormat"
 PROCESSOR2+=" --channel-config name=data2,type=pull,method=connect,address=tcp://localhost:5566"
 PROCESSOR2+="                  name=data3,type=push,method=connect,address=tcp://localhost:5567"
-xterm -geometry 80x23+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR2 &
+xterm -geometry 80x23+500+350 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR2 &
 
 PROCESSOR3="tut3-processor"
 PROCESSOR3+=" --id processor3"
@@ -85,7 +85,7 @@ PROCESSOR3+=" --out-channel data3"
 PROCESSOR3+=" --data-format $dataFormat"
 PROCESSOR3+=" --channel-config name=data2,type=pull,method=connect,address=tcp://localhost:5566"
 PROCESSOR3+="                  name=data3,type=push,method=connect,address=tcp://localhost:5567"
-xterm -geometry 80x23+500+700 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR3 &
+xterm -geometry 80x23+500+700 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR3 &
 
 PROXY2="fairmq-proxy"
 PROXY2+=" --id proxy2"
@@ -101,4 +101,4 @@ FILESINK+=" --in-channel data4"
 FILESINK+=" --data-format $dataFormat"
 FILESINK+=" --channel-config name=data4,type=pull,method=connect,address=tcp://localhost:5570"
 FILESINK+="                  name=ack,type=push,method=connect,address=tcp://localhost:5999"
-xterm -geometry 80x23+1000+350 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$FILESINK &
+xterm -geometry 80x23+1000+350 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$FILESINK &

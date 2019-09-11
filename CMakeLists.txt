@@ -186,7 +186,7 @@ find_package2(PUBLIC Pythia6)
 find_package2(PUBLIC Pythia8)
 find_package2(PUBLIC Protobuf)
 find_package2(PUBLIC msgpack)
-find_package2(PUBLIC FlatBuffers)
+find_package2(PUBLIC Flatbuffers)
 
 find_package2(PUBLIC Geant3)
 if(Geant3_FOUND)

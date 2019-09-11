@@ -66,7 +66,7 @@ install(TARGETS ex-params-client
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/parameters/bin
 )
 
-add_test(NAME ex_MQ_parameters COMMAND ${CMAKE_BINARY_DIR}/bin/examples/MQ/parameters/test-mq-ex-params.sh)
+add_test(NAME ex_MQ_parameters COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test-mq-ex-params.sh)
 set_tests_properties(ex_MQ_parameters PROPERTIES
   TIMEOUT "30"
   RUN_SERIAL true

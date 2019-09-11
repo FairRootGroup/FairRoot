@@ -45,4 +45,4 @@ PROCESSOR2+=" --data-format $dataFormat"
 PROCESSOR2+=" --channel-config name=data1,type=pull,method=connect,address=tcp://localhost:5565"
 PROCESSOR2+="                  name=data2,type=push,method=connect,address=tcp://localhost:5570"
 PROCESSOR2+=" --data-format $dataFormat"
-xterm -geometry 80x23+500+350 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR2 &
+xterm -geometry 80x23+500+350 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR2 &

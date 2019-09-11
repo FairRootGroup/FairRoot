@@ -6,8 +6,6 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/parameter-server.json ${CMAKE_BINARY_DIR}/bin/config/parameter-server.json)
-
 set(target ParMQ)
 
 set(sources
@@ -49,7 +47,7 @@ install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(parmq-server runParameterMQServer.cxx)
 target_link_libraries(parmq-server PRIVATE FairRoot::ParMQ FairMQ::FairMQ)
-set_target_properties(parmq-server PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin/")
+set_target_properties(parmq-server PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin/")
 
 install(TARGETS parmq-server
   RUNTIME DESTINATION bin

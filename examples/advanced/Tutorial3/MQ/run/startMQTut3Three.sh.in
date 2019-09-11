@@ -46,11 +46,11 @@ SAMPLER+=" --id sampler1"
 SAMPLER+=" --data-format $dataFormat"
 SAMPLER+=" --severity info"
 SAMPLER+=" --chain-input 99"
-SAMPLER+=" --input-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testdigi_$mcEngine.root"
-SAMPLER+=" --parameter-file @CMAKE_SOURCE_DIR@/examples/advanced/Tutorial3/macro/data/testparams_$mcEngine.root"
+SAMPLER+=" --input-file @CMAKE_CURRENT_SOURCE_DIR@/macro/data/testdigi_$mcEngine.root"
+SAMPLER+=" --parameter-file @CMAKE_CURRENT_SOURCE_DIR@/macro/data/testparams_$mcEngine.root"
 SAMPLER+=" --channel-config name=data1,type=push,method=bind,address=tcp://localhost:5565"
 SAMPLER+="                  name=ack,type=pull,method=bind,address=tcp://localhost:5999"
-xterm -geometry 80x23+0+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$SAMPLER &
+xterm -geometry 80x23+0+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$SAMPLER &
 
 PROCESSOR="tut3-processor"
 PROCESSOR+=" --id processor1"
@@ -58,7 +58,7 @@ PROCESSOR+=" --data-format $dataFormat"
 PROCESSOR+=" --severity info"
 PROCESSOR+=" --channel-config name=data1,type=pull,method=connect,address=tcp://localhost:5565"
 PROCESSOR+="                  name=data2,type=push,method=connect,address=tcp://localhost:5570"
-xterm -geometry 80x23+500+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$PROCESSOR &
+xterm -geometry 80x23+500+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR &
 
 FILESINK="tut3-sink"
 FILESINK+=" --id sink1"
@@ -66,4 +66,4 @@ FILESINK+=" --data-format $dataFormat"
 FILESINK+=" --severity info"
 FILESINK+=" --channel-config name=data2,type=pull,method=bind,address=tcp://localhost:5570"
 FILESINK+="                  name=ack,type=push,method=connect,address=tcp://localhost:5999"
-xterm -geometry 80x23+1000+0 -hold -e @CMAKE_BINARY_DIR@/bin/examples/advanced/Tutorial3/$FILESINK &
+xterm -geometry 80x23+1000+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$FILESINK &
