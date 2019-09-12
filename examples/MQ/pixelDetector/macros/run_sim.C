@@ -1,17 +1,13 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-
-
-
 void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0)
 {
-  
   TString dir = getenv("VMCWORKDIR");
   TString tutdir = dir + "/MQ/pixelDetector";
 
@@ -24,24 +20,20 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0)
   TString partName[] = {"pions","eplus","proton"};
   Int_t   partPdgC[] = {    211,     11,    2212};
   Int_t chosenPart  = 0;
-  
+
 
   TString outDir = "./";
 
   // Output file name
   TString outFile;
-  if ( fileId == 0 )  outFile = Form("%s/pixel_%s.mc.root",
-				     outDir.Data(),
-				     mcEngine.Data());
-  else                outFile = Form("%s/pixel_%s.mc.f%d.root",
-				     outDir.Data(),
-				     mcEngine.Data(),
-				     fileId);
-  
+  if (fileId == 0) {
+    outFile = Form("%s/pixel_%s.mc.root", outDir.Data(), mcEngine.Data());
+  } else {
+    outFile = Form("%s/pixel_%s.mc.f%d.root", outDir.Data(), mcEngine.Data(), fileId);
+  }
+
   // Parameter file name
-  TString parFile = Form("%s/pixel_%s.params.root",
-			 outDir.Data(),
-			 mcEngine.Data());
+  TString parFile = Form("%s/pixel_%s.params.root", outDir.Data(), mcEngine.Data());
 
   // In general, the following parts need not be touched
   // ========================================================================
@@ -61,11 +53,11 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0)
   run->SetSink(new FairRootFileSink(outFile));
   FairRuntimeDb* rtdb = run->GetRuntimeDb();
   // ------------------------------------------------------------------------
-  
+
   // -----   Create media   -------------------------------------------------
   run->SetMaterials("media.geo");       // Materials
   // ------------------------------------------------------------------------
-  
+
   // -----   Create geometry   ----------------------------------------------
 
   FairModule* cave= new FairCave("CAVE");
@@ -88,12 +80,12 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0)
 
   primGen->AddGenerator(boxGen);
 
-  
+
   run->SetGenerator(primGen);
   // ------------------------------------------------------------------------
 
   run->SetStoreTraj(kFALSE);
-   
+
   // -----   Initialize simulation run   ------------------------------------
   run->Init();
   // ------------------------------------------------------------------------
@@ -112,7 +104,7 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0)
   run->Run(nEvents);
   run->CreateGeometryFile("geofile_full.root");
   // ------------------------------------------------------------------------
-  
+
   // -----   Finish   -------------------------------------------------------
 
   cout << endl << endl;
@@ -143,5 +135,3 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0)
 
   // ------------------------------------------------------------------------
 }
-
-

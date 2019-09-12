@@ -78,10 +78,10 @@ class Ex2Sampler : public FairMQDevice
             Ex2Header* header = new Ex2Header();
             header->EventNumber = idx;
 
-            std::unique_ptr<FairMQMessage> msgHeader(NewMessage());
+            FairMQMessagePtr msgHeader(NewMessage());
             Serialize<SerializerEx2>(*msgHeader, header);
 
-            std::unique_ptr<FairMQMessage> msg(NewMessage());
+            FairMQMessagePtr msg(NewMessage());
             Serialize<RootSerializer>(*msg, fInput);
 
             FairMQParts parts;

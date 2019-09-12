@@ -25,7 +25,6 @@ FairMQPixelFileSink::FairMQPixelFileSink()
   , fAckChannelName("")
   , fFileName()
   , fTreeName()
- 
   , fFileOption()
   , fFlowMode(false)
   , fWrite(false)
@@ -46,7 +45,7 @@ void FairMQPixelFileSink::Init()
 
   LOG(INFO) << "SHOULD CREATE THE FILE AND TREE";
   fFileOption = "RECREATE";
-  fTreeName = "cbmsim";  
+  fTreeName = "cbmsim";
 
   if ( ::getenv("DDS_SESSION_ID") ) {
     std::string DDS_SESSION_ID = ::getenv("DDS_SESSION_ID");
@@ -55,7 +54,7 @@ void FairMQPixelFileSink::Init()
       fFileName.replace(fFileName.length()-5,5,DDS_SESSION_ID.c_str());
     }
   }
-  
+
   fOutFile = TFile::Open(fFileName.c_str(),fFileOption.c_str());
   
   OnData(fInputChannelName, &FairMQPixelFileSink::StoreData);

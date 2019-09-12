@@ -36,8 +36,8 @@ Testing/
 build/
 examples/advanced/Tutorial3/macro/data/*
 !examples/advanced/Tutorial3/macro/data/dummy.txt
-examples/MQ/9-PixelDetector/macros/*.root
-examples/MQ/9-PixelDetector/macros/*.dat
+examples/MQ/pixelDetector/macros/*.root
+examples/MQ/pixelDetector/macros/*.dat
 core_dump*
 gphysi.dat
 FairRunInfo_*

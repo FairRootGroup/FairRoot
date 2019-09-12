@@ -28,7 +28,7 @@ FairMQPixelFileSinkBin::FairMQPixelFileSinkBin()
   , fAckChannelName("")
   , fFileName()
   , fTreeName()
- 
+
   , fBranchNames()
   , fClassNames()
   , fFileOption()
@@ -53,18 +53,18 @@ void FairMQPixelFileSinkBin::Init()
 
   LOG(info) << "SHOULD CREATE THE FILE AND TREE";
   fFileOption = "RECREATE";
-  fTreeName = "cbmsim";  
+  fTreeName = "cbmsim";
 
   fOutFile = TFile::Open(fFileName.c_str(),fFileOption.c_str());
-  
+
   fTree = new TTree(fTreeName.c_str(), "/cbmout");
 
   fFolder = new TFolder("cbmout", "Main Output Folder");
   TFolder* foldEventHeader = fFolder->AddFolder("EvtHeader","EvtHeader");
   TFolder* foldPixel       = fFolder->AddFolder("Pixel","Pixel");
-  
+
   TList* BranchNameList = new TList();
-  
+
   for ( fNObjects = 0 ; fNObjects < fBranchNames.size() ; fNObjects++ ) {
     if      ( fClassNames[fNObjects].find("TClonesArray(") == 0 ) {
       fClassNames   [fNObjects] = fClassNames[fNObjects].substr(13,fClassNames[fNObjects].length()-12-2);
@@ -82,20 +82,20 @@ void FairMQPixelFileSinkBin::Init()
     else {
       LOG(error) << "!!! Unknown output object \"" << fClassNames[fNObjects] << "\" !!!";
     }
-  }  
+  }
 
   fFolder->Write();
   BranchNameList->Write("BranchList", TObject::kSingleKey);
   BranchNameList->Delete();
   delete BranchNameList;
-  
+
   OnData(fInputChannelName, &FairMQPixelFileSinkBin::StoreData);
 }
 
 bool FairMQPixelFileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
 {
   if ( parts.Size() == 0 ) return true; // probably impossible, but still check
-  
+
   // expecting even number of parts in the form: header,data,header,data,header,data and so on...
   int nPPE = 2; // nof parts per event
 
@@ -107,7 +107,7 @@ bool FairMQPixelFileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
     // the first part should be the event header
     PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(nPPE*ievent)->GetData());
     // LOG(debug) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
-  
+
     for ( unsigned int ibr = 0 ; ibr < fBranchNames.size() ; ibr++ )
       {
         if ( "EventHeader." == fBranchNames[ibr] )
@@ -139,7 +139,7 @@ bool FairMQPixelFileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
 
     fTree->Fill();
   }
-  
+
   if ( fAckChannelName != "" ) {
     unique_ptr<FairMQMessage> msg(NewMessage());
     Send(msg, fAckChannelName);
@@ -148,7 +148,7 @@ bool FairMQPixelFileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
 }
 
 FairMQPixelFileSinkBin::~FairMQPixelFileSinkBin()
-{ 
+{
   if (fTree)
     {
       fTree->Write();

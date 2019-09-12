@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -27,15 +27,7 @@
 #include "FairParRootFileIo.h"
 #include "FairParSet.h"
 
-#include "FairMCEventHeader.h"
-
-#include "TROOT.h"
-#include "TRint.h"
-#include "TVirtualMC.h"
-#include "TVirtualMCApplication.h"
-#include "TList.h"
-#include "TObjString.h"
-#include "TObjArray.h"
+#include "FairMQLogger.h"
 
 using namespace std;
 
@@ -46,20 +38,13 @@ FairOnlineSink::FairOnlineSink()
 }
 
 FairOnlineSink::~FairOnlineSink()
-{
-}
+{}
 
-//_____________________________________________________________________________
-void FairOnlineSink::RegisterImpl(const char* , const char* , void* )
-{
-  return;
-}
+void FairOnlineSink::RegisterImpl(const char* , const char* , void*)
+{}
 
-//_____________________________________________________________________________
-void FairOnlineSink::RegisterAny(const char* /* brname */, const std::type_info &/* oi */, const std::type_info &/* pi */, void* /* obj */)
-{
-  return;
-}
+void FairOnlineSink::RegisterAny(const char* /* brname */, const std::type_info& /* oi */, const std::type_info& /* pi */, void* /* obj */)
+{}
 
 void  FairOnlineSink::Fill()
 {
@@ -69,16 +54,14 @@ void  FairOnlineSink::Fill()
   if ( fMQRunDevice )
       fMQRunDevice->SendBranches();
 }
- 
+
 Bool_t FairOnlineSink::InitSink()
 {
     return kTRUE;
 }
 
 void  FairOnlineSink::Reset()
-{
-}
+{}
 
 void  FairOnlineSink::Close()
-{
-}
+{}

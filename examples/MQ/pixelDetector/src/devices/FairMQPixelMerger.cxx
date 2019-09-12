@@ -52,7 +52,7 @@ bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
   TClonesArray* tempArrays[10];
   int nofArrays = 0;
   // LOG(debug) << "******************************************************************************************************";
-  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ ) 
+  for ( int ipart = 0 ; ipart < parts.Size() ; ipart++ )
   {
     tempObject = nullptr;
     Deserialize<RootSerializer>(*parts.At(ipart),tempObject);
@@ -70,12 +70,12 @@ bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
       MultiMapDef::iterator it3;
       it3 = fObjectMap.find(fEvRIPartTrio);
       if ( it3 != fObjectMap.end() ) {
-        LOG(info) << "FairMQPixelMerger::Run(), shouldn't happen, already got objects for part " << fEvRIPartTrio.second 
+        LOG(info) << "FairMQPixelMerger::Run(), shouldn't happen, already got objects for part " << fEvRIPartTrio.second
                   << ", event " << fEvRIPair.first << ", run " << fEvRIPair.second << ". Skipping this message!!!";
         nofReceivedParts = -1;
         break; // break the for(ipart) loop, as nothing else is left to do
       }
-      
+
       std::map<std::pair<int,int>,int>::iterator it2;
       it2 = fNofPartsPerEventMap.find(fEvRIPair);
       if ( it2 == fNofPartsPerEventMap.end() ) {
@@ -89,7 +89,7 @@ bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
       }
       // LOG(debug) << " got " << nofReceivedParts << " parts of event " << fEvRIPair.first;
     }
-    else { 
+    else {
       tempArrays[nofArrays] = (TClonesArray*)tempObject;
       nofArrays++;
     }
@@ -98,7 +98,7 @@ bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
 
   // not all parts are there yet, have to put them in buffer
   if ( nofReceivedParts != fNofParts )
-    { 
+    {
       // LOG(debug) << "not all parts are yet here... adding to (size = " << fObjectMap.size() << ")";
       // LOG(debug) << "+" << fEventHeader->GetName() << "[" << fEvRIPartTrio.first.second << "][" << fEvRIPartTrio.first.first << "][" << fEvRIPartTrio.second << "]";
       fObjectMap.insert(std::pair<std::pair<std::pair<int,int>,int>,TObject*>(fEvRIPartTrio,(TObject*)fEventHeader));
@@ -108,14 +108,14 @@ bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
         fObjectMap.insert(std::pair<std::pair<std::pair<int,int>,int>,TObject*>(fEvRIPartTrio,(TObject*)tempArrays[iarray]));
       }
       // LOG(debug) << "                 now we have fObjectMap (size = " << fObjectMap.size() << ")";
-      if ( printInfo) 
+      if ( printInfo)
         LOG(info) << ">> [" << fEventHeader->GetRunId() << "][" << fEventHeader->GetMCEntryNumber() << "][" << fEventHeader->GetPartNo() << "] Received: " << fNofReceivedMessages << " // Buffered: " << fObjectMap.size() << " // Sent: " << fNofSentMessages << " <<";
     }
   // got all the parts of the event, have to combine and send message, consisting of objects from tempArrays
   else
     {
       int currentEventPart = fEventHeader->GetPartNo();
-      for ( int iarray = 0 ; iarray < nofArrays ; iarray++ ) 
+      for ( int iarray = 0 ; iarray < nofArrays ; iarray++ )
       {
         // LOG(debug) << "BEFORE ADDING, TCA \"" << tempArrays[iarray]->GetName() << "\" has " << tempArrays[iarray]->GetEntries() << " entries.";
         TClonesArray* arrayToAdd;
@@ -161,5 +161,5 @@ bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
 }
 
 FairMQPixelMerger::~FairMQPixelMerger()
-{ 
+{
 }

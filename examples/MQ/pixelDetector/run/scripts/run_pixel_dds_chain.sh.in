@@ -10,7 +10,6 @@
 #SBATCH -o %j_%N.out.log
 #SBATCH -e %j_%N.err.log
 
-DDS_location=@DDS_LOCATION@
 topologyFile="@PIXEL_BIN_LOCATION@/pixel-dds-chain.xml"
 requiredNofAgents=5
 
@@ -19,7 +18,7 @@ requiredNofAgents=5
 # Source DDS environment
 echo "DDS from this location is used ${location}"
 source @CMAKE_BINARY_DIR@/config.sh
-source ${DDS_location}/DDS_env.sh
+source @DDS_LOCATION@/DDS_env.sh
 
 # Start DDS commander server
 echo "Starting DDS server..."

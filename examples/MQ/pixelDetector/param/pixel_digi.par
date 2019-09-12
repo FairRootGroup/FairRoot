@@ -16,4 +16,3 @@ chargeconv_method:Int_t 1
 PixelSorterCellWidth:Double_t 10
 PixelSorterNumberOfCells:Int_t 1000
 #################################################################
-	

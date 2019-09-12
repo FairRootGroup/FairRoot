@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -13,7 +13,7 @@
  */
 
 #include "FairMQSimDevice.h"
-  
+
 #include "FairMQLogger.h"
 #include "FairMQMessage.h"
 
@@ -60,7 +60,7 @@ FairMQSimDevice::FairMQSimDevice()
 {
 }
 
-void FairMQSimDevice::InitTask() 
+void FairMQSimDevice::InitTask()
 {
   fRunSim = new FairRunSim();
 
@@ -81,11 +81,11 @@ void FairMQSimDevice::InitTask()
   if ( fUserCuts.Length() > 0 )
     fRunSim->SetUserCuts(fUserCuts);
   // ------------------------------------------------------------------------
-  
+
   // -----   Create media   -------------------------------------------------
   fRunSim->SetMaterials(fMaterialsFile.data());
   // ------------------------------------------------------------------------
-  
+
   // -----   Magnetic field   -------------------------------------------
   if ( fMagneticField )
     fRunSim->SetField(fMagneticField);
@@ -106,7 +106,7 @@ void FairMQSimDevice::InitTask()
                                   askForRunNumber->length(),
                                   [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
                                   askForRunNumber));
-  std::unique_ptr<FairMQMessage> rep(NewMessage());
+  FairMQMessagePtr rep(NewMessage());
 
   unsigned int runId = 0;
   if (Send(req, fUpdateChannelName) > 0)
@@ -163,7 +163,7 @@ bool FairMQSimDevice::ConditionalRun()
 void FairMQSimDevice::UpdateParameterServer()
 {
   FairRuntimeDb* rtdb = fRunSim->GetRuntimeDb();
-  
+
   printf("FairMQSimDevice::UpdateParameterServer() (%d containers)\n",rtdb->getListOfContainers()->GetEntries());
 
   // send the parameters to be saved

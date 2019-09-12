@@ -1,17 +1,17 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 void run_dBinSource( TString mcEngine="TGeant3" )
 {
   // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
   Int_t iVerbose = 0; // just forget about it, for the moment
-  
+
   // Parameter file
-  TString parFile = "pixel_"; 
+  TString parFile = "pixel_";
   parFile = parFile + mcEngine + ".params.root";
 
   // Digitization parameter file
@@ -22,10 +22,10 @@ void run_dBinSource( TString mcEngine="TGeant3" )
   // Output file
   TString outFile = "pixel_";
   outFile = outFile + mcEngine + ".viaBinSource.hits.root";
-  
+
   // -----   Timer   --------------------------------------------------------
   TStopwatch timer;
-  
+
   PixelEventHeader* pixelEventHeader = new PixelEventHeader();
 
   // -----   Reconstruction run   -------------------------------------------
@@ -37,24 +37,24 @@ void run_dBinSource( TString mcEngine="TGeant3" )
   digiSource->SetInputFileName("digisBin.dat");
 
   fRun->SetSource(digiSource);
-  
+
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();
   parInput1->open(parFile.Data());
 
   FairParAsciiFileIo* parIo1 = new FairParAsciiFileIo();
   parIo1->open(digParFile.Data(),"in");
-        
+
   rtdb->setFirstInput(parInput1);
   rtdb->setSecondInput(parIo1);
-  
+
   // -----   TorinoDetector hit  producers   ---------------------------------
   //  PixelDigiReadFromFile* digiRead = new PixelDigiReadFromFile();
   //  fRun->AddTask(digiRead);
 
   PixelFindHits* hitFinderTask = new PixelFindHits();
   fRun->AddTask(hitFinderTask);
-  
+
 
   fRun->Init();
 

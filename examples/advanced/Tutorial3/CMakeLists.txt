@@ -64,12 +64,6 @@ set(headers
   timeBasedSimulation/FairTestDetectorTimeRecoTask.h
 )
 
-# message(STATUS "Flatbuffers_FOUND: " ${Flatbuffers_FOUND})
-# message(STATUS "Flatbuffers: " ${Flatbuffers_DIR})
-# get_target_property(Flatbuffers_INCLUDEDIR flatbuffers::flatbuffers INTERFACE_INCLUDE_DIRECTORIES)
-# message(STATUS "Flatbuffers: " ${Flatbuffers_INCLUDEDIR})
-# message(STATUS "Flatbuffers: " ${SIMPATH})
-
 if(Protobuf_FOUND)
   set(PROTOBUF_USED true)
   list(APPEND defs PROTOBUF)
@@ -82,7 +76,6 @@ else()
   set(PROTOBUF_USED false)
 endif()
 
-# TODO: fix paths here
 if(Flatbuffers_FOUND)
   set(FLATBUFFERS_USED true)
   list(APPEND defs FLATBUFFERS)
