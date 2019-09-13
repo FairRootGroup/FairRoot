@@ -10,7 +10,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/start-mq-ex-params.sh.in ${CMAKE_CURR
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/test-mq-ex-params.sh.in  ${CMAKE_CURRENT_BINARY_DIR}/test-mq-ex-params.sh)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mq_ex_params.root        ${CMAKE_CURRENT_BINARY_DIR}/mq_ex_params.root COPYONLY)
 
-set(target FairMQExParameters)
+set(target ExParameters)
 
 set(sources
   FairMQExParamsClient.cxx
@@ -59,7 +59,7 @@ install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(ex-params-client runExParamsClient.cxx)
-target_link_libraries(ex-params-client PRIVATE FairRoot::ParMQ FairRoot::FairMQExParameters FairMQ::FairMQ)
+target_link_libraries(ex-params-client PRIVATE FairRoot::ParMQ FairRoot::ExParameters FairMQ::FairMQ)
 set_target_properties(ex-params-client PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 install(TARGETS ex-params-client
