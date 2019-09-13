@@ -27,24 +27,24 @@ case $key in
     shift
     ;;
 esac
-shift 
+shift
 done
 
 ########################### Define some variables
 # ASCII and ROOT parameter files for the processor device
-ROOTPARAM="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.params.root"
-ASCIIPARAM="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/param/pixel_digi.par"
+ROOTPARAM="@pixel_file_dir@/macros/pixel_TGeant3.params.root"
+ASCIIPARAM="@pixel_file_dir@/param/pixel_digi.par"
 
 if [ "$FAIRTASKNAME" == "--task-name PixelFindHits" ] ; then
     # input file and branch for the sampler device
-    INPUTFILE1="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.root"
+    INPUTFILE1="@pixel_file_dir@/macros/pixel_TGeant3.digi.root"
 
-    INPUTFILE2="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.f1.root"
+    INPUTFILE2="@pixel_file_dir@/macros/pixel_TGeant3.digi.f1.root"
     INPUTBRANCH="PixelDigis"
-    
+
     # output file for sink
-    OUTPUTFILE1="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.bin.hits1.root"
-    OUTPUTFILE2="@PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.bin.hits2.root"
+    OUTPUTFILE1="@pixel_file_dir@/macros/MQ.pixel_TGeant3.bin.hits1.root"
+    OUTPUTFILE2="@pixel_file_dir@/macros/MQ.pixel_TGeant3.bin.hits2.root"
     OUTPUTCLASS="--class-name TClonesArray(PixelHit)"
     OUTPUTBRANCH="--branch-name PixelHits"
 else
@@ -62,19 +62,19 @@ fi
 SERVER="parmq-server $TRANSPORT"
 SERVER+=" --id parmq-server --channel-config name=param,type=rep,method=bind,rateLogging=0,address=tcp://*:5405 --channel-name param"
 SERVER+=" --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
-xterm -geometry 80x24+500+350 -hold -e @FAIRROOT_BIN_LOCATION@/$SERVER &
+xterm -geometry 80x24+500+350 -hold -e @fairroot_bin_dir@/$SERVER &
 
 
 ########################## start SAMPLE
-SAMPLER1="pixel-samplerBin $TRANSPORT --severity info"
+SAMPLER1="pixel-sampler-bin $TRANSPORT --severity info"
 SAMPLER1+=" --id sampler1 --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5410"
 SAMPLER1+=" --file-name $INPUTFILE1 --branch-name EventHeader. --branch-name $INPUTBRANCH $MAXINDEX"
-xterm -geometry 80x24+0+0 -hold -e @PIXEL_BIN_LOCATION@/$SAMPLER1 &
+xterm -geometry 80x24+0+0 -hold -e @pixel_bin_dir@/$SAMPLER1 &
 
-SAMPLER2="pixel-samplerBin $TRANSPORT --severity info"
+SAMPLER2="pixel-sampler-bin $TRANSPORT --severity info"
 SAMPLER2+=" --id sampler2 --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5410"
 SAMPLER2+=" --file-name $INPUTFILE2 --branch-name EventHeader. --branch-name $INPUTBRANCH $MAXINDEX"
-xterm -geometry 80x24+1000+0 -hold -e @PIXEL_BIN_LOCATION@/$SAMPLER2 &
+xterm -geometry 80x24+1000+0 -hold -e @pixel_bin_dir@/$SAMPLER2 &
 
 ########################## start PROXY SAMPLER
 PROXYS="fairmq-proxy $TRANSPORT"
@@ -84,33 +84,33 @@ PROXYS+=" --channel-config name=data-out,type=push,method=bind,rateLogging=1,add
 xterm -geometry 80x24+500+0 -hold -e $SIMPATH/bin/$PROXYS &
 
 ########################## start PROCESSORs
-PROCESSOR1="pixel-processorBin $TRANSPORT $FAIRTASKNAME"
+PROCESSOR1="pixel-processor-bin $TRANSPORT $FAIRTASKNAME"
 PROCESSOR1+=" $VERBOSE --id processor1 --static-pars true"
 PROCESSOR1+=" --channel-config name=param,type=req,method=connect,rateLogging=0,address=tcp://localhost:5405"
 PROCESSOR1+=" --channel-config name=data-in,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5411"
 PROCESSOR1+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5420"
-xterm -geometry 80x12+0+350 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR1 &
+xterm -geometry 80x12+0+350 -hold -e @pixel_bin_dir@/$PROCESSOR1 &
 
-PROCESSOR2="pixel-processorBin $TRANSPORT $FAIRTASKNAME"
+PROCESSOR2="pixel-processor-bin $TRANSPORT $FAIRTASKNAME"
 PROCESSOR2+=" $VERBOSE --id processor2 --static-pars true"
 PROCESSOR2+=" --channel-config name=param,type=req,method=connect,rateLogging=0,address=tcp://localhost:5405"
 PROCESSOR2+=" --channel-config name=data-in,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5411"
 PROCESSOR2+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5420"
-xterm -geometry 80x12+0+525 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR2 &
+xterm -geometry 80x12+0+525 -hold -e @pixel_bin_dir@/$PROCESSOR2 &
 
-PROCESSOR3="pixel-processorBin $TRANSPORT $FAIRTASKNAME"
+PROCESSOR3="pixel-processor-bin $TRANSPORT $FAIRTASKNAME"
 PROCESSOR3+=" $VERBOSE --id processor3 --static-pars true"
 PROCESSOR3+=" --channel-config name=param,type=req,method=connect,rateLogging=0,address=tcp://localhost:5405"
 PROCESSOR3+=" --channel-config name=data-in,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5411"
 PROCESSOR3+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5420"
-xterm -geometry 80x12+1000+350 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR3 &
+xterm -geometry 80x12+1000+350 -hold -e @pixel_bin_dir@/$PROCESSOR3 &
 
-PROCESSOR4="pixel-processorBin $TRANSPORT $FAIRTASKNAME"
+PROCESSOR4="pixel-processor-bin $TRANSPORT $FAIRTASKNAME"
 PROCESSOR4+=" $VERBOSE --id processor4 --static-pars true"
 PROCESSOR4+=" --channel-config name=param,type=req,method=connect,rateLogging=0,address=tcp://localhost:5405"
 PROCESSOR4+=" --channel-config name=data-in,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5411"
 PROCESSOR4+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5420"
-xterm -geometry 80x12+1000+525 -hold -e @PIXEL_BIN_LOCATION@/$PROCESSOR4 &
+xterm -geometry 80x12+1000+525 -hold -e @pixel_bin_dir@/$PROCESSOR4 &
 
 ########################## start PROXY SAMPLER
 PROXYF="fairmq-proxy $TRANSPORT"
@@ -120,14 +120,14 @@ PROXYF+=" --channel-config name=data-out,type=push,method=bind,rateLogging=1,add
 xterm -geometry 80x24+500+700 -hold -e $SIMPATH/bin/$PROXYF &
 
 ########################## start FILESINK
-FILESINK1="pixel-sinkBin $TRANSPORT"
+FILESINK1="pixel-sink-bin $TRANSPORT"
 FILESINK1+=" --id sink1 --channel-config name=data-in,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5421"
 FILESINK1+=" --file-name $OUTPUTFILE1 $OUTPUTCLASS $OUTPUTBRANCH"
-xterm +aw -geometry 80x24+0+700 -hold -e @PIXEL_BIN_LOCATION@/$FILESINK1 &
+xterm +aw -geometry 80x24+0+700 -hold -e @pixel_bin_dir@/$FILESINK1 &
 
-FILESINK2="pixel-sinkBin $TRANSPORT"
+FILESINK2="pixel-sink-bin $TRANSPORT"
 FILESINK2+=" --id sink2 --channel-config name=data-in,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5421"
 FILESINK2+=" --file-name $OUTPUTFILE2 $OUTPUTCLASS $OUTPUTBRANCH"
-xterm +aw -geometry 80x24+1000+700 -hold -e @PIXEL_BIN_LOCATION@/$FILESINK2 &
+xterm +aw -geometry 80x24+1000+700 -hold -e @pixel_bin_dir@/$FILESINK2 &
 
 

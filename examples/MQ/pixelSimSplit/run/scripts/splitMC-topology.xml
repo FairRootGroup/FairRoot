@@ -7,7 +7,7 @@
     <property id="ackChannel" />
 
     <decltask id="Generator">
-      <exe reachable="true">@SPLITMC_BIN_LOCATION@/runMQGen --id splitMC-gen --channel-config name=primariesChannel,type=push,method=bind --running-mode pp --severity INFO --nof-events 100 --chunk-size 10 --ack-channel ackChannel --channel-config name=ackChannel,type=pull,method=bind,rateLogging=1 -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
+      <exe reachable="true">@splitmc_bin_location@/pixel-sim-gen --id splitMC-gen --channel-config name=primariesChannel,type=push,method=bind --running-mode pp --severity INFO --nof-events 100 --chunk-size 10 --ack-channel ackChannel --channel-config name=ackChannel,type=pull,method=bind,rateLogging=1 -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
         <properties>
           <id access="write">primariesChannel</id>
           <id access="write">ackChannel</id>
@@ -15,7 +15,7 @@
     </decltask>
 
     <decltask id="Transporter">
-      <exe reachable="true">@SPLITMC_BIN_LOCATION@/runMQTrans --config-key splitMC-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect --channel-config name=primariesChannel,type=pull,method=connect --channel-config name=data#all#,type=push,method=connect --transport-name TGeant3 --running-mode pp --severity INFO --detector-library @CMAKE_BINARY_DIR@/lib/libPixel.@EXAMPLE_LIBRARY_EXTENSION@ -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
+      <exe reachable="true">@splitmc_bin_location@/pixel-sim-transport --config-key splitMC-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect --channel-config name=primariesChannel,type=pull,method=connect --channel-config name=data#all#,type=push,method=connect --transport-name TGeant3 --running-mode pp --severity INFO --detector-library @CMAKE_BINARY_DIR@/lib/libPixel.@example_library_extension@ -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
         <properties>
           <id access="read">primariesChannel</id>
           <id access="read">data#all#</id>
@@ -24,15 +24,15 @@
     </decltask>
 
     <decltask id="Merger">
-      <exe reachable="true">@SPLITMC_BIN_LOCATION@/runMQChMer --id splitMC-merger --in-channel data#all# --channel-config name=data#all#,type=pull,method=bind --out-channel dataOut --channel-config name=dataOut,type=push,method=bind --transport zeromq --severity INFO -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
+      <exe reachable="true">@splitmc_bin_location@/pixel-sim-chunk-merger --id splitMC-merger --in-channel data#all# --channel-config name=data#all#,type=pull,method=bind --out-channel dataOut --channel-config name=dataOut,type=push,method=bind --transport zeromq --severity INFO -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
         <properties>
           <id access="write">data#all#</id>
           <id access="write">dataOut</id>
         </properties>
     </decltask>
-    
+
     <decltask id="Sink">
-      <exe reachable="true">@PIXEL_BIN_LOCATION@/pixel-sink --id splitMC-sink --in-channel dataOut --severity INFO --channel-config name=dataOut,type=pull,method=connect --file-name @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.data.root --ack-channel ackChannel --channel-config name=ackChannel,type=push,method=connect,rateLogging=1 -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
+      <exe reachable="true">@pixel_bin_dir@/pixel-sink --id splitMC-sink --in-channel dataOut --severity INFO --channel-config name=dataOut,type=pull,method=connect --file-name @splitmc_file_location@/DDS.simulation_TGeant3.data.root --ack-channel ackChannel --channel-config name=ackChannel,type=push,method=connect,rateLogging=1 -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
         <properties>
           <id access="read">dataOut</id>
           <id access="read">ackChannel</id>
@@ -40,7 +40,7 @@
     </decltask>
 
     <decltask id="ParamServer">
-      <exe reachable="true">@FAIRROOT_BIN_LOCATION@/parmq-server zeromq --id splitMC-parmq-server --channel-config name=updateChannel,type=rep,method=bind --severity INFO --update-channel-name updateChannel --output-name @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.pars.root -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
+      <exe reachable="true">@fairroot_bin_dir@/parmq-server zeromq --id splitMC-parmq-server --channel-config name=updateChannel,type=rep,method=bind --severity INFO --update-channel-name updateChannel --output-name @splitmc_file_location@/DDS.simulation_TGeant3.pars.root -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
         <properties>
             <id access="write">updateChannel</id>
         </properties>

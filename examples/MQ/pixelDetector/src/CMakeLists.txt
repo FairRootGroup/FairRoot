@@ -1,125 +1,116 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libPixel" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${FairMQ_INCDIR}/fairmq/options
-  ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
-  ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/src
-  ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/src/devices
-  ${CMAKE_SOURCE_DIR}/examples/common/mcstack
-  ${FairLogger_INCDIR}
+set(target Pixel)
+
+set(sources
+  devices/FairMQPixelFileSink.cxx
+  devices/FairMQPixelFileSinkBin.cxx
+  devices/FairMQPixelMerger.cxx
+  devices/FairMQPixelSampler.cxx
+  devices/FairMQPixelSamplerBin.cxx
+  devices/FairMQRunDevice.cxx
+  devices/FairMQSimDevice.cxx
+  devices/PixelFindHitsTask.cxx
+  FairOnlineSink.cxx
+
+  Pixel.cxx
+  PixelContFact.cxx
+  PixelDigi.cxx
+  PixelDigiBinSource.cxx
+  PixelDigiPar.cxx
+  PixelDigiSource.cxx
+  PixelDigitize.cxx
+  PixelDigiWriteToBinFile.cxx
+  PixelDigiWriteToFile.cxx
+  PixelEventHeader.cxx
+  PixelFindHits.cxx
+  PixelFindTracks.cxx
+  PixelFitTracks.cxx
+  PixelGeo.cxx
+  PixelGeoPar.cxx
+  PixelHit.cxx
+  PixelPoint.cxx
+  PixelTrack.cxx
 )
 
-
-Set(SYSTEM_INCLUDE_DIRECTORIES
-    ${SYSTEM_INCLUDE_DIRECTORIES}
+set(no_dict_headers
+  devices/FairMQPixelFileSink.h
+  devices/FairMQPixelFileSinkBin.h
+  devices/FairMQPixelMerger.h
+  devices/FairMQPixelSampler.h
+  devices/FairMQPixelSamplerBin.h
+  devices/FairMQPixelTaskProcessor.h
+  devices/FairMQPixelTaskProcessorBin.h
+  devices/FairMQRunDevice.h
+  devices/FairMQSimDevice.h
+  devices/PixelFindHitsTask.h
+  FairOnlineSink.h
 )
 
-include_directories( ${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
+set(headers
+  Pixel.h
+  PixelContFact.h
+  PixelDigi.h
+  PixelDigiBinSource.h
+  PixelDigiPar.h
+  PixelDigiSource.h
+  PixelDigitize.h
+  PixelDigiWriteToBinFile.h
+  PixelDigiWriteToFile.h
+  PixelEventHeader.h
+  PixelFindHits.h
+  PixelFindTracks.h
+  PixelFitTracks.h
+  PixelGeo.h
+  PixelGeoPar.h
+  PixelHit.h
+  PixelPayload.h
+  PixelPoint.h
+  PixelTrack.h
 )
 
-link_directories( ${LINK_DIRECTORIES})
+add_library(${target} SHARED ${sources} ${headers} ${no_dict_headers})
+add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 
-Set(NO_DICT_SRCS
-devices/FairMQPixelSampler.cxx
-devices/FairMQPixelSamplerBin.cxx
-devices/PixelFindHitsTask.cxx
-devices/FairMQPixelMerger.cxx
-devices/FairMQPixelFileSink.cxx
-devices/FairMQPixelFileSinkBin.cxx
-devices/FairMQRunDevice.cxx
-devices/FairMQSimDevice.cxx
-FairOnlineSink.cxx
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/devices>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
 )
 
-Set(NO_DICT_HEADERS
-devices/FairMQPixelSampler.h
-devices/FairMQPixelSamplerBin.h
-devices/PixelFindHitsTask.h
-devices/FairMQPixelMerger.h
-devices/FairMQPixelFileSink.h
-devices/FairMQPixelFileSinkBin.h
-devices/FairMQPixelTaskProcessor.h
-devices/FairMQPixelTaskProcessor.tpl
-devices/FairMQPixelTaskProcessorBin.h
-devices/FairMQPixelTaskProcessorBin.tpl
-devices/FairMQRunDevice.h
-devices/FairMQSimDevice.h
-FairOnlineSink.h
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
 )
 
-set(SRCS
-Pixel.cxx
-PixelContFact.cxx
-PixelDigitize.cxx
-PixelDigiPar.cxx
-PixelDigiSource.cxx
-PixelDigiBinSource.cxx
-PixelDigiWriteToFile.cxx
-PixelDigiWriteToBinFile.cxx
-PixelFindHits.cxx
-PixelFindTracks.cxx
-PixelFitTracks.cxx
-PixelGeo.cxx
-PixelGeoPar.cxx
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base # FairRunIdGenerator
+  FairRoot::BaseMQ # Serialization policies
+  FairRoot::FairTools # FairLogger
+  FairRoot::ParBase
+  FairRoot::GeoBase
+  FairRoot::MCStack
+  FairMQ::FairMQ
+  FairRoot::Passive
 
-PixelEventHeader.cxx
-PixelPoint.cxx
-PixelDigi.cxx
-PixelHit.cxx
-PixelTrack.cxx
+  # TODO: clean the following
+  Gen
+  Core
 )
 
-Set(HEADERS
-Pixel.h
-PixelContFact.h
-PixelDigitize.h
-PixelDigiPar.h
-PixelDigiSource.h
-PixelDigiBinSource.h
-PixelDigiWriteToFile.h
-PixelDigiWriteToBinFile.h
-PixelFindHits.h
-PixelFindTracks.h
-PixelFitTracks.h
-PixelGeo.h
-PixelGeoPar.h
-
-PixelEventHeader.h
-PixelPoint.h
-PixelDigi.h
-PixelHit.h
-PixelTrack.h
-
-PixelPayload.h
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF PixelLinkDef.h
 )
 
-Set(LINKDEF PixelLinkDef.h)
-Set(LIBRARY_NAME Pixel)
-Set(DEPENDENCIES
-    Base
-    GeoBase
-    ParBase
-    MCStack
-    FairMQ::FairMQ
-    BaseMQ
-    Gen
-    Passive
-)
-
-GENERATE_LIBRARY()
-
-Install(FILES ${NO_DICT_HEADERS} DESTINATION include)
+install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} ${no_dict_headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

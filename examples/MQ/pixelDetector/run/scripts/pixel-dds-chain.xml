@@ -7,7 +7,7 @@
   <property id="retrieveParams" />
 
   <decltask id="Sampler">
-      <exe reachable="true">@PIXEL_BIN_LOCATION@/run-sim --channel-config name=dataStore#all#,type=push,method=connect --channel-config name=dataAna#all#,type=push,method=connect --channel-config name=storeParams,type=req,method=connect --config-key sampler --id sampler_%taskIndex% --severity INFO --param-channel-name storeParams --nof-events 10000 --transport-name TGeant3 --random-seed 0 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+      <exe reachable="true">@pixel_bin_dir@/run-sim --channel-config name=dataStore#all#,type=push,method=connect --channel-config name=dataAna#all#,type=push,method=connect --channel-config name=storeParams,type=req,method=connect --config-key sampler --id sampler_%taskIndex% --severity INFO --param-channel-name storeParams --nof-events 10000 --transport-name TGeant3 --random-seed 0 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
         <properties>
           <id access="read">dataStore#all#</id>
           <id access="read">dataAna#all#</id>
@@ -16,14 +16,14 @@
     </decltask>
 
     <decltask id="SimSink">
-      <exe reachable="true">@PIXEL_BIN_LOCATION@/pixel-sink --channel-config name=dataStore#all#,type=pull,method=bind  --id simSink --severity INFO --in-channel dataStore#all# --class-name FairMCEventHeader --branch-name MCEventHeader. --class-name "TClonesArray(PixelPoint)" --branch-name PixelPoint --class-name "TClonesArray(FairMCTrack)" --branch-name MCTrack --file-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/DDS.simulation_TGeant3.mc.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+      <exe reachable="true">@pixel_bin_dir@/pixel-sink --channel-config name=dataStore#all#,type=pull,method=bind  --id simSink --severity INFO --in-channel dataStore#all# --class-name FairMCEventHeader --branch-name MCEventHeader. --class-name "TClonesArray(PixelPoint)" --branch-name PixelPoint --class-name "TClonesArray(FairMCTrack)" --branch-name MCTrack --file-name @pixel_file_dir@/macros/DDS.simulation_TGeant3.mc.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
         <properties>
             <id access="write">dataStore#all#</id>
         </properties>
     </decltask>
 
     <decltask id="Processor">
-        <exe reachable="true">@PIXEL_BIN_LOCATION@/pixel-processor --channel-config name=dataAna#all#,type=pull,method=bind --channel-config name=anaStore,type=push,method=bind --channel-config name=retrieveParams,type=req,method=connect --config-key processor --id processor --severity INFO --task-name PixelDigitize --in-channel dataAna#all# --out-channel anaStore --par-channel retrieveParams --static-pars true -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+        <exe reachable="true">@pixel_bin_dir@/pixel-processor --channel-config name=dataAna#all#,type=pull,method=bind --channel-config name=anaStore,type=push,method=bind --channel-config name=retrieveParams,type=req,method=connect --config-key processor --id processor --severity INFO --task-name PixelDigitize --in-channel dataAna#all# --out-channel anaStore --par-channel retrieveParams --static-pars true -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
         <properties>
             <id access="write">dataAna#all#</id>
             <id access="write">anaStore</id>
@@ -32,14 +32,14 @@
     </decltask>
 
     <decltask id="AnaSink">
-      <exe reachable="true">@PIXEL_BIN_LOCATION@/pixel-sink --channel-config name=anaStore,type=pull,method=connect --id anaSink --severity INFO --in-channel anaStore --class-name FairMCEventHeader --branch-name MCEventHeader. --class-name "TClonesArray(PixelDigi)" --branch-name PixelDigis --file-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/DDS.simulation_TGeant3.digi.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+      <exe reachable="true">@pixel_bin_dir@/pixel-sink --channel-config name=anaStore,type=pull,method=connect --id anaSink --severity INFO --in-channel anaStore --class-name FairMCEventHeader --branch-name MCEventHeader. --class-name "TClonesArray(PixelDigi)" --branch-name PixelDigis --file-name @pixel_file_dir@/macros/DDS.simulation_TGeant3.digi.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
         <properties>
             <id access="read">anaStore</id>
         </properties>
     </decltask>
 
     <decltask id="ParamServer">
-      <exe reachable="true">@FAIRROOT_BIN_LOCATION@/parmq-server --channel-config name=storeParams,type=rep,method=bind --channel-config name=retrieveParams,type=rep,method=bind --id parmq-server --severity INFO --update-channel-name storeParams --channel-name retrieveParams --first-input-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/param/pixel_digi.par --first-input-type ASCII --output-name @PIXEL_FILE_LOCATION@/examples/MQ/pixelDetector/macros/DDS.simulation_TGeant3.pars.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+      <exe reachable="true">@fairroot_bin_dir@/parmq-server --channel-config name=storeParams,type=rep,method=bind --channel-config name=retrieveParams,type=rep,method=bind --id parmq-server --severity INFO --update-channel-name storeParams --channel-name retrieveParams --first-input-name @pixel_file_dir@/param/pixel_digi.par --first-input-type ASCII --output-name @pixel_file_dir@/macros/DDS.simulation_TGeant3.pars.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
         <properties>
             <id access="write">storeParams</id>
             <id access="write">retrieveParams</id>

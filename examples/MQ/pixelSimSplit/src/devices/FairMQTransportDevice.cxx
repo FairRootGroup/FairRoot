@@ -16,7 +16,6 @@
 
 #include "FairMQLogger.h"
 #include "FairMQMessage.h"
-#include "FairMQProgOptions.h"
 
 #include "FairOnlineSink.h"
 
@@ -86,7 +85,7 @@ void FairMQTransportDevice::InitTask()
     fMCSplitEventHeader = new FairMCSplitEventHeader(fRunId,0,0,0);
     fRunSim->SetMCEventHeader(fMCSplitEventHeader);
     fRunSim->SetRunId(fRunSim->GetMCEventHeader()->GetRunID());
-    
+
     fRunSim->SetSink(fSink);
 
     if ( fFirstParameter || fSecondParameter ) {
@@ -180,7 +179,7 @@ void FairMQTransportDevice::InitTask()
                 }
         }
     // ------------------------------------------------------------------------
-    
+
     fRunSim->SetStoreTraj(fStoreTrajFlag);
 
     // -----   Set tasks   ----------------------------------------------------

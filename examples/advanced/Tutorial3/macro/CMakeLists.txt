@@ -13,47 +13,47 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_digi.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_reco.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_digi_timebased.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_reco_timebased.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_DiRePr.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_digi_reco_proof.C)
 
 foreach(mcEngine IN ITEMS TGeant3 TGeant4)
-  add_test(tutorial3_sim_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_sim.sh 100 \"${mcEngine}\")
+  add_test(ex_tutorial3_sim_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_sim.sh 100 \"${mcEngine}\")
   math(EXPR testTime 3*${maxTestTime})
-  set_tests_properties(tutorial3_sim_${mcEngine} PROPERTIES
+  set_tests_properties(ex_tutorial3_sim_${mcEngine} PROPERTIES
     TIMEOUT ${testTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
 
-  add_test(tutorial3_digi_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_digi.sh \"${mcEngine}\")
-  set_tests_properties(tutorial3_digi_${mcEngine} PROPERTIES
-    DEPENDS tutorial3_sim_${mcEngine}
+  add_test(ex_tutorial3_digi_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_digi.sh \"${mcEngine}\")
+  set_tests_properties(ex_tutorial3_digi_${mcEngine} PROPERTIES
+    DEPENDS ex_tutorial3_sim_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
 
-  add_test(tutorial3_reco_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_reco.sh \"${mcEngine}\")
-  set_tests_properties(tutorial3_reco_${mcEngine} PROPERTIES
-    DEPENDS tutorial3_digi_${mcEngine}
+  add_test(ex_tutorial3_reco_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_reco.sh \"${mcEngine}\")
+  set_tests_properties(ex_tutorial3_reco_${mcEngine} PROPERTIES
+    DEPENDS ex_tutorial3_digi_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
 
-  add_test(tutorial3_digi_timebased_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_digi_timebased.sh \"${mcEngine}\")
-  set_tests_properties(tutorial3_digi_timebased_${mcEngine} PROPERTIES
-    DEPENDS tutorial3_sim_${mcEngine}
+  add_test(ex_tutorial3_digi_timebased_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_digi_timebased.sh \"${mcEngine}\")
+  set_tests_properties(ex_tutorial3_digi_timebased_${mcEngine} PROPERTIES
+    DEPENDS ex_tutorial3_sim_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
 
-  add_test(tutorial3_reco_timebased_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_reco_timebased.sh \"${mcEngine}\")
-  set_tests_properties(tutorial3_reco_timebased_${mcEngine} PROPERTIES
-    DEPENDS tutorial3_digi_timebased_${mcEngine}
+  add_test(ex_tutorial3_reco_timebased_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_reco_timebased.sh \"${mcEngine}\")
+  set_tests_properties(ex_tutorial3_reco_timebased_${mcEngine} PROPERTIES
+    DEPENDS ex_tutorial3_digi_timebased_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
 
-  add_test(tutorial3_DiRePr_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_DiRePr.sh 1 \"${mcEngine}\")
-  set_tests_properties(tutorial3_DiRePr_${mcEngine} PROPERTIES
-    DEPENDS tutorial3_sim_${mcEngine}
+  add_test(ex_tutorial3_digi_reco_proof_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_digi_reco_proof.sh 1 \"${mcEngine}\")
+  set_tests_properties(ex_tutorial3_digi_reco_proof_${mcEngine} PROPERTIES
+    DEPENDS ex_tutorial3_sim_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )

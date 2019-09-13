@@ -7,7 +7,7 @@ Generates MC events and sends them. It can also split events into smaller chunks
 The size (in the number of particles) of the maximal chunk is specified via chunk-size program option.
 The default option is to transport whole events (the value is set to 0):
 ```
-./runMQGen --chunk-size 10 
+./pixel-sim-gen --chunk-size 10 
 ```
 
 ### FairMQTransportDevice
@@ -23,7 +23,7 @@ Pixel*  det = new Pixel("PixelDetector", kTRUE);
 ```
 - dynamically, via the extern C libraries loading mechanism through program options:
 ```
-./runMQTrans --detector-library libTutorial1.dylib --detector-library libPixel.dylib
+./pixel-sim-transport --detector-library libTutorial1.dylib --detector-library libPixel.dylib
 ```
 The latter option requires implementation of the extern C function ExternCreateDetector, fe.:
 ```

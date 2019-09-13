@@ -6,6 +6,8 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/pixel_digi.par ${CMAKE_CURRENT_BINARY_DIR}/pixel_digi.par)
+
 install(FILES pixel_digi.par
   DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelDetector/param/
 )

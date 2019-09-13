@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source @CMAKE_BINARY_DIR@/config.sh -p
+
 NOFEXPEVENTS=-1
 MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
@@ -9,7 +11,7 @@ INPUTTYPE="dat"
 OUTPUTTYPE="root"
 AGGREGATE="--aggregate 1"
 
-WORKDIR="@PIXEL_FILE_LOCATION@"
+WORKDIR="@pixel_file_dir@"
 
 NOFPROCESSORS=2
 FORCEKILL=false
@@ -72,7 +74,7 @@ case $key in
         shift
         ;;
 esac
-shift 
+shift
 done
 
 CONTROL=""
@@ -82,23 +84,23 @@ fi
 
 ########################### Define some variables
 # ASCII and ROOT parameter files for the processor device
-ROOTPARAM="$WORKDIR/examples/MQ/pixelDetector/macros/pixel_TGeant3.params.root"
-ASCIIPARAM="$WORKDIR/examples/MQ/pixelDetector/param/pixel_digi.par"
+ROOTPARAM="$WORKDIR/macros/pixel_TGeant3.params.root"
+ASCIIPARAM="$WORKDIR/param/pixel_digi.par"
 
 if [ "$FAIRTASKNAME" == "--task-name PixelAltFindHits" ] ; then
     # input file and branch for the sampler device
     if [ "$INPUTTYPE" == "dat" ] ; then
-        INPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/digisBin.dat"
+        INPUTFILE="$WORKDIR/macros/digisBin.dat"
     elif [ "$INPUTTYPE" == "root" ] ; then
-        INPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.root"
+        INPUTFILE="$WORKDIR/macros/pixel_TGeant3.digi.root"
         INPUTBRANCH="PixelDigis"
     fi
-    
+
     # output file for sink
     if [ "$OUTPUTTYPE" == "dat" ] ; then
-        OUTPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQa.pixel_TGeant3.bin.hits.dat"
+        OUTPUTFILE="$WORKDIR/macros/MQa.pixel_TGeant3.bin.hits.dat"
     elif [ "$OUTPUTTYPE" == "root" ] ; then
-        OUTPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQa.pixel_TGeant3.bin.hits.root"
+        OUTPUTFILE="$WORKDIR/macros/MQa.pixel_TGeant3.bin.hits.root"
         OUTPUTCLASS="--class-name TClonesArray(PixelHit)"
         OUTPUTBRANCH="--branch-name PixelHits"
     fi
@@ -114,18 +116,18 @@ fi
 
 
 ########################## start Parameter server
-SERVER="@FAIRROOT_BIN_LOCATION@/"
+SERVER="@fairroot_bin_dir@/"
 SERVER+="parmq-server $TRANSPORT $CONTROL"
 SERVER+=" --id pixAlt-parmq-server  --channel-config name=param,type=rep,method=bind,rateLogging=0,address=tcp://*:5305"
 SERVER+=" --channel-name param --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII"
 ########################## start SAMPLER
 if [ "$INPUTTYPE" == "dat" ] ; then
-    SAMPLER="@PIXALT_BIN_LOCATION@/"
-    SAMPLER+="pixalt-samplerBin $TRANSPORT"
+    SAMPLER="@pixel_alt_bin_location@/"
+    SAMPLER+="pixalt-sampler-bin $TRANSPORT"
     SAMPLER+=" $AGGREGATE"
 elif [ "$INPUTTYPE" == "root" ] ; then
-    SAMPLER="@PIXEL_BIN_LOCATION@/"
-    SAMPLER+="pixel-samplerBin $TRANSPORT"
+    SAMPLER="@pixel_bin_dir@/"
+    SAMPLER+="pixel-sampler-bin $TRANSPORT"
     SAMPLER+=" --branch-name EventHeader. --branch-name $INPUTBRANCH"
 fi
 SAMPLER+=" --id pixAlt-sampler1 --channel-config name=data-out,type=push,method=bind,rateLogging=1,address=tcp://*:5306"
@@ -134,8 +136,8 @@ if [ "$COMMAND" == "static" ]; then
 fi
 SAMPLER+=" --file-name $INPUTFILE $MAXINDEX --severity info $CONTROL"
 ########################## start PROCESSORs
-PROCESSOR="@PIXALT_BIN_LOCATION@/"
-PROCESSOR+="pixalt-processorBin $TRANSPORT"
+PROCESSOR="@pixel_alt_bin_location@/"
+PROCESSOR+="pixalt-processor-bin $TRANSPORT"
 PROCESSOR+=" $VERBOSE"
 PROCESSOR+=" $FAIRTASKNAME $CONTROL"
 PROCESSOR+=" --channel-config name=param,type=req,method=connect,rateLogging=0,address=tcp://localhost:5305"
@@ -148,11 +150,11 @@ do
 done
 ########################## start FILESINK
 if [ "$OUTPUTTYPE" == "dat" ] ; then
-    FILESINK="@PIXALT_BIN_LOCATION@/"
-    FILESINK+="pixalt-sinkBin $TRANSPORT"
+    FILESINK="@pixel_alt_bin_location@/"
+    FILESINK+="pixalt-sink-bin $TRANSPORT"
 elif [ "$OUTPUTTYPE" == "root" ] ; then
-    FILESINK="@PIXEL_BIN_LOCATION@/"
-    FILESINK+="pixel-sinkBin $TRANSPORT"
+    FILESINK="@pixel_bin_dir@/"
+    FILESINK+="pixel-sink-bin $TRANSPORT"
     FILESINK+=" --class-name FairEventHeader --branch-name EventHeader. $OUTPUTCLASS $OUTPUTBRANCH"
 fi
 FILESINK+=" --id pixAlt-sink1 --channel-config name=data-in,type=pull,method=bind,rateLogging=1,address=tcp://*:5307"

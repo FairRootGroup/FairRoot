@@ -10,15 +10,15 @@
 #SBATCH -o %j_%N.out.log
 #SBATCH -e %j_%N.err.log
 
-topologyFile="@PIXEL_BIN_LOCATION@/pixel-dds-chain.xml"
+topologyFile="@pixel_bin_dir@/pixel-dds-chain.xml"
 requiredNofAgents=5
 
 # FIXME Need to set home on GSI luster
 # export HOME=/lustre/nyx/rz/karabowi
 # Source DDS environment
-echo "DDS from this location is used ${location}"
+echo "DDS from this location is used: @dds_location@"
 source @CMAKE_BINARY_DIR@/config.sh
-source @DDS_LOCATION@/DDS_env.sh
+source @dds_location@/DDS_env.sh
 
 # Start DDS commander server
 echo "Starting DDS server..."

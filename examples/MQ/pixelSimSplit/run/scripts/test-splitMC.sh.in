@@ -1,9 +1,11 @@
 #!/bin/bash
 
+source @CMAKE_BINARY_DIR@/config.sh -p
+
 NOFNEEDEDAGENTS=5
 
 export LC_ALL=C
-source @DDS_LOCATION@/DDS_env.sh
+source @dds_location@/DDS_env.sh
 
 echo "***** Start dds server"
 dds-session start &> dds-server.dat
@@ -36,7 +38,7 @@ if [ $NOFAGENTS -lt $NOFNEEDEDAGENTS ]; then
 fi
 
 echo "***** Activate topology"
-dds-topology -s $DDS_ID --activate @SPLITMC_BIN_LOCATION@/test-splitMC.xml --disable-validation
+dds-topology -s $DDS_ID --activate @splitmc_bin_location@/test-splitMC.xml --disable-validation
 
 #wait 20 seconds to finish jobs
 COUNTER=0
@@ -47,8 +49,8 @@ until [ $LOOPING -eq 0 ]; do
     ((COUNTER++));
     if [ $COUNTER -ge 50 ]; then LOOPING=0; fi
     FILESIZE=0
-    if [ -f @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.data.$DDS_ID.root ]; then
-        FILESIZE=$(ls -l @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.data.$DDS_ID.root | awk '{print $5}')
+    if [ -f @splitmc_file_location@/DDS.simulation_TGeant3.data.$DDS_ID.root ]; then
+        FILESIZE=$(ls -l @splitmc_file_location@/DDS.simulation_TGeant3.data.$DDS_ID.root | awk '{print $5}')
     fi
 #    if [ $FILESIZE -ge 3000000 ]; then LOOPING=0; fi
     fairmq-dds-command-ui -s $DDS_ID -c c &> dds_check.log
@@ -82,8 +84,8 @@ echo "***** Stop DDS"
 dds-session stop $DDS_ID -f
 
 echo "***** Check the output file"
-ls -ltrh @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.data.$DDS_ID.root
-OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @SPLITMC_FILE_LOCATION@/DDS.simulation_TGeant3.data.$DDS_ID.root | tail -1)"
+ls -ltrh @splitmc_file_location@/DDS.simulation_TGeant3.data.$DDS_ID.root
+OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @splitmc_file_location@/DDS.simulation_TGeant3.data.$DDS_ID.root | tail -1)"
 echo "There are $OUTPUT_EVENTS events in the output file."
 
 if (( $OUTPUT_EVENTS == 100 ));

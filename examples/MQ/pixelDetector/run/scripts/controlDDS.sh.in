@@ -65,7 +65,7 @@ while [ "$keypress" != "x" ]; do
   fi
   NOFWORKERS="$(dds-info -n)"
   if [ -z "$NOFWORKERS" ]; then NOFWORKERS=0; fi
-  if [ "$NOFWORKERS" -gt 0 ]; 
+  if [ "$NOFWORKERS" -gt 0 ];
   then
       tail -1 ~/.DDS/default.sid | xargs -I {} $SIMPATH/bin/fairmq-dds-command-ui -s {} -c c | sort &> command.out
   fi
@@ -101,7 +101,7 @@ while [ "$keypress" != "x" ]; do
 	TASTATE=${TASTATE% (*}
         TASTATE=${TASTATE#*: }
         TASTATE=${TASTATE#*: }
-	
+
 	echo -ne "["
 	if [[ $TASTATE == "PAUSED" ]]; then echo -ne "\033[40m"; fi
 	if [[ $TASTATE == "RUNNING" ]]; then echo -ne "\033[42m"; fi

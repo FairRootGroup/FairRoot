@@ -1,109 +1,79 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-Set(MaxTestTime 90)
+if(DDS_FOUND)
+  set(dds_location ${DDS_INSTALL_PREFIX})
+endif()
 
-GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelSimSplit/test-splitMC.sh ${CMAKE_CURRENT_BINARY_DIR})
-GENERATE_TEST_SCRIPT(${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelSimSplit/test-splitMQ.sh ${CMAKE_CURRENT_BINARY_DIR})
+set(example_library_extension so)
+if(APPLE)
+  set(example_library_extension dylib)
+endif()
 
-#Add_Test(pixelSplitDDS
-#       ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
-#Set_Tests_Properties(pixelSplitDDS PROPERTIES TIMEOUT ${MaxTestTime})
-#Set_Tests_Properties(pixelSplitDDS PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
+set(splitmc_bin_location ${CMAKE_CURRENT_BINARY_DIR})
+set(splitmc_file_location ${CMAKE_CURRENT_BINARY_DIR})
+set(pixel_bin_dir ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run)
+set(fairroot_bin_dir ${CMAKE_BINARY_DIR}/bin)
 
-Add_Test(pixelSplitMQ
-         ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh)
-Set_Tests_Properties(pixelSplitMQ PROPERTIES TIMEOUT ${MaxTestTime})
-Set_Tests_Properties(pixelSplitMQ PROPERTIES PASS_REGULAR_EXPRESSION "Shell script finished successfully")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/splitMC-topology.xml ${CMAKE_CURRENT_BINARY_DIR}/splitMC-topology.xml)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMC.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMQ.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh)
 
-set(INCLUDE_DIRECTORIES
-    ${BASE_INCLUDE_DIRECTORIES}
-    ${CMAKE_SOURCE_DIR}/base/MQ/policies/Sampler
-    ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
-    ${CMAKE_SOURCE_DIR}/base/MQ/policies/Storage
-    ${CMAKE_SOURCE_DIR}/base/MQ/baseMQtools
-    ${CMAKE_SOURCE_DIR}/generators
-    ${CMAKE_SOURCE_DIR}/examples/common/passive
-    ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector
-    ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/src
-    ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/src/devices
-    ${CMAKE_SOURCE_DIR}/examples/MQ/pixelSimSplit/src
-    ${CMAKE_SOURCE_DIR}/examples/MQ/pixelSimSplit/src/devices
+set(exe_dependencies
+  FairRoot::SimMQ
+  FairMQ::FairMQ
+  Boost::program_options
 )
 
-Set(SYSTEM_INCLUDE_DIRECTORIES
-    ${SYSTEM_INCLUDE_DIRECTORIES}
-    ${ZeroMQ_INCLUDE_DIR}
+add_executable(pixel-sim-chunk-merger runMQChunkMerger.cxx)
+target_link_libraries(pixel-sim-chunk-merger PRIVATE ${exe_dependencies})
+set_target_properties(pixel-sim-chunk-merger PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+
+add_executable(pixel-sim-gen runMQGen.cxx)
+target_link_libraries(pixel-sim-gen PRIVATE
+  ${exe_dependencies}
+  FairRoot::Base # FairModule, FairPrimaryGenerator
+  FairRoot::Gen # FairBoxGenerator
+  FairRoot::ParBase # FairParAsciiFileIo
+  FairRoot::Passive # FairCave
+  Core # TSystem
+  MathCore # TRandom
+)
+target_link_directories(pixel-sim-gen PRIVATE ${ROOT_LIBRARY_DIR})
+set_target_properties(pixel-sim-gen PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+
+add_executable(pixel-sim-transport runMQTrans.cxx)
+target_link_libraries(pixel-sim-transport PRIVATE
+  ${exe_dependencies}
+  FairRoot::Base # FairModule, FairPrimaryGenerator
+  FairRoot::Gen # FairBoxGenerator
+  FairRoot::ParBase # FairParAsciiFileIo
+  FairRoot::Passive # FairCave
+  Core # TSystem
+  MathCore # TRandom
+)
+target_link_directories(pixel-sim-transport PRIVATE ${ROOT_LIBRARY_DIR})
+set_target_properties(pixel-sim-transport PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+
+install(TARGETS pixel-sim-chunk-merger pixel-sim-gen pixel-sim-transport
+  RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelSimSplit/bin
 )
 
-include_directories(${INCLUDE_DIRECTORIES})
-include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+set(maxTestTime 90)
 
-set(EXAMPLE_LIBRARY_EXTENSION so)
-If(APPLE)
-  set(EXAMPLE_LIBRARY_EXTENSION dylib)
-EndIf(APPLE)
+# add_test(pixelSplitDDS ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
+# set_tests_properties(pixelSplitDDS PROPERTIES
+#   TIMEOUT ${maxTestTime}
+#   PASS_REGULAR_EXPRESSION "Shell script finished successfully"
+# )
 
-set(LINK_DIRECTORIES
-    ${ROOT_LIBRARY_DIR}
-    ${Boost_LIBRARY_DIRS}
+add_test(ex_MQ_pixel_split ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh)
+set_tests_properties(ex_MQ_pixel_split PROPERTIES
+  TIMEOUT ${maxTestTime}
+  PASS_REGULAR_EXPRESSION "Shell script finished successfully"
 )
-
-link_directories(${LINK_DIRECTORIES})
-
-
-Set(Exe_Names
-    runMQGen
-    runMQTrans
-    runMQChMer
-)
-
-set(Exe_Source
-    runMQGen.cxx
-    runMQTrans.cxx
-    runMQChunkMerger.cxx
-)
-
-
-List(LENGTH Exe_Names _length)
-Math(EXPR _length ${_length}-1)
-
-
-set(BIN_DESTINATION share/fairbase/examples/MQ/pixelSimSplit/bin)
-set(EXECUTABLE_OUTPUT_PATH "${EXECUTABLE_OUTPUT_PATH}/examples/MQ/pixelSimSplit")
-
-ForEach(_file RANGE 0 ${_length})
-    List(GET Exe_Names ${_file} _name)
-    List(GET Exe_Source ${_file} _src)
-    Set(EXE_NAME ${_name})
-    Set(SRCS ${_src})
-    Set(DEPENDENCIES Pixel SimMQ)
-    GENERATE_EXECUTABLE()
-EndForEach(_file RANGE 0 ${_length})
-
-Message(STATUS "Looking for DDS!!!")
-find_package(DDS)
-set(DDS_LOCATION ${DDS_INCLUDE_DIR}/../)
-MESSAGE(STATUS "Set ${DDS_LOCATION} as place to look for DDS_env.sh")
-
-set(SPLITMC_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelSimSplit)
-set(SPLITMC_FILE_LOCATION ${CMAKE_SOURCE_DIR}/examples/MQ/pixelSimSplit/run/scripts/)
-set(PIXEL_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelDetector)
-set(FAIRROOT_BIN_LOCATION  ${CMAKE_BINARY_DIR}/bin)
-
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelSimSplit/run/scripts/splitMC-topology.xml
-		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelSimSplit/splitMC-topology.xml )
-
-set(SPLITMC_FILE_LOCATION ${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelSimSplit)
-
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelSimSplit/run/scripts/splitMC-topology.xml
-		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelSimSplit/test-splitMC.xml )
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelSimSplit/run/scripts/test-splitMC.sh.in
-		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelSimSplit/test-splitMC.sh)
-configure_file( ${CMAKE_SOURCE_DIR}/examples/MQ/pixelSimSplit/run/scripts/test-splitMQ.sh.in
-		${CMAKE_BINARY_DIR}/bin/examples/MQ/pixelSimSplit/test-splitMQ.sh)

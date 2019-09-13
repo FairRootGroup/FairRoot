@@ -1,4 +1,4 @@
-void run_DiReOne( TString mcEngine="TGeant3" )
+void run_digi_reco_local(Int_t nofFiles, TString mcEngine="TGeant3" )
 {
   FairLogger *logger = FairLogger::GetLogger();
  // logger->SetLogFileName("MyLog.log");
@@ -22,7 +22,7 @@ void run_DiReOne( TString mcEngine="TGeant3" )
   //  parFile = parFile + mcEngine + ".root";
 
   // Output file
-  TString outFile = Form("data/testDiReOne_");
+  TString outFile = Form("data/testDiReLo_%df_",nofFiles);
   outFile = outFile + mcEngine + ".root";
 
   // -----   Timer   --------------------------------------------------------
@@ -34,19 +34,24 @@ void run_DiReOne( TString mcEngine="TGeant3" )
   FairFileSource *fFileSource = new FairFileSource(inFile);
   fRun->SetSource(fFileSource);
 
-    fRun->SetSink(new FairRootFileSink(outFile));
+  for ( Int_t ifile = 1 ; ifile < nofFiles ; ifile++ ) {
+    cout << "fRun->AddFile(....f" << ifile << ".root" << endl;
+    fFileSource->AddFile(Form("file://%s/data/testrun_%s_f%d.root",workDir.Data(),mcEngine.Data(),ifile));
+  }
+
+  fRun->SetSink(new FairRootFileSink(outFile));
 
   FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
   FairParRootFileIo* parInput1 = new FairParRootFileIo();
 
   TList* fnamelist = new TList();
 
-  Int_t ifile = 0;
-  TString parFile = Form("%s/data/testpar_%s_f%d.root",workDir.Data(),mcEngine.Data(),ifile);
+  for ( Int_t ifile = 0 ; ifile < nofFiles ; ifile++ )
+    fnamelist->Add(new TObjString(Form("%s/data/testpar_%s_f%d.root",workDir.Data(),mcEngine.Data(),ifile)));
 
   cout << "PAR LIST CREATED" << endl;
-  //  parInput1->open(fnamelist);
-  parInput1->open(parFile.Data());
+  parInput1->open(fnamelist);
+  //  parInput1->open(parFile.Data());
 
   rtdb->setFirstInput(parInput1);
 
@@ -84,7 +89,6 @@ void run_DiReOne( TString mcEngine="TGeant3" )
 
   cout << endl << endl;
   cout << "Output file is "    << outFile << endl;
-  cout << "Parameter file is " << parFile << endl;
   cout << "Real time " << rtime << " s, CPU time " << ctime
        << "s" << endl << endl;
   cout << "Macro finished successfully." << endl;

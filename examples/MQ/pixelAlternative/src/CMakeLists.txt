@@ -1,74 +1,69 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Create a library called "libPixel" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
+################################################################################
+# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 
-set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${FairMQ_INCDIR}
-  ${FairMQ_INCDIR}/fairmq
-  ${CMAKE_SOURCE_DIR}/base/MQ/policies/Serialization
-  ${CMAKE_SOURCE_DIR}/examples/MQ/pixelDetector/src
-  ${CMAKE_SOURCE_DIR}/examples/MQ/pixelAlternative/src
-  ${CMAKE_SOURCE_DIR}/examples/MQ/pixelAlternative/src/devices
-  ${CMAKE_SOURCE_DIR}/examples/common/mcstack
+set(target PixelAlt)
+
+set(sources
+  devices/FairMQPixAltFileSinkBin.cxx
+  devices/FairMQPixAltSamplerBin.cxx
+
+  PixelAltDigiWriteToRootVector.cxx
+  PixelAltFindHits.cxx
 )
 
-
-Set(SYSTEM_INCLUDE_DIRECTORIES
-    ${SYSTEM_INCLUDE_DIRECTORIES}
+set(no_dict_headers
+  devices/FairMQPixAltFileSinkBin.h
+  devices/FairMQPixAltSamplerBin.h
+  devices/FairMQPixAltTaskProcessorBin.h
 )
 
-include_directories( ${INCLUDE_DIRECTORIES})
-Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
+set(headers
+  PixelAltDigiWriteToRootVector.h
+  PixelAltFindHits.h
 )
 
-link_directories( ${LINK_DIRECTORIES})
+add_library(${target} SHARED ${sources} ${headers} ${no_dict_headers})
+add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 
-Set(NO_DICT_SRCS
-devices/FairMQPixAltSamplerBin.cxx
-devices/FairMQPixAltFileSinkBin.cxx
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/devices>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
 )
 
-Set(NO_DICT_HEADERS
-devices/FairMQPixAltSamplerBin.h
-devices/FairMQPixAltFileSinkBin.h
-devices/FairMQPixAltTaskProcessorBin.h
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
 )
 
-set(SRCS
-PixelAltFindHits.cxx
-PixelAltDigiWriteToRootVector.cxx
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base # FairRunIdGenerator
+  FairRoot::BaseMQ # Serialization policies
+  FairRoot::FairTools # FairLogger
+  FairRoot::ParBase
+  FairRoot::GeoBase
+  FairRoot::MCStack
+  FairMQ::FairMQ
+  FairRoot::Pixel
+  FairRoot::Passive
+
+  # TODO: clean the following
+  Gen
+  Core
 )
 
-Set(HEADERS
-PixelAltFindHits.h
-PixelAltDigiWriteToRootVector.h
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF PixelAltLinkDef.h
 )
 
-Set(LINKDEF PixelAltLinkDef.h)
-Set(LIBRARY_NAME PixelAlt)
-Set(DEPENDENCIES
-    Base
-    GeoBase
-    ParBase
-    MCStack
-    FairMQ::FairMQ
-    BaseMQ
-    Gen
-    Passive
-    Pixel
-)
-
-GENERATE_LIBRARY()
-
-Install(FILES ${NO_DICT_HEADERS} DESTINATION include)
+install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} ${no_dict_headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

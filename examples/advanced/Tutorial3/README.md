@@ -16,7 +16,7 @@ to use several computers creating your own computing cluster. Much simpler useca
 of the computing cores available on your local computer - in this case we talk about PROOFLite.
 
 This example lets you see how to use PROOF (the Parallel ROOT Facility) in the data reconstruction using FairRoot framework.
-The basic macro is run_DiRePr.C, which uses PROOF to split digitization between cores of your computer.
-In contrast, the macro run_DiReLo.C performs the same job using single core.
+The basic macro is run_digi_reco_proof.C, which uses PROOF to split digitization between cores of your computer.
+In contrast, the macro run_digi_reco_local.C performs the same job using single core.
 
 You may test it by simulating a set of data:

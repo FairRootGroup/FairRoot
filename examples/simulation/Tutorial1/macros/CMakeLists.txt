@@ -22,43 +22,38 @@ set_tests_properties(load_all_libs PROPERTIES
 )
 
 foreach(mcEngine IN ITEMS TGeant3 TGeant4)
-  add_test(tutorial1_mesh_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_mesh.sh 10 \"${mcEngine}\")
-  set_tests_properties(tutorial1_mesh_${mcEngine} PROPERTIES
+  add_test(ex_sim_tutorial1_mesh_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_mesh.sh 10 \"${mcEngine}\")
+  set_tests_properties(ex_sim_tutorial1_mesh_${mcEngine} PROPERTIES
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
 
-  add_test(tutorial1_pythia6_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_pythia6.sh 10 \"${mcEngine}\")
-  set_tests_properties(tutorial1_pythia6_${mcEngine} PROPERTIES
+  add_test(ex_sim_tutorial1_pythia6_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_pythia6.sh 10 \"${mcEngine}\")
+  set_tests_properties(ex_sim_tutorial1_pythia6_${mcEngine} PROPERTIES
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
 
-  add_test(tutorial1_pythia8_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_pythia8.sh 10 \"${mcEngine}\")
-  set_tests_properties(tutorial1_pythia8_${mcEngine} PROPERTIES
+  add_test(ex_sim_tutorial1_pythia8_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_pythia8.sh 10 \"${mcEngine}\")
+  set_tests_properties(ex_sim_tutorial1_pythia8_${mcEngine} PROPERTIES
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
 
-  add_test(tutorial1_urqmd_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_urqmd.sh 2 \"${mcEngine}\")
-  set_tests_properties(tutorial1_urqmd_${mcEngine} PROPERTIES
+  add_test(ex_sim_tutorial1_urqmd_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_urqmd.sh 2 \"${mcEngine}\")
+  set_tests_properties(ex_sim_tutorial1_urqmd_${mcEngine} PROPERTIES
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
 
-  add_test(tutorial1_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1.sh 10 \"${mcEngine}\")
-  set_tests_properties(tutorial1_${mcEngine} PROPERTIES
+  add_test(ex_sim_tutorial1_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1.sh 10 \"${mcEngine}\")
+  set_tests_properties(ex_sim_tutorial1_${mcEngine} PROPERTIES
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
 endforeach()
 
-install(FILES
-  run_tutorial1_mesh.C
-  run_tutorial1_pythia6.C
-  run_tutorial1_pythia8.C
-  run_tutorial1_urqmd.C
-  run_tutorial1.C
+install(FILES run_tutorial1_mesh.C run_tutorial1_pythia6.C run_tutorial1_pythia8.C run_tutorial1_urqmd.C run_tutorial1.C
   DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/simulation/Tutorial1
 )
 

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -13,10 +13,9 @@
  */
 
 #include "FairMQPrimaryGeneratorDevice.h"
-  
+
 #include "FairMQLogger.h"
 #include "FairMQMessage.h"
-#include "FairMQProgOptions.h"
 
 #include "FairMCSplitEventHeader.h"
 
@@ -58,7 +57,7 @@ FairMQPrimaryGeneratorDevice::FairMQPrimaryGeneratorDevice()
 {
 }
 
-void FairMQPrimaryGeneratorDevice::InitTask() 
+void FairMQPrimaryGeneratorDevice::InitTask()
 {
     fAckChannelName    = fConfig->GetValue<std::string>             ("ack-channel");
 

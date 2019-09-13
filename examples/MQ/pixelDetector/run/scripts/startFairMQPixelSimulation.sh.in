@@ -1,10 +1,12 @@
 #!/bin/bash
 
+source @CMAKE_BINARY_DIR@/config.sh -p
+
 NOFEVENTS="100"
 NOFSIMULS="1"
 TRANSPORTNAME="TGeant3"
 TRANSPORT="--transport zeromq"
-WORKDIR="@PIXEL_FILE_LOCATION@"
+WORKDIR="@pixel_file_dir@"
 SEVERITY="--severity info"
 VERBOSITY="--verbosity medium"
 COLOR="--color true"
@@ -76,7 +78,7 @@ case $key in
     shift
     ;;
 esac
-shift 
+shift
 done
 
 CONTROL=""
@@ -131,8 +133,8 @@ fi
 
 ########################### Define some variables
 # ASCII and ROOT parameter files for the processor device
-OUTPUTPARAM="$WORKDIR/examples/MQ/pixelDetector/macros/MQ.simulation_$TRANSPORTNAME.pars.root"
-OUTPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQ.simulation_$TRANSPORTNAME.data.root"
+OUTPUTPARAM="$WORKDIR/macros/MQ.simulation_$TRANSPORTNAME.pars.root"
+OUTPUTFILE="$WORKDIR/macros/MQ.simulation_$TRANSPORTNAME.data.root"
 ###########################
 
 TRANSPORTNAME="--transport-name $TRANSPORTNAME"
@@ -147,7 +149,7 @@ fi
 
 
 ########################## start Parameter server
-SERVER="@FAIRROOT_BIN_LOCATION@/"
+SERVER="@fairroot_bin_dir@/"
 SERVER+="parmq-server $TRANSPORT"
 SERVER+=" --id pixSim-parmq-server  --channel-config name=updateChannel,type=rep,method=bind,rateLogging=1,address=tcp://*:5205"
 SERVER+=" $SEVERITY "
@@ -156,7 +158,7 @@ SERVER+=" $COLOR "
 SERVER+=" --update-channel-name updateChannel --output-name $OUTPUTPARAM $CONTROL"
 
 ########################## start SAMPLER
-SAMPLER="@PIXEL_BIN_LOCATION@/"
+SAMPLER="@pixel_bin_dir@/"
 SAMPLER+="run-sim $TRANSPORT"
 SAMPLER+=" --channel-config name=updateChannel,type=req,method=connect,rateLogging=1,address=tcp://localhost:5205"
 SAMPLER+=" --channel-config name=data#all#,type=push,method=connect,rateLogging=1,address=tcp://localhost:5206"
@@ -175,7 +177,7 @@ do
     ASAMPLER[i]="$SAMPLER --id pixSim-sampler$i --random-seed ${RANDOMNUMBER[i]}"
 done
 ########################## start FILESINK
-FILESINK="@PIXEL_BIN_LOCATION@/"
+FILESINK="@pixel_bin_dir@/"
 FILESINK+="pixel-sink $TRANSPORT --in-channel data#all#"
 FILESINK+=" $SEVERITY "
 FILESINK+=" $VERBOSITY "

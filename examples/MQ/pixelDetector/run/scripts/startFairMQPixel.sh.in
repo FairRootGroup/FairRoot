@@ -1,12 +1,14 @@
 #!/bin/bash
 
+source @CMAKE_BINARY_DIR@/config.sh -p
+
 MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
 VERBOSE="--severity INFO"
 FAIRTASKNAME="--task-name PixelFindHits"
 NOFPROCESSORS=3
 
-WORKDIR="@EXAMPLE9_FILE_LOCATION@"
+WORKDIR="@pixel_file_dir@"
 
 FORCEKILL=false
 COMMAND="interactive"
@@ -55,7 +57,7 @@ case $key in
     shift
     ;;
 esac
-shift 
+shift
 done
 
 CONTROL=""
@@ -65,32 +67,32 @@ fi
 
 ########################### Define some variables
 # ASCII and ROOT parameter files for the processor device
-ROOTPARAM="$WORKDIR/examples/MQ/pixelDetector/macros/pixel_TGeant3.params.root"
-ASCIIPARAM="$WORKDIR/examples/MQ/pixelDetector/param/pixel_digi.par"
+ROOTPARAM="$WORKDIR/macros/pixel_TGeant3.params.root"
+ASCIIPARAM="$WORKDIR/param/pixel_digi.par"
 
 if [ "$FAIRTASKNAME" == "--task-name PixelFindHits" ] ; then
     # input file and branch for the sampler device
-    INPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.root"
- #   INPUTFILE+=" --file-name $WORKDIR/examples/MQ/pixelDetector/macros/pixel_TGeant3.digi.f1.root"
+    INPUTFILE="$WORKDIR/macros/pixel_TGeant3.digi.root"
+ #   INPUTFILE+=" --file-name $WORKDIR/macros/pixel_TGeant3.digi.f1.root"
     INPUTBRANCH="PixelDigis"
-    
+
     # output file for sink
-    OUTPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.hits.root"
+    OUTPUTFILE="$WORKDIR/macros/MQ.pixel_TGeant3.hits.root"
 elif [ "$FAIRTASKNAME" == "--task-name PixelFindTracks" ] ; then
-    # input file and branch for the sampler device 
+    # input file and branch for the sampler device
     FAIRTASKNAME+=" --keep-data PixelHits"
-    INPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.hits.root"
+    INPUTFILE="$WORKDIR/macros/MQ.pixel_TGeant3.hits.root"
     INPUTBRANCH="PixelHits"
-    
+
     # output file for sink
-    OUTPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.hits_tracks.root"
+    OUTPUTFILE="$WORKDIR/macros/MQ.pixel_TGeant3.hits_tracks.root"
 elif [ "$FAIRTASKNAME" == "--task-name PixelFitTracks" ] ; then
     # input file and branch for the sampler device
-    INPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.hits_tracks.root"
+    INPUTFILE="$WORKDIR/macros/MQ.pixel_TGeant3.hits_tracks.root"
     INPUTBRANCH="PixelHits --branch-name PixelTracks"
-    
+
     # output file for sink
-    OUTPUTFILE="$WORKDIR/examples/MQ/pixelDetector/macros/MQ.pixel_TGeant3.fitTracks.root"
+    OUTPUTFILE="$WORKDIR/macros/MQ.pixel_TGeant3.fitTracks.root"
 else
     echo "TASK $FAIRTASKNAME UNKNOWN!!!"
     exit
@@ -103,13 +105,13 @@ fi
 
 
 ########################## start Parameter server
-SERVER="@FAIRROOT_BIN_LOCATION@/"
+SERVER="@fairroot_bin_dir@/"
 SERVER+="parmq-server $TRANSPORT"
 SERVER+=" --id pixDet-parmq-server --channel-config name=param,type=rep,method=bind,rateLogging=0,address=tcp://*:5105"
 SERVER+=" --channel-name param --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII $CONTROL"
 
 ########################## start SAMPLER
-SAMPLER="@PIXEL_BIN_LOCATION@/"
+SAMPLER="@pixel_bin_dir@/"
 SAMPLER+="pixel-sampler $TRANSPORT"
 SAMPLER+=" --id pixDet-sampler1 --severity info"
 SAMPLER+=" --channel-config name=data-out,type=push,method=bind,rateLogging=1,address=tcp://*:5106"
@@ -119,7 +121,7 @@ fi
 SAMPLER+=" --file-name $INPUTFILE --branch-name $INPUTBRANCH --branch-name EventHeader. $MAXINDEX $CONTROL"
 
 ########################## start PROCESSORs
-PROCESSOR="@PIXEL_BIN_LOCATION@/"
+PROCESSOR="@pixel_bin_dir@/"
 PROCESSOR+="pixel-processor $TRANSPORT"
 PROCESSOR+=" $VERBOSE"
 PROCESSOR+=" --channel-config name=param,type=req,method=connect,rateLogging=0,address=tcp://localhost:5105"
@@ -133,7 +135,7 @@ do
 done
 
 ########################## start FILESINK
-FILESINK="@PIXEL_BIN_LOCATION@/"
+FILESINK="@pixel_bin_dir@/"
 FILESINK+="pixel-sink $TRANSPORT"
 FILESINK+=" --id pixDet-sink1 --channel-config name=data-in,type=pull,method=bind,rateLogging=1,address=tcp://*:5107"
 if [ "$COMMAND" == "static" ]; then

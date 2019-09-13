@@ -1,8 +1,8 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
@@ -19,5 +19,5 @@ void addCustomOptions(bpo::options_description& /*options*/)
 
 FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)
 {
-  return new FairMQPixelMerger();
+    return new FairMQPixelMerger();
 }

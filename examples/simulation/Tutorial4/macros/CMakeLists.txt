@@ -15,14 +15,14 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_reco.C)
 set(maxTestTime 60)
 
 foreach(mcEngine IN ITEMS TGeant3 TGeant4)
-  add_test(tutorial4_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial4.sh 10 \"${mcEngine}\")
-  set_tests_properties(tutorial4_${mcEngine} PROPERTIES
+  add_test(ex_sim_tutorial4_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial4.sh 10 \"${mcEngine}\")
+  set_tests_properties(ex_sim_tutorial4_${mcEngine} PROPERTIES
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
 
-  add_test(tutorial4_reco_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_reco.sh \"${mcEngine}\")
-  set_tests_properties(tutorial4_reco_${mcEngine} PROPERTIES
+  add_test(ex_sim_tutorial4_reco_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_reco.sh \"${mcEngine}\")
+  set_tests_properties(ex_sim_tutorial4_reco_${mcEngine} PROPERTIES
     DEPENDS run_tutorial4_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
