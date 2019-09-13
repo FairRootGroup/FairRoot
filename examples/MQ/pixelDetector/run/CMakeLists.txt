@@ -96,8 +96,8 @@ add_executable(pixel-merger runPixelMerger.cxx)
 target_link_libraries(pixel-merger PRIVATE ${exe_dependencies})
 set_target_properties(pixel-merger PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
-add_executable(run-sim runMQSim.cxx)
-target_link_libraries(run-sim PRIVATE
+add_executable(pixel-sim runMQSim.cxx)
+target_link_libraries(pixel-sim PRIVATE
   ${exe_dependencies}
   FairRoot::Base # FairModule, FairPrimaryGenerator
   FairRoot::Gen # FairBoxGenerator
@@ -106,10 +106,10 @@ target_link_libraries(run-sim PRIVATE
   Core # TSystem
   MathCore # TRandom
 )
-target_link_directories(run-sim PRIVATE ${ROOT_LIBRARY_DIR})
-set_target_properties(run-sim PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
+target_link_directories(pixel-sim PRIVATE ${ROOT_LIBRARY_DIR})
+set_target_properties(pixel-sim PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
-install(TARGETS pixel-sampler pixel-processor pixel-sink pixel-sampler-bin pixel-processor-bin pixel-sink-bin pixel-merger run-sim
+install(TARGETS pixel-sampler pixel-processor pixel-sink pixel-sampler-bin pixel-processor-bin pixel-sink-bin pixel-merger pixel-sim
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelDetector/bin
 )
 

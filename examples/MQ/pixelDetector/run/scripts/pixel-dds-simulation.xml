@@ -4,7 +4,7 @@
     <property id="updateChannel" />
 
     <decltask id="Sampler">
-      <exe reachable="true">@pixel_bin_dir@/run-sim --config-key sampler --channel-config name=data#all#,type=push,method=connect --channel-config name=updateChannel,type=req,method=connect --severity DEBUG --nof-events 100000 --transport-name TGeant3 --id sampler_%taskIndex% --random-seed 0 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+      <exe reachable="true">@pixel_bin_dir@/pixel-sim --config-key sampler --channel-config name=data#all#,type=push,method=connect --channel-config name=updateChannel,type=req,method=connect --severity DEBUG --nof-events 100000 --transport-name TGeant3 --id sampler_%taskIndex% --random-seed 0 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
         <properties>
           <id access="read">data#all#</id>
 	  <id access="read">updateChannel</id>

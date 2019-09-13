@@ -159,7 +159,7 @@ SERVER+=" --update-channel-name updateChannel --output-name $OUTPUTPARAM $CONTRO
 
 ########################## start SAMPLER
 SAMPLER="@pixel_bin_dir@/"
-SAMPLER+="run-sim $TRANSPORT"
+SAMPLER+="pixel-sim $TRANSPORT"
 SAMPLER+=" --channel-config name=updateChannel,type=req,method=connect,rateLogging=1,address=tcp://localhost:5205"
 SAMPLER+=" --channel-config name=data#all#,type=push,method=connect,rateLogging=1,address=tcp://localhost:5206"
 SAMPLER+=" $SEVERITY "

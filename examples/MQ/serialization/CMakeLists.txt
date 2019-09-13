@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target SerializationExample)
+set(target ExSerialization)
 
 set(sources
   data/MyDigi.cxx
@@ -64,31 +64,31 @@ install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(ex-serialization1-sampler 1-simple/runEx1Sampler.cxx)
-target_link_libraries(ex-serialization1-sampler PRIVATE FairRoot::SerializationExample FairMQ::FairMQ)
+target_link_libraries(ex-serialization1-sampler PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
 set_target_properties(ex-serialization1-sampler PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(ex-serialization1-processor 1-simple/runEx1Processor.cxx)
-target_link_libraries(ex-serialization1-processor PRIVATE FairRoot::SerializationExample FairMQ::FairMQ)
+target_link_libraries(ex-serialization1-processor PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
 set_target_properties(ex-serialization1-processor PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(ex-serialization1-sink 1-simple/runEx1Sink.cxx)
-target_link_libraries(ex-serialization1-sink PRIVATE FairRoot::SerializationExample FairMQ::FairMQ)
+target_link_libraries(ex-serialization1-sink PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
 set_target_properties(ex-serialization1-sink PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(ex-serialization2-sampler 2-multipart/runEx2Sampler.cxx)
-target_link_libraries(ex-serialization2-sampler PRIVATE FairRoot::SerializationExample FairMQ::FairMQ)
+target_link_libraries(ex-serialization2-sampler PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
 set_target_properties(ex-serialization2-sampler PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(ex-serialization2-processor 2-multipart/runEx2Processor.cxx)
-target_link_libraries(ex-serialization2-processor PRIVATE FairRoot::SerializationExample FairMQ::FairMQ)
+target_link_libraries(ex-serialization2-processor PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
 set_target_properties(ex-serialization2-processor PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(ex-serialization2-sink 2-multipart/runEx2Sink.cxx)
-target_link_libraries(ex-serialization2-sink PRIVATE FairRoot::SerializationExample FairMQ::FairMQ)
+target_link_libraries(ex-serialization2-sink PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
 set_target_properties(ex-serialization2-sink PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(ex-serialization-generate-data data_generator/runGenerateData.cxx)
-target_link_libraries(ex-serialization-generate-data PRIVATE FairRoot::SerializationExample FairMQ::FairMQ RooFitCore RooFit Core Hist Gpad FairRoot::BaseMQ)
+target_link_libraries(ex-serialization-generate-data PRIVATE FairRoot::ExSerialization FairMQ::FairMQ RooFitCore RooFit Core Hist Gpad FairRoot::BaseMQ)
 set_target_properties(ex-serialization-generate-data PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 # Create a directory that will hold root input/output data file
@@ -116,13 +116,13 @@ install(TARGETS
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/serialization/bin
 )
 
-add_test(ex_MQ_serialization1 COMMAND ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx1.sh)
+add_test(ex_MQ_serialization1 ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx1.sh)
 set_tests_properties(ex_MQ_serialization1 PROPERTIES
   TIMEOUT "30"
   PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
 )
 
-add_test(ex_MQ_serialization2 COMMAND ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx2.sh)
+add_test(ex_MQ_serialization2 ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx2.sh)
 set_tests_properties(ex_MQ_serialization2 PROPERTIES
   DEPENDS ex_MQ_serialization1
   TIMEOUT "30"

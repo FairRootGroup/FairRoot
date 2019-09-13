@@ -7,7 +7,7 @@
   <property id="retrieveParams" />
 
   <decltask id="Sampler">
-      <exe reachable="true">@pixel_bin_dir@/run-sim --channel-config name=dataStore#all#,type=push,method=connect --channel-config name=dataAna#all#,type=push,method=connect --channel-config name=storeParams,type=req,method=connect --config-key sampler --id sampler_%taskIndex% --severity INFO --param-channel-name storeParams --nof-events 10000 --transport-name TGeant3 --random-seed 0 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+      <exe reachable="true">@pixel_bin_dir@/pixel-sim --channel-config name=dataStore#all#,type=push,method=connect --channel-config name=dataAna#all#,type=push,method=connect --channel-config name=storeParams,type=req,method=connect --config-key sampler --id sampler_%taskIndex% --severity INFO --param-channel-name storeParams --nof-events 10000 --transport-name TGeant3 --random-seed 0 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
         <properties>
           <id access="read">dataStore#all#</id>
           <id access="read">dataAna#all#</id>
