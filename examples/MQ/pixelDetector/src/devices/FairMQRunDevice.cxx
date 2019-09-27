@@ -73,11 +73,10 @@ void FairMQRunDevice::SendBranches()
                   LOG(debug) << "Branch \"" << ObjStr->GetString() << "\" is persistent ANY";
                   if ( ObjStr->GetString().CompareTo("MCTrack") == 0 ) {
                       TClonesArray** mcTrackArray = (static_cast<FairOnlineSink*>(FairRootManager::Instance()->GetSink()))->GetPersistentBranchAny<TClonesArray**>(ObjStr->GetString());
-                      (*mcTrackArray)->SetName("MCTrack");
-                      LOG(debug) << "[" << FairRootManager::Instance()->GetInstanceId() << "] mcTrack " << mcTrackArray << " /// *mcTrackArray " << *mcTrackArray << " /// *mcTrackArray->GetName() " << (*mcTrackArray)->GetName();
-                      TObject* objClone = 0;
                       if ( mcTrackArray ) {
-                          objClone = (*mcTrackArray)->Clone();
+                          (*mcTrackArray)->SetName("MCTrack");
+                          LOG(debug) << "[" << FairRootManager::Instance()->GetInstanceId() << "] mcTrack " << mcTrackArray << " /// *mcTrackArray " << *mcTrackArray << " /// *mcTrackArray->GetName() " << (*mcTrackArray)->GetName();
+                          TObject* objClone = (*mcTrackArray)->Clone();
                           LOG(debug) << "FairMQRunDevice::SendBranches() the track array has " << ((TClonesArray*)(objClone))->GetEntries() << " entries.";
                           FairMQMessagePtr mess(NewMessage());
                           Serialize<RootSerializer>(*mess,objClone);
@@ -91,7 +90,6 @@ void FairMQRunDevice::SendBranches()
               }
               else {
                   TObject* object   = FairRootManager::Instance()->GetObject(ObjStr->GetString());
-                  TObject* objClone = 0;
                   if ( object ) {
                       objClone = object->Clone();
                       FairMQMessagePtr mess(NewMessage());
