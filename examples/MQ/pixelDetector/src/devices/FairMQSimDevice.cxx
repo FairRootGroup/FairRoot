@@ -29,9 +29,6 @@
 
 #include <cstdio> // printf
 
-#include <mutex>          // std::mutex
-std::mutex mtx;           // mutex for critical section
-
 using namespace std;
 
 FairMQSimDevice::FairMQSimDevice()

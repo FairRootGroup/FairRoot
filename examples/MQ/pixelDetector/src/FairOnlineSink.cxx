@@ -41,12 +41,27 @@ void FairOnlineSink::RegisterImpl(const char* , const char* , void* )
 }
 
 //_____________________________________________________________________________
-void FairOnlineSink::RegisterAny(const char* /* brname */, const std::type_info &/* oi */, const std::type_info &/* pi */, void* /* obj */)
-{
-  return;
+void FairOnlineSink::RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj) {
+   fPersistentBranchesMap[brname]=std::unique_ptr<TypeAddressPair const> (new TypeAddressPair(oi, pi,obj));
 }
 
-void  FairOnlineSink::Fill()
+//_____________________________________________________________________________
+bool FairOnlineSink::IsPersistentBranchAny(const char *name) {
+    if (fPersistentBranchesMap.find(name) == fPersistentBranchesMap.end()) {
+        return false;
+    }
+    return true;
+}
+
+//_____________________________________________________________________________
+void FairOnlineSink::EmitPersistentBranchWrongTypeWarning(const char* brname, const char *type1, const char *type2) const {
+  LOG(warn) << "Trying to read from persistent branch " << brname
+               << " with wrong type " << type1
+               << " (expexted: " << type2 << " )";
+}
+
+//_____________________________________________________________________________
+void FairOnlineSink::Fill()
 {
   /// Fill the Root tree.
   LOG(debug) << "[" << FairRootManager::Instance()->GetInstanceId() << "] called FairOnlineSink::Fill()!!!!";

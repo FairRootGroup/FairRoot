@@ -26,7 +26,13 @@
 
 #include <cstdio> // printf
 
-using namespace std;
+#include <mutex>          // std::mutex
+std::mutex mtx;           // mutex for critical section
+
+FairMQRunDevice::FairMQRunDevice()
+  : FairMQDevice()
+{
+}
 
 void FairMQRunDevice::SendObject(TObject* obj, const std::string& chan) {
   FairMQMessagePtr mess(NewMessage());
@@ -51,21 +57,58 @@ void FairMQRunDevice::SendBranches()
   TList* branchNameList = FairRootManager::Instance()->GetBranchNameList();
   TObjString* ObjStr;
 
-  for (auto& mi : fChannels) {
-    LOG(debug) << "trying channel >" << mi.first.data() << "<";
+  for (auto& mi : fChannels)
+    {
+      LOG(debug) << "trying channel >" << mi.first.data() << "<";
 
-    FairMQParts parts;
-
-    for(Int_t t = 0; t < branchNameList->GetEntries(); t++) {
-      ObjStr = static_cast<TObjString*>(branchNameList->TList::At(t));
-      LOG(debug) << "              branch >" << ObjStr->GetString().Data() << "<";
-      std::string modifiedBranchName = std::string("#") + ObjStr->GetString().Data() + "#";
-      if (mi.first.find(modifiedBranchName) != std::string::npos || mi.first.find("#all#") != std::string::npos) {
-        TObject* object = (FairRootManager::Instance()->GetObject(ObjStr->GetString()))->Clone();
-        FairMQMessagePtr mess(NewMessage());
-        Serialize<RootSerializer>(*mess, object);
-        parts.AddPart(std::move(mess));
-        LOG(debug) << "channel >" << mi.first.data() << "< --> >" << ObjStr->GetString().Data() << "<";
+      FairMQParts parts;
+      
+      for(Int_t t=0; t<branchNameList->GetEntries(); t++) 
+        {
+          ObjStr= static_cast<TObjString*>(branchNameList->TList::At(t));
+          LOG(debug) << "              branch >" << ObjStr->GetString().Data() << "<";
+          std::string modifiedBranchName = std::string("#") + ObjStr->GetString().Data() + "#";
+          if ( mi.first.find(modifiedBranchName) != std::string::npos || mi.first.find("#all#") != std::string::npos ) {
+              if ( (static_cast<FairOnlineSink*>(FairRootManager::Instance()->GetSink()))->IsPersistentBranchAny(ObjStr->GetString()) ) {
+                  LOG(debug) << "Branch \"" << ObjStr->GetString() << "\" is persistent ANY";
+                  if ( ObjStr->GetString().CompareTo("MCTrack") == 0 ) {
+                      TClonesArray** mcTrackArray = (static_cast<FairOnlineSink*>(FairRootManager::Instance()->GetSink()))->GetPersistentBranchAny<TClonesArray**>(ObjStr->GetString());
+                      (*mcTrackArray)->SetName("MCTrack");
+                      LOG(debug) << "[" << FairRootManager::Instance()->GetInstanceId() << "] mcTrack " << mcTrackArray << " /// *mcTrackArray " << *mcTrackArray << " /// *mcTrackArray->GetName() " << (*mcTrackArray)->GetName();
+                      TObject* objClone = 0;
+                      if ( mcTrackArray ) {
+                          objClone = (*mcTrackArray)->Clone();
+                          LOG(debug) << "FairMQRunDevice::SendBranches() the track array has " << ((TClonesArray*)(objClone))->GetEntries() << " entries.";
+                          FairMQMessagePtr mess(NewMessage());
+                          Serialize<RootSerializer>(*mess,objClone);
+                          parts.AddPart(std::move(mess));
+                          LOG(debug) << "channel >" << mi.first.data() << "< --> >" << ObjStr->GetString().Data() << "<";
+                      }
+                  }
+                  else {
+                      continue;
+                  }
+              }
+              else {
+                  TObject* object   = FairRootManager::Instance()->GetObject(ObjStr->GetString());
+                  TObject* objClone = 0;
+                  if ( object ) {
+                      objClone = object->Clone();
+                      FairMQMessagePtr mess(NewMessage());
+                      Serialize<RootSerializer>(*mess,objClone);
+                      parts.AddPart(std::move(mess));
+                      LOG(debug) << "channel >" << mi.first.data() << "< --> >" << ObjStr->GetString().Data() << "<";
+                  }
+                  else {
+                      LOG(fatal) << "Object " << ObjStr->GetString() << " NOT FOUND!!!";
+                  }
+              }
+          }
+        }
+      if ( parts.Size() > 0 ) {
+          mtx.lock();
+          Send(parts,mi.first.data());
+          mtx.unlock();
       }
     }
     if (parts.Size() > 0)

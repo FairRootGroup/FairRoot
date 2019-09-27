@@ -812,7 +812,10 @@ void FairMCApplication::FinishEvent()
 {
 // User actions after finishing of an event
 // ---
-  LOG(debug) << "FairMCMCApplication::FinishEvent: " << fRootManager->GetInstanceId();
+  LOG(debug) << "[" << fRootManager->GetInstanceId() << " FairMCMCApplication::FinishEvent: " << fMCEventHeader->GetEventID() << " (MC " << gMC->CurrentEvent() << ")";
+  if ( gMC->IsMT() && fRun->GetSink()->GetSinkType() == kONLINESINK ) { // fix the rare case when running G4 multithreaded on MQ
+    fMCEventHeader->SetEventID(gMC->CurrentEvent()+1);
+  }
 
   // --> Fill the stack output array
   fStack->FillTrackArray();
