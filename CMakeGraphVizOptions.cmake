@@ -1,0 +1,14 @@
+set(GRAPHVIZ_GRAPH_TYPE digraph)
+set(GRAPHVIZ_GRAPH_NAME FairRoot)
+set(GRAPHVIZ_EXECUTABLES OFF)
+set(GRAPHVIZ_STATIC_LIBS OFF)
+set(GRAPHVIZ_SHARED_LIBS ON)
+set(GRAPHVIZ_MODULE_LIBS OFF)
+set(GRAPHVIZ_GENERATE_PER_TARGET OFF)
+set(GRAPHVIZ_GENERATE_DEPENDERS OFF)
+# set(GRAPHVIZ_IGNORE_TARGETS
+#   "fairmq-ex.*"
+#   "testsuite_.*"
+#   "testhelper_.*"
+#   "FairMQPlugin_test_dummy"
+# )
