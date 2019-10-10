@@ -15,6 +15,7 @@
 #include "FairParamList.h"              // for FairParamList
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 
+#include <TObjArray.h>
 
 ClassImp(FairBaseParSet)
 
@@ -26,10 +27,7 @@ FairBaseParSet::FairBaseParSet(const char* name,const char* title,const char* co
     fContNameList(new TObjArray()),
     fRandomSeed(99999999)
 {
-
-
 }
-
 
 FairBaseParSet::~FairBaseParSet(void)
 {

@@ -9,34 +9,19 @@
 // -----                     FairGenerator source file                 -----
 // -------------------------------------------------------------------------
 
-
 #include "FairGenerator.h"
 
-
-// -----   Default constructor   -------------------------------------------
 FairGenerator::FairGenerator()
   : TNamed() {}
-// -------------------------------------------------------------------------
 
-
-
-// -----   Constructor with name and title   -------------------------------
 FairGenerator::FairGenerator(const char* name, const char* title)
   : TNamed(name, title) {}
-// -------------------------------------------------------------------------
 
-
-// -----   Copy constructor ------------------------------------------------
 FairGenerator::FairGenerator(const FairGenerator& rhs)
   : TNamed(rhs) {}
-// -------------------------------------------------------------------------
 
-
-// -----   Destructor   ----------------------------------------------------
 FairGenerator::~FairGenerator() { }
-// -------------------------------------------------------------------------
 
-// -----   Assignment   ----------------------------------------------------
 FairGenerator& FairGenerator::operator= (const FairGenerator& rhs)
 {
   // check assignment to self
@@ -48,7 +33,6 @@ FairGenerator& FairGenerator::operator= (const FairGenerator& rhs)
   return *this;
 }
 
-// -----   Clone this object   ---------------------------------------------
 FairGenerator* FairGenerator::CloneGenerator() const
 {
   Fatal("CloneGenerator","Has to be overriden in multi-threading applications.");

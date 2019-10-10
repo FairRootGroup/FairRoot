@@ -8,34 +8,27 @@
 #ifndef FAIRRUNINFO_H
 #define FAIRRUNINFO_H
 
-#include "TObject.h"                    // for TObject
+#include <TObject.h> // for TObject
 
-#include "Rtypes.h"                     // for Double_t, Long_t, etc
-#include "TSystem.h"                    // for CpuInfo_t, MemInfo_t, etc
-#include "TTimeStamp.h"                 // for TTimeStamp
+#include <Rtypes.h> // for Double_t, Long_t, etc
+#include <TSystem.h> // for CpuInfo_t, MemInfo_t, etc
+#include <TTimeStamp.h> // for TTimeStamp
 
-#include <vector>                       // for vector
+#include <vector> // for vector
 
-class FairLogger;
 class TList;
 
 class FairRunInfo : public TObject
 {
-
   public:
-
     FairRunInfo();
-
     ~FairRunInfo();
 
     void StoreInfo();
-
     void WriteInfo();
-
     void Reset();
 
   private:
-
     TTimeStamp  fTimeStamp;//!
     CpuInfo_t   fCpuInfo;//!
     MemInfo_t   fMemInfo;//!
@@ -46,19 +39,15 @@ class FairRunInfo : public TObject
     std::vector<Long_t> fVirtualMemory;//!
 
     void CalculateTimeDifference();
-
     void PrintInfo();
-
     void GetInfo();
-
     void CreateAndFillHistograms(TList* histoList);
-
     void WriteHistosToFile(TList* histoList);
 
     FairRunInfo(const FairRunInfo&);
     FairRunInfo& operator=(const FairRunInfo&);
 
     ClassDef(FairRunInfo,2)
-
 };
+
 #endif

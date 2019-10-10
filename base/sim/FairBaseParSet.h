@@ -16,8 +16,8 @@
  */
 #include "FairParGenericSet.h"          // for FairParGenericSet
 
-#include "Rtypes.h"                     // for Double_t, etc
-#include "TGeoManager.h"                // IWYU pragma: keep needed by cint
+#include <Rtypes.h>                     // for Double_t, etc
+#include <TGeoManager.h>                // IWYU pragma: keep needed by cint
 
 class FairParamList;
 class FairPrimaryGenerator;
@@ -98,10 +98,8 @@ class FairBaseParSet : public FairParGenericSet
     *  Get the Random Seed used in this run
     */
     UInt_t  GetRndSeed() {return fRandomSeed;}
-   
 
   protected:
-
     /// Detectors used in the simulation
     TObjArray*              fDetList;
     ///Generator used for simulation
@@ -118,9 +116,6 @@ class FairBaseParSet : public FairParGenericSet
   private:
     FairBaseParSet(const FairBaseParSet& L);
     FairBaseParSet& operator= (const FairBaseParSet&) {return *this;}
-
-
-
 };
 
 #endif /* !FAIRBASEPARSET_H */

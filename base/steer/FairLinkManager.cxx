@@ -3,25 +3,19 @@
 // -----            Created 05/06/14  by T.Stockmanns                  -----
 // -------------------------------------------------------------------------
 
-
 #include "FairLinkManager.h"
 
 #include "FairLogger.h"
 #include "FairRun.h"
 
-using std::set;
-
-#include <iostream>
-
 TMCThreadLocal FairLinkManager* FairLinkManager::fgInstance = 0;
-//_____________________________________________________________________________
+
 FairLinkManager* FairLinkManager::Instance()
 {
 // Returns singleton instance.
 // ---
   return fgInstance;
 }
-//_____________________________________________________________________________
 
 FairLinkManager::FairLinkManager()
   : TObject(),
@@ -41,45 +35,40 @@ FairLinkManager::FairLinkManager()
     fLogger = FairLogger::GetLogger();
   }
 }
-//_____________________________________________________________________________
+
 FairLinkManager::~FairLinkManager()
 {
-//
   LOG(debug) << "Enter Destructor of FairLinkManager";
   fgInstance = 0;
   LOG(debug) <<  "Leave Destructor of FairLinkManager";
 }
-//_____________________________________________________________________________
 
 void FairLinkManager::AddIgnoreType(Int_t type)
 {
-	if (fIgnoreSetting == kFALSE){
-		LOG(debug) <<  "AddIgnoreType ignored because of IncludeType setting";
-		return;
-	}
-	LOG(debug) <<  "AddIgnoreType";
-	fIgnoreTypes.insert(type);
+  if (fIgnoreSetting == kFALSE) {
+    LOG(debug) <<  "AddIgnoreType ignored because of IncludeType setting";
+    return;
+  }
+  LOG(debug) <<  "AddIgnoreType";
+  fIgnoreTypes.insert(type);
 }
 
 void FairLinkManager::AddIncludeType(Int_t type)
 {
-	LOG(debug) <<  "AddIgnoreType";
-//	std::cout << "-I- FairLinkManager::AddIgnoreType: " << type << std::endl;
-	if (fIgnoreSetting == kTRUE){
-		fIgnoreSetting=kFALSE;
-		fIgnoreTypes.clear();
-	}
-	fIgnoreTypes.insert(type);
+  LOG(debug) <<  "AddIgnoreType";
+  if (fIgnoreSetting == kTRUE) {
+    fIgnoreSetting=kFALSE;
+    fIgnoreTypes.clear();
+  }
+  fIgnoreTypes.insert(type);
 }
-
 
 Bool_t FairLinkManager::IsIgnoreType(Int_t type) const
 {
-	if (fIgnoreSetting)
-		return fIgnoreTypes.count(type);
-	else
-		return !fIgnoreTypes.count(type);
-
+  if (fIgnoreSetting)
+    return fIgnoreTypes.count(type);
+  else
+    return !fIgnoreTypes.count(type);
 }
 
 ClassImp(FairLinkManager)

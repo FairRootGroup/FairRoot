@@ -14,13 +14,12 @@
 #ifndef FAIR_PARTICLE_H
 #define FAIR_PARTICLE_H
 
-#include "TObject.h"                    // for TObject
-
-#include "Rtypes.h"                     // for Int_t, Double_t, Bool_t, etc
-#include "TMCParticleType.h"            // for TMCParticleType
-#include "TRef.h"                       // for TRef
-#include "TRefArray.h"                  // for TRefArray
-#include "TString.h"                    // for TString
+#include <TObject.h>                    // for TObject
+#include <Rtypes.h>                     // for Int_t, Double_t, Bool_t, etc
+#include <TMCParticleType.h>            // for TMCParticleType
+#include <TRef.h>                       // for TRef
+#include <TRefArray.h>                  // for TRefArray
+#include <TString.h>                    // for TString
 
 class TParticle;
 
@@ -98,6 +97,4 @@ class FairParticle : public TObject
     ClassDef(FairParticle,3) // Extended TParticle
 };
 
-#endif //FAIR_PARTICLE_H   
-
-
+#endif //FAIR_PARTICLE_H

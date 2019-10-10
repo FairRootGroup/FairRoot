@@ -14,28 +14,26 @@
 #ifndef FAIRUNPACK_H
 #define FAIRUNPACK_H
 
-#include "Rtypes.h"                     // for Int_t, Bool_t, etc
-#include "TObject.h"
-
+#include <Rtypes.h>                     // for Int_t, Bool_t, etc
+#include <TObject.h>
 
 class FairUnpack : public TObject
 {
   public:
-    FairUnpack(Short_t type, Short_t subType,
-               Short_t procId, Short_t subCrate, Short_t control);
+    FairUnpack(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control);
     virtual ~FairUnpack();
 
     virtual Bool_t Init() = 0;
     virtual Bool_t ReInit() { return kTRUE; }
     virtual Bool_t DoUnpack(Int_t* data, Int_t size) = 0;
     virtual void   Reset() = 0;
-    virtual void   SetParContainers() {  };
+    virtual void   SetParContainers() { };
 
-    inline Short_t GetType()    const { return fType;     }
-    inline Short_t GetSubType() const { return fSubType;  }
-    inline Short_t GetProcId()  const { return fProcId;   }
+    inline Short_t GetType() const { return fType; }
+    inline Short_t GetSubType() const { return fSubType; }
+    inline Short_t GetProcId() const { return fProcId; }
     inline Short_t GetSubCrate() const { return fSubCrate; }
-    inline Short_t GetControl()  const { return fControl;  }
+    inline Short_t GetControl() const { return fControl; }
 
   private:
     Short_t fType;
@@ -51,8 +49,4 @@ class FairUnpack : public TObject
     ClassDef(FairUnpack, 0)
 };
 
-
 #endif
-
-
-

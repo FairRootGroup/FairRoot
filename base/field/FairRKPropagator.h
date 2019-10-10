@@ -21,12 +21,12 @@ class FairField;
 
 class FairRKPropagator : public FairPropagator
 {
-
   private:
     FairRKPropagator(const FairRKPropagator&);            // Not implemented
     FairRKPropagator& operator=(const FairRKPropagator&); // Not implemented
     Double_t fMaxStep;
-    FairField*              fMagField;
+    FairField* fMagField;
+
   public:
     void Step(Double_t Charge, Double_t* vecRKIn, Double_t* vecOut);
     Double_t OneStepRungeKutta(Double_t charge, Double_t step, Double_t* vect, Double_t* vout);
@@ -52,8 +52,6 @@ class FairRKPropagator : public FairPropagator
 
     virtual ~FairRKPropagator();
     ClassDef(FairRKPropagator, 2);
-
 };
-
 
 #endif

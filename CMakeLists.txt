@@ -313,23 +313,23 @@ EndIf()
 # cause another cmake executable to run.  The same process will walk through
 # the project's entire directory structure.
 add_subdirectory(alignment)
-add_subdirectory(fairtools)
 option(BUILD_MBS "Build MBS" ON)
 add_subdirectory(base)
 add_subdirectory(geobase)
 add_subdirectory(parbase)
 add_subdirectory(generators)
+add_subdirectory(fairtools)
 If(Geant3_FOUND)
  add_subdirectory(geane)
  add_subdirectory(trackbase)
 EndIf ()
 
 execute_process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --has-opengl OUTPUT_VARIABLE ROOT_HAS_OPENGL)
-If (${ROOT_HAS_OPENGL} MATCHES "yes")
-  add_subdirectory (eventdisplay)
-Else ()
-  Message(STATUS "eventdisplay will not be built, because ROOT has no opengl support.")
-EndIf ()
+if(${ROOT_HAS_OPENGL} MATCHES "yes")
+  add_subdirectory(eventdisplay)
+else()
+  message(STATUS "eventdisplay will not be built, because ROOT has no opengl support.")
+endif()
 
 add_subdirectory(MbsAPI)
 add_subdirectory(datamatch)
@@ -355,11 +355,7 @@ if(BUILD_EXAMPLES)
 endif(BUILD_EXAMPLES)
 
 if(IWYU_FOUND)
-
-  ADD_CUSTOM_TARGET(checkHEADERS
-     DEPENDS $ENV{ALL_HEADER_RULES}
-  )
-
+  add_custom_target(checkHEADERS DEPENDS $ENV{ALL_HEADER_RULES})
 endif(IWYU_FOUND)
 
 if(${CMAKE_BUILD_TYPE} MATCHES PROFILE)

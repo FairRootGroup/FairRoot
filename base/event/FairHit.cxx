@@ -7,8 +7,6 @@
  ********************************************************************************/
 #include "FairHit.h"
 
-
-// -----   Default constructor   -------------------------------------------
 FairHit::FairHit()
   : FairTimeStamp(),
     fDx(0),
@@ -19,15 +17,9 @@ FairHit::FairHit()
     fX(0),
     fY(0),
     fZ(0)
-
-
 {
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   ------------------------------------------
 FairHit::FairHit(Int_t detID, TVector3& pos, TVector3& dpos, Int_t index)
   :FairTimeStamp(),
    fDx          (dpos.X()),
@@ -41,14 +33,6 @@ FairHit::FairHit(Int_t detID, TVector3& pos, TVector3& dpos, Int_t index)
 {
 }
 
-
-// -------------------------------------------------------------------------
-
-
-// -----   Destructor   ----------------------------------------------------
 FairHit::~FairHit() { }
-// -------------------------------------------------------------------------
-
-
 
 ClassImp(FairHit)

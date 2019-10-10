@@ -17,30 +17,34 @@
 #define __FAIRROOT__FairMixedSource__
 
 #include "FairSource.h"
-#include <list>    
-#include "TChain.h"
-#include "TFile.h"
-#include "TF1.h"
+
+#include <TChain.h>
+#include <TFile.h>
+#include <TF1.h>
+#include <TArrayI.h>
+
+#include <list>
+#include <map>
 
 class FairEventHeader;
 class FairFileHeader;
 class FairMCEventHeader;
 class TString;
-class FairLogger;
 class FairRuntimeDb;
 class TFolder;
+class TObject;
 
 class FairRootManager;
 
 class FairMixedSource : public FairSource
 {
-public:
+  public:
     FairMixedSource(TFile *f, const char* Title="InputRootFile", UInt_t identifier=0);
     FairMixedSource(const TString* RootFileName, const char* Title="InputRootFile", UInt_t identifier=0);
     FairMixedSource(const TString RootFileName, const Int_t signalId, const char* Title="InputRootFile", UInt_t identifier=0);
-  //  FairMixedSource(const FairMixedSource& file);
+    //  FairMixedSource(const FairMixedSource& file);
     virtual ~FairMixedSource();
-    
+
     Bool_t              Init();
     Int_t               ReadEvent(UInt_t i=0);
     void                Close();
@@ -126,7 +130,7 @@ public:
     void                SetEvtHeaderNew(Bool_t Status) {fEvtHeaderIsNew = Status;}
     Bool_t              IsEvtHeaderNew() {return fEvtHeaderIsNew;}
 
-private:
+  private:
     /**IO manager */
     FairRootManager*         fRootManager;
 
@@ -183,7 +187,7 @@ private:
     /* /\**No of entries in BG Chain*\/ */
     UInt_t                                  fNoOfBGEntries; //!
     /* /\**Hold the current entry for each input chain*\/ */
-    std::map<UInt_t, UInt_t>                fCurrentEntry; //! 
+    std::map<UInt_t, UInt_t>                fCurrentEntry; //!
 
     /** min time for one event (ns) */
     Double_t                                fEventTimeMin;  //!
@@ -201,9 +205,9 @@ private:
     TF1*                                    fTimeProb;      //!
 
     /**holds the SB ratio by number*/
-    std::map<UInt_t, Double_t>              fSignalBGN;//! 
+    std::map<UInt_t, Double_t>              fSignalBGN;//!
     /* /\**True for background window in entry units*\/ */
-    Bool_t                                  fSBRatiobyN;  //! 
+    Bool_t                                  fSBRatiobyN;  //!
     /* /\**True for background window in time units (ns) *\/ */
     Bool_t                                  fSBRatiobyT;  //!
 
@@ -219,10 +223,9 @@ private:
 
     FairMixedSource(const FairMixedSource&);
     FairMixedSource& operator=(const FairMixedSource&);
-    
+
 public:
     ClassDef(FairMixedSource, 0)
 };
-
 
 #endif /* defined(__FAIRROOT__FairMixedSource__) */

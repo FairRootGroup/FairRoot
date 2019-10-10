@@ -10,8 +10,8 @@
 //
 #include "FairFileInfo.h"
 
-#include "TFile.h"                      // for TFile
-#include "TSystem.h"                    // for TSystem, gSystem
+#include <TFile.h>                      // for TFile
+#include <TSystem.h>                    // for TSystem, gSystem
 
 #include <stdio.h>                      // for printf
 
@@ -32,14 +32,12 @@ FairFileInfo::FairFileInfo(TFile* file, UInt_t id,  UInt_t ChId)
    fIdentifier(id),
    fInChainId(ChId)
 {
-  fPath+=gSystem->WorkingDirectory();
-  fPath+=fName;
-
+  fPath += gSystem->WorkingDirectory();
+  fPath += fName;
 }
 //__________________________________________________________________________
 FairFileInfo::~FairFileInfo()
 {
-
 }
 //__________________________________________________________________________
 void FairFileInfo::Print(Option_t*) const
@@ -49,10 +47,6 @@ void FairFileInfo::Print(Option_t*) const
   printf("File Size in Byte            :  %i \n", fSize);
   printf("File Identifier              :  %i \n", fIdentifier);
   printf("File order in input chain    :  %i \n", fInChainId);
-
 }
 //__________________________________________________________________________
 ClassImp(FairFileInfo)
-
-
-

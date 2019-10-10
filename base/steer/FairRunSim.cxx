@@ -1,14 +1,14 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-//_____________________________________________________________________________
+
 // -----                   FairRunSim source file                      -----
 // -----            Created 06/01/04  by M. Al-Turany                  -----
-//_____________________________________________________________________________
+
 #include "FairRunSim.h"
 
 #include "FairBaseParSet.h"             // for FairBaseParSet
@@ -30,16 +30,15 @@
 #include "FairTask.h"                   // for FairTask
 #include "FairTrajFilter.h"             // for FairTrajFilter
 
-#include <iosfwd>                       // for ostream
-#include "TCollection.h"                // for TIter
-#include "TGeoManager.h"                // for gGeoManager
-#include "TList.h"                      // for TList
-#include "TObjString.h"                 // for TObjString
-#include "TObject.h"                    // for TObject
-#include "TROOT.h"                      // for TROOT, gROOT
-#include "TSystem.h"                    // for TSystem, gSystem
-#include "TRandom.h"                    // for gRandom
-#include <stdlib.h>                     // for getenv, NULL
+#include <TCollection.h>                // for TIter
+#include <TGeoManager.h>                // for gGeoManager
+#include <TList.h>                      // for TList
+#include <TObjString.h>                 // for TObjString
+#include <TObject.h>                    // for TObject
+#include <TSystem.h>                    // for TSystem, gSystem
+#include <TRandom.h>                    // for gRandom
+
+#include <stdlib.h>                     // for getenv, nullptr
 #include <string.h>                     // for strcmp, strncmp
 #include <iostream>                     // for cout, endl, ostream
 
@@ -47,16 +46,16 @@ using std::cout;
 using std::endl;
 
 ClassImp(FairRunSim)
-//_____________________________________________________________________________
+
 FairRunSim::FairRunSim(Bool_t isMaster)
   :FairRun(isMaster),
    count(0),
-   fApp(NULL),
+   fApp(nullptr),
    fBeamMom(0),
    fUseBeamMom(kFALSE),
-   fGen(NULL),
-   fMCEvHead(NULL),
-   fField(NULL),
+   fGen(nullptr),
+   fMCEvHead(nullptr),
+   fField(nullptr),
    fMapName(""),
    fIons(new TObjArray()),
    fParticles( new TObjArray()),
@@ -72,12 +71,11 @@ FairRunSim::FairRunSim(Bool_t isMaster)
    fRadMap(kFALSE),
    fRadGrid(kFALSE),
    fMeshList( new TObjArray() ),
-   fSimulationConfig(NULL),
+   fSimulationConfig(nullptr),
    fUserConfig(""),
    fUserCuts("SetCuts.C"),
    fIsMT(kFALSE),
    fImportTGeoToVMC(kTRUE)
-
 {
   if (fginstance) {
     Fatal("FairRun", "Singleton instance already exists.");
@@ -87,10 +85,9 @@ FairRunSim::FairRunSim(Bool_t isMaster)
   fRunId=0;
   fAna=kFALSE;
 }
-//_____________________________________________________________________________
+
 FairRunSim::~FairRunSim()
 {
-
   LOG(debug) << "Enter Destructor of FairRunSim ";
 
   // delete fApp;
@@ -115,42 +112,42 @@ FairRunSim::~FairRunSim()
   delete fGen;
   delete fMCEvHead;
 }
-//_____________________________________________________________________________
+
 FairRunSim* FairRunSim::Instance()
 {
   return fginstance;
 }
-//_____________________________________________________________________________
+
 void FairRunSim::AddModule (FairModule* Mod)
 {
   ListOfModules->Add(Mod);
   Mod->SetModId(count++);
 }
-//_____________________________________________________________________________
+
 void FairRunSim::AddMesh (FairMesh* Mesh)
 {
   Mesh->print();
   Mesh->calculate();
   fMeshList->Add(Mesh);
 }
-//_____________________________________________________________________________
+
 TObjArray* FairRunSim::GetUserDefIons()
 {
   /** return the array of user defined ions*/
   return fIons;
 }
-//_____________________________________________________________________________
+
 TObjArray* FairRunSim::GetUserDefParticles()
 {
   /** return the array of user defined particles*/
   return fParticles;
 }
-//_____________________________________________________________________________
+
 void FairRunSim::Init()
 {
   /**Initialize the simulation session*/
   fRootManager->InitSink();
-  
+
   CheckFlukaExec();
 
 //  fOutFile=fRootManager->OpenOutFile(fOutname);
@@ -246,16 +243,15 @@ void FairRunSim::Init()
   /**Set the configuration for MC engine*/
   SetMCConfig();
   fRootManager->WriteFileHeader(fFileHeader);
-
 }
-//_____________________________________________________________________________
+
 void FairRunSim::SetFieldContainer()
 {
   if (fField) {
     fField->FillParContainer();
   }
 }
-//_____________________________________________________________________________
+
 void FairRunSim::CheckFlukaExec()
 {
   /** Private method for setting FLUKA simulation*/
@@ -271,7 +267,7 @@ void FairRunSim::CheckFlukaExec()
   if(strcmp(GetName(),"TFluka") == 0 ) {
     TString flexec="run_fluka.sh";
     if (TString(gSystem->FindFile(config_dir.Data(),flexec)) != TString("")) {
-      LOG(info) << "---User path for Configuration is used: " 
+      LOG(info) << "---User path for Configuration is used: "
 		<< config_dir.Data();
     } else {
       flexec=work_config+"run_fluka.sh";
@@ -286,7 +282,7 @@ void FairRunSim::CheckFlukaExec()
     gSystem->cd(flout.Data());
   }
 }
-//_____________________________________________________________________________
+
 void FairRunSim::SetMCConfig()
 {
   // Either setup the simulation with the provided user hook
@@ -294,7 +290,7 @@ void FairRunSim::SetMCConfig()
     fSimSetup();
   }
   else {
-      if ( fSimulationConfig == NULL ) // RKRKRK COMMENT
+      if ( fSimulationConfig == nullptr ) // RKRKRK COMMENT
           fSimulationConfig = new FairGenericVMCConfig();
       fSimulationConfig->Setup(GetName());
   }
@@ -302,22 +298,21 @@ void FairRunSim::SetMCConfig()
   fApp->InitMC("foo", "bar");
 }
 
-//_____________________________________________________________________________
 void FairRunSim::Run(Int_t NEvents, Int_t)
 {
   fApp->RunMC(NEvents);
 }
-//_____________________________________________________________________________
+
 void FairRunSim::SetField(FairField* field)
 {
   fField=field;
 }
-//_____________________________________________________________________________
+
 void FairRunSim::SetGenerator(FairPrimaryGenerator* Gen)
 {
   fGen=Gen;
 }
-//_____________________________________________________________________________
+
 void FairRunSim::SetMaterials(const char* MatFileName)
 {
   TString Mat="";
@@ -334,7 +329,7 @@ void FairRunSim::SetMaterials(const char* MatFileName)
   MatFname=Mat+MatFileName;
   LOG(info) << "Media file used: " << MatFname.Data();
 }
-//_____________________________________________________________________________
+
 void FairRunSim::SetGeoModel( char* name )
 {
   if ( strncmp(fName,"TGeant3",7) == 0 ) {
@@ -346,15 +341,13 @@ void FairRunSim::SetGeoModel( char* name )
     LOG(info) << "FairRun::SetGeoModel(): Method skipped ... ";
   }
 }
-//_____________________________________________________________________________
+
 void  FairRunSim::SetPythiaDecayer(const TString& Config )
 {
   /**switch On external decayer (Pythia). Config macro will be used */
   fPythiaDecayerConfig = Config;
   fPythiaDecayer =kTRUE;
-
 }
-//_____________________________________________________________________________
 
 void  FairRunSim::SetUserDecay(const TString& Config)
 {
@@ -362,15 +355,11 @@ void  FairRunSim::SetUserDecay(const TString& Config)
   fUserDecayConfig = Config;
   fUserDecay = kTRUE;
 }
-//_____________________________________________________________________________
+
 FairMCEventHeader*  FairRunSim::GetMCEventHeader()
 {
-  if ( NULL == fMCEvHead ) { fMCEvHead = new FairMCEventHeader(); }
+  if ( nullptr == fMCEvHead ) { fMCEvHead = new FairMCEventHeader(); }
   return fMCEvHead;
 }
-//_____________________________________________________________________________
 
 TMCThreadLocal FairRunSim* FairRunSim::fginstance= 0;
-
-
-

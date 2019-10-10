@@ -15,11 +15,8 @@
 #ifndef FairRingSorter_H_
 #define FairRingSorter_H_
 
-
-#include "TObject.h"                    // for TObject
-
-#include <iosfwd>                       // for ostream
-#include "Rtypes.h"                     // for FairRingSorter::Class, etc
+#include <TObject.h>                    // for TObject
+#include <Rtypes.h>                     // for FairRingSorter::Class, etc
 
 #include <iostream>                     // for operator<<, ostream, etc
 #include <map>                          // for multimap
@@ -41,29 +38,24 @@ class FairRingSorter : public TObject
     virtual FairTimeStamp* CreateElement(FairTimeStamp* data);
 
     virtual void AddElement(FairTimeStamp* digi, double timestamp);
-    virtual void WriteOutElements(int index);       ///< writes out the entries from LowerBoundPointer up to index
-    virtual void WriteOutElement(int index);          ///< writes out the entry at the index and clears it
-    virtual void WriteOutAll() {
-      WriteOutElements(fLowerBoundPointer.first);
-    }
-    virtual double GetBufferSize() {return fCellWidth * fRingBuffer.size();}
-    virtual std::vector<FairTimeStamp*> GetOutputData() {
-      return fOutputData;
-    }
+    virtual void WriteOutElements(int index); ///< writes out the entries from LowerBoundPointer up to index
+    virtual void WriteOutElement(int index); ///< writes out the entry at the index and clears it
+    virtual void WriteOutAll() { WriteOutElements(fLowerBoundPointer.first); }
+    virtual double GetBufferSize() { return fCellWidth * fRingBuffer.size(); }
+    virtual std::vector<FairTimeStamp*> GetOutputData() { return fOutputData; }
 
     virtual void DeleteOutputData() {fOutputData.clear(); }
     virtual void SetLowerBound(double timestampOfHitToWrite);
 
     virtual void print(std::ostream& out = std::cout) {
-      out << "RingSorter: Size " << fRingBuffer.size() << " CellWidth: " << fCellWidth << std::endl;
-      out << "LowerBoundPointer at index: " << fLowerBoundPointer.first << " Time: " << fLowerBoundPointer.second << std::endl;
+      out << "RingSorter: Size " << fRingBuffer.size() << " CellWidth: " << fCellWidth << "\n";
+      out << "LowerBoundPointer at index: " << fLowerBoundPointer.first << " Time: " << fLowerBoundPointer.second << "\n";
       out << "| ";
       for (unsigned int i = 0; i < fRingBuffer.size(); i++) {
         out << fRingBuffer[i].size() << " |";
       }
       out << std::endl;
     }
-
 
   private:
     int CalcIndex(double val);
@@ -74,7 +66,6 @@ class FairRingSorter : public TObject
     int fVerbose;
 
     ClassDef(FairRingSorter,1)
-
 };
 
 #endif /* FairRingSorter_H_ */

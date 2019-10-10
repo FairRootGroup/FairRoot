@@ -10,43 +10,38 @@
 // -----                          FairRemoteSource                         -----
 // -----                    Created 12.04.2013 by D.Kresan                 -----
 // -----------------------------------------------------------------------------
-#include <unistd.h>
-#include <iostream>
-using namespace std;
+#include "FairRemoteSource.h"
+
+#include <unistd.h> // usleep
 
 #include "ptrevmbsdef.h"          // MBS data definitions
 
 #include "TSocket.h"
 
 #include "MRevBuffer.h"
-#include "FairRemoteSource.h"
-
 
 FairRemoteSource::FairRemoteSource(char* node)
   : FairMbsSource(),
     fNode(node),
-    fSocket(NULL),
+    fSocket(nullptr),
     fBuffer(new MRevBuffer(1)),
-    fREvent(NULL)
+    fREvent(nullptr)
 {
 }
-
 
 FairRemoteSource::FairRemoteSource(const FairRemoteSource& source)
   : FairMbsSource(source),
     fNode(const_cast<char*>(source.GetNode())),
-    fSocket(NULL),
+    fSocket(nullptr),
     fBuffer(new MRevBuffer(1)),
-    fREvent(NULL)
+    fREvent(nullptr)
 {
 }
-
 
 FairRemoteSource::~FairRemoteSource()
 {
   delete fBuffer;
 }
-
 
 Bool_t FairRemoteSource::Init()
 {
@@ -58,7 +53,6 @@ Bool_t FairRemoteSource::Init()
   }
   return kTRUE;
 }
-
 
 Int_t FairRemoteSource::ReadEvent(UInt_t)
 {
@@ -88,14 +82,10 @@ Int_t FairRemoteSource::ReadEvent(UInt_t)
   return 0;
 }
 
-
 void FairRemoteSource::Close()
 {
   fBuffer->RevClose(fSocket);
   fBuffer->RevStatus(0);
 }
 
-
 ClassImp(FairRemoteSource)
-
-

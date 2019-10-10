@@ -17,27 +17,33 @@
 #define __FAIRROOT__FairFileSource__
 
 #include "FairSource.h"
-#include <list>    
-#include "TChain.h"
-#include "TFile.h"
-#include "TFolder.h"
-#include "TF1.h"
+
+
+#include <TFile.h>
+#include <TString.h>
+#include <TArrayI.h>
+#include <TFolder.h>
+#include <TChain.h>
+
+#include <list>
+#include <map>
+
 class FairEventHeader;
 class FairFileHeader;
 class FairMCEventHeader;
-class TString;
-class FairLogger;
 class FairRuntimeDb;
+class TF1;
+class TTree;
 
 class FairFileSource : public FairSource
 {
-public:
+  public:
     FairFileSource(TFile *f, const char* Title="InputRootFile", UInt_t identifier=0);
     FairFileSource(const TString* RootFileName, const char* Title="InputRootFile", UInt_t identifier=0);
     FairFileSource(const TString RootFileName, const char* Title="InputRootFile", UInt_t identifier=0);
-  //  FairFileSource(const FairFileSource& file);
+    // FairFileSource(const FairFileSource& file);
     virtual ~FairFileSource();
-    
+
     Bool_t              Init();
     Int_t               ReadEvent(UInt_t i=0);
     void                Close();
@@ -111,7 +117,7 @@ public:
      */
     void                SetCheckFileLayout(Bool_t enable) {fCheckFileLayout = enable;}
 
-private:
+  private:
     /** Title of input source, could be input, background or signal*/
     TString                           fInputTitle;
     /**ROOT file*/
@@ -143,7 +149,7 @@ private:
     UInt_t                              fNoOfEntries;
     /**Initialization flag, true if initialized*/
     Bool_t                              IsInitialized;
-    
+
     FairFileSource(const FairFileSource&);
     FairFileSource operator=(const FairFileSource&);
 
@@ -190,6 +196,5 @@ private:
 
     ClassDef(FairFileSource, 3)
 };
-
 
 #endif /* defined(__FAIRROOT__FairFileSource__) */

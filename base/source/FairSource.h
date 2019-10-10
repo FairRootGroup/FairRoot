@@ -15,9 +15,8 @@
 #ifndef FAIRSOURCE_H
 #define FAIRSOURCE_H
 
-#include "TObject.h"
-
-#include <iostream>
+#include <TObject.h>
+#include <Rtypes.h>
 
 class FairEventHeader;
 
@@ -63,6 +62,5 @@ class FairSource : public TObject
   public:
     ClassDef(FairSource, 2)
 };
-
 
 #endif

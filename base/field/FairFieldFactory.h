@@ -10,17 +10,15 @@
 // -----                Created 15/01/07  by M. Al-Turany              -----
 // -------------------------------------------------------------------------
 
-
 #ifndef FAIRFIELDFACTORY_H
 #define FAIRFIELDFACTORY_H
 
-#include "Rtypes.h"                     // for FairFieldFactory::Class, etc
+#include <Rtypes.h> // for FairFieldFactory::Class, etc
 
 class FairField;
 
 class FairFieldFactory
 {
-
   public:
     static FairFieldFactory* Instance();
     FairFieldFactory();
@@ -39,16 +37,10 @@ class FairFieldFactory
     static FairFieldFactory*  fgRinstance;
 
     ClassDef(FairFieldFactory,1)
+
   private:
     FairFieldFactory(const FairFieldFactory& M);
     FairFieldFactory& operator= (const  FairFieldFactory&) {return *this;}
-
 };
+
 #endif //FAIRFIELDFACTORY_H
-
-
-
-
-
-
-

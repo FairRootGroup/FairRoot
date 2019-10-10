@@ -17,8 +17,8 @@
 
 #include "FairRingSorter.h"             // for FairRingSorter
 
-#include "Rtypes.h"                     // for Bool_t, Int_t, kTRUE, etc
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for Bool_t, Int_t, kTRUE, etc
+#include <TString.h>                    // for TString
 
 class FairTimeStamp;
 class TClonesArray;
@@ -26,7 +26,6 @@ class TClonesArray;
 class FairRingSorterTask : public FairTask
 {
   public:
-
     /** Default constructor **/
     FairRingSorterTask():
       FairTask("SorterTask"),
@@ -100,7 +99,6 @@ class FairRingSorterTask : public FairTask
     virtual FairRingSorter* InitSorter(Int_t numberOfCells, Double_t widthOfCells) const;
 
   protected:
-
     FairRingSorter* fSorter;
     /** switch to turn on/off storing the arrays to a file*/
     Bool_t fPersistance;
@@ -120,7 +118,6 @@ class FairRingSorterTask : public FairTask
     FairRingSorterTask& operator=(const FairRingSorterTask&);
 
     ClassDef(FairRingSorterTask,2);
-
 };
 
 #endif

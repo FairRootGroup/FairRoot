@@ -10,8 +10,8 @@
 
 #include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include "Rtypes.h"                     // for Double_t, Int_t, Double32_t, etc
-#include "TVector3.h"                   // for TVector3
+#include <Rtypes.h>                     // for Double_t, Int_t, Double32_t, etc
+#include <TVector3.h>                   // for TVector3
 
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
@@ -24,12 +24,9 @@
  */
 class FairHit : public FairTimeStamp
 {
-
   public:
-
     /** Default constructor **/
     FairHit();
-
 
     /** Constructor with hit parameters **/
     FairHit(Int_t detID, TVector3& pos, TVector3& dpos, Int_t index);
@@ -37,20 +34,17 @@ class FairHit : public FairTimeStamp
     /** Destructor **/
     virtual ~FairHit();
 
-
     /** Accessors **/
-    Double_t GetDx()            const { return fDx;                     };
-    Double_t GetDy()            const { return fDy;                     };
-    Double_t GetDz()            const { return fDz;                     };
-    Int_t    GetRefIndex()      const { return fRefIndex;               };
+    Double_t GetDx() const { return fDx; };
+    Double_t GetDy() const { return fDy; };
+    Double_t GetDz() const { return fDz; };
+    Int_t GetRefIndex() const { return fRefIndex; };
     void PositionError(TVector3& dpos) const;
-    Int_t    GetDetectorID()    const { return fDetectorID;             };
-    Double_t GetX()             const { return fX;                      };
-    Double_t GetY()             const { return fY;                      };
-    Double_t GetZ()             const { return fZ;                      };
-    void Position(TVector3& pos)       const;
-
-
+    Int_t GetDetectorID() const { return fDetectorID; };
+    Double_t GetX() const { return fX; };
+    Double_t GetY() const { return fY; };
+    Double_t GetZ() const { return fZ; };
+    void Position(TVector3& pos) const;
 
     /** Modifiers **/
     void SetDx(Double_t dx) { fDx = dx; }
@@ -65,7 +59,6 @@ class FairHit : public FairTimeStamp
     void SetZ(Double_t z) { fZ = z; }
     void SetXYZ(Double_t x, Double_t y, Double_t z);
     void SetPosition(const TVector3& pos);
-
 
     /*** Output to screen */
     virtual void Print(const Option_t*) const {;}
@@ -95,12 +88,10 @@ class FairHit : public FairTimeStamp
     ClassDef(FairHit,3);
 };
 
-
 inline void FairHit::PositionError(TVector3& dpos) const
 {
   dpos.SetXYZ(fDx, fDy, fDz);
 }
-
 
 inline void FairHit::SetDxyz(Double_t dx, Double_t dy, Double_t dz)
 {
@@ -108,7 +99,6 @@ inline void FairHit::SetDxyz(Double_t dx, Double_t dy, Double_t dz)
   fDy = dy;
   fDz = dz;
 }
-
 
 inline void FairHit::SetPositionError(const TVector3& dpos)
 {
@@ -122,14 +112,12 @@ inline void FairHit::Position(TVector3& pos) const
   pos.SetXYZ(fX, fY, fZ);
 }
 
-
 inline void FairHit::SetXYZ(Double_t x, Double_t y, Double_t z)
 {
   fX = x;
   fY = y;
   fZ = z;
 }
-
 
 inline void FairHit::SetPosition(const TVector3& pos)
 {

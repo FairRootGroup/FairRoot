@@ -12,11 +12,9 @@
 // -----                                                                   -----
 // -----------------------------------------------------------------------------
 
-#include <iostream>
-
 #include "FairSink.h"
-#include "FairEventHeader.h"
-
+#include <TFolder.h>
+#include <TTree.h>
 
 FairSink::FairSink()
   : fRunId(0)
@@ -24,13 +22,11 @@ FairSink::FairSink()
 {
 }
 
-
 FairSink::FairSink(const FairSink& sink)
   : fRunId(sink.fRunId)
   , fOutFolder(0)
 {
 }
-
 
 FairSink::~FairSink()
 {

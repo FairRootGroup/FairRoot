@@ -1,30 +1,25 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-// -------------------------------------------------------------------------
 // -----                        FairTask source file                   -----
 // -----          Created 12/01/04  by M. Al-Turany / D. Bertini       -----
-// -------------------------------------------------------------------------
 
 #include "FairTask.h"
 
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "FairMonitor.h"                // for FairMonitor
 
-#include "TCollection.h"                // for TIter
-#include "TList.h"                      // for TList
-#include "TObject.h"                    // for TObject
+#include <TCollection.h>                // for TIter
+#include <TList.h>                      // for TList
+#include <TObject.h>                    // for TObject
 
-#include <iostream>                     // for cout, endl
+#include <utility> // pair
+#include <cstdio> // printf
 
-using std::cout;
-using std::endl;
-
-// -----   Default constructor   -------------------------------------------
 FairTask::FairTask()
   : TTask(),
     fVerbose(0),
@@ -34,11 +29,7 @@ FairTask::FairTask()
     fOutputPersistance()
 {
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   ------------------------------------------
 FairTask::FairTask(const char* name, Int_t iVerbose)
   : TTask(name, "FairTask"),
     fVerbose(iVerbose),
@@ -46,19 +37,10 @@ FairTask::FairTask(const char* name, Int_t iVerbose)
     fLogger(FairLogger::GetLogger()),
     fOutputPersistance()
 {
-
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Destructor   ----------------------------------------------------
 FairTask::~FairTask() { }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Public method InitTask   ----------------------------------------
 void FairTask::InitTask()
 {
   FairMonitor::GetMonitor()->SetCurrentTask(this);
@@ -71,11 +53,7 @@ void FairTask::InitTask()
   FairMonitor::GetMonitor()->SetCurrentTask(0);
   InitTasks();
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Public method ReInitTask   --------------------------------------
 void FairTask::ReInitTask()
 {
   if ( ! fActive ) { return; }
@@ -86,38 +64,27 @@ void FairTask::ReInitTask()
   if ( tStat == kERROR ) { fActive = kFALSE; }
   ReInitTasks();
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Public method SetParTask   --------------------------------------
 void FairTask::SetParTask()
 {
   if ( ! fActive ) { return; }
   SetParContainers();
   SetParTasks();
 }
-// -------------------------------------------------------------------------
 
-// -----    Public method FinishEvent -------------------------------------
 void FairTask::FinishEvent()
 {
   if ( ! fActive ) { return; }
   FinishEvents();
 }
 
-// -----    Public method FinishTask   -------------------------------------
 void FairTask::FinishTask()
 {
   if ( ! fActive ) { return; }
   Finish();
   FinishTasks();
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Public method SetVerbose   --------------------------------------
 void FairTask::SetVerbose(Int_t iVerbose)
 {
   fVerbose = iVerbose;
@@ -125,21 +92,14 @@ void FairTask::SetVerbose(Int_t iVerbose)
   FairTask* task;
   while((task=dynamic_cast <FairTask*> (next()))) { task->SetVerbose(iVerbose); }
 }
-// -------------------------------------------------------------------------
 
-
-
-
-// -----   Protected method InitTasks   ------------------------------------
 void FairTask::InitTasks()
 {
   TIter next(GetListOfTasks());
   FairTask* task;
   while( ( task=dynamic_cast<FairTask*>(next()) ) ) { task->InitTask(); }
 }
-// -------------------------------------------------------------------------
 
-//______________________________________________________________________________
 void FairTask::ExecuteTask(Option_t *option)
 {
    // Execute main task and its subtasks.
@@ -179,9 +139,7 @@ void FairTask::ExecuteTask(Option_t *option)
       fgBeginTask = 0;
    }
 }
-// -------------------------------------------------------------------------
 
-//______________________________________________________________________________
 void FairTask::ExecuteTasks(Option_t *option)
 {
    // Execute all the subtasks of a task.
@@ -203,7 +161,7 @@ void FairTask::ExecuteTasks(Option_t *option)
       }
 
       if (gDebug > 1) {
-	LOG(info)<<"Execute task:"<<task->GetName()<<" : "<<task->GetTitle();
+        LOG(info)<<"Execute task:"<<task->GetName()<<" : "<<task->GetTitle();
       }
       FairMonitor::GetMonitor()->StartMonitoring(task,"EXEC");
       task->Exec(option);
@@ -212,55 +170,41 @@ void FairTask::ExecuteTasks(Option_t *option)
       task->fHasExecuted = kTRUE;
       task->ExecuteTasks(option);
       if (task->fBreakout == 1) {
-	printf("Break at exit of task: %s\n",task->GetName());
-	fgBreakPoint = this;
-	task->fBreakout++;
-	return;
+        printf("Break at exit of task: %s\n",task->GetName());
+        fgBreakPoint = this;
+        task->fBreakout++;
+        return;
       }
    }
 }
-// -------------------------------------------------------------------------
 
-
-// -----   Protected method ReInitTasks   ----------------------------------
 void FairTask::ReInitTasks()
 {
   TIter next(GetListOfTasks());
   FairTask* task;
   while( ( task=dynamic_cast<FairTask*>(next()) ) ) { task->ReInitTask(); }
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Protected method SetParTasks   ----------------------------------
 void FairTask::SetParTasks()
 {
   TIter next(GetListOfTasks());
   FairTask* task;
   while( ( task=dynamic_cast<FairTask*>(next()) ) ) { task->SetParTask(); }
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Protected method FinishTasks   ----------------------------------
 void FairTask::FinishTasks()
 {
   TIter next(GetListOfTasks());
   FairTask* task;
   while( ( task=dynamic_cast<FairTask*>(next()) ) ) { task->FinishTask(); }
 }
-// -------------------------------------------------------------------------
 
-// -----   Protected method FinishEvents   ----------------------------------
 void FairTask::FinishEvents()
 {
   TIter next(GetListOfTasks());
   FairTask* task;
   while( ( task=dynamic_cast<FairTask*>(next()) ) ) { task->FinishEvent(); }
 }
-// -------------------------------------------------------------------------
 
 void FairTask::SetOutputBranchPersistent(TString branchName, Bool_t persistence)
 {
@@ -268,7 +212,7 @@ void FairTask::SetOutputBranchPersistent(TString branchName, Bool_t persistence)
 }
 
 Bool_t FairTask::IsOutputBranchPersistent(TString branchName)
-{  
+{
   std::map<TString, Bool_t>::iterator it = fOutputPersistance.find(branchName);
   if (it != fOutputPersistance.end()) {
     return it->second;

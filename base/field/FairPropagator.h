@@ -15,16 +15,17 @@
 #ifndef FAIRPROPAGATORH
 #define FAIRPROPAGATORH
 
-#include "Rtypes.h"
-#include "TNamed.h"
-#include "TVector3.h"
+#include <Rtypes.h>
+#include <TNamed.h>
+#include <TVector3.h>
 
 class FairTrackPar;
 class FairTrackParH;
 class FairTrackParP;
 
-class FairPropagator : public TNamed {
-public:
+class FairPropagator : public TNamed
+{
+  public:
     FairPropagator();
 
     FairPropagator(const TString& name, const TString& title);

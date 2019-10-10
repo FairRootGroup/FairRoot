@@ -12,11 +12,8 @@
 // -----                                                                   -----
 // -----------------------------------------------------------------------------
 
-#include <iostream>
-
 #include "FairSource.h"
 #include "FairEventHeader.h"
-
 
 FairSource::FairSource()
   : TObject()
@@ -24,13 +21,11 @@ FairSource::FairSource()
 {
 }
 
-
 FairSource::FairSource(const FairSource& source)
   : TObject(source)
   , fRunId(source.fRunId)
 {
 }
-
 
 FairSource::~FairSource()
 {
@@ -38,8 +33,7 @@ FairSource::~FairSource()
 
 void FairSource::FillEventHeader(FairEventHeader* eh)
 {
-  if(eh)
-  {
+  if (eh) {
     eh->SetRunId(fRunId);
   }
 }

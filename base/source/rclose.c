@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /********************************************************************
@@ -17,7 +17,7 @@
  * created 23. 4.1999 by Horst Goeringer
  ********************************************************************
  */
-// IWYU pragma: no_include <secure/_stdio.h>              
+// IWYU pragma: no_include <secure/_stdio.h>
 #include <stdio.h>                      // for printf, perror
 #include <unistd.h>                     // for close
 #include <sys/socket.h>                 // for shutdown
@@ -52,7 +52,7 @@ int rclose(int *piSocket, int iMode)
          iRC = shutdown(iSocket, iMode);
          if (iRC)
          {
-            sprintf(cMsg, "-E- %s: shutdown(%d) rc = %d", 
+            sprintf(cMsg, "-E- %s: shutdown(%d) rc = %d",
                     cModule, iMode, iRC);
             perror(cMsg);
             iError = -1;
@@ -60,14 +60,14 @@ int rclose(int *piSocket, int iMode)
 /*
          else if (iDebug)
             printf("    %s: shutdown(%d) successfull\n",
-                   cModule, iMode);    
+                   cModule, iMode);
 */
       }
 
       if (iClose)
       {
          iRC = close(iSocket);
-         if (iRC)   
+         if (iRC)
          {
             sprintf(cMsg, "-E- %s: close rc = %d", cModule, iRC);
             perror(cMsg);

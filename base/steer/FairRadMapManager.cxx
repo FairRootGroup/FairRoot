@@ -14,29 +14,25 @@
 #include "FairRadMapPoint.h"            // for FairRadMapPoint
 #include "FairRootManager.h"            // for FairRootManager
 
-#include <iosfwd>                       // for ostream
-#include "TClonesArray.h"               // for TClonesArray
-#include "TGeoManager.h"                // for TGeoManager, gGeoManager
-#include "TGeoVolume.h"                 // for TGeoVolume
-#include "TLorentzVector.h"             // for TLorentzVector
-#include "TMap.h"                       // for TMap
-#include "TObjArray.h"                  // for TObjArray
-#include "TObject.h"                    // for TObject
-#include "TVector3.h"                   // for TVector3
-#include "TVectorDfwd.h"                // for TVectorD
-#include "TVectorT.h"                   // for TVectorT
-#include "TVirtualMC.h"                 // for TVirtualMC
-#include "TVirtualMCStack.h"            // for TVirtualMCStack
+#include <TClonesArray.h>               // for TClonesArray
+#include <TGeoManager.h>                // for TGeoManager, gGeoManager
+#include <TGeoVolume.h>                 // for TGeoVolume
+#include <TMap.h>                       // for TMap
+#include <TObjArray.h>                  // for TObjArray
+#include <TObject.h>                    // for TObject
+#include <TVector3.h>                   // for TVector3
+#include <TVectorDfwd.h>                // for TVectorD
+#include <TVectorT.h>                   // for TVectorT
+#include <TVirtualMC.h>                 // for TVirtualMC
+#include <TVirtualMCStack.h>            // for TVirtualMCStack
 
-#include <stdio.h>                      // for NULL, printf
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
 using namespace std;
 
-
 ClassImp(FairRadMapManager)
 
-FairRadMapManager* FairRadMapManager::fgInstance = NULL;
+FairRadMapManager* FairRadMapManager::fgInstance = nullptr;
 
 FairRadMapManager* FairRadMapManager::Instance()
 {
@@ -66,21 +62,20 @@ FairRadMapManager::FairRadMapManager()
     fAbsl(0),
     fActVol(0),
     fActMass(0),
-    fMassMap(NULL)
+    fMassMap(nullptr)
 {
   /** radiation length default ctor */
-  if(NULL == fgInstance) {
+  if(nullptr == fgInstance) {
     fgInstance = this;
     //    fPointCollection=new TClonesArray("FairRadMapPoint");
   }
 
 }
 
-
 FairRadMapManager::~FairRadMapManager()
 {
   /** radiation length default dtor */
-  fgInstance = NULL;
+  fgInstance = nullptr;
   fPointCollection->Delete();
   delete fPointCollection;
   delete fMassMap;
@@ -128,7 +123,7 @@ void FairRadMapManager::Reset()
 {
   /**We have to free the momeory, Clear() is faster but not enough! */
   fPointCollection->Delete();
-  printf(" FairRadMapManager::Reset() ------------------------------------------------\n");
+  cout << " FairRadMapManager::Reset() ------------------------------------------------\n" << endl;
 }
 
 void FairRadMapManager::AddPoint(Int_t&)
@@ -206,9 +201,5 @@ void FairRadMapManager::AddPoint(Int_t&)
                                         TVector3(fPosOut.X(),fPosOut.Y(),fPosOut.Z()),
                                         TVector3(fMomOut.X(),fMomOut.Y(),fMomOut.Z()),
                                         fA, fZmat, fDensity, fActMass, fStep, fDose, fDoseSL, fPdg);
-
   }
-
 }
-
-

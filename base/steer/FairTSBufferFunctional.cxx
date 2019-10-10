@@ -11,24 +11,21 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include "TBranch.h"                    // for TBranch
-#include "TClass.h"                     // for TClass
-#include "TClonesArray.h"               // for TClonesArray
-#include "TTree.h"                      // for TTree
-
-#include <stddef.h>                     // for NULL
+#include <TBranch.h>                    // for TBranch
+#include <TClass.h>                     // for TClass
+#include <TClonesArray.h>               // for TClonesArray
+#include <TTree.h>                      // for TTree
 
 ClassImp(FairTSBufferFunctional);
 
-
 FairTSBufferFunctional::FairTSBufferFunctional(TString branchName, TTree* sourceTree, BinaryFunctor* stopFunction, BinaryFunctor* startFunction)
   :TObject(),
-   fOutputArray(NULL),
-   fBufferArray(NULL),
-   fInputArray(NULL),
+   fOutputArray(nullptr),
+   fBufferArray(nullptr),
+   fInputArray(nullptr),
    fStartFunction(startFunction),
    fStopFunction (stopFunction),
-   fBranch(NULL),
+   fBranch(nullptr),
    fBranchIndex(-1),
    fTerminate(kFALSE),
    fVerbose(0)
@@ -46,7 +43,6 @@ FairTSBufferFunctional::FairTSBufferFunctional(TString branchName, TTree* source
 
 TClonesArray* FairTSBufferFunctional::GetData(Double_t stopParameter)
 {
-
   Double_t actualTime = 0.;
   int posBuffer = 0;
 
@@ -203,7 +199,6 @@ Int_t FairTSBufferFunctional::FindStartIndex(Double_t startParameter)
   fBranchIndex = previousBranchIndex;
   return previousIndex;
 }
-
 
 void FairTSBufferFunctional::ReadInNextFilledEntry()
 {

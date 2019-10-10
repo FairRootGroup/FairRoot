@@ -14,16 +14,13 @@
 #ifndef FAIRANASELECTOR_H
 #define FAIRANASELECTOR_H
 
-#include "TSelector.h"                  // for TSelector
-
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 
-#include "Rtypes.h"                     // for Int_t, Bool_t, etc
-#include "TSelectorList.h"              // for TSelectorList
-#include "TString.h"                    // for TString
-#include "TTree.h"                      // for TTree
-
-#include <stddef.h>                     // for NULL
+#include <TSelector.h>                  // for TSelector
+#include <Rtypes.h>                     // for Int_t, Bool_t, etc
+#include <TSelectorList.h>              // for TSelectorList
+#include <TString.h>                    // for TString
+#include <TTree.h>                      // for TTree
 
 class FairFileSource;
 class FairRunAnaProof;
@@ -32,17 +29,16 @@ class TFile;
 class TList;
 class TObject;
 class TProofOutputFile;
-class TString;
 
 class FairAnaSelector : public TSelector
 {
-  public :
+  public:
     TProofOutputFile*     fProofFile;
     TFile*                fFile;
     TTree*                fChain;   //!pointer to the analyzed TTree or TChain
     FairRunAnaProof*      fRunAna;
 
-    FairAnaSelector(TTree* /*tree*/ =0) : fProofFile(0), fFile(0), fChain(0), fRunAna(NULL), fProofSource(0), fCurrentDirectory("") { }
+    FairAnaSelector(TTree* /*tree*/ =0) : fProofFile(0), fFile(0), fChain(0), fRunAna(nullptr), fProofSource(0), fCurrentDirectory("") { }
 
     virtual ~FairAnaSelector() { }
     virtual Int_t   Version() const {
@@ -76,7 +72,6 @@ class FairAnaSelector : public TSelector
     }
 
   private:
-
     FairAnaSelector(const FairAnaSelector&);
     FairAnaSelector operator=(const FairAnaSelector&);
 

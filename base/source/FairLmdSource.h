@@ -21,13 +21,12 @@ extern "C"
 #include "s_bufhe_swap.h"
 }
 
-#include "TString.h"
+#include <TString.h>
+#include <Rtypes.h>
 
 #include "FairMbsSource.h"
 
-
 class TList;
-
 
 class FairLmdSource : public FairMbsSource
 {
@@ -49,20 +48,19 @@ class FairLmdSource : public FairMbsSource
     Bool_t OpenNextFile(TString fileName);
 
     Int_t fCurrentFile;
-	Int_t fNEvent;
-	Int_t fCurrentEvent;
+    Int_t fNEvent;
+    Int_t fCurrentEvent;
     TList* fFileNames;
     s_evt_channel* fxInputChannel;
     s_ve10_1* fxEvent;
     s_bufhe* fxBuffer;
     Int_t* fxEventData;
     s_ves10_1* fxSubEvent;
-	s_filhe* fxInfoHeader;
+    s_filhe* fxInfoHeader;
 
     FairLmdSource& operator=(const FairLmdSource&);
 
     ClassDef(FairLmdSource, 0)
 };
-
 
 #endif

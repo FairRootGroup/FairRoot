@@ -41,7 +41,7 @@ set(sources
   sim/FairBaseContFact.cxx
   sim/FairBaseParSet.cxx
   sim/FairDetector.cxx
-  # sim/FairDoubleHit.cxx # TODO: should this be added?
+  # sim/FairDoubleHit.cxx
   sim/FairGeaneApplication.cxx
   sim/FairGenerator.cxx
   sim/FairGenericStack.cxx
@@ -121,7 +121,7 @@ set(headers
   sim/FairBaseContFact.h
   sim/FairBaseParSet.h
   sim/FairDetector.h
-  sim/FairDoubleHit.h
+  # sim/FairDoubleHit.h
   sim/FairGeaneApplication.h
   sim/FairGenerator.h
   sim/FairGenericStack.h
@@ -197,19 +197,20 @@ target_link_libraries(${target} PUBLIC
   Boost::serialization
   $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
 
-  Proof
-  GeomPainter
-  Geom
-  VMC
-  EG
-  MathCore
-  Physics
-  Matrix
-  Tree
-  Hist
-  RIO
-  RHTTP
+  RHTTP # THttpServer
   Core
+  EG
+  Geom
+  GeomPainter # TGeoTrack
+  Hist
+  MathCore
+  Matrix
+  Net # TSocket
+  Physics
+  Proof
+  RIO
+  Tree
+  VMC
   $<$<BOOL:${ROOT_GDML_FOUND}>:Gdml>
 )
 

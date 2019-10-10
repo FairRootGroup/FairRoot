@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -20,7 +20,6 @@
 #include <iostream>                     // for operator<<, ostream, cout, etc
 #include <iterator>                     // for reverse_iterator
 
-//_____________________________________________________________________________
 FairWriteoutBuffer::FairWriteoutBuffer(TString branchName, TString className, TString folderName, Bool_t persistance)
   : TObject(),
     fStartTime_map(),
@@ -39,7 +38,6 @@ FairWriteoutBuffer::FairWriteoutBuffer(TString branchName, TString className, TS
     fTreeSave = true;
   }
 }
-//_____________________________________________________________________________
 
 void FairWriteoutBuffer::WriteOutData(double time)
 {
@@ -70,7 +68,6 @@ void FairWriteoutBuffer::WriteOutData(double time)
   }
 
 }
-//_____________________________________________________________________________
 
 void FairWriteoutBuffer::WriteOutDataDeadTimeMap(double time)
 {
@@ -103,7 +100,6 @@ void FairWriteoutBuffer::WriteOutDataDeadTimeMap(double time)
     ioman->GetTClonesArray(fBranchName);
   }
 }
-//_____________________________________________________________________________
 
 void FairWriteoutBuffer::WriteOutAllData()
 {
@@ -124,7 +120,6 @@ void FairWriteoutBuffer::WriteOutAllData()
     WriteOutData(ultimateTime);
   }
 }
-//_____________________________________________________________________________
 
 std::vector<FairTimeStamp*> FairWriteoutBuffer::GetRemoveOldData(double time)
 {
@@ -140,7 +135,6 @@ std::vector<FairTimeStamp*> FairWriteoutBuffer::GetRemoveOldData(double time)
   fDeadTime_map.erase(fDeadTime_map.begin(), fDeadTime_map.lower_bound(time));
   return result;
 }
-//_____________________________________________________________________________
 
 std::vector<FairTimeStamp*> FairWriteoutBuffer::GetAllData()
 {
@@ -163,7 +157,6 @@ void FairWriteoutBuffer::FillNewData(FairTimeStamp* data, double startTime, doub
   }
 
 }
-//_____________________________________________________________________________
 
 void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activeTime, double startTime)
 {
@@ -205,19 +198,19 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
       }
 
       if (dataFound == true) {
-	if (timeOfOldData > startTime) {                                     //if older active data can interference with the new data call modify function
-	  std::vector<std::pair<double, FairTimeStamp*> > modifiedData = Modify(std::pair<double, FairTimeStamp*>(currentdeadtime, oldData), std::pair<double, FairTimeStamp*>(activeTime, data));
-	  for (unsigned int i = 0; i < modifiedData.size(); i++) {
-	    FillDataToDeadTimeMap(modifiedData[i].second, modifiedData[i].first,0);//startTime  = 0 since the Maps are already empty and the startTime therefore doesn't matter anymore
-	    if (fVerbose > 1) {
-	      std::cout << i << " :Modified Data: " << modifiedData[i].first << " : " << modifiedData[i].second << std::endl;
-	    }
-	  }
-	} else {                           //no interference can happen between old hit and new hit
-	  AddNewDataToTClonesArray(oldData);    //therefore the old hit is written out
-	  fDeadTime_map.insert(std::pair<double, FairTimeStamp*>(activeTime, data));      //and the new hit is stored
-	  FillDataMap(data, activeTime);
-	}
+        if (timeOfOldData > startTime) {                                     //if older active data can interference with the new data call modify function
+          std::vector<std::pair<double, FairTimeStamp*> > modifiedData = Modify(std::pair<double, FairTimeStamp*>(currentdeadtime, oldData), std::pair<double, FairTimeStamp*>(activeTime, data));
+          for (unsigned int i = 0; i < modifiedData.size(); i++) {
+            FillDataToDeadTimeMap(modifiedData[i].second, modifiedData[i].first,0);//startTime  = 0 since the Maps are already empty and the startTime therefore doesn't matter anymore
+            if (fVerbose > 1) {
+              std::cout << i << " :Modified Data: " << modifiedData[i].first << " : " << modifiedData[i].second << std::endl;
+            }
+          }
+        } else {                           //no interference can happen between old hit and new hit
+          AddNewDataToTClonesArray(oldData);    //therefore the old hit is written out
+          fDeadTime_map.insert(std::pair<double, FairTimeStamp*>(activeTime, data));      //and the new hit is stored
+          FillDataMap(data, activeTime);
+        }
       } else {
         std::cout << "-E- FairWriteoutBuffer::FillDataToDeadTimeMap: old data present in dataMap but not in deadTimeMap!" << std::endl;
       }
@@ -236,7 +229,6 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
     delete data;
   }
 }
-//_____________________________________________________________________________
 
 void FairWriteoutBuffer::MoveDataFromStartTimeMapToDeadTimeMap(double time)
 {
@@ -250,7 +242,6 @@ void FairWriteoutBuffer::MoveDataFromStartTimeMapToDeadTimeMap(double time)
   }
   fStartTime_map.erase(fStartTime_map.begin(), stopTime);
 }
-//_____________________________________________________________________________
 
 void FairWriteoutBuffer::PrintStartTimeMap()
 {
@@ -262,7 +253,7 @@ void FairWriteoutBuffer::PrintStartTimeMap()
   }
   std::cout << " |" << std::endl;
 }
-//_____________________________________________________________________________
+
 void FairWriteoutBuffer::PrintDeadTimeMap()
 {
   typedef  std::multimap<double, FairTimeStamp*>::iterator DTMapIter;
@@ -274,7 +265,5 @@ void FairWriteoutBuffer::PrintDeadTimeMap()
   }
   std::cout << std::endl;
 }
-//_____________________________________________________________________________
-
 
 ClassImp(FairWriteoutBuffer);

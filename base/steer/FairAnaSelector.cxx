@@ -13,26 +13,24 @@
 
 #include "FairAnaSelector.h"
 
-#include "FairRootFileSink.h"               // for FairRootFileSink
 #include "FairFileSource.h"             // for FairFileSource
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "FairParAsciiFileIo.h"         // for FairParAsciiFileIo
 #include "FairParRootFileIo.h"          // for FairParRootFileIo
+#include "FairRootFileSink.h"           // for FairRootFileSink
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairRunAnaProof.h"            // for FairRunAnaProof
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairTask.h"                   // for FairTask
 
-#include <iosfwd>                       // for ostream
-#include "TFile.h"                      // for TFile
-#include "TList.h"                      // for TList
-#include "TNamed.h"                     // for TNamed
-#include "TObject.h"                    // for TObject
-#include "TProofOutputFile.h"           // for TProofOutputFile
-#include "TProofServ.h"                 // for TProofServ
-#include "TSystem.h"                    // for TSystem, gSystem
+#include <TFile.h>                      // for TFile
+#include <TList.h>                      // for TList
+#include <TNamed.h>                     // for TNamed
+#include <TObject.h>                    // for TObject
+#include <TProofOutputFile.h>           // for TProofOutputFile
+#include <TProofServ.h>                 // for TProofServ
+#include <TSystem.h>                    // for TSystem, gSystem
 
-//_____________________________________________________________________________
 void FairAnaSelector::Init(TTree* tree)
 {
   // The Init() function is called when the selector needs to initialize
@@ -108,8 +106,7 @@ void FairAnaSelector::Init(TTree* tree)
       //      outputFileName = outputFileName(outputFileName.Last('/')+1,outputFileName.Length());
       fProofFile = new TProofOutputFile(outputFileName.Data());
       if (!(fFile = fProofFile->OpenFile("RECREATE"))) {
-	Warning("SlaveBegin", "problems opening file: %s/%s",
-		fProofFile->GetDir(), fProofFile->GetFileName());
+        Warning("SlaveBegin", "problems opening file: %s/%s", fProofFile->GetDir(), fProofFile->GetFileName());
       }
     }
 
@@ -167,9 +164,7 @@ void FairAnaSelector::Init(TTree* tree)
   }
 
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 Bool_t FairAnaSelector::Notify()
 {
   // The Notify() function is called when a new file is opened. This
@@ -181,9 +176,7 @@ Bool_t FairAnaSelector::Notify()
 
   return kTRUE;
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairAnaSelector::Begin(TTree* /*tree*/)
 {
   // The Begin() function is called at the start of the query.
@@ -204,9 +197,7 @@ void FairAnaSelector::Begin(TTree* /*tree*/)
   gSystem->cd(outputDir.Data());
 
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairAnaSelector::SlaveBegin(TTree* tree)
 {
   // The SlaveBegin() function is called after the Begin() function.
@@ -219,9 +210,7 @@ void FairAnaSelector::SlaveBegin(TTree* tree)
 
   LOG(info) << "FairAnaSelector::SlaveBegin(): finishing";
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 Bool_t FairAnaSelector::Process(Long64_t entry)
 {
   // The Process() function is called for each entry in the tree (or possibly
@@ -248,9 +237,7 @@ Bool_t FairAnaSelector::Process(Long64_t entry)
   //  LOG(info) << "FairAnaSelector::Process(): Event " << entry << " analyzed.";
   return kTRUE;
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairAnaSelector::SlaveTerminate()
 {
   // The SlaveTerminate() function is called after all entries or objects
@@ -291,9 +278,7 @@ void FairAnaSelector::SlaveTerminate()
   }
   LOG(info) << "FairAnaSelector::SlaveTerminate(): Finishing...";
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairAnaSelector::Terminate()
 {
   // The Terminate() function is the last function to be called during
@@ -303,4 +288,3 @@ void FairAnaSelector::Terminate()
   gSystem->cd(fCurrentDirectory.Data());
   LOG(info) << "FairAnaSelector::Terminate(): -------------";
 }
-//_____________________________________________________________________________

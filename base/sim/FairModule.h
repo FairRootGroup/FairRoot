@@ -8,8 +8,6 @@
 #ifndef FAIRMODULE_H
 #define FAIRMODULE_H
 
-#include "TNamed.h"                     // for TNamed
-
 #include "FairGeoInterface.h"           // for FairGeoInterface
 #include "FairGeoLoader.h"              // for FairGeoLoader
 #include "FairGeoNode.h"                // for FairGeoNode
@@ -18,12 +16,12 @@
 #include "FairRun.h"                    // for FairRun
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 
-#include "Rtypes.h"                     // for Bool_t, Int_t, etc
-#include "TList.h"                      // for TList (ptr only), TListIter
-#include "TObjArray.h"                  // for TObjArray
-#include "TString.h"                    // for TString, operator!=
+#include <TNamed.h>                     // for TNamed
+#include <Rtypes.h>                     // for Bool_t, Int_t, etc
+#include <TList.h>                      // for TList (ptr only), TListIter
+#include <TObjArray.h>                  // for TObjArray
+#include <TString.h>                    // for TString, operator!=
 
-#include <stddef.h>                     // for NULL
 #include <string>                       // for string
 
 class FairVolumeList;
@@ -32,7 +30,6 @@ class TArrayI;
 class TGeoMatrix;
 class TGeoNode;
 class TGeoVolume;
-class TGeoMedium;
 class TRefArray;
 class TVirtualMC;
 
@@ -69,7 +66,7 @@ class FairModule:  public TNamed
     /**method called from the MC application to set optical geometry properties*/
     virtual void        ConstructOpGeometry();
     /**construct geometry from root files (TGeo)*/
-    virtual void        ConstructRootGeometry(TGeoMatrix* shiftM=NULL);
+    virtual void        ConstructRootGeometry(TGeoMatrix* shiftM=nullptr);
     /**construct geometry from standard ASSCII files (Hades Format)*/
     virtual void        ConstructASCIIGeometry();
     /** Modify the geometry for the simulation run using methods of the Root geometry package */
@@ -92,7 +89,7 @@ class FairModule:  public TNamed
 
     /**template function to construct geometry. to be used in derived classes.*/
     template<class T, class U>
-    void ConstructASCIIGeometry(T* dataType1, TString containerName="", U* datatype2 = NULL);
+    void ConstructASCIIGeometry(T* dataType1, TString containerName="", U* datatype2 = nullptr);
 
     /**Set the sensitivity flag for volumes, called from ConstructASCIIRootGeometry(), and has to be implimented for detectors
      * which use ConstructASCIIRootGeometry() to build the geometry */
@@ -190,8 +187,8 @@ void FairModule::ConstructASCIIGeometry(T* dataType1, TString containerName, U*)
     TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
     TListIter iter(volList);
-    FairGeoNode* node   = NULL;
-    FairGeoVolume* aVol=NULL;
+    FairGeoNode* node   = nullptr;
+    FairGeoVolume* aVol=nullptr;
 
     while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
       aVol = dynamic_cast<FairGeoVolume*> ( node );

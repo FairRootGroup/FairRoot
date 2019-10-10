@@ -10,10 +10,8 @@
 
 #include "FairMultiLinkedData_Interface.h"        // for FairMultiLinkedData
 
-#include "FairLink.h"                   // for FairLink
-
 #include <iosfwd>                       // for ostream
-#include "Rtypes.h"                     // for Double_t, etc
+#include <Rtypes.h>                     // for Double_t, etc
 
 #include <iostream>                     // for ostream, cout
 
@@ -93,8 +91,7 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
 };
 
 // -----   Default constructor   -------------------------------------------
-inline
-FairTimeStamp::FairTimeStamp()
+inline FairTimeStamp::FairTimeStamp()
   : FairMultiLinkedData_Interface(),
     fTimeStamp(-1),
     fTimeStampError(-1)
@@ -102,16 +99,14 @@ FairTimeStamp::FairTimeStamp()
 }
 
 // -----   Standard constructor   ------------------------------------------
-inline
-FairTimeStamp::FairTimeStamp(Double_t time)
+inline FairTimeStamp::FairTimeStamp(Double_t time)
   : FairMultiLinkedData_Interface(),
     fTimeStamp(time),
     fTimeStampError(-1)
 {
 }
 
-inline
-FairTimeStamp::FairTimeStamp(Double_t time, Double_t timeerror)
+inline FairTimeStamp::FairTimeStamp(Double_t time, Double_t timeerror)
   : FairMultiLinkedData_Interface(),
     fTimeStamp(time),
     fTimeStampError(timeerror)

@@ -31,26 +31,12 @@
 #include "FairEventBuilder.h"
 
 #include "FairRootManager.h"
-#include "FairRunAna.h"
-#include "FairRuntimeDb.h"
+#include "FairTimeStamp.h"
 
-#include "TClonesArray.h"
+#include <TClonesArray.h>
 
-#include <iomanip>
+#include <iostream>
 
-using std::cout;
-using std::cerr;
-using std::endl;
-using std::flush;
-using std::fixed;
-using std::right;
-using std::left;
-using std::setw;
-using std::setprecision;
-using std::set;
-using std::map;
-
-// -----   Default constructor   ------------------------------------------
 FairEventBuilder::FairEventBuilder()
   : FairWriteoutBuffer(),
     fBuilderName                (""),
@@ -60,10 +46,7 @@ FairEventBuilder::FairEventBuilder()
     fMaxAllowedEventCreationTime(0.)
 {
 }
-// -------------------------------------------------------------------------
 
-
-// -----   Constructor with name   -----------------------------------------
 FairEventBuilder::FairEventBuilder(TString branchName, TString className, TString folderName, Bool_t persistance)
   : FairWriteoutBuffer(branchName,className,folderName,persistance),
     fBuilderName                (""),
@@ -73,19 +56,14 @@ FairEventBuilder::FairEventBuilder(TString branchName, TString className, TStrin
     fMaxAllowedEventCreationTime(0.)
 {
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Destructor   ----------------------------------------------------
 FairEventBuilder::~FairEventBuilder()
 {
 }
-// -------------------------------------------------------------------------
 
 void FairEventBuilder::WriteOutAllDeadTimeData()
 {
-  if ( fBranchName.Length() < 1 ) {
+  if (fBranchName.Length() < 1) {
     return;
   }
 
@@ -118,16 +96,12 @@ void FairEventBuilder::WriteOutAllDeadTimeData()
     ioman->GetTClonesArray(fBranchName);
   }
 }
-//_____________________________________________________________________________
 
-// -----   Public method Finish   ------------------------------------------
 void FairEventBuilder::Finish()
 {
-
-  cout << "-------------------- " << GetBuilderName() << " : Summary -----------------------" << endl;
-  cout << " Should be implemented by the user" << endl;
-  cout << "---------------------------------------------------------------------" << endl;
+  std::cout << "-------------------- " << GetBuilderName() << " : Summary -----------------------" << std::endl;
+  std::cout << " Should be implemented by the user" << std::endl;
+  std::cout << "---------------------------------------------------------------------" << std::endl;
 }
-// -------------------------------------------------------------------------
 
 ClassImp(FairEventBuilder)

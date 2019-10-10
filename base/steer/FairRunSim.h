@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRRUNSIM_H
@@ -14,10 +14,11 @@
 #include "FairMCApplication.h"          // for FairMCApplication
 #include "FairParticle.h"               // for FairParticle
 
-#include "Rtypes.h"                     // for Bool_t, Double_t, Int_t, etc
-#include "TObjArray.h"                  // for TObjArray
-#include "TString.h"                    // for TString
-#include "TMCtls.h"                     // for multi-threading
+#include <Rtypes.h>                     // for Bool_t, Double_t, Int_t, etc
+#include <TObjArray.h>                  // for TObjArray
+#include <TString.h>                    // for TString
+#include <TMCtls.h>                     // for multi-threading
+
 #include <functional>
 
 class FairField;
@@ -171,14 +172,13 @@ class FairRunSim : public FairRun
     Bool_t IsImportTGeoToVMC() const { return fImportTGeoToVMC; }
 
     void StopMCRun() { fApp->StopMCRun(); }
-
- private:
+  private:
     FairRunSim(const FairRunSim& M);
     FairRunSim& operator= (const  FairRunSim&) {return *this;}
     void SetMCConfig();
     void CheckFlukaExec();
-  protected:
 
+  protected:
     Int_t                  count;//!                               /** Internal counter*/
     FairMCApplication*     fApp;  //!                              /** Main VMC application */
     Double_t               fBeamMom; //!                           /** Beam Energy in GeV/c  */
@@ -209,14 +209,8 @@ class FairRunSim : public FairRun
     std::function<void()>  fSimSetup; //!                          /** A user provided function to do sim setup / instead of using macros **/
     bool                   fUseSimSetupFunction = false;
     FairGenericVMCConfig*  fSimulationConfig;  //!                 /** Simulation configuration */
-    
-    ClassDef(FairRunSim ,2)
 
+    ClassDef(FairRunSim ,2)
 };
 
 #endif //FAIRRUNSIM_H
-
-
-
-
-

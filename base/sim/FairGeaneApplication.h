@@ -15,8 +15,8 @@
 
 #include "TVirtualMCApplication.h"      // for TVirtualMCApplication
 
-#include "Rtypes.h"                     // for Bool_t, etc
-#include "TLorentzVector.h"             // for TLorentzVector
+#include <Rtypes.h>                     // for Bool_t, etc
+#include <TLorentzVector.h>             // for TLorentzVector
 
 class FairField;
 
@@ -38,16 +38,16 @@ class FairGeaneApplication : public TVirtualMCApplication
     /** default destructor */
     virtual ~FairGeaneApplication();
     /** Return Field used in simulation*/
-    FairField*             GetField() {return fxField;}
+    FairField* GetField() {return fxField;}
     /** Initialize MC engine */
-    void                  InitMC(const char* setup,  const char* cuts);
+    void InitMC(const char* setup,  const char* cuts);
     /**
     * Set the magnetic field for simulation or Geane
     * @param field: magnetic field
     */
-    void                   SetField(FairField* field);
+    void SetField(FairField* field);
     /** Define action at each step, dispatch the action to the corresponding detectors */
-    void          GeaneStepping();                           // MC Application
+    void GeaneStepping();                           // MC Application
     void ConstructGeometry();
     /** Singelton instance
      */
@@ -70,11 +70,11 @@ class FairGeaneApplication : public TVirtualMCApplication
   private:
     // data members
     /**Magnetic Field Pointer*/
-    FairField*            fxField; //
+    FairField* fxField; //
     /**MC Engine 1= Geant3, 2 = Geant4*/
-    Int_t                fMcVersion;     // mc Version
+    Int_t fMcVersion;     // mc Version
     /** Debug flag*/
-    Bool_t               fDebug;//!
+    Bool_t fDebug;//!
     TLorentzVector fTrkPos; //!
 
     ClassDef(FairGeaneApplication,1)  //Interface to MonteCarlo application
@@ -86,6 +86,8 @@ class FairGeaneApplication : public TVirtualMCApplication
 // inline functions
 
 inline FairGeaneApplication* FairGeaneApplication::Instance()
-{ return static_cast<FairGeaneApplication*>(TVirtualMCApplication::Instance());}
+{
+  return static_cast<FairGeaneApplication*>(TVirtualMCApplication::Instance());
+}
 
 #endif

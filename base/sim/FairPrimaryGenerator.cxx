@@ -14,15 +14,12 @@
 #include "FairMCEventHeader.h" // for FairMCEventHeader
 
 #include "TDatabasePDG.h" // for TDatabasePDG
-#include "TF1.h"          // for TF1
 #include "TIterator.h"    // for TIterator
 #include "TMath.h"        // for Sqrt
 #include "TObject.h"      // for TObject
 #include "TParticlePDG.h" // for TParticlePDG
 #include "TRandom.h"      // for TRandom, gRandom
-#include "TString.h"      // for TString
 
-#include <stddef.h> // for NULL
 #include <iostream> // for operator<<, basic_ostream, etc
 
 using std::cout;
@@ -31,7 +28,6 @@ using std::endl;
 
 Int_t FairPrimaryGenerator::fTotPrim = 0;
 
-// -----   Default constructor   -------------------------------------------
 FairPrimaryGenerator::FairPrimaryGenerator()
     : TNamed(), fBeamX0(0.), fBeamY0(0.), fBeamSigmaX(0.), fBeamSigmaY(0.),
       fBeamAngleX0(0.), fBeamAngleY0(0.), fBeamAngleX(0.), fBeamAngleY(0.),
@@ -41,14 +37,12 @@ FairPrimaryGenerator::FairPrimaryGenerator()
       fVertex(TVector3(0., 0., 0.)), fNTracks(0), fSmearVertexZ(kFALSE),
       fSmearGausVertexZ(kFALSE), fSmearVertexXY(kFALSE),
       fSmearGausVertexXY(kFALSE), fBeamAngle(kFALSE), fEventPlane(kFALSE),
-      fStack(NULL), fGenList(new TObjArray()),
-      fListIter(fGenList->MakeIterator()), fEvent(NULL), fdoTracking(kTRUE),
+      fStack(nullptr), fGenList(new TObjArray()),
+      fListIter(fGenList->MakeIterator()), fEvent(nullptr), fdoTracking(kTRUE),
       fMCIndexOffset(0), fEventNr(0) {
   fTargetZ[0] = 0.;
 }
-// -------------------------------------------------------------------------
 
-// -----   Constructor with title and name   -------------------------------
 FairPrimaryGenerator::FairPrimaryGenerator(const char *name, const char *title)
     : TNamed(name, title), fBeamX0(0), fBeamY0(0), fBeamSigmaX(0),
       fBeamSigmaY(0), fBeamAngleX0(0), fBeamAngleY0(0), fBeamAngleX(0),
@@ -58,13 +52,12 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char *name, const char *title)
       fVertex(TVector3(0., 0., 0.)), fNTracks(0), fSmearVertexZ(kFALSE),
       fSmearGausVertexZ(kFALSE), fSmearVertexXY(kFALSE),
       fSmearGausVertexXY(kFALSE), fBeamAngle(kFALSE), fEventPlane(kFALSE),
-      fStack(NULL), fGenList(new TObjArray()),
-      fListIter(fGenList->MakeIterator()), fEvent(NULL), fdoTracking(kTRUE),
+      fStack(nullptr), fGenList(new TObjArray()),
+      fListIter(fGenList->MakeIterator()), fEvent(nullptr), fdoTracking(kTRUE),
       fMCIndexOffset(0), fEventNr(0) {
   fTargetZ[0] = 0.;
 }
 
-// -----   Copy constructor   ----------------------------------------------
 FairPrimaryGenerator::FairPrimaryGenerator(const FairPrimaryGenerator &rhs)
     : TNamed(rhs), fBeamX0(rhs.fBeamX0), fBeamY0(rhs.fBeamY0),
       fBeamSigmaX(rhs.fBeamSigmaX), fBeamSigmaY(rhs.fBeamSigmaY),
@@ -78,13 +71,12 @@ FairPrimaryGenerator::FairPrimaryGenerator(const FairPrimaryGenerator &rhs)
       fSmearVertexZ(rhs.fSmearVertexZ), fSmearGausVertexZ(rhs.fSmearGausVertexZ),
       fSmearVertexXY(rhs.fSmearVertexXY), fSmearGausVertexXY(rhs.fSmearGausVertexXY),
       fBeamAngle(rhs.fBeamAngle), fEventPlane(rhs.fEventPlane),
-      fStack(NULL), fGenList(new TObjArray()),
-      fListIter(fGenList->MakeIterator()), fEvent(NULL), fdoTracking(rhs.fdoTracking),
+      fStack(nullptr), fGenList(new TObjArray()),
+      fListIter(fGenList->MakeIterator()), fEvent(nullptr), fdoTracking(rhs.fdoTracking),
       fMCIndexOffset(rhs.fMCIndexOffset), fEventNr(rhs.fEventNr) {
   fTargetZ[0] = rhs.fTargetZ[0];
 }
 
-// -------------------------------------------------------------------------
 Bool_t FairPrimaryGenerator::Init() {
   /** Initialize list of generators*/
   for (Int_t i = 0; i < fGenList->GetEntries(); i++) {
@@ -96,7 +88,6 @@ Bool_t FairPrimaryGenerator::Init() {
   return kTRUE;
 }
 
-// -----   Destructor   ----------------------------------------------------
 FairPrimaryGenerator::~FairPrimaryGenerator() {
 
   delete[] fTargetZ;
@@ -105,9 +96,7 @@ FairPrimaryGenerator::~FairPrimaryGenerator() {
   delete fListIter;
 
 }
-// -------------------------------------------------------------------------
 
-// -----   Assignment operator   -------------------------------------------
 FairPrimaryGenerator& FairPrimaryGenerator::operator=(const FairPrimaryGenerator& rhs)
 {
   // check assignment to self
@@ -142,10 +131,10 @@ FairPrimaryGenerator& FairPrimaryGenerator::operator=(const FairPrimaryGenerator
     fSmearGausVertexXY = rhs.fSmearGausVertexXY;
     fBeamAngle = rhs.fBeamAngle;
     fEventPlane = rhs.fEventPlane;
-    fStack = NULL;
+    fStack = nullptr;
     fGenList =new TObjArray();
     fListIter = fGenList->MakeIterator();
-    fEvent = NULL;
+    fEvent = nullptr;
     fdoTracking = rhs.fdoTracking;
     fMCIndexOffset = rhs.fMCIndexOffset;
     fEventNr = rhs.fEventNr;
@@ -153,17 +142,14 @@ FairPrimaryGenerator& FairPrimaryGenerator::operator=(const FairPrimaryGenerator
   }
 
   return *this;
-
 }
 
-// -----   Public method GenerateEvent   -----------------------------------
 Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack *pStack) {
   // Check for MCEventHeader
   if (!fEvent) {
     LOG(fatal) << "No MCEventHeader branch!";
     return kFALSE;
   } else {
-
     // Initialise
     fStack = pStack;
     fNTracks = 0;
@@ -226,16 +212,13 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack *pStack) {
     return kTRUE;
   }
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method AddTrack   ----------------------------------------
 void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px_raw,
                                     Double_t py_raw, Double_t pz_raw,
                                     Double_t vx, Double_t vy, Double_t vz,
                                     Int_t parent, Bool_t wanttracking,
                                     Double_t e, Double_t tof,
                                     Double_t weight, TMCProcess proc) {
-
   // ---> Add event vertex to track vertex
   vx += fVertex.X();
   vy += fVertex.Y();
@@ -319,9 +302,7 @@ void FairPrimaryGenerator::AddTrack(Int_t pdgid, Double_t px_raw,
                     weight, status, parent);
   fNTracks++;
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method ClonePrimaryGenerator   ---------------------------
 FairPrimaryGenerator* FairPrimaryGenerator::ClonePrimaryGenerator() const
 {
   FairPrimaryGenerator* newPrimaryGenerator = new FairPrimaryGenerator(*this);
@@ -337,7 +318,6 @@ FairPrimaryGenerator* FairPrimaryGenerator::ClonePrimaryGenerator() const
   return newPrimaryGenerator;
 }
 
-// -----   Public method SetBeam   -----------------------------------------
 void FairPrimaryGenerator::SetBeam(Double_t x0, Double_t y0, Double_t sigmaX,
                                    Double_t sigmaY) {
   fBeamX0 = x0;
@@ -345,9 +325,7 @@ void FairPrimaryGenerator::SetBeam(Double_t x0, Double_t y0, Double_t sigmaX,
   fBeamSigmaX = sigmaX;
   fBeamSigmaY = sigmaY;
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method SetBeamAngle   -------------------------------------
 void FairPrimaryGenerator::SetBeamAngle(Double_t beamAngleX0,
                                         Double_t beamAngleY0,
                                         Double_t beamAngleSigmaX,
@@ -358,25 +336,19 @@ void FairPrimaryGenerator::SetBeamAngle(Double_t beamAngleX0,
   fBeamAngleSigmaY = beamAngleSigmaY;
   fBeamAngle = kTRUE;
 }
-// ------------------------------------------------------------------------
 
-// -----   Public method SetEventPlane   ----------------------------------
 void FairPrimaryGenerator::SetEventPlane(Double_t phiMin, Double_t phiMax) {
   fPhiMin = phiMin;
   fPhiMax = phiMax;
   fEventPlane = kTRUE;
 }
-// ------------------------------------------------------------------------
 
-// -----   Public method SetTarget   ---------------------------------------
 void FairPrimaryGenerator::SetTarget(Double_t z, Double_t dz) {
 
   fTargetZ[0] = z;
   fTargetDz = dz;
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method SetMultTarget   -----------------------------------
 void FairPrimaryGenerator::SetMultTarget(Int_t nroftargets, Double_t *targetpos,
                                          Double_t dz) {
 
@@ -390,9 +362,7 @@ void FairPrimaryGenerator::SetMultTarget(Int_t nroftargets, Double_t *targetpos,
   }
   fTargetDz = dz;
 }
-// -------------------------------------------------------------------------
 
-// -----   Private method MakeVertex   -------------------------------------
 void FairPrimaryGenerator::MakeVertex() {
   Double_t vx = fBeamX0;
   Double_t vy = fBeamY0;
@@ -431,9 +401,7 @@ void FairPrimaryGenerator::MakeVertex() {
 
   fVertex = TVector3(vx, vy, vz);
 }
-// -------------------------------------------------------------------------
 
-// -----   Private method MakeBeamAngle   -------------------------------
 void FairPrimaryGenerator::MakeBeamAngle() {
   fBeamAngleX = gRandom->Gaus(fBeamAngleX0, fBeamAngleSigmaX);
   fBeamAngleY = gRandom->Gaus(fBeamAngleY0, fBeamAngleSigmaY);
@@ -441,14 +409,11 @@ void FairPrimaryGenerator::MakeBeamAngle() {
   fEvent->SetRotX(fBeamAngleX);
   fEvent->SetRotY(fBeamAngleY);
 }
-// -------------------------------------------------------------------------
 
-// -----   Private method MakeEventPlane   -------------------------------
 void FairPrimaryGenerator::MakeEventPlane() {
   fPhi = gRandom->Uniform(fPhiMin, fPhiMax);
   fEvent->SetRotZ(fPhi);
 }
-// -------------------------------------------------------------------------
 
 void FairPrimaryGenerator::SmearVertexZ(Bool_t flag) {
   fSmearVertexZ = flag;

@@ -10,28 +10,22 @@
  * tracks through active detectors.
  **/
 
-
-
 #ifndef FAIRMCPOINT_H
 #define FAIRMCPOINT_H
 
 #include "FairMultiLinkedData_Interface.h"        // for FairMultiLinkedData
 
-#include "Rtypes.h"                     // for Double_t, Double32_t, Int_t, etc
-#include "TVector3.h"                   // for TVector3
-
+#include <Rtypes.h>                     // for Double_t, Double32_t, Int_t, etc
+#include <TVector3.h>                   // for TVector3
 
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
 
 class FairMCPoint : public FairMultiLinkedData_Interface
 {
-
   public:
-
     /** Default constructor **/
     FairMCPoint();
-
 
     /** Constructor with arguments
      *@param trackID  Index of MCTrack
@@ -45,35 +39,31 @@ class FairMCPoint : public FairMultiLinkedData_Interface
      **/
     FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                 Double_t tof, Double_t length, Double_t eLoss, UInt_t EventId=0);
-    
+
     /** Destructor **/
     virtual ~FairMCPoint();
 
-
     /** Accessors */
-    UInt_t   GetEventID()    const { return fEventId; }        /// event identifier
-    Int_t    GetTrackID()    const { return fTrackID; }
-    Double_t GetPx()         const { return fPx; }
-    Double_t GetPy()         const { return fPy; }
-    Double_t GetPz()         const { return fPz; }
-    Double_t GetTime()       const { return fTime; }
-    Double_t GetLength()     const { return fLength; }
+    UInt_t GetEventID() const { return fEventId; } /// event identifier
+    Int_t GetTrackID() const { return fTrackID; }
+    Double_t GetPx() const { return fPx; }
+    Double_t GetPy() const { return fPy; }
+    Double_t GetPz() const { return fPz; }
+    Double_t GetTime() const { return fTime; }
+    Double_t GetLength() const { return fLength; }
     Double_t GetEnergyLoss() const { return fELoss; }
     void Momentum(TVector3& mom) const { mom.SetXYZ(fPx, fPy, fPz); }
-    Int_t    GetDetectorID()   const { return fDetectorID;             };
-    Double_t GetX()             const { return fX;                      };
-    Double_t GetY()             const { return fY;                      };
-    Double_t GetZ()             const { return fZ;                      };
+    Int_t GetDetectorID() const { return fDetectorID; };
+    Double_t GetX() const { return fX; };
+    Double_t GetY() const { return fY; };
+    Double_t GetZ() const { return fZ; };
     void Position(TVector3& pos) const { pos.SetXYZ(fX, fY, fZ); }
-
-
-
 
     /** Modifiers **/
     void SetEventID(UInt_t eventId) { fEventId = eventId; }
     virtual void SetTrackID(Int_t id) { fTrackID = id;}
-    void SetTime(Double_t time)        { fTime = time; }
-    void SetLength(Double_t length)    { fLength = length; }
+    void SetTime(Double_t time) { fTime = time; }
+    void SetLength(Double_t length) { fLength = length; }
     void SetEnergyLoss(Double_t eLoss) { fELoss = eLoss; }
     void SetMomentum(const TVector3& mom);
     void SetDetectorID(Int_t detID) { fDetectorID = detID; }
@@ -83,32 +73,28 @@ class FairMCPoint : public FairMultiLinkedData_Interface
     void SetXYZ(Double_t x, Double_t y, Double_t z);
     void SetPosition(const TVector3& pos);
 
-
     /** Output to screen **/
     virtual void Print(const Option_t* opt = 0) const;
 
-
-    
     template<class Archive>
-    void serialize(Archive & ar, const unsigned int) 
+    void serialize(Archive & ar, const unsigned int)
     {
         //ar & boost::serialization::base_object<FairMultiLinkedData>(*this);
         ar & fTrackID;
         ar & fEventId;
-        ar & fDetectorID; 
+        ar & fDetectorID;
         ar & fX;
         ar & fY;
         ar & fZ;
         ar & fPx;
         ar & fPy;
-        ar & fPz; 
-        ar & fTime; 
-        ar & fLength; 
-        ar & fELoss; 
+        ar & fPz;
+        ar & fTime;
+        ar & fLength;
+        ar & fELoss;
     }
 
   protected:
-
     friend class boost::serialization::access;
 
     Int_t fTrackID;               ///< Track index
@@ -120,11 +106,8 @@ class FairMCPoint : public FairMultiLinkedData_Interface
     Int_t      fDetectorID;       ///< Detector unique identifier
     Double32_t fX, fY, fZ;        ///< Position of hit [cm]
 
-
     ClassDef(FairMCPoint,5)
-
 };
-
 
 inline void FairMCPoint::SetMomentum(const TVector3& mom)
 {
@@ -133,7 +116,6 @@ inline void FairMCPoint::SetMomentum(const TVector3& mom)
   fPz = mom.Pz();
 }
 
-
 inline void FairMCPoint::SetXYZ(Double_t x, Double_t y, Double_t z)
 {
   fX = x;
@@ -141,14 +123,11 @@ inline void FairMCPoint::SetXYZ(Double_t x, Double_t y, Double_t z)
   fZ = z;
 }
 
-
 inline void FairMCPoint::SetPosition(const TVector3& pos)
 {
   fX = pos.X();
   fY = pos.Y();
   fZ = pos.Z();
 }
-
-
 
 #endif

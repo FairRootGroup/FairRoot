@@ -12,9 +12,6 @@
 
 #include "FairVolume.h"
 
-#include <stddef.h>                     // for NULL
-
-//_____________________________________________________________________________
 FairVolume::FairVolume()
   : TNamed(),
     //    fName(""),          /**Volume Name in MC*/
@@ -26,14 +23,11 @@ FairVolume::FairVolume()
     fMotherId(-1),    /**Mother Volume Id*/
     fMotherCopyNo(-1),  /**Mother Volume Copy No*/
     fDetector(0),
-    fModule(NULL),         /**The Module (detector) which will proccess the hits for this volume*/
-    fNode(NULL)            /**Node corre*/
+    fModule(nullptr),         /**The Module (detector) which will proccess the hits for this volume*/
+    fNode(nullptr)            /**Node corre*/
 {
-
-
 }
 
-//_____________________________________________________________________________
 FairVolume::FairVolume(TString name, Int_t id, Int_t ModId, FairModule* fMod)
   :TNamed(name,name),
    //   fName(name),
@@ -46,21 +40,15 @@ FairVolume::FairVolume(TString name, Int_t id, Int_t ModId, FairModule* fMod)
    fMotherCopyNo(0),  /**Mother Volume Copy No*/
    fDetector(0),
    fModule(fMod),        /**The Module (detector) which will proccess the hits for this volume*/
-   fNode(NULL)            /**Node corre*/
-
+   fNode(nullptr)            /**Node corre*/
 {
     if (fModule && fModule->InheritsFrom("FairDetector")){
         fDetector=dynamic_cast<FairDetector *>(fModule);
     }
-
 }
 
-
-//_____________________________________________________________________________
 FairVolume::~FairVolume()
 {
-  //
-
 }
-ClassImp(FairVolume)
 
+ClassImp(FairVolume)

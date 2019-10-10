@@ -24,9 +24,8 @@
 #ifndef MRevBuffer_H
 #define MRevBuffer_H
 
-#include "TObject.h"                    // for TObject
-
-#include "Rtypes.h"                     // for Int_t, ClassDef, etc
+#include <TObject.h>                    // for TObject
+#include <Rtypes.h>                     // for Int_t, ClassDef, etc
 
 class TSocket;
 
@@ -64,8 +63,6 @@ class REvent : public TObject
     ClassDef(REvent, 0)           // prototype for event
 };
 
-//////////////////////////////////////////////////////////////////////
-
 class MRevBuffer : public TObject
 {
   private:
@@ -99,19 +96,19 @@ class MRevBuffer : public TObject
     MRevBuffer& operator=(const MRevBuffer&);
 
   public:
-    MRevBuffer( Int_t iMode); // constructor
+    MRevBuffer(Int_t iMode); // constructor
     ~MRevBuffer();            // destructor
 
-    TSocket* RevOpen( char* pNode, Int_t iPort, Int_t iEvent);
+    TSocket* RevOpen(char* pNode, Int_t iPort, Int_t iEvent);
     // input: node name and port number server, req. no. of events
     // returns Socket ptr of server connection
 
-    Int_t* RevGetI( TSocket* pSocket, Int_t iFlush);
+    Int_t* RevGetI(TSocket* pSocket, Int_t iFlush);
     // get next event (pointer) from buffer, input:
     // Socket ptr,
     // iFlush = 1: skip current buffer (not impl)
 
-    REvent* RevGet( TSocket* pSocket, Int_t iFlush, Int_t iSkip);
+    REvent* RevGet(TSocket* pSocket, Int_t iFlush, Int_t iSkip);
     // get next event (pointer) from buffer, input:
     // Socket ptr,
     // iFlush = 1: skip current buffer (not impl)
@@ -133,9 +130,9 @@ class MRevBuffer : public TObject
     Int_t RevBufsize();
     // get size of current buffer (byte)
 
-    void  RevClose( TSocket* pSocket );           // input Socket ptr
+    void  RevClose(TSocket* pSocket);           // input Socket ptr
 
     ClassDef(MRevBuffer, 0)        // prototype for remote event buffer
 };
 
-#endif     // !MRevBuffer_H 
+#endif     // !MRevBuffer_H

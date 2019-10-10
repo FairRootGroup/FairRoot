@@ -19,11 +19,10 @@
 #include "FairBaseParSet.h"
 #include "FairGeoParSet.h"
 #include "FairRuntimeDb.h"
-#include "TList.h"
-#include "TString.h"
+#include <TList.h>
+#include <TString.h>
 
 class FairParSet;
-
 
 ClassImp(FairBaseContFact)
 
@@ -54,9 +53,6 @@ void FairBaseContFact::setAllContainers()
                                          "DefaultContext");
   pTest->addContext("TestNonDefaultContext");
   containers->Add(pGeo);
-
-
-
 }
 
 FairParSet* FairBaseContFact::createContainer(FairContainer* c)

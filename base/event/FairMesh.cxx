@@ -13,16 +13,13 @@
 
 #include "FairMesh.h"
 
-#include <iosfwd>                       // for ostream
-#include "TMath.h"                      // for Sqrt
-#include "TString.h"                    // for TString, operator+
+#include "TMath.h" // for Sqrt
+#include "TString.h" // for TString, operator+
 
-#include <stddef.h>                     // for NULL
-#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <iostream> // for operator<<, basic_ostream, etc
 
 using namespace std;
 
-// -----   Default constructor   -------------------------------------------
 FairMesh::FairMesh()
   : TObject(),
     fXmin (0.0),
@@ -36,12 +33,11 @@ FairMesh::FairMesh()
     NZbin(0),
     fBinVolume(0.),
     fDiag(0.),
-    fMeshTid(NULL),
-    fMeshFlu(NULL),
-    fMeshSEU(NULL),
+    fMeshTid(nullptr),
+    fMeshFlu(nullptr),
+    fMeshSEU(nullptr),
     fhname("")
 {
-
 }
 
 FairMesh::FairMesh(const char* fname)
@@ -57,58 +53,53 @@ FairMesh::FairMesh(const char* fname)
     NZbin(0),
     fBinVolume(0.),
     fDiag(0.),
-    fMeshTid(NULL),
-    fMeshFlu(NULL),
-    fMeshSEU(NULL),
+    fMeshTid(nullptr),
+    fMeshFlu(nullptr),
+    fMeshSEU(nullptr),
     fhname(fname)
 {
-
   //  fhname = fname;
 }
 
 void FairMesh::calculate()
 {
-// compute numbers
+  // compute numbers
 
   TString tid = fhname + "TID";
-  fMeshTid = new TH2D(tid.Data(),"TID", NXbin, fXmin,fXmax,NYbin,fYmin,fYmax);
+  fMeshTid = new TH2D(tid.Data(), "TID", NXbin, fXmin, fXmax, NYbin, fYmin, fYmax);
   fMeshTid->Sumw2();
 
   TString flu = fhname + "FLU";
-  fMeshFlu = new TH2D(flu.Data(),"Fluence", NXbin, fXmin,fXmax,NYbin,fYmin,fYmax);
+  fMeshFlu = new TH2D(flu.Data(), "Fluence", NXbin, fXmin, fXmax, NYbin, fYmin, fYmax);
   fMeshFlu->Sumw2();
 
   TString seu = fhname + "SEU";
-  fMeshSEU = new TH2D(seu.Data(),"SEU", NXbin, fXmin,fXmax,NYbin,fYmin,fYmax);
+  fMeshSEU = new TH2D(seu.Data(), "SEU", NXbin, fXmin, fXmax, NYbin, fYmin, fYmax);
   fMeshSEU->Sumw2();
-
 
   // reseting
   fMeshTid->Reset();
   fMeshFlu->Reset();
   fMeshSEU->Reset();
 
-
-  fBinVolume = ((fXmax-fXmin)/NXbin) *
-               ((fYmax-fYmin)/NYbin) *
-               ((fZmax-fZmin)/NZbin);
+  fBinVolume = ((fXmax - fXmin) / NXbin) *
+               ((fYmax - fYmin) / NYbin) *
+               ((fZmax - fZmin) / NZbin);
 
   fDiag = TMath::Sqrt(
-            ((fXmax-fXmin)/NXbin)*((fXmax-fXmin)/NXbin) +
-            ((fYmax-fYmin)/NYbin)*((fYmax-fYmin)/NYbin) +
-            ((fZmax-fZmin)/NZbin)*((fZmax-fZmin)/NZbin) );
+            ((fXmax - fXmin) / NXbin)*((fXmax - fXmin) / NXbin) +
+            ((fYmax - fYmin) / NYbin)*((fYmax - fYmin) / NYbin) +
+            ((fZmax - fZmin) / NZbin)*((fZmax - fZmin) / NZbin));
 }
-// -----   Destructor   ----------------------------------------------------
+
 FairMesh::~FairMesh() { }
-// -------------------------------------------------------------------------
+
 void FairMesh::print()
 {
-
   cout << " Xmin " <<  fXmin  << " Xmax " << fXmax << endl;
   cout << " Ymin " <<  fYmin  << " Ymax " << fYmax << endl;
   cout << " Zmin " <<  fZmin  << " Zmax " << fZmax << endl;
   cout << " NX  " <<  NXbin  << " NY " << NXbin << endl;
 }
-
 
 ClassImp(FairMesh)

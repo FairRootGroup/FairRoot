@@ -17,10 +17,7 @@
 #define FAIRMBSSOURCE_H
 
 #include "FairOnlineSource.h"
-#include "TObjArray.h"
-
-#include "FairUnpack.h"
-
+#include <Rtypes.h>
 
 class FairMbsSource : public FairOnlineSource
 {
@@ -40,6 +37,5 @@ class FairMbsSource : public FairOnlineSource
 
     ClassDef(FairMbsSource, 0)
 };
-
 
 #endif

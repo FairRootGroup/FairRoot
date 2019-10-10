@@ -17,7 +17,7 @@
 #pragma link C++ class FairBaseParSet;
 #pragma link C++ class FairGeoParSet;
 #pragma link C++ class FairDetector+;
-// #pragma link C++ class FairDoubleHit+; // TODO: should this be added?
+//#pragma link C++ class FairDoubleHit+;
 #pragma link C++ class FairEventBuilder+;
 #pragma link C++ class FairEventBuilderManager+;
 #pragma link C++ class FairEventHeader;

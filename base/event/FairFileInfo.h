@@ -11,35 +11,30 @@
 #ifndef FAIRFILEINFO_H
 #define FAIRFILEINFO_H
 
-#include "TNamed.h"                     // for TNamed
-
-#include "Rtypes.h"                     // for UInt_t, FairFileInfo::Class, etc
-#include "TString.h"                    // for TString
+#include <TNamed.h>                     // for TNamed
+#include <Rtypes.h>                     // for UInt_t, FairFileInfo::Class, etc
+#include <TString.h>                    // for TString
 
 class TFile;
 
 class FairFileInfo : public TNamed
 {
   public:
-
     FairFileInfo();
     FairFileInfo(TFile* file, UInt_t id,  UInt_t ChId);
     virtual  ~FairFileInfo();
 
+    TString     GetPath()         { return fPath; }
+    UInt_t      GetSize()         { return fSize; }
+    UInt_t      GetIdentifier()   { return fIdentifier; }
+    UInt_t      GetOrderInChain() { return fInChainId; }
 
-    TString     GetPath()          {return fPath;}
-    UInt_t      GetSize()          {return fSize;}
-    UInt_t      GetIdentifier()    {return fIdentifier;}
-    UInt_t      GetOrderInChain()  {return fInChainId;}
+    void Print(Option_t* option="") const;
 
-    void        Print(Option_t* option="") const;
-
-    void        SetPath(TString path) {fPath = path;}
-    void        SetSize(UInt_t  size) {fSize =size;}
-    void        SetIdentifier(UInt_t  id) {fIdentifier =id;}
-    void        SetOrderInChain(UInt_t id) {fInChainId =id;}
-
-
+    void SetPath(TString path) {fPath = path;}
+    void SetSize(UInt_t  size) {fSize =size;}
+    void SetIdentifier(UInt_t  id) {fIdentifier =id;}
+    void SetOrderInChain(UInt_t id) {fInChainId =id;}
 
   protected:
     /** Full path of file*/

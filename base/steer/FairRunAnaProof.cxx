@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -12,47 +12,33 @@
 
 #include "FairRunAnaProof.h"
 
-// #include "FairRootManager.h"
-#include "FairTask.h"
 #include "FairBaseParSet.h"
-#include "FairGeoParSet.h"
 #include "FairEventHeader.h"
 #include "FairFieldFactory.h"
-#include "FairRuntimeDb.h"
-#include "FairTrajFilter.h"
-#include "FairRunIdGenerator.h"
-#include "FairLogger.h"
 #include "FairFileHeader.h"
-#include "FairMCEventHeader.h"
+#include "FairLogger.h"
 #include "FairParIo.h"
-#include "FairAnaSelector.h"
-#include "FairRootFileSink.h"
+#include "FairRunIdGenerator.h"
+#include "FairRuntimeDb.h"
 #include "FairSink.h"
+#include "FairTask.h"
+#include "FairTrajFilter.h"
 
-#include "TROOT.h"
-// #include "TTree.h"
-// #include "TSeqCollection.h"
 #include "TGeoManager.h"
 #include "TKey.h"
-// #include "TF1.h"
-// #include "TSystem.h"
 #include "TProof.h"
-#include "TProofOutputFile.h"
+#include "TROOT.h"
 
-//_____________________________________________________________________________
 FairRunAnaProof* FairRunAnaProof::fRAPInstance= 0;
-//_____________________________________________________________________________
+
 FairRunAnaProof* FairRunAnaProof::Instance()
 {
-
   return fRAPInstance;
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 FairRunAnaProof::FairRunAnaProof(const char* proofName)
   :FairRunAna(),
-   fProof(NULL),
+   fProof(nullptr),
    fRunOnProofWorker(kFALSE),
    fProofServerName(proofName),
    fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par"),
@@ -65,8 +51,7 @@ FairRunAnaProof::FairRunAnaProof(const char* proofName)
   }
   else {
     LOG(info) << "+++++++ T P R O O F +++++++++++++++++++++++++++++++++";
-    LOG(info) << "creating TProof* proof = TProof::Open(\"" << fProofServerName.Data()
-	 << "\");";
+    LOG(info) << "creating TProof* proof = TProof::Open(\"" << fProofServerName.Data() << "\");";
     TProof::AddEnvVar("LOCALDATASERVER","file://");
     //    TProof* proof = TProof::Open("lite:///?workers=1");
     fProof = TProof::Open(fProofServerName.Data());
@@ -76,15 +61,11 @@ FairRunAnaProof::FairRunAnaProof(const char* proofName)
   fRAPInstance=this;
   fAna=kTRUE;
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 FairRunAnaProof::~FairRunAnaProof()
 {
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairRunAnaProof::Init()
 {
   fInFileIsOpen = fRootManager->InitSource();
@@ -219,7 +200,7 @@ void FairRunAnaProof::Init()
 
     }
     //  fRootManager->SetBranchNameList(par->GetBranchNameList());
-    
+
   } else {
     LOG(info) << "Initializing without input file or Mixed input";
     FairEventHeader* evt = GetEventHeader();
@@ -259,9 +240,7 @@ void FairRunAnaProof::Init()
   fRootManager->WriteFolder();
   fRootManager->WriteFileHeader(fFileHeader);
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairRunAnaProof::InitContainers()
 {
   fRtdb= GetRuntimeDb();
@@ -273,7 +252,7 @@ void FairRunAnaProof::InitContainers()
 
     fEvtHeader = dynamic_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
 
-    if (NULL == fEvtHeader) LOG(fatal) << "Could not read event header.";
+    if (nullptr == fEvtHeader) LOG(fatal) << "Could not read event header.";
 
     fRootManager->FillEventHeader(fEvtHeader);
 
@@ -292,9 +271,7 @@ void FairRunAnaProof::InitContainers()
     }
   }
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairRunAnaProof::SetSource(FairSource* tempSource) {
   // FairRunAnaProof should accept only FairFileSource
   if (strncmp(tempSource->GetName(), "FairFileSource", 14) != 0) {
@@ -303,17 +280,13 @@ void FairRunAnaProof::SetSource(FairSource* tempSource) {
   fRootManager->SetSource(tempSource);
   fProofFileSource = static_cast<FairFileSource*>(tempSource);
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairRunAnaProof::Run(Int_t Ev_start, Int_t Ev_end)
 {
   RunOnProof(Ev_start,Ev_end);
   return;
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairRunAnaProof::RunOneEvent(Long64_t entry)
 {
   if (fTimeStamps) {
@@ -340,9 +313,7 @@ void FairRunAnaProof::RunOneEvent(Long64_t entry)
     fTask->FinishEvent();
   }
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
 {
   fProofOutputStatus.ToLower();
@@ -403,17 +374,13 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
 
   return;
 }
-//_____________________________________________________________________________
 
-// //_____________________________________________________________________________
-// void FairRunAnaProof::SetOutputFile(const char* fname)
+// // void FairRunAnaProof::SetOutputFile(const char* fname)
 // {
 //   fOutname=fname;
 // }
-// //_____________________________________________________________________________
-
-// //_____________________________________________________________________________
-// void FairRunAnaProof::SetOutputFile(TFile* f)
+//
+// // void FairRunAnaProof::SetOutputFile(TFile* f)
 // {
 //   if (! fRootManager) return;
 
@@ -422,8 +389,5 @@ void FairRunAnaProof::RunOnProof(Int_t NStart,Int_t NStop)
 //   fOutFile = f;
 
 // }
-// //_____________________________________________________________________________
-
+//
 ClassImp(FairRunAnaProof)
-
-

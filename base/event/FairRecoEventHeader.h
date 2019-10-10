@@ -13,8 +13,7 @@
 #ifndef FAIRRECOEVENTHEADER_H
 #define FAIRRECOEVENTHEADER_H
 
-
-#include "TNamed.h"
+#include <TNamed.h>
 
 /**
  *  Event Header Class
@@ -24,9 +23,7 @@
  */
 class FairRecoEventHeader : public TNamed
 {
-
   public:
-
     /** Default constructor */
     FairRecoEventHeader();
 
@@ -98,7 +95,6 @@ class FairRecoEventHeader : public TNamed
     virtual ~FairRecoEventHeader();
 
   protected:
-
     /** Run Id */
     UInt_t fRunId;
     /** Identifier */
@@ -109,6 +105,6 @@ class FairRecoEventHeader : public TNamed
     Double_t  fEventTimeError;
 
     ClassDef(FairRecoEventHeader,1)
-
 };
+
 #endif

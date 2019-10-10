@@ -10,7 +10,7 @@
 
 #include "FairModule.h"                 // for FairModule
 
-#include "Rtypes.h"                     // for Int_t, Bool_t, etc
+#include <Rtypes.h>                     // for Int_t, Bool_t, etc
 
 class FairLogger;
 class FairVolume;
@@ -24,9 +24,7 @@ class TClonesArray;
  */
 class FairDetector : public FairModule
 {
-
   public:
-
     /**
       constructor
       Name :  Detector Name
@@ -45,7 +43,7 @@ class FairDetector : public FairModule
     /**
       Initialization of the detector is done here
     */
-    virtual void   Initialize();
+    virtual void Initialize();
     /**
       this method is called for each step during simulation (see FairMCApplication::Stepping())
     */
@@ -53,13 +51,11 @@ class FairDetector : public FairModule
     /**
       this is called at the end of an event
     */
-    virtual void   EndOfEvent() {
-      ;
-    }
+    virtual void EndOfEvent() {}
     /**
       Registers the produced collections in FAIRRootManager.
     */
-    virtual void   Register()=0;
+    virtual void Register()=0;
 
     /** Gets the produced collections **/
     virtual TClonesArray* GetCollection(Int_t iColl) const = 0;
@@ -67,33 +63,17 @@ class FairDetector : public FairModule
     /**
       has to be called after each event to reset the containers
     */
-    virtual void   Reset()=0;
+    virtual void Reset()=0;
 
-    virtual void   CopyClones( TClonesArray*,  TClonesArray*, Int_t) {
-      ;
-    }
+    virtual void CopyClones( TClonesArray*,  TClonesArray*, Int_t) {}
 
-    virtual void   FinishPrimary() {
-      ;
-    }
-    virtual void   FinishRun() {
-      ;
-    }
-    virtual void   BeginPrimary() {
-      ;
-    }
-    virtual void   PostTrack() {
-      ;
-    }
-    virtual void   PreTrack() {
-      ;
-    }
-    virtual void   BeginEvent() {
-      ;
-    }
-    virtual void   FinishEvent() {
-      ;
-    }
+    virtual void FinishPrimary() {}
+    virtual void FinishRun() {}
+    virtual void BeginPrimary() {}
+    virtual void PostTrack() {}
+    virtual void PreTrack() {}
+    virtual void BeginEvent() {}
+    virtual void FinishEvent() {}
     void SaveGeoParams();
     Int_t  GetDetId() {
       return fDetId;

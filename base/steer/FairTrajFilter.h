@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // ********************************************* //
@@ -13,11 +13,11 @@
 #ifndef FAIR_TRAJ_FILTER_H
 #define FAIR_TRAJ_FILTER_H 1
 
-#include "Rtypes.h"                     // for Double_t, Bool_t, Int_t, etc
-#include "TGeoTrack.h"                  // IWYU pragma: keep needed by cint
-#include "TMath.h"                      // for Pi, TwoPi
-#include "TString.h"                    // for TString
-#include "TMCtls.h"                     // for multi-threading
+#include <Rtypes.h>                     // for Double_t, Bool_t, Int_t, etc
+#include <TGeoTrack.h>                  // IWYU pragma: keep needed by cint // TODO: is this still relevant for CINT?
+#include <TMath.h>                      // for Pi, TwoPi
+#include <TString.h>                    // for TString
+#include <TMCtls.h>                     // for multi-threading
 
 class TClonesArray;
 class TParticle;
@@ -40,10 +40,8 @@ class TParticle;
  * @since 2004-Sep-15
  */
 
-
 class FairTrajFilter
 {
-
   public:
     /**
      * Default constructor.
@@ -62,9 +60,7 @@ class FairTrajFilter
      */
     ClassDef(FairTrajFilter,1);
 
-
   private:
-
     FairTrajFilter(const FairTrajFilter&);
     FairTrajFilter& operator=(const FairTrajFilter&);
 
@@ -257,9 +253,6 @@ class FairTrajFilter
     inline Double_t GetStepSizeCut() const { return fStepSizeMin; };
 
     TGeoTrack* GetTrack(Int_t trackId);
-
 };
-
-
 
 #endif

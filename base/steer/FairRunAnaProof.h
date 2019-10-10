@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRRUNANAPROOF_H
@@ -16,15 +16,14 @@
  */
 
 #include "FairRunAna.h"
-
 #include "FairFileSource.h" // FairRunAnaProof can only accept FairFileSource as source
-#include "TProof.h"
+
+#include <Rtypes.h>
+#include <TProof.h>
 
 class FairRunAnaProof : public FairRunAna
 {
-
   public:
-
     static FairRunAnaProof* Instance();
     virtual ~FairRunAnaProof();
     FairRunAnaProof(const char* proofName="");
@@ -97,14 +96,12 @@ class FairRunAnaProof : public FairRunAna
     TString                                  fProofOutputStatus;
 
   private:
-  
     FairRunAnaProof(const FairRunAnaProof&);
     FairRunAnaProof operator=(const FairRunAnaProof&);
 
     FairFileSource* fProofFileSource;
-    
-    ClassDef(FairRunAnaProof ,1)
 
+    ClassDef(FairRunAnaProof ,1)
 };
 
 #endif //FAIRRUNANAPROOF_H

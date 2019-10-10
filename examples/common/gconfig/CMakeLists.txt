@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target GConfig) # TODO: where is this target used?
+set(target GConfig)
 
 set(sources
   FairVMCConfig.cxx

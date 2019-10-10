@@ -13,27 +13,22 @@
 #ifndef FAIRRADGRIDMANAGER_H
 #define FAIRRADGRIDMANAGER_H 1
 
-
-#include <iosfwd>                       // for ostream
-#include "Rtypes.h"                     // for Float_t, Double_t, Int_t, etc
-#include "TLorentzVector.h"             // for TLorentzVector
-#include "TObjArray.h"                  // for TObjArray
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for Float_t, Double_t, Int_t, etc
+#include <TLorentzVector.h>             // for TLorentzVector
+#include <TObjArray.h>                  // for TObjArray
+#include <TString.h>                    // for TString
 
 #include <iostream>                     // for basic_ostream::operator<<, etc
 
 class FairMesh;
 class TClonesArray;
 
-
 /**
  * @class FairRadGridManager
  */
 
-
 class FairRadGridManager
 {
-
   public:
     /**
      * Default constructor.
@@ -51,9 +46,7 @@ class FairRadGridManager
      */
     ClassDef(FairRadGridManager,1);
 
-
   private:
-
     FairRadGridManager(const FairRadGridManager&);
     FairRadGridManager& operator=(const FairRadGridManager&);
 
@@ -99,8 +92,8 @@ class FairRadGridManager
     TString fOutputFileName;
 
     static Double_t fLtmp;
-  public:
 
+  public:
     TObjArray* GetMeshList() { return fMeshList; }
     void AddMeshList ( TObjArray* list ) {
       std::cout << " grid manag " << list->GetEntriesFast() << std::endl;

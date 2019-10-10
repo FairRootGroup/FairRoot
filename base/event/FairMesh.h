@@ -14,11 +14,11 @@
 #ifndef FAIRMESH_H
 #define FAIRMESH_H
 
-#include "TObject.h"                    // for TObject
+#include <TObject.h>                    // for TObject
 
-#include "Rtypes.h"                     // for Double_t, Int_t, etc
-#include "TH2.h"                        // for TH2D
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for Double_t, Int_t, etc
+#include <TH2.h>                        // for TH2D
+#include <TString.h>                    // for TString
 
 /**
  * Abstract base class for Mesh Objects.
@@ -26,17 +26,13 @@
  */
 class FairMesh : public TObject
 {
-
   public:
-
     /** Default constructor **/
     FairMesh();
     FairMesh(const char*);
 
-
     /** Destructor **/
     virtual ~FairMesh();
-
 
     /** Accessors **/
     Double_t GetXmin()  const { return fXmin;  };
@@ -46,7 +42,6 @@ class FairMesh : public TObject
     Double_t GetXmax()  const { return fXmax;  };
     Double_t GetYmax()  const { return fYmax;  };
     Double_t GetZmax()  const { return fZmax;  };
-
 
     /** Modifiers **/
     void SetX(Double_t xmin,Double_t xmax, Int_t nbin ) {
@@ -93,10 +88,9 @@ class FairMesh : public TObject
 
     void calculate();
 
-
     void print();
-  protected:
 
+  protected:
     Double_t  fXmin, fYmin, fZmin;
     Double_t  fXmax, fYmax, fZmax;
     Int_t     NXbin, NYbin, NZbin;
@@ -112,7 +106,6 @@ class FairMesh : public TObject
     FairMesh& operator=(const FairMesh&);
 
     ClassDef(FairMesh,1);
-
 };
 
 #endif

@@ -14,15 +14,13 @@
 
 #include "FairLogger.h"
 
-#include <iosfwd>                       // for ostream
-#include "TMath.h"                      // for Sqrt
-#include "TMathBase.h"                  // for Abs
-#include "TMatrixTSym.h"                // for TMatrixTSym
-#include "TMatrixTUtils.h"              // for TMatrixTRow, etc
+#include <TMath.h>                      // for Sqrt
+#include <TMathBase.h>                  // for Abs
+#include <TMatrixTSym.h>                // for TMatrixTSym
+#include <TMatrixTUtils.h>              // for TMatrixTRow, etc
 
 #include <iomanip>
 
-// -----   Default constructor   -------------------------------------------
 FairTrackParam::FairTrackParam()
   : TObject(),
     fX(0),
@@ -35,11 +33,7 @@ FairTrackParam::FairTrackParam()
   //  fX = fY = fZ = fTx = fTy = fQp = 0.;
   for (int i=0; i<15; i++) { fCovMatrix[i] = 0; }
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Constructor with parameters   -----------------------------------
 FairTrackParam::FairTrackParam(Double_t x, Double_t y, Double_t z,
                                Double_t tx, Double_t ty, Double_t qp,
                                const TMatrixFSym& covMat)
@@ -56,8 +50,7 @@ FairTrackParam::FairTrackParam(Double_t x, Double_t y, Double_t z,
     for (int j=i; j<5; j++) { fCovMatrix[index++] = covMat[i][j]; }
   }
 }
-// -------------------------------------------------------------------------
-// -----   Copy Constructor             -----------------------------------
+
 FairTrackParam::FairTrackParam(const FairTrackParam& param)
   : TObject(param),
     fX(param.GetX()),
@@ -70,26 +63,15 @@ FairTrackParam::FairTrackParam(const FairTrackParam& param)
   *this = param;
 }
 
-// -----   Destructor   ----------------------------------------------------
 FairTrackParam::~FairTrackParam() {}
-// -------------------------------------------------------------------------
 
-
-
-// -----   Public method Print   -------------------------------------------
 void FairTrackParam::Print(Option_t*) const
 {
-  LOG(info) << "Position : (" << std::setprecision(2)
-	    << fX << ", " << fY << ", " << fZ << ")";
+  LOG(info) << "Position : (" << std::setprecision(2) << fX << ", " << fY << ", " << fZ << ")";
   LOG(info) << "Slopes : dx/dz = " << fTx << ", dy/dz = " << fTy;
   LOG(info) << "q/p = " << fQp;
 }
-// -------------------------------------------------------------------------
 
-
-
-
-// -----  Accessor to momentum   -------------------------------------------
 void FairTrackParam::Momentum(TVector3& mom) const
 {
   Double_t p  = ( TMath::Abs(fQp)>1.e-4 ) ?1./TMath::Abs(fQp) :1.e4;
@@ -99,20 +81,12 @@ void FairTrackParam::Momentum(TVector3& mom) const
   mom.SetXYZ(px, py, pz);
 
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Accessor to covariance matrix (array)   -------------------------
 void FairTrackParam::CovMatrix(Double_t cov[]) const
 {
   for (Int_t i=0; i<15; i++) { cov[i] = fCovMatrix[i]; }
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Accessor to covariance matrix (TMatrixFSym)    ------------------
 void FairTrackParam::CovMatrix(TMatrixFSym& covMat) const
 {
   Int_t index = 0;
@@ -124,16 +98,11 @@ void FairTrackParam::CovMatrix(TMatrixFSym& covMat) const
     }
   }
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Accessor to covariance matrix elements   ------------------------
 Double_t FairTrackParam::GetCovariance(Int_t i, Int_t j) const
 {
   if ( i<0 || j<0 || i>4 || j>4 ) {
-    LOG(error) << "FairTrackParam::GetCovariance: Invalid index pair ("
-	       << i << "," << j << ") !";
+    LOG(error) << "FairTrackParam::GetCovariance: Invalid index pair (" << i << "," << j << ") !";
     return 0;
   }
   if (i>j) {
@@ -149,31 +118,19 @@ Double_t FairTrackParam::GetCovariance(Int_t i, Int_t j) const
   else if (i==4) { index = 10 + j; }
   return fCovMatrix[index];
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Position modifier    --------------------------------------------
 void FairTrackParam::SetPosition(const TVector3& pos)
 {
   fX = pos.X();
   fY = pos.Y();
   fZ = pos.Z();
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Covariance matrix modifier (array)  -----------------------------
 void FairTrackParam::SetCovMatrix(Double_t cov[])
 {
   for (Int_t i=0; i<15; i++) { fCovMatrix[i] = cov[i]; }
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Covariance matrix modifier (TMatrixFSym)  -----------------------
 void FairTrackParam::SetCovMatrix(const TMatrixFSym& covMat)
 {
   Int_t index = 0;
@@ -181,21 +138,15 @@ void FairTrackParam::SetCovMatrix(const TMatrixFSym& covMat)
     for (int j=i; j<5; j++) { fCovMatrix[index++] = covMat[i][j]; }
   }
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Covariance matrix element modifier   ----------------------------
 void FairTrackParam::SetCovariance(Int_t i, Int_t j, Double_t val)
 {
   if (i < 0 || i > 4) {
-    LOG(warn) << "FairTrackParam::SetCovariance: "
-		 << "First index out of range!  " << i;
+    LOG(warn) << "FairTrackParam::SetCovariance: " << "First index out of range!  " << i;
     return;
   }
   if (j < 0 || j > 4) {
-    LOG(warn) << "FairTrackParam::SetCovariance: "
-         << "Second index out of range!  " << j;
+    LOG(warn) << "FairTrackParam::SetCovariance: " << "Second index out of range!  " << j;
     return;
   }
   if (i>j) {
@@ -212,11 +163,7 @@ void FairTrackParam::SetCovariance(Int_t i, Int_t j, Double_t val)
   fCovMatrix[index] = val;
   return;
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Assignment operator   -------------------------------------------
 FairTrackParam& FairTrackParam::operator=(const FairTrackParam& par)
 {
   fX  = par.GetX();
@@ -230,12 +177,5 @@ FairTrackParam& FairTrackParam::operator=(const FairTrackParam& par)
   SetCovMatrix(cov);
   return *this;
 }
-// -------------------------------------------------------------------------
-
-
-
-
 
 ClassImp(FairTrackParam)
-
-

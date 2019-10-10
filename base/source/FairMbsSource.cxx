@@ -13,53 +13,57 @@
 // -----                                                                   -----
 // -----------------------------------------------------------------------------
 
-#include <iostream>
-
 #include "FairMbsSource.h"
 #include "FairLogger.h"
 
 FairMbsSource::FairMbsSource() : FairOnlineSource() {}
 
 FairMbsSource::FairMbsSource(const FairMbsSource &source)
-    : FairOnlineSource(source) {}
+    : FairOnlineSource(source)
+{}
 
-FairMbsSource::~FairMbsSource() {
-}
+FairMbsSource::~FairMbsSource()
+{}
 
 Bool_t FairMbsSource::Unpack(Int_t *data, Int_t size, Short_t type,
                              Short_t subType, Short_t procId, Short_t subCrate,
-                             Short_t control) {
+                             Short_t control)
+{
+    LOG(debug2) << "FairMbsSource::Unpack => Found Sub-event with flags: "
+                << " Type " << type << " SubType " << subType
+                << " ProcId " << procId << " SubCrate " << subCrate
+                << " Control " << control;
 
-  LOG(debug2)<< "FairMbsSource::Unpack => Found Sub-event with flags: " 
-             << " Type " << type << " SubType " << subType
-             << " ProcId " << procId << " SubCrate " << subCrate
-             << " Control " << control;
-  
-  FairUnpack *unpack;
-  Bool_t seen = kFALSE;
-  for (Int_t i = 0; i < fUnpackers->GetEntriesFast(); i++) {
-    unpack = static_cast<FairUnpack*>(fUnpackers->At(i));
+    FairUnpack *unpack;
+    Bool_t seen = kFALSE;
+    for (Int_t i = 0; i < fUnpackers->GetEntriesFast(); i++) {
+        unpack = static_cast<FairUnpack*>(fUnpackers->At(i));
 
-    if (unpack->GetSubCrate() < 0) { // All sub-crates
-      if (type != unpack->GetType() || subType != unpack->GetSubType() ||
-          procId != unpack->GetProcId() || control != unpack->GetControl()) {
-        continue;
-      }
-    } else { // specified sub-crate
-      if (type != unpack->GetType() || subType != unpack->GetSubType() ||
-          procId != unpack->GetProcId() || subCrate != unpack->GetSubCrate() ||
-          control != unpack->GetControl()) {
-        continue;
-      }
+        if (unpack->GetSubCrate() < 0) { // All sub-crates
+            if (type != unpack->GetType()
+                || subType != unpack->GetSubType()
+                || procId != unpack->GetProcId()
+                || control != unpack->GetControl()) {
+                continue;
+            }
+        } else { // specified sub-crate
+            if (type != unpack->GetType()
+                || subType != unpack->GetSubType()
+                || procId != unpack->GetProcId()
+                || subCrate != unpack->GetSubCrate()
+                || control != unpack->GetControl()) {
+                continue;
+            }
+        }
+
+        if (!unpack->DoUnpack(data, size)) {
+            return kFALSE;
+        }
+
+        seen = kTRUE;
     }
 
-    if (!unpack->DoUnpack(data, size)) {
-      return kFALSE;
-    }
-
-    seen = kTRUE;
-  }
-  return seen;
+    return seen;
 }
 
 ClassImp(FairMbsSource)

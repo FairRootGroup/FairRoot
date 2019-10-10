@@ -13,9 +13,7 @@
 
 #include "FairUnpack.h"
 
-
-FairUnpack::FairUnpack(Short_t type, Short_t subType,
-                       Short_t procId, Short_t subCrate, Short_t control)
+FairUnpack::FairUnpack(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control)
   : TObject(),
     fType(type),
     fSubType(subType),
@@ -25,10 +23,8 @@ FairUnpack::FairUnpack(Short_t type, Short_t subType,
 {
 }
 
-
 FairUnpack::~FairUnpack()
 {
 }
-
 
 ClassImp(FairUnpack)

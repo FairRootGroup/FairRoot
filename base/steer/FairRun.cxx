@@ -22,21 +22,19 @@
 
 #include "FairRootFileSink.h"               // only temporary, should be removed after the move to FairSink is finished
 
-#include "TFile.h"                      // for TFile
-#include "TList.h"                      // for TList
-#include "TObject.h"                    // for TObject
+#include <TFile.h>                      // for TFile
+#include <TList.h>                      // for TList
+#include <TObject.h>                    // for TObject
 
-#include <stddef.h>                     // for NULL
-#include <cassert>			// for... well, assert
+#include <cassert> // for... well, assert
 
-//_____________________________________________________________________________
 TMCThreadLocal FairRun* FairRun::fRunInstance= 0;
-//_____________________________________________________________________________
+
 FairRun* FairRun::Instance()
 {
   return fRunInstance;
 }
-//_____________________________________________________________________________
+
 FairRun::FairRun(Bool_t isMaster)
   :TNamed(),
    fNTasks(0),
@@ -47,7 +45,7 @@ FairRun::FairRun(Bool_t isMaster)
    fUserOutputFileName(),
    fRunId(0),
    fAna(kFALSE),
-   fEvtHeader(NULL),
+   fEvtHeader(nullptr),
    fFileHeader(new FairFileHeader()),
    fGenerateRunInfo(kFALSE),
    fIsMaster(isMaster),
@@ -63,7 +61,7 @@ FairRun::FairRun(Bool_t isMaster)
 
   new FairLinkManager();
 }
-//_____________________________________________________________________________
+
 FairRun::~FairRun()
 {
   LOG(debug) << "Enter Destructor of FairRun";
@@ -73,15 +71,13 @@ FairRun::~FairRun()
   delete fEvtHeader;
   LOG(debug) << "Leave Destructor of FairRun";
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairRun::AddTask(FairTask* task)
 {
   fTask->Add(task);
   StoreTaskNames(task);
 }
-//_____________________________________________________________________________
+
 void FairRun::StoreTaskNames(const FairTask* task)
 {
   if(task) {
@@ -96,7 +92,7 @@ void FairRun::StoreTaskNames(const FairTask* task)
     }
   }
 }
-//_____________________________________________________________________________
+
 void FairRun::SetTask(FairTask* task)
 {
   delete fTask;
@@ -108,22 +104,22 @@ void FairRun::SetTask(FairTask* task)
     StoreTaskNames(task);
   }
 }
-//_____________________________________________________________________________
+
 void FairRun::CreateGeometryFile(const char* geofile)
 {
   fRootManager->CreateGeometryFile(geofile);
 }
-//_____________________________________________________________________________
+
 FairTask* FairRun::GetTask(const char* taskName)
 {
   TList* taskList = fTask->GetListOfTasks();
   TObject* task = taskList->FindObject(taskName);
   return dynamic_cast<FairTask*>(task);
 }
-//_____________________________________________________________________________
+
 FairEventHeader*  FairRun::GetEventHeader()
 {
-  if ( NULL == fEvtHeader ) {
+  if ( nullptr == fEvtHeader ) {
     fEvtHeader = new FairEventHeader();
   }
   return fEvtHeader;
@@ -134,7 +130,6 @@ void FairRun::SetUseFairLinks(Bool_t val)
         fRootManager->SetUseFairLinks(val);
 }
 
-//_____________________________________________________________________________
 void FairRun::SetWriteRunInfoFile(Bool_t write)
 {
   LOG(warn) << "Function FairRun::SetWriteRunInfoFile(Bool_t) is depcrecated and will vanish in future versions of FairRoot.\n";
@@ -151,7 +146,6 @@ Bool_t FairRun::GetWriteRunInfoFile()
   return fGenerateRunInfo;
 }
 
-//_____________________________________________________________________________
 void FairRun::SetOutputFile(const char* fname)
 {
   LOG(WARNING) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
@@ -159,9 +153,7 @@ void FairRun::SetOutputFile(const char* fname)
   if (fRootManager) fRootManager->SetSink(fSink);
   fUserOutputFileName = fname;
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairRun::SetOutputFile(TFile* f)
 {
   LOG(WARNING) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
@@ -169,18 +161,14 @@ void FairRun::SetOutputFile(TFile* f)
   if (fRootManager) fRootManager->SetSink(fSink);
   if (f) fUserOutputFileName = f->GetName();
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairRun::SetOutputFileName(const TString& name) {
   LOG(WARNING) << "FairRun::SetOutputFileName() deprecated. Use FairRootFileSink.";
   fSink = new FairRootFileSink(name);
   if (fRootManager) fRootManager->SetSink(fSink);
   fUserOutputFileName = name;
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 TFile* FairRun::GetOutputFile()
 {
   LOG(WARNING) << "FairRun::GetOutputFile() deprecated. Use separate file to store additional data.";
@@ -189,29 +177,21 @@ TFile* FairRun::GetOutputFile()
   auto rootFileSink = static_cast<FairRootFileSink*>(sink);
   return rootFileSink->GetRootFile();
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairRun::SetUserOutputFileName(const TString& name) {
   fUserOutputFileName = name;
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 TString FairRun::GetUserOutputFileName() const
 {
   return fUserOutputFileName;
 }
-//_____________________________________________________________________________
-
 
 void FairRun::AlignGeometry() const {
   fAlignmentHandler.AlignGeometry();
 }
 
-void FairRun::AddAlignmentMatrices(
-    const std::map<std::string, TGeoHMatrix>& alignmentMatrices,
-    bool invertMatrices) {
+void FairRun::AddAlignmentMatrices(const std::map<std::string, TGeoHMatrix>& alignmentMatrices, bool invertMatrices) {
   fAlignmentHandler.AddAlignmentMatrices(alignmentMatrices, invertMatrices);
 }
 

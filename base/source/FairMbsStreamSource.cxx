@@ -15,31 +15,28 @@
 FairMbsStreamSource::FairMbsStreamSource(TString tServerName)
   : FairMbsSource(),
     fServerName(tServerName),
-    fxInputChannel(NULL),
-    fxEvent(NULL),
-    fxBuffer(NULL),
-    fxEventData(NULL),
-    fxSubEvent(NULL)
+    fxInputChannel(nullptr),
+    fxEvent(nullptr),
+    fxBuffer(nullptr),
+    fxEventData(nullptr),
+    fxSubEvent(nullptr)
 {
 }
-
 
 FairMbsStreamSource::FairMbsStreamSource(const FairMbsStreamSource& source)
   : FairMbsSource(source),
     fServerName(source.GetServerName()),
-    fxInputChannel(NULL),
-    fxEvent(NULL),
-    fxBuffer(NULL),
-    fxEventData(NULL),
-    fxSubEvent(NULL)
+    fxInputChannel(nullptr),
+    fxEvent(nullptr),
+    fxBuffer(nullptr),
+    fxEventData(nullptr),
+    fxSubEvent(nullptr)
 {
 }
-
 
 FairMbsStreamSource::~FairMbsStreamSource()
 {
 }
-
 
 Bool_t FairMbsStreamSource::Init()
 {
@@ -49,7 +46,6 @@ Bool_t FairMbsStreamSource::Init()
 
   return kTRUE;
 }
-
 
 Bool_t FairMbsStreamSource::ConnectToServer()
 {
@@ -69,7 +65,7 @@ Bool_t FairMbsStreamSource::ConnectToServer()
                           1,
                           1);
 
-  CHARS* sErrorString = NULL;
+  CHARS* sErrorString = nullptr;
   f_evt_error(status, sErrorString , 0);
 
   if(GETEVT__SUCCESS != status) {
@@ -80,7 +76,6 @@ Bool_t FairMbsStreamSource::ConnectToServer()
 
   return kTRUE;
 }
-
 
 Int_t FairMbsStreamSource::ReadEvent(UInt_t)
 {
@@ -96,13 +91,13 @@ Int_t FairMbsStreamSource::ReadEvent(UInt_t)
   if(GETEVT__SUCCESS != status) {
     LOG(info) << "FairMbsStreamSource::ReadEvent()";
 
-    CHARS* sErrorString = NULL;
+    CHARS* sErrorString = nullptr;
     f_evt_error(status, sErrorString , 0);
 
     return 1;
   }
 
-  Int_t nrSubEvts = f_evt_get_subevent(fxEvent, 0, NULL, NULL, NULL);
+  Int_t nrSubEvts = f_evt_get_subevent(fxEvent, 0, nullptr, nullptr, nullptr);
 
   Int_t sebuflength;
   Short_t setype;
@@ -137,18 +132,14 @@ Int_t FairMbsStreamSource::ReadEvent(UInt_t)
   return 0;
 }
 
-
 void FairMbsStreamSource::Close()
 {
   Int_t status = f_evt_get_close(fxInputChannel);
 
   LOG(info) << "FairMbsStreamSource::Close()";
 
-  CHARS* sErrorString = NULL;
+  CHARS* sErrorString = nullptr;
   f_evt_error(status, sErrorString , 0);
 }
 
-
 ClassImp(FairMbsStreamSource)
-
-

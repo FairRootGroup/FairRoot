@@ -26,11 +26,7 @@
 
 #include "MRevBuffer.h"            // class definition
 
-#include <iosfwd>                       // for ostream
-#include "TSocket.h"                    // for TSocket, etc
-
-#include <iostream>                     // for operator<<, basic_ostream, etc
-#include <sstream>                     // for stringstream
+#include <TSocket.h>                    // for TSocket, etc
 
 #include <signal.h>                     // IWYU pragma: keep
 #include <unistd.h>                     // IWYU pragma: keep
@@ -55,8 +51,6 @@
 
 #include "FairLogger.h"
 
-using namespace std;
-
 ClassImp(MRevBuffer)
 ClassImp(REvent)
 
@@ -80,7 +74,7 @@ int iOutMode = 0;    // needed in exitCli to handle CTL C
 
 MRevBuffer::MRevBuffer(Int_t iMode)
   : TObject(),
-    pTSocket(NULL),
+    pTSocket(nullptr),
     iSocket(0),
     iBufNo1(0),
     iBufNo2(0),
@@ -101,7 +95,7 @@ MRevBuffer::MRevBuffer(Int_t iMode)
     iEvtBuf(0),
     iEvtPar(0),
     piBuf(new int [iBufSizeAlloc/sizeof(int)+1]),
-    piNextEvt(NULL),
+    piNextEvt(nullptr),
     pEvt(new REvent())
 {
 //  iStatus = 1;                         // server not yet connected
@@ -435,7 +429,7 @@ gNextRecvL:
       }
       if ( iRC == 0 ) {
         if ( (iDebug == 2) || (iDebug == 3) ) {
-          LOG(debug) <<  std::endl;
+          LOG(debug) <<  "\n";
         }
         LOG(info) <<  "-E- receiving data length: connection closed by server"
 ;
@@ -466,7 +460,7 @@ gNextRecvL:
     if (iBufSize <= 0) {
       if (iBufSize == 0) {
         if (iDebug) {
-          LOG(debug) <<  std::endl;
+          LOG(debug) <<  "\n";
         }
         LOG(info) <<  "-W- server closed connection";
         LOG(info) <<  "    " << iEvtNo << " of " << iEvtMax
@@ -477,7 +471,7 @@ gNextRecvL:
 
       if (iBufSize == -1) {
         if (iRetryFirst) {
-          LOG(info) <<  std::endl << "-E- no data length received: ";
+          LOG(info) <<  "\n" << "-E- no data length received: ";
           iRetryFirst = 0;
         }
         iRetry++;
@@ -488,7 +482,7 @@ gNextRecvL:
         }
         goto gRetryLen;
       } else {
-        LOG(info) <<  std::endl << "-E- invalid data length received: "
+        LOG(info) <<  "\n" << "-E- invalid data length received: "
              << iBufSize;
         iError = 1;
       }
@@ -543,7 +537,7 @@ gNextRecvD:
       }
       if ( iRC == 0 ) {
         if ( (iDebug == 2) || (iDebug == 3) ) {
-          LOG(debug) <<  std::endl;
+          LOG(debug) <<  "\n";
         }
         LOG(info) <<  "-E- receiving data: connection closed by server"
 ;
@@ -577,7 +571,7 @@ gNextRecvD:
         if (iDebug == 1)
           printf("    dummy buffer no. %d, %d events\n",
                  iBufNoServ, iEvtBuf);
-        if (iDebug == 3) { LOG(info) <<  std::endl; }
+        if (iDebug == 3) { LOG(info) <<  "\n"; }
         LOG(debug) <<  "*** connection to remote event server okay, but currently no DAQ events ("
              << iBufNoServ << ")";
         iStatus = 3;
@@ -627,7 +621,7 @@ gNextRecvD:
 
     pFrag = reinterpret_cast<sMbsBufFrag*>(&piBuf[3]);
     if (iDebug == 1) {
-      LOG(debug) <<  std::endl << "buffer " << iBufNo
+      LOG(debug) <<  "\n" << "buffer " << iBufNo
            << " (" << iBufNoServ << "): "
            << " size "
            << iBufSize << " byte";
@@ -771,14 +765,14 @@ gNextRecvD:
   pEvt->ReFillData(piNextEvt);
 
   if (imySig == -1) {
-    LOG(info) <<  std::endl << "-D- CTL C specified";
+    LOG(info) <<  "\n" << "-D- CTL C specified";
     if (iDebug) { LOG(debug) <<  " (at end RevGet)"; }
-    else { LOG(info) << std::endl; }
+    else { LOG(info) << "\n"; }
     goto gEndGet;
   }
 
   if (iEvtNo == iEvtMax) {
-    LOG(info) <<  std::endl << "-I- all required events ("
+    LOG(info) <<  "\n" << "-I- all required events ("
          << iEvtMax << ") received: " << iBufNo << " buffers ("
          << iBufNo1 << " - " << iBufNo2 << ")";
     LOG(info) <<  "    fragments found: " << iFragBeginIgn << " begin, "
@@ -903,7 +897,7 @@ REvent::REvent()
   : TObject(),
     iSize(0),
     iNumb(0),
-    piData(NULL),
+    piData(nullptr),
     nSubEvt(0),
     subEvtSize(),
     subEvtType(),

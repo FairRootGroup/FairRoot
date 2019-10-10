@@ -7,13 +7,11 @@
  ********************************************************************************/
 #include "FairTimeStamp.h"
 
-// -------------------------------------------------------------------------
-
 std::ostream& FairTimeStamp::PrintTimeInfo(std::ostream& out) const
 {
-  out << " TimeStamp: " << GetTimeStamp() << " +/- " << GetTimeStampError() << std::endl;
-  FairMultiLinkedData_Interface::PrintLinkInfo(out);
-
-  return out;
+    out << " TimeStamp: " << GetTimeStamp() << " +/- " << GetTimeStampError() << std::endl;
+    FairMultiLinkedData_Interface::PrintLinkInfo(out);
+    return out;
 }
+
 ClassImp(FairTimeStamp)

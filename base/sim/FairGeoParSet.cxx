@@ -11,8 +11,7 @@
 // -------------------------------------------------------------------------
 
 #include "FairGeoParSet.h"
-#include "TGeoManager.h"                // for TGeoManager
-#include "TObjArray.h"                  // for TObjArray
+#include <TObjArray.h>                  // for TObjArray
 #include "FairParamList.h"              // for FairParamList
 
 ClassImp(FairGeoParSet)
@@ -22,10 +21,7 @@ FairGeoParSet::FairGeoParSet(const char* name,const char* title,const char* cont
     fGeoNodes(new TObjArray()),
     fGeom(0)
 {
-
-
 }
-
 
 FairGeoParSet::~FairGeoParSet(void)
 {
@@ -35,7 +31,6 @@ void FairGeoParSet::clear(void)
 {
   //delete fGeoNodes;
 // delete fGeom;
-
 }
 
 void FairGeoParSet::putParams(FairParamList* l)
@@ -52,5 +47,3 @@ Bool_t FairGeoParSet::getParams(FairParamList* l)
   if (!l->fillObject("Detector Geometry", fGeom)) { return kFALSE; }
   return kTRUE;
 }
-
-

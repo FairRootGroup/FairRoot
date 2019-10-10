@@ -11,20 +11,16 @@
 // -----          adapted april 2010               O.Hartmann          -----
 // -------------------------------------------------------------------------
 
-
-#include <iostream>
 #include "FairRadGridManager.h"
 #include "FairRootManager.h"
-#include "TLorentzVector.h"
-#include "TParticle.h"
-#include "TVirtualMC.h"
 #include "FairMesh.h"
 
-using namespace std;
+#include <TParticle.h>
+#include <TVirtualMC.h>
 
 ClassImp(FairRadGridManager)
 
-FairRadGridManager* FairRadGridManager::fgInstance = NULL;
+FairRadGridManager* FairRadGridManager::fgInstance = nullptr;
 
 Double_t FairRadGridManager::fLtmp = 0.0 ;
 
@@ -35,7 +31,7 @@ FairRadGridManager* FairRadGridManager::Instance()
 }
 
 FairRadGridManager::FairRadGridManager()
-  : fPointCollection(NULL),
+  : fPointCollection(nullptr),
     fTrackID(0),
     fVolumeID(0),
     fPosIn(TLorentzVector(0,0,0,0)),
@@ -51,11 +47,11 @@ FairRadGridManager::FairRadGridManager()
     fRadl(0),
     fAbsl(0),
     fEstimator(0),
-    fMeshList(NULL)
-  ,fOutputFileName("radGridManager.root")
+    fMeshList(nullptr),
+    fOutputFileName("radGridManager.root")
 {
   /** radiation length default ctor */
-  if(NULL == fgInstance) {
+  if(nullptr == fgInstance) {
     fgInstance = this;
   }
   fLtmp=0;
@@ -64,7 +60,7 @@ FairRadGridManager::FairRadGridManager()
 FairRadGridManager::~FairRadGridManager()
 {
   /** radiation length default dtor */
-  fgInstance = NULL;
+  fgInstance = nullptr;
 }
 
 void FairRadGridManager::Init()

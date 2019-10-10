@@ -12,11 +12,9 @@
 // -----    Created 08/12/05                      V. Friese           -----
 // ------------------------------------------------------------------------
 
-
 #include "FairMCEventHeader.h"
 #include "FairRootManager.h"
 
-// -----   Default constructor   ------------------------------------------
 FairMCEventHeader::FairMCEventHeader()
   : TNamed("MCEvent", "MC"),
     fRunId(0),
@@ -31,14 +29,9 @@ FairMCEventHeader::FairMCEventHeader()
     fRotX (0.),
     fRotY (0.),
     fRotZ (0.)
-
 {
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Constructor with run identifier   ------------------------------
 FairMCEventHeader::FairMCEventHeader(UInt_t runId)
   : TNamed("MCEvent", "MC"),
     fRunId(runId),
@@ -53,14 +46,9 @@ FairMCEventHeader::FairMCEventHeader(UInt_t runId)
     fRotX (0.),
     fRotY (0.),
     fRotZ (0.)
-
 {
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   -----------------------------------------
 FairMCEventHeader::FairMCEventHeader(Int_t iEvent, Double_t x, Double_t y,
                                      Double_t z, Double_t t,Double_t b,
                                      Int_t nPrim)
@@ -77,22 +65,13 @@ FairMCEventHeader::FairMCEventHeader(Int_t iEvent, Double_t x, Double_t y,
     fRotX (0.),
     fRotY (0.),
     fRotZ (0.)
-
 {
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Destructor   ---------------------------------------------------
 FairMCEventHeader::~FairMCEventHeader()
 {
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Public method Reset   ------------------------------------------
 void FairMCEventHeader::Reset()
 {
   fEventId = -1;
@@ -101,7 +80,6 @@ void FairMCEventHeader::Reset()
   fIsSet = kFALSE;
   fRotX = fRotY = fRotZ = 0.;
 }
-// ------------------------------------------------------------------------
 
 void FairMCEventHeader::Register()
 {

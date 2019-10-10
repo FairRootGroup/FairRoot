@@ -23,15 +23,9 @@
 #ifndef FAIRLINK_H_
 #define FAIRLINK_H_
 
-#include "TObject.h"                    // for TObject; ClassDefNV
+#include <Rtypes.h> // for Int_t, Float_t, etc, ClassDefNV
 
-#include <iosfwd>                       // for ostream
-#include "Rtypes.h"                     // for Int_t, Float_t, etc
-
-#include <iostream>                     // for ostream, cout
-
-#include <boost/serialization/access.hpp>
-#include <boost/serialization/base_object.hpp>
+#include <iostream> // for ostream, cout
 
 class FairLink
 {
@@ -58,26 +52,25 @@ class FairLink
       SetWeight(weight);
     };
     int GetFile() const;
-    int GetEntry() const {return fEntry;}
+    int GetEntry() const { return fEntry; }
     int GetType() const;
-    int GetIndex() const {return fIndex;}
-    float GetWeight() const {return fWeight;}
+    int GetIndex() const { return fIndex; }
+    float GetWeight() const { return fWeight; }
 
     void SetFile(int file);
-    void SetEntry(int entry){fEntry = entry;};
+    void SetEntry(int entry){ fEntry = entry; };
     void SetType(int type);
-    void SetIndex(int index){fIndex = index;};
+    void SetIndex(int index){ fIndex = index; };
 
-    void SetWeight(Float_t weight) {fWeight = weight;}
-    void AddWeight(Float_t weight) {fWeight += weight;}
-
+    void SetWeight(Float_t weight) { fWeight = weight; }
+    void AddWeight(Float_t weight) { fWeight += weight; }
 
     void PrintLinkInfo(std::ostream& out = std::cout) const;
 
     bool operator==(const FairLink& link) const {
       if ((GetFile() == link.GetFile() || link.GetFile() == -1) &&
-		  (GetEntry() == link.GetEntry() || link.GetEntry() == -1) &&
-			  GetType() == link.GetType() && GetIndex() == link.GetIndex()) {
+          (GetEntry() == link.GetEntry() || link.GetEntry() == -1) &&
+          GetType() == link.GetType() && GetIndex() == link.GetIndex()) {
         return true;
       } else {
         return false;
@@ -85,20 +78,20 @@ class FairLink
     }
 
     bool operator<(const FairLink& link) const {
-		if (GetFile() != -1 && link.GetFile() != -1){
-			if (GetFile() < link.GetFile()) 		return true;
-			else if (link.GetFile() < GetFile()) 	return false;
-		}
-		if (GetEntry() != -1 && link.GetEntry() != -1){
-			if(GetEntry() < link.GetEntry())		return true;
-			else if (link.GetEntry() < GetEntry())	return false;
-		}
-		if (GetType() < link.GetType())				return true;
-		else if (link.GetType() < GetType())		return false;
-		if (GetIndex() < link.GetIndex())			return true;
-		else if (link.GetIndex() < GetIndex())		return false;
+      if (GetFile() != -1 && link.GetFile() != -1) {
+        if (GetFile() < link.GetFile()) return true;
+        else if (link.GetFile() < GetFile()) return false;
+      }
+      if (GetEntry() != -1 && link.GetEntry() != -1) {
+        if (GetEntry() < link.GetEntry()) return true;
+        else if (link.GetEntry() < GetEntry()) return false;
+      }
+      if (GetType() < link.GetType()) return true;
+      else if (link.GetType() < GetType()) return false;
+      if (GetIndex() < link.GetIndex()) return true;
+      else if (link.GetIndex() < GetIndex()) return false;
 
-		return false;
+      return false;
     }
 
     friend std::ostream& operator<< (std::ostream& out, const FairLink& link) {
@@ -109,15 +102,14 @@ class FairLink
     ClassDefNV(FairLink, 5);
 
     template<class Archive>
-        void serialize(Archive& ar, const unsigned int)
-        {
-            ar& fFile;
-            ar& fType;
-            ar& fEntry;
-            ar& fIndex;
-            ar& fWeight;
-        }
-
+    void serialize(Archive& ar, const unsigned int)
+    {
+        ar& fFile;
+        ar& fType;
+        ar& fEntry;
+        ar& fIndex;
+        ar& fWeight;
+    }
 
   private:
     unsigned char fFile;
@@ -125,8 +117,6 @@ class FairLink
     int fEntry;
     int fIndex;
     float fWeight;
-
-
 };
 
 inline FairLink::FairLink() :
@@ -145,7 +135,7 @@ inline FairLink::FairLink(Int_t type, Int_t index, Float_t weight)
    fIndex(index),
    fWeight(weight)
 {
-	SetType(type);
+  SetType(type);
 }
 
 inline FairLink::FairLink(Int_t file, Int_t entry, Int_t type, Int_t index, Float_t weight)
@@ -155,32 +145,32 @@ inline FairLink::FairLink(Int_t file, Int_t entry, Int_t type, Int_t index, Floa
    fIndex(index),
    fWeight(weight)
 {
-	SetFile(file);
-	SetType(type);
+  SetFile(file);
+  SetType(type);
 }
 
 inline void FairLink::SetType(int type)
 {
-	if (type < -1) return;
-	fType = type + 1;
+  if (type < -1) return;
+  fType = type + 1;
 }
 
 inline int FairLink::GetType() const
 {
-	int type = fType;
-	return type - 1;
+  int type = fType;
+  return type - 1;
 }
 
 inline void FairLink::SetFile(int file)
 {
-	if (file < -1) return;
-	fFile = file + 1;
+  if (file < -1) return;
+  fFile = file + 1;
 }
 
 inline int FairLink::GetFile() const
 {
-	int file = fFile;
-	return file - 1;
+  int file = fFile;
+  return file - 1;
 }
 
 #endif /* FAIRLINK_H_ */

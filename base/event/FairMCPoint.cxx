@@ -8,7 +8,6 @@
 #include "FairMCPoint.h"
 #include "FairLogger.h"
 
-// -----   Default constructor   -------------------------------------------
 FairMCPoint::FairMCPoint()
   : FairMultiLinkedData_Interface(),
     fTrackID(-1),
@@ -23,16 +22,9 @@ FairMCPoint::FairMCPoint()
     fX(0),
     fY (0),
     fZ(0)
-
-
 {
-
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   ------------------------------------------
 FairMCPoint::FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos,
                          TVector3 mom, Double_t tof, Double_t length,
                          Double_t eLoss, UInt_t EventId)
@@ -51,23 +43,15 @@ FairMCPoint::FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos,
    fZ(pos.Z())
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Destructor   ----------------------------------------------------
-FairMCPoint::~FairMCPoint() { }
-// -------------------------------------------------------------------------
+FairMCPoint::~FairMCPoint() {}
+
 void FairMCPoint::Print(const Option_t*) const
 {
-  LOG(debug) << "FairMC point for track " << fTrackID
-             << " in detector " << fDetectorID;
+  LOG(debug) << "FairMC point for track " << fTrackID << " in detector " << fDetectorID;
   LOG(debug) << "Position (" << fX << ", " << fY << ", " << fZ << ") cm";
-  LOG(debug) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
-             << ") GeV";
-  LOG(debug) << "    Time " << fTime << " ns,  Length " << fLength
-             << " cm,  Energy loss " << fELoss*1.0e06 << " keV";
+  LOG(debug) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz << ") GeV";
+  LOG(debug) << "    Time " << fTime << " ns,  Length " << fLength << " cm,  Energy loss " << fELoss * 1.0e06 << " keV";
 }
 
-
-
 ClassImp(FairMCPoint)
-

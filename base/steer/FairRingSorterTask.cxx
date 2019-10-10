@@ -15,9 +15,8 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include <iosfwd>                       // for ostream
-#include "TClass.h"                     // for TClass
-#include "TClonesArray.h"               // for TClonesArray
+#include <TClass.h>                     // for TClass
+#include <TClonesArray.h>               // for TClonesArray
 
 #include <iostream>                     // for operator<<, cout, ostream, etc
 #include <vector>                       // for vector
@@ -29,13 +28,11 @@ InitStatus FairRingSorterTask::ReInit()
 
 FairRingSorter* FairRingSorterTask::InitSorter(Int_t numberOfCells, Double_t widthOfCells) const
 {
-	return new FairRingSorter(numberOfCells, widthOfCells);
+  return new FairRingSorter(numberOfCells, widthOfCells);
 }
 
-// -----   Public method Init   --------------------------------------------
 InitStatus FairRingSorterTask::Init()
 {
-
   FairRootManager* ioman = FairRootManager::Instance();
   if ( ! ioman ) {
     std::cout << "-E- FairRingSorterTaskT::Init: "
@@ -51,17 +48,11 @@ InitStatus FairRingSorterTask::Init()
   if(fVerbose>1) { Info("Init","Registering this branch: %s/%s",fFolder.Data(),fOutputBranch.Data()); }
   fOutputArray = ioman->Register(fOutputBranch, fInputArray->GetClass()->GetName(), fFolder, fPersistance);
 
-
   return kSUCCESS;
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method Exec   --------------------------------------------
 void FairRingSorterTask::Exec(Option_t*)
 {
-
-
-
   fInputArray = FairRootManager::Instance()->GetTClonesArray(fInputBranch);
   if (fVerbose > 1) {
     std::cout << "-I- FairRingSorterTask: Size PixelArray: " << fInputArray->GetEntriesFast() << std::endl;
@@ -80,7 +71,6 @@ void FairRingSorterTask::Exec(Option_t*)
 
   std::vector<FairTimeStamp*> sortedData = fSorter->GetOutputData();
 
-
   fOutputArray = FairRootManager::Instance()->GetEmptyTClonesArray(fOutputBranch);
   for (unsigned int i = 0; i < sortedData.size(); i++) {
     AddNewDataToTClonesArray(sortedData[i]);
@@ -89,15 +79,12 @@ void FairRingSorterTask::Exec(Option_t*)
   fEntryNr++;
 }
 
-
 void FairRingSorterTask::AddNewDataToTClonesArray(FairTimeStamp* data)
 {
-	FairRootManager* ioman = FairRootManager::Instance();
-	TClonesArray* myArray = ioman->GetTClonesArray(fOutputBranch);
-	(*myArray)[myArray->GetEntries()] = data;
+  FairRootManager* ioman = FairRootManager::Instance();
+  TClonesArray* myArray = ioman->GetTClonesArray(fOutputBranch);
+  (*myArray)[myArray->GetEntries()] = data;
 }
-
-// -------------------------------------------------------------------------
 
 void FairRingSorterTask::FinishEvent()
 {

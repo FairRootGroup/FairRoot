@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -31,16 +31,14 @@
 #ifndef FairWriteoutBuffer_H_
 #define FairWriteoutBuffer_H_
 
-#include "TObject.h"                    // for TObject
-
 #include "FairLogger.h"                 // for FairLogger
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include <iosfwd>                       // for ostream
-#include "Rtypes.h"                     // for Bool_t, Int_t, etc
-#include "TClonesArray.h"               // for TClonesArray
-#include "TString.h"                    // for TString
+#include <TObject.h>                    // for TObject
+#include <Rtypes.h>                     // for Bool_t, Int_t, etc
+#include <TClonesArray.h>               // for TClonesArray
+#include <TString.h>                    // for TString
 
 #include <iostream>                     // for cout, ostream
 #include <map>                          // for multimap
@@ -63,7 +61,7 @@ class FairWriteoutBuffer: public TObject
     }
 
    Bool_t IsBufferingActivated(){ return fActivateBuffering;}
-  
+
 /// Fills a pointer to a data object into the buffer. StartTime gives the time when the data can influence later data, activeTime gives the time how long the data can influence later data.
 /// Both time data has to be given as an absolute time!
     virtual void FillNewData(FairTimeStamp* data, double startTime, double activeTime);
@@ -73,7 +71,6 @@ class FairWriteoutBuffer: public TObject
     }
     virtual std::vector<FairTimeStamp*> GetRemoveOldData(double time);
     virtual std::vector<FairTimeStamp*> GetAllData();
-
 
     virtual void SetVerbose(Int_t val) {
       fVerbose = val;
@@ -90,7 +87,6 @@ class FairWriteoutBuffer: public TObject
     virtual void WriteOutAllData();
 
   protected:
-
     virtual void AddNewDataToTClonesArray(FairTimeStamp* data) = 0; ///< store the data from the FairTimeStamp pointer in a TClonesArray (you have to cast it to your type of data)
     virtual double FindTimeForData(FairTimeStamp* data) = 0;  ///< if the same data object (like a pad or a pixel) is already present in the buffer, the time of this object has to be returned otherwise -1
     virtual void FillDataMap(FairTimeStamp* data, double activeTime) = 0; ///< add a new element in the search buffer
@@ -103,7 +99,6 @@ class FairWriteoutBuffer: public TObject
       result.push_back(oldData);
       return result;
     }
-
 
     virtual void WriteOutDataDeadTimeMap(double time);
     virtual void MoveDataFromStartTimeMapToDeadTimeMap(double time);

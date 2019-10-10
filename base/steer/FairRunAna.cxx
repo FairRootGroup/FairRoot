@@ -13,13 +13,11 @@
 #include "FairRunAna.h"
 
 #include "FairBaseParSet.h"             // for FairBaseParSet
-#include "FairGeoParSet.h"              // for FairGeoParSet
 #include "FairEventHeader.h"            // for FairEventHeader
 #include "FairField.h"                  // for FairField
 #include "FairFieldFactory.h"           // for FairFieldFactory
 #include "FairFileHeader.h"             // for FairFileHeader
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
-#include "FairParIo.h"                  // for FairParIo
 #include "FairParSet.h"                 // for FairParSet
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairRunIdGenerator.h"         // for FairRunIdGenerator
@@ -30,31 +28,24 @@
 #include "FairFileSource.h"             // ONLY TEMPORARILY, FOR COMPABILITY
 #include "FairMixedSource.h"            // ONLY TEMPORARILY, FOR COMPABILITY
 
-#include <iosfwd>                       // for ostream
-#include "TChain.h"                     // for TChain
 #include "TCollection.h"                // for TIter
-#include "TDirectory.h"                 // for TDirectory, gDirectory
 #include "TFile.h"                      // for TFile, gFile
 #include "TGeoManager.h"                // for gGeoManager, TGeoManager
 #include "TKey.h"                       // for TKey
 #include "TList.h"                      // for TList
-#include "TNamed.h"                     // for TNamed
 #include "TObjArray.h"                  // for TObjArray
 #include "TObject.h"                    // for TObject
 #include "TROOT.h"                      // for TROOT, gROOT
 #include "TSeqCollection.h"             // for TSeqCollection
 #include "TSystem.h"                    // for TSystem, gSystem
-#include "TTree.h"                      // for TTree
 
-#include <stdlib.h>                     // for NULL, exit
+#include <stdlib.h>                     // for exit
 #include "signal.h"
 #include <string.h>                     // for strcmp
 #include <iostream>                     // for operator<<, basic_ostream, etc
-#include <list>                         // for list
 
 using std::cout;
 using std::endl;
-using std::list;
 
 Bool_t gFRAIsInterrupted;
 
@@ -378,7 +369,7 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
       if (fGenerateRunInfo) {
         fRunInfo.StoreInfo();
       }
-      if (NULL !=  FairTrajFilter::Instance()) {
+      if (nullptr !=  FairTrajFilter::Instance()) {
         FairTrajFilter::Instance()->Reset();
       }
 
@@ -414,13 +405,13 @@ void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
       }
     } else {
       if (Ev_end > MaxAllowed) {
-	cout << "-------------------Warning---------------------------" << endl;
-	cout << " -W FairRunAna : File has less events than requested!!" << endl;
-	cout << " File contains : " << MaxAllowed  << " Events" << endl;
-	cout << " Requested number of events = " <<  Ev_end <<  " Events"<< endl;
-	cout << " The number of events is set to " << MaxAllowed << " Events"<< endl;
-	cout << "-----------------------------------------------------" << endl;
-	Ev_end = MaxAllowed;
+        cout << "-------------------Warning---------------------------" << endl;
+        cout << " -W FairRunAna : File has less events than requested!!" << endl;
+        cout << " File contains : " << MaxAllowed  << " Events" << endl;
+        cout << " Requested number of events = " <<  Ev_end <<  " Events"<< endl;
+        cout << " The number of events is set to " << MaxAllowed << " Events"<< endl;
+        cout << "-----------------------------------------------------" << endl;
+        Ev_end = MaxAllowed;
       }
     }
     LOG(info) << "FairRunAna::Run() After checking, the run will run from event " << Ev_start << " to " << Ev_end << ".";
@@ -458,7 +449,7 @@ void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
     if (fGenerateRunInfo) {
       fRunInfo.StoreInfo();
     }
-    if (NULL !=  FairTrajFilter::Instance()) {
+    if (nullptr !=  FairTrajFilter::Instance()) {
       FairTrajFilter::Instance()->Reset();
     }
 
@@ -482,7 +473,7 @@ void FairRunAna::Run(Double_t delta_t)
     Fill();
     fRootManager->DeleteOldWriteoutBufferData();
     fTask->FinishEvent();
-    if (NULL !=  FairTrajFilter::Instance()) {
+    if (nullptr !=  FairTrajFilter::Instance()) {
       FairTrajFilter::Instance()->Reset();
     }
   }
@@ -559,7 +550,7 @@ void FairRunAna::RunTSBuffers()
     Fill();
     fRootManager->DeleteOldWriteoutBufferData();
     fTask->FinishEvent();
-    if (NULL !=  FairTrajFilter::Instance()) {
+    if (nullptr !=  FairTrajFilter::Instance()) {
       FairTrajFilter::Instance()->Reset();
     }
   }

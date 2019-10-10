@@ -10,56 +10,53 @@
 // -----                           FairLmdSource                           -----
 // -----                    Created 12.04.2013 by D.Kresan                 -----
 // -----------------------------------------------------------------------------
-#include <iostream>
-using namespace std;
-
-#include "TList.h"
-#include "TObjString.h"
-#include "TRegexp.h"
-#include "TSystemDirectory.h"
-#include "TSystem.h"
 
 #include "FairLmdSource.h"
 #include "FairLogger.h"
 
+#include <TIterator.h>
+#include <TList.h>
+#include <TObjString.h>
+#include <TRegexp.h>
+#include <TSystem.h>
+#include <TSystemDirectory.h>
+#include <TSystemFile.h>
+
 FairLmdSource::FairLmdSource()
   : FairMbsSource(),
     fCurrentFile(0),
-	fNEvent(0),
+    fNEvent(0),
     fCurrentEvent(0),
     fFileNames(new TList()),
-    fxInputChannel(NULL),
-    fxEvent(NULL),
-    fxBuffer(NULL),
-    fxEventData(NULL),
-    fxSubEvent(NULL),
-    fxInfoHeader(NULL)
+    fxInputChannel(nullptr),
+    fxEvent(nullptr),
+    fxBuffer(nullptr),
+    fxEventData(nullptr),
+    fxSubEvent(nullptr),
+    fxInfoHeader(nullptr)
 {
 }
-
 
 FairLmdSource::FairLmdSource(const FairLmdSource& source)
   : FairMbsSource(source),
     fCurrentFile(source.GetCurrentFile()),
-	fNEvent(0),
+    fNEvent(0),
     fCurrentEvent(0),
     fFileNames(new TList()),
-    fxInputChannel(NULL),
-    fxEvent(NULL),
-    fxBuffer(NULL),
-    fxEventData(NULL),
-    fxSubEvent(NULL),
-    fxInfoHeader(NULL)
+    fxInputChannel(nullptr),
+    fxEvent(nullptr),
+    fxBuffer(nullptr),
+    fxEventData(nullptr),
+    fxSubEvent(nullptr),
+    fxInfoHeader(nullptr)
 {
 }
-
 
 FairLmdSource::~FairLmdSource()
 {
   fFileNames->Delete();
   delete fFileNames;
 }
-
 
 void FairLmdSource::AddFile(TString fileName)
 {
@@ -73,7 +70,6 @@ void FairLmdSource::AddFile(TString fileName)
   TObjString* str = new TObjString(fileName);
   fFileNames->Add(str);
 }
-
 
 void FairLmdSource::AddPath(TString dir, TString wildCard)
 {
@@ -96,7 +92,7 @@ void FairLmdSource::AddPath(TString dir, TString wildCard)
   TIterator *iter = list->MakeIterator();
   TSystemFile *file;
   TString name;
-  while(NULL != (file = static_cast<TSystemFile*>(iter->Next())))
+  while(nullptr != (file = static_cast<TSystemFile*>(iter->Next())))
   {
     name = file->GetName();
     if(name.Contains(*re))
@@ -108,7 +104,6 @@ void FairLmdSource::AddPath(TString dir, TString wildCard)
 
   list->Delete();
 }
-
 
 Bool_t FairLmdSource::Init()
 {
@@ -128,7 +123,6 @@ Bool_t FairLmdSource::Init()
 
   return kTRUE;
 }
-
 
 Bool_t FairLmdSource::OpenNextFile(TString fileName)
 {
@@ -160,7 +154,6 @@ Bool_t FairLmdSource::OpenNextFile(TString fileName)
   return kTRUE;
 }
 
-
 Int_t FairLmdSource::ReadEvent(UInt_t)
 {
   void* evtptr = &fxEvent;
@@ -174,7 +167,7 @@ Int_t FairLmdSource::ReadEvent(UInt_t)
 
     LOG(info) << "FairMbsStreamSource::ReadEvent()";
 
-    CHARS* sErrorString = NULL;
+    CHARS* sErrorString = nullptr;
     f_evt_error(status, sErrorString , 0);
 
     if(fCurrentFile >= fFileNames->GetSize()) {
@@ -203,7 +196,7 @@ Int_t FairLmdSource::ReadEvent(UInt_t)
   Bool_t result = kFALSE;
   /*Bool_t result = */Unpack(reinterpret_cast<Int_t*>(fxEvent), sizeof(s_ve10_1), -2, -2, -2, -2, -2);
 
-  Int_t nrSubEvts = f_evt_get_subevent(fxEvent, 0, NULL, NULL, NULL);
+  Int_t nrSubEvts = f_evt_get_subevent(fxEvent, 0, nullptr, nullptr, nullptr);
   Int_t sebuflength;
   Short_t setype;
   Short_t sesubtype;
@@ -244,7 +237,7 @@ Int_t FairLmdSource::ReadEvent(UInt_t)
   // Increment evt counters.
   fNEvent++;
   fCurrentEvent++;
- 
+
   if(! result)
   {
     return 2;
@@ -253,7 +246,6 @@ Int_t FairLmdSource::ReadEvent(UInt_t)
  return 0;
 }
 
-
 void FairLmdSource::Close()
 {
   f_evt_get_close(fxInputChannel);
@@ -261,7 +253,4 @@ void FairLmdSource::Close()
   fCurrentEvent=0;
 }
 
-
 ClassImp(FairLmdSource)
-
-

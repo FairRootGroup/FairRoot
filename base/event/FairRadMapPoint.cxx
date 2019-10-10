@@ -9,11 +9,8 @@
 // -----                      FairRadMapPoint source file              -----
 // -------------------------------------------------------------------------
 
-
 #include "FairRadMapPoint.h"
 
-
-// -----   Default constructor   -------------------------------------------
 FairRadMapPoint::FairRadMapPoint()
   : FairMCPoint(),
     fPdg(0),
@@ -30,16 +27,9 @@ FairRadMapPoint::FairRadMapPoint()
     fPxOut(0),
     fPyOut(0),
     fPzOut(0)
-
-
 {
-  /**default ctor*/
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   ------------------------------------------
 FairRadMapPoint::FairRadMapPoint(Int_t trackID, Int_t detID, TVector3 pos,
                                  TVector3 mom, Double_t tof, Double_t length,
                                  Double_t eLoss, TVector3 posOut, TVector3 momOut,
@@ -62,21 +52,13 @@ FairRadMapPoint::FairRadMapPoint(Int_t trackID, Int_t detID, TVector3 pos,
     fPzOut ( momOut.Pz())
 
 {
-  /**std ctor*/
-
 }
-// -------------------------------------------------------------------------
 
-
-// -----   Destructor   ----------------------------------------------------
 FairRadMapPoint::~FairRadMapPoint() { }
-// -------------------------------------------------------------------------
 
 void  FairRadMapPoint::Print(const Option_t*) const
 {
   /**to be implimented*/
-
-
 }
-ClassImp(FairRadMapPoint)
 
+ClassImp(FairRadMapPoint)

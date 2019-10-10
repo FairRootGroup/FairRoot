@@ -16,18 +16,15 @@
 #include "FairRootManager.h"            // for FairRootManager
 
 #include "TClonesArray.h"               // for TClonesArray
-#include "TLorentzVector.h"             // for TLorentzVector
 #include "TVector3.h"                   // for TVector3
 #include "TVirtualMC.h"                 // for TVirtualMC
 #include "TVirtualMCStack.h"            // for TVirtualMCStack
-
-#include <stddef.h>                     // for NULL
 
 using namespace std;
 
 ClassImp(FairRadLenManager)
 
-FairRadLenManager* FairRadLenManager::fgInstance = NULL;
+FairRadLenManager* FairRadLenManager::fgInstance = nullptr;
 
 FairRadLenManager* FairRadLenManager::Instance()
 {
@@ -53,7 +50,7 @@ FairRadLenManager::FairRadLenManager()
     fAbsl(0)
 {
   /** radiation length default ctor */
-  if(NULL == fgInstance) {
+  if (nullptr == fgInstance) {
     fgInstance = this;
     //    fPointCollection=new TClonesArray("FairRadLenPoint");
   }
@@ -62,7 +59,7 @@ FairRadLenManager::FairRadLenManager()
 FairRadLenManager::~FairRadLenManager()
 {
   /** radiation length default dtor */
-  fgInstance = NULL;
+  fgInstance = nullptr;
   fPointCollection->Delete();
   delete fPointCollection;
 }

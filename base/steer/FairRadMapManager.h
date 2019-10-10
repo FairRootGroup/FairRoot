@@ -11,8 +11,8 @@
 #ifndef FAIRRADMAPMANAGER_H
 #define FAIRRADMAPMANAGER_H 1
 
-#include "Rtypes.h"                     // for Double_t, Float_t, Int_t, etc
-#include "TLorentzVector.h"             // for TLorentzVector
+#include <Rtypes.h>                     // for Double_t, Float_t, Int_t, etc
+#include <TLorentzVector.h>             // for TLorentzVector
 
 class TClonesArray;
 class TMap;
@@ -21,10 +21,8 @@ class TMap;
  * @class FairRadMapManager
  */
 
-
 class FairRadMapManager
 {
-
   public:
     /**
      * Default constructor.
@@ -43,9 +41,7 @@ class FairRadMapManager
      */
     ClassDef(FairRadMapManager,1);
 
-
   private:
-
     FairRadMapManager(const FairRadMapManager&);
     FairRadMapManager& operator=(const FairRadMapManager&);
 
@@ -95,7 +91,6 @@ class FairRadMapManager
     Double_t       fActMass;
 
     TMap* fMassMap;
-
 
   public:
     /**Add point to collection*/

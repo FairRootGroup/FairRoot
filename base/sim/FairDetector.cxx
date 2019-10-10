@@ -18,17 +18,14 @@
 #include "FairVolume.h"                 // for FairVolume
 #include "FairRootManager.h"
 
-#include "TFolder.h"                    // for TFolder
-#include "TList.h"                      // for TList
-#include "TObject.h"                    // for TObject
-#include "TROOT.h"                      // for TROOT, gROOT
-#include "TRefArray.h"                  // for TRefArray
-#include "TString.h"                    // for TString
-#include "TGeoManager.h"                // for gGeoManager
-#include "TVirtualMC.h"                 // for TVirtualMC
-
-#include <stddef.h>                     // for NULL
-// -------------------------------------------------------------------------
+#include <TFolder.h>                    // for TFolder
+#include <TList.h>                      // for TList
+#include <TObject.h>                    // for TObject
+#include <TROOT.h>                      // for TROOT, gROOT
+#include <TRefArray.h>                  // for TRefArray
+#include <TString.h>                    // for TString
+#include <TGeoManager.h>                // for gGeoManager
+#include <TVirtualMC.h>                 // for TVirtualMC
 
 FairDetector::FairDetector(const char* Name, Bool_t Active, Int_t DetId )
   :FairModule(Name, "FAIR Detector", Active),
@@ -40,10 +37,7 @@ FairDetector::FairDetector(const char* Name, Bool_t Active, Int_t DetId )
   lname += "GeoPar";
   flGeoPar->SetName(lname.Data());
   fGeoSaved = kFALSE;
-
-
 }
-// -------------------------------------------------------------------------
 
 FairDetector::FairDetector(const FairDetector& rhs)
   :FairModule(rhs),
@@ -51,13 +45,11 @@ FairDetector::FairDetector(const FairDetector& rhs)
    fLogger(rhs.fLogger)
 {
 }
-// -------------------------------------------------------------------------
 
 FairDetector::~FairDetector()
 {
   delete flGeoPar;
 }
-// -------------------------------------------------------------------------
 
 FairDetector& FairDetector::operator= (const FairDetector& rhs)
 {
@@ -74,16 +66,11 @@ FairDetector& FairDetector::operator= (const FairDetector& rhs)
   return *this;
 }
 
-// -------------------------------------------------------------------------
-
 FairDetector::FairDetector()
   :fDetId(0),
    fLogger(FairLogger::GetLogger())
 {
-
 }
-
-// -------------------------------------------------------------------------
 
 void   FairDetector::Initialize()
 {
@@ -102,7 +89,7 @@ void   FairDetector::Initialize()
     Ssiz_t pos = cutName.Index (copysign, 1);
     if(pos>1) { cutName.Resize(pos); }
     if ( aVol->getModId() == GetModId()  ) {
-      fMCid=TVirtualMC::GetMC()->VolId(cutName.Data());
+      fMCid = TVirtualMC::GetMC()->VolId(cutName.Data());
       aVol->setMCid(fMCid);
       fN=aVol->getGeoNode();
       if (fN) { fN->setMCid(fMCid); }
@@ -111,30 +98,21 @@ void   FairDetector::Initialize()
 
   // Initialize cached pointer to MC (on master in sequential mode)
   fMC = TVirtualMC::GetMC();
-
 }
-// -------------------------------------------------------------------------
 
 void FairDetector::SaveGeoParams()
 {
-
   if ( ! fGeoSaved  ) {
     LOG(info) << "Detector: " << GetName() << " Geometry parameters saved ... ";
     TFolder* mf = dynamic_cast<TFolder*>(gROOT->FindObjectAny(FairRootManager::GetFolderName())) ;
-    TFolder* stsf = NULL;
+    TFolder* stsf = nullptr;
     if (mf ) { stsf = dynamic_cast<TFolder*> (mf->FindObjectAny(GetName())); }
     if (stsf) {
-      TFolder* newf = stsf->AddFolder("Parameters","Detector parameters",NULL);
+      TFolder* newf = stsf->AddFolder("Parameters","Detector parameters", nullptr);
       newf->Add( flGeoPar ) ;
     }
     fGeoSaved = kTRUE;
   }
 }
-// -------------------------------------------------------------------------
-
 
 ClassImp(FairDetector)
-
-
-
-

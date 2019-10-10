@@ -8,10 +8,10 @@
 #ifndef FAIR_VOLUME_H
 #define FAIR_VOLUME_H
 
-#include "TNamed.h"                     // for TNamed
+#include <TNamed.h>                     // for TNamed
+#include <Rtypes.h>                     // for Int_t, FairVolume::Class, etc
+#include <TString.h>                    // for TString
 
-#include "Rtypes.h"                     // for Int_t, FairVolume::Class, etc
-#include "TString.h"                    // for TString
 #include "FairModule.h"
 #include "FairDetector.h"
 class FairGeoNode;
@@ -23,12 +23,9 @@ class FairGeoNode;
  * @since 12.01.04
  */
 
-
 class FairVolume : public TNamed
 {
-
   public:
-
     FairVolume();
     FairVolume(TString name, Int_t id=0, Int_t detid=0,FairModule* fMod=0);
     virtual ~FairVolume();
@@ -36,13 +33,13 @@ class FairVolume : public TNamed
     //    const char*  GetName() { return fName.Data();}
     //    TString getName() { return fName;}
 
-    void setRealName( TString name ) { fRealName = name;}
+    void setRealName(TString name) { fRealName = name;}
     const char* getRealName() { return fRealName.Data();}
     Int_t getVolumeId() { return fVolumeId;}
     Int_t getModId() { return  fModId;}
     void  setModId(Int_t id) { fModId=id;}
     void  setCopyNo(Int_t id) { fCopyNo=id;}
-    void  setVolumeId ( Int_t id ) {fVolumeId= id;}
+    void  setVolumeId (Int_t id) {fVolumeId= id;}
     void  setGeoNode(FairGeoNode* d) {fNode=d;}
     void  setMotherId(Int_t fM) {fMotherId=fM;}
     void  setMotherCopyNo(Int_t CopyNo) {fMotherCopyNo=CopyNo;}
@@ -79,10 +76,8 @@ class FairVolume : public TNamed
     FairDetector* fDetector; /** The Detector which will proccess the hits for this volume*/
     FairModule*   fModule;    /**The Module in which the volume is */
     FairGeoNode*  fNode;     /**Node corresponding to this volume*/
-    
 
     ClassDef(FairVolume,2) // Volume Definition
-
 };
 
-#endif //
+#endif

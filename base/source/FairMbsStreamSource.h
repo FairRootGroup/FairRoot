@@ -18,7 +18,8 @@ extern "C"
 #include "s_bufhe_swap.h"
 }
 
-#include "TString.h"
+#include <TString.h>
+#include <Rtypes.h>
 
 #include "FairMbsSource.h"
 
@@ -48,10 +49,8 @@ class FairMbsStreamSource : public FairMbsSource
 
     FairMbsStreamSource& operator=(const FairMbsStreamSource&);
 
-
   public:
     ClassDef(FairMbsStreamSource, 0)
 };
-
 
 #endif

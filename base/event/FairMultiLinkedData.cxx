@@ -33,7 +33,6 @@ FairMultiLinkedData::FairMultiLinkedData()
    fInsertHistory(kTRUE),
    fVerbose(0),
    fDefaultType(0)
-
 {
 }
 
@@ -56,7 +55,6 @@ FairMultiLinkedData::FairMultiLinkedData(TString dataType, const std::vector<Int
    fInsertHistory(kTRUE),
    fVerbose(0),
    fDefaultType(0)
-
 {
   SimpleAddLinks(fileId, evtId, FairRootManager::Instance()->GetBranchId(dataType), links, bypass, mult);
 //  FairMultiLinkedData(ioman->GetBranchId(dataType), links, persistanceCheck, bypass, addup, mult);
@@ -70,7 +68,6 @@ FairMultiLinkedData::FairMultiLinkedData(Int_t dataType, const std::vector<Int_t
    fInsertHistory(kTRUE),
    fVerbose(0),
    fDefaultType(0)
-
 {
   SimpleAddLinks(fileId, evtId, dataType, links, bypass, mult);
 }
@@ -92,7 +89,6 @@ void FairMultiLinkedData::SetLinks(FairMultiLinkedData links, Float_t mult)
   AddLinks(links, mult);
 }
 
-
 void FairMultiLinkedData::SetLink(FairLink link, Bool_t bypass, Float_t mult)
 {
   fLinks.clear();
@@ -100,7 +96,6 @@ void FairMultiLinkedData::SetLink(FairLink link, Bool_t bypass, Float_t mult)
   link.SetWeight(weight);
   AddLink(link, bypass);
 }
-
 
 void FairMultiLinkedData::AddLinks(FairMultiLinkedData links, Float_t mult)
 {
@@ -113,7 +108,6 @@ void FairMultiLinkedData::AddLinks(FairMultiLinkedData links, Float_t mult)
 
 void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
 {
-
   Float_t weight = link.GetWeight() * mult;
   link.SetWeight(weight);
   //std::cout << fVerbose << std::endl;
@@ -174,13 +168,12 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
     if (fInsertHistory == kTRUE)
     	InsertHistory(link);
   }
-
 }
 
 void FairMultiLinkedData::InsertLink(FairLink link)
 {
   if (FairLinkManager::Instance()->IsIgnoreType(link.GetType())){
-	return;
+    return;
   }
 
   std::set<FairLink>::iterator it = fLinks.find(link);
@@ -197,52 +190,52 @@ void FairMultiLinkedData::InsertLink(FairLink link)
 
 void FairMultiLinkedData::InsertHistory(FairLink link)
 {
-        FairRootManager* ioman = FairRootManager::Instance();
-        FairMultiLinkedData* pointerToLinks = 0;
+    FairRootManager* ioman = FairRootManager::Instance();
+    FairMultiLinkedData* pointerToLinks = 0;
 
-        if (fVerbose > 1)
-        	    std::cout << "FairMultiLinkedData::InsertHistory for Link " << link << " Type: " << ioman->GetBranchName(link.GetType()) << std::endl;
+    if (fVerbose > 1) {
+        std::cout << "FairMultiLinkedData::InsertHistory for Link " << link << " Type: " << ioman->GetBranchName(link.GetType()) << std::endl;
+    }
 
-        if (link.GetType() < 0)
-            return;
-        if (link.GetType() == ioman->GetMCTrackBranchId())
-            return;
-        if(ioman->GetBranchName(link.GetType()).Contains("."))
-        		return;
-        if(link.GetEntry() != -1 && link.GetEntry() != ioman->GetEntryNr())
-        		return;
+    if (link.GetType() < 0)
+        return;
+    if (link.GetType() == ioman->GetMCTrackBranchId())
+        return;
+    if (ioman->GetBranchName(link.GetType()).Contains("."))
+        return;
+    if (link.GetEntry() != -1 && link.GetEntry() != ioman->GetEntryNr())
+        return;
 
-        if (link.GetIndex() < 0) { //if index is -1 then this is not a TClonesArray so only the Object is returned
-			TObject* myObject = ioman->GetObject(ioman->GetBranchName(link.GetType()));
-			if (myObject->InheritsFrom("FairMultiLinkedData_Interface")){
-				FairMultiLinkedData_Interface* interface = static_cast<FairMultiLinkedData_Interface*>(myObject);
-				pointerToLinks = interface->GetPointerToLinks();
-			} else {
-				std::cout << "FairMultiLinkedData::InsertHistory Link to wrong Class: " << ioman->GetBranchName(link.GetType()) << std::endl;
-				return;
-			}
+    if (link.GetIndex() < 0) { //if index is -1 then this is not a TClonesArray so only the Object is returned
+        TObject* myObject = ioman->GetObject(ioman->GetBranchName(link.GetType()));
+        if (myObject->InheritsFrom("FairMultiLinkedData_Interface")) {
+            FairMultiLinkedData_Interface* interface = static_cast<FairMultiLinkedData_Interface*>(myObject);
+            pointerToLinks = interface->GetPointerToLinks();
         } else {
-			TClonesArray* dataArray = static_cast<TClonesArray*>( ioman->GetObject(ioman->GetBranchName(link.GetType())));
-			if (dataArray != 0 && link.GetIndex() < dataArray->GetEntriesFast()) {
-				TObject* myObject = dataArray->At(link.GetIndex());
-				if (myObject->InheritsFrom("FairMultiLinkedData_Interface")){
-					FairMultiLinkedData_Interface* interface = static_cast<FairMultiLinkedData_Interface*>(myObject);
-					pointerToLinks = interface->GetPointerToLinks();
-				}
-				else  {
-					std::cout << "FairMultiLinkedData::InsertHistory Link to wrong Class: " << ioman->GetBranchName(link.GetType()) << std::endl;
-					return;
-				}
-			}
+            std::cout << "FairMultiLinkedData::InsertHistory Link to wrong Class: " << ioman->GetBranchName(link.GetType()) << std::endl;
+            return;
         }
-        if (pointerToLinks != 0){
-			std::set<FairLink> linkSet = pointerToLinks->GetLinks();
-			for (auto tlink : linkSet){
-				if (fVerbose > 1)
-					std::cout << "FairMultiLinkedData::InsertHistory inserting " << tlink << std::endl;
-				InsertLink(tlink);
-			}
+    } else {
+        TClonesArray* dataArray = static_cast<TClonesArray*>( ioman->GetObject(ioman->GetBranchName(link.GetType())));
+        if (dataArray != 0 && link.GetIndex() < dataArray->GetEntriesFast()) {
+            TObject* myObject = dataArray->At(link.GetIndex());
+            if (myObject->InheritsFrom("FairMultiLinkedData_Interface")) {
+                FairMultiLinkedData_Interface* interface = static_cast<FairMultiLinkedData_Interface*>(myObject);
+                pointerToLinks = interface->GetPointerToLinks();
+            } else {
+                std::cout << "FairMultiLinkedData::InsertHistory Link to wrong Class: " << ioman->GetBranchName(link.GetType()) << std::endl;
+                return;
+            }
         }
+    }
+    if (pointerToLinks != 0) {
+        std::set<FairLink> linkSet = pointerToLinks->GetLinks();
+        for (auto tlink : linkSet) {
+            if (fVerbose > 1)
+                std::cout << "FairMultiLinkedData::InsertHistory inserting " << tlink << std::endl;
+            InsertLink(tlink);
+        }
+    }
 }
 
 Bool_t FairMultiLinkedData::IsLinkInList(Int_t type, Int_t index)
@@ -287,12 +280,12 @@ bool LargerWeight(FairLink val1, FairLink val2){
 }
 
 std::vector<FairLink> FairMultiLinkedData::GetSortedMCTracks(){
-	FairMultiLinkedData mcLinks = GetLinksWithType(FairRootManager::Instance()->GetMCTrackBranchId());
-	std::set<FairLink> mcSet = mcLinks.GetLinks();
-	std::vector<FairLink> mcVector(mcSet.begin(), mcSet.end());
-	//std::sort(begin(mcVector), end(mcVector), [](FairLink& val1, FairLink& val2){ return val1.GetWeight() > val2.GetWeight();});
-	std::sort(begin(mcVector), end(mcVector), LargerWeight);
-	return mcVector;
+    FairMultiLinkedData mcLinks = GetLinksWithType(FairRootManager::Instance()->GetMCTrackBranchId());
+    std::set<FairLink> mcSet = mcLinks.GetLinks();
+    std::vector<FairLink> mcVector(mcSet.begin(), mcSet.end());
+    //std::sort(begin(mcVector), end(mcVector), [](FairLink& val1, FairLink& val2){ return val1.GetWeight() > val2.GetWeight();});
+    std::sort(begin(mcVector), end(mcVector), LargerWeight);
+    return mcVector;
 }
 
 TObject* FairMultiLinkedData::GetData(FairLink& myLink)

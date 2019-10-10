@@ -22,10 +22,11 @@
 #include "FairLogger.h"
 
 // Includes from ROOT
-#include "TClonesArray.h"
-#include "TObjArray.h"
-#include "TMath.h"
-#include "TGeoManager.h"
+#include <TClonesArray.h>
+#include <TObjArray.h>
+#include <TMath.h>
+#include <TFile.h>
+#include <TGeoManager.h>
 
 #include "PixelPayload.h"
 

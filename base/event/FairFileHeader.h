@@ -13,10 +13,10 @@
 #ifndef FAIRFILEHEADER_H
 #define FAIRFILEHEADER_H
 
-#include "TNamed.h"                     // for TNamed
+#include <TNamed.h>                     // for TNamed
 
-#include "Rtypes.h"                     // for UInt_t, etc
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for UInt_t, etc
+#include <TString.h>                    // for TString
 
 class FairFileInfo;
 class TFile;
@@ -28,9 +28,7 @@ class TList;
  */
 class FairFileHeader : public TNamed
 {
-
   public:
-
     /** Default constructor */
     FairFileHeader();
 
@@ -40,13 +38,13 @@ class FairFileHeader : public TNamed
     /** Set the run ID for this run
        * @param runid : unique run id
        */
-    void SetRunId(UInt_t runid) {fRunId=runid;}
+    void SetRunId(UInt_t runid) { fRunId = runid; }
 
     /** Get the run ID for this run*/
-    UInt_t GetRunId() {return fRunId;}
+    UInt_t GetRunId() { return fRunId; }
 
     /** Return the list of tasks class names */
-    TList* GetListOfTasks() {return fTaskList;}
+    TList* GetListOfTasks() { return fTaskList; }
 
     void AddInputFile(TFile* f, UInt_t id, UInt_t ChId);
 
@@ -55,11 +53,7 @@ class FairFileHeader : public TNamed
      */
     virtual ~FairFileHeader();
 
-
     FairFileInfo* GetFileInfo(UInt_t id, UInt_t ChId);
-
-
-
 
   protected:
     /** Run Id */
@@ -75,8 +69,7 @@ class FairFileHeader : public TNamed
     FairFileHeader(const FairFileHeader&);
     FairFileHeader& operator=(const FairFileHeader&);
 
-
     ClassDef(FairFileHeader,2)
-
 };
+
 #endif

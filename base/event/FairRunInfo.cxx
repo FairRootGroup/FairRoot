@@ -7,7 +7,7 @@
  ********************************************************************************/
 #include "FairRunInfo.h"
 
-#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairLogger.h"                 // for FairLogger
 
 #include "TFile.h"                      // for TFile, gFile
 #include "TH1.h"                        // for TH1F
@@ -16,12 +16,10 @@
 #include "TString.h"                    // for TString
 #include "TSystem.h"                    // for ProcInfo_t, TSystem, etc
 
-#include <stddef.h>                     // for NULL
 #include <algorithm>                    // for sort
 
 ClassImp(FairRunInfo)
 
-//_____________________________________________________________________________
 FairRunInfo::FairRunInfo()
   :TObject(),
    fTimeStamp(),
@@ -34,11 +32,11 @@ FairRunInfo::FairRunInfo()
    fVirtualMemory()
 {
 }
-//_____________________________________________________________________________
+
 FairRunInfo::~FairRunInfo()
 {
 }
-//_____________________________________________________________________________
+
 void FairRunInfo::StoreInfo()
 {
   // Extract the Information about the used memory from the system.
@@ -53,7 +51,7 @@ void FairRunInfo::StoreInfo()
 
   PrintInfo();
 }
-//_____________________________________________________________________________
+
 void FairRunInfo::GetInfo()
 {
   // Set the TimeStamp to the actual time and store it
@@ -65,7 +63,7 @@ void FairRunInfo::GetInfo()
   fResidentMemory.push_back(fProcInfo.fMemResident/1024);
   fVirtualMemory.push_back(fProcInfo.fMemVirtual/1024);
 }
-//_____________________________________________________________________________
+
 void FairRunInfo::CalculateTimeDifference()
 {
   // Calculates the time difference between now and the last call
@@ -74,7 +72,7 @@ void FairRunInfo::CalculateTimeDifference()
   fTimeDiff.push_back( fTime.at(lastElement) -
                        fTime.at(lastElement-1) );
 }
-//_____________________________________________________________________________
+
 void FairRunInfo::PrintInfo()
 {
 
@@ -82,7 +80,7 @@ void FairRunInfo::PrintInfo()
   LOG(debug) << "Used resident memory: " << fResidentMemory.back() << " MB";
   LOG(debug) << "Used virtual memory: " << fVirtualMemory.back() << " MB";
 }
-//_____________________________________________________________________________
+
 void FairRunInfo::WriteInfo()
 {
   TList* histoList = new TList();
@@ -90,7 +88,7 @@ void FairRunInfo::WriteInfo()
   //  CreateAndFillHistograms(histoList);
   WriteHistosToFile(histoList);
 }
-//_____________________________________________________________________________
+
 void FairRunInfo::CreateAndFillHistograms(TList* histoList)
 {
   Int_t entries = fTime.size();
@@ -143,14 +141,12 @@ void FairRunInfo::CreateAndFillHistograms(TList* histoList)
   histoList->AddLast(TimePerEvent);
   histoList->AddLast(EventtimeVsEvent);
 }
-//_____________________________________________________________________________
 
 void FairRunInfo::WriteHistosToFile(TList* histoList)
 {
   // If the file size is larger then approx. 2GB then the histos
   // can't be read any longer. Because of this problem the histos
   // are written to a separate file instead
-
 
   TFile* oldfile = gFile;
 
@@ -163,15 +159,12 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
     filename += directory;
   }
 
-
   directory = gFile->GetName();
   LOG(debug) << "Name: " << directory.Data();
   posLastSlash = directory.Last('/');
   directory.Remove(0, posLastSlash+1);
   directory.ReplaceAll(".root","");
   LOG(debug) << "Name: " << directory.Data();
-
-
 
 //  Int_t pid = gSystem->GetPid();
   filename += "FairRunInfo_";
@@ -184,7 +177,7 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
 
   TIterator* listIter=histoList->MakeIterator();
   listIter->Reset();
-  TObject* obj = NULL;
+  TObject* obj = nullptr;
   while((obj=listIter->Next())) {
     obj->Write();
   }
@@ -198,7 +191,6 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
   gFile=oldfile;
 
 }
-//_____________________________________________________________________________
 
 void FairRunInfo::Reset()
 {

@@ -29,75 +29,56 @@
  ** The implementations may be using any or both of the above functions.
  **/
 
-
 #ifndef FAIREVENTBUILDER_H
 #define FAIREVENTBUILDER_H 1
 
 #include "FairWriteoutBuffer.h"
 #include "FairRecoEventHeader.h"
 
-#include "TStopwatch.h"
-#include "TString.h"
+#include <TStopwatch.h>
+#include <TString.h>
+#include <Rtypes.h>
 
-#include <map>
-#include <set>
 #include <vector>
+#include <utility> // pair
 
 class TClonesArray;
 //class FairRecoEventHeader;
 
 class FairEventBuilder : public FairWriteoutBuffer
 {
-
-
-  public :
-
+  public:
     /** Default constructor **/
     FairEventBuilder();
 
-
     /** Constructor with task name **/
     FairEventBuilder(TString branchName, TString className, TString folderName, Bool_t persistance);
-
 
     /** Destructor **/
     virtual ~FairEventBuilder();
 
     virtual void WriteOutAllDeadTimeData();
 
-    virtual std::vector<std::pair<double, FairRecoEventHeader*> > FindEvents() = 0;
-    virtual void          StoreEventData(FairRecoEventHeader* /*recoEvent*/) = 0;
+    virtual std::vector<std::pair<double, FairRecoEventHeader*>> FindEvents() = 0;
+    virtual void StoreEventData(FairRecoEventHeader* /*recoEvent*/) = 0;
 
-    void  SetIdentifier(Int_t ident) {
-      fIdentifier=ident;
-    }
-    Int_t GetIdentifier() {
-      return fIdentifier;
-    }
+    void SetIdentifier(Int_t ident) { fIdentifier = ident; }
+    Int_t GetIdentifier() { return fIdentifier; }
 
     virtual Bool_t Init() = 0;
 
-    virtual void Print(Option_t *option="") const = 0;
+    virtual void Print(Option_t* option = "") const = 0;
 
     /** Finish at the end of each event **/
     virtual void Finish();
 
-    Double_t AllowedTime() {
-      return fMaxAllowedEventCreationTime;
-    };
-    void SetMaxAllowedTime(Double_t td) {
-      fMaxAllowedEventCreationTime = td;
-    };
+    Double_t AllowedTime() { return fMaxAllowedEventCreationTime; };
+    void SetMaxAllowedTime(Double_t td) { fMaxAllowedEventCreationTime = td; };
 
-    void    SetBuilderName(const char* name) {
-      fBuilderName=name;
-    }
-    TString GetBuilderName() {
-      return fBuilderName;
-    }
+    void SetBuilderName(const char* name) { fBuilderName = name; }
+    TString GetBuilderName() { return fBuilderName; }
 
   private:
-
     TString    fBuilderName;
 
     TStopwatch fTimer;
@@ -107,7 +88,6 @@ class FairEventBuilder : public FairWriteoutBuffer
     Double_t   fMaxAllowedEventCreationTime;
 
     ClassDef(FairEventBuilder,1);
-
 };
 
 #endif

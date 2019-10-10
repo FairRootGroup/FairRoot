@@ -25,28 +25,23 @@ which has to use the method FairPrimaryGenerator::AddTrack.
 #ifndef FAIRGENERATOR_H
 #define FAIRGENERATOR_H
 
-#include "TNamed.h"                     // for TNamed
+#include <TNamed.h>                     // for TNamed
 
-#include "Rtypes.h"                     // for Bool_t, etc
+#include <Rtypes.h>                     // for Bool_t, etc
 
 class FairPrimaryGenerator;
 
 class FairGenerator : public TNamed
 {
-
   public:
-
     /** Default constructor. **/
     FairGenerator();
-
 
     /** Constructor with name and title **/
     FairGenerator(const char* name, const char* title="FAIR Generator");
 
-
     /** Destructor. **/
     virtual ~FairGenerator();
-
 
     /** Abstract method ReadEvent must be implemented by any derived class.
         It has to handle the generation of input tracks (reading from input
@@ -56,7 +51,6 @@ class FairGenerator : public TNamed
         *@return kTRUE if successful, kFALSE if not
     **/
     virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen) = 0;
-
 
     /**Initialize the generator if needed */
     virtual Bool_t Init() { return kTRUE;}
@@ -74,5 +68,3 @@ class FairGenerator : public TNamed
 };
 
 #endif
-
-

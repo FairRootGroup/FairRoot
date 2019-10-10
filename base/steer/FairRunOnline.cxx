@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -16,55 +16,38 @@
 #include "FairTask.h"
 #include "FairBaseParSet.h"
 #include "FairEventHeader.h"
-#include "FairFieldFactory.h"
 #include "FairRuntimeDb.h"
 #include "FairRunIdGenerator.h"
 #include "FairLogger.h"
 #include "FairFileHeader.h"
-#include "FairParIo.h"
 #include "FairField.h"
-//#include "FairSource.h"
-#include "FairMbsSource.h"
-
-#include "FairGeoInterface.h"
-#include "FairGeoLoader.h"
 #include "FairGeoParSet.h"
+#include "FairSource.h"          // for FairSource, kONLINE
+#include "FairParSet.h"          // for FairParSet
 
-#include "TROOT.h"
-#include "TSystem.h"
-#include "TTree.h"
-#include "TSeqCollection.h"
-#include "TGeoManager.h"
-#include "TKey.h"
-#include "TF1.h"
-#include "TSystem.h"
-#include "TFolder.h"
-#include "TH1F.h"
-#include "TH2F.h"
-#include "THttpServer.h"
+#include <TROOT.h>
+#include <TCollection.h>         // for TIter
+#include <TList.h>               // for TList
+#include <TObjArray.h>           // for TObjArray
+#include <TObjString.h>          // for TObjString
+#include <TObject.h>             // for TObject
+#include <TSystem.h>
+#include <TGeoManager.h>
+#include <THttpServer.h>
 
 #include <signal.h>
 #include <stdlib.h>
 #include <iostream>
-#include <list>
 
 using std::cout;
 using std::endl;
-using std::list;
 
-
-
-//_____________________________________________________________________________
 FairRunOnline* FairRunOnline::fgRinstance = 0;
 
-
-
-//_____________________________________________________________________________
 FairRunOnline* FairRunOnline::Instance()
 {
   return fgRinstance;
 }
-
 
 FairRunOnline::FairRunOnline()
   :FairRun(),
@@ -73,14 +56,14 @@ FairRunOnline::FairRunOnline()
    fStatic(kFALSE),
    fField(0),
    fNevents(0),
-   fServer(NULL),
+   fServer(nullptr),
    fServerRefreshRate(0)
 {
   fgRinstance = this;
   fAna = kTRUE;
   LOG(info) << "FairRunOnline constructed at " << this;
 }
-//_____________________________________________________________________________
+
 FairRunOnline::FairRunOnline(FairSource* source)
   :FairRun(),
    fAutomaticFinish(kTRUE),
@@ -88,7 +71,7 @@ FairRunOnline::FairRunOnline(FairSource* source)
    fStatic(kFALSE),
    fField(0),
    fNevents(0),
-   fServer(NULL),
+   fServer(nullptr),
    fServerRefreshRate(0)
 {
   fRootManager->SetSource(source);
@@ -96,9 +79,7 @@ FairRunOnline::FairRunOnline(FairSource* source)
   fAna = kTRUE;
   LOG(info) << "FairRunOnline constructed at " << this;
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 FairRunOnline::~FairRunOnline()
 {
   //  delete fFriendFileList;
@@ -112,9 +93,6 @@ FairRunOnline::~FairRunOnline()
   }
   delete fServer;
 }
-//_____________________________________________________________________________
-
-
 
 Bool_t gIsInterrupted;
 
@@ -123,9 +101,6 @@ void handler_ctrlc(int)
   gIsInterrupted = kTRUE;
 }
 
-
-
-//_____________________________________________________________________________
 void FairRunOnline::Init()
 {
   LOG(info)<<"FairRunOnline::Init";
@@ -148,18 +123,18 @@ void FairRunOnline::Init()
   // Add a Generated run ID to the FairRunTimeDb for input data which contain a FairMCEventHeader
   // The call doesn't make sense for online sources which doesn't contain a  FairMCEventHeader
 
-  if(kONLINE != fRootManager->GetSource()->GetSourceType())
+  if (kONLINE != fRootManager->GetSource()->GetSourceType())
   {
     fRootManager->ReadEvent(0);
   }
 
   GetEventHeader();
-  
+
   fRootManager->FillEventHeader(fEvtHeader);
 
-  if(0 == fRunId) // Run ID was not set in run manager
+  if (0 == fRunId) // Run ID was not set in run manager
   {
-    if(0 == fEvtHeader->GetRunId()) // Run ID was not set in source
+    if (0 == fEvtHeader->GetRunId()) // Run ID was not set in source
     {
       // Generate unique Run ID
       FairRunIdGenerator genid;
@@ -185,7 +160,7 @@ void FairRunOnline::Init()
   if (geopar) {
     geopar->SetGeometry(gGeoManager);
   }
-  if(fField) {
+  if (fField) {
     fField->Init();
     fField->FillParContainer();
   }
@@ -205,7 +180,7 @@ void FairRunOnline::Init()
     geopar->setChanged();
     geopar->setInputVersion(fRunId,1);
   }
-  
+
   fRootManager->WriteFileHeader(fFileHeader);
 
   fRootManager->GetSource()->SetParUnpackers();
@@ -232,18 +207,14 @@ void FairRunOnline::Init()
   fRootManager->WriteFolder();
   fRootManager->WriteFileHeader(fFileHeader);
 }
-//_____________________________________________________________________________
 
-
-//_____________________________________________________________________________
 void FairRunOnline::InitContainers()
 {
 
   fRtdb = GetRuntimeDb();
-  FairBaseParSet* par=static_cast<FairBaseParSet*>
-                      (fRtdb->getContainer("FairBaseParSet"));
+  FairBaseParSet* par=static_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
   LOG(info) << "FairRunOnline::InitContainers: par = " << par;
-  if (NULL == par)
+  if (nullptr == par)
     LOG(warn)<<"FairRunOnline::InitContainers: no  'FairBaseParSet' container !";
 
   if (par) {
@@ -268,14 +239,14 @@ void FairRunOnline::InitContainers()
       //      fEvtHeader = dynamic_cast<FairEventHeader*> (FairRunOnline::Instance()->GetEventHeade
       GetEventHeader();
       if ( ! fEvtHeader ) {
-	LOG(fatal) << "FairRunOnline::InitContainers:No event header in run!";
-	return;
+        LOG(fatal) << "FairRunOnline::InitContainers:No event header in run!";
+        return;
       }
       LOG(info) << "FairRunOnline::InitContainers: event header at " << fEvtHeader;
       fRootManager->Register("EventHeader.", "Event", fEvtHeader, kTRUE);
     }
 }
-//_____________________________________________________________________________
+
 Int_t FairRunOnline::EventLoop()
 {
   gSystem->IgnoreInterrupt();
@@ -299,12 +270,12 @@ Int_t FairRunOnline::EventLoop()
   fRootManager->DeleteOldWriteoutBufferData();
   fTask->FinishEvent();
   fNevents += 1;
-  if(fServer && 0 == (fNevents%fServerRefreshRate))
+  if (fServer && 0 == (fNevents%fServerRefreshRate))
   {
     fServer->ProcessRequests();
   }
-    
-  if(gIsInterrupted)
+
+  if (gIsInterrupted)
   {
     return 1;
   }
@@ -312,13 +283,12 @@ Int_t FairRunOnline::EventLoop()
   return 0;
 }
 
-//_____________________________________________________________________________
 void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
 {
   fNevents = 0;
 
   gIsInterrupted = kFALSE;
-  
+
   Int_t MaxAllowed=fRootManager->CheckMaxEventNo(Ev_end);
   if ( MaxAllowed != -1 ) {
     if (Ev_end==0) {
@@ -344,18 +314,18 @@ void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
     }
   }
   Int_t status;
-  if(Ev_start < 0) {
+  if (Ev_start < 0) {
     while(kTRUE) {
       status = fRootManager->ReadEvent();
-      if(0 == status) {
-	status = EventLoop();
+      if (0 == status) {
+        status = EventLoop();
       }
-      if(1 == status) {
+      if (1 == status) {
         break;
-      } else if(2 == status) {
+      } else if (2 == status) {
         continue;
       }
-      if(gIsInterrupted)
+      if (gIsInterrupted)
       {
         break;
       }
@@ -363,31 +333,29 @@ void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
   } else {
     for (Int_t i = Ev_start; i < Ev_end; i++) {
       status = fRootManager->ReadEvent(i);
-      if(0 == status) {
-	status = EventLoop();
+      if (0 == status) {
+        status = EventLoop();
       }
-      if(1 == status) {
+      if (1 == status) {
         break;
-      } else if(2 == status) {
+      } else if (2 == status) {
         i -= 1;
         continue;
       }
 
-      if(gIsInterrupted)
+      if (gIsInterrupted)
       {
         break;
       }
     }
   }
- 
+
   fRootManager->StoreAllWriteoutBufferData();
   if (fAutomaticFinish) {
     Finish();
   }
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairRunOnline::Finish()
 {
   fTask->FinishTask();
@@ -397,9 +365,7 @@ void FairRunOnline::Finish()
 
   fRootManager->CloseSink();
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void FairRunOnline::ActivateHttpServer(Int_t refreshRate, Int_t httpServer)
 {
   TString serverAddress="http:";
@@ -407,32 +373,22 @@ void FairRunOnline::ActivateHttpServer(Int_t refreshRate, Int_t httpServer)
   fServer = new THttpServer(serverAddress);
   fServerRefreshRate = refreshRate;
 }
-//_____________________________________________________________________________
 
-
-//_____________________________________________________________________________
 void FairRunOnline::RegisterHttpCommand(TString name, TString command)
 {
-  if(fServer)
+  if (fServer)
   {
     TString path = "/Objects/HISTO";
     fServer->RegisterCommand(name, path + command);
   }
 }
-//_____________________________________________________________________________
 
-
-//_____________________________________________________________________________
 void FairRunOnline::Reinit(UInt_t runId)
 {
   // reinit procedure
   fRtdb->initContainers( runId );
 }
-//_____________________________________________________________________________
 
-
-
-//_____________________________________________________________________________
 void  FairRunOnline::SetContainerStatic(Bool_t tempBool)
 {
   fStatic=tempBool;
@@ -442,28 +398,24 @@ void  FairRunOnline::SetContainerStatic(Bool_t tempBool)
     LOG(info) << "Parameter Cont. initialisation is NOT static";
   }
 }
-//_____________________________________________________________________________
 
-
-
-//_____________________________________________________________________________
 void FairRunOnline::AddObject(TObject* object)
 {
-    if(NULL == object)
+    if (nullptr == object)
     {
         return;
     }
-    if(fServer) {
+    if (fServer) {
         TString classname = TString(object->ClassName());
-        if(classname.EqualTo("TCanvas"))
+        if (classname.EqualTo("TCanvas"))
         {
             fServer->Register("CANVAS", object);
         }
-        else if(classname.EqualTo("TFolder"))
+        else if (classname.EqualTo("TFolder"))
         {
             fServer->Register("/", object);
         }
-        else if(classname.Contains("TH1") || classname.Contains("TH2"))
+        else if (classname.Contains("TH1") || classname.Contains("TH2"))
         {
             fServer->Register("HISTO", object);
         }
@@ -473,14 +425,10 @@ void FairRunOnline::AddObject(TObject* object)
         }
     }
 }
-//_____________________________________________________________________________
 
-
-
-//_____________________________________________________________________________
 void FairRunOnline::Fill()
 {
-  if(fMarkFill)
+  if (fMarkFill)
   {
     fRootManager->Fill();
   }
@@ -489,8 +437,5 @@ void FairRunOnline::Fill()
     fMarkFill = kTRUE;
   }
 }
-//_____________________________________________________________________________
-
-
 
 ClassImp(FairRunOnline)

@@ -20,13 +20,12 @@
 #ifndef FAIRGENERICSTACK_H
 #define FAIRGENERICSTACK_H
 
-#include "TClonesArray.h" 
-#include "TVirtualMCStack.h"            // for TVirtualMCStack
+#include <TClonesArray.h>
+#include <TVirtualMCStack.h>            // for TVirtualMCStack
 
-#include "Rtypes.h"                     // for Double_t, Int_t, etc
-#include "TMCProcess.h"                 // for TMCProcess
+#include <Rtypes.h>                     // for Double_t, Int_t, etc
+#include <TMCProcess.h>                 // for TMCProcess
 
-#include <stddef.h>                     // for NULL
 #include <map>
 #include <tuple>
 
@@ -35,23 +34,17 @@ class TParticle;
 class TRefArray;
 class TIterator;
 
-
 class FairGenericStack : public TVirtualMCStack
 {
-
   public:
-
     /** Default constructor  **/
     FairGenericStack();
-
 
     /** Destructor with estimated array size  **/
     FairGenericStack(Int_t size);
 
-
     /** Destructor  **/
     virtual ~FairGenericStack();
-
 
     /** Virtual method PushTrack.
      ** Add a TParticle to the stack.
@@ -77,14 +70,11 @@ class FairGenericStack : public TVirtualMCStack
                            Double_t poly, Double_t polz, TMCProcess proc,
                            Int_t& ntr, Double_t weight, Int_t is, Int_t secondparentID) = 0;
 
-
     /** Fill the MCTrack output array, applying filter criteria **/
     virtual void FillTrackArray() {}
 
-
     /** Update the track index in the MCTracks and MCPoints **/
     virtual void UpdateTrackIndex(TRefArray* /* detArray=0 */) {}
-
 
     /** Set the list of detectors to be used for filltering the stack*/
     void SetDetArrayList(TRefArray* detArray);
@@ -132,7 +122,7 @@ class FairGenericStack : public TVirtualMCStack
     /** Allow FairFastSim the retrieval of moved particle position, p1 and p2 to get secondaries **/
     virtual std::tuple<Int_t, Int_t, Int_t> FastSimGetMovedIndex() { return std::make_tuple(fFSMovedIndex, fFSFirstSecondary, fFSNofSecondaries); }
     virtual void FastSimClearMovedIndex () { fFSMovedIndex = -2; fFSFirstSecondary = -2; fFSNofSecondaries = 0; }
-    
+
     template<typename T> void FastSimUpdateTrackIndex(T* point, Int_t& iTrack);
 
   protected:
@@ -152,7 +142,7 @@ class FairGenericStack : public TVirtualMCStack
 
     /**Verbosity level*/
     Int_t fVerbose;
-    
+
     /** FastSimulation: STL map from new track index to original track index  **/
     std::map<Int_t, Int_t>            fFSTrackMap;        //!
     std::map<Int_t, Int_t>::iterator  fFSTrackIter;       //!
@@ -163,7 +153,8 @@ class FairGenericStack : public TVirtualMCStack
     ClassDef(FairGenericStack,1)
 };
 
-template<typename T> void FairGenericStack::FastSimUpdateTrackIndex(T* point, Int_t& iTrack)
+template<typename T>
+void FairGenericStack::FastSimUpdateTrackIndex(T* point, Int_t& iTrack)
 {
     fFSTrackIter = fFSTrackMap.find(iTrack);      // check if point created by FastSimulation
     if ( fFSTrackIter != fFSTrackMap.end() ) {    // indeed the point has been created by the FastSimulation mechanism

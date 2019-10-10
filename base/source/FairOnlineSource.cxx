@@ -13,8 +13,6 @@
 // -----                                                                   -----
 // -----------------------------------------------------------------------------
 
-#include <iostream>
-
 #include "FairOnlineSource.h"
 #include "FairLogger.h"
 

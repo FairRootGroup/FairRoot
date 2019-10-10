@@ -1,16 +1,13 @@
 #ifndef FAIR_LINK_MANAGER_H
 #define FAIR_LINK_MANAGER_H
 
-#include "TObject.h"                    // for TObject
-#include "TMCtls.h"                     // for multi-threading
+#include <TObject.h>                    // for TObject
+#include <TMCtls.h>                     // for multi-threading
+#include <Rtypes.h>                     // for Bool_t, Int_t, UInt_t, etc
 
-#include "Rtypes.h"                     // for Bool_t, Int_t, UInt_t, etc
-#include <set>							// for set of branch types to ignore
-
+#include <set> // for set of branch types to ignore
 
 class FairLogger;
-
-//_____________________________________________________________________
 
 class FairLinkManager : public TObject
 {
@@ -30,7 +27,6 @@ class FairLinkManager : public TObject
 
     std::set<Int_t> GetIgnoreTypes() const {return fIgnoreTypes;}
 
-
   private:
     /**private methods*/
     FairLinkManager(const FairLinkManager&);
@@ -38,17 +34,13 @@ class FairLinkManager : public TObject
     /**  Set the branch address for a given branch name and return
         a TObject pointer, the user have to cast this pointer to the right type.*/
 
-//_____________________________________________________________________
-    /**private Members*/
-
     std::set<Int_t> fIgnoreTypes; //!
     Bool_t fIgnoreSetting;
 
     /**Singleton instance*/
     static TMCThreadLocal FairLinkManager* fgInstance;
 
-    FairLogger*                         fLogger;//!
-
+    FairLogger* fLogger; //!
 
     ClassDef(FairLinkManager,1) // Root IO manager
 };

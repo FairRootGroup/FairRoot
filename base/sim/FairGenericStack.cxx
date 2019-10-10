@@ -11,12 +11,16 @@
 // -------------------------------------------------------------------------
 #include "FairGenericStack.h"
 #include "FairLogger.h"                 // for FairLogger
-#include "TRefArray.h"
-#include "TVirtualMC.h"
-#include "TLorentzVector.h"
-#include "TGeoManager.h"
 
-// -----   Default constructor   -------------------------------------------
+#include <TRefArray.h>
+#include <TVirtualMC.h>
+#include <TLorentzVector.h>
+#include <TGeoManager.h>
+#include <TMCProcess.h>
+#include <TString.h>
+
+#include <cstring> // strcmp
+
 FairGenericStack::FairGenericStack()
   : TVirtualMCStack(),
     fLogger(FairLogger::GetLogger()),
@@ -30,7 +34,7 @@ FairGenericStack::FairGenericStack()
     fFSNofSecondaries(0)
 {
 }
-// -------------------------------------------------------------------------
+
 // -----   Constructor with estimated array dimension   --------------------
 FairGenericStack::FairGenericStack(Int_t)
   : TVirtualMCStack(),
@@ -45,14 +49,12 @@ FairGenericStack::FairGenericStack(Int_t)
     fFSNofSecondaries(0)
 {
 }
-// -------------------------------------------------------------------------
-// -----   Destructor   ----------------------------------------------------
+
 FairGenericStack::~FairGenericStack()
 {
   delete fDetIter;
 }
-// -------------------------------------------------------------------------
-// -----   Copy constructor   ----------------------------------------------
+
 FairGenericStack::FairGenericStack(const FairGenericStack& rhs)
   : TVirtualMCStack(rhs),
     fLogger(FairLogger::GetLogger()),
@@ -62,8 +64,6 @@ FairGenericStack::FairGenericStack(const FairGenericStack& rhs)
 {
 }
 
-// -------------------------------------------------------------------------
-// -----   Assignment operator   -------------------------------------------
 FairGenericStack& FairGenericStack::operator=(const FairGenericStack& rhs)
 {
   // check assignment to self
@@ -81,15 +81,12 @@ FairGenericStack& FairGenericStack::operator=(const FairGenericStack& rhs)
   return *this;
 }
 
-// -----   Public method SetDetArrayList  ----------------------------------
 void FairGenericStack::SetDetArrayList(TRefArray* detArray)
 {
   fDetList=detArray;
   if(fDetList!=0) { fDetIter=fDetList->MakeIterator(); }
 }
 
-// -------------------------------------------------------------------------
-// -----   Virtual method  CloneStack  -------------------------------------
 FairGenericStack* FairGenericStack::CloneStack() const
 {
   Fatal("CloneStack","Has to be overriden in multi-threading applications.");
@@ -112,7 +109,7 @@ void FairGenericStack::FastSimMoveParticleTo(Double_t xx, Double_t yy, Double_t 
     else {
         LOG(debug) << "gMC says track is in \"" << curVolName << "\" moving particle to \"" << targetVolName << "\".";
     }
-    
+
     Int_t tobedone  = 1;
     Int_t parent    = 0; // do not store it as mother
     Int_t pdg       = TVirtualMC::GetMC()->TrackPid();
@@ -123,7 +120,7 @@ void FairGenericStack::FastSimMoveParticleTo(Double_t xx, Double_t yy, Double_t 
     Int_t ntr       = 0;    // Track number; to be filled by the stack
     Int_t status    = 0; // not important, the track will not be saved
     Double_t weight = 0.;
-    
+
     PushTrack(tobedone, parent, pdg,
               px, py, pz, en,
               xx, yy, zz, tt,
@@ -135,14 +132,13 @@ void FairGenericStack::FastSimMoveParticleTo(Double_t xx, Double_t yy, Double_t 
     if ( fFSTrackIter != fFSTrackMap.end() )       // indeed the track has been created by the FastSimulation mechanism
         trackID = fFSTrackIter->second;            // use the ID of the original track
     fFSTrackMap[ntr] = trackID;
-    
+
     LOG(debug) << "FairStack::FastSimMoveParticleTo() created track number " << ntr << " to replace track number " << trackID;
-    
+
     if ( strcmp(TVirtualMC::GetMC()->GetName(),"TGeant3TGeo") == 0 ) {
         TVirtualMC::GetMC()->StopTrack();
     }
 }
-
 
 void FairGenericStack::FastSimStopParticle()
 {
@@ -152,7 +148,6 @@ void FairGenericStack::FastSimStopParticle()
     TVirtualMC::GetMC()->StopTrack();
 }
 
-
 void FairGenericStack::FastSimPushSecondary(Int_t parentID, Int_t pdgCode,
                                      Double_t xx, Double_t yy, Double_t zz, Double_t tt,
                                      Double_t px, Double_t py, Double_t pz, Double_t en,
@@ -160,7 +155,7 @@ void FairGenericStack::FastSimPushSecondary(Int_t parentID, Int_t pdgCode,
                                      Double_t weight, Int_t is)
 {
     Int_t tobedone  = 1;
-    
+
     Int_t ntr       = 0;    // Track number; to be filled by the stack
     PushTrack(tobedone, parentID, pdgCode,
               px, py, pz, en,
@@ -171,6 +166,5 @@ void FairGenericStack::FastSimPushSecondary(Int_t parentID, Int_t pdgCode,
         fFSFirstSecondary = GetListOfParticles()->GetEntries()-1;
     fFSNofSecondaries++;
 }
-
 
 ClassImp(FairGenericStack)

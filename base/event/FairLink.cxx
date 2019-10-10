@@ -17,7 +17,6 @@
 
 ClassImp(FairLink);
 
-
 FairLink::FairLink(TString branchName, Int_t index, Float_t weight)
   :fFile(0),
    fType(0),
@@ -25,9 +24,8 @@ FairLink::FairLink(TString branchName, Int_t index, Float_t weight)
    fIndex(index),
    fWeight(weight)
 {
-	SetType(FairRootManager::Instance()->GetBranchId(branchName));
+  SetType(FairRootManager::Instance()->GetBranchId(branchName));
 }
-
 
 FairLink::FairLink(Int_t file, Int_t entry, TString branchName, Int_t index, Float_t weight)
   :fFile(0),
@@ -36,8 +34,8 @@ FairLink::FairLink(Int_t file, Int_t entry, TString branchName, Int_t index, Flo
    fIndex(index),
    fWeight(weight)
 {
-	SetFile(file);
-	SetType(FairRootManager::Instance()->GetBranchId(branchName));
+  SetFile(file);
+  SetType(FairRootManager::Instance()->GetBranchId(branchName));
 }
 
 void FairLink::PrintLinkInfo(std::ostream& out) const
@@ -45,5 +43,3 @@ void FairLink::PrintLinkInfo(std::ostream& out) const
   out << "(" << GetFile() << "/" << GetEntry() << "/";
   out << GetType() << "/" << GetIndex() << "/" << GetWeight() << ")";
 }
-
-

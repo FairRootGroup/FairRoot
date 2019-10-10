@@ -22,19 +22,16 @@
 #ifndef FAIRION_H
 #define FAIRION_H
 
-#include "TNamed.h"                     // for TNamed
-
-#include "Rtypes.h"                     // for Int_t, Double_t, etc
+#include <TNamed.h>                     // for TNamed
+#include <Rtypes.h>                     // for Int_t, Double_t, etc
 
 class FairLogger;
 
 class FairIon: public TNamed
 {
   public:
-
     /** Default constructor **/
     FairIon();
-
 
     /** Standard constructor
      *@param name  name
@@ -47,8 +44,7 @@ class FairIon: public TNamed
      **/
 
     FairIon(const char* name, Int_t z, Int_t a, Int_t q, Double_t e=0., Double_t m=0.);
-    void SetParams( const char* name, Int_t z, Int_t a,
-                    Int_t q, Double_t e=0., Double_t m=0.) {
+    void SetParams(const char* name, Int_t z, Int_t a, Int_t q, Double_t e=0., Double_t m=0.) {
       SetName(name);
       fZ=z;
       fA=a;
@@ -58,7 +54,6 @@ class FairIon: public TNamed
     }
     /** Destructor **/
     virtual ~FairIon();
-
 
     /** Accessors **/
     /**
@@ -92,11 +87,7 @@ class FairIon: public TNamed
     */
     void SetMass(Double_t mass)      { fMass = mass*amu; }
 
-
   private:
-
-    /** Data members **/
-
     static Int_t fgNIon;  //! /// Number of ions instantiated. One per generator.
     Int_t    fZ;          /// Atomic number
     Int_t    fA;          /// Atomic mass
@@ -110,9 +101,6 @@ class FairIon: public TNamed
     FairIon& operator=(const FairIon&);
 
     ClassDef(FairIon,2);
-
 };
-
-
 
 #endif

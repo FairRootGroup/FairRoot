@@ -17,18 +17,17 @@
  */
 
 #include "FairRun.h"                    // for FairRun
-
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairRunInfo.h"                // for FairRunInfo
 
-#include "Rtypes.h"                     // for Bool_t, Double_t, UInt_t, etc
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for Bool_t, Double_t, UInt_t, etc
+#include <TString.h>                    // for TString
 
 class FairField;
 class TF1;
 class TFile;
-class TTree;
 
+class FairSource;
 class FairFileSource;
 class FairMixedSource;
 

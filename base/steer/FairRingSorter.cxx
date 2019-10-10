@@ -12,8 +12,7 @@
 // -------------------------------------------------------------------------
 
 #include "FairRingSorter.h"
-
-#include "FairTimeStamp.h"              // for FairTimeStamp
+#include "FairTimeStamp.h" // for FairTimeStamp
 
 FairTimeStamp* FairRingSorter::CreateElement(FairTimeStamp* data)
 {
@@ -33,7 +32,7 @@ void FairRingSorter::AddElement(FairTimeStamp* digi, double timestamp)
   if (timestamp >= fLowerBoundPointer.second + (2 * GetBufferSize())) {
     if (fVerbose > 0) {
       std::cout << "-I- FairRingSorterT::AddElement : Timestamp "
-                << timestamp << " larger than 2 * bufferspace: " << fLowerBoundPointer.second + GetBufferSize() << " writing out " << index+1 << std::endl;
+                << timestamp << " larger than 2 * bufferspace: " << fLowerBoundPointer.second + GetBufferSize() << " writing out " << index + 1 << std::endl;
     }
     WriteOutAll();
     SetLowerBound(timestamp);
@@ -90,9 +89,9 @@ void FairRingSorter::WriteOutElement(int index)
   std::multimap<double, FairTimeStamp*>::iterator it;
   if (!myDataField->empty()) {
     if (fVerbose > 1) {
-		std::cout << "-I- FairRingSorter:WriteOutElement ";
-		myDataField->begin()->second->Print();
-		std::cout << std::endl;
+      std::cout << "-I- FairRingSorter:WriteOutElement ";
+      myDataField->begin()->second->Print();
+      std::cout << std::endl;
     }
     for (auto& mmi : *myDataField) {
       fOutputData.push_back(mmi.second);

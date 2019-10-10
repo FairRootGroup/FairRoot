@@ -27,34 +27,27 @@
 #ifndef FAIRSTSTRACKPARAM
 #define FAIRSTSTRACKPARAM 1
 
-#include "TObject.h"                    // for TObject
-
-#include "Rtypes.h"                     // for Double_t, Double32_t, Int_t, etc
-#include "TMatrixFSymfwd.h"             // for TMatrixFSym
-#include "TVector3.h"                   // for TVector3
+#include <TObject.h>                    // for TObject
+#include <Rtypes.h>                     // for Double_t, Double32_t, Int_t, etc
+#include <TMatrixFSymfwd.h>             // for TMatrixFSym
+#include <TVector3.h>                   // for TVector3
 
 class FairTrackParam : public TObject
 {
-
   public:
-
     /** Constructor **/
     FairTrackParam();
-
 
     /** Constructor with all variables **/
     FairTrackParam(Double_t x,  Double_t y,  Double_t z,
                    Double_t tx, Double_t ty, Double_t qp,
                    const TMatrixFSym& covMat);
 
-
     /** Copy constructor **/
     FairTrackParam(const FairTrackParam& param);
 
-
     /** Destructor **/
     virtual ~FairTrackParam();
-
 
     /** Output to screen **/
     void  Print(Option_t* option = "") const;
@@ -72,7 +65,6 @@ class FairTrackParam : public TObject
     void CovMatrix(TMatrixFSym& covMat) const;
     Double_t GetCovariance(Int_t i, Int_t j) const;
 
-
     /** Modifiers **/
     void SetX(Double_t x)   { fX  = x;  };
     void SetY(Double_t y)   { fY  = y;  };
@@ -85,14 +77,10 @@ class FairTrackParam : public TObject
     void SetCovMatrix(const TMatrixFSym& covMat);
     void SetCovariance(Int_t i, Int_t j, Double_t val);
 
-
     /** Assignment operator  **/
     FairTrackParam& operator=(const FairTrackParam& par );
 
-
-
   private:
-
     /** Position of track at given z [cm] **/
     Double32_t fX, fY, fZ;
 
@@ -110,10 +98,7 @@ class FairTrackParam : public TObject
 
     Double32_t fCovMatrix[15];
 
-
     ClassDef(FairTrackParam,1);
-
 };
-
 
 #endif

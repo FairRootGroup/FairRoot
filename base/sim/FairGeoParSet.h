@@ -15,8 +15,8 @@
  * @since 12.10.04
  */
 #include "FairParGenericSet.h"          // for FairParGenericSet
-#include "Rtypes.h"                     // for Double_t, etc
-#include "TGeoManager.h"                // IWYU pragma: keep needed by cint
+#include <Rtypes.h>                     // for Double_t, etc
+#include <TGeoManager.h>                // IWYU pragma: keep needed by cint
 
 class FairParamList;
 class TObjArray;
@@ -30,7 +30,6 @@ class FairGeoParSet : public FairParGenericSet
     * @param title:  Parameter set title
     * @param context:  Parameter set context
     */
-
 
     FairGeoParSet(const char* name="FairGeoParSet",
                   const char* title="Class for base parameter io",
@@ -71,7 +70,6 @@ class FairGeoParSet : public FairParGenericSet
     TGeoManager*           GetGeometry() {return fGeom;}
 
   protected:
-
     /// List of FairGeoNodes for sensitive volumes
     TObjArray*              fGeoNodes; //!
     /// Full Geometry
@@ -81,9 +79,6 @@ class FairGeoParSet : public FairParGenericSet
   private:
     FairGeoParSet(const FairGeoParSet& L);
     FairGeoParSet& operator= (const FairGeoParSet&) {return *this;}
-
-
-
 };
 
 #endif /* !FairGeoParSet_H */

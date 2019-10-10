@@ -16,8 +16,6 @@
 
 const Double_t FairIon::amu=0.931494028 ; // Gev/c**2
 
-
-// -----   Default constructor   -------------------------------------------
 FairIon::FairIon()
   :TNamed(),
    fZ(0),
@@ -27,12 +25,8 @@ FairIon::FairIon()
    fMass(0),
    fLogger(FairLogger::GetLogger())
 {
-
 }
-// -------------------------------------------------------------------------
 
-
-// -----   Standard constructor   ------------------------------------------
 FairIon::FairIon(const char* name, Int_t z, Int_t a, Int_t q, Double_t e,
                  Double_t mass)
   : TNamed(name, "User defined ion"),
@@ -43,7 +37,6 @@ FairIon::FairIon(const char* name, Int_t z, Int_t a, Int_t q, Double_t e,
     fMass(0),
     fLogger(FairLogger::GetLogger())
 {
-
   TDatabasePDG* pdgDB = TDatabasePDG::Instance();
   TParticlePDG* kProton = pdgDB->GetParticle(2212);
   Double_t kProtonMass=kProton->Mass();
@@ -51,17 +44,10 @@ FairIon::FairIon(const char* name, Int_t z, Int_t a, Int_t q, Double_t e,
   if (mass == 0.) { fMass = kProtonMass * Double_t(a); }
   else { fMass = mass; }
   LOG(info) << "New Ion " << name << " Z=" << z << "  A=" << a << "  Charge=" << q << "  Mass=" << fMass << " GeV ";
-
 }
-// -------------------------------------------------------------------------
 
-
-// -----   Destructor   ----------------------------------------------------
 FairIon::~FairIon()
 {
 };
-// -------------------------------------------------------------------------
-
-
 
 ClassImp(FairIon)

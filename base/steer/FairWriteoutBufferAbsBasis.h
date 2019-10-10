@@ -15,7 +15,7 @@
 #ifndef FAIRWRITEOUTBUFFERABSBASIS_H_
 #define FAIRWRITEOUTBUFFERABSBASIS_H_
 
-#include "TObject.h"
+#include <TObject.h>
 
 class FairWriteoutBufferAbsBasis : public TObject
 {
@@ -27,6 +27,5 @@ class FairWriteoutBufferAbsBasis : public TObject
 
     ClassDef(FairWriteoutBufferAbsBasis,1)
 };
-
 
 #endif /* FAIRWRITEOUTBUFFERABSBASIS_H_ */

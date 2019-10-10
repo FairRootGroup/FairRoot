@@ -13,9 +13,8 @@
 #ifndef FAIREVENTHEADER_H
 #define FAIREVENTHEADER_H
 
-#include "TNamed.h"                     // for TNamed
-
-#include "Rtypes.h"                     // for Int_t, Double_t, UInt_t, etc
+#include <TNamed.h> // for TNamed
+#include <Rtypes.h> // for Int_t, Double_t, UInt_t, ClassDef, etc
 
 /**
  *  Event Header Class
@@ -24,47 +23,45 @@
  */
 class FairEventHeader : public TNamed
 {
-
   public:
-
     /** Default constructor */
     FairEventHeader();
 
     /** Get the run ID for this run*/
-    UInt_t GetRunId() {return fRunId;}
+    UInt_t GetRunId() { return fRunId; }
 
     /** Get the MC time for this event*/
-    Double_t GetEventTime() {return fEventTime;}
+    Double_t GetEventTime() { return fEventTime; }
 
     /** Get the MC input file Id for this event*/
-    Int_t GetInputFileId() {return fInputFileId;}
+    Int_t GetInputFileId() { return fInputFileId; }
 
     /**The entry number in the original MC chain */
-    Int_t GetMCEntryNumber() {return fMCEntryNo;}
+    Int_t GetMCEntryNumber() { return fMCEntryNo; }
 
     /** Set the run ID for this run
     * @param runid : unique run id
     */
-    void SetRunId(UInt_t runid) {fRunId=runid;}
+    void SetRunId(UInt_t runid) { fRunId = runid; }
 
     /** Set the MC time for this event
      * @param time : time in ns
      */
-    void SetEventTime(Double_t time) {fEventTime=time;}
+    void SetEventTime(Double_t time) { fEventTime = time; }
 
     /** Set the Signal file Id for this event*/
-    void SetInputFileId(Int_t id) {fInputFileId=id;}
+    void SetInputFileId(Int_t id) { fInputFileId = id; }
 
     /**The entry number in the original MC chain */
-    void SetMCEntryNumber(Int_t id) {fMCEntryNo=id;}
+    void SetMCEntryNumber(Int_t id) { fMCEntryNo = id; }
 
     /**
      * Destructor
      */
     virtual ~FairEventHeader();
     virtual void Register(Bool_t Persistance = kTRUE);
-  protected:
 
+  protected:
     /** Run Id */
     UInt_t fRunId;
     /** Event Time **/
@@ -74,8 +71,7 @@ class FairEventHeader : public TNamed
     /**MC entry number from input chain*/
     Int_t     fMCEntryNo;
 
-
     ClassDef(FairEventHeader,3)
-
 };
+
 #endif

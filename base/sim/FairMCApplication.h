@@ -13,16 +13,16 @@
 #ifndef FAIR_MC_APPLICATION_H
 #define FAIR_MC_APPLICATION_H
 
-#include "TVirtualMCApplication.h"      // for TVirtualMCApplication
 
 #include "FairRunInfo.h"                // for FairRunInfo
 
-#include "Rtypes.h"                     // for Int_t, Bool_t, Double_t, etc
-#include "TLorentzVector.h"             // for TLorentzVector
-#include "TString.h"                    // for TString
+#include <TVirtualMCApplication.h>      // for TVirtualMCApplication
+#include <Rtypes.h>                     // for Int_t, Bool_t, Double_t, etc
+#include <TLorentzVector.h>             // for TLorentzVector
+#include <TString.h>                    // for TString
 
-#include <map>                           // for map, multimap, etc
-#include <list>                           // for list
+#include <map>                          // for map, multimap, etc
+#include <list>                         // for list
 
 class FairDetector;
 class FairEventHeader;

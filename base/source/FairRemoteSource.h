@@ -16,11 +16,10 @@
 
 #include "FairMbsSource.h"
 
-
-class TSocket;
 class MRevBuffer;
 class REvent;
 
+class TSocket;
 
 class FairRemoteSource : public FairMbsSource
 {
@@ -42,10 +41,9 @@ class FairRemoteSource : public FairMbsSource
     REvent* fREvent;
 
     FairRemoteSource& operator=(const FairRemoteSource&);
-    
+
   public:
     ClassDef(FairRemoteSource, 0)
 };
-
 
 #endif

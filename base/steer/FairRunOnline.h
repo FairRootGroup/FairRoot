@@ -1,13 +1,12 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRRUNONLINE_H
 #define FAIRRUNONLINE_H
-
 
 /**
  * Configure and manage the Analysis
@@ -19,21 +18,16 @@
 #include "FairRun.h"
 #include "FairRootManager.h"
 
-#include "TString.h"
-#include <iostream>
+#include <TString.h>
+#include <Rtypes.h>
 
-class FairRuntimeDb;
 class FairField;
-class TFile;
-class TF1;
-class TTree;
 class FairSource;
-class TFolder;
 class THttpServer;
+class TObject;
 
 class FairRunOnline : public FairRun
 {
-
   public:
     static FairRunOnline* Instance();
     virtual ~FairRunOnline();
@@ -44,7 +38,7 @@ class FairRunOnline : public FairRun
     void        Init();
     /**Run for the given number of events*/
     void        Run(Int_t Ev_start, Int_t Ev_end);
- 
+
     void        Reinit(UInt_t runId);
     UInt_t      getRunId() { return fRunId; }
     /** Get the magnetic field **/
@@ -60,7 +54,6 @@ class FairRunOnline : public FairRun
     void        SetSource(FairSource* source) { fRootManager->SetSource(source); }
     /** Return pointer to source **/
     FairSource*  GetSource() { return fRootManager->GetSource(); }
-
 
     /** Initialization of parameter container is set to static, i.e: the run id is
      *  is not checked anymore after initialization
@@ -86,7 +79,6 @@ class FairRunOnline : public FairRun
      */
     void RegisterHttpCommand(TString name, TString command);
 
-
     /** Get direct access to the http server. */
     THttpServer* GetHttpServer() { return fServer; }
 
@@ -94,7 +86,6 @@ class FairRunOnline : public FairRun
     void Finish();
 
   private:
-
     Bool_t fAutomaticFinish;
 
     FairRunOnline(const FairRunOnline& M);

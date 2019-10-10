@@ -17,10 +17,10 @@
 #define FAIRONLINESOURCE_H
 
 #include "FairSource.h"
-#include "TObjArray.h"
+#include <TObjArray.h>
+#include <Rtypes.h>
 
 #include "FairUnpack.h"
-
 
 class FairOnlineSource : public FairSource
 {
@@ -54,6 +54,5 @@ class FairOnlineSource : public FairSource
 
     ClassDef(FairOnlineSource, 0)
 };
-
 
 #endif

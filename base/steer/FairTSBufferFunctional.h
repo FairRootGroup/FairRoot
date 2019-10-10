@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FairTSBufferFunctionalFunctional_H_
@@ -10,10 +10,9 @@
 
 #include "FairTimeStamp.h"              // for FairTimeStamp
 
-#include <iosfwd>                       // for ostream
-#include "Rtypes.h"                     // for Int_t, Bool_t, Double_t, etc
-#include "TObject.h"                    // for TObject
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for Int_t, Bool_t, Double_t, etc
+#include <TObject.h>                    // for TObject
+#include <TString.h>                    // for TString
 
 #include <functional>                   // for binary_function
 #include <iostream>                     // for operator<<, basic_ostream, etc
@@ -21,7 +20,6 @@
 class TBranch;
 class TClonesArray;
 class TTree;
-
 
 /**
  * \class BinaryFunctor
@@ -35,16 +33,15 @@ class TTree;
  * The method TimeOut is used to break the processing if for example always the same data is requested.
  */
 
-class BinaryFunctor : public std::binary_function<FairTimeStamp* ,double, bool>
+class BinaryFunctor : public std::binary_function<FairTimeStamp*, double, bool>
 {
-  public :
+  public:
     virtual bool operator() (FairTimeStamp* a, double b) {return Call(a,b);};
     virtual bool Call(FairTimeStamp* a, double b) = 0;
     virtual bool TimeOut() {return false;}
     virtual void ResetTimeOut() {};
 
     virtual ~BinaryFunctor() {};
-
 };
 
 /**
@@ -55,7 +52,7 @@ class BinaryFunctor : public std::binary_function<FairTimeStamp* ,double, bool>
 
 class StopTime : public BinaryFunctor
 {
-  public :
+  public:
     StopTime():fRequestTime(-1), fOldTime(-1), fSameTimeRequestCounter(0) {};
 
     /**
@@ -87,13 +84,11 @@ class StopTime : public BinaryFunctor
 
     void ResetTimeOut() {fSameTimeRequestCounter = 0;}
 
-  private :
+  private:
     double fRequestTime;
     double fOldTime;
     int fSameTimeRequestCounter;
 };
-
-
 
 /**
  * \class TimeGap
@@ -104,7 +99,6 @@ class TimeGap : public BinaryFunctor
 {
   public:
     TimeGap():fOldTime(-1.) {};
-
 
     /**
      * \parameter b : TimeGap: All data between two time gaps which are larger than TimeGap are returned
@@ -124,7 +118,6 @@ class TimeGap : public BinaryFunctor
         return false;
       }
     };
-
 
   private:
     double fOldTime;
@@ -152,7 +145,6 @@ class TimeGap : public BinaryFunctor
 
 class FairTSBufferFunctional : public TObject
 {
-
   public:
     FairTSBufferFunctional(TString branchName, TTree* sourceTree, BinaryFunctor* stopFunction, BinaryFunctor* startFunction = 0);
 
@@ -184,7 +176,6 @@ class FairTSBufferFunctional : public TObject
 
     Int_t FindStartIndex(Double_t startParameter);
 
-
   private:
     void ReadInNextFilledEntry();
     Int_t ReadInPreviousFilledEntry(Int_t startEntry);
@@ -210,8 +201,6 @@ class FairTSBufferFunctional : public TObject
     FairTSBufferFunctional& operator=(const FairTSBufferFunctional&);
 
     ClassDef(FairTSBufferFunctional,0);
-
 };
-
 
 #endif

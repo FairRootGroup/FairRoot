@@ -10,16 +10,14 @@
 // -----            Created 06/01/04  by M. Al-Turany                  -----
 // -------------------------------------------------------------------------
 
+// Extended TParticle with pointers to mother and daughters particles
 
-// Extended TParticle with pointers to mother and daughters
-// particles
 #include "FairParticle.h"
 
-#include <iosfwd>                       // for ostream
-#include "TDatabasePDG.h"               // for TDatabasePDG
-#include "TMCParticleType.h"            // for TMCParticleType::kPTIon, etc
-#include "TParticle.h"                  // for TParticle
-#include "TParticlePDG.h"               // for TParticlePDG
+#include <TDatabasePDG.h>               // for TDatabasePDG
+#include <TMCParticleType.h>            // for TMCParticleType::kPTIon, etc
+#include <TParticle.h>                  // for TParticle
+#include <TParticlePDG.h>               // for TParticlePDG
 
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
@@ -27,7 +25,7 @@ using std::cout;
 using std::endl;
 
 ClassImp(FairParticle)
-//_____________________________________________________________________________
+
 FairParticle::FairParticle(Int_t id, TParticle* particle)
   : TObject(),
     fpdg(id),
@@ -52,7 +50,6 @@ FairParticle::FairParticle(Int_t id, TParticle* particle)
     fstable(particle->GetPDG()->Stable())
 {
 }
-//_____________________________________________________________________________
 
 FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Int_t s,Double_t mass ,Int_t q, Bool_t stable, Double_t decaytime)
   :  TObject(),
@@ -109,7 +106,6 @@ FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Int_t s,Double_t 
 
 
 }
-//_____________________________________________________________________________
 
 FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Double_t mass ,Int_t q, Bool_t stable, Double_t decaytime)
   :  TObject(),
@@ -170,7 +166,6 @@ FairParticle::FairParticle(const char* name, Int_t z, Int_t a, Double_t mass ,In
 
 }
 
-//_____________________________________________________________________________
 FairParticle::FairParticle(Int_t id, TParticle* particle, FairParticle* mother)
   : TObject(),
     fpdg(id),
@@ -195,10 +190,8 @@ FairParticle::FairParticle(Int_t id, TParticle* particle, FairParticle* mother)
     fstable(kTRUE)
 
 {
-//
 }
 
-//_____________________________________________________________________________
 FairParticle::FairParticle( Int_t pdg,
                             const TString name,
                             TMCParticleType mcType,
@@ -249,7 +242,6 @@ FairParticle::FairParticle( Int_t pdg,
 
 }
 
-//_____________________________________________________________________________
 FairParticle::FairParticle()
   : TObject(),
     fpdg(0),
@@ -273,13 +265,10 @@ FairParticle::FairParticle()
     fbaryon(0),
     fstable(kTRUE)
 {
-//
 }
 
-//_____________________________________________________________________________
 FairParticle::~FairParticle()
 {
-//
   delete fParticle;
 }
 
@@ -287,7 +276,6 @@ FairParticle::~FairParticle()
 // public methods
 //
 
-//_____________________________________________________________________________
 void FairParticle::SetMother(FairParticle* particle)
 {
 // Adds particles daughter
@@ -296,7 +284,6 @@ void FairParticle::SetMother(FairParticle* particle)
   fMother.SetObject(particle);
 }
 
-//_____________________________________________________________________________
 void FairParticle::AddDaughter(FairParticle* particle)
 {
 // Adds particles daughter
@@ -305,7 +292,6 @@ void FairParticle::AddDaughter(FairParticle* particle)
   fDaughters.Add(particle);
 }
 
-//_____________________________________________________________________________
 void FairParticle::Print(Option_t*) const
 {
 // Prints particle properties.
@@ -327,7 +313,6 @@ void FairParticle::Print(Option_t*) const
   cout << endl;
 }
 
-//_____________________________________________________________________________
 void FairParticle::PrintDaughters() const
 {
 // Prints particles daughters.
@@ -339,7 +324,6 @@ void FairParticle::PrintDaughters() const
   }
 }
 
-//_____________________________________________________________________________
 Int_t  FairParticle::GetPDG() const
 {
 // Returs particle ID.
@@ -349,7 +333,6 @@ Int_t  FairParticle::GetPDG() const
 }
 
 
-//_____________________________________________________________________________
 TParticle*  FairParticle::GetParticle() const
 {
 // Returns particle definition (TParticle).
@@ -358,7 +341,6 @@ TParticle*  FairParticle::GetParticle() const
   return fParticle;
 }
 
-//_____________________________________________________________________________
 FairParticle* FairParticle::GetMother() const
 {
 // Returns particle definition (TParticle).
@@ -367,7 +349,6 @@ FairParticle* FairParticle::GetMother() const
   return static_cast<FairParticle*>(fMother.GetObject());
 }
 
-//_____________________________________________________________________________
 Int_t FairParticle::GetNofDaughters() const
 {
 // Returns number of daughters.
@@ -376,7 +357,6 @@ Int_t FairParticle::GetNofDaughters() const
   return fDaughters.GetEntriesFast();
 }
 
-//_____________________________________________________________________________
 FairParticle* FairParticle::GetDaughter(Int_t i) const
 {
 // Returns i-th daughter.
