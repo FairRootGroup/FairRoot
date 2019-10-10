@@ -3,7 +3,7 @@
 
 #include <map>
 
-#include "TGeoMatrix.h"
+#include <TGeoMatrix.h>
 
 class FairAlignmentHandler {
     friend class FairRun;
@@ -13,9 +13,7 @@ class FairAlignmentHandler {
     void AlignGeometryByFullPath() const;
     void AlignGeometryBySymlink() const;
 
-    void AddAlignmentMatrices(
-        const std::map<std::string, TGeoHMatrix>& alignmentMatrices,
-        bool invertMatrices);
+    void AddAlignmentMatrices(const std::map<std::string, TGeoHMatrix>& alignmentMatrices, bool invertMatrices);
 
   public:
     FairAlignmentHandler();
