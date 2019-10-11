@@ -10,8 +10,8 @@
 
 #include <memory>
 
-#include "TClonesArray.h"
-#include "TMessage.h"
+#include <TClonesArray.h>
+#include <TMessage.h>
 
 #include "FairMQMessage.h"
 

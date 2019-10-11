@@ -50,7 +50,6 @@ std::ostream& operator<<(std::ostream& out, const std::tuple<Args...>& t)
     return out << ')';
 }
 
-/// ///////////////////////// --- RESOLVE --- /////////////////////////
 namespace resolve
 {
 /// test function member signature in given class
@@ -101,7 +100,7 @@ void DataTypeInfo(std::string classname)
 {
     LOG(info) << "Info on type " << classname;
 
-    if(std::is_class<T>::value)
+    if (std::is_class<T>::value)
     {
 
         if (std::is_pod<T>::value)

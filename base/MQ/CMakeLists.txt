@@ -57,13 +57,19 @@ target_link_directories(${target} PUBLIC
 )
 
 target_link_libraries(${target} PUBLIC
-  FairRoot::Base # FairTask
+  FairRoot::Base # FairTask, FairRunAna, FairRootFileSink, FairFileSource
+  FairRoot::ParBase # FairParRootFileIo, FairRuntimeDb
   FairRoot::FairTools
   FairMQ::FairMQ
+  $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
+
   Boost::serialization
   Boost::filesystem
-  # TODO: clean the following
+
   Net # TMessage
+  Core # Rtypes, TClonesArray
+  RIO # TFile
+  Tree # TTree
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})

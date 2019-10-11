@@ -9,7 +9,6 @@
 #define	BINARYOUTFILEMANAGER_H
 
 // std
-#include <iostream>
 #include <vector>
 #include <string>
 #include <fstream>
@@ -20,12 +19,6 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
-
-// ROOT
-#include "Rtypes.h"
-#include "TFile.h"
-#include "TTree.h"
-#include "TClonesArray.h"
 
 // FairRoot
 #include "FairMQLogger.h"

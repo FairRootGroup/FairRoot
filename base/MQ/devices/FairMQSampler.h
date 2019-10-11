@@ -15,22 +15,12 @@
 #ifndef FAIRMQSAMPLER_H_
 #define FAIRMQSAMPLER_H_
 
-#include <vector>
-#include <iostream>
-#include <string>
-#include <exception>
 #include <chrono>
 #include <thread>
-
-#include "TList.h"
-#include "TObjString.h"
-#include "TClonesArray.h"
-#include "TROOT.h"
 
 #include "FairParRootFileIo.h"
 #include "FairRuntimeDb.h"
 #include "FairRunAna.h"
-#include "FairTask.h"
 #include "FairRootFileSink.h"
 #include "FairFileSource.h"
 

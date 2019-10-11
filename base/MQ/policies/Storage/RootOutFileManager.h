@@ -14,21 +14,19 @@
 #include <string>
 
 // ROOT
-#include "Rtypes.h"
-#include "TFile.h"
-#include "TTree.h"
-#include "TClonesArray.h"
-
-#include "TKey.h"
-#include "TFolder.h"
-#include "TObjString.h"
-#include "TList.h"
+#include <Rtypes.h>
+#include <TFile.h>
+#include <TTree.h>
+#include <TClonesArray.h>
+#include <TKey.h>
+#include <TFolder.h>
+#include <TObjString.h>
+#include <TList.h>
 
 // FairRoot
 #include "FairLogger.h"
 #include "FairMQMessage.h"
 #include <options/FairMQProgOptions.h>
-
 
 template <typename DataType>
 class RootOutFileManager

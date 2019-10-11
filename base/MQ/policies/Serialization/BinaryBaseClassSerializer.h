@@ -5,11 +5,9 @@
  * Created on October 10, 2014, 5:22 PM
  */
 
-
 #ifndef BINARYBASECLASSSERIALIZER_H
 #define BINARYBASECLASSSERIALIZER_H
 
-#include <iostream>
 #include "FairMQMessage.h"
 
 template <typename TPayload>

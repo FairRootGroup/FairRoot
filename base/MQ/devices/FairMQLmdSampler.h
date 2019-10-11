@@ -36,7 +36,7 @@ extern "C"
 class FairMQLmdSampler : public FairMQDevice
 {
   public:
-        FairMQLmdSampler()
+    FairMQLmdSampler()
         : fCurrentFile(0)
         , fNEvent(0)
         , fCurrentEvent(0)

@@ -15,8 +15,6 @@
 #ifndef FAIRMQPROCESSORTASK_H_
 #define FAIRMQPROCESSORTASK_H_
 
-#include <vector>
-
 #include "FairTask.h"
 
 #include "FairMQMessage.h"

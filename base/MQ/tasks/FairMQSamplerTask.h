@@ -15,7 +15,6 @@
 #ifndef FAIRMQSAMPLERTASK_H_
 #define FAIRMQSAMPLERTASK_H_
 
-#include <vector>
 #include <string>
 #include <memory>
 

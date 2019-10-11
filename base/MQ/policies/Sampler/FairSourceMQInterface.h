@@ -5,7 +5,6 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *  
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
- 
 
 #ifndef FAIRSOURCEMQINTERFACE_H
 #define FAIRSOURCEMQINTERFACE_H
@@ -15,11 +14,6 @@
 
 #include "FairRunAna.h"
 #include "FairFileSource.h"
-//#include "FairLmdSource.h"
-//#include "FairMbsSource.h"
-//#include "FairMbsStreamSource.h"
-//#include "FairMixedSource.h"
-//#include "FairRemoteSource.h"
 #include <type_traits>
 #include <functional>
 

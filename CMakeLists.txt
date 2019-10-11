@@ -297,17 +297,16 @@ Generate_Version_Info()
 SetBasicVariables()
 
 # Check C++11 availability
-If(NOT CMAKE_CXX_FLAGS)
-  Message(STATUS "No C++11 support found.")
-Else()
-  String(FIND " ${CMAKE_CXX_FLAGS} " "-std=c++11" POS_C++11)
-  If(POS_C++11)
-    Message(STATUS "C++11 support found.")
-  Else()
-    Message(STATUS "No C++11 support found.")
-  EndIf()
-EndIf()
-
+if(NOT CMAKE_CXX_FLAGS)
+  message(STATUS "No C++11 support found.")
+else()
+  string(FIND " ${CMAKE_CXX_FLAGS} " "-std=c++11" POS_C++11)
+  if(POS_C++11)
+    message(STATUS "C++11 support found.")
+  else()
+    message(STATUS "No C++11 support found.")
+  endif()
+endif()
 
 # Recurse into the given subdirectories.  This does not actually
 # cause another cmake executable to run.  The same process will walk through
