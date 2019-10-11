@@ -14,29 +14,22 @@
 #include "FairMCMatch.h"                // for FairMCMatch
 #include "FairRootManager.h"            // for FairRootManager
 
-#include <iosfwd>                       // for ostream
 #include <TClonesArray.h>               // for TClonesArray
 
-#include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
-// -----   Default constructor   -------------------------------------------
 FairMCMatchLoaderTask::FairMCMatchLoaderTask()
   : FairTask("Creates FairMCMatch"),
-    fMCMatch(NULL),
-    fMCLink(NULL),
+    fMCMatch(nullptr),
+    fMCLink(nullptr),
     fEventNr(0)
 {
 }
-// -------------------------------------------------------------------------
 
-
-// -----   Destructor   ----------------------------------------------------
 FairMCMatchLoaderTask::~FairMCMatchLoaderTask()
 {
 }
 
-// -----   Public method Init   --------------------------------------------
 InitStatus FairMCMatchLoaderTask::Init()
 {
   fMCMatch = new FairMCMatch("FairMCMatch", "FairMCMatch");
@@ -112,14 +105,10 @@ InitStatus FairMCMatchLoaderTask::Init()
   return kSUCCESS;
 }
 
-
-// -------------------------------------------------------------------------
 void FairMCMatchLoaderTask::SetParContainers()
 {
 }
 
-
-// -----   Public method Exec   --------------------------------------------
 void FairMCMatchLoaderTask::Exec(Option_t* /*opt*/)
 {
 
@@ -136,6 +125,5 @@ void FairMCMatchLoaderTask::Exec(Option_t* /*opt*/)
 void FairMCMatchLoaderTask::Finish()
 {
 }
-
 
 ClassImp(FairMCMatchLoaderTask);

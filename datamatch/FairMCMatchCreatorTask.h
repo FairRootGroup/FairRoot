@@ -17,7 +17,6 @@
  ** Displays all available informations for a given event
  **/
 
-
 #ifndef FAIRMCMATCHCREATORTASK_H
 #define FAIRMCMATCHCREATORTASK_H
 
@@ -34,7 +33,6 @@ class TClonesArray;
 class FairMCMatchCreatorTask : public FairTask
 {
   public:
-
     /** Default constructor **/
     FairMCMatchCreatorTask();
 
@@ -61,7 +59,6 @@ class FairMCMatchCreatorTask : public FairTask
     FairMCMatch* fMCMatch;
 
   private:
-
     std::map<std::string, TClonesArray*> fBranches;
     Bool_t fPersistance;
     TClonesArray* fMCLink;//->

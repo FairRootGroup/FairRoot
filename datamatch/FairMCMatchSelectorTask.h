@@ -34,7 +34,6 @@ class FairMCMatch;
 class FairMCMatchSelectorTask : public FairTask
 {
   public:
-
     /** Default constructor **/
     FairMCMatchSelectorTask();
 
@@ -74,7 +73,7 @@ class FairMCMatchSelectorTask : public FairTask
     TString fStartString;
     TString fStopString;
 
-    std::vector<std::pair<Int_t, Float_t> > fStageWeights;
+    std::vector<std::pair<Int_t, Float_t>> fStageWeights;
     Float_t fCommonWeight;
 
     void Register();
@@ -87,7 +86,6 @@ class FairMCMatchSelectorTask : public FairTask
     FairMCMatchSelectorTask& operator=(const FairMCMatchSelectorTask&);
 
     ClassDef(FairMCMatchSelectorTask,1);
-
 };
 
 #endif

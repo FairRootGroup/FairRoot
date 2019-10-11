@@ -16,10 +16,8 @@
 #define FAIRMCRESULT_H_
 
 #include "FairMCObject.h"               // for FairMCObject
-
 #include "FairMCEntry.h"                // for FairMCEntry
 
-#include <iosfwd>                       // for ostream
 #include <Rtypes.h>                     // for Int_t, FairMCResult::Class, etc
 
 #include <iostream>                     // for operator<<, ostream, etc

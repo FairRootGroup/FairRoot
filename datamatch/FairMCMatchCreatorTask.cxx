@@ -18,31 +18,24 @@
 #include "FairMultiLinkedData.h"        // for FairMultiLinkedData
 #include "FairRootManager.h"            // for FairRootManager
 
-#include <iosfwd>                       // for ostream
 #include <TClonesArray.h>               // for TClonesArray
 
-#include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
-// -----   Default constructor   -------------------------------------------
 FairMCMatchCreatorTask::FairMCMatchCreatorTask()
   : FairTask("Creates FairMCMatch"),
-    fMCMatch(NULL),
+    fMCMatch(nullptr),
     fBranches(),
     fPersistance(kTRUE),
-    fMCLink(NULL),
+    fMCLink(nullptr),
     fEventNr(0)
 {
 }
-// -------------------------------------------------------------------------
 
-
-// -----   Destructor   ----------------------------------------------------
 FairMCMatchCreatorTask::~FairMCMatchCreatorTask()
 {
 }
 
-// -----   Public method Init   --------------------------------------------
 InitStatus FairMCMatchCreatorTask::Init()
 {
   fMCMatch = new FairMCMatch("FairMCMatch", "FairMCMatch");
@@ -64,7 +57,6 @@ InitStatus FairMCMatchCreatorTask::Init()
   ioman->Register("MCMatch", "MCInfo", fMCMatch, kFALSE);
 
   std::cout << "-I- FairMCMatchCreatorTask::Init: Initialization successfull" << std::endl;
-
 
   return status;
 }
@@ -95,12 +87,10 @@ InitStatus FairMCMatchCreatorTask::InitBranches()
   return kSUCCESS;
 }
 
-// -------------------------------------------------------------------------
 void FairMCMatchCreatorTask::SetParContainers()
 {
 }
 
-// -----   Public method Exec   --------------------------------------------
 void FairMCMatchCreatorTask::Exec(Option_t* /*opt*/)
 {
   if (!fMCLink) { Fatal("Exec", "No fMCLinkDet"); }
@@ -145,6 +135,5 @@ void FairMCMatchCreatorTask::Exec(Option_t* /*opt*/)
 void FairMCMatchCreatorTask::Finish()
 {
 }
-
 
 ClassImp(FairMCMatchCreatorTask);

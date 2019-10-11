@@ -31,7 +31,6 @@ class TClonesArray;
 class FairMCMatchLoaderTask : public FairTask
 {
   public:
-
     /** Default constructor **/
     FairMCMatchLoaderTask();
 
@@ -52,11 +51,9 @@ class FairMCMatchLoaderTask : public FairTask
     virtual void InitDataStages() = 0;
 
   protected:
-
     FairMCMatch* fMCMatch;
 
   private:
-
     TClonesArray* fMCLink;
     int fEventNr;
 

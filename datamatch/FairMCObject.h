@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -15,13 +15,11 @@
 #ifndef FAIRMCOBJECT_H_
 #define FAIRMCOBJECT_H_
 
-#include <TObject.h>                    // for TObject
-
 #include "FairLink.h"                   // for FairLink
 #include "FairMCEntry.h"                // for FairMCEntry
 #include "FairMultiLinkedData.h"        // for FairMultiLinkedData
 
-#include <iosfwd>                       // for ostream
+#include <TObject.h>                    // for TObject
 #include <Rtypes.h>                     // for Int_t, FairMCObject::Class, etc
 
 #include <iostream>                     // for ostream, etc
@@ -36,20 +34,17 @@ class FairMCObject: public TObject
       : TObject(),
         fStage(),
         fStageId(type)
-        {
-        }	
+    {}
     FairMCObject(const FairMCObject& obj)
       : TObject(obj),
-        fStage(obj.GetEntryVector()), 
+        fStage(obj.GetEntryVector()),
         fStageId(obj.GetStageId())
-        {
-        }
+    {}
     FairMCObject(Int_t type, std::vector<FairMCEntry> stage)
       : TObject(),
         fStage(stage),
-        fStageId(type) 
-        {
-        }
+        fStageId(type)
+    {}
 
     FairMCObject& operator=(const FairMCObject& from) {
       if (this == &from) { return *this; }

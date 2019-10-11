@@ -15,7 +15,6 @@
 #ifndef FAIRMCMATCH_H_
 #define FAIRMCMATCH_H_
 
-#include <TNamed.h>                     // for TNamed
 
 #include "FairMCEntry.h"                // for FairMCEntry
 #include "FairMCResult.h"               // for FairMCResult
@@ -23,10 +22,9 @@
 #include "FairMultiLinkedData.h"        // for FairMultiLinkedData
 #include "FairRootManager.h"            // for FairRootManager
 
-#include <iosfwd>                       // for ostream
 #include <Rtypes.h>                     // for Int_t, FairMCMatch::Class, etc
+#include <TNamed.h>                     // for TNamed
 #include <TString.h>                    // for TString
-#include <TClonesArray.h>
 
 #include <iostream>                     // for ostream, cout, endl
 #include <map>                          // for map, etc
@@ -34,6 +32,7 @@
 #include <utility>                      // for pair
 
 class FairLink;
+class TClonesArray;
 
 typedef std::map<Int_t, FairMCStage*>::iterator TListIterator;
 typedef std::map<Int_t, FairMCStage*>::const_iterator TListIteratorConst;

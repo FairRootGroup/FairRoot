@@ -16,15 +16,12 @@
 #include "FairMCStage.h"                // for FairMCStage
 #include "FairRootManager.h"            // for FairRootManager
 
-#include <iosfwd>                       // for ostream
-
-#include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, ostream, etc
 
 // -----   Default constructor   -------------------------------------------
 FairMCMatchSelectorTask::FairMCMatchSelectorTask()
   : FairTask("Creates FairMCMatch"),
-    fMCMatch(NULL),
+    fMCMatch(nullptr),
     fStart(-1),
     fStop(-1),
     fStartString(""),
@@ -37,7 +34,7 @@ FairMCMatchSelectorTask::FairMCMatchSelectorTask()
 
 FairMCMatchSelectorTask::FairMCMatchSelectorTask(TString start, TString stop)
   : FairTask("Creates FairMCMatch"),
-    fMCMatch(NULL),
+    fMCMatch(nullptr),
     fStart(-1),
     fStop(-1),
     fStartString(start),
@@ -49,7 +46,7 @@ FairMCMatchSelectorTask::FairMCMatchSelectorTask(TString start, TString stop)
 
 FairMCMatchSelectorTask::FairMCMatchSelectorTask(Int_t start, Int_t stop)
   : FairTask("Creates FairMCMatch"),
-    fMCMatch(NULL),
+    fMCMatch(nullptr),
     fStart(start),
     fStop(stop),
     fStartString(""),
