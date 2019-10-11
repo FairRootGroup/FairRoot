@@ -10,7 +10,6 @@
 // -----                  Created 03/08/04  by V. Friese               -----
 // -------------------------------------------------------------------------
 
-
 /** FairMCTrack.h
  *@author V.Friese <v.friese@gsi.de>
  **
@@ -20,7 +19,6 @@
  **
  ** Redesign 13/06/07 by V. Friese
  **/
-
 
 #ifndef FAIRMCTRACK_H
 #define FAIRMCTRACK_H 1
@@ -38,13 +36,9 @@ class TParticle;
 
 class FairMCTrack : public TObject
 {
-
   public:
-
-
     /**  Default constructor  **/
     FairMCTrack();
-
 
     /**  Standard constructor  **/
     FairMCTrack(Int_t pdgCode, Int_t motherID, Double_t px, Double_t py,
@@ -54,14 +48,11 @@ class FairMCTrack : public TObject
     /**  Copy constructor  **/
     FairMCTrack(const FairMCTrack& track);
 
-
     /**  Constructor from TParticle  **/
     FairMCTrack(TParticle* particle);
 
-
     /**  Destructor  **/
     virtual ~FairMCTrack();
-
 
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -91,19 +82,14 @@ class FairMCTrack : public TObject
     void Get4Momentum(TLorentzVector& momentum);
     void GetStartVertex(TVector3& vertex);
 
-
     /** Accessors to the number of MCPoints in the detectors **/
     Int_t GetNPoints(DetectorId detId)  const;
-
 
     /**  Modifiers  **/
     void SetMotherId(Int_t id) { fMotherId = id; }
     void SetNPoints(Int_t iDet, Int_t np);
 
-
-
   private:
-
     /**  PDG particle code  **/
     Int_t  fPdgCode;
 
@@ -133,12 +119,8 @@ class FairMCTrack : public TObject
      **/
     Int_t fNPoints;
 
-
     ClassDef(FairMCTrack,2);
-
 };
-
-
 
 // ==========   Inline functions   ========================================
 
@@ -148,26 +130,19 @@ inline Double_t FairMCTrack::GetEnergy() const
   return TMath::Sqrt(mass*mass + fPx*fPx + fPy*fPy + fPz*fPz );
 }
 
-
 inline void FairMCTrack::GetMomentum(TVector3& momentum)
 {
   momentum.SetXYZ(fPx,fPy,fPz);
 }
-
 
 inline void FairMCTrack::Get4Momentum(TLorentzVector& momentum)
 {
   momentum.SetXYZT(fPx,fPy,fPz,GetEnergy());
 }
 
-
 inline void FairMCTrack::GetStartVertex(TVector3& vertex)
 {
   vertex.SetXYZ(fStartX,fStartY,fStartZ);
 }
-
-
-
-
 
 #endif

@@ -39,11 +39,11 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::FairTools # FairLogger
 
-  # TODO: clean the following
-  # used are: TDatabasePDG TParticle TParticlePDG TLorentzVector TMath TVector3 Rtypes
-  EG
-  Physics
   Core
+  Physics # TLorentzVector, TVector3
+  MathCore # TMath
+  EG # TDatabasePDG, TParticle
+  VMC # TMCProcess
 )
 
 fairroot_target_root_dictionary(${target}

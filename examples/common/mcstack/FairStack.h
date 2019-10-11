@@ -10,7 +10,6 @@
 // -----           Created 10/08/04  by D. Bertini / V. Friese         -----
 // -------------------------------------------------------------------------
 
-
 /** FairStack.h
  *@author D.Bertini <d.bertini@gsi.de>
  *@author V.Friese <v.friese@gsi.de>
@@ -33,14 +32,12 @@
  ** By default, the minimal number of points is 1 and the energy cut is 0.
  **/
 
-
 #ifndef FAIRSTACK_H
 #define FAIRSTACK_H
 
 #include "FairGenericStack.h"           // for FairGenericStack
 
 #include "FairDetectorList.h"           // for DetectorId
-#include "FairLogger.h"
 
 #include <Rtypes.h>                     // for Int_t, Double_t, Bool_t, etc
 #include <TMCProcess.h>                 // for TMCProcess
@@ -56,18 +53,14 @@ class TRefArray;
 
 class FairStack : public FairGenericStack
 {
-
   public:
-
     /** Default constructor
      *param size  Estimated track number
      **/
     FairStack(Int_t size = 100);
 
-
     /** Destructor  **/
     virtual ~FairStack();
-
 
     /** Add a TParticle to the stack.
      ** Declared in TVirtualMCStack
@@ -98,16 +91,12 @@ class FairStack : public FairGenericStack
                            Double_t poly, Double_t polz, TMCProcess proc,
                            Int_t& ntr, Double_t weight, Int_t is,Int_t secondParentId);
 
-
-
-
     /** Get next particle for tracking from the stack.
      ** Declared in TVirtualMCStack
      *@param  iTrack  index of popped track (return)
      *@return Pointer to the TParticle of the track
      **/
     virtual TParticle* PopNextTrack(Int_t& iTrack);
-
 
     /** Get primary particle by index for tracking from stack
      ** Declared in TVirtualMCStack
@@ -116,69 +105,56 @@ class FairStack : public FairGenericStack
      **/
     virtual TParticle* PopPrimaryForTracking(Int_t iPrim);
 
-
     /** Set the current track number
      ** Declared in TVirtualMCStack
      *@param iTrack  track number
      **/
     virtual void SetCurrentTrack(Int_t iTrack)   { fCurrentTrack     = iTrack; }
 
-
     /** Get total number of tracks
      ** Declared in TVirtualMCStack
      **/
     virtual Int_t GetNtrack() const { return fNParticles; }
-
 
     /** Get number of primary tracks
      ** Declared in TVirtualMCStack
      **/
     virtual Int_t GetNprimary() const { return fNPrimaries; }
 
-
     /** Get the current track's particle
      ** Declared in TVirtualMCStack
      **/
     virtual TParticle* GetCurrentTrack() const;
-
 
     /** Get the number of the current track
      ** Declared in TVirtualMCStack
      **/
     virtual Int_t GetCurrentTrackNumber() const;// { return fCurrentTrack; }
 
-
     /** Get the track number of the parent of the current track
      ** Declared in TVirtualMCStack
      **/
     virtual Int_t GetCurrentParentTrackNumber() const;
 
-
     /** Add a TParticle to the fParticles array **/
     virtual void AddParticle(TParticle* part);
-
 
     /** Fill the MCTrack output array, applying filter criteria **/
     virtual void FillTrackArray();
 
-
     /** Update the track index in the MCTracks and MCPoints **/
     virtual void UpdateTrackIndex(TRefArray* detArray=0);
-
 
     /** Resets arrays and stack and deletes particles and tracks **/
     virtual void Reset();
 
-
     /** Register the MCTrack array to the Root Manager  **/
     virtual void Register();
-
 
     /** Output to screen
      **@param iVerbose: 0=events summary, 1=track info
      **/
     virtual void Print(Option_t*) const;
-
 
     /** Modifiers  **/
     void StoreSecondaries(Bool_t choice = kTRUE) { fStoreSecondaries = choice; }
@@ -186,12 +162,10 @@ class FairStack : public FairGenericStack
     void SetEnergyCut(Double_t eMin)             { fEnergyCut        = eMin;   }
     void StoreMothers(Bool_t choice = kTRUE)     { fStoreMothers     = choice; }
 
-
     /** Increment number of points for the current track in a given detector
      *@param iDet  Detector unique identifier
      **/
     void AddPoint(DetectorId iDet);
-
 
     /** Increment number of points for an arbitrary track in a given detector
      *@param iDet    Detector unique identifier
@@ -231,21 +205,17 @@ class FairStack : public FairGenericStack
     /** STL stack (FILO) used to handle the TParticles for tracking **/
     std::stack<TParticle*>  fStack;           //!
 
-
     /** Array of TParticles (contains all TParticles put into or created
      ** by the transport
      **/
     TClonesArray* fParticles;            //!
 
-
     /** Array of FairMCTracks containg the tracks written to the output **/
     TClonesArray* fTracks;
-
 
     /** STL map from particle index to storage flag  **/
     std::map<Int_t, Bool_t>           fStoreMap;        //!
     std::map<Int_t, Bool_t>::iterator fStoreIter;       //!
-
 
     /** STL map from particle index to track index  **/
     std::map<Int_t, Int_t>            fIndexMap;        //!
@@ -261,7 +231,6 @@ class FairStack : public FairGenericStack
     Int_t fNTracks;       //! Number of entries in fTracks
     Int_t fIndex;         //! Used for merging
 
-
     /** Variables defining the criteria for output selection **/
     Bool_t     fStoreSecondaries;
     Int_t      fMinPoints;
@@ -275,13 +244,6 @@ class FairStack : public FairGenericStack
     FairStack& operator=(const FairStack&);
 
     ClassDef(FairStack,1)
-
-
 };
-
-
-
-
-
 
 #endif

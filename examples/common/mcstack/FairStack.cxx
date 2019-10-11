@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -18,22 +18,15 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 
-#include <iosfwd>                       // for ostream
 #include <TClonesArray.h>               // for TClonesArray
-#include <TGeoManager.h>                // for gGeoManager
 #include <TIterator.h>                  // for TIterator
 #include <TLorentzVector.h>             // for TLorentzVector
 #include <TParticle.h>                  // for TParticle
 #include <TRefArray.h>                  // for TRefArray
 #include <TVirtualMC.h>                 // for gMC
 
-#include <stddef.h>                     // for NULL
-#include <iostream>                     // for operator<<, etc
-
 using std::pair;
 
-
-// -----   Default constructor   -------------------------------------------
 FairStack::FairStack(Int_t size)
   : FairGenericStack(),
     fStack(),
@@ -56,11 +49,6 @@ FairStack::FairStack(Int_t size)
 {
 }
 
-// -------------------------------------------------------------------------
-
-
-
-// -----   Destructor   ----------------------------------------------------
 FairStack::~FairStack()
 {
   if (fParticles) {
@@ -72,7 +60,6 @@ FairStack::~FairStack()
     delete fTracks;
   }
 }
-// -------------------------------------------------------------------------
 
 void FairStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
                           Double_t px, Double_t py, Double_t pz,
@@ -81,7 +68,6 @@ void FairStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
                           Double_t polz, TMCProcess proc, Int_t& ntr,
                           Double_t weight, Int_t is)
 {
-
   PushTrack( toBeDone, parentId, pdgCode,
              px,  py,  pz,
              e,  vx,  vy,  vz,
@@ -90,12 +76,6 @@ void FairStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
              weight, is, -1);
 }
 
-
-
-
-
-
-// -----   Virtual public method PushTrack   -------------------------------
 void FairStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
                           Double_t px, Double_t py, Double_t pz,
                           Double_t e, Double_t vx, Double_t vy, Double_t vz,
@@ -133,17 +113,13 @@ void FairStack::PushTrack(Int_t toBeDone, Int_t parentId, Int_t pdgCode,
   if (toBeDone == 1) { fStack.push(particle); }
 
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Virtual method PopNextTrack   -----------------------------------
 TParticle* FairStack::PopNextTrack(Int_t& iTrack)
 {
   // If end of stack: Return empty pointer
   if (fStack.empty()) {
     iTrack = -1;
-    return NULL;
+    return nullptr;
   }
 
   // If not, get next particle from stack
@@ -152,7 +128,7 @@ TParticle* FairStack::PopNextTrack(Int_t& iTrack)
 
   if ( !thisParticle) {
     iTrack = 0;
-    return NULL;
+    return nullptr;
   }
 
   fCurrentTrack = thisParticle->GetStatusCode();
@@ -161,11 +137,7 @@ TParticle* FairStack::PopNextTrack(Int_t& iTrack)
   return thisParticle;
 
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Virtual method PopPrimaryForTracking   --------------------------
 TParticle* FairStack::PopPrimaryForTracking(Int_t iPrim)
 {
   // Get the iPrimth particle from the fStack TClonesArray. This
@@ -186,11 +158,7 @@ TParticle* FairStack::PopPrimaryForTracking(Int_t iPrim)
   return part;
 
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Virtual public method GetCurrentTrack   -------------------------
 TParticle* FairStack::GetCurrentTrack() const
 {
   TParticle* currentPart = GetParticle(fCurrentTrack);
@@ -199,11 +167,7 @@ TParticle* FairStack::GetCurrentTrack() const
   }
   return currentPart;
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Public method AddParticle   -------------------------------------
 void FairStack::AddParticle(TParticle* oldPart)
 {
   TClonesArray& array = *fParticles;
@@ -212,11 +176,7 @@ void FairStack::AddParticle(TParticle* oldPart)
   newPart->SetUniqueID(oldPart->GetUniqueID());
   fIndex++;
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Public method FillTrackArray   ----------------------------------
 void FairStack::FillTrackArray()
 {
 
@@ -250,8 +210,8 @@ void FairStack::FillTrackArray()
         track->SetNPoints(iDet, fPointsMap[a]);
       }
       fNTracks++;
-    } else { 
-      fIndexMap[iPart] = -2; 
+    } else {
+      fIndexMap[iPart] = -2;
     }
 
   }
@@ -261,9 +221,7 @@ void FairStack::FillTrackArray()
 
   // --> Screen output
   //Print(1);
-
 }
-// -------------------------------------------------------------------------
 
 Int_t FairStack::GetCurrentTrackNumber() const
 {
@@ -274,10 +232,8 @@ Int_t FairStack::GetCurrentTrackNumber() const
     return fCurrentTrack;
 }
 
-// -----   Public method UpdateTrackIndex   --------------------------------
 void FairStack::UpdateTrackIndex(TRefArray* detList)
 {
-
   Int_t nColl = 0;
 
   // First update mother ID in MCTracks
@@ -292,7 +248,6 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
     }
   }
 
-
   if(fDetList==0) {
     // Now iterate through all active detectors
     fDetIter = detList->MakeIterator();
@@ -301,9 +256,8 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
     fDetIter->Reset();
   }
 
-  FairDetector* det = NULL;
+  FairDetector* det = nullptr;
   while( (det = static_cast<FairDetector*>(fDetIter->Next()) ) ) {
-
 
     // --> Get hit collections from detector
     Int_t iColl = 0;
@@ -324,21 +278,16 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
         if (fIndexIter == fIndexMap.end()) {
           LOG(fatal) << "Particle index " << iTrack << " not found in index map!";
         } else {
-	  point->SetTrackID((*fIndexIter).second);
-	  point->SetLink(FairLink("MCTrack", (*fIndexIter).second));
-	}
+          point->SetTrackID((*fIndexIter).second);
+          point->SetLink(FairLink("MCTrack", (*fIndexIter).second));
+        }
       }
 
     }   // Collections of this detector
   }     // List of active detectors
-  LOG(debug) << "...stack and  " << nColl << " collections updated."
-;
+  LOG(debug) << "...stack and  " << nColl << " collections updated.";
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Public method Reset   -------------------------------------------
 void FairStack::Reset()
 {
   fIndex = 0;
@@ -350,11 +299,7 @@ void FairStack::Reset()
   fFSTrackMap.clear();
   fPointsMap.clear();
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Public method Register   ----------------------------------------
 void FairStack::Register()
 {
   if ( gMC && ( ! gMC->IsMT() ) ) {
@@ -363,11 +308,7 @@ void FairStack::Register()
     FairRootManager::Instance()->RegisterAny("MCTrack",fTracks,kTRUE);
   }
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Public method Print  --------------------------------------------
 void FairStack::Print(Option_t*) const
 {
   LOG(info) << "FairStack: Number of primaries        = " << fNPrimaries;
@@ -379,11 +320,7 @@ void FairStack::Print(Option_t*) const
     }
   }
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Public method AddPoint (for current track)   --------------------
 void FairStack::AddPoint(DetectorId detId)
 {
   Int_t iDet = detId;
@@ -397,11 +334,7 @@ void FairStack::AddPoint(DetectorId detId)
   if ( fPointsMap.find(a) == fPointsMap.end() ) { fPointsMap[a] = 1; }
   else { fPointsMap[a]++; }
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Public method AddPoint (for arbitrary track)  -------------------
 void FairStack::AddPoint(DetectorId detId, Int_t iTrack)
 {
   if ( iTrack < 0 ) { return; }
@@ -415,23 +348,14 @@ void FairStack::AddPoint(DetectorId detId, Int_t iTrack)
   if ( fPointsMap.find(a) == fPointsMap.end() ) { fPointsMap[a] = 1; }
   else { fPointsMap[a]++; }
 }
-// -------------------------------------------------------------------------
 
-
-
-
-// -----   Virtual method GetCurrentParentTrackNumber   --------------------
 Int_t FairStack::GetCurrentParentTrackNumber() const
 {
   TParticle* currentPart = GetCurrentTrack();
   if ( currentPart ) { return currentPart->GetFirstMother(); }
   else { return -1; }
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Public method GetParticle   -------------------------------------
 TParticle* FairStack::GetParticle(Int_t trackID) const
 {
   if (trackID < 0 || trackID >= fNParticles) {
@@ -439,11 +363,7 @@ TParticle* FairStack::GetParticle(Int_t trackID) const
   }
   return static_cast<TParticle*>(fParticles->At(trackID));
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Private method SelectTracks   -----------------------------------
 void FairStack::SelectTracks()
 {
 
@@ -500,8 +420,6 @@ void FairStack::SelectTracks()
 
     // --> Set storage flag
     fStoreMap[i] = store;
-
-
   }
 
   // --> If flag is set, flag recursively mothers of selected tracks
@@ -516,8 +434,6 @@ void FairStack::SelectTracks()
       }
     }
   }
-
 }
-// -------------------------------------------------------------------------
 
 ClassImp(FairStack)
