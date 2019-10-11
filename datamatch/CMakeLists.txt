@@ -52,7 +52,7 @@ target_link_directories(${target} PUBLIC
 
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairMultiLinkedData, FairRootManager, FairLink
-  # TODO: clean the following
+
   Core
 )
 

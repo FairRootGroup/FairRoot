@@ -16,7 +16,6 @@
 
 #include "FairHit.h"                    // for FairHit
 
-#include <iosfwd>                       // for ostream
 #include <TVector3.h>                   // for TVector3
 
 #include <iostream>                     // for operator<<, basic_ostream, etc
@@ -27,7 +26,6 @@ using std::endl;
 FairHitPointSetDraw::FairHitPointSetDraw()
 {
   // TODO Auto-generated constructor stub
-
 }
 
 FairHitPointSetDraw::~FairHitPointSetDraw()
@@ -43,6 +41,5 @@ TVector3 FairHitPointSetDraw::GetVector(TObject* obj)
   }
   return TVector3(p->GetX(), p->GetY(), p->GetZ());
 }
-
 
 ClassImp(FairHitPointSetDraw)

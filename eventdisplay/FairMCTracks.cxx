@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -15,7 +15,6 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairLogger.h"
 
-#include <iosfwd>                       // for ostream
 #include <TClonesArray.h>               // for TClonesArray
 #include <TEveManager.h>                // for TEveManager, gEve
 #include <TEvePathMark.h>               // for TEvePathMark
@@ -27,55 +26,49 @@
 #include <TObjArray.h>                  // for TObjArray
 #include <TParticle.h>                  // for TParticle
 
-#include <string.h>                     // for NULL, strcmp
-#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <cstring>                      // for strcmp
 
-
-// -----   Default constructor   -------------------------------------------
 FairMCTracks::FairMCTracks()
   : FairTask("FairMCTracks", 0),
-    fTrackList(NULL),
-    fTrPr(NULL),
-    fEventManager(NULL),
-    fEveTrList(NULL),
+    fTrackList(nullptr),
+    fTrPr(nullptr),
+    fEventManager(nullptr),
+    fEveTrList(nullptr),
     fEvent(""),
-    fTrList(NULL),
+    fTrList(nullptr),
     MinEnergyLimit(-1.),
     MaxEnergyLimit(-1.),
     PEnergy(-1.)
 {
 }
-// -------------------------------------------------------------------------
 
-
-// -----   Standard constructor   ------------------------------------------
 FairMCTracks::FairMCTracks(const char* name, Int_t iVerbose)
   : FairTask(name, iVerbose),
-    fTrackList(NULL),
-    fTrPr(NULL),
-    fEventManager(NULL),
+    fTrackList(nullptr),
+    fTrPr(nullptr),
+    fEventManager(nullptr),
     fEveTrList(new TObjArray(16)),
     fEvent(""),
-    fTrList(NULL),
+    fTrList(nullptr),
     MinEnergyLimit(-1.),
     MaxEnergyLimit(-1.),
     PEnergy(-1.)
 {
 }
-// -------------------------------------------------------------------------
+
 InitStatus FairMCTracks::Init()
 {
-  LOG(debug) <<  "FairMCTracks::Init()"; 
+  LOG(debug) <<  "FairMCTracks::Init()";
   FairRootManager* fManager = FairRootManager::Instance();
   fTrackList = static_cast<TClonesArray*>(fManager->GetObject("GeoTracks"));
   if(fTrackList==0) {
     LOG(error) << "FairMCTracks::Init()  branch " << GetName() << " Not found! Task will be deactivated ";
     SetActive(kFALSE);
   }
-  LOG(debug1) <<  "FairMCTracks::Init() get track list" << fTrackList; 
-  LOG(debug1) <<  "FairMCTracks::Init()  create propagator"; 
+  LOG(debug1) <<  "FairMCTracks::Init() get track list" << fTrackList;
+  LOG(debug1) <<  "FairMCTracks::Init()  create propagator";
   fEventManager =FairEventManager::Instance();
-  LOG(debug1) <<  "FairMCTracks::Init() get instance of FairEventManager "; 
+  LOG(debug1) <<  "FairMCTracks::Init() get instance of FairEventManager ";
   fEvent = "Current Event";
   MinEnergyLimit=fEventManager->GetEvtMinEnergy();
   MaxEnergyLimit=fEventManager->GetEvtMaxEnergy();
@@ -83,29 +76,27 @@ InitStatus FairMCTracks::Init()
   if(IsActive()) { return kSUCCESS; }
   else { return kERROR; }
 }
-// -------------------------------------------------------------------------
+
 void FairMCTracks::Exec(Option_t* /*option*/)
 {
-
   if (IsActive()) {
-
-    LOG(debug1) << " FairMCTracks::Exec "; 
+    LOG(debug1) << " FairMCTracks::Exec ";
     TGeoTrack* tr;
     const Double_t* point;
 
     Reset();
 
     for (Int_t i=0; i<fTrackList->GetEntriesFast(); i++)  {
-      LOG(debug3) << "FairMCTracks::Exec "<< i; 
+      LOG(debug3) << "FairMCTracks::Exec "<< i;
       tr=static_cast<TGeoTrack*>(fTrackList->At(i));
       TParticle* P=static_cast<TParticle*>(tr->GetParticle());
       PEnergy=P->Energy();
       MinEnergyLimit=TMath::Min(PEnergy,MinEnergyLimit) ;
       MaxEnergyLimit=TMath::Max(PEnergy,MaxEnergyLimit) ;
-      LOG(debug3)<< "MinEnergyLimit " << MinEnergyLimit << " MaxEnergyLimit " << MaxEnergyLimit; 
+      LOG(debug3)<< "MinEnergyLimit " << MinEnergyLimit << " MaxEnergyLimit " << MaxEnergyLimit;
       if (fEventManager->IsPriOnly() && P->GetMother(0)>-1) { continue; }
       if(fEventManager->GetCurrentPDG()!=0 && fEventManager->GetCurrentPDG()!= tr->GetPDG()) { continue; }
-      LOG(debug3) << "PEnergy " << PEnergy << " Min "  << fEventManager->GetMinEnergy() << " Max " << fEventManager->GetMaxEnergy(); 
+      LOG(debug3) << "PEnergy " << PEnergy << " Min "  << fEventManager->GetMinEnergy() << " Max " << fEventManager->GetMaxEnergy();
       if( (PEnergy<fEventManager->GetMinEnergy()) || (PEnergy >fEventManager->GetMaxEnergy())) { continue; }
 
       Int_t Np=tr->GetNpoints();
@@ -133,7 +124,6 @@ void FairMCTracks::Exec(Option_t* /*option*/)
       }
       fTrList->AddElement(track);
       LOG(debug3) << "track added " << track->GetName();
-
     }
     for (Int_t i=0; i<fEveTrList->GetEntriesFast(); i++) {
       // TEveTrackList *TrListIn=( TEveTrackList *) fEveTrList->At(i);
@@ -144,22 +134,19 @@ void FairMCTracks::Exec(Option_t* /*option*/)
     gEve->Redraw3D(kFALSE);
   }
 }
-// -----   Destructor   ----------------------------------------------------
+
 FairMCTracks::~FairMCTracks()
 {
 }
-// -------------------------------------------------------------------------
+
 void FairMCTracks::SetParContainers()
 {
-
 }
 
-// -------------------------------------------------------------------------
 void FairMCTracks::Finish()
 {
-
 }
-// -------------------------------------------------------------------------
+
 void FairMCTracks::Reset()
 {
   for (Int_t i=0; i<fEveTrList->GetEntriesFast(); i++) {
@@ -171,7 +158,6 @@ void FairMCTracks::Reset()
 
 TEveTrackList* FairMCTracks::GetTrGroup(TParticle* P)
 {
-
   fTrList=0;
   for (Int_t i=0; i<fEveTrList->GetEntriesFast(); i++) {
     TEveTrackList* TrListIn=static_cast<TEveTrackList*>(fEveTrList->At(i));
@@ -192,5 +178,3 @@ TEveTrackList* FairMCTracks::GetTrGroup(TParticle* P)
 }
 
 ClassImp(FairMCTracks)
-
-

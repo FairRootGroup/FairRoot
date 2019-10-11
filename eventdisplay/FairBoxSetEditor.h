@@ -29,7 +29,7 @@
 
 #include "FairBoxSet.h"                 // for FairBoxSet
 
-#include "GuiTypes.h"                   // for Pixel_t
+#include <GuiTypes.h>                   // for Pixel_t
 #include <Rtypes.h>                     // for FairBoxSetEditor::Class, etc
 #include <TGFrame.h>                    // for EFrameType::kChildFrame, etc
 #include <TGNumberEntry.h>              // for TGNumberEntry
@@ -39,11 +39,8 @@ class TGWindow;
 
 class FairBoxSetEditor : public TGedFrame
 {
-
   public:
-
-    FairBoxSetEditor(const TGWindow* p=0, Int_t width=170, Int_t height=30,
-                     UInt_t options = kChildFrame, Pixel_t back=GetDefaultFrameBackground());
+    FairBoxSetEditor(const TGWindow* p=0, Int_t width=170, Int_t height=30, UInt_t options = kChildFrame, Pixel_t back=GetDefaultFrameBackground());
     virtual ~FairBoxSetEditor() {};
 
     virtual void Init();
@@ -62,21 +59,15 @@ class FairBoxSetEditor : public TGedFrame
     TGNumberEntry* fTimeWindowPlus;
     TGNumberEntry* fTimeWindowMinus;
 
-
   protected:
     TObject* fObject;
     FairBoxSet* fM;
-
-
 
   private:
     FairBoxSetEditor(const FairBoxSetEditor&);
     FairBoxSetEditor& operator=(const FairBoxSetEditor&);
 
-
     ClassDef(FairBoxSetEditor,2);
-
 };
-
 
 #endif

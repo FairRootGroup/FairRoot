@@ -24,9 +24,7 @@ ClassImp(FairTimeStampPointDraw);
 FairTimeStampPointDraw::FairTimeStampPointDraw()
 {
   // TODO Auto-generated constructor stub
-
 }
-
 
 FairTimeStampPointDraw::FairTimeStampPointDraw(const char* name, Int_t iVerbose):FairBoxSetDraw(name, iVerbose)
 {

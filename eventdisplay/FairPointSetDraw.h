@@ -33,12 +33,9 @@ class TVector3;
 
 class FairPointSetDraw : public FairTask
 {
-
   public:
-
     /** Default constructor **/
     FairPointSetDraw();
-
 
     /** Standard constructor
     *@param name        Name of task
@@ -54,8 +51,8 @@ class FairPointSetDraw : public FairTask
     /** Executed task **/
     virtual void Exec(Option_t* option);
     void Reset();
-  protected:
 
+  protected:
     virtual TVector3 GetVector(TObject* obj) = 0;
     virtual TObject* GetValue(TObject* obj,Int_t i);
 
@@ -75,8 +72,6 @@ class FairPointSetDraw : public FairTask
     FairPointSetDraw& operator=(const FairPointSetDraw&);
 
     ClassDef(FairPointSetDraw,1);
-
 };
-
 
 #endif

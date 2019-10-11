@@ -23,7 +23,6 @@ class TObject;
 FairMCPointDraw::FairMCPointDraw()
 {
   // TODO Auto-generated constructor stub
-
 }
 
 FairMCPointDraw::~FairMCPointDraw()
@@ -36,6 +35,5 @@ TVector3 FairMCPointDraw::GetVector(TObject* obj)
   FairMCPoint* p = static_cast<FairMCPoint*>(obj);
   return TVector3(p->GetX(), p->GetY(), p->GetZ());
 }
-
 
 ClassImp(FairMCPointDraw)

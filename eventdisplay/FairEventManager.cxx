@@ -11,41 +11,37 @@
 *  M. Al-Turany 06.12.2007
 **/
 #include "FairEventManager.h"
+#include "FairRootManager.h"       // for FairRootManager
+#include "FairRunAna.h"            // for FairRunAna
+#include "FairXMLNode.h"
 
-#include "FairRootManager.h"            // for FairRootManager
-#include "FairRunAna.h"                 // for FairRunAna
-
-#include <TDOMParser.h>
-#include <TXMLEngine.h>
-#include <TXMLAttr.h>
-#include <TXMLNode.h>
-#include <TDatabasePDG.h>               // for TDatabasePDG
-#include <TEveGeoNode.h>                // for TEveGeoTopNode
-#include <TEveManager.h>                // for TEveManager, gEve
-#include <TGeoManager.h>                // for gGeoManager, TGeoManager
-
-
-#include <TGLViewer.h>
-#include <TGLCameraOverlay.h>
-#include <TGLLightSet.h>
-#include <TEveProjectionAxes.h>
+#include <TDatabasePDG.h>          // for TDatabasePDG
 #include <TEveBrowser.h>
-
-
-
-
-class TGeoNode;
+#include <TEveGeoNode.h>           // for TEveGeoTopNode
+#include <TEveManager.h>           // for TEveManager, gEve
+#include <TEveProjectionManager.h>
+#include <TEveProjections.h>       // for TEveProjection, TEveProjection::k...
+#include <TEveScene.h>
+#include <TEveViewer.h>
+#include <TEveWindow.h>            // for TEveWindowPack, TEveWindowSlot
+#include <TGeoManager.h>           // for gGeoManager, TGeoManager
+#include <TGeoNode.h>
+#include <TGeoVolume.h>            // for TGeoVolume
+#include <TGLCameraOverlay.h>
+#include <TGLClip.h>               // for TGLClip, TGLClip::kClipPlane, TGL...
+#include <TGLLightSet.h>
+#include <TGLViewer.h>
 
 ClassImp(FairEventManager)
 
 FairEventManager* FairEventManager::fgRinstance= 0;
-//_____________________________________________________________________________
+
 FairEventManager* FairEventManager::Instance()
 {
 
   return fgRinstance;
 }
-//______________________________________________________________________________
+
 FairEventManager::FairEventManager()
   :TEveEventManager("FairEventManager", ""),
    fRootManager(FairRootManager::Instance()),
@@ -62,17 +58,17 @@ FairEventManager::FairEventManager()
    fRhoZPlane{-1,0,0,0},
    fRphiCam(TGLViewer::kCameraOrthoXOY),
    fRhoCam(TGLViewer::kCameraOrthoZOY),
-   fRPhiView(NULL),
-   fRhoZView(NULL),
-   fMultiView(NULL),
-   fMultiRPhiView(NULL),
-   fMultiRhoZView(NULL),
-   fRPhiScene(NULL),
-   fRhoZScene(NULL),
-   fRPhiProjManager(NULL),
-   fRhoZProjManager(NULL),
-   fAxesPhi(NULL),
-   fAxesRho(NULL),
+   fRPhiView(nullptr),
+   fRhoZView(nullptr),
+   fMultiView(nullptr),
+   fMultiRPhiView(nullptr),
+   fMultiRhoZView(nullptr),
+   fRPhiScene(nullptr),
+   fRhoZScene(nullptr),
+   fRPhiProjManager(nullptr),
+   fRhoZProjManager(nullptr),
+   fAxesPhi(nullptr),
+   fAxesRho(nullptr),
    fXMLConfig("")
 {
   fgRinstance=this;
@@ -127,12 +123,12 @@ FairEventManager::FairEventManager()
   fPDGToColor[1000020040] = 50;
   fPDGToColor[1000020030] = 55;
 }
-//______________________________________________________________________________
+
 void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
 {
   TEveManager::Create();
   fRunAna->Init();
-  if(gGeoManager==NULL)  return;
+  if(gGeoManager==nullptr)  return;
   TGeoNode* N=  gGeoManager->GetTopNode();
   TEveGeoTopNode* TNod=new  TEveGeoTopNode(gGeoManager, N, visopt, vislvl, maxvisnds);
   if(!fXMLConfig.EqualTo(""))
@@ -204,52 +200,45 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
    fMultiRhoZView->GetEveFrame()->HideAllDecorations();
 
 }
-//______________________________________________________________________________
+
 void FairEventManager::UpdateEditor()
 {
-
 }
-//______________________________________________________________________________
+
 FairEventManager::~FairEventManager()
 {
 }
-//______________________________________________________________________________
+
 void FairEventManager::Open()
 {
-
 }
-//______________________________________________________________________________
+
 void FairEventManager::GotoEvent(Int_t event)
 {
   fEntry=event;
   fRunAna->Run(static_cast<Long64_t>(event));
 }
-//______________________________________________________________________________
+
 void FairEventManager::NextEvent()
 {
   fEntry+=1;
   fRunAna->Run(static_cast<Long64_t>(fEntry));
 }
-//______________________________________________________________________________
+
 void FairEventManager::PrevEvent()
 {
   fEntry-=1;
   fRunAna->Run(static_cast<Long64_t>(fEntry));
 }
-//______________________________________________________________________________
+
 void FairEventManager::Close()
 {
-
 }
-
-//______________________________________________________________________________
 
 void FairEventManager::DisplaySettings()
 {
-
 }
 
-//______________________________________________________________________________
 Int_t FairEventManager::Color( int pdg)
 {
 	if(fPDGToColor.find(pdg)!=fPDGToColor.end()){
@@ -257,12 +246,9 @@ Int_t FairEventManager::Color( int pdg)
 	}
 	return 0;
 }
-//______________________________________________________________________________
 
 void FairEventManager::AddParticlesToPdgDataBase(Int_t /*pdg*/)
 {
-
-//
 // Add particles to the PDG data base
 
   TDatabasePDG* pdgDB = TDatabasePDG::Instance();
@@ -274,7 +260,6 @@ void FairEventManager::AddParticlesToPdgDataBase(Int_t /*pdg*/)
   const Double_t kYear2Sec = 3600*24*365.25;
 
 // Ions
-//
 
   if ( !pdgDB->GetParticle(1000010020) )
     pdgDB->AddParticle("Deuteron","Deuteron",2*kAu2Gev+8.071e-3,kTRUE,
@@ -301,7 +286,6 @@ void FairEventManager::AddParticlesToPdgDataBase(Int_t /*pdg*/)
   if ( !pdgDB->GetParticle(50000051) )
     pdgDB->AddParticle("FeedbackPhoton","FeedbackPhoton",0,kFALSE,
                        0,0,"Special",50000051);
-
 }
 
 void FairEventManager::SetViewers(TEveViewer* RPhi, TEveViewer* RhoZ) {
@@ -470,4 +454,3 @@ Int_t FairEventManager::StringToColor(TString color) const {
 		return color.Atoi();
 	}
 }
-

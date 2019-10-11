@@ -17,12 +17,9 @@
 #include <TGLayout.h>
 #include <TString.h>                    // for TString
 
-#include <stddef.h>                     // for NULL
-
 class TGWindow;
 class TObject;
 
-//______________________________________________________________________________
 // FairMCTracksEditor
 //
 // Specialization of TGedEditor for proper update propagation to
@@ -30,12 +27,10 @@ class TObject;
 
 ClassImp(FairMCTracksEditor)
 
-
-//______________________________________________________________________________
 FairMCTracksEditor::FairMCTracksEditor(const TGWindow* p, Int_t width, Int_t height,
                                        UInt_t options, Pixel_t back)
   : TGedFrame(p, width, height, options | kVerticalFrame, back),
-    fObject(NULL),
+    fObject(nullptr),
     fManager(FairEventManager::Instance())
 {
   // Resize(width, height);
@@ -65,12 +60,7 @@ FairMCTracksEditor::FairMCTracksEditor(const TGWindow* p, Int_t width, Int_t hei
   fInfoFrame->AddFrame(title1, new TGLayoutHints(kLHintsTop, 0, 0, 2, 0));
 }
 
-//______________________________________________________________________________
 void FairMCTracksEditor::SetModel( TObject* obj)
 {
   fObject     = obj;
 }
-//______________________________________________________________________________
-
-
-

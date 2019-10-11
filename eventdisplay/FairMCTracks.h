@@ -10,7 +10,6 @@
 // -----                Created 10/12/07  by M. Al-Turany              -----
 // -------------------------------------------------------------------------
 
-
 /** FairMCTracks
  * @author M. Al-Turany
  * @since 10.12.07
@@ -35,12 +34,9 @@ class TParticle;
 
 class FairMCTracks : public FairTask
 {
-
   public:
-
     /** Default constructor **/
     FairMCTracks();
-
 
     /** Standard constructor
     *@param name        Name of task
@@ -64,8 +60,6 @@ class FairMCTracks : public FairTask
     TEveTrackList* GetTrGroup(TParticle* P);
 
   protected:
-
-
     TClonesArray*  fTrackList;  //!
     TEveTrackPropagator* fTrPr;
     FairEventManager* fEventManager;  //!
@@ -83,8 +77,6 @@ class FairMCTracks : public FairTask
     FairMCTracks& operator=(const FairMCTracks&);
 
     ClassDef(FairMCTracks,1);
-
 };
-
 
 #endif

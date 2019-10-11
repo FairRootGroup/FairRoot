@@ -14,7 +14,6 @@
 #include "FairEventManager.h"           // for FairEventManager
 #include "FairRootManager.h"            // for FairRootManager
 
-#include <iosfwd>                       // for ostream
 #include <TClonesArray.h>               // for TClonesArray
 #include <TEveManager.h>                // for TEveManager, gEve
 #include <TEvePointSet.h>               // for TEvePointSet
@@ -23,7 +22,6 @@
 #include <TString.h>                    // for Form
 #include <TVector3.h>                   // for TVector3
 
-#include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
 class TObject;
@@ -31,34 +29,28 @@ class TObject;
 using std::cout;
 using std::endl;
 
-// -----   Default constructor   -------------------------------------------
 FairPointSetDraw::FairPointSetDraw()
   : FairTask("FairPointSetDraw", 0),
     fVerbose(0),
-    fPointList(NULL),
-    fEventManager(NULL),
-    fq(NULL),
+    fPointList(nullptr),
+    fEventManager(nullptr),
+    fq(nullptr),
     fColor(0),
     fStyle(0)
 {
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   ------------------------------------------
 FairPointSetDraw::FairPointSetDraw(const char* name, Color_t color ,Style_t mstyle,Int_t iVerbose)
   : FairTask(name, iVerbose),
     fVerbose(iVerbose),
-    fPointList(NULL),
-    fEventManager(NULL),
-    fq(NULL),
+    fPointList(nullptr),
+    fEventManager(nullptr),
+    fq(nullptr),
     fColor(color),
     fStyle(mstyle)
 {
-
 }
-// -------------------------------------------------------------------------
+
 InitStatus FairPointSetDraw::Init()
 {
   if(fVerbose>1) { cout<<  "FairPointSetDraw::Init()" << endl; }
@@ -76,7 +68,7 @@ InitStatus FairPointSetDraw::Init()
   // gEve->AddElement(fq, fEventManager );
   return kSUCCESS;
 }
-// -------------------------------------------------------------------------
+
 void FairPointSetDraw::Exec(Option_t* /*option*/)
 {
   if (IsActive()) {
@@ -108,21 +100,19 @@ TObject* FairPointSetDraw::GetValue(TObject* /*obj*/,Int_t i)
   return new TNamed(Form("Point %d", i),"");
 }
 
-// -----   Destructor   ----------------------------------------------------
 FairPointSetDraw::~FairPointSetDraw()
 {
 }
-// -------------------------------------------------------------------------
+
 void FairPointSetDraw::SetParContainers()
 {
-
 }
-// -------------------------------------------------------------------------
+
 /** Action after each event**/
 void FairPointSetDraw::Finish()
 {
 }
-// -------------------------------------------------------------------------
+
 void FairPointSetDraw::Reset()
 {
   if(fq!=0) {
@@ -131,7 +121,4 @@ void FairPointSetDraw::Reset()
   }
 }
 
-
 ClassImp(FairPointSetDraw);
-
-

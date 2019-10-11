@@ -8,10 +8,13 @@
  */
 
 #include "FairXMLNode.h"
-#include <TDOMParser.h>
-#include <TXMLEngine.h>
-#include <iostream>
 
+#include <TDOMParser.h>
+#include <TXMLNode.h>
+#include <TXMLAttr.h>      // for TXMLAttr
+#include <TXMLDocument.h>  // for TXMLDocument
+
+#include <iostream>
 
 FairXMLNode::FairXMLNode(TString name,TString value) : TNamed(name, value){
 	fChildren.SetOwner(kTRUE);
@@ -52,7 +55,7 @@ void FairXMLNode::Copy(TXMLNode* node){
 	if(node->HasChildren()){
 		TXMLNode *child = node->GetChildren();
 		do{
-			if(child==NULL) break;
+			if(child==nullptr) break;
 			TString name = child->GetNodeName();
 			if(name!="text"){//skip "text" nodes
 				FairXMLNode *tempnode = new FairXMLNode();

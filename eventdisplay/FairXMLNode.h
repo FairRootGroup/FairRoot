@@ -8,17 +8,23 @@
  */
 #ifndef FAIRXLMNODE_H_
 #define FAIRXLMNODE_H_
-#include <TXMLNode.h>
+
+#include <Rtypes.h>
+#include <TString.h>
+#include <TObject.h>
 #include <TList.h>
-#include <TXMLAttr.h>
 #include <TXMLEngine.h>
 #include <TNamed.h>
+
 #include <memory>
+
+class TXMLNode;
+
 /**
  * class for representing node attributes
  */
 class FairXMLAttrib: public TNamed{
-public :
+  public:
 	/**
 	 * default constructor
 	 */

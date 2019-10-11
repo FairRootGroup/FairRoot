@@ -26,7 +26,9 @@ class FairHitPointSetDraw: public FairPointSetDraw
 {
   public:
     FairHitPointSetDraw();
-    FairHitPointSetDraw(const char* name, Color_t color ,Style_t mstyle, Int_t iVerbose = 1):FairPointSetDraw(name, color, mstyle, iVerbose) {};
+    FairHitPointSetDraw(const char* name, Color_t color, Style_t mstyle, Int_t iVerbose = 1)
+      : FairPointSetDraw(name, color, mstyle, iVerbose)
+    {}
     virtual ~FairHitPointSetDraw();
 
   protected:

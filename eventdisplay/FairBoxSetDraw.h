@@ -32,20 +32,17 @@
 #include <Rtypes.h>                     // for Double_t, Int_t, Bool_t, etc
 
 class FairBoxSet;
+class FairEventManager;
+class FairRootManager;
 class TObject;
 class TVector3;
 class TClonesArray;
-class FairEventManager;
-class FairRootManager;
 
 class FairBoxSetDraw : public FairTask
 {
-
   public:
-
     /** Default constructor **/
     FairBoxSetDraw();
-
 
     /** Standard constructor
     *@param name        Name of task
@@ -80,7 +77,6 @@ class FairBoxSetDraw : public FairTask
     void Reset();
 
   protected:
-
     Int_t   fVerbose;       //  Verbosity level
     virtual void SetParContainers() ;
     virtual InitStatus Init();
@@ -102,7 +98,6 @@ class FairBoxSetDraw : public FairTask
     Double_t fStartTime;
     Bool_t fUseEventTime;
 
-
   private:
     FairBoxSetDraw(const FairBoxSetDraw&);
     FairBoxSetDraw& operator=(const FairBoxSetDraw&);
@@ -110,8 +105,6 @@ class FairBoxSetDraw : public FairTask
     BinaryFunctor* fStopFunctor;
 
     ClassDef(FairBoxSetDraw,1);
-
 };
-
 
 #endif

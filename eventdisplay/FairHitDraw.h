@@ -36,7 +36,6 @@ class FairHitDraw: public FairBoxSetDraw
     FairHitDraw(const char* name, Int_t iVerbose = 1);
 
   protected:
-
     TVector3 GetVector(TObject* obj);
 
     ClassDef(FairHitDraw,1);

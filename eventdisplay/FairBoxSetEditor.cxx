@@ -8,19 +8,15 @@
 #include "FairBoxSetEditor.h"
 
 #include "FairEventManager.h"           // for FairEventManager
-#include "FairRootManager.h"            // for FairRootManager
 
-#include <iosfwd>                       // for ostream
 #include <TGLabel.h>                    // for TGLabel
 #include <TGLayout.h>                   // for TGLayoutHints, etc
 #include <TGNumberEntry.h>              // for TGNumberEntry, etc
 
 class TGWindow;
 
-#include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
-//______________________________________________________________________________
 // FairBoxSetEditor
 //
 // Specialization of TGedEditor for proper update propagation to
@@ -28,13 +24,11 @@ class TGWindow;
 
 ClassImp(FairBoxSetEditor)
 
-
-//______________________________________________________________________________
 FairBoxSetEditor::FairBoxSetEditor(const TGWindow* p, Int_t width, Int_t height,
                                    UInt_t options, Pixel_t back)
   :TGedFrame(p, width, height, options | kVerticalFrame, back),
-   fInfoFrame(NULL), fTimeWindowPlus(NULL), fTimeWindowMinus(NULL),
-   fObject(NULL), fM(NULL)
+   fInfoFrame(nullptr), fTimeWindowPlus(nullptr), fTimeWindowMinus(nullptr),
+   fObject(nullptr), fM(nullptr)
 {
   std::cout << "FairBoxSetEditor called!" << std::endl;
   Init();
@@ -42,7 +36,6 @@ FairBoxSetEditor::FairBoxSetEditor(const TGWindow* p, Int_t width, Int_t height,
 
 void FairBoxSetEditor::Init()
 {
-
 //  FairRootManager* fRootManager=FairRootManager::Instance();
 //  TChain* chain =fRootManager->GetInChain();
 //  Int_t Entries= chain->GetEntriesFast();
@@ -78,7 +71,6 @@ void FairBoxSetEditor::Init()
   title2->AddFrame(fTimeWindowMinus, new TGLayoutHints(kLHintsTop, 1, 1, 1, 0));
 
   fInfoFrame->AddFrame(title2);
-
 }
 
 void FairBoxSetEditor::TimeWindow()
@@ -91,9 +83,3 @@ void FairBoxSetEditor::TimeWindow()
   man->GotoEvent(man->GetCurrentEvent());
   Update();
 }
-
-
-//______________________________________________________________________________
-
-
-

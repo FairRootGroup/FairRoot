@@ -28,7 +28,6 @@ class TObject;
 
 #define MAXE 5000
 
-//______________________________________________________________________________
 // FairEventManagerEditor
 //
 // Specialization of TGedEditor for proper update propagation to
@@ -36,8 +35,6 @@ class TObject;
 
 ClassImp(FairEventManagerEditor)
 
-
-//______________________________________________________________________________
 FairEventManagerEditor::FairEventManagerEditor(const TGWindow* p, Int_t width, Int_t height,
     UInt_t options, Pixel_t back)
   :TGedFrame(p, width, height, options | kVerticalFrame, back),
@@ -151,33 +148,27 @@ void FairEventManagerEditor::Init()
   fManager->SetMaxEnergy(MAXE);
 }
 
-
-//______________________________________________________________________________
 void FairEventManagerEditor::MaxEnergy()
 {
   fManager->SetMaxEnergy(fMaxEnergy->GetValue());
-
 }
-//______________________________________________________________________________
+
 void FairEventManagerEditor::MinEnergy()
 {
   fManager->SetMinEnergy(fMinEnergy->GetValue());
-
 }
 
-//______________________________________________________________________________
 void FairEventManagerEditor::DoVizPri()
 {
   if (fVizPri->IsOn()) { fManager->SetPriOnly(kTRUE); }
   else { fManager->SetPriOnly(kFALSE); }
 }
-//______________________________________________________________________________
+
 void FairEventManagerEditor::SelectPDG()
 {
   fManager->SelectPDG(fCurrentPDG->GetIntNumber());
 }
 
-//______________________________________________________________________________
 void FairEventManagerEditor::SelectEvent()
 {
   fManager->GotoEvent(fCurrentEvent->GetIntNumber());
@@ -195,13 +186,8 @@ void FairEventManagerEditor::SelectEvent()
   Update();
 
 }
-//______________________________________________________________________________
+
 void FairEventManagerEditor::SetModel( TObject* obj)
 {
   fObject     = obj;
-
 }
-//______________________________________________________________________________
-
-
-

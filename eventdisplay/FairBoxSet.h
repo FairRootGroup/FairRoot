@@ -10,7 +10,6 @@
 // -----          Created 26/03/09  by T. Stockmanns                   -----
 // -------------------------------------------------------------------------
 
-
 /** FairBoxSet
  * @author T. Stockmanns
  * @since 26.3.2009
@@ -25,18 +24,14 @@
 #ifndef FAIRBOXSET_H
 #define FAIRBOXSET_H
 
-#include <TEveBoxSet.h>                 // for TEveBoxSet
-
 #include "FairBoxSetDraw.h"             // for FairBoxSetDraw
 
 #include <Rtypes.h>                     // for Double_t, FairBoxSet::Class, etc
-
+#include <TEveBoxSet.h>                 // for TEveBoxSet
 
 class FairBoxSet : public TEveBoxSet
 {
-
   public:
-
     /** Standard constructor
        **/
     FairBoxSet(FairBoxSetDraw* drawer, const char* name = "FairBoxSet", const char* t = "");
@@ -47,13 +42,8 @@ class FairBoxSet : public TEveBoxSet
     Double_t GetTimeWindowPlus() {return fDraw->GetTimeWindowPlus();}
     Double_t GetTimeWindowMinus() {return fDraw->GetTimeWindowMinus();}
 
-
     /** Destructor **/
     virtual ~FairBoxSet() {};
-
-
-
-  protected:
 
   private:
     FairBoxSetDraw* fDraw;
@@ -62,8 +52,6 @@ class FairBoxSet : public TEveBoxSet
     FairBoxSet operator=(const FairBoxSet&);
 
     ClassDef(FairBoxSet,1);
-
 };
-
 
 #endif

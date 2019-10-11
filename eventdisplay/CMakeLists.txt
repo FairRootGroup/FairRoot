@@ -61,11 +61,20 @@ target_link_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::FairTools
   FairRoot::Base # FairRootManager, FairRunAna, FairTSBufferFunctional, FairTimeStamp, FairEventManager
-  # TODO: clean the following
-  # needed: TClonesArray, TEveBoxSet, RTypes, TGLabel, TGLayout, TGNumberEntry, TXMLNode.h, TList.h, TXMLAttr, TXMLEngine
-  Eve
-  XMLIO
-  XMLParser
+
+  Core
+  EG          # TDatabasePDG
+  Eve         # TEveBoxSet
+  Ged         # TGedFrame
+  Geom        # TGeoManager, TGeoNode, TGeoVolume
+  GeomPainter # TGeoTrack
+  Gui         # TGFrame, TGNumberEntry, TGWindow
+  MathCore    # TMathBase
+  Physics     # TVector3
+  RGL         # TGLViewer, TGLCameraOverlay, TGLClip, TGLLightSet
+  Tree        # TChain
+  XMLIO       # TXMLEngine
+  XMLParser   # TXMLNode, TXMLAttr, TDOMParser
 )
 
 fairroot_target_root_dictionary(${target}

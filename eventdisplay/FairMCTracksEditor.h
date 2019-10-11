@@ -10,7 +10,7 @@
 
 #include <TGedFrame.h>                  // for TGedFrame
 
-#include "GuiTypes.h"                   // for Pixel_t
+#include <GuiTypes.h>                   // for Pixel_t
 #include <Rtypes.h>                     // for FairMCTracksEditor::Class, etc
 #include <TGFrame.h>                    // for EFrameType::kChildFrame
 
@@ -32,7 +32,6 @@ class FairMCTracksEditor : public TGedFrame
     virtual ~FairMCTracksEditor() {}
 
     virtual void SetModel( TObject* obj);
-
 
     ClassDef(FairMCTracksEditor, 0); // Specialization of TGedEditor for proper update propagation to TEveManager.
 };

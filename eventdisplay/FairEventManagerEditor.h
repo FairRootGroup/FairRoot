@@ -13,8 +13,7 @@
 #define ROOT_FAIREVENTMANAGEREDITOR
 
 #include <TGedFrame.h>                  // for TGedFrame
-
-#include "GuiTypes.h"                   // for Pixel_t
+#include <GuiTypes.h>                   // for Pixel_t
 #include <Rtypes.h>                     // for ClassDef
 #include <TGFrame.h>                    // for EFrameType::kChildFrame
 
