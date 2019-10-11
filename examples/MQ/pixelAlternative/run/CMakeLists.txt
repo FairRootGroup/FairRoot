@@ -30,15 +30,12 @@ set(exe_dependencies
 
 add_executable(pixalt-sampler-bin runPixAltSamplerBin.cxx)
 target_link_libraries(pixalt-sampler-bin PRIVATE ${exe_dependencies})
-set_target_properties(pixalt-sampler-bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(pixalt-sink-bin runPixAltFileSinkBin.cxx)
 target_link_libraries(pixalt-sink-bin PRIVATE ${exe_dependencies})
-set_target_properties(pixalt-sink-bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(pixalt-processor-bin runPixAltTaskProcessorBin.cxx)
 target_link_libraries(pixalt-processor-bin PRIVATE ${exe_dependencies})
-set_target_properties(pixalt-processor-bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 install(TARGETS pixalt-sampler-bin pixalt-sink-bin pixalt-processor-bin
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelAlternative/bin

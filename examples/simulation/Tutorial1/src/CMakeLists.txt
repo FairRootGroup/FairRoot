@@ -70,7 +70,6 @@ install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(tutorial1 runTutorial1.cxx)
 target_link_libraries(tutorial1 PRIVATE Tutorial1)
-set_target_properties(tutorial1 PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}")
 
 install(TARGETS tutorial1
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/simulation/Tutorial1/bin

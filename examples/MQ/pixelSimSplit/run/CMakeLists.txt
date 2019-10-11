@@ -32,7 +32,6 @@ set(exe_dependencies
 
 add_executable(pixel-sim-chunk-merger runMQChunkMerger.cxx)
 target_link_libraries(pixel-sim-chunk-merger PRIVATE ${exe_dependencies})
-set_target_properties(pixel-sim-chunk-merger PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(pixel-sim-gen runMQGen.cxx)
 target_link_libraries(pixel-sim-gen PRIVATE
@@ -45,7 +44,6 @@ target_link_libraries(pixel-sim-gen PRIVATE
   MathCore # TRandom
 )
 target_link_directories(pixel-sim-gen PRIVATE ${ROOT_LIBRARY_DIR})
-set_target_properties(pixel-sim-gen PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(pixel-sim-transport runMQTrans.cxx)
 target_link_libraries(pixel-sim-transport PRIVATE
@@ -58,7 +56,6 @@ target_link_libraries(pixel-sim-transport PRIVATE
   MathCore # TRandom
 )
 target_link_directories(pixel-sim-transport PRIVATE ${ROOT_LIBRARY_DIR})
-set_target_properties(pixel-sim-transport PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 install(TARGETS pixel-sim-chunk-merger pixel-sim-gen pixel-sim-transport
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelSimSplit/bin

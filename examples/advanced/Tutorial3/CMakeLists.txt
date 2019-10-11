@@ -168,17 +168,14 @@ install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 add_executable(tut3-sampler MQ/run/runTestDetectorSampler.cxx)
 target_link_libraries(tut3-sampler PRIVATE FairRoot::BaseMQ FairRoot::FairTestDetector FairMQ::FairMQ)
 target_compile_definitions(tut3-sampler PRIVATE ${defs})
-set_target_properties(tut3-sampler PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(tut3-processor MQ/run/runTestDetectorProcessor.cxx)
 target_link_libraries(tut3-processor PRIVATE FairRoot::BaseMQ FairRoot::FairTestDetector FairMQ::FairMQ)
 target_compile_definitions(tut3-processor PRIVATE ${defs})
-set_target_properties(tut3-processor PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(tut3-sink MQ/run/runTestDetectorFileSink.cxx)
 target_link_libraries(tut3-sink PRIVATE FairRoot::BaseMQ FairRoot::FairTestDetector FairMQ::FairMQ)
 target_compile_definitions(tut3-sink PRIVATE ${defs})
-set_target_properties(tut3-sink PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 install(TARGETS tut3-sampler tut3-processor tut3-sink
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/advanced/Tutorial3/bin

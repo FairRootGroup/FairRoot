@@ -70,31 +70,24 @@ set(exe_dependencies
 
 add_executable(pixel-sampler runPixelSampler.cxx)
 target_link_libraries(pixel-sampler PRIVATE ${exe_dependencies})
-set_target_properties(pixel-sampler PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(pixel-processor runPixelTaskProcessor.cxx)
 target_link_libraries(pixel-processor PRIVATE ${exe_dependencies})
-set_target_properties(pixel-processor PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(pixel-sink runPixelFileSink.cxx)
 target_link_libraries(pixel-sink PRIVATE ${exe_dependencies})
-set_target_properties(pixel-sink PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(pixel-sampler-bin runPixelSamplerBin.cxx)
 target_link_libraries(pixel-sampler-bin PRIVATE ${exe_dependencies})
-set_target_properties(pixel-sampler-bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(pixel-processor-bin runPixelTaskProcessorBin.cxx)
 target_link_libraries(pixel-processor-bin PRIVATE ${exe_dependencies})
-set_target_properties(pixel-processor-bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(pixel-sink-bin runPixelFileSinkBin.cxx)
 target_link_libraries(pixel-sink-bin PRIVATE ${exe_dependencies})
-set_target_properties(pixel-sink-bin PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(pixel-merger runPixelMerger.cxx)
 target_link_libraries(pixel-merger PRIVATE ${exe_dependencies})
-set_target_properties(pixel-merger PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(pixel-sim runMQSim.cxx)
 target_link_libraries(pixel-sim PRIVATE
@@ -107,7 +100,6 @@ target_link_libraries(pixel-sim PRIVATE
   MathCore # TRandom
 )
 target_link_directories(pixel-sim PRIVATE ${ROOT_LIBRARY_DIR})
-set_target_properties(pixel-sim PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 install(TARGETS pixel-sampler pixel-processor pixel-sink pixel-sampler-bin pixel-processor-bin pixel-sink-bin pixel-merger pixel-sim
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelDetector/bin

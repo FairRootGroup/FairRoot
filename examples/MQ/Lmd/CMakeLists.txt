@@ -55,15 +55,12 @@ install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(ex-lmd-sampler runLmdSampler.cxx)
 target_link_libraries(ex-lmd-sampler PRIVATE FairRoot::ExLmd FairRoot::BaseMQ Core FairRoot::MbsTutorial FairMQ::FairMQ)
-set_target_properties(ex-lmd-sampler PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(ex-lmd-mbs-unpacker runMBSMQUnpacker.cxx)
 target_link_libraries(ex-lmd-mbs-unpacker PRIVATE FairRoot::ExLmd FairRoot::BaseMQ Core FairRoot::MbsTutorial FairMQ::FairMQ)
-set_target_properties(ex-lmd-mbs-unpacker PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 add_executable(ex-lmd-mbs-sink runMBSSink.cxx)
 target_link_libraries(ex-lmd-mbs-sink PRIVATE FairRoot::ExLmd FairRoot::BaseMQ Core FairRoot::MbsTutorial FairMQ::FairMQ)
-set_target_properties(ex-lmd-mbs-sink PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 install(TARGETS ex-lmd-sampler ex-lmd-mbs-unpacker ex-lmd-mbs-sink
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/Lmd/bin
