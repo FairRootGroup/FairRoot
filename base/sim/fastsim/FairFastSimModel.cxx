@@ -9,23 +9,27 @@
 // -----               FairFastSimModel source file                    -----
 // -----            Created 2019/01/30  by R. Karabowicz               -----
 // -------------------------------------------------------------------------
-#include <iostream>
+
 #include "FairFastSimModel.h"
+#include "FairGenericStack.h"
+#include "FairLogger.h"
+#include "FairMCApplication.h"
+#include "FairTrajFilter.h"
+
 #include "G4VPhysicalVolume.hh"
 #include "G4Electron.hh"
 #include "G4Gamma.hh"
 #include "G4ParticleTable.hh"
 #include "G4StackManager.hh"
-
 #include "G4SystemOfUnits.hh"
 
-#include "FairGenericStack.h"
-#include "FairLogger.h"
-#include "FairMCApplication.h"
-#include "FairTrajFilter.h"
-#include "TGeoManager.h"
-#include "TParticle.h"
-#include "TVirtualMC.h"
+#include <TGeoManager.h>
+#include <TParticle.h>
+#include <TVirtualMC.h>
+#include <TClonesArray.h> // for TClonesArray
+#include <TVector3.h> // for TVector3
+
+#include <tuple> // for tie, tuple
 
 // I.H. make this optional
 // #include "G4GDMLParser.hh"

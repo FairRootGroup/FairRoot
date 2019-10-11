@@ -13,6 +13,9 @@
 #define FAIR_FASTSIM_RUN_CONFIGURATION_H
 #include "TG4RunConfiguration.h"
 
+#include <TString.h>              // for TString
+class TG4VUserFastSimulation;
+
 class FairFastSimRunConfiguration : public TG4RunConfiguration
 {
   public:

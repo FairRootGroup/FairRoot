@@ -11,6 +11,7 @@
 // -------------------------------------------------------------------------
 #ifndef FAIR_FAST_SIMULATION_H
 #define FAIR_FAST_SIMULATION_H
+
 #include "TG4VUserFastSimulation.h"
 
 class FairFastSimulation : public TG4VUserFastSimulation
@@ -24,4 +25,3 @@ class FairFastSimulation : public TG4VUserFastSimulation
 };
 
 #endif //FAIR_FAST_SIMULATION_H
-

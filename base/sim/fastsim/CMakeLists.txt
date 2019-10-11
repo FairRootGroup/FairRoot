@@ -46,25 +46,17 @@ target_link_directories(${target} PUBLIC
 
 target_link_libraries(${target} PUBLIC
   FairRoot::FairTools
-  FairRoot::Base # FairGenericStack, ...
+  FairRoot::Base # FairDetector,
   FairRoot::GeoBase
-  FairRoot::ParBase
-  # TODO: clean the following
-  Core
-  EG
+
   G4processes
   geant4vmc
-  Geom
-  GeomPainter
-  Hist
-  MathCore
-  Matrix
-  Physics
-  Proof
-  RHTTP
-  RIO
-  Tree
-  VMC
+
+  Geom # TGeoManager
+  Core # Rtypes
+  VMC # TVirtualMC
+  EG # TParticle
+  Physics # TVector
 )
 
 fairroot_target_root_dictionary(${target}

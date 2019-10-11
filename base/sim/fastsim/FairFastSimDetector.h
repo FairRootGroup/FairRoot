@@ -10,6 +10,10 @@
 
 #include "FairDetector.h"
 
+#include <Rtypes.h>
+
+class FairVolume;
+class TClonesArray;
 class TGeoMedium;
 
 class FairFastSimDetector : public FairDetector

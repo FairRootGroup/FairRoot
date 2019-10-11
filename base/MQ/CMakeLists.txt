@@ -60,8 +60,9 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairTask, FairRunAna, FairRootFileSink, FairFileSource
   FairRoot::ParBase # FairParRootFileIo, FairRuntimeDb
   FairRoot::FairTools
-  FairMQ::FairMQ
   $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
+
+  FairMQ::FairMQ
 
   Boost::serialization
   Boost::filesystem

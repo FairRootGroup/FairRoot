@@ -14,7 +14,8 @@
 
 #include "FairLogger.h"
 
-//_____________________________________________________________________________
+#include <TG4RunConfiguration.h>  // for TG4RunConfiguration
+
 FairFastSimRunConfiguration::FairFastSimRunConfiguration(const TString& geometry,
                                                          const TString& physicsList,
                                                          const TString& specialProcess,
@@ -28,7 +29,6 @@ FairFastSimRunConfiguration::FairFastSimRunConfiguration(const TString& geometry
 /// \param specialProcess  Selection of the special processes
 }
 
-//_____________________________________________________________________________
 FairFastSimRunConfiguration::~FairFastSimRunConfiguration()
 {
 /// Destructor
@@ -38,10 +38,8 @@ FairFastSimRunConfiguration::~FairFastSimRunConfiguration()
 // protected methods
 //
 
-//_____________________________________________________________________________
 TG4VUserFastSimulation*  FairFastSimRunConfiguration::CreateUserFastSimulation()
 {
     LOG(info) << "Going to create FairFastSimulation";
-    
     return new FairFastSimulation();
 }

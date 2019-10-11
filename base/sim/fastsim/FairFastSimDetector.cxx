@@ -6,12 +6,14 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairFastSimDetector.h"
-#include "FairLogger.h"
 #include "FairGeoMedia.h"
 #include "FairGeoBuilder.h"
+#include "FairGeoInterface.h" // for FairGeoInterface
+#include "FairGeoLoader.h" // for FairGeoLoader
+#include "FairGeoMedium.h" // for FairGeoMedium
 
-#include "TGeoMedium.h"
-#include "TGeoManager.h"
+// #include <TGeoMedium.h>
+#include <TGeoManager.h> // gGeoManager
 
 FairFastSimDetector::FairFastSimDetector()
     : FairDetector("FastSimulation", kTRUE)
