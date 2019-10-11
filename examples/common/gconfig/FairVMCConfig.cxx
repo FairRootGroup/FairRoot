@@ -15,21 +15,17 @@
 #include "FairRunSim.h"
 #include "FairStack.h"
 
-#include <TROOT.h>
-#include <TString.h>
 #include <TVirtualMC.h>
 
-//_____________________________________________________________________________
 FairVMCConfig::FairVMCConfig()
     : FairYamlVMCConfig()
 {
 }
-//_____________________________________________________________________________
+
 FairVMCConfig::~FairVMCConfig()
 {
 }
 
-//_____________________________________________________________________________
 void FairVMCConfig::SetupStack()
 {
     FairStack *stack = new FairStack(1000);

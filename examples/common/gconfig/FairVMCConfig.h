@@ -15,8 +15,6 @@
 
 #include "FairYamlVMCConfig.h"
 
-class TString;
-
 class FairVMCConfig : public FairYamlVMCConfig
 {
   public:
