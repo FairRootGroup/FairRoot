@@ -20,8 +20,8 @@
 
 #include "FairDetParIo.h"               // for FairDetParIo
 
-#include "TCollection.h"                // for TIter
-#include "TList.h"                      // for TList
+#include <TCollection.h>                // for TIter
+#include <TList.h>                      // for TList
 
 using namespace std;
 

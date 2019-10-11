@@ -10,7 +10,7 @@
 
 #include "FairParGenericSet.h" // for FairParGenericSet
 
-#include "Rtypes.h" // for Class Def
+#include <Rtypes.h> // for Class Def
 
 class TObjArray;
 class FairParamList;

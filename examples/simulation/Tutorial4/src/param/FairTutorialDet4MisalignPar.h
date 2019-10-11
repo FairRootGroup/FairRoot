@@ -10,9 +10,9 @@
 
 #include "FairParGenericSet.h"          // for FairParGenericSet
 
-#include "Rtypes.h"                     // for ClassDef
+#include <Rtypes.h>                     // for ClassDef
 
-#include "TArrayD.h"                    // for TArrayD
+#include <TArrayD.h>                    // for TArrayD
 
 class FairParamList;
 

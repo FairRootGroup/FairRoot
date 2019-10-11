@@ -7,10 +7,10 @@
  ********************************************************************************/
 #include "FairMQExHistoCanvasDrawerExample.h"
 
-#include "TCanvas.h"
-#include "THttpServer.h"
-#include "TObjArray.h"
-#include "TH1.h"
+#include <TCanvas.h>
+#include <THttpServer.h>
+#include <TObjArray.h>
+#include <TH1.h>
 
 #include <cassert>
 

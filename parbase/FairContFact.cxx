@@ -22,8 +22,8 @@
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 
 #include <iosfwd>                       // for ostream
-#include "TCollection.h"                // for TIter
-#include "TObjString.h"                 // for TObjString
+#include <TCollection.h>                // for TIter
+#include <TObjString.h>                 // for TObjString
 
 #include <string.h>                     // for strlen, NULL
 #include <iostream>                     // for operator<<, ostream, cout, etc

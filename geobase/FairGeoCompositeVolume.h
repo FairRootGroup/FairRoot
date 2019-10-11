@@ -10,7 +10,7 @@
 
 #include "FairGeoVolume.h"              // for FairGeoVolume
 
-#include "Rtypes.h"                     // for Int_t, etc
+#include <Rtypes.h>                     // for Int_t, etc
 
 class TObjArray;
 /**

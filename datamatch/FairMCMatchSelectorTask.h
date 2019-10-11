@@ -23,8 +23,8 @@
 
 #include "FairTask.h"                   // for FairTask, InitStatus
 
-#include "Rtypes.h"                     // for Int_t, Float_t, etc
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for Int_t, Float_t, etc
+#include <TString.h>                    // for TString
 
 #include <utility>                      // for pair
 #include <vector>                       // for vector

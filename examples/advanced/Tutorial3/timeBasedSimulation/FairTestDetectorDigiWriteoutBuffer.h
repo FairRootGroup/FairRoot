@@ -19,8 +19,8 @@
 
 #include "FairTestDetectorDigi.h" // for FairTestDetectorDigi
 
-#include "Rtypes.h"
-#include "TString.h" // for TString
+#include <Rtypes.h>
+#include <TString.h> // for TString
 
 #include <map> // for map
 

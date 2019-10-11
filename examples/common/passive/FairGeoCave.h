@@ -11,8 +11,8 @@
 #include "FairGeoSet.h"                 // for FairGeoSet
 
 #include <iosfwd>                       // for fstream
-#include "Rtypes.h"                     // for FairGeoCave::Class, Bool_t, etc
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for FairGeoCave::Class, Bool_t, etc
+#include <TString.h>                    // for TString
 
 #include <fstream>                      // for fstream
 

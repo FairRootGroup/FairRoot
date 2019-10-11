@@ -19,7 +19,7 @@
 #include "FairLogger.h"           // for logging
 
 #include <iosfwd>         // for ostream
-#include "TClonesArray.h" // for TClonesArray
+#include <TClonesArray.h> // for TClonesArray
 
 #include <utility>  // for pair
 

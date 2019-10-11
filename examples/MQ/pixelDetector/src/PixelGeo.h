@@ -9,8 +9,8 @@
 #define PIXELGEO_H
 
 #include "FairGeoSet.h"  // for FairGeoSet
-#include "Rtypes.h"      // for PixelGeo::Class, ClassDef, PixelGeo::Streamer
-#include "TString.h"     // for TString
+#include <Rtypes.h>      // for PixelGeo::Class, ClassDef, PixelGeo::Streamer
+#include <TString.h>     // for TString
 
 class  PixelGeo : public FairGeoSet
 {

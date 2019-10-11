@@ -21,7 +21,7 @@
 #include "FairMQMessage.h"
 #include "FairMQTransportFactory.h"
 
-#include "TClonesArray.h"
+#include <TClonesArray.h>
 #include "FairTask.h"
 #include "FairEventHeader.h"
 

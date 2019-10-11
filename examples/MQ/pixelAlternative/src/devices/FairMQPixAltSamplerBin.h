@@ -19,8 +19,8 @@
 #include <thread>
 #include <fstream>
 
-#include "TBranch.h"
-#include "TChain.h"
+#include <TBranch.h>
+#include <TChain.h>
 
 #include "FairMQDevice.h"
 

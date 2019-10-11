@@ -17,7 +17,7 @@
 
 #include "FairPointSetDraw.h"           // for FairPointSetDraw
 
-#include "Rtypes.h"                     // for FairMCPointDraw::Class, etc
+#include <Rtypes.h>                     // for FairMCPointDraw::Class, etc
 
 class TObject;
 class TVector3;

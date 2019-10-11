@@ -9,7 +9,7 @@
 #ifndef FAIRMBSRAWITEM_H
 #define FAIRMBSRAWITEM_H
 
-#include "TObject.h"
+#include <TObject.h>
 
 /**
  * An example class for raw data object of a detector.

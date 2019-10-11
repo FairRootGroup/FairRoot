@@ -22,9 +22,9 @@
 #include "FairParSet.h"        // for FairParSet
 #include "FairParamList.h"     // for FairParamObj, FairParamList
 
-#include "TCollection.h" // for TIter
-#include "TList.h"       // for TList
-#include "TString.h"     // for TString, operator<<
+#include <TCollection.h> // for TIter
+#include <TList.h>       // for TList
+#include <TString.h>     // for TString, operator<<
 
 #include <stdio.h>  // for printf, sscanf
 #include <string.h> // for strcmp, memcpy, strtok, etc

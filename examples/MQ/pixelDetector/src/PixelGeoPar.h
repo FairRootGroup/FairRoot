@@ -9,7 +9,7 @@
 #define PIXELGEOPAR_H
 
 #include "FairParGenericSet.h"  // for FairParGenericSet
-#include "Rtypes.h"             // for PixelGeoPar::Class, ClassDef, PixelGe...
+#include <Rtypes.h>             // for PixelGeoPar::Class, ClassDef, PixelGe...
 class FairParamList;  // lines 14-14
 class TObjArray;  // lines 13-13
 

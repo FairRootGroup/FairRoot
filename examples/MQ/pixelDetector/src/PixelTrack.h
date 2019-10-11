@@ -16,7 +16,7 @@
 #define PIXELTRACK_H_
 
 #include "FairTimeStamp.h"  // for FairTimeStamp
-#include "Rtypes.h"         // for PixelTrack::Class, ClassDef, PixelTrack::...
+#include <Rtypes.h>         // for PixelTrack::Class, ClassDef, PixelTrack::...
 
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>

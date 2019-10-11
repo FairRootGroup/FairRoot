@@ -15,10 +15,10 @@
 #ifndef FAIRMQPIXELFILESINK_H_
 #define FAIRMQPIXELFILESINK_H_
 
-#include "TClonesArray.h"
-#include "TFile.h"
-#include "TFolder.h"
-#include "TTree.h"
+#include <TClonesArray.h>
+#include <TFile.h>
+#include <TFolder.h>
+#include <TTree.h>
 
 #include "FairMQDevice.h"
 

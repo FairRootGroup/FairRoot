@@ -14,7 +14,7 @@
 #include "FairLogger.h"
 #include "FairRunSim.h"
 
-#include "TROOT.h"
+#include <TROOT.h>
 
 FairGenericVMCConfig::FairGenericVMCConfig()
 {

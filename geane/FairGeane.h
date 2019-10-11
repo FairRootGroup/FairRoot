@@ -14,8 +14,8 @@
 
 #include "FairTask.h"                   // for FairTask, InitStatus
 
-#include "Rtypes.h"                     // for FairGeane::Class, ClassDef, etc
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for FairGeane::Class, ClassDef, etc
+#include <TString.h>                    // for TString
 
 class FairGeaneApplication;
 class FairField;

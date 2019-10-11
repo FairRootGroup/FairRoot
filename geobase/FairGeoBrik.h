@@ -10,7 +10,7 @@
 
 #include "FairGeoBasicShape.h"          // for FairGeoBasicShape
 
-#include "Rtypes.h"                     // for FairGeoBrik::Class, etc
+#include <Rtypes.h>                     // for FairGeoBrik::Class, etc
 
 
 class FairGeoTransform;

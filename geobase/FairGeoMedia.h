@@ -8,11 +8,11 @@
 #ifndef FAIRGEOMEDIA_H
 #define FAIRGEOMEDIA_H
 
-#include "TNamed.h"                     // for TNamed
+#include <TNamed.h>                     // for TNamed
 
 #include <iosfwd>                       // for fstream
-#include "Rtypes.h"                     // for FairGeoMedia::Class, etc
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for FairGeoMedia::Class, etc
+#include <TString.h>                    // for TString
 
 #include <iosfwd>                       // for fstream
 

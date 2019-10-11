@@ -25,11 +25,11 @@
 #ifndef FAIRBOXSET_H
 #define FAIRBOXSET_H
 
-#include "TEveBoxSet.h"                 // for TEveBoxSet
+#include <TEveBoxSet.h>                 // for TEveBoxSet
 
 #include "FairBoxSetDraw.h"             // for FairBoxSetDraw
 
-#include "Rtypes.h"                     // for Double_t, FairBoxSet::Class, etc
+#include <Rtypes.h>                     // for Double_t, FairBoxSet::Class, etc
 
 
 class FairBoxSet : public TEveBoxSet

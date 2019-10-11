@@ -15,7 +15,7 @@
 #include "FairRootManager.h"            // for FairRootManager
 
 #include <iosfwd>                       // for ostream
-#include "TClonesArray.h"               // for TClonesArray
+#include <TClonesArray.h>               // for TClonesArray
 
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc

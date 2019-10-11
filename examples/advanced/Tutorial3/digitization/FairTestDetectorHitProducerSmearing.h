@@ -10,7 +10,7 @@
 
 #include "FairTask.h" // for InitStatus, FairTask
 
-#include "Rtypes.h" // for ClassDef
+#include <Rtypes.h> // for ClassDef
 
 class TClonesArray;
 

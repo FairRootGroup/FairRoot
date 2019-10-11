@@ -13,7 +13,7 @@
 #ifndef FAIR_GEANE_APPLICATION_H
 #define FAIR_GEANE_APPLICATION_H
 
-#include "TVirtualMCApplication.h"      // for TVirtualMCApplication
+#include <TVirtualMCApplication.h>      // for TVirtualMCApplication
 
 #include <Rtypes.h>                     // for Bool_t, etc
 #include <TLorentzVector.h>             // for TLorentzVector

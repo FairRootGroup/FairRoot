@@ -17,8 +17,8 @@
 
 #include <FairRingSorterTask.h> // for FairRingSorterTask
 
-#include "Rtypes.h"  // for Double_t, etc
-#include "TString.h" // for TString
+#include <Rtypes.h>  // for Double_t, etc
+#include <TString.h> // for TString
 
 class FairRingSorter;
 class FairTimeStamp;

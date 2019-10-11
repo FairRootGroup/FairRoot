@@ -6,10 +6,10 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "TClonesArray.h"
-#include "TH1F.h"
-#include "TCanvas.h"
-#include "TFolder.h"
+#include <TClonesArray.h>
+#include <TH1F.h>
+#include <TCanvas.h>
+#include <TFolder.h>
 
 #include "FairRootManager.h"
 #include "FairRunOnline.h"

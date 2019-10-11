@@ -8,10 +8,10 @@
 #ifndef FAIRGEOBASICSHAPE_H
 #define FAIRGEOBASICSHAPE_H
 
-#include "TNamed.h"                     // for TNamed
+#include <TNamed.h>                     // for TNamed
 
 #include <iosfwd>                       // for fstream
-#include "Rtypes.h"                     // for Int_t, etc
+#include <Rtypes.h>                     // for Int_t, etc
 
 #include <fstream>                      // for fstream
 

@@ -18,7 +18,7 @@
 #include "FairGeoRootBuilder.h"         // for FairGeoRootBuilder
 
 #include <iosfwd>                       // for ostream
-#include "TGeoManager.h"                // for TGeoManager
+#include <TGeoManager.h>                // for TGeoManager
 
 #include <string.h>                     // for strncmp
 #include <cstdlib>                      // for NULL, exit

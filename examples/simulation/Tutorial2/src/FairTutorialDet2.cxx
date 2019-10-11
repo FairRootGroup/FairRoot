@@ -22,8 +22,8 @@
 #include "FairDetectorList.h"
 #include "FairStack.h"
 
-#include "TClonesArray.h"
-#include "TVirtualMC.h"
+#include <TClonesArray.h>
+#include <TVirtualMC.h>
 #ifdef NDEBUG
 #undef NDEBUG
 #endif

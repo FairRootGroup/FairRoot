@@ -19,10 +19,10 @@
 #include "FairTimeStamp.h"              // for FairTimeStamp
 
 #include <iosfwd>                       // for ostream
-#include "TClonesArray.h"               // for TClonesArray
-#include "TEveBoxSet.h"
-#include "TEveManager.h"                // for TEveManager, gEve
-#include "TVector3.h"                   // for TVector3
+#include <TClonesArray.h>               // for TClonesArray
+#include <TEveBoxSet.h>
+#include <TEveManager.h>                // for TEveManager, gEve
+#include <TVector3.h>                   // for TVector3
 
 #include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc

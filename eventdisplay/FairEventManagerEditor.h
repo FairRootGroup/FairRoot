@@ -12,11 +12,11 @@
 #ifndef ROOT_FAIREVENTMANAGEREDITOR
 #define ROOT_FAIREVENTMANAGEREDITOR
 
-#include "TGedFrame.h"                  // for TGedFrame
+#include <TGedFrame.h>                  // for TGedFrame
 
 #include "GuiTypes.h"                   // for Pixel_t
-#include "Rtypes.h"                     // for ClassDef
-#include "TGFrame.h"                    // for EFrameType::kChildFrame
+#include <Rtypes.h>                     // for ClassDef
+#include <TGFrame.h>                    // for EFrameType::kChildFrame
 
 class FairEventManager;
 class TEveGValuator;

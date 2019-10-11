@@ -14,10 +14,10 @@
 
 #include "FairPropagator.h"                     // for TNamed
 
-#include "Rtypes.h"                     // for Int_t, Bool_t, Double_t, etc
-#include "TGeant3.h"                    // for Ertrio_t, etc
-#include "TString.h"                    // for TString
-#include "TVector3.h"                   // for TVector3
+#include <Rtypes.h>                     // for Int_t, Bool_t, Double_t, etc
+#include <TGeant3.h>                    // for Ertrio_t, etc
+#include <TString.h>                    // for TString
+#include <TVector3.h>                   // for TVector3
 
 class FairTrackPar;
 class FairTrackParP;

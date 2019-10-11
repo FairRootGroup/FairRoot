@@ -17,7 +17,7 @@
 #include "FairLogger.h"    // for logging
 
 #include <iosfwd>    // for ostream
-#include "TString.h" // for operator<<, TString
+#include <TString.h> // for operator<<, TString
 
 #include <iomanip>  // for operator<<, setw
 

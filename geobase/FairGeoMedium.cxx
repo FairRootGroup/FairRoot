@@ -15,7 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "FairGeoMedium.h"
 
-#include "TString.h"                    // for TString
+#include <TString.h>                    // for TString
 
 #include <stddef.h>                     // for NULL
 #include <cmath>                        // for pow, log

@@ -11,7 +11,7 @@
 #include "FairParIo.h"                  // for FairParIo
 
 #include <iosfwd>                       // for fstream
-#include "Rtypes.h"                     // for Bool_t, Text_t, etc
+#include <Rtypes.h>                     // for Bool_t, Text_t, etc
 
 #include <fstream>                      // for fstream, etc
 

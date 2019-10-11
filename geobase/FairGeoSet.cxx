@@ -23,8 +23,8 @@
 #include "FairGeoShapes.h"              // for FairGeoShapes
 #include "FairGeoTransform.h"           // for FairGeoTransform
 
-#include "TArrayI.h"                    // for TArrayI
-#include "TString.h"                    // for TString, operator<<
+#include <TArrayI.h>                    // for TArrayI
+#include <TString.h>                    // for TString, operator<<
 
 #include <ctype.h>                      // for isalpha
 #include <string.h>                     // for NULL, strcmp

@@ -25,7 +25,7 @@
 #include "FairGeoShapes.h"              // for FairGeoShapes
 #include "FairGeoTransform.h"           // for FairGeoTransform
 
-#include "TList.h"                      // for TList
+#include <TList.h>                      // for TList
 
 #include <string.h>                     // for strcmp, NULL
 #include <iostream>                     // for cerr, cout

@@ -10,7 +10,7 @@
 
 #include "FairHit.h"                    // for FairHit
 
-#include "Rtypes.h"                     // for FairTutorialDet4Hit::Class, etc
+#include <Rtypes.h>                     // for FairTutorialDet4Hit::Class, etc
 
 class TVector3;
 

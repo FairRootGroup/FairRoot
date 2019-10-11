@@ -10,8 +10,8 @@
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairRutherfordGeoPar.h"       // for FairRutherfordGeoPar
 
-#include "TList.h"                      // for TList
-#include "TString.h"                    // for TString
+#include <TList.h>                      // for TList
+#include <TString.h>                    // for TString
 
 #include <string.h>                     // for strcmp, NULL
 

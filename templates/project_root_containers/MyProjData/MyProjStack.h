@@ -38,8 +38,8 @@
 
 #include "MyProjDetectorList.h"           // for DetectorId
 
-#include "Rtypes.h"                     // for Int_t, Double_t, Bool_t, etc
-#include "TMCProcess.h"                 // for TMCProcess
+#include <Rtypes.h>                     // for Int_t, Double_t, Bool_t, etc
+#include <TMCProcess.h>                 // for TMCProcess
 
 #include <map>                          // for map, map<>::iterator
 #include <stack>                        // for stack

@@ -85,7 +85,7 @@
 
 #include "FairGenerator.h"              // for FairGenerator
 
-#include "Rtypes.h"                     // for FairEvtGenGenerator::Class, etc
+#include <Rtypes.h>                     // for FairEvtGenGenerator::Class, etc
 
 #include <stdio.h>                      // for FILE
 

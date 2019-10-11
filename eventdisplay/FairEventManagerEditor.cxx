@@ -11,15 +11,15 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairRunAna.h"                 // for FairRunAna
 
-#include "TChain.h"                     // for TChain
-#include "TEveGValuators.h"             // for TEveGValuator
-#include "TFile.h"                      // for TFile
-#include "TGButton.h"                   // for TGCheckButton, TGTextButton
-#include "TGLabel.h"                    // for TGLabel
-#include "TGLayout.h"                   // for TGLayoutHints, etc
-#include "TGNumberEntry.h"              // for TGNumberEntry, etc
-#include "TGeoManager.h"                // for TGeoManager, gGeoManager
-#include "TString.h"                    // for TString
+#include <TChain.h>                     // for TChain
+#include <TEveGValuators.h>             // for TEveGValuator
+#include <TFile.h>                      // for TFile
+#include <TGButton.h>                   // for TGCheckButton, TGTextButton
+#include <TGLabel.h>                    // for TGLabel
+#include <TGLayout.h>                   // for TGLayoutHints, etc
+#include <TGNumberEntry.h>              // for TGNumberEntry, etc
+#include <TGeoManager.h>                // for TGeoManager, gGeoManager
+#include <TString.h>                    // for TString
 
 #include <stddef.h>                     // for NULL
 

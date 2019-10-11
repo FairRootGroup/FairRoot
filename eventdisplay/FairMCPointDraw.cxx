@@ -16,7 +16,7 @@
 
 #include "FairMCPoint.h"                // for FairMCPoint
 
-#include "TVector3.h"                   // for TVector3
+#include <TVector3.h>                   // for TVector3
 
 class TObject;
 

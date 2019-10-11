@@ -16,8 +16,8 @@
 #include "FairRunSim.h"                 // for FairRunSim
 #include "FairLogger.h"                 // for logging
 
-#include "TDatabasePDG.h"               // for TDatabasePDG
-#include "TParticlePDG.h"               // for TParticlePDG
+#include <TDatabasePDG.h>               // for TDatabasePDG
+#include <TParticlePDG.h>               // for TParticlePDG
 
 #include <stdio.h>                      // for NULL, sprintf
 #include <utility>                      // for pair

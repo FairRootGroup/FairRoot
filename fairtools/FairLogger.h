@@ -17,7 +17,7 @@
 
 #include <fairlogger/Logger.h>
 
-#include "Rtypes.h" // for bool, FairLogger::Class, etc
+#include <Rtypes.h> // for bool, FairLogger::Class, etc
 
 #include <stdarg.h> // for va_list
 #include <string>   // for operator<<

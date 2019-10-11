@@ -14,10 +14,10 @@
 #include "FairTestDetectorPoint.h" // for FairTestDetectorPoint
 #include "FairLogger.h"
 
-#include "TClonesArray.h" // for TClonesArray
-#include "TMath.h"        // for Sqrt
-#include "TRandom.h"      // for TRandom, gRandom
-#include "TString.h"      // for TString
+#include <TClonesArray.h> // for TClonesArray
+#include <TMath.h>        // for Sqrt
+#include <TRandom.h>      // for TRandom, gRandom
+#include <TString.h>      // for TString
 
 #include <stddef.h> // for NULL
 

@@ -18,7 +18,7 @@
 
 #include "FairTask.h"
 
-#include "TVector3.h"
+#include <TVector3.h>
 #include "FairTutorialDet2Point.h"
 
 class TClonesArray;

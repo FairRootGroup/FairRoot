@@ -28,7 +28,7 @@
 
 #include "FairGenerator.h"              // for FairGenerator
 
-#include "Rtypes.h"                     // for Int_t, Bool_t, etc
+#include <Rtypes.h>                     // for Int_t, Bool_t, etc
 
 #include <stdio.h>                      // for FILE
 #include <map>                          // for map

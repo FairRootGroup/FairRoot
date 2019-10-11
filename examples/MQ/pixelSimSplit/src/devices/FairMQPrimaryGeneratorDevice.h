@@ -19,7 +19,7 @@
 #include <string>
 #include <thread>
 
-#include "TString.h"
+#include <TString.h>
 
 #include "FairMQDevice.h"
 

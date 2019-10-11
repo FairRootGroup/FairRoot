@@ -11,7 +11,7 @@
 #include "FairGeoBasicShape.h"          // for FairGeoBasicShape
 
 #include <iosfwd>                       // for fstream
-#include "Rtypes.h"                     // for FairGeoCone::Class, Bool_t, etc
+#include <Rtypes.h>                     // for FairGeoCone::Class, Bool_t, etc
 
 #include <iosfwd>                       // for fstream
 

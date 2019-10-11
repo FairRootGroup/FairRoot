@@ -13,9 +13,9 @@
 
 #include "FairLogger.h"                 // for FairLogger, etc
 
-#include "TDatabasePDG.h"               // for TDatabasePDG
-#include "TParticle.h"                  // for TParticle
-#include "TParticlePDG.h"               // for TParticlePDG
+#include <TDatabasePDG.h>               // for TDatabasePDG
+#include <TParticle.h>                  // for TParticle
+#include <TParticlePDG.h>               // for TParticlePDG
 
 // -----   Default constructor   -------------------------------------------
 FairMCTrack::FairMCTrack()

@@ -10,7 +10,7 @@
 
 #include "IOPolicy.h" // fair::mq::policy::
 #include "RootSerializer.h" // RootSerializer
-#include "TClonesArray.h" // data type for the InputPolicy
+#include <TClonesArray.h> // data type for the InputPolicy
 
 #include "RootOutFileManager.h" // OutputPolicy
 #include "FairMBSRawItem.h" // data type for the OutputPolicy

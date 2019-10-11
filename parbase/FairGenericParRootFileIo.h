@@ -10,7 +10,7 @@
 
 #include "FairDetParRootFileIo.h"       // for FairDetParRootFileIo
 
-#include "Rtypes.h"                    // for ClassDef macro
+#include <Rtypes.h>                    // for ClassDef macro
 
 class FairParRootFile;
 class FairParSet;

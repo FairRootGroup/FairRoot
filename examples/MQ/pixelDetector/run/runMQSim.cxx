@@ -21,8 +21,8 @@
 
 #include "FairOnlineSink.h"
 
-#include "TRandom.h"
-#include "TSystem.h"
+#include <TRandom.h>
+#include <TSystem.h>
 
 #include <string>
 #include <stdexcept>

@@ -16,7 +16,7 @@
 #define PNDPASSIVECONTFACT_H
 
 #include "FairContFact.h"               // for FairContFact, etc
-#include "Rtypes.h"                     // for MyPassiveContFact::Class, etc
+#include <Rtypes.h>                     // for MyPassiveContFact::Class, etc
 
 class FairParSet;
 

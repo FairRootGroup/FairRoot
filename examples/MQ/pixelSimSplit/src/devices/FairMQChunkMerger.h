@@ -15,10 +15,10 @@
 #ifndef FAIRMQCHUNKMERGER_H_
 #define FAIRMQCHUNKMERGER_H_
 
-#include "TClonesArray.h"
-#include "TFile.h"
-#include "TFolder.h"
-#include "TTree.h"
+#include <TClonesArray.h>
+#include <TFile.h>
+#include <TFolder.h>
+#include <TTree.h>
 #include "FairMCSplitEventHeader.h"
 
 #include "FairMQDevice.h"

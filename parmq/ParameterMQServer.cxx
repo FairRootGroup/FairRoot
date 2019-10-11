@@ -12,10 +12,10 @@
  * @author M. Al-Turany, A. Rybalchenko
  */
 
-#include "TGeoManager.h"
+#include <TGeoManager.h>
 #include "RootSerializer.h"
-#include "TClass.h"
-#include "Rtypes.h"
+#include <TClass.h>
+#include <Rtypes.h>
 
 #include "FairRuntimeDb.h"
 #include "FairParAsciiFileIo.h"

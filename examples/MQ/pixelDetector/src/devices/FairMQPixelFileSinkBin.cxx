@@ -15,7 +15,7 @@
 #include "FairMQPixelFileSinkBin.h"
 #include "FairMQLogger.h"
 
-#include "TVector3.h"
+#include <TVector3.h>
 
 #include "PixelPayload.h"
 #include "PixelHit.h"

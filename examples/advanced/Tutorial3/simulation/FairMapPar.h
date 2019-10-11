@@ -19,8 +19,8 @@
 
 #include "FairParGenericSet.h" // for FairParGenericSet
 
-#include "Rtypes.h"  // for Double_t, FairMapPar::Class, etc
-#include "TString.h" // for TString
+#include <Rtypes.h>  // for Double_t, FairMapPar::Class, etc
+#include <TString.h> // for TString
 
 class FairMapPar : public FairParGenericSet
 {

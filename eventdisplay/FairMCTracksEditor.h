@@ -8,11 +8,11 @@
 #ifndef ROOT_FAIREMCTRACKSEDITOR
 #define ROOT_FAIREMCTRACKSEDITOR
 
-#include "TGedFrame.h"                  // for TGedFrame
+#include <TGedFrame.h>                  // for TGedFrame
 
 #include "GuiTypes.h"                   // for Pixel_t
-#include "Rtypes.h"                     // for FairMCTracksEditor::Class, etc
-#include "TGFrame.h"                    // for EFrameType::kChildFrame
+#include <Rtypes.h>                     // for FairMCTracksEditor::Class, etc
+#include <TGFrame.h>                    // for EFrameType::kChildFrame
 
 class FairEventManager;
 class TGWindow;

@@ -16,13 +16,11 @@
 #define FAIRMCENTRY_H_
 
 #include "FairMultiLinkedData.h"        // for FairMultiLinkedData
-
 #include "FairLink.h"                   // for FairLink
 
-#include <iosfwd>                       // for ostream
-#include "Rtypes.h"                     // for Int_t, FairMCEntry::Class, etc
+#include <Rtypes.h>                     // for Int_t, FairMCEntry::Class, etc
 
-#include <iostream>                     // for ostream
+#include <iosfwd>                       // for ostream
 #include <set>                          // for set
 
 class FairMCEntry : public FairMultiLinkedData

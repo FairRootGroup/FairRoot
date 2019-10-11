@@ -18,7 +18,7 @@
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairLinkManager.h"            // for FairLinkManager
 
-#include "TClonesArray.h"               // for TClonesArray
+#include <TClonesArray.h>               // for TClonesArray
 
 #include <algorithm>                    // for find
 #include <iterator>                     // for distance

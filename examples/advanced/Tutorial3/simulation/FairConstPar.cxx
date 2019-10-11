@@ -10,7 +10,7 @@
 #include "FairConstField.h" // for FairConstField
 #include "FairParamList.h"  // for FairParamList
 
-#include "TString.h" // for TString
+#include <TString.h> // for TString
 
 class FairField;
 

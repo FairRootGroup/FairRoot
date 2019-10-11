@@ -17,7 +17,7 @@
 
 #include "FairMQMessage.h"
 
-#include "TClonesArray.h"
+#include <TClonesArray.h>
 
 #include "FairEventHeader.h"
 

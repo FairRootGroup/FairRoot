@@ -10,8 +10,8 @@
 
 #include "FairMCPoint.h"                // for FairMCPoint
 
-#include "Rtypes.h"                     // for Double_t, etc
-#include "TVector3.h"                   // for TVector3
+#include <Rtypes.h>                     // for Double_t, etc
+#include <TVector3.h>                   // for TVector3
 
 class FairTutorialDet4Point : public FairMCPoint
 {

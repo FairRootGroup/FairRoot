@@ -16,7 +16,7 @@
 #define FAIRTUTORIALDET4POINTDRAW_H
 
 #include "FairTask.h"                   // for FairTask, InitStatus
-#include "Rtypes.h"                     // for Bool_t, Int_t, etc
+#include <Rtypes.h>                     // for Bool_t, Int_t, etc
 
 class FairTutorialDet4GeoPar;
 class FairTutorialDet4DigiPar;

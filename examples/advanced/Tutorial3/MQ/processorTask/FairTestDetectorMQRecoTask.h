@@ -12,8 +12,8 @@
 #include <sstream>
 #include <array>
 
-#include "TMath.h"
-#include "TClonesArray.h"
+#include <TMath.h>
+#include <TClonesArray.h>
 
 #include "FairRootManager.h"
 #include "FairMQLogger.h"

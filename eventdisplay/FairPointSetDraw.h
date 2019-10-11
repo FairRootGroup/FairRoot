@@ -23,7 +23,7 @@
 
 #include "FairTask.h"                   // for FairTask, InitStatus
 
-#include "Rtypes.h"                     // for Int_t, Color_t, etc
+#include <Rtypes.h>                     // for Int_t, Color_t, etc
 
 class FairEventManager;
 class TClonesArray;

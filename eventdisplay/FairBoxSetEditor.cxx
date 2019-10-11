@@ -11,9 +11,9 @@
 #include "FairRootManager.h"            // for FairRootManager
 
 #include <iosfwd>                       // for ostream
-#include "TGLabel.h"                    // for TGLabel
-#include "TGLayout.h"                   // for TGLayoutHints, etc
-#include "TGNumberEntry.h"              // for TGNumberEntry, etc
+#include <TGLabel.h>                    // for TGLabel
+#include <TGLayout.h>                   // for TGLayoutHints, etc
+#include <TGNumberEntry.h>              // for TGNumberEntry, etc
 
 class TGWindow;
 

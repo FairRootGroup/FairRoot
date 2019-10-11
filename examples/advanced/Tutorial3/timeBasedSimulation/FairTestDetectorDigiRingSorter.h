@@ -17,7 +17,7 @@
 
 #include <FairRingSorter.h> // for FairRingSorter
 
-#include "Rtypes.h" // for ClassDef
+#include <Rtypes.h> // for ClassDef
 
 class FairTimeStamp;
 

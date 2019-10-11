@@ -12,10 +12,10 @@
 #include "FairTrackParam.h"             // for FairTrackParam
 #include "FairTutorialDet4Hit.h"        // for FairTutorialDet4Hit
 
-#include "TClonesArray.h"               // for TClonesArray
-#include "TF1.h"                        // for TF1
-#include "TGraphErrors.h"               // for TGraphErrors
-#include "TVector3.h"                   // for TVector3
+#include <TClonesArray.h>               // for TClonesArray
+#include <TF1.h>                        // for TF1
+#include <TGraphErrors.h>               // for TGraphErrors
+#include <TVector3.h>                   // for TVector3
 
 #include <stddef.h>                     // for NULL
 #include <set>                          // for set, set<>::iterator, etc

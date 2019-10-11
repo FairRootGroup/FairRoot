@@ -12,18 +12,18 @@
 #ifndef FairEventManager_H
 #define FairEventManager_H
 
-#include "TEveEventManager.h"           // for TEveEventManager
+#include <TEveEventManager.h>           // for TEveEventManager
 
 #include "FairRunAna.h"                 // for FairRunAna
 
-#include "Rtypes.h"                     // for Float_t, Int_t, Bool_t, etc
-#include "TEveViewer.h"
-#include "TEveScene.h"
-#include "TEveProjectionAxes.h"
-#include "TEveProjectionManager.h"
-#include "TGeoNode.h"
+#include <Rtypes.h>                     // for Float_t, Int_t, Bool_t, etc
+#include <TEveViewer.h>
+#include <TEveScene.h>
+#include <TEveProjectionAxes.h>
+#include <TEveProjectionManager.h>
+#include <TGeoNode.h>
 #include "FairXMLNode.h"
-#include "TGLViewer.h"
+#include <TGLViewer.h>
 #include <map>
 
 class FairRootManager; //does not work with streamer, reason unclear

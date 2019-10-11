@@ -24,10 +24,10 @@
 #include "FairTask.h"
 #include "FairTrajFilter.h"
 
-#include "TGeoManager.h"
-#include "TKey.h"
-#include "TProof.h"
-#include "TROOT.h"
+#include <TGeoManager.h>
+#include <TKey.h>
+#include <TProof.h>
+#include <TROOT.h>
 
 FairRunAnaProof* FairRunAnaProof::fRAPInstance= 0;
 

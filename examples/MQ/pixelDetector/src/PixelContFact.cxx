@@ -11,8 +11,8 @@
 #include "FairRuntimeDb.h"  // for FairRuntimeDb
 #include "PixelDigiPar.h"   // for PixelDigiPar
 #include "PixelGeoPar.h"    // for PixelGeoPar
-#include "TList.h"          // for TList
-#include "TString.h"        // for TString
+#include <TList.h>          // for TList
+#include <TString.h>        // for TString
 class FairParSet;
 
 

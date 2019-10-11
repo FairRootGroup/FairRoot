@@ -9,10 +9,10 @@
 #define FAIRMQEXHISTODEVICE
 
 #include "FairMQDevice.h"
-#include "TH1F.h"
-#include "TH2F.h"
-#include "TRandom3.h"
-#include "TObjArray.h"
+#include <TH1F.h>
+#include <TH2F.h>
+#include <TRandom3.h>
+#include <TObjArray.h>
 
 class FairMQExHistoDevice : public FairMQDevice
 {

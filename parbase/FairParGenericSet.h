@@ -10,7 +10,7 @@
 
 #include "FairParSet.h"                 // for FairParSet
 
-#include "Rtypes.h"                     // for Bool_t, etc
+#include <Rtypes.h>                     // for Bool_t, etc
 
 class FairParIo;
 class FairParamList;

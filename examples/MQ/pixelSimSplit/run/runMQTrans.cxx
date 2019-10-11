@@ -14,12 +14,12 @@
 #include "FairOnlineSink.h"
 //#include "FairRootFileSink.h"
 
-#include "TRandom.h"
-#include "TRint.h"
-#include "TROOT.h"
-#include "TSystem.h"
-#include "TVirtualMC.h"
-#include "TVirtualMCApplication.h"
+#include <TRandom.h>
+#include <TRint.h>
+#include <TROOT.h>
+#include <TSystem.h>
+#include <TVirtualMC.h>
+#include <TVirtualMCApplication.h>
 
 namespace bpo = boost::program_options;
 

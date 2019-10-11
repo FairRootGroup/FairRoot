@@ -10,7 +10,7 @@
 #include <iostream>
 using namespace std;
 #include <TStopwatch.h>
-#include "TRandom3.h"
+#include <TRandom3.h>
 #include "FairRunSim.h"
 #include "FairRootFileSink.h"
 #include "FairTutorialDet1.h"

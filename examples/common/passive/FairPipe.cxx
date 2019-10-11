@@ -16,11 +16,11 @@
 #include "FairRun.h"                    // for FairRun
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 
-#include "TGeoCompositeShape.h"         // for TGeoCompositeShape
-#include "TGeoManager.h"                // for TGeoManager, gGeoManager
-#include "TGeoMatrix.h"                 // for TGeoRotation
-#include "TGeoPcon.h"                   // for TGeoPcon
-#include "TGeoVolume.h"                 // for TGeoVolume, etc
+#include <TGeoCompositeShape.h>         // for TGeoCompositeShape
+#include <TGeoManager.h>                // for TGeoManager, gGeoManager
+#include <TGeoMatrix.h>                 // for TGeoRotation
+#include <TGeoPcon.h>                   // for TGeoPcon
+#include <TGeoVolume.h>                 // for TGeoVolume, etc
 
 class FairGeoMedium;
 

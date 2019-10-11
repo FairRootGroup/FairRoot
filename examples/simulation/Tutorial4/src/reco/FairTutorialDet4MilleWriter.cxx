@@ -14,7 +14,7 @@
 
 #include "Mille.h"                      // for Mille
 
-#include "TClonesArray.h"               // for TClonesArray
+#include <TClonesArray.h>               // for TClonesArray
 
 #include <stddef.h>                     // for NULL
 #include <set>                          // for set, set<>::iterator, etc

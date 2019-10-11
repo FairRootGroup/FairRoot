@@ -11,8 +11,8 @@
 
 #include "FairMCPoint.h"
 
-#include "TObject.h"
-#include "TVector3.h"
+#include <TObject.h>
+#include <TVector3.h>
 
 class PixelPoint : public FairMCPoint
 {

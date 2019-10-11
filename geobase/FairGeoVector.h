@@ -8,12 +8,12 @@
 #ifndef FAIRGEOVECTOR_H
 #define FAIRGEOVECTOR_H
 
-#include "TObject.h"                    // for TObject
+#include <TObject.h>                    // for TObject
 
 #include <iosfwd>                       // for ostream, istream
-#include "Rtypes.h"                     // for Double_t, Bool_t, Int_t, etc
-#include "TMath.h"                      // for pow, floor, sqrt
-#include "TMathBase.h"                  // for Abs
+#include <Rtypes.h>                     // for Double_t, Bool_t, Int_t, etc
+#include <TMath.h>                      // for pow, floor, sqrt
+#include <TMathBase.h>                  // for Abs
 
 #include <stdio.h>                      // for printf
 #include <iostream>                     // for operator<<, ostream, etc

@@ -15,10 +15,10 @@
 #ifndef FAIRMQPIXELMERGER_H_
 #define FAIRMQPIXELMERGER_H_
 
-#include "TClonesArray.h"
-#include "TFile.h"
-#include "TFolder.h"
-#include "TTree.h"
+#include <TClonesArray.h>
+#include <TFile.h>
+#include <TFolder.h>
+#include <TTree.h>
 #include "FairEventHeader.h"
 
 #include "FairMQDevice.h"

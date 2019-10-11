@@ -22,7 +22,7 @@
 #include "FairGeoVector.h"              // for FairGeoVector
 #include "FairGeoVolume.h"              // for FairGeoVolume
 
-#include "TArrayD.h"                    // for TArrayD
+#include <TArrayD.h>                    // for TArrayD
 
 #include <stdio.h>                      // for printf, sprintf, sscanf
 #include <string.h>                     // for strlen

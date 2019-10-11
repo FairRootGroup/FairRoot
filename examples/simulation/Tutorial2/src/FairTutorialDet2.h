@@ -10,8 +10,8 @@
 
 #include "FairDetector.h"
 
-#include "TVector3.h"
-#include "TLorentzVector.h"
+#include <TVector3.h>
+#include <TLorentzVector.h>
 #include "FairTutorialDet2Point.h"
 
 class FairVolume;

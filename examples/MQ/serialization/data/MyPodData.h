@@ -18,7 +18,7 @@
 
 // for root types
 #include <iosfwd>   
-#include "Rtypes.h" 
+#include <Rtypes.h> 
 
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>

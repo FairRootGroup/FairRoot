@@ -20,7 +20,7 @@
 #include "FairGeoRotation.h"            // for FairGeoRotation
 #include "FairGeoVector.h"              // for FairGeoVector
 
-#include "TList.h"                      // for TList
+#include <TList.h>                      // for TList
 
 #include <cmath>                       // IWYU pragma: keep for abs
 // IWYU pragma: no_include <architecture/i386/math.h>

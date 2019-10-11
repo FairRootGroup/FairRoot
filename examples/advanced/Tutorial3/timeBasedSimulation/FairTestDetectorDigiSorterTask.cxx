@@ -19,7 +19,7 @@
 #include "FairTestDetectorDigi.h" // for FairTestDetectorDigi, etc
 #include "FairTestDetectorDigiRingSorter.h"
 
-#include "TClonesArray.h" // for TClonesArray
+#include <TClonesArray.h> // for TClonesArray
 
 
 class FairRingSorter;

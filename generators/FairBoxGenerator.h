@@ -36,7 +36,7 @@
 
 #include "FairGenerator.h"              // for FairGenerator
 
-#include "Rtypes.h"                     // for Double32_t, Bool_t, kTRUE, etc
+#include <Rtypes.h>                     // for Double32_t, Bool_t, kTRUE, etc
 
 class FairPrimaryGenerator;
 

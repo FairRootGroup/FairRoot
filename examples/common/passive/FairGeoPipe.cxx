@@ -19,8 +19,8 @@
 #include "FairGeoInterface.h"           // for FairGeoInterface
 #include "FairGeoLoader.h"              // for FairGeoLoader
 
-#include "TList.h"                      // for TList
-#include "TString.h"                    // for TString
+#include <TList.h>                      // for TList
+#include <TString.h>                    // for TString
 
 #include <string.h>                     // for strcpy
 

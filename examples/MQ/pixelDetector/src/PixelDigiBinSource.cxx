@@ -21,8 +21,8 @@
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairRootManager.h"
 
-#include "TClonesArray.h"
-#include "TString.h"
+#include <TClonesArray.h>
+#include <TString.h>
 
 using std::map;
 using std::set;

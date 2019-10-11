@@ -17,16 +17,16 @@
 #include "FairBaseParSet.h"
 #include "FairLogger.h"
 
-#include "TRandom.h"
-#include "TMath.h"
-#include "TVector3.h"
-#include "TClonesArray.h"
-#include "TGeoManager.h"
-#include "TGeoVolume.h"
-#include "TGeoMaterial.h"
-#include "TGeoNode.h"
-#include "TGeoMatrix.h"
-#include "TGeoBBox.h"
+#include <TRandom.h>
+#include <TMath.h>
+#include <TVector3.h>
+#include <TClonesArray.h>
+#include <TGeoManager.h>
+#include <TGeoVolume.h>
+#include <TGeoMaterial.h>
+#include <TGeoNode.h>
+#include <TGeoMatrix.h>
+#include <TGeoBBox.h>
 
 // ---- Default constructor -------------------------------------------
 FairTutorialDet2Digitizer::FairTutorialDet2Digitizer()

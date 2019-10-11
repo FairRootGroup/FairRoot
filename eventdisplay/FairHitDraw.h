@@ -19,8 +19,8 @@
 
 #include "FairBoxSetDraw.h"             // for FairBoxSetDraw
 
-#include "Rtypes.h"                     // for FairHitDraw::Class, etc
-#include "TVector3.h"                   // for TVector3
+#include <Rtypes.h>                     // for FairHitDraw::Class, etc
+#include <TVector3.h>                   // for TVector3
 
 class TObject;
 

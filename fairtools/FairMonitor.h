@@ -19,8 +19,8 @@
 #include <list>
 #include <map>
 
-#include "TNamed.h"
-#include "TStopwatch.h"
+#include <TNamed.h>
+#include <TStopwatch.h>
 
 class TCanvas;
 class TFile;

@@ -28,16 +28,16 @@
 #include "FairFileSource.h"             // ONLY TEMPORARILY, FOR COMPABILITY
 #include "FairMixedSource.h"            // ONLY TEMPORARILY, FOR COMPABILITY
 
-#include "TCollection.h"                // for TIter
-#include "TFile.h"                      // for TFile, gFile
-#include "TGeoManager.h"                // for gGeoManager, TGeoManager
-#include "TKey.h"                       // for TKey
-#include "TList.h"                      // for TList
-#include "TObjArray.h"                  // for TObjArray
-#include "TObject.h"                    // for TObject
-#include "TROOT.h"                      // for TROOT, gROOT
-#include "TSeqCollection.h"             // for TSeqCollection
-#include "TSystem.h"                    // for TSystem, gSystem
+#include <TCollection.h>                // for TIter
+#include <TFile.h>                      // for TFile, gFile
+#include <TGeoManager.h>                // for gGeoManager, TGeoManager
+#include <TKey.h>                       // for TKey
+#include <TList.h>                      // for TList
+#include <TObjArray.h>                  // for TObjArray
+#include <TObject.h>                    // for TObject
+#include <TROOT.h>                      // for TROOT, gROOT
+#include <TSeqCollection.h>             // for TSeqCollection
+#include <TSystem.h>                    // for TSystem, gSystem
 
 #include <stdlib.h>                     // for exit
 #include "signal.h"

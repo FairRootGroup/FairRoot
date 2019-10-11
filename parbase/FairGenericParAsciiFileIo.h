@@ -11,7 +11,7 @@
 #include "FairDetParAsciiFileIo.h"      // for FairDetParAsciiFileIo
 
 #include <iosfwd>                       // for fstream
-#include "Rtypes.h"                     // for Int_t, Bool_t, etc
+#include <Rtypes.h>                     // for Int_t, Bool_t, etc
 
 #include <fstream>                      // for fstream
 

@@ -10,8 +10,8 @@
 
 #include "FairTask.h"                   // for InitStatus, FairTask
 
-#include "TString.h"
-#include "Rtypes.h"                     // for Option_t, Bool_t, etc
+#include <TString.h>
+#include <Rtypes.h>                     // for Option_t, Bool_t, etc
 
 class Mille;
 class TClonesArray;

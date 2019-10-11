@@ -32,8 +32,8 @@
 #include "FairGenerator.h"              // for FairGenerator
 
 #include <iosfwd>                       // for ifstream
-#include "Rtypes.h"                     // for FairShieldGenerator::Class, etc
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for FairShieldGenerator::Class, etc
+#include <TString.h>                    // for TString
 
 #include <fstream>                      // for ifstream
 #include <map>                          // for map

@@ -12,9 +12,9 @@
 #include "FairTestDetectorHit.h"   // for FairTestDetectorHit
 #include "FairTestDetectorPoint.h" // for FairTestDetectorPoint
 
-#include "TClonesArray.h" // for TClonesArray
-#include "TRandom.h"      // for TRandom, gRandom
-#include "TVector3.h"     // for TVector3
+#include <TClonesArray.h> // for TClonesArray
+#include <TRandom.h>      // for TRandom, gRandom
+#include <TVector3.h>     // for TVector3
 
 #include <stddef.h> // for NULL
 

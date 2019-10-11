@@ -15,7 +15,7 @@
 #ifndef FAIRMCMATCH_H_
 #define FAIRMCMATCH_H_
 
-#include "TNamed.h"                     // for TNamed
+#include <TNamed.h>                     // for TNamed
 
 #include "FairMCEntry.h"                // for FairMCEntry
 #include "FairMCResult.h"               // for FairMCResult
@@ -24,9 +24,9 @@
 #include "FairRootManager.h"            // for FairRootManager
 
 #include <iosfwd>                       // for ostream
-#include "Rtypes.h"                     // for Int_t, FairMCMatch::Class, etc
-#include "TString.h"                    // for TString
-#include "TClonesArray.h"
+#include <Rtypes.h>                     // for Int_t, FairMCMatch::Class, etc
+#include <TString.h>                    // for TString
+#include <TClonesArray.h>
 
 #include <iostream>                     // for ostream, cout, endl
 #include <map>                          // for map, etc

@@ -10,7 +10,7 @@
 
 #include "FairGeoSet.h"                 // for FairGeoSet
 
-#include "Rtypes.h"                     // for FairGeoPipe::Class, Int_t, etc
+#include <Rtypes.h>                     // for FairGeoPipe::Class, Int_t, etc
 
 class FairGeoBuilder;
 

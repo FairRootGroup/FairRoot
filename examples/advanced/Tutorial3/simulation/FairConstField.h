@@ -17,7 +17,7 @@
 
 #include "FairField.h" // for FairField
 
-#include "Rtypes.h" // for Double_t, etc
+#include <Rtypes.h> // for Double_t, etc
 
 class FairConstPar;
 

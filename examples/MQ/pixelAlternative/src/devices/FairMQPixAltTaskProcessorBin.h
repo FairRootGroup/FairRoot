@@ -18,8 +18,8 @@
 #include "FairMQDevice.h"
 #include "FairMQParts.h"
 
-#include "TClonesArray.h"
-#include "TList.h"
+#include <TClonesArray.h>
+#include <TList.h>
 #include "RootSerializer.h"
 
 #include "PixelPayload.h"

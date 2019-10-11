@@ -18,11 +18,11 @@
 #include "FairMQDevice.h"
 #include "FairMQLogger.h"
 
-#include "Rtypes.h"
-#include "TFile.h"
-#include "TTree.h"
-#include "TClonesArray.h"
-#include "TSystem.h"
+#include <Rtypes.h>
+#include <TFile.h>
+#include <TTree.h>
+#include <TClonesArray.h>
+#include <TSystem.h>
 
 #include "FairTestDetectorPayload.h"
 #include "FairTestDetectorHit.h"

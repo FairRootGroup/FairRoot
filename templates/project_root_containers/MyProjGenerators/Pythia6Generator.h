@@ -63,7 +63,7 @@
 
 #include <stdio.h>          // for FILE
 #include "FairGenerator.h"  // for FairGenerator
-#include "Rtypes.h"         // for Int_t, Pythia6Generator::Class, Bool_t, etc
+#include <Rtypes.h>         // for Int_t, Pythia6Generator::Class, Bool_t, etc
 class FairPrimaryGenerator;  // lines 68-68
 
 

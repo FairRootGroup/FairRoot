@@ -17,9 +17,9 @@
 #ifndef FairGeoLOADER_H
 #define FairGeoLOADER_H
 
-#include "TNamed.h"                     // for TNamed
+#include <TNamed.h>                     // for TNamed
 
-#include "Rtypes.h"                     // for FairGeoLoader::Class, etc
+#include <Rtypes.h>                     // for FairGeoLoader::Class, etc
 
 class FairGeoInterface;
 class FairGeoBuilder;

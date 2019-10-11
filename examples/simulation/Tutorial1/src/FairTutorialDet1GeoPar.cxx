@@ -9,7 +9,7 @@
 
 #include "FairParamList.h"              // for FairParamList
 
-#include "TObjArray.h"                  // for TObjArray
+#include <TObjArray.h>                  // for TObjArray
 
 ClassImp(FairTutorialDet1GeoPar)
 

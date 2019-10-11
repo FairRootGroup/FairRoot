@@ -15,10 +15,10 @@
 #include "FairRadLenPoint.h"            // for FairRadLenPoint
 #include "FairRootManager.h"            // for FairRootManager
 
-#include "TClonesArray.h"               // for TClonesArray
-#include "TVector3.h"                   // for TVector3
-#include "TVirtualMC.h"                 // for TVirtualMC
-#include "TVirtualMCStack.h"            // for TVirtualMCStack
+#include <TClonesArray.h>               // for TClonesArray
+#include <TVector3.h>                   // for TVector3
+#include <TVirtualMC.h>                 // for TVirtualMC
+#include <TVirtualMCStack.h>            // for TVirtualMCStack
 
 using namespace std;
 

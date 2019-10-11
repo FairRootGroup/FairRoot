@@ -30,9 +30,9 @@
 #include "FairRtdbRun.h"                // for FairRtdbRun, FairParVersion
 
 #include <iosfwd>                       // for ostream
-#include "TClass.h"                     // for TClass
-#include "TCollection.h"                // for TIter
-#include "TFile.h"                      // for TFile, gFile
+#include <TClass.h>                     // for TClass
+#include <TCollection.h>                // for TIter
+#include <TFile.h>                      // for TFile, gFile
 
 #include <stdio.h>                      // for sprintf
 #include <string.h>                     // for strcmp, NULL, strlen

@@ -18,7 +18,7 @@
 
 #include "FairMapPar.h" // for FairMapPar
 
-#include "Rtypes.h" // for Double_t, etc
+#include <Rtypes.h> // for Double_t, etc
 
 class FairField;
 class FairParamList;

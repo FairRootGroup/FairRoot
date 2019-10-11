@@ -17,7 +17,7 @@
 
 #include "FairGeoMagnet.h"
 
-#include "TString.h"                    // for TString
+#include <TString.h>                    // for TString
 
 #include <string.h>                     // for strcpy
 

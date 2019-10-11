@@ -30,13 +30,13 @@
 #include "FairParRootFileIo.h"
 #include "FairParSet.h"
 
-#include "TROOT.h"
-#include "TRint.h"
-#include "TVirtualMC.h"
-#include "TVirtualMCApplication.h"
-#include "TList.h"
-#include "TObjString.h"
-#include "TObjArray.h"
+#include <TROOT.h>
+#include <TRint.h>
+#include <TVirtualMC.h>
+#include <TVirtualMCApplication.h>
+#include <TList.h>
+#include <TObjString.h>
+#include <TObjArray.h>
 #include "RootSerializer.h"
 
 using namespace std;

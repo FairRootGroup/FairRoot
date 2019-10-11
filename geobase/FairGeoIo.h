@@ -8,9 +8,9 @@
 #ifndef FAIRGEOIO_H
 #define FAIRGEOIO_H
 
-#include "TObject.h"                    // for TObject
+#include <TObject.h>                    // for TObject
 
-#include "Rtypes.h"                     // for Bool_t, FairGeoIo::Class, etc
+#include <Rtypes.h>                     // for Bool_t, FairGeoIo::Class, etc
 
 class FairGeoMedia;
 class FairGeoSet;

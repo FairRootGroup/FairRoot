@@ -15,8 +15,8 @@
 #include "FairLogger.h"
 
 #include <iosfwd>                       // for ostream
-#include "TF1.h"                        // for TF1
-#include "TRandom.h"                    // for TRandom, gRandom
+#include <TF1.h>                        // for TF1
+#include <TRandom.h>                    // for TRandom, gRandom
 
 #include <algorithm>                    // for max
 #include <sstream>                      // for stringstream

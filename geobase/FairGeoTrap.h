@@ -12,7 +12,7 @@
 
 #include "FairGeoRotation.h"            // for FairGeoRotation
 
-#include "Rtypes.h"                     // for FairGeoPcon::Class, Bool_t, etc
+#include <Rtypes.h>                     // for FairGeoPcon::Class, Bool_t, etc
 
 class FairGeoTransform;
 class FairGeoVolume;

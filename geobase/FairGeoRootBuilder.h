@@ -10,7 +10,7 @@
 
 #include "FairGeoBuilder.h"             // for FairGeoBuilder
 
-#include "Rtypes.h"                     // for FairGeoRootBuilder::Class, etc
+#include <Rtypes.h>                     // for FairGeoRootBuilder::Class, etc
 
 class FairGeoMedium;
 class FairGeoNode;

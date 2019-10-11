@@ -15,9 +15,8 @@
 #ifndef FAIRMCLIST_H_
 #define FAIRMCLIST_H_
 
-#include "TObject.h"                    // for TObject
-
-#include "Rtypes.h"                     // for Int_t, FairMCList::Class, etc
+#include <TObject.h>                    // for TObject
+#include <Rtypes.h>                     // for Int_t, FairMCList::Class, etc
 
 #include <vector>                       // for vector
 

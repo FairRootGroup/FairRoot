@@ -13,9 +13,9 @@
 #include "FairTestDetectorPoint.h" // for FairTestDetectorPoint
 
 #include <iosfwd>         // for ostream
-#include "TClonesArray.h" // for TClonesArray
-#include "TMath.h"        // for Sqrt
-#include "TRandom.h"      // for TRandom, gRandom
+#include <TClonesArray.h> // for TClonesArray
+#include <TMath.h>        // for Sqrt
+#include <TRandom.h>      // for TRandom, gRandom
 
 #include <stddef.h> // for NULL
 #include <iostream> // for operator<<, basic_ostream, etc

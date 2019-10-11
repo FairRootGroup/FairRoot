@@ -8,14 +8,14 @@
 #ifndef FAIRGEOSET_H
 #define FAIRGEOSET_H
 
-#include "TNamed.h"                     // for TNamed
+#include <TNamed.h>                     // for TNamed
 
 #include "FairGeoNode.h"
 
 #include <iosfwd>                       // for fstream
-#include "Rtypes.h"                     // for Int_t, Bool_t, etc
-#include "TList.h"                      // for TList
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for Int_t, Bool_t, etc
+#include <TList.h>                      // for TList
+#include <TString.h>                    // for TString
 
 #include <fstream>                      // for fstream
 

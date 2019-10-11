@@ -30,10 +30,10 @@
 
 #include "FairPrimaryGenerator.h"
 
-#include "TRandom.h"
-#include "TParticlePDG.h"
-#include "TDatabasePDG.h"
-#include "TMath.h"
+#include <TRandom.h>
+#include <TParticlePDG.h>
+#include <TDatabasePDG.h>
+#include <TMath.h>
 
 // ------------------------------------------------------------------------
 FairBoxGenerator::FairBoxGenerator() :

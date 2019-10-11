@@ -18,10 +18,10 @@
 #include "FairLogger.h"                 // for logging
 
 #include <iosfwd>                       // for ostream
-#include "TDatabasePDG.h"               // for TDatabasePDG
-#include "TObjArray.h"                  // for TObjArray
-#include "TParticle.h"                  // for TParticle
-#include "TParticlePDG.h"               // for TParticlePDG
+#include <TDatabasePDG.h>               // for TDatabasePDG
+#include <TObjArray.h>                  // for TObjArray
+#include <TParticle.h>                  // for TParticle
+#include <TParticlePDG.h>               // for TParticlePDG
 
 #include <stdio.h>                      // for NULL, sprintf
 

@@ -10,7 +10,7 @@
 
 #include "FairContFact.h"               // for FairContFact, etc
 
-#include "Rtypes.h"                     // for FairPassiveContFact::Class, etc
+#include <Rtypes.h>                     // for FairPassiveContFact::Class, etc
 
 class FairParSet;
 

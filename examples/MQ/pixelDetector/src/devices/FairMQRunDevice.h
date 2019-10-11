@@ -17,7 +17,7 @@
 #define FAIRMQRUNDEVICE_H_
 
 #include <string>
-#include "TString.h"
+#include <TString.h>
 
 #include "FairMQDevice.h"
 

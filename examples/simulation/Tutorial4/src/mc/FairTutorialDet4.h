@@ -10,11 +10,11 @@
 
 #include "FairDetector.h"               // for FairDetector
 
-#include "Rtypes.h"                     // for Int_t, Bool_t, Double32_t, etc
-#include "TArrayD.h"                    // for TArrayD
-#include "TLorentzVector.h"             // for TLorentzVector
-#include "TClonesArray.h"
-#include "TVector3.h"                   // for TVector3
+#include <Rtypes.h>                     // for Int_t, Bool_t, Double32_t, etc
+#include <TArrayD.h>                    // for TArrayD
+#include <TLorentzVector.h>             // for TLorentzVector
+#include <TClonesArray.h>
+#include <TVector3.h>                   // for TVector3
 
 #include <string>                       // for string
 

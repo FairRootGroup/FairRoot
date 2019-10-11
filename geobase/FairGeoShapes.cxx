@@ -50,7 +50,7 @@
 #include "FairGeoTorus.h"
 #include "FairGeoAssembly.h"
 
-#include "TList.h"
+#include <TList.h>
 
 ClassImp(FairGeoShapes)
 

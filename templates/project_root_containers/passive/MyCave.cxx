@@ -20,9 +20,9 @@
 #include "FairRun.h"                    // for FairRun
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 
-#include "TList.h"                      // for TListIter, TList (ptr only)
-#include "TObjArray.h"                  // for TObjArray
-#include "TString.h"                    // for TString
+#include <TList.h>                      // for TListIter, TList (ptr only)
+#include <TObjArray.h>                  // for TObjArray
+#include <TString.h>                    // for TString
 
 #include <stddef.h>                     // for NULL
 

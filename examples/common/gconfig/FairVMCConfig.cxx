@@ -15,9 +15,9 @@
 #include "FairRunSim.h"
 #include "FairStack.h"
 
-#include "TROOT.h"
-#include "TString.h"
-#include "TVirtualMC.h"
+#include <TROOT.h>
+#include <TString.h>
+#include <TVirtualMC.h>
 
 //_____________________________________________________________________________
 FairVMCConfig::FairVMCConfig()

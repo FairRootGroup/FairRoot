@@ -8,10 +8,10 @@
 #ifndef FAIRGEOMEDIUM_H
 #define FAIRGEOMEDIUM_H
 
-#include "TNamed.h"                     // for TNamed
+#include <TNamed.h>                     // for TNamed
 
 #include <iosfwd>                       // for fstream
-#include "Rtypes.h"                     // for Double_t, Int_t, Bool_t, etc
+#include <Rtypes.h>                     // for Double_t, Int_t, Bool_t, etc
 
 #include <fstream>                      // for fstream
 

@@ -15,14 +15,14 @@
 #ifndef FAIRMCOBJECT_H_
 #define FAIRMCOBJECT_H_
 
-#include "TObject.h"                    // for TObject
+#include <TObject.h>                    // for TObject
 
 #include "FairLink.h"                   // for FairLink
 #include "FairMCEntry.h"                // for FairMCEntry
 #include "FairMultiLinkedData.h"        // for FairMultiLinkedData
 
 #include <iosfwd>                       // for ostream
-#include "Rtypes.h"                     // for Int_t, FairMCObject::Class, etc
+#include <Rtypes.h>                     // for Int_t, FairMCObject::Class, etc
 
 #include <iostream>                     // for ostream, etc
 #include <utility>                      // for pair

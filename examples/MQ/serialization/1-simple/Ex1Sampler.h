@@ -3,11 +3,11 @@
 
 #include "FairMQDevice.h"
 #include "RootSerializer.h"
-#include "TClonesArray.h"
+#include <TClonesArray.h>
 
-#include "Rtypes.h"
-#include "TFile.h"
-#include "TTree.h"
+#include <Rtypes.h>
+#include <TFile.h>
+#include <TTree.h>
 
 #include "MyDigi.h"
 

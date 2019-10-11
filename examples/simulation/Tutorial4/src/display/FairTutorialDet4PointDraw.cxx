@@ -16,10 +16,10 @@
 #include "FairLogger.h"
 
 #include <iosfwd>             // for ostream
-#include "TClonesArray.h"     // for TClonesArray
-#include "TEvePointSet.h"     // for TEveBoxSet, etc
-#include "TEveManager.h"      // for TEveManager, gEve
-#include "TVector3.h"         // for TVector3
+#include <TClonesArray.h>     // for TClonesArray
+#include <TEvePointSet.h>     // for TEveBoxSet, etc
+#include <TEveManager.h>      // for TEveManager, gEve
+#include <TVector3.h>         // for TVector3
 
 
 // -----   Default constructor   -------------------------------------------

@@ -11,7 +11,7 @@
 #include "FairDetParIo.h"
 
 #include "FairLogger.h"
-#include "TString.h"
+#include <TString.h>
 
 FairMQExParamsParOne::FairMQExParamsParOne(const char* name, const char* title, const char* context) :
     FairParGenericSet(name, title, context),

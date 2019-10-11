@@ -17,7 +17,7 @@
 
 #include "FairModule.h"                 // for FairModule
 
-#include "Rtypes.h"                     // for MyCave::Class, ClassDef, etc
+#include <Rtypes.h>                     // for MyCave::Class, ClassDef, etc
 
 class MyCave : public FairModule
 {

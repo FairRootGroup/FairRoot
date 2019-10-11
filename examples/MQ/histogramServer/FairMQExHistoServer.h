@@ -10,8 +10,8 @@
 
 #include "FairMQDevice.h"
 
-#include "THttpServer.h"
-#include "TObjArray.h"
+#include <THttpServer.h>
+#include <TObjArray.h>
 
 #include <thread>
 #include <string>

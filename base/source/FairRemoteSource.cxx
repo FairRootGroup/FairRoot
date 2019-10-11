@@ -16,7 +16,7 @@
 
 #include "ptrevmbsdef.h"          // MBS data definitions
 
-#include "TSocket.h"
+#include <TSocket.h>
 
 #include "MRevBuffer.h"
 

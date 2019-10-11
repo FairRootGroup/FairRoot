@@ -10,7 +10,7 @@
 
 #include "FairParGenericSet.h"          // for FairParGenericSet
 
-#include "Rtypes.h"                     // for FairGeoPassivePar::Class, etc
+#include <Rtypes.h>                     // for FairGeoPassivePar::Class, etc
 
 class FairParamList;
 class TObjArray;

@@ -10,7 +10,7 @@
 
 #include "FairModule.h"                 // for FairModule
 
-#include "Rtypes.h"                     // for FairPipe::Class, ClassDef, etc
+#include <Rtypes.h>                     // for FairPipe::Class, ClassDef, etc
 
 class FairPipe : public FairModule
 {

@@ -43,7 +43,7 @@
 #include <TVirtualMC.h>
 
 #ifdef ROOT_HAS_GDML
-#include "TGDMLParse.h"
+#include <TGDMLParse.h>
 #endif
 
 #include <stdlib.h>                     // for getenv

@@ -21,10 +21,10 @@
 #include "boost/program_options.hpp"
 
 // root
-#include "TApplication.h"
-#include "TH1D.h"
-#include "TH2D.h"
-#include "TCanvas.h"
+#include <TApplication.h>
+#include <TH1D.h>
+#include <TH2D.h>
+#include <TCanvas.h>
 
 // FairRoot
 #include "FairMQLogger.h"

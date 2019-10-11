@@ -15,7 +15,7 @@
 #include "FairMQPixelSampler.h"
 
 #include "RootSerializer.h"
-#include "TClonesArray.h"
+#include <TClonesArray.h>
 
 #include "FairMQLogger.h"
 #include "FairMQMessage.h"

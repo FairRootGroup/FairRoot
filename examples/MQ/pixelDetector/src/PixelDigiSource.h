@@ -18,7 +18,7 @@
 
 #include "FairSource.h"
 
-#include "TString.h"
+#include <TString.h>
 
 #include <list>  
 #include <fstream>

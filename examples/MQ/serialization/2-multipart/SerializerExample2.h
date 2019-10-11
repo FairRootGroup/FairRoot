@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 
-#include "TClonesArray.h"
+#include <TClonesArray.h>
 #include "MyHit.h"
 
 #include "FairMQMessage.h"

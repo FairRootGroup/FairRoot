@@ -32,7 +32,7 @@
 #include "FairGenerator.h"              // for FairGenerator
 
 #include <iosfwd>                       // for ifstream
-#include "Rtypes.h"                     // for FairAsciiGenerator::Class, etc
+#include <Rtypes.h>                     // for FairAsciiGenerator::Class, etc
 
 #include <fstream>                      // for ifstream
 

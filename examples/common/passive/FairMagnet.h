@@ -10,7 +10,7 @@
 
 #include "FairModule.h"                 // for FairModule
 
-#include "Rtypes.h"                     // for FairMagnet::Class, Bool_t, etc
+#include <Rtypes.h>                     // for FairMagnet::Class, Bool_t, etc
 
 #include <string>                       // for string
 

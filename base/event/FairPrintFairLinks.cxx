@@ -6,7 +6,7 @@
 #include <FairPrintFairLinks.h>
 
 // Root includes
-#include "TClonesArray.h"
+#include <TClonesArray.h>
 
 // framework includes
 #include "FairRootManager.h"

@@ -28,9 +28,9 @@
 #include "FairRuntimeDb.h"     // for FairRuntimeDb
 
 #include <iosfwd>       // for ostream
-#include "TDirectory.h" // for TDirectory, gDirectory
-#include "TKey.h"       // for TKey
-#include "TROOT.h"      // for TROOT, gROOT
+#include <TDirectory.h> // for TDirectory, gDirectory
+#include <TKey.h>       // for TKey
+#include <TROOT.h>      // for TROOT, gROOT
 
 #include <stdio.h>  // for sprintf
 #include <iostream> // for operator<<, basic_ostream, etc

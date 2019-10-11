@@ -16,10 +16,10 @@
 
 #include "FairParGenericSet.h"
 
-#include "TObject.h"
-#include "TObjArray.h"
-#include "TArrayF.h"
-#include "TArrayI.h"
+#include <TObject.h>
+#include <TObjArray.h>
+#include <TArrayF.h>
+#include <TArrayI.h>
 
 class FairParIo;
 class FairParamList;

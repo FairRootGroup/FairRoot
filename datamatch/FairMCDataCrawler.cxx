@@ -13,11 +13,8 @@
  */
 
 #include "FairMCDataCrawler.h"
-
 #include "FairLink.h"                   // for FairLink, operator<<
 #include "FairRootManager.h"            // for FairRootManager
-
-#include <iosfwd>                       // for ostream
 
 #include <iostream>                     // for operator<<, ostream, cout, etc
 

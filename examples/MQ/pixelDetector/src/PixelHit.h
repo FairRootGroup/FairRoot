@@ -16,7 +16,7 @@
 #define PIXELHIT_H_
 
 #include "FairHit.h"     // for FairHit
-#include "Rtypes.h"      // for PixelHit::Class, ClassDef, PixelHit::Streamer
+#include <Rtypes.h>      // for PixelHit::Class, ClassDef, PixelHit::Streamer
 class TVector3;  // lines 27-27
 
 #include <boost/serialization/access.hpp>

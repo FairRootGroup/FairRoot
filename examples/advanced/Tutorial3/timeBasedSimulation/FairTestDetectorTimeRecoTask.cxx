@@ -15,9 +15,9 @@
 #include "FairTestDetectorHit.h"    // for FairTestDetectorHit
 #include "FairLogger.h"
 
-#include "TClonesArray.h" // for TClonesArray
-#include "TMath.h"        // for Sqrt
-#include "TVector3.h"     // for TVector3
+#include <TClonesArray.h> // for TClonesArray
+#include <TMath.h>        // for Sqrt
+#include <TVector3.h>     // for TVector3
 
 #include <stddef.h> // for NULL
 

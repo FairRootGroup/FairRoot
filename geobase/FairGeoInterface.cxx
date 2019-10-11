@@ -31,9 +31,9 @@
 #include "FairGeoShapes.h"              // for FairGeoShapes
 
 #include <iosfwd>                       // for ostream
-#include "TClass.h"                     // for TClass
-#include "TList.h"                      // for TList
-#include "TObjArray.h"                  // for TObjArray
+#include <TClass.h>                     // for TClass
+#include <TList.h>                      // for TList
+#include <TObjArray.h>                  // for TObjArray
 
 #include <stdio.h>                      // for sprintf, NULL
 #include <string.h>                     // for strcmp

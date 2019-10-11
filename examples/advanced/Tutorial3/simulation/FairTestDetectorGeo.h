@@ -10,8 +10,8 @@
 
 #include "FairGeoSet.h" // for FairGeoSet
 
-#include "Rtypes.h"  // for Int_t, etc
-#include "TString.h" // for TString
+#include <Rtypes.h>  // for Int_t, etc
+#include <TString.h> // for TString
 
 class FairTestDetectorGeo : public FairGeoSet
 {

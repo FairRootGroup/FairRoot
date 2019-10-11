@@ -22,13 +22,13 @@
 #include "MyProjDetectorList.h"
 #include "MyProjStack.h"
 
-#include "TVirtualMC.h"
-#include "TGeoManager.h"
-#include "TGeoBBox.h"
-#include "TGeoCompositeShape.h"
-#include "TGeoTube.h"
-#include "TGeoMaterial.h"
-#include "TGeoMedium.h"
+#include <TVirtualMC.h>
+#include <TGeoManager.h>
+#include <TGeoBBox.h>
+#include <TGeoCompositeShape.h>
+#include <TGeoTube.h>
+#include <TGeoMaterial.h>
+#include <TGeoMedium.h>
 
 NewDetector::NewDetector()
     : FairDetector("NewDetector", kTRUE, kNewDetector)

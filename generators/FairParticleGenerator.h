@@ -25,7 +25,7 @@
 
 #include "FairGenerator.h"              // for FairGenerator
 
-#include "Rtypes.h"                     // for Double32_t, Int_t, etc
+#include <Rtypes.h>                     // for Double32_t, Int_t, etc
 
 class FairPrimaryGenerator;
 

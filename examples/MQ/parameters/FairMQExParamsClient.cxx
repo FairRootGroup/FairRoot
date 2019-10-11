@@ -20,7 +20,7 @@
 #include "FairMQExParamsParOne.h"
 
 #include "RootSerializer.h"
-#include "Rtypes.h"
+#include <Rtypes.h>
 
 using namespace std;
 

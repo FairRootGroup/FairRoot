@@ -10,7 +10,7 @@
 
 #include "FairGeoSet.h"                 // for FairGeoSet
 
-#include "Rtypes.h"                     // for FairGeoTarget::Class, Int_t, etc
+#include <Rtypes.h>                     // for FairGeoTarget::Class, Int_t, etc
 
 class  FairGeoTarget : public FairGeoSet
 {

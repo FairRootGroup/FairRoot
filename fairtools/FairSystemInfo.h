@@ -16,7 +16,7 @@
 #ifndef BASE_FAIRSYSTEMINFO_H_
 #define BASE_FAIRSYSTEMINFO_H_
 
-#include "Rtypes.h"
+#include <Rtypes.h>
 
 class FairSystemInfo
 {

@@ -15,12 +15,12 @@
 #include "FairRunSim.h"
 #include "FairFastSimRunConfiguration.h"
 
-#include "TGeant3.h"
-#include "TGeant3TGeo.h"
-#include "TGeant4.h"
+#include <TGeant3.h>
+#include <TGeant3TGeo.h>
+#include <TGeant4.h>
 
-#include "TROOT.h"
-#include "TString.h"
+#include <TROOT.h>
+#include <TString.h>
 
 //_____________________________________________________________________________
 FairYamlVMCConfig::FairYamlVMCConfig()

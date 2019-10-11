@@ -23,7 +23,7 @@
 
 #include "FairTask.h"                   // for InitStatus, FairTask
 
-#include "Rtypes.h"                     // for Bool_t, etc
+#include <Rtypes.h>                     // for Bool_t, etc
 
 #include <map>                          // for map
 #include <string>                       // for string

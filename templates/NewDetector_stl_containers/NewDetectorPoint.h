@@ -8,7 +8,7 @@
 #ifndef NEWDETECTORPOINT_H
 #define NEWDETECTORPOINT_H 1
 
-#include "TVector3.h"
+#include <TVector3.h>
 
 class NewDetectorPoint
 {

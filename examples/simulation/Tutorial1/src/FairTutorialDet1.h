@@ -10,9 +10,9 @@
 
 #include "FairDetector.h"               // for FairDetector
 
-#include "Rtypes.h"                     // for Int_t, Double32_t, Double_t, etc
-#include "TLorentzVector.h"             // for TLorentzVector
-#include "TVector3.h"                   // for TVector3
+#include <Rtypes.h>                     // for Int_t, Double32_t, Double_t, etc
+#include <TLorentzVector.h>             // for TLorentzVector
+#include <TVector3.h>                   // for TVector3
 
 class FairTutorialDet1Point;
 class FairTutorialDet1Geo;

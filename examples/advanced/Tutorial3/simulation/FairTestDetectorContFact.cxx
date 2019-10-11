@@ -11,8 +11,8 @@
 #include "FairRuntimeDb.h"          // for FairRuntimeDb
 #include "FairTestDetectorGeoPar.h" // for FairTestDetectorGeoPar
 
-#include "TList.h"   // for TList
-#include "TString.h" // for TString
+#include <TList.h>   // for TList
+#include <TString.h> // for TString
 
 #include <string.h> // for strcmp, NULL
 

@@ -16,7 +16,7 @@
 #define MAGNET_H
 
 #include "FairModule.h"                 // for FairModule
-#include "Rtypes.h"                     // for MyMagnet::Class, Bool_t, etc
+#include <Rtypes.h>                     // for MyMagnet::Class, Bool_t, etc
 #include <string>                       // for string
 
 class MyMagnet : public FairModule

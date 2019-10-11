@@ -26,8 +26,8 @@
 #include "FairGeoVector.h"              // for FairGeoVector
 #include "FairGeoVolume.h"              // for FairGeoVolume
 
-#include "TArrayD.h"                    // for TArrayD
-#include "TString.h"                    // for TString
+#include <TArrayD.h>                    // for TArrayD
+#include <TString.h>                    // for TString
 
 ClassImp(FairGeoBrik)
 

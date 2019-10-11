@@ -11,7 +11,7 @@
 #include "FairMQExHistoDevice.h"
 #include "RootSerializer.h"
 
-#include "TMath.h"
+#include <TMath.h>
 
 FairMQExHistoDevice::FairMQExHistoDevice()
     : FairMQDevice()

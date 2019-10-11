@@ -33,7 +33,7 @@
 #include "FairParamList.h"              // for FairParamList
 
 #include <iosfwd>                       // for ostream
-#include "TString.h"                    // for operator<<, TString
+#include <TString.h>                    // for operator<<, TString
 
 #include <iostream>                     // for operator<<, ostream, cout, etc
 

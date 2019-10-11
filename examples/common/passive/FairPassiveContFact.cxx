@@ -20,8 +20,8 @@
 #include "FairGeoPassivePar.h"          // for FairGeoPassivePar
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 
-#include "TList.h"                      // for TList
-#include "TString.h"                    // for TString
+#include <TList.h>                      // for TList
+#include <TString.h>                    // for TString
 
 #include <string.h>                     // for strcmp, NULL
 

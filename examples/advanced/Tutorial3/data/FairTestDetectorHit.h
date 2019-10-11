@@ -10,7 +10,7 @@
 
 #include "FairHit.h" // for FairHit
 
-#include "Rtypes.h" // for FairTestDetectorHit::Class, etc
+#include <Rtypes.h> // for FairTestDetectorHit::Class, etc
 
 #include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>

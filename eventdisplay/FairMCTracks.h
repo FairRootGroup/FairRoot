@@ -23,9 +23,9 @@
 
 #include "FairTask.h"                   // for FairTask, InitStatus
 
-#include "Rtypes.h"                     // for Double_t, etc
-#include "TEveTrackPropagator.h"        // IWYU pragma: keep needed by cint
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for Double_t, etc
+#include <TEveTrackPropagator.h>        // IWYU pragma: keep needed by cint
+#include <TString.h>                    // for TString
 
 class FairEventManager;
 class TClonesArray;

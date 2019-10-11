@@ -8,11 +8,11 @@
 #ifndef FAIRGEOMATRIX_H
 #define FAIRGEOMATRIX_H
 
-#include "TObject.h"                    // for TObject
+#include <TObject.h>                    // for TObject
 
 #include "FairGeoVector.h"              // for FairGeoVector
 
-#include "Rtypes.h"                     // for Double_t, etc
+#include <Rtypes.h>                     // for Double_t, etc
 
 /**
  * @author Ilse koenig

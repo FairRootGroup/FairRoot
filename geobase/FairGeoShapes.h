@@ -8,11 +8,11 @@
 #ifndef FAIRGEOSHAPES_H
 #define FAIRGEOSHAPES_H
 
-#include "TObject.h"                    // for TObject
+#include <TObject.h>                    // for TObject
 
 #include <iosfwd>                       // for fstream
-#include "Rtypes.h"                     // for FairGeoShapes::Class, etc
-#include "TString.h"                    // for TString
+#include <Rtypes.h>                     // for FairGeoShapes::Class, etc
+#include <TString.h>                    // for TString
 
 #include <fstream>                      // for fstream
 
