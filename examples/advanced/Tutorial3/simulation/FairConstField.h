@@ -23,7 +23,6 @@ class FairConstPar;
 
 class FairConstField : public FairField
 {
-
   public:
     /** Default constructor **/
     FairConstField();

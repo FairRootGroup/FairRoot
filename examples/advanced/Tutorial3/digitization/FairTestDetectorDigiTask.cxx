@@ -12,31 +12,24 @@
 #include "FairTestDetectorDigi.h"  // for FairTestDetectorDigi
 #include "FairTestDetectorPoint.h" // for FairTestDetectorPoint
 
-#include <iosfwd>         // for ostream
 #include <TClonesArray.h> // for TClonesArray
 #include <TMath.h>        // for Sqrt
 #include <TRandom.h>      // for TRandom, gRandom
 
-#include <stddef.h> // for NULL
 #include <iostream> // for operator<<, basic_ostream, etc
 
-// -----   Default constructor   -------------------------------------------
 FairTestDetectorDigiTask::FairTestDetectorDigiTask()
     : FairTask("TestDetectorDigTask")
     , fTimeResolution(0.)
-    , fPointArray(NULL)
-    , fDigiArray(NULL)
+    , fPointArray(nullptr)
+    , fDigiArray(nullptr)
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Destructor   ----------------------------------------------------
 FairTestDetectorDigiTask::~FairTestDetectorDigiTask()
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method Init (abstract in base class)  --------------------
 InitStatus FairTestDetectorDigiTask::Init()
 {
     FairRootManager* ioman = FairRootManager::Instance();
@@ -62,7 +55,6 @@ InitStatus FairTestDetectorDigiTask::Init()
     return kSUCCESS;
 }
 
-// -----   Public method Exec   --------------------------------------------
 void FairTestDetectorDigiTask::Exec(Option_t* /*opt*/)
 {
 
@@ -97,14 +89,12 @@ void FairTestDetectorDigiTask::Exec(Option_t* /*opt*/)
         digi->AddLink(FairLink(-1, FairRootManager::Instance()->GetEntryNr(), "FairTestDetectorPoint", ipnt));
     }
 }
-// -------------------------------------------------------------------------
 
 Int_t FairTestDetectorDigiTask::CalcPad(Double_t posIn, Double_t posOut)
 {
     Int_t result = static_cast<Int_t>(posIn + posOut) / 2;
     return result;
 }
-// -------------------------------------------------------------------------
 
 Double_t FairTestDetectorDigiTask::CalcTimeStamp(Double_t timeOfFlight)
 {

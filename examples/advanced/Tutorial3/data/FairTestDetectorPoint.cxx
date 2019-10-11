@@ -9,7 +9,6 @@
 
 #include "FairLogger.h"
 
-// -----   Default constructor   -------------------------------------------
 FairTestDetectorPoint::FairTestDetectorPoint()
     : FairMCPoint()
     , fX_out(0.)
@@ -20,9 +19,7 @@ FairTestDetectorPoint::FairTestDetectorPoint()
     , fPz_out(0.)
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Standard constructor   ------------------------------------------
 FairTestDetectorPoint::FairTestDetectorPoint(Int_t trackID,
                                              Int_t detID,
                                              TVector3 pos,
@@ -41,15 +38,11 @@ FairTestDetectorPoint::FairTestDetectorPoint(Int_t trackID,
     , fPz_out(momOut.Pz())
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Destructor   ----------------------------------------------------
 FairTestDetectorPoint::~FairTestDetectorPoint()
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method Print   -------------------------------------------
 void FairTestDetectorPoint::Print(const Option_t* /*opt*/) const
 {
     LOG(info) << "FairTestDetectorPoint: FairTestDetector point for track "
@@ -59,6 +52,5 @@ void FairTestDetectorPoint::Print(const Option_t* /*opt*/) const
     LOG(info) << "    Time " << fTime << " ns,  Length " << fLength
               << " cm,  Energy loss " << fELoss * 1.0e06 << " keV" ;
 }
-// -------------------------------------------------------------------------
 
 ClassImp(FairTestDetectorPoint)

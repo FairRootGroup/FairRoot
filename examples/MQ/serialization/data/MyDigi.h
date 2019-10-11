@@ -23,7 +23,7 @@
 
 #include <iostream> // for operator<<, basic_ostream, etc
 
-#include <boost/serialization/access.hpp>
+namespace boost { namespace serialization { class access; } }
 #include <boost/serialization/base_object.hpp>
 
 class MyDigi : public FairTimeStamp

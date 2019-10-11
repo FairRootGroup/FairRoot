@@ -8,7 +8,6 @@
 #include "FairTestDetectorGeoPar.h"
 
 #include "FairParamList.h" // for FairParamList
-
 #include <TObjArray.h> // for TObjArray
 
 ClassImp(FairTestDetectorGeoPar) FairTestDetectorGeoPar::FairTestDetectorGeoPar(const char* name, const char* title, const char* context)

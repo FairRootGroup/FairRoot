@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairConstPar.h"
@@ -14,7 +14,6 @@
 
 class FairField;
 
-// ------   Constructor   --------------------------------------------------
 FairConstPar::FairConstPar(const char* name, const char* title, const char* context)
     : FairMapPar(name, title, context)
     , fBx(0)
@@ -105,6 +104,7 @@ Bool_t FairConstPar::getParams(FairParamList* list)
     }
     return kTRUE;
 }
+
 void FairConstPar::SetParameters(FairField* field)
 {
     FairConstField* fieldConst = static_cast<FairConstField*>(field);

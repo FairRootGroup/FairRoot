@@ -15,8 +15,6 @@
 #ifndef TESTDETECTORPAYLOAD_H_
 #define TESTDETECTORPAYLOAD_H_
 
-#include <string>
-
 namespace TestDetectorPayload
 {
     class TimeStamp

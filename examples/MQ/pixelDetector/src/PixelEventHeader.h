@@ -17,7 +17,7 @@
 
 #include "FairEventHeader.h"     // for FairEventHeader
 
-#include <boost/serialization/access.hpp>
+namespace boost { namespace serialization { class access; } }
 #include <boost/serialization/base_object.hpp>
 
 class PixelEventHeader : public FairEventHeader

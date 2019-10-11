@@ -7,7 +7,6 @@
  ********************************************************************************/
 #include "FairMapPar.h"
 
-// ------   Constructor   --------------------------------------------------
 FairMapPar::FairMapPar(const char* name, const char* title, const char* context)
     : FairParGenericSet(name, title, context)
     , fType(-1)
@@ -24,7 +23,6 @@ FairMapPar::FairMapPar(const char* name, const char* title, const char* context)
     , fScale(0)
 {
 }
-// -------------------------------------------------------------------------
 
 FairMapPar::FairMapPar()
     : fType(-1)
@@ -41,12 +39,9 @@ FairMapPar::FairMapPar()
     , fScale(0)
 {
 }
-// -------------------------------------------------------------------------
 
-// ------   Destructor   ---------------------------------------------------
 FairMapPar::~FairMapPar()
 {
 }
-// -------------------------------------------------------------------------
 
 ClassImp(FairMapPar)

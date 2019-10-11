@@ -18,7 +18,6 @@
 #include "FairTestDetectorDigi.h" // for FairTestDetectorDigi, etc
 #include "FairLogger.h"           // for logging
 
-#include <iosfwd>         // for ostream
 #include <TClonesArray.h> // for TClonesArray
 
 #include <utility>  // for pair
@@ -29,7 +28,6 @@ FairTestDetectorDigiWriteoutBuffer::FairTestDetectorDigiWriteoutBuffer()
     : FairWriteoutBuffer()
     , fData_map()
 {
-
     // TODO Auto-generated constructor stub
 }
 
@@ -50,8 +48,7 @@ void FairTestDetectorDigiWriteoutBuffer::AddNewDataToTClonesArray(FairTimeStamp*
     TClonesArray* myArray = ioman->GetTClonesArray(fBranchName);
     if (fVerbose > 1)
     {
-      LOG(info) << "Data Inserted: " 
-		<< static_cast<FairTestDetectorDigi*>(data)->ToString();
+      LOG(info) << "Data Inserted: " << static_cast<FairTestDetectorDigi*>(data)->ToString();
     }
     new ((*myArray)[myArray->GetEntries()]) FairTestDetectorDigi(*static_cast<FairTestDetectorDigi*>((data)));
 }

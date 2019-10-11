@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -21,11 +21,11 @@
 #include <Rtypes.h>  // for Int_t, etc
 
 #include <iostream> // for operator<<, basic_ostream, etc
-#include <string>
 #include <sstream>
+#include <string>
 
-#include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
+namespace boost { namespace serialization { class access; } }
 
 class FairTestDetectorDigi : public FairTimeStamp
 {
@@ -130,9 +130,9 @@ class FairTestDetectorDigi : public FairTimeStamp
 
     std::string ToString()
     {
-      std::string out = "FairTestDetectorDigi at: (" + ToString(GetX()) 
-  	    + "/" + ToString(GetY()) + "/" + ToString(GetZ()) 
- 	    + ") " + " with TimeStamp: " + ToString(GetTimeStamp());
+      std::string out = "FairTestDetectorDigi at: (" + ToString(GetX())
+        + "/" + ToString(GetY()) + "/" + ToString(GetZ())
+        + ") " + " with TimeStamp: " + ToString(GetTimeStamp());
       return out;
     }
 

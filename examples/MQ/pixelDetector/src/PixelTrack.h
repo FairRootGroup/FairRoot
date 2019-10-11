@@ -18,7 +18,7 @@
 #include "FairTimeStamp.h"  // for FairTimeStamp
 #include <Rtypes.h>         // for PixelTrack::Class, ClassDef, PixelTrack::...
 
-#include <boost/serialization/access.hpp>
+namespace boost { namespace serialization { class access; } }
 #include <boost/serialization/base_object.hpp>
 
 class PixelTrack : public FairTimeStamp

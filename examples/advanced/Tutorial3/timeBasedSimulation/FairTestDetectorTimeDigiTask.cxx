@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairTestDetectorTimeDigiTask.h"
@@ -19,42 +19,33 @@
 #include <TRandom.h>      // for TRandom, gRandom
 #include <TString.h>      // for TString
 
-#include <stddef.h> // for NULL
-
-// -----   Default constructor   -------------------------------------------
 FairTestDetectorTimeDigiTask::FairTestDetectorTimeDigiTask()
     : FairTask()
     , fTimeResolution(100.)
-    , fPointArray(NULL)
-    , fDigiArray(NULL)
-    , fDataBuffer(NULL)
+    , fPointArray(nullptr)
+    , fDigiArray(nullptr)
+    , fDataBuffer(nullptr)
     , fTimeOrderedDigi(kFALSE)
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Destructor   ----------------------------------------------------
 FairTestDetectorTimeDigiTask::~FairTestDetectorTimeDigiTask()
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method Init (abstract in base class)  --------------------
 InitStatus FairTestDetectorTimeDigiTask::Init()
 {
     FairRootManager* ioman = FairRootManager::Instance();
     if (!ioman)
     {
-        LOG(error) << "FairTestDetectorTimeDigiTask::Init: " 
-		   << "RootManager not instantiated!";
+        LOG(error) << "FairTestDetectorTimeDigiTask::Init: RootManager not instantiated!";
         return kFATAL;
     }
 
     fPointArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorPoint"));
     if (!fPointArray)
     {
-        LOG(warn) << "FairTestDetectorTimeDigiTask::Init: "
-		     << "No Point array!";
+        LOG(warn) << "FairTestDetectorTimeDigiTask::Init: No Point array!";
         return kERROR;
     }
 
@@ -66,16 +57,12 @@ InitStatus FairTestDetectorTimeDigiTask::Init()
     return kSUCCESS;
 }
 
-// -----   Public method Exec   --------------------------------------------
 void FairTestDetectorTimeDigiTask::Exec(Option_t* /*opt*/)
 {
-
     // fDigiArray->Delete();
 
     // fill the map
-
-    LOG(info) << "EventTime: " 
-	      << FairRootManager::Instance()->GetEventTime();
+    LOG(info) << "EventTime: " << FairRootManager::Instance()->GetEventTime();
 
     for (int ipnt = 0; ipnt < fPointArray->GetEntries(); ipnt++)
     {
@@ -109,14 +96,12 @@ void FairTestDetectorTimeDigiTask::Exec(Option_t* /*opt*/)
         fDataBuffer->FillNewData(digi, timeOfFlight + eventTime, digi->GetTimeStamp() + 10);
     }
 }
-// -------------------------------------------------------------------------
 
 Int_t FairTestDetectorTimeDigiTask::CalcPad(Double_t posIn, Double_t posOut)
 {
     Int_t result = static_cast<Int_t>(posIn + posOut) / 2;
     return result;
 }
-// -------------------------------------------------------------------------
 
 Double_t FairTestDetectorTimeDigiTask::CalcTimeStamp(Double_t timeOfFlight)
 {

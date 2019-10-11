@@ -20,7 +20,7 @@
 #include <iosfwd>   
 #include <Rtypes.h> 
 
-#include <boost/serialization/access.hpp>
+namespace boost { namespace serialization { class access; } }
 #include <boost/serialization/base_object.hpp>
 
 namespace MyPodData

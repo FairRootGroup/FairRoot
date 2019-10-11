@@ -24,7 +24,6 @@
 
 class FairMapPar : public FairParGenericSet
 {
-
   public:
     /** Standard constructor  **/
     FairMapPar(const char* name, const char* title, const char* context);

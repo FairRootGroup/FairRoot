@@ -20,7 +20,6 @@ class TClonesArray;
 
 class FairTestDetector : public FairDetector
 {
-
   public:
     /**      Name :  Detector Name
      *       Active: kTRUE for active detectors (ProcessHits() will be called)

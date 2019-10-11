@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -16,7 +16,6 @@
 #include "FairRuntimeDb.h" // for FairRuntimeDb
 #include "FairLogger.h"    // for logging
 
-#include <iosfwd>    // for ostream
 #include <TString.h> // for operator<<, TString
 
 #include <iomanip>  // for operator<<, setw
@@ -24,7 +23,6 @@
 using std::setw;
 using std::setprecision;
 
-// -----   Default constructor   -------------------------------------------
 FairConstField::FairConstField()
     : fXmin(0)
     , fXmax(0)
@@ -38,9 +36,7 @@ FairConstField::FairConstField()
 {
     fType = 0;
 }
-// -------------------------------------------------------------------------
 
-// -----   Standard constructor   ------------------------------------------
 FairConstField::FairConstField(const char* name,
                                Double_t xMin,
                                Double_t xMax,
@@ -65,9 +61,7 @@ FairConstField::FairConstField(const char* name,
 {
     fType = 0;
 }
-// -------------------------------------------------------------------------
 
-// --------   Constructor from PndFieldPar   -------------------------------
 FairConstField::FairConstField(FairConstPar* fieldPar)
     : FairField()
     , fXmin(0)
@@ -82,7 +76,7 @@ FairConstField::FairConstField(FairConstPar* fieldPar)
 {
     if (!fieldPar)
     {
-      LOG(warn) << "empty parameter container!";
+        LOG(warn) << "empty parameter container!";
         fType = -1;
     }
     else
@@ -99,15 +93,11 @@ FairConstField::FairConstField(FairConstPar* fieldPar)
         fType = fieldPar->GetType();
     }
 }
-// -------------------------------------------------------------------------
 
-// -----   Destructor   ----------------------------------------------------
 FairConstField::~FairConstField()
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Set field region   ----------------------------------------------
 void FairConstField::SetFieldRegion(Double_t xMin, Double_t xMax, Double_t yMin, Double_t yMax, Double_t zMin, Double_t zMax)
 {
     fXmin = xMin;
@@ -117,18 +107,14 @@ void FairConstField::SetFieldRegion(Double_t xMin, Double_t xMax, Double_t yMin,
     fZmin = zMin;
     fZmax = zMax;
 }
-// -------------------------------------------------------------------------
 
-// -----   Set field values   ----------------------------------------------
 void FairConstField::SetField(Double_t bX, Double_t bY, Double_t bZ)
 {
     fBx = bX;
     fBy = bY;
     fBz = bZ;
 }
-// -------------------------------------------------------------------------
 
-// -----   Get x component of field   --------------------------------------
 Double_t FairConstField::GetBx(Double_t x, Double_t y, Double_t z)
 {
     if (x < fXmin || x > fXmax || y < fYmin || y > fYmax || z < fZmin || z > fZmax)
@@ -137,9 +123,7 @@ Double_t FairConstField::GetBx(Double_t x, Double_t y, Double_t z)
     }
     return fBx;
 }
-// -------------------------------------------------------------------------
 
-// -----   Get y component of field   --------------------------------------
 Double_t FairConstField::GetBy(Double_t x, Double_t y, Double_t z)
 {
     if (x < fXmin || x > fXmax || y < fYmin || y > fYmax || z < fZmin || z > fZmax)
@@ -148,9 +132,7 @@ Double_t FairConstField::GetBy(Double_t x, Double_t y, Double_t z)
     }
     return fBy;
 }
-// -------------------------------------------------------------------------
 
-// -----   Get z component of field   --------------------------------------
 Double_t FairConstField::GetBz(Double_t x, Double_t y, Double_t z)
 {
     if (x < fXmin || x > fXmax || y < fYmin || y > fYmax || z < fZmin || z > fZmax)
@@ -159,9 +141,7 @@ Double_t FairConstField::GetBz(Double_t x, Double_t y, Double_t z)
     }
     return fBz;
 }
-// -------------------------------------------------------------------------
 
-// -----   Screen output   -------------------------------------------------
 void FairConstField::Print(Option_t*) const
 {
     LOG(info) << "======================================================" ;
@@ -170,18 +150,13 @@ void FairConstField::Print(Option_t*) const
     LOG(info) << "----  Field type    : constant";
     LOG(info) << "----";
     LOG(info) << "----  Field regions : ";
-    LOG(info) << "----        x = " << setw(4) << fXmin << " to " << setw(4)
-              << fXmax << " cm";
-    LOG(info) << "----        y = " << setw(4) << fYmin << " to " << setw(4)
-              << fYmax << " cm";
-    LOG(info) << "----        z = " << setw(4) << fZmin << " to " << setw(4)
-              << fZmax << " cm";
-    LOG(info) << "----  B = ( " << setprecision(4) << fBx << ", " << fBy
-              << ", " << fBz << " ) kG";
+    LOG(info) << "----        x = " << setw(4) << fXmin << " to " << setw(4) << fXmax << " cm";
+    LOG(info) << "----        y = " << setw(4) << fYmin << " to " << setw(4) << fYmax << " cm";
+    LOG(info) << "----        z = " << setw(4) << fZmin << " to " << setw(4) << fZmax << " cm";
+    LOG(info) << "----  B = ( " << setprecision(4) << fBx << ", " << fBy << ", " << fBz << " ) kG";
     LOG(info) << "======================================================";
 }
-// -------------------------------------------------------------------------
-// ---------   Fill the parameters   --------------------------------------------
+
 void FairConstField::FillParContainer()
 {
     TString MapName = GetName();

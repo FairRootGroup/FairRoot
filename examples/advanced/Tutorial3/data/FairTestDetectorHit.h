@@ -12,8 +12,8 @@
 
 #include <Rtypes.h> // for FairTestDetectorHit::Class, etc
 
-#include <boost/serialization/access.hpp>
 #include <boost/serialization/base_object.hpp>
+namespace boost { namespace serialization { class access; } }
 
 class TVector3;
 

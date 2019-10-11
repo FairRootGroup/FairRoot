@@ -18,7 +18,7 @@
 #include <Rtypes.h>                     // for Double_t, Double32_t, Int_t, etc
 #include <TVector3.h>                   // for TVector3
 
-#include <boost/serialization/access.hpp>
+namespace boost { namespace serialization { class access; } }
 #include <boost/serialization/base_object.hpp>
 
 class FairMCPoint : public FairMultiLinkedData_Interface

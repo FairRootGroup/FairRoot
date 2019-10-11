@@ -13,7 +13,7 @@
 
 #include <TClonesArray.h>
 
-#include <boost/serialization/access.hpp>
+namespace boost { namespace serialization { class access; } }
 #include <boost/serialization/vector.hpp>
 #include <boost/archive/binary_iarchive.hpp> // input: a non-portable native binary archive
 #include <boost/archive/binary_oarchive.hpp> // output: a non-portable native binary archive

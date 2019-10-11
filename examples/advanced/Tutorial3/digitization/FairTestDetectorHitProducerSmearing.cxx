@@ -16,18 +16,14 @@
 #include <TRandom.h>      // for TRandom, gRandom
 #include <TVector3.h>     // for TVector3
 
-#include <stddef.h> // for NULL
-
-// ---- Default constructor -------------------------------------------
 FairTestDetectorHitProducerSmearing::FairTestDetectorHitProducerSmearing()
     : FairTask("FairTestDetectorHitProducerSmearing")
-    , fPointsArray(NULL)
+    , fPointsArray(nullptr)
     , fHitsArray(new TClonesArray("FairTestDetectorHit", 100))
 {
   LOG(debug) << "Default Constructor of FairTestDetectorHitProducerSmearing";
 }
 
-// ---- Destructor ----------------------------------------------------
 FairTestDetectorHitProducerSmearing::~FairTestDetectorHitProducerSmearing()
 {
   LOG(debug) << "Destructor of FairTestDetectorHitProducerSmearing";
@@ -35,7 +31,6 @@ FairTestDetectorHitProducerSmearing::~FairTestDetectorHitProducerSmearing()
     delete fHitsArray;
 }
 
-// ----  Initialisation  ----------------------------------------------
 void FairTestDetectorHitProducerSmearing::SetParContainers()
 {
   LOG(debug) << "SetParContainers of FairTestDetectorHitProducerSmearing"
@@ -50,7 +45,6 @@ void FairTestDetectorHitProducerSmearing::SetParContainers()
     */
 }
 
-// ---- Init ----------------------------------------------------------
 InitStatus FairTestDetectorHitProducerSmearing::Init()
 {
   LOG(debug) << "Initilization of FairTestDetectorHitProducerSmearing";
@@ -78,14 +72,12 @@ InitStatus FairTestDetectorHitProducerSmearing::Init()
     return kSUCCESS;
 }
 
-// ---- ReInit  -------------------------------------------------------
 InitStatus FairTestDetectorHitProducerSmearing::ReInit()
 {
   LOG(debug) << "Reinitilization of FairTestDetectorHitProducerSmearing";
     return kSUCCESS;
 }
 
-// ---- Exec ----------------------------------------------------------
 void FairTestDetectorHitProducerSmearing::Exec(Option_t* /*option*/)
 {
   LOG(debug) << "Exec of FairTestDetectorHitProducerSmearing";
@@ -93,8 +85,8 @@ void FairTestDetectorHitProducerSmearing::Exec(Option_t* /*option*/)
     fHitsArray->Delete();
 
     // fill the map
-    FairTestDetectorPoint* point = NULL;
-    //FairTestDetectorHit* hit = NULL;
+    FairTestDetectorPoint* point = nullptr;
+    // FairTestDetectorHit* hit = nullptr;
     for (int iPoint = 0; iPoint < fPointsArray->GetEntriesFast(); iPoint++)
     {
         point = static_cast<FairTestDetectorPoint*>(fPointsArray->At(iPoint));
@@ -112,12 +104,11 @@ void FairTestDetectorHitProducerSmearing::Exec(Option_t* /*option*/)
         dposition.SetXYZ(0.05, 0.05, 0.);
         position.SetXYZ(gRandom->Gaus(position.X(), 0.05), gRandom->Gaus(position.Y(), 0.05), position.Z());
 
-//        hit = new ((*fHitsArray)[iPoint]) FairTestDetectorHit(point->GetDetectorID(), iPoint, position, dposition);
+        // hit = new ((*fHitsArray)[iPoint]) FairTestDetectorHit(point->GetDetectorID(), iPoint, position, dposition);
         new ((*fHitsArray)[iPoint]) FairTestDetectorHit(point->GetDetectorID(), iPoint, position, dposition);
     }
 }
 
-// ---- Finish --------------------------------------------------------
 void FairTestDetectorHitProducerSmearing::Finish()
 {
   LOG(debug) << "Finish of FairTestDetectorHitProducerSmearing";

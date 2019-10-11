@@ -12,8 +12,6 @@
 
 class TClonesArray;
 
-class FairTestDetectorPoint;
-
 class FairTestDetectorRecoTask : public FairTask
 {
   public:

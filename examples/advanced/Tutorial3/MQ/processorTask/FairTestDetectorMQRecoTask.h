@@ -8,11 +8,6 @@
 #ifndef FAIRTESTDETECTORMQRECOTASK_H
 #define FAIRTESTDETECTORMQRECOTASK_H
 
-#include <iostream>
-#include <sstream>
-#include <array>
-
-#include <TMath.h>
 #include <TClonesArray.h>
 
 #include "FairRootManager.h"

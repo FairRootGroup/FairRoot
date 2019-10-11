@@ -7,7 +7,6 @@
  ********************************************************************************/
 #include "FairTestDetectorTimeRecoTask.h"
 
-#include "FairLink.h"               // for FairLink
 #include "FairRootManager.h"        // for FairRootManager
 #include "FairRunAna.h"             // for FairRunAna
 #include "FairTSBufferFunctional.h" // for StopTime
@@ -19,53 +18,42 @@
 #include <TMath.h>        // for Sqrt
 #include <TVector3.h>     // for TVector3
 
-#include <stddef.h> // for NULL
-
-// -----   Default constructor   -------------------------------------------
 FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask()
     : FairTask()
-    , fDigiArray(NULL)
-    , fHitArray(NULL)
-	, fTime (0.)
-    , fFunctor(NULL)
+    , fDigiArray(nullptr)
+    , fHitArray(nullptr)
+    , fTime (0.)
+    , fFunctor(nullptr)
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Standard constructor   ------------------------------------------
 FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask(Int_t verbose)
     : FairTask()
-    , fDigiArray(NULL)
-    , fHitArray(NULL)
-	, fTime(0.)
-    , fFunctor(NULL)
+    , fDigiArray(nullptr)
+    , fHitArray(nullptr)
+    , fTime(0.)
+    , fFunctor(nullptr)
 {
     fVerbose = verbose;
 }
-// -------------------------------------------------------------------------
 
-// -----   Destructor   ----------------------------------------------------
 FairTestDetectorTimeRecoTask::~FairTestDetectorTimeRecoTask()
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method Init (abstract in base class)  --------------------
 InitStatus FairTestDetectorTimeRecoTask::Init()
 {
     FairRootManager* ioman = FairRootManager::Instance();
     if (!ioman)
     {
-      LOG(error) <<"FairTestDetectorTimeRecoTask::Init: "
-		 << "RootManager not instantiated!";
+        LOG(error) <<"FairTestDetectorTimeRecoTask::Init: RootManager not instantiated!";
         return kFATAL;
     }
 
     fDigiArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorSortedDigi"));
     if (!fDigiArray)
     {
-      LOG(warn) << "FairTestDetectorTimeRecoTask::Init: "
-		   << "No Point array!";
+        LOG(warn) << "FairTestDetectorTimeRecoTask::Init: No Point array!";
         return kERROR;
     }
 
@@ -78,10 +66,8 @@ InitStatus FairTestDetectorTimeRecoTask::Init()
     return kSUCCESS;
 }
 
-// -----   Public method Exec   --------------------------------------------
 void FairTestDetectorTimeRecoTask::Exec(Option_t* /*opt*/)
 {
-
     fHitArray->Delete();
 
     fTime += 200;
@@ -91,17 +77,14 @@ void FairTestDetectorTimeRecoTask::Exec(Option_t* /*opt*/)
         //    LOG(info) << "EventTime: " << FairRootManager::Instance()->GetEntryNr() << " " << FairRootManager::Instance()->GetEventTime();
     }
 
-
     // fill the map
-
-    //LOG(info) << "NDigis: " << fDigiArray->GetEntries();
-
+    // LOG(info) << "NDigis: " << fDigiArray->GetEntries();
     for (int ipnt = 0; ipnt < fDigiArray->GetEntries(); ipnt++)
     {
         FairTestDetectorDigi* digi = static_cast<FairTestDetectorDigi*>(fDigiArray->At(ipnt));
         if (!digi)
         {
-	  LOG(warn)  << "No digi!";
+            LOG(warn)  << "No digi!";
             continue;
         }
 
@@ -120,6 +103,5 @@ void FairTestDetectorTimeRecoTask::Exec(Option_t* /*opt*/)
 
     fDigiArray->Delete();
 }
-// -------------------------------------------------------------------------
 
 ClassImp(FairTestDetectorTimeRecoTask)

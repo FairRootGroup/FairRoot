@@ -20,7 +20,7 @@
 
 #include <Rtypes.h> // for MyHit::Class, etc
 
-#include <boost/serialization/access.hpp>
+namespace boost { namespace serialization { class access; } }
 #include <boost/serialization/base_object.hpp>
 
 class TVector3;

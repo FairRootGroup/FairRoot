@@ -21,7 +21,6 @@
 
 #include <TClonesArray.h> // for TClonesArray
 
-
 class FairRingSorter;
 class FairTimeStamp;
 

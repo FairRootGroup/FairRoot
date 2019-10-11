@@ -15,7 +15,6 @@
 
 class FairTestDetectorPoint : public FairMCPoint
 {
-
   public:
     /** Default constructor **/
     FairTestDetectorPoint();

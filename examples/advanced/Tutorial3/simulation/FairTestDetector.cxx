@@ -8,10 +8,6 @@
 #include "FairTestDetector.h"
 
 #include "FairDetectorList.h"       // for DetectorId::kTutDet
-#include "FairGeoInterface.h"       // for FairGeoInterface
-#include "FairGeoLoader.h"          // for FairGeoLoader
-#include "FairGeoNode.h"            // for FairGeoNode
-#include "FairGeoVolume.h"          // for FairGeoVolume
 #include "FairRootManager.h"        // for FairRootManager
 #include "FairRun.h"                // for FairRun
 #include "FairRuntimeDb.h"          // for FairRuntimeDb
@@ -20,15 +16,11 @@
 #include "FairTestDetectorGeoPar.h" // for FairTestDetectorGeoPar
 #include "FairTestDetectorPoint.h"  // for FairTestDetectorPoint
 #include "FairVolume.h"             // for FairVolume
+#include "FairLink.h"               // for FairLink
 
 #include <TClonesArray.h>    // for TClonesArray
-#include <TList.h>           // for TListIter, TList (ptr only)
-#include <TObjArray.h>       // for TObjArray
-#include <TString.h>         // for TString
 #include <TVirtualMC.h>      // for TVirtualMC
 #include <TVirtualMCStack.h> // for TVirtualMCStack
-
-#include <stddef.h> // for NULL
 
 FairTestDetector::FairTestDetector()
     : FairDetector("FairTestDetector", kTRUE, kTutDet)
@@ -151,7 +143,7 @@ TClonesArray* FairTestDetector::GetCollection(Int_t iColl) const
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }
 

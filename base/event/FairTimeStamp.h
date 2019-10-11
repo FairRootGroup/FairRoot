@@ -15,7 +15,7 @@
 
 #include <iostream>                     // for ostream, cout
 
-#include <boost/serialization/access.hpp>
+namespace boost { namespace serialization { class access; } }
 #include <boost/serialization/base_object.hpp>
 
 class TObject;

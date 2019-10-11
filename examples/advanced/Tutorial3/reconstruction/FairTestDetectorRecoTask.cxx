@@ -11,57 +11,44 @@
 #include "FairRootManager.h"      // for FairRootManager
 #include "FairTestDetectorDigi.h" // for FairTestDetectorDigi
 #include "FairTestDetectorHit.h"  // for FairTestDetectorHit
-#include <iosfwd>                 // for ostream
+#include "FairLogger.h"
+
 #include <TClonesArray.h>         // for TClonesArray
 #include <TMath.h>                // for Sqrt
 #include <TVector3.h>             // for TVector3
-#include <stddef.h>               // for NULL
-#include <iostream>               // for operator<<, basic_ostream, etc
 
-#include "FairMQLogger.h"
-
-// -----   Default constructor   -------------------------------------------
 FairTestDetectorRecoTask::FairTestDetectorRecoTask()
     : FairTask()
-    , fDigiArray(NULL)
-    , fHitArray(NULL)
-
+    , fDigiArray(nullptr)
+    , fHitArray(nullptr)
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Standard constructor   ------------------------------------------
 FairTestDetectorRecoTask::FairTestDetectorRecoTask(Int_t verbose)
     : FairTask()
-    , fDigiArray(NULL)
-    , fHitArray(NULL)
+    , fDigiArray(nullptr)
+    , fHitArray(nullptr)
 {
     fVerbose = verbose;
 }
-// -------------------------------------------------------------------------
 
-// -----   Destructor   ----------------------------------------------------
 FairTestDetectorRecoTask::~FairTestDetectorRecoTask()
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method Init (abstract in base class)  --------------------
 InitStatus FairTestDetectorRecoTask::Init()
 {
     FairRootManager* ioman = FairRootManager::Instance();
     if (!ioman)
     {
-        std::cout << "-E- FairTestDetectorRecoTask::Init: " /// todo replace with logger!
-                  << "RootManager not instantiated!" << std::endl;
+        LOG(error) << "-E- FairTestDetectorRecoTask::Init: RootManager not instantiated!";
         return kFATAL;
     }
 
     fDigiArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorDigi"));
     if (!fDigiArray)
     {
-        std::cout << "-W- FairTestDetectorRecoTask::Init: "
-                  << "No Point array!" << std::endl;
+        LOG(warn) << "-W- FairTestDetectorRecoTask::Init: No Point array!";
         return kERROR;
     }
 
@@ -72,14 +59,11 @@ InitStatus FairTestDetectorRecoTask::Init()
     return kSUCCESS;
 }
 
-// -----   Public method Exec   --------------------------------------------
 void FairTestDetectorRecoTask::Exec(Option_t* /*opt*/)
 {
-
     fHitArray->Clear();
 
     // fill the map
-
     for (int ipnt = 0; ipnt < fDigiArray->GetEntriesFast(); ipnt++)
     {
         FairTestDetectorDigi* digi = static_cast<FairTestDetectorDigi*>(fDigiArray->At(ipnt));
@@ -103,6 +87,5 @@ void FairTestDetectorRecoTask::Exec(Option_t* /*opt*/)
         hit->SetTimeStampError(digi->GetTimeStampError());
     }
 }
-// -------------------------------------------------------------------------
 
 ClassImp(FairTestDetectorRecoTask)

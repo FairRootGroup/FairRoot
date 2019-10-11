@@ -139,24 +139,22 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::BaseMQ # Serialization policies
   FairRoot::FairTools # FairLogger
+  FairRoot::GeoBase # FairGeoSet
   FairRoot::MCStack
   FairRoot::ParBase # FairRuntimeDb, FairContFact, FairParamList
-  FairRoot::GeoBase # FairGeoInterface, FairGeoLoader, FairGeoNode, FairGeoVolume
+
   FairMQ::FairMQ
 
   Boost::serialization
-
   $<$<BOOL:${Protobuf_FOUND}>:protobuf::libprotobuf>
   $<$<BOOL:${Flatbuffers_FOUND}>:flatbuffers::flatbuffers>
   $<$<BOOL:${msgpack_FOUND}>:msgpackc>
 
-  # TODO: clean the following
-  Core
-  Physics
-  MathCore
-  VMC
-  RIO
-  Tree
+  Core # Rtypes
+  MathCore # TRandom
+  Physics # TVector3, TLorentzVector
+  RIO # TFile
+  Tree # TTree
 )
 
 fairroot_target_root_dictionary(${target}
@@ -183,5 +181,5 @@ target_compile_definitions(tut3-sink PRIVATE ${defs})
 set_target_properties(tut3-sink PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}") # TODO: delete me, use defaults
 
 install(TARGETS tut3-sampler tut3-processor tut3-sink
-  RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/parameters/bin
+  RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/advanced/Tutorial3/bin
 )
