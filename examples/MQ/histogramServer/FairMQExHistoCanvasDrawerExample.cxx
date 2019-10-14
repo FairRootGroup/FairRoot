@@ -11,8 +11,11 @@
 #include <THttpServer.h>
 #include <TObjArray.h>
 #include <TH1.h>
+#include <TString.h>      // for TString
 
 #include <cassert>
+
+class TObject;
 
 FairMQExHistoCanvasDrawerExample::FairMQExHistoCanvasDrawerExample()
     : fCanvas(nullptr)
@@ -23,7 +26,7 @@ FairMQExHistoCanvasDrawerExample::~FairMQExHistoCanvasDrawerExample() {}
 
 void FairMQExHistoCanvasDrawerExample::CreateCanvases(THttpServer& server)
 {
-    assert(! fCanvas);
+    assert(!fCanvas);
     fCanvas = std::unique_ptr<TCanvas, std::function<void(TCanvas*)>>
     (
         new TCanvas("c1", "", 10, 10, 1000, 1000),

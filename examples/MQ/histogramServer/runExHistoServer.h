@@ -27,4 +27,3 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)
 
     return histoServer;
 }
-

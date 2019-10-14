@@ -9,15 +9,15 @@
 #define FAIRMQEXHISTOSERVER
 
 #include "FairMQDevice.h"
+#include "FairMQExHistoCanvasDrawer.h"  // for FairMQExHistoCanvasDrawer
 
 #include <THttpServer.h>
 #include <TObjArray.h>
 
-#include <thread>
-#include <string>
 #include <memory>
-
-class FairMQExHistoCanvasDrawer;
+#include <string>
+#include <thread>
+#include <utility>
 
 class FairMQExHistoServer : public FairMQDevice
 {

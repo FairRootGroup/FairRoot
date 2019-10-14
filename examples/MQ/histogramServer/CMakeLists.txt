@@ -44,12 +44,12 @@ target_link_libraries(${target} PUBLIC
   FairRoot::FairTools # FairLogger
   FairRoot::ParBase
   FairMQ::FairMQ
-  # TODO: clean the following
+
   Core
   Gpad
-  RHTTP
   Hist
   MathCore
+  RHTTP
 )
 
 fairroot_target_root_dictionary(${target}

@@ -5,7 +5,6 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include <mutex>
 
 #include "FairMQExHistoServer.h"
 #include "FairMQExHistoCanvasDrawer.h"
@@ -13,12 +12,16 @@
 #include "RootSerializer.h"
 
 #include <TH1.h>
+#include <TObject.h>
+#include <TString.h>
+
+#include <chrono>
+#include <mutex>
 
 std::mutex mtx;
 
 FairMQExHistoServer::FairMQExHistoServer()
-    : FairMQDevice()
-    , fInputChannelName("histogram-in")
+    : fInputChannelName("histogram-in")
     , fArrayHisto()
     , fNMessages(0)
     , fServer("http:8080")
@@ -50,7 +53,7 @@ bool FairMQExHistoServer::ReceiveData(FairMQMessagePtr& msg, int index)
         TObjArray* arrayHisto = static_cast<TObjArray*>(tempObject);
         TH1* histogram_new;
         TH1* histogram_existing;
-        for (Int_t i = 0; i < arrayHisto->GetEntriesFast(); i++)
+        for (int i = 0; i < arrayHisto->GetEntriesFast(); i++)
         {
             TObject* obj = arrayHisto->At(i);
             TH1* histogram = static_cast<TH1*>(obj);
