@@ -21,7 +21,7 @@
 #include "FairTestDetectorDigi.h"
 
 #include "FairMQSamplerTask.h"
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 
 template<typename TOut, typename TPayloadOut>
 class FairTestDetectorDigiLoader : public FairMQSamplerTask

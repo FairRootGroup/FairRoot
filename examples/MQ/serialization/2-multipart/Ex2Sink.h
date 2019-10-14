@@ -6,7 +6,7 @@
 #include <memory>
 
 // FairRoot
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 #include "SerializerExample2.h"
 #include "BoostSerializer.h"
 

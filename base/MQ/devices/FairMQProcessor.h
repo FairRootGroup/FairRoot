@@ -15,9 +15,9 @@
 #ifndef FAIRMQPROCESSOR_H_
 #define FAIRMQPROCESSOR_H_
 
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 #include "FairMQProcessorTask.h"
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 
 template <typename Task>
 class FairMQProcessor : public FairMQDevice

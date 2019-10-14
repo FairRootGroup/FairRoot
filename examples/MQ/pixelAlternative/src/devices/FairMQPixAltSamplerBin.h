@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -15,16 +15,18 @@
 #ifndef FAIRMQPIXALTSAMPLERBIN_H_
 #define FAIRMQPIXALTSAMPLERBIN_H_
 
+#include "PixelPayload.h"
+
+#include <FairMQDevice.h>
+
 #include <string>
 #include <thread>
 #include <fstream>
+#include <vector>
+#include <cstdint>
 
-#include <TBranch.h>
-#include <TChain.h>
-
-#include "FairMQDevice.h"
-
-#include "PixelPayload.h"
+class TBranch;
+class TChain;
 
 class FairMQPixAltSamplerBin : public FairMQDevice
 {
@@ -32,14 +34,14 @@ class FairMQPixAltSamplerBin : public FairMQDevice
     FairMQPixAltSamplerBin();
     virtual ~FairMQPixAltSamplerBin();
 
-    void AddInputFileName  (std::string tempString) { fFileNames.push_back(tempString); }
+    void AddInputFileName(const std::string& tempString) { fFileNames.push_back(tempString); }
 
     void SetMaxIndex(int64_t tempInt) { fMaxIndex = tempInt; }
 
     void ListenForAcks();
 
-    void SetOutputChannelName(std::string tstr) { fOutputChannelName = tstr; }
-    void SetAckChannelName(std::string tstr) { fAckChannelName = tstr; }
+    void SetOutputChannelName(const std::string& tstr) { fOutputChannelName = tstr; }
+    void SetAckChannelName(const std::string& tstr) { fAckChannelName = tstr; }
 
     void SetAggregateFactor(int nal) { fAggregateLevel = nal; }
 
@@ -53,31 +55,31 @@ class FairMQPixAltSamplerBin : public FairMQDevice
     bool ReadRootFile();
 
   private:
-    std::string     fOutputChannelName;
-    std::string     fAckChannelName;
+    std::string fOutputChannelName;
+    std::string fAckChannelName;
 
-    std::vector<std::string>     fFileNames;
-    std::ifstream   fInputFile;
-    int             fCurrentFile;
+    std::vector<std::string> fFileNames;
+    std::ifstream fInputFile;
+    int fCurrentFile;
 
-    TChain                          *fInputChain;
-    PixelPayload::EventHeader       *fEventHeader;
-    TBranch                         *fDigiBranch;
-    std::vector<PixelPayload::Digi> *fDigiArray;
+    TChain* fInputChain;
+    PixelPayload::EventHeader* fEventHeader;
+    TBranch* fDigiBranch;
+    std::vector<PixelPayload::Digi>* fDigiArray;
 
-    int             fAggregateLevel;
+    int fAggregateLevel;
 
-    int64_t         fMaxIndex;
+    int64_t fMaxIndex;
 
-    int             fEventCounter;
-    int             fNofRecAcks;
+    int fEventCounter;
+    int fNofRecAcks;
 
-    bool            fReadingRootFiles;
+    bool fReadingRootFiles;
 
     FairMQPixAltSamplerBin(const FairMQPixAltSamplerBin&);
     FairMQPixAltSamplerBin& operator=(const FairMQPixAltSamplerBin&);
 
-    std::thread* fAckListener;
+    std::thread fAckListener;
 };
 
 #endif /* FAIRMQPIXALTSAMPLER_H_ */

@@ -10,7 +10,7 @@
 #define FAIRSOURCEMQINTERFACE_H
 
 #include "BaseSourcePolicy.h"
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 
 #include "FairRunAna.h"
 #include "FairFileSource.h"

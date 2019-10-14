@@ -15,8 +15,8 @@
 #include "FairGeoParSet.h"
 #include "FairParGenericSet.h"
 
-#include "FairMQDevice.h"
-#include "FairMQParts.h"
+#include <FairMQDevice.h>
+#include <FairMQParts.h>
 
 #include <TClonesArray.h>
 #include <TList.h>
@@ -52,11 +52,11 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
         delete fFairTask;
     }
 
-    void SetDataToKeep(std::string tStr) { fDataToKeep = tStr;}
+    void SetDataToKeep(const std::string& tStr) { fDataToKeep = tStr;}
 
-    void SetInputChannelName (std::string tstr) {fInputChannelName = tstr;}
-    void SetOutputChannelName(std::string tstr) {fOutputChannelName = tstr;}
-    void SetParamChannelName (std::string tstr) {fParamChannelName  = tstr;}
+    void SetInputChannelName(const std::string& tstr) {fInputChannelName = tstr;}
+    void SetOutputChannelName(const std::string& tstr) {fOutputChannelName = tstr;}
+    void SetParamChannelName(const std::string& tstr) {fParamChannelName  = tstr;}
 
   protected:
     bool ProcessData(FairMQParts& parts, int)
@@ -69,7 +69,7 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
         // expecting even number of parts in the form: header,data,header,data,header,data and so on...
         int nPPE = 2; // nof parts per event
 
-        if (parts.Size()%nPPE >= 1)
+        if (parts.Size() % nPPE >= 1)
             LOG(info) << "received " << parts.Size() << " parts, will ignore last part!!!";
 
         // creating output multipart message
@@ -134,7 +134,7 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
         fOutputChannelName = fConfig->GetValue<std::string>("out-channel");
         fParamChannelName  = fConfig->GetValue<std::string>("par-channel");
 
-            //fHitFinder->InitMQ(fRootParFileName,fAsciiParFileName);
+        // fHitFinder->InitMQ(fRootParFileName,fAsciiParFileName);
         fFairTask = new T();
         fFairTask->SetStreamProcessing(kTRUE);
         fGeoPar = new FairGeoParSet("FairGeoParSet");

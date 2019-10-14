@@ -1,7 +1,7 @@
 #ifndef EX1SINK_H
 #define EX1SINK_H
 
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 #include "RootSerializer.h"
 #include <TClonesArray.h>
 

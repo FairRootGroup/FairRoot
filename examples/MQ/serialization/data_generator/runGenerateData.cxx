@@ -27,7 +27,7 @@
 #include <TCanvas.h>
 
 // FairRoot
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 #include "RootOutFileManager.h"
 
 // FairRoot - Tutorial 7

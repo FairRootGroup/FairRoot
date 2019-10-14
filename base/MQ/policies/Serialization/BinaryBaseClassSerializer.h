@@ -8,7 +8,7 @@
 #ifndef BINARYBASECLASSSERIALIZER_H
 #define BINARYBASECLASSSERIALIZER_H
 
-#include "FairMQMessage.h"
+#include <FairMQMessage.h>
 
 template <typename TPayload>
 class BinaryBaseClassSerializer

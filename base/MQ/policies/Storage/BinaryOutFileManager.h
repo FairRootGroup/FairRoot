@@ -21,8 +21,8 @@ namespace boost { namespace serialization { class access; } }
 #include <boost/serialization/vector.hpp>
 
 // FairRoot
-#include "FairMQLogger.h"
-#include "FairMQMessage.h"
+#include <FairMQLogger.h>
+#include <FairMQMessage.h>
 #include "TriviallyCopyableDataSaver.h"
 #include "BoostDataSaver.h"
 #include "baseMQtools.h"

@@ -16,8 +16,8 @@
 #include "FairGeoParSet.h"
 #include "FairParGenericSet.h"
 
-#include "FairMQDevice.h"
-#include "FairMQParts.h"
+#include <FairMQDevice.h>
+#include <FairMQParts.h>
 
 #include <TClonesArray.h>
 #include <TList.h>

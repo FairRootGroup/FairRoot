@@ -15,7 +15,7 @@
 #include <thread> // this_thread::sleep_for
 #include <chrono>
 
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 #include "FairMQExParamsClient.h"
 #include "FairMQExParamsParOne.h"
 

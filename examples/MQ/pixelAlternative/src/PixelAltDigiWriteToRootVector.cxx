@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -16,51 +16,30 @@
 
 // Includes from base
 #include "FairRootManager.h"
-#include "FairRunAna.h"
-#include "FairRuntimeDb.h"
-#include "FairLink.h"
 #include "FairLogger.h"
 
 // Includes from ROOT
 #include <TClonesArray.h>
-#include <TObjArray.h>
-#include <TMath.h>
 #include <TFile.h>
-#include <TGeoManager.h>
+#include <TTree.h>
 
 #include "PixelPayload.h"
 
 #include "PixelDigi.h"
 
-#include <map>
-
-using std::pair;
-using std::map;
-
-
-
-// -----   Default constructor   ------------------------------------------
 PixelAltDigiWriteToRootVector::PixelAltDigiWriteToRootVector()
   : PixelAltDigiWriteToRootVector("Pixel DigiWriter", 0)
 {
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   ------------------------------------------
-PixelAltDigiWriteToRootVector::PixelAltDigiWriteToRootVector(Int_t iVerbose) 
+PixelAltDigiWriteToRootVector::PixelAltDigiWriteToRootVector(Int_t iVerbose)
   : PixelAltDigiWriteToRootVector("Pixel DigiWriter", iVerbose)
 {
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Constructor with name   -----------------------------------------
-PixelAltDigiWriteToRootVector::PixelAltDigiWriteToRootVector(const char* name, Int_t iVerbose) 
+PixelAltDigiWriteToRootVector::PixelAltDigiWriteToRootVector(const char* name, Int_t iVerbose)
   : FairTask(name, iVerbose)
-  , fDigis(NULL)
+  , fDigis(nullptr)
   , fOutputRootFile()
   , fOutputRootTree()
   , fPixelEventHeader(0)
@@ -74,19 +53,14 @@ PixelAltDigiWriteToRootVector::PixelAltDigiWriteToRootVector(const char* name, I
 {
   Reset();
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Destructor   ----------------------------------------------------
-PixelAltDigiWriteToRootVector::~PixelAltDigiWriteToRootVector() { 
+PixelAltDigiWriteToRootVector::~PixelAltDigiWriteToRootVector()
+{
   Reset();
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method Exec   --------------------------------------------
-void PixelAltDigiWriteToRootVector::Exec(Option_t* /*opt*/) {
-
+void PixelAltDigiWriteToRootVector::Exec(Option_t* /*opt*/)
+{
   Reset();
 
   Int_t nofDigis = fDigis->GetEntriesFast();
@@ -96,12 +70,12 @@ void PixelAltDigiWriteToRootVector::Exec(Option_t* /*opt*/) {
     fPixelEventHeader->fRunId     = fRunId;
     fPixelEventHeader->fMCEntryNo = fMCEntryNo;
     fPixelEventHeader->fPartNo    = ifile;
-    
+
     //    std::cout << ifile << " > " << std::flush;
     for ( Int_t iDigi = 0 ; iDigi < nofDigis ; iDigi++ ) {
       PixelDigi* currentDigi = static_cast<PixelDigi*>(fDigis->At(iDigi));
-      
-      int detId     = (int)currentDigi->GetDetectorID();    
+
+      int detId     = (int)currentDigi->GetDetectorID();
       Int_t fileToSave = 0;
       if ( fDivideLevel == 1 ) {
         fileToSave = detId/256 - 1;
@@ -110,8 +84,8 @@ void PixelAltDigiWriteToRootVector::Exec(Option_t* /*opt*/) {
         fileToSave = (detId/256 - 1)*4 + (detId%256 -1);
       }
       //      std::cout << fileToSave << " " << std::flush;
-      if ( fileToSave != ifile ) continue; 
-      
+      if ( fileToSave != ifile ) continue;
+
       int feId      = (int)currentDigi->GetFeID();
       int col       = (int)currentDigi->GetCol();
       int row       = (int)currentDigi->GetRow();
@@ -131,23 +105,19 @@ void PixelAltDigiWriteToRootVector::Exec(Option_t* /*opt*/) {
   }
   fMCEntryNo ++;
 }
-// -------------------------------------------------------------------------
 
-// -----   Private method SetParContainers   -------------------------------
 void PixelAltDigiWriteToRootVector::SetParContainers() {
 }
-// -------------------------------------------------------------------------
 
-// -----   Private method Init   -------------------------------------------
 InitStatus PixelAltDigiWriteToRootVector::Init() {
 
-  // Get input array 
+  // Get input array
   FairRootManager* ioman = FairRootManager::Instance();
 
   if ( ! ioman ) LOG(fatal) << "No FairRootManager";
   fDigis = static_cast<TClonesArray*>(ioman->GetObject("PixelDigis"));
 
-  if ( !fDigis ) 
+  if ( !fDigis )
     LOG(warn) << "PixelAltDigiWriteToRootVector::Init() No input PixelDigis array!";
 
   LOG(info) << "-I- " << fName.Data() << "::Init(). Initialization succesfull.";
@@ -183,15 +153,11 @@ InitStatus PixelAltDigiWriteToRootVector::Init() {
     fOutputRootTree[ifile]->Branch("DigiVector.",&fPixelDigiVector,32000,0);
     LOG(debug) << "branches created, fPixelDigiVector = >>" << &fPixelDigiVector << "<<";
   }
-  
+
   return kSUCCESS;
 
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Private method ReInit   -----------------------------------------
 InitStatus PixelAltDigiWriteToRootVector::ReInit() {
   FairRootManager* ioman = FairRootManager::Instance();
     InitStatus Status=kFATAL;
@@ -204,25 +170,15 @@ InitStatus PixelAltDigiWriteToRootVector::ReInit() {
     }
     return Status;
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Private method Reset   ------------------------------------------
 void PixelAltDigiWriteToRootVector::Reset() {
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method Finish   ------------------------------------------
 void PixelAltDigiWriteToRootVector::Finish() {
   for ( Int_t ifile = 0 ; ifile < fNofOutputFiles ; ifile++ ) {
     fOutputRootFile[ifile]->Write();
     fOutputRootFile[ifile]->Close();
   }
 }
-// -------------------------------------------------------------------------
-
-
 
 ClassImp(PixelAltDigiWriteToRootVector)
-

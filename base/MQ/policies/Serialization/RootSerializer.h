@@ -13,7 +13,7 @@
 #include <TClonesArray.h>
 #include <TMessage.h>
 
-#include "FairMQMessage.h"
+#include <FairMQMessage.h>
 
 // special class to expose protected TMessage constructor
 class FairTMessage : public TMessage

@@ -20,7 +20,7 @@
 #include <TFolder.h>
 #include <TTree.h>
 
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 
 class FairMQPixelFileSink : public FairMQDevice
 {

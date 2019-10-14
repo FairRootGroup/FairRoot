@@ -13,7 +13,7 @@
  */
 
 #include "FairMQPixelMerger.h"
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 
 #include "RootSerializer.h"
 

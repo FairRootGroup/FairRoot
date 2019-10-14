@@ -21,7 +21,7 @@
 #include <TTree.h>
 #include "FairEventHeader.h"
 
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 
 class FairMQPixelFileSinkBin : public FairMQDevice
 {

@@ -13,9 +13,9 @@
  */
 
 #include "FairMQPixelSamplerBin.h"
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 
-#include "FairMQMessage.h"
+#include <FairMQMessage.h>
 
 #include <TClonesArray.h>
 

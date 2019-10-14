@@ -41,7 +41,7 @@
 #include "FairParRootFileIo.h"
 #include "FairParAsciiFileIo.h"
 #include "FairGeoParSet.h"
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 
 using std::pair;
 using std::map;

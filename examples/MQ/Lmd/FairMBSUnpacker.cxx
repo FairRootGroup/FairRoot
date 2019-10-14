@@ -10,7 +10,7 @@
 #include <TClonesArray.h>
 
 // Fair headers
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 
 // Land headers
 #include "FairMBSRawItem.h"

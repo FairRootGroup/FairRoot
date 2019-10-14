@@ -7,7 +7,7 @@
 #include <chrono>
 
 // FairRoot
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 #include "SerializerExample2.h"
 #include "RootSerializer.h"
 

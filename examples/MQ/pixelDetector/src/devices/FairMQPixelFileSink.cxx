@@ -15,7 +15,7 @@
 #include "RootSerializer.h"
 
 #include "FairMQPixelFileSink.h"
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 
 using namespace std;
 

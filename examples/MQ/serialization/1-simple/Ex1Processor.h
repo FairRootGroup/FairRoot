@@ -1,7 +1,7 @@
 #ifndef EX1PROCESSOR_H
 #define EX1PROCESSOR_H
 
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 #include "RootSerializer.h"
 #include <TClonesArray.h>
 #include <memory>

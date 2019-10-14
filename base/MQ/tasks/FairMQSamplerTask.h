@@ -18,7 +18,7 @@
 #include <string>
 #include <memory>
 
-#include "FairMQMessage.h"
+#include <FairMQMessage.h>
 #include "FairMQTransportFactory.h"
 
 #include <TClonesArray.h>

@@ -22,7 +22,7 @@ namespace boost { namespace serialization { class access; } }
 #include <boost/serialization/vector.hpp>
 
 // FairRoot
-#include "FairMQMessage.h"
+#include <FairMQMessage.h>
 
 template <typename TPayload, typename TArchiveIn = boost::archive::binary_iarchive, typename TArchiveOut = TBoboost::archive::binary_oarchiveostOut>
 class BoostDataSaver

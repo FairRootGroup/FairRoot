@@ -13,7 +13,7 @@
  */
 
 #include "FairMQChunkMerger.h"
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 
 #include "RootSerializer.h"
 

@@ -29,9 +29,9 @@ extern "C"
 
 #include <boost/filesystem.hpp>
 
-#include "FairMQLogger.h"
-#include "FairMQDevice.h"
-#include "FairMQMessage.h"
+#include <FairMQLogger.h>
+#include <FairMQDevice.h>
+#include <FairMQMessage.h>
 
 class FairMQLmdSampler : public FairMQDevice
 {

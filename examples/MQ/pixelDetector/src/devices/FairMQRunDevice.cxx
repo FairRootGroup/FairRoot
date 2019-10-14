@@ -14,8 +14,8 @@
 
 #include "FairMQRunDevice.h"
   
-#include "FairMQLogger.h"
-#include "FairMQMessage.h"
+#include <FairMQLogger.h>
+#include <FairMQMessage.h>
 
 #include "FairOnlineSink.h"
 

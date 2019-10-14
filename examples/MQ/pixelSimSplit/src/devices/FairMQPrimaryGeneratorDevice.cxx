@@ -14,8 +14,8 @@
 
 #include "FairMQPrimaryGeneratorDevice.h"
 
-#include "FairMQLogger.h"
-#include "FairMQMessage.h"
+#include <FairMQLogger.h>
+#include <FairMQMessage.h>
 
 #include "FairMCSplitEventHeader.h"
 

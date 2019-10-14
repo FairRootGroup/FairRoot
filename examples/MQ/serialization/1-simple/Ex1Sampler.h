@@ -1,7 +1,7 @@
 #ifndef EX1SAMPLER_H
 #define EX1SAMPLER_H
 
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 #include "RootSerializer.h"
 #include <TClonesArray.h>
 

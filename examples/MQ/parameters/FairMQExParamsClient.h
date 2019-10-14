@@ -18,7 +18,7 @@
 #include <string>
 #include <cstdint> // uint64_t
 
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 
 class FairMQExParamsClient : public FairMQDevice
 {

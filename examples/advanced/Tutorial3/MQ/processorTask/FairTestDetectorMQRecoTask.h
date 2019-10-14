@@ -11,9 +11,9 @@
 #include <TClonesArray.h>
 
 #include "FairRootManager.h"
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 #include "FairMQProcessorTask.h"
-#include "FairMQMessage.h"
+#include <FairMQMessage.h>
 
 #include "FairTestDetectorRecoTask.h"
 #include "FairTestDetectorPayload.h"

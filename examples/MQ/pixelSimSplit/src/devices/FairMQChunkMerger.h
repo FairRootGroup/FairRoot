@@ -21,7 +21,7 @@
 #include <TTree.h>
 #include "FairMCSplitEventHeader.h"
 
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 
 typedef std::multimap<std::pair<int,int>,std::pair<int,TObject*>> MultiMapDef;
 

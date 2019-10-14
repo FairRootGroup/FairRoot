@@ -21,7 +21,7 @@
 
 #include <TString.h>
 
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 
 class FairMCEventHeader;
 class FairRunSim;

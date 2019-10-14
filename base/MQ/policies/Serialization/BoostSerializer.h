@@ -8,8 +8,8 @@
 #ifndef BOOSTSERIALIZER_H
 #define BOOSTSERIALIZER_H
 
-#include "FairMQLogger.h"
-#include "FairMQMessage.h"
+#include <FairMQLogger.h>
+#include <FairMQMessage.h>
 
 #include <TClonesArray.h>
 

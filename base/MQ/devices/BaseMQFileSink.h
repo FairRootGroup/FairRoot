@@ -16,8 +16,8 @@
 #ifndef BASEMQFILESINK_H
 #define BASEMQFILESINK_H
 
-#include "FairMQDevice.h"
-#include "FairMQLogger.h"
+#include <FairMQDevice.h>
+#include <FairMQLogger.h>
 
 template <typename InputPolicy, typename OutputPolicy>
 class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPolicy

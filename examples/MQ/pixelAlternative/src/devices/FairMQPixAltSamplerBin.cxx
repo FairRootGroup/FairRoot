@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -13,11 +13,15 @@
  */
 
 #include "FairMQPixAltSamplerBin.h"
-#include "FairMQLogger.h"
 
-#include "FairMQMessage.h"
+#include <TBranch.h>
+#include <TChain.h>
 
-#include "PixelPayload.h"
+#include <FairMQLogger.h>
+#include <FairMQMessage.h>
+
+#include <cstddef>
+#include <utility>
 
 using namespace std;
 
@@ -28,20 +32,20 @@ FairMQPixAltSamplerBin::FairMQPixAltSamplerBin()
   , fFileNames()
   , fInputFile()
   , fCurrentFile(0)
-  , fInputChain(NULL)
-  , fEventHeader(NULL)
-  , fDigiBranch(NULL)
-  , fDigiArray(NULL)
+  , fInputChain(nullptr)
+  , fEventHeader(nullptr)
+  , fDigiBranch(nullptr)
+  , fDigiArray(nullptr)
   , fAggregateLevel(1)
   , fMaxIndex(-1)
   , fEventCounter(0)
   , fNofRecAcks(0)
   , fReadingRootFiles(false)
-  , fAckListener(NULL)
+  , fAckListener()
 {
 }
 
-void FairMQPixAltSamplerBin::InitTask() 
+void FairMQPixAltSamplerBin::InitTask()
 {
   fFileNames         = fConfig->GetValue<std::vector<std::string>>("file-name");
   fMaxIndex          = fConfig->GetValue<int64_t>                 ("max-index"); //RK 2818.05.28 int64_t will print "Unknown value", but the value is still passed
@@ -52,21 +56,21 @@ void FairMQPixAltSamplerBin::InitTask()
 
 void FairMQPixAltSamplerBin::PreRun()
 {
-  if ( fAggregateLevel < 1 ) fAggregateLevel = 1;
+  if (fAggregateLevel < 1) fAggregateLevel = 1;
 
   LOG(info) << "FairMQPixAltSamplerBin::PreRun() started. fAggregateLevel = " << fAggregateLevel;
 
   fReadingRootFiles = false;
 
-  fAckListener = new std::thread(&FairMQPixAltSamplerBin::ListenForAcks, this);
+  fAckListener = std::thread(&FairMQPixAltSamplerBin::ListenForAcks, this);
 
-  if ( fFileNames.size() == 0 ) return;
+  if (fFileNames.size() == 0) return;
 
-  if ( fFileNames[0].find(".root") == std::string::npos ) return;
+  if (fFileNames[0].find(".root") == std::string::npos) return;
 
   fInputChain = new TChain("fairdata");
 
-  for ( int ifile = 0 ; ifile < (int)fFileNames.size() ; ifile++ ) {
+  for (int ifile = 0 ; ifile < (int)fFileNames.size() ; ifile++) {
     fInputChain->Add(fFileNames[ifile].c_str());
   }
 
@@ -80,26 +84,29 @@ void FairMQPixAltSamplerBin::PreRun()
 
 bool FairMQPixAltSamplerBin::ConditionalRun()
 {
-  if ( fReadingRootFiles ) return ReadRootFile();
-  else                     return ReadBinFile();
+  if (fReadingRootFiles) {
+    return ReadRootFile();
+  } else {
+    return ReadBinFile();
+  }
 }
 
 bool FairMQPixAltSamplerBin::ReadBinFile()
 {
   FairMQParts parts;
 
-  for ( int iaggr = 0 ; iaggr < fAggregateLevel ; iaggr++ ) {
+  for (int iaggr = 0 ; iaggr < fAggregateLevel ; iaggr++) {
 
-    if ( fEventCounter == fMaxIndex ) { // check if reached event limit
-      if ( parts.Size() > 0 ) {
+    if (fEventCounter == fMaxIndex) { // check if reached event limit
+      if (parts.Size() > 0) {
         Send(parts, fOutputChannelName);
       }
       return false;
     }
 
-    if ( !fInputFile.is_open() ) { // file not there
-      if ( fCurrentFile == (int)fFileNames.size() ) { // this is last file
-        if ( parts.Size() > 0 ) {
+    if (!fInputFile.is_open()) { // file not there
+      if (fCurrentFile == (int)fFileNames.size()) { // this is last file
+        if (parts.Size() > 0) {
           Send(parts, fOutputChannelName);
         }
         return false;
@@ -108,9 +115,9 @@ bool FairMQPixAltSamplerBin::ReadBinFile()
       fCurrentFile++;
     }
 
-    if ( !fInputFile.is_open() ) { // wrong file name
+    if (!fInputFile.is_open()) { // wrong file name
       LOG(error) << "FairMQPixAltSamplerBin::ConditionalRun fInputFile \"" << fFileNames[fCurrentFile] << "\" could not be open!";
-      if ( parts.Size() > 0 ) {
+      if (parts.Size() > 0) {
         Send(parts, fOutputChannelName);
       }
       return false;
@@ -121,11 +128,11 @@ bool FairMQPixAltSamplerBin::ReadBinFile()
     int head[4]; // runId, MCEntryNo, PartNo, NofDigis
     fInputFile.read((char*)head,sizeof(head));
 
-    if ( fInputFile.eof() ) {
+    if (fInputFile.eof()) {
       LOG(info) << "End of file reached!";
       fInputFile.close();
-      if ( fCurrentFile == (int)fFileNames.size() ) { // this is the last file
-        if ( parts.Size() > 0 ) {
+      if (fCurrentFile == (int)fFileNames.size()) { // this is the last file
+        if (parts.Size() > 0) {
           Send(parts, fOutputChannelName);
         }
         return false;
@@ -146,7 +153,7 @@ bool FairMQPixAltSamplerBin::ReadBinFile()
     FairMQMessagePtr msgHeader(NewMessage(header,
                                           sizeof(PixelPayload::EventHeader),
                                           [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
-                                          ));
+                                        ));
     parts.AddPart(std::move(msgHeader));
 
     size_t digisSize = head[3] * sizeof(PixelPayload::Digi);
@@ -155,7 +162,7 @@ bool FairMQPixAltSamplerBin::ReadBinFile()
 
     PixelPayload::Digi* digiPayload = static_cast<PixelPayload::Digi*>(msgDigis->GetData());
 
-    for ( int idigi = 0 ; idigi < head[3] ; idigi++ ) {
+    for (int idigi = 0 ; idigi < head[3] ; idigi++) {
       new (&digiPayload[idigi]) PixelPayload::Digi();
       digiPayload[idigi].fDetectorID = (int)dataCont[idigi*dataSize+0];
       digiPayload[idigi].fFeID       = (int)dataCont[idigi*dataSize+1];
@@ -170,7 +177,7 @@ bool FairMQPixAltSamplerBin::ReadBinFile()
 
   Send(parts, fOutputChannelName);
 
-  if ( fInputFile.eof() ) {
+  if (fInputFile.eof()) {
     LOG(info) << "End of file reached!";
     fInputFile.close();
   }
@@ -180,7 +187,7 @@ bool FairMQPixAltSamplerBin::ReadBinFile()
 
 bool FairMQPixAltSamplerBin::ReadRootFile()
 {
-  if ( fEventCounter == fMaxIndex ) return false;
+  if (fEventCounter == fMaxIndex) return false;
 
   // fill the input data containers
   fInputChain->GetEntry(fEventCounter);
@@ -196,7 +203,7 @@ bool FairMQPixAltSamplerBin::ReadRootFile()
   FairMQMessagePtr msgHeader(NewMessage(header,
                                         sizeof(PixelPayload::EventHeader),
                                         [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
-                                        ));
+                                      ));
   parts.AddPart(std::move(msgHeader));
 
   size_t digisSize = sizeof(PixelPayload::Digi)*fDigiArray->size();
@@ -204,7 +211,7 @@ bool FairMQPixAltSamplerBin::ReadRootFile()
   FairMQMessagePtr  msgDigis(NewMessage(digisSize));
   PixelPayload::Digi* digiPayload = static_cast<PixelPayload::Digi*>(msgDigis->GetData());
 
-  for ( int idigi = 0 ; idigi < (int)fDigiArray->size() ; idigi++ ) {
+  for (int idigi = 0 ; idigi < (int)fDigiArray->size() ; idigi++) {
     new (&digiPayload[idigi]) PixelPayload::Digi();
     digiPayload[idigi].fDetectorID = fDigiArray->at(idigi).fDetectorID;
     digiPayload[idigi].fFeID       = fDigiArray->at(idigi).fFeID;
@@ -218,46 +225,34 @@ bool FairMQPixAltSamplerBin::ReadRootFile()
 
   fEventCounter++;
 
-  if ( fInputFile.eof() ) {
-    LOG(info) << "End of file reached!"; 
+  if (fInputFile.eof()) {
+    LOG(info) << "End of file reached!";
     fInputFile.close();
   }
 
   return true;
 }
 
-void FairMQPixAltSamplerBin::PostRun() 
+void FairMQPixAltSamplerBin::PostRun()
 {
-    if ( fAckChannelName != "" ) {
-        try
-            {
-                fAckListener->join();
-            }
-        catch (std::runtime_error &ex)
-            {
-                LOG(error) << ex.what();
-                exit(EXIT_FAILURE);
-            }
-    }
+  if (fAckChannelName != "") {
+    fAckListener.join();
+  }
   LOG(info) << "PostRun() finished!";
 }
 
 void FairMQPixAltSamplerBin::ListenForAcks()
 {
-  if (fAckChannelName != "")
-      {
-          do
-              {
-                  FairMQMessagePtr ack(NewMessage());
-                  if (Receive(ack, fAckChannelName) >= 0)
-                      {
-                          fNofRecAcks++;
-                      }
-              }
-          while (fNofRecAcks < fMaxIndex/fAggregateLevel);
-          
-          LOG(info) << "Acknowledged " << fNofRecAcks << " messages (" << fAggregateLevel << " events each) out of " << fMaxIndex << " events.";
+  if (fAckChannelName != "") {
+    do {
+      FairMQMessagePtr ack(NewMessage());
+      if (Receive(ack, fAckChannelName) >= 0) {
+        fNofRecAcks++;
       }
+    } while (fNofRecAcks < fMaxIndex/fAggregateLevel);
+
+    LOG(info) << "Acknowledged " << fNofRecAcks << " messages (" << fAggregateLevel << " events each) out of " << fMaxIndex << " events.";
+  }
 }
 
 FairMQPixAltSamplerBin::~FairMQPixAltSamplerBin()

@@ -17,7 +17,7 @@
 
 #include "FairTask.h"
 
-#include "FairMQMessage.h"
+#include <FairMQMessage.h>
 
 class FairMQProcessorTask : public FairTask
 {

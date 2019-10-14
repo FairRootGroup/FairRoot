@@ -8,7 +8,7 @@
 #ifndef TRIVIALLYCOPYABLEDATASAVER_H
 #define	TRIVIALLYCOPYABLEDATASAVER_H
 
-#include "FairMQMessage.h"
+#include <FairMQMessage.h>
 
 template <typename TPayload>
 class TriviallyCopyableDataSaver

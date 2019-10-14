@@ -22,8 +22,8 @@
 #include <TClonesArray.h>
 
 // FairRoot
-#include "FairMQLogger.h"
-#include "FairMQMessage.h"
+#include <FairMQLogger.h>
+#include <FairMQMessage.h>
 
 template <typename DataType>
 class BaseSimpleTreeReader

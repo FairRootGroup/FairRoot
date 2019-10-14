@@ -8,7 +8,7 @@
 #ifndef FAIRMQEXHISTOSERVER
 #define FAIRMQEXHISTOSERVER
 
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 #include "FairMQExHistoCanvasDrawer.h"  // for FairMQExHistoCanvasDrawer
 
 #include <THttpServer.h>

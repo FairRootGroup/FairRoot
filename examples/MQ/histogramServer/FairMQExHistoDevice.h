@@ -8,7 +8,7 @@
 #ifndef FAIRMQEXHISTODEVICE
 #define FAIRMQEXHISTODEVICE
 
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 
 #include <TH1.h>           // for TH1F
 #include <TH2.h>           // for TH2F

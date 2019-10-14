@@ -8,7 +8,7 @@
 #include <TClonesArray.h>
 #include "MyHit.h"
 
-#include "FairMQMessage.h"
+#include <FairMQMessage.h>
 
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>

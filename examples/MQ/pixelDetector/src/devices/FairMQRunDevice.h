@@ -19,7 +19,7 @@
 #include <string>
 #include <TString.h>
 
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 
 class TObject;
 class TObjArray;

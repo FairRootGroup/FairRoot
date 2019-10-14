@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -16,15 +16,16 @@
 
 // Includes from base
 #include "FairRootManager.h"
-#include "FairRunAna.h"
+#include "FairRun.h"
 #include "FairRuntimeDb.h"
-#include "FairLink.h"
 #include "FairLogger.h"
 
 // Includes from ROOT
 #include <TClonesArray.h>
-#include <TObjArray.h>
 #include <TMath.h>
+#include <TList.h>
+#include <TString.h>
+#include <TVector3.h>
 #include <TGeoManager.h>
 #include <TGeoNode.h>
 #include <TGeoVolume.h>
@@ -34,47 +35,26 @@
 #include "PixelHit.h"
 #include "PixelDigiPar.h"
 
-#include <map>
-
- // 
-#include "FairParRootFileIo.h"
-#include "FairParAsciiFileIo.h"
-#include "FairGeoParSet.h"
-
-using std::pair;
-using std::map;
-
-
-
-// -----   Default constructor   ------------------------------------------
 PixelAltFindHits::PixelAltFindHits()
   : PixelAltFindHits("Pixel Hit Finder", 0)
 {
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   ------------------------------------------
-PixelAltFindHits::PixelAltFindHits(Int_t iVerbose) 
+PixelAltFindHits::PixelAltFindHits(Int_t iVerbose)
   : PixelAltFindHits("Pixel Hit Finder", iVerbose)
 {
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Constructor with name   -----------------------------------------
-PixelAltFindHits::PixelAltFindHits(const char* name, Int_t iVerbose) 
+PixelAltFindHits::PixelAltFindHits(const char* name, Int_t iVerbose)
   : FairTask(name, iVerbose)
-  , fDigiPar(NULL)
-  , fGeoParSet(NULL)
-  , fDigis(NULL)
-  , fHits(NULL)
+  , fDigiPar(nullptr)
+  , fGeoParSet(nullptr)
+  , fDigis(nullptr)
+  , fHits(nullptr)
   , fNDigis(0)
   , fNHits(0)
   , fTNofEvents(0)
-  , fTNofDigis(0) 
+  , fTNofDigis(0)
   , fTNofHits(0)
   , fFeCols(0)
   , fFeRows(0)
@@ -85,23 +65,19 @@ PixelAltFindHits::PixelAltFindHits(const char* name, Int_t iVerbose)
   LOG(info) << "Created PixelAltFindHits.";
   Reset();
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Destructor   ----------------------------------------------------
-PixelAltFindHits::~PixelAltFindHits() { 
+PixelAltFindHits::~PixelAltFindHits()
+{
   Reset();
   delete fDigiPar;
-  if ( fHits ) {
+  if (fHits) {
     fHits->Delete();
     delete fHits;
   }
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method Exec   --------------------------------------------
-void PixelAltFindHits::Exec(Option_t* /*opt*/) {
+void PixelAltFindHits::Exec(Option_t* /*opt*/)
+{
   Reset();
 
   LOG(debug) << "PixelAltFindHits::Exec() EVENT " << fTNofEvents;
@@ -109,98 +85,92 @@ void PixelAltFindHits::Exec(Option_t* /*opt*/) {
   fTNofEvents++;
 
   fNDigis = fDigis->GetEntriesFast();
-  fTNofDigis+= fNDigis;
+  fTNofDigis += fNDigis;
 
-  for ( Int_t iDigi = 0 ; iDigi < fNDigis ; iDigi++ ) {
+  for (Int_t iDigi = 0 ; iDigi < fNDigis ; iDigi++) {
     PixelDigi* currentDigi = static_cast<PixelDigi*>(fDigis->At(iDigi));
 
-    Int_t detId     = currentDigi->GetDetectorID();
-    
+    Int_t detId = currentDigi->GetDetectorID();
+
     Double_t posX, posY, posZ;
     Double_t errX, errY, errZ;
-    Int_t hitIndex = FindHit(detId,currentDigi->GetFeID(),currentDigi->GetCol(),currentDigi->GetRow(),currentDigi->GetIndex(),
-			     posX,posY,posZ,errX,errY,errZ);
+    Int_t hitIndex = FindHit(detId, currentDigi->GetFeID(), currentDigi->GetCol(), currentDigi->GetRow(), currentDigi->GetIndex(),
+                             posX, posY, posZ, errX, errY, errZ);
 
-    TVector3 pos   (posX,posY,posZ);
-    TVector3 posErr(errX,errY,errZ);
+    TVector3 pos(posX, posY, posZ);
+    TVector3 posErr(errX, errY, errZ);
 
-    if ( hitIndex == -666 ) continue; // hit not found
+    if (hitIndex == -666) continue; // hit not found
 
-    new ((*fHits)[fNHits]) PixelHit(detId,hitIndex,pos,posErr);
-    
+    new ((*fHits)[fNHits]) PixelHit(detId, hitIndex, pos, posErr);
+
     fNHits++;
   }
-  
+
   fTNofHits += fNHits;
 }
-// -------------------------------------------------------------------------
 
-// -----   Private method FindHit   ----------------------------------------
 // should return -666 if hit not found
 Int_t PixelAltFindHits::FindHit(Int_t detId, Int_t feId, Int_t col, Int_t row, Int_t index,
-			     Double_t& posX, Double_t& posY, Double_t& posZ, 
-			     Double_t& errX, Double_t& errY, Double_t& errZ) {
+                                Double_t& posX, Double_t& posY, Double_t& posZ,
+                                Double_t& errX, Double_t& errY, Double_t& errZ)
+{
   TString nodeName = Form("/cave/Pixel%d_%d",detId/256,detId%256);
-  
+
   gGeoManager->cd(nodeName.Data());
-  TGeoNode*   curNode   = gGeoManager->GetCurrentNode();
+  TGeoNode* curNode = gGeoManager->GetCurrentNode();
   TGeoVolume* actVolume = gGeoManager->GetCurrentVolume();
   TGeoBBox* actBox = static_cast<TGeoBBox*>(actVolume->GetShape());
 
   Double_t locPosCalc[3];
-  locPosCalc[0] = ( ((feId-1)/fMaxFEperCol)*fFeCols + col + 0.5 )*fPitchX;
-  locPosCalc[1] = ( ((feId-1)%fMaxFEperCol)*fFeRows + row + 0.5 )*fPitchY;
+  locPosCalc[0] = (((feId-1) / fMaxFEperCol) * fFeCols + col + 0.5)*fPitchX;
+  locPosCalc[1] = (((feId-1) % fMaxFEperCol) * fFeRows + row + 0.5)*fPitchY;
   locPosCalc[2] = 0.;
-  
+
   locPosCalc[0] -= actBox->GetDX();
   locPosCalc[1] -= actBox->GetDY();
-  
+
   Double_t globPos[3];
-  
-  curNode->LocalToMaster(locPosCalc,globPos);
-  
+
+  curNode->LocalToMaster(locPosCalc, globPos);
+
   LOG(debug) << "HIT   ON " << detId << " POSITION:  " << locPosCalc[0] << " / " << locPosCalc[1];
   LOG(debug) << "GLOB HIT " << detId << " POSITION:  " << globPos[0] << " / " << globPos[1] << " / " << globPos[2];
 
   posX = globPos[0];
   posY = globPos[1];
   posZ = globPos[2];
-  errX = fPitchX/TMath::Sqrt(12.);
-  errY = fPitchY/TMath::Sqrt(12.);
+  errX = fPitchX / TMath::Sqrt(12.);
+  errY = fPitchY / TMath::Sqrt(12.);
   errZ = actBox->GetDZ();
 
-// should return -666 if hit not found
+  // should return -666 if hit not found
   return index;
 }
-// -------------------------------------------------------------------------
 
-// -----   Private method SetParContainers   -------------------------------
-void PixelAltFindHits::SetParContainers() {
-  
+void PixelAltFindHits::SetParContainers()
+{
   // Get run and runtime database
   FairRun* run = FairRun::Instance();
-  if ( ! run ) LOG(fatal) << "No analysis run";
+  if (!run) LOG(fatal) << "No analysis run";
 
   FairRuntimeDb* db = run->GetRuntimeDb();
-  if ( ! db ) LOG(fatal) << "No runtime database";
+  if (!db) LOG(fatal) << "No runtime database";
 
   // Get GEM digitisation parameter container
   fDigiPar = static_cast<PixelDigiPar*>(db->getContainer("PixelDigiParameters"));
-
 }
-// -------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------
-void PixelAltFindHits::GetParList(TList* tempList) {
+void PixelAltFindHits::GetParList(TList* tempList)
+{
   fDigiPar = new PixelDigiPar("PixelDigiParameters");
   tempList->Add(fDigiPar);
-  
+
   return;
 }
-// -------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------
-void   PixelAltFindHits::InitMQ(TList* tempList) {
+void   PixelAltFindHits::InitMQ(TList* tempList)
+{
   LOG(info) << "********************************************** PixelAltFindHits::InitMQ()";
   fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
 
@@ -220,10 +190,9 @@ void   PixelAltFindHits::InitMQ(TList* tempList) {
 
   return;
 }
-// -------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------
-void   PixelAltFindHits::ExecMQ(TList* inputList,TList* outputList) {
+void   PixelAltFindHits::ExecMQ(TList* inputList,TList* outputList)
+{
   //  LOG(info) << "********************************************** PixelAltFindHits::ExecMQ(" << inputList->GetName() << "," << outputList->GetName() << "), Event " << fTNofEvents;
   //  LOG(info) << "********************************************** PixelAltFindHits::ExecMQ(), Event " << fTNofEvents;
   //  LOG(info) << "h" << FairLogger::flush;
@@ -232,42 +201,39 @@ void   PixelAltFindHits::ExecMQ(TList* inputList,TList* outputList) {
   Exec("");
   return;
 }
-// -------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------
-void PixelAltFindHits::ExecMQ(PixelPayload::Digi *digiPalVector,
-                              int                 nofDigis,
-                              PixelPayload::Hit  *hitPalVector,
-                              int                &nofHits) {
-  for ( int idigi = 0 ; idigi < nofDigis ; idigi++ ) {
+void PixelAltFindHits::ExecMQ(PixelPayload::Digi* digiPalVector,
+                              int nofDigis,
+                              PixelPayload::Hit* hitPalVector,
+                              int& nofHits)
+{
+  for (int idigi = 0 ; idigi < nofDigis ; idigi++) {
     FindHit(digiPalVector[idigi].fDetectorID,
-	    digiPalVector[idigi].fFeID,
-	    digiPalVector[idigi].fCol,
-	    digiPalVector[idigi].fRow,
-	    idigi,
-	    hitPalVector[idigi].posX,
-	    hitPalVector[idigi].posY,
-	    hitPalVector[idigi].posZ,
-	    hitPalVector[idigi].dposX,
-	    hitPalVector[idigi].dposY,
-	    hitPalVector[idigi].dposZ);
+            digiPalVector[idigi].fFeID,
+            digiPalVector[idigi].fCol,
+            digiPalVector[idigi].fRow,
+            idigi,
+            hitPalVector[idigi].posX,
+            hitPalVector[idigi].posY,
+            hitPalVector[idigi].posZ,
+            hitPalVector[idigi].dposX,
+            hitPalVector[idigi].dposY,
+            hitPalVector[idigi].dposZ);
     hitPalVector[idigi].fDetectorID = digiPalVector[idigi].fDetectorID;
     nofHits++;
   }
   return;
 }
-// -------------------------------------------------------------------------
 
-// -----   Private method Init   -------------------------------------------
-InitStatus PixelAltFindHits::Init() {
-
-  // Get input array 
+InitStatus PixelAltFindHits::Init()
+{
+  // Get input array
   FairRootManager* ioman = FairRootManager::Instance();
 
-  if ( ! ioman ) LOG(fatal) << "No FairRootManager";
+  if (!ioman) LOG(fatal) << "No FairRootManager";
   fDigis = static_cast<TClonesArray*>(ioman->GetObject("PixelDigis"));
 
-  if ( !fDigis ) 
+  if (!fDigis)
     LOG(warn) << "PixelAltFindHits::Init() No input PixelDigis array!";
 
   // Register output array PixelHit
@@ -283,43 +249,29 @@ InitStatus PixelAltFindHits::Init() {
   fPitchY = fDigiPar->GetYPitch();
 
   LOG(info) << "PixelAltFindHits::SetParContainers() Pixel detector with pitch size " << fPitchX << "cm x" << fPitchY << "cm";
-  
 
   return kSUCCESS;
-
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Private method ReInit   -----------------------------------------
-InitStatus PixelAltFindHits::ReInit() {
-
+InitStatus PixelAltFindHits::ReInit()
+{
   return kSUCCESS;
-
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Private method Reset   ------------------------------------------
 void PixelAltFindHits::Reset() {
   fNDigis = fNHits = 0;
-  if ( fHits ) fHits->Clear();
+  if (fHits) fHits->Clear();
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method Finish   ------------------------------------------
-void PixelAltFindHits::Finish() {
-  if ( fHits ) fHits->Delete();
+void PixelAltFindHits::Finish()
+{
+  if (fHits) fHits->Delete();
 
   LOG(info) << "-------------------- " << fName.Data() << " : Summary ------------------------";
   LOG(info) << " Events:        " << fTNofEvents;
-  LOG(info) << " Digis:         " << fTNofDigis  << "    ( " << static_cast<Double_t>(fTNofDigis) /(static_cast<Double_t>(fTNofEvents)) << " per event )";
-  LOG(info) << " Hits:          " << fTNofHits   << "    ( " << static_cast<Double_t>(fTNofHits  )/(static_cast<Double_t>(fTNofEvents)) << " per event )";
-  LOG(info) << "---------------------------------------------------------------------"; 
+  LOG(info) << " Digis:         " << fTNofDigis  << "    (" << static_cast<Double_t>(fTNofDigis) /(static_cast<Double_t>(fTNofEvents)) << " per event)";
+  LOG(info) << " Hits:          " << fTNofHits   << "    (" << static_cast<Double_t>(fTNofHits )/(static_cast<Double_t>(fTNofEvents)) << " per event)";
+  LOG(info) << "---------------------------------------------------------------------";
 }
-// -------------------------------------------------------------------------
 
 ClassImp(PixelAltFindHits)
-

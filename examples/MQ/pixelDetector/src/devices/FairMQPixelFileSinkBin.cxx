@@ -13,7 +13,7 @@
  */
 
 #include "FairMQPixelFileSinkBin.h"
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 
 #include <TVector3.h>
 

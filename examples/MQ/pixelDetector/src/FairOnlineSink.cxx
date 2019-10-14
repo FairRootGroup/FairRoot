@@ -14,8 +14,8 @@
 
 #include "FairOnlineSink.h"
   
-#include "FairMQLogger.h"
-#include "FairMQMessage.h"
+#include <FairMQLogger.h>
+#include <FairMQMessage.h>
 
 #include "FairMQRunDevice.h"
 #include "FairRootManager.h"
@@ -26,7 +26,7 @@
 #include "FairParRootFileIo.h"
 #include "FairParSet.h"
 
-#include "FairMQLogger.h"
+#include <FairMQLogger.h>
 
 using namespace std;
 

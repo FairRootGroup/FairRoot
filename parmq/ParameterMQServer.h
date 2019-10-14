@@ -17,7 +17,7 @@
 
 #include <string>
 
-#include "FairMQDevice.h"
+#include <FairMQDevice.h>
 
 class FairRuntimeDb;
 class FairMQMessage;

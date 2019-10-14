@@ -15,8 +15,8 @@
 #ifndef FAIRTESTDETECTORFILESINK_H_
 #define FAIRTESTDETECTORFILESINK_H_
 
-#include "FairMQDevice.h"
-#include "FairMQLogger.h"
+#include <FairMQDevice.h>
+#include <FairMQLogger.h>
 
 #include <Rtypes.h>
 #include <TFile.h>

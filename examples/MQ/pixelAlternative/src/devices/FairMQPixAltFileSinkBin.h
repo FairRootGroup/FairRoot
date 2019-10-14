@@ -15,9 +15,10 @@
 #ifndef FAIRMQPIXALTFILESINKBIN_H_
 #define FAIRMQPIXALTFILESINKBIN_H_
 
-#include <fstream>
+#include <FairMQDevice.h>
 
-#include "FairMQDevice.h"
+#include <fstream>
+#include <string>
 
 class FairMQPixAltFileSinkBin : public FairMQDevice
 {
@@ -25,23 +26,23 @@ class FairMQPixAltFileSinkBin : public FairMQDevice
     FairMQPixAltFileSinkBin();
     virtual ~FairMQPixAltFileSinkBin();
 
-    void SetOutputFileName(std::string tempString) { fFileName = tempString; }
-    std::string GetOutputFileName () { return fFileName;}
+    void SetOutputFileName(const std::string& tempString) { fFileName = tempString; }
+    std::string GetOutputFileName() { return fFileName;}
 
-    void SetInputChannelName (std::string tstr) {fInputChannelName = tstr;}
-    void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
+    void SetInputChannelName(const std::string& tstr) { fInputChannelName = tstr; }
+    void SetAckChannelName(const std::string& tstr) { fAckChannelName = tstr; }
 
   protected:
     bool StoreData(FairMQParts&, int);
     virtual void Init();
 
- private:
-    std::string     fInputChannelName;
-    std::string     fAckChannelName;
+  private:
+    std::string fInputChannelName;
+    std::string fAckChannelName;
 
     std::string fFileName;
 
-    std::ofstream   fOutFile;
+    std::ofstream fOutFile;
 
     FairMQPixAltFileSinkBin(const FairMQPixAltFileSinkBin&);
     FairMQPixAltFileSinkBin& operator=(const FairMQPixAltFileSinkBin&);
