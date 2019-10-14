@@ -11,6 +11,8 @@
 
 #include "FairUnpack.h"
 
+#include <Rtypes.h>
+
 class TClonesArray;
 
 /**
@@ -39,19 +41,13 @@ class FairMBSUnpacker : public FairUnpack
     virtual void Reset();
 
     /** Method for controling the functionality. */
-    inline Int_t GetNHitsTotal()
-    {
-        return fNHitsTotal;
-    }
+    Int_t GetNHitsTotal() { return fNHitsTotal; }
 
-    TClonesArray* GetOutputData()
-    {
-        return fRawData;
-    }
+    TClonesArray* GetOutputData() { return fRawData; }
 
   protected:
     /** Register the output structures. */
-    virtual void Register(){}
+    virtual void Register() {}
 
   private:
     TClonesArray* fRawData; /**< Array of output raw items. */

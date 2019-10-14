@@ -38,10 +38,9 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::BaseMQ # Serialization policies
   FairRoot::FairTools # FairLogger
-  FairRoot::MbsAPI
   FairRoot::MbsTutorial
   FairMQ::FairMQ
-  # TODO: clean the following
+
   Core
 )
 
@@ -54,10 +53,10 @@ install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(ex-lmd-sampler runLmdSampler.cxx)
-target_link_libraries(ex-lmd-sampler PRIVATE FairRoot::ExLmd FairRoot::BaseMQ Core FairRoot::MbsTutorial FairMQ::FairMQ)
+target_link_libraries(ex-lmd-sampler PRIVATE FairRoot::ExLmd FairRoot::BaseMQ FairMQ::FairMQ)
 
 add_executable(ex-lmd-mbs-unpacker runMBSMQUnpacker.cxx)
-target_link_libraries(ex-lmd-mbs-unpacker PRIVATE FairRoot::ExLmd FairRoot::BaseMQ Core FairRoot::MbsTutorial FairMQ::FairMQ)
+target_link_libraries(ex-lmd-mbs-unpacker PRIVATE FairRoot::ExLmd FairRoot::BaseMQ FairMQ::FairMQ)
 
 add_executable(ex-lmd-mbs-sink runMBSSink.cxx)
 target_link_libraries(ex-lmd-mbs-sink PRIVATE FairRoot::ExLmd FairRoot::BaseMQ Core FairRoot::MbsTutorial FairMQ::FairMQ)
