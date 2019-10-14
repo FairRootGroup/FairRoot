@@ -46,7 +46,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::FairTools # FairLogger
   FairRoot::ParBase
   FairMQ::FairMQ
-  # TODO: clean the following
+
   Core
 )
 
@@ -59,7 +59,7 @@ install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(ex-params-client runExParamsClient.cxx)
-target_link_libraries(ex-params-client PRIVATE FairRoot::ParMQ FairRoot::ExParameters FairMQ::FairMQ)
+target_link_libraries(ex-params-client PRIVATE FairRoot::ExParameters FairMQ::FairMQ)
 
 install(TARGETS ex-params-client
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/parameters/bin

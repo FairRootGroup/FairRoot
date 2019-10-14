@@ -11,6 +11,7 @@
 #include "FairContFact.h"
 
 class FairContainer;
+class FairParSet;
 
 class FairMQExParamsContFact : public FairContFact
 {

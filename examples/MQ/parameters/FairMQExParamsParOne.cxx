@@ -8,7 +8,6 @@
 #include "FairMQExParamsParOne.h"
 
 #include "FairParamList.h"
-#include "FairDetParIo.h"
 
 #include "FairLogger.h"
 #include <TString.h>
@@ -48,7 +47,6 @@ void FairMQExParamsParOne::putParams(FairParamList* list)
 
     list->add("Example7ParameterValue", fParameterValue);
 }
-
 
 Bool_t FairMQExParamsParOne::getParams(FairParamList* list)
 {

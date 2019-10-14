@@ -16,6 +16,7 @@
 #define FAIRMQEXPARAMSCLIENT_H
 
 #include <string>
+#include <cstdint> // uint64_t
 
 #include "FairMQDevice.h"
 

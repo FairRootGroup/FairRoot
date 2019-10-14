@@ -5,12 +5,13 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include <iostream>
 
 #include "FairRuntimeDb.h"
 
 #include "FairMQExParamsContFact.h"
 #include "FairMQExParamsParOne.h"
+
+#include <cstring> // strcmp
 
 static FairMQExParamsContFact gFairMQExParamsContFact;
 
@@ -33,7 +34,7 @@ void FairMQExParamsContFact::setAllContainers()
 FairParSet* FairMQExParamsContFact::createContainer(FairContainer* container)
 {
     const char* name = container->GetName();
-    FairParSet* p = NULL;
+    FairParSet* p = nullptr;
 
     if (strcmp(name, "FairMQExParamsParOne") == 0)
     {

@@ -10,7 +10,7 @@
 
 #include "FairParGenericSet.h"
 
-#include <TObject.h>
+#include <Rtypes.h>
 
 class FairParamList;
 
