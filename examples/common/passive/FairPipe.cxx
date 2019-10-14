@@ -12,9 +12,6 @@
 #include "FairGeoInterface.h"           // for FairGeoInterface
 #include "FairGeoLoader.h"              // for FairGeoLoader
 #include "FairGeoMedia.h"               // for FairGeoMedia
-#include "FairGeoPassivePar.h"          // for FairGeoPassivePar
-#include "FairRun.h"                    // for FairRun
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
 
 #include <TGeoCompositeShape.h>         // for TGeoCompositeShape
 #include <TGeoManager.h>                // for TGeoManager, gGeoManager
@@ -45,16 +42,15 @@ FairPipe::FairPipe(const FairPipe& rhs)
 
 void FairPipe::ConstructGeometry()
 {
-
 /*
   FairRun* fRun = FairRun::Instance();
   FairRuntimeDb* rtdb= fRun->GetRuntimeDb();
   FairGeoPassivePar* par=(FairGeoPassivePar*)(rtdb->getContainer("FairGeoPassivePar"));
 */
 
-  FairGeoLoader* loader=FairGeoLoader::Instance();
-  FairGeoInterface* GeoInterface =loader->getGeoInterface();
-  FairGeoMedia* Media =  GeoInterface->getMedia();
+  FairGeoLoader* loader = FairGeoLoader::Instance();
+  FairGeoInterface* GeoInterface = loader->getGeoInterface();
+  FairGeoMedia* Media = GeoInterface->getMedia();
   FairGeoBuilder* geobuild = loader->getGeoBuilder();
 
   // Call materials
@@ -220,7 +216,6 @@ void FairPipe::ConstructGeometry()
 
   TGeoVolume* cave = gGeoManager->GetTopVolume();
   cave->AddNode(beamPipe, 1);
-
 }
 
 FairModule* FairPipe::CloneModule() const
@@ -229,4 +224,3 @@ FairModule* FairPipe::CloneModule() const
 }
 
 ClassImp(FairPipe)
-

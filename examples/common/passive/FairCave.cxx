@@ -21,34 +21,33 @@
 #include <TObjArray.h>                  // for TObjArray
 #include <TString.h>                    // for TString
 
-#include <stddef.h>                     // for NULL
-
 ClassImp(FairCave)
+
 void FairCave::ConstructGeometry()
 {
-  FairGeoLoader* loader=FairGeoLoader::Instance();
-  FairGeoInterface* GeoInterface =loader->getGeoInterface();
-  FairGeoCave* MGeo=new FairGeoCave();
+  FairGeoLoader* loader = FairGeoLoader::Instance();
+  FairGeoInterface* GeoInterface = loader->getGeoInterface();
+  FairGeoCave* MGeo = new FairGeoCave();
   MGeo->setGeomFile(GetGeometryFileName());
   GeoInterface->addGeoModule(MGeo);
   Bool_t rc = GeoInterface->readSet(MGeo);
-  if ( rc ) { MGeo->create(loader->getGeoBuilder()); }
+  if (rc) { MGeo->create(loader->getGeoBuilder()); }
 
   TList* volList = MGeo->getListOfVolumes();
   // store geo parameter
   FairRun* fRun = FairRun::Instance();
-  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairGeoPassivePar* par=static_cast<FairGeoPassivePar*>(rtdb->getContainer("FairGeoPassivePar"));
+  FairRuntimeDb* rtdb = FairRun::Instance()->GetRuntimeDb();
+  FairGeoPassivePar* par = static_cast<FairGeoPassivePar*>(rtdb->getContainer("FairGeoPassivePar"));
   TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
   TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
   TListIter iter(volList);
-  FairGeoNode* node   = NULL;
-  FairGeoVolume* aVol=NULL;
+  FairGeoNode* node = nullptr;
+  FairGeoVolume* aVol = nullptr;
 
-  while( (node = static_cast<FairGeoNode*>(iter.Next())) ) {
+  while ((node = static_cast<FairGeoNode*>(iter.Next()))) {
     aVol = dynamic_cast<FairGeoVolume*> ( node );
-    if ( node->isSensitive()  ) {
+    if (node->isSensitive()) {
       fSensNodes->AddLast( aVol );
     } else {
       fPassNodes->AddLast( aVol );
@@ -73,8 +72,8 @@ FairCave::FairCave()
 
 FairCave::~FairCave()
 {
-
 }
+
 FairCave::FairCave(const char* name,  const char* Title)
   : FairModule(name ,Title)
 {

@@ -19,6 +19,7 @@ class  FairGeoPipe : public FairGeoSet
   protected:
     char modName[2];  // name of module
     char eleName[2];  // substring for elements in module
+
   public:
     FairGeoPipe();
     virtual ~FairGeoPipe();

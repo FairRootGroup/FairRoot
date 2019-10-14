@@ -55,7 +55,6 @@ target_link_libraries(${target} PUBLIC
   FairRoot::GeoBase
   FairRoot::ParBase
 
-  # TODO: clean the following
   Geom
   Core
 )

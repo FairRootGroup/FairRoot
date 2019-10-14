@@ -9,26 +9,17 @@
 
 #include "FairMagnet.h"
 
-#include "FairGeoInterface.h"           // for FairGeoInterface
-#include "FairGeoLoader.h"              // for FairGeoLoader
 #include "FairGeoMagnet.h"              // for FairGeoMagnet
-#include "FairGeoNode.h"                // for FairGeoNode
 #include "FairGeoPassivePar.h"          // for FairGeoPassivePar
-#include "FairGeoVolume.h"              // for FairGeoVolume
 
-#include "FairRun.h"                    // for FairRun
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
-#include <iosfwd>                       // for ostream
-#include <TList.h>                      // for TListIter, TList (ptr only)
-#include <TObjArray.h>                  // for TObjArray
 #include <TString.h>                    // for TString
 
-#include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
 FairMagnet::~FairMagnet()
 {
 }
+
 FairMagnet::FairMagnet()
   : FairModule("FairMagnet", "")
 {
@@ -46,7 +37,6 @@ FairMagnet::FairMagnet(const FairMagnet& rhs)
 
 void FairMagnet::ConstructGeometry()
 {
-
   TString fileName=GetGeometryFileName();
   if (fileName.EndsWith(".geo")) {
     ConstructASCIIGeometry();
@@ -66,7 +56,7 @@ Bool_t FairMagnet::CheckIfSensitive(std::string /*name*/)
 void FairMagnet::ConstructASCIIGeometry()
 {
     FairGeoMagnet* MGeo=new FairGeoMagnet();
-    
+
     FairModule::ConstructASCIIGeometry<FairGeoMagnet, FairGeoPassivePar>(MGeo, "FairGeoPassivePar");
 }
 

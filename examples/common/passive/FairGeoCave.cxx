@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 //*-- AUTHOR : Ilse Koenig
@@ -27,6 +27,7 @@
 
 #include <string.h>                     // for strcmp
 #include <iostream>                     // for cout
+#include <fstream>                      // for fstream
 
 using namespace std;
 ClassImp(FairGeoCave)
@@ -35,9 +36,8 @@ FairGeoCave::FairGeoCave()
   : FairGeoSet(),
     name("cave")
 {
-  // Constructor
-  fName="cave";
-  name="cave";
+  fName = "cave";
+  name = "cave";
   maxModules=1;
 }
 

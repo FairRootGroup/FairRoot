@@ -23,7 +23,7 @@
 #include <TList.h>                      // for TList
 #include <TString.h>                    // for TString
 
-#include <string.h>                     // for strcmp, NULL
+#include <string.h>                     // for strcmp
 
 class FairParSet;
 
@@ -48,7 +48,7 @@ void FairPassiveContFact::setAllContainers()
   /** Creates the Container objects with all accepted contexts and adds them to
    *  the list of containers for the STS library.*/
 
-  FairContainer* p= new FairContainer("FairGeoPassivePar",
+  FairContainer* p = new FairContainer("FairGeoPassivePar",
                                       "Passive Geometry Parameters",
                                       "TestDefaultContext");
   p->addContext("TestNonDefaultContext");
@@ -62,9 +62,9 @@ FairParSet* FairPassiveContFact::createContainer(FairContainer* c)
    * For an actual context, which is not an empty string and not the default context
    * of this container, the name is concatinated with the context. */
   const char* name=c->GetName();
-  FairParSet* p=NULL;
-  if (strcmp(name,"FairGeoPassivePar")==0) {
-    p=new FairGeoPassivePar(c->getConcatName().Data(),c->GetTitle(),c->getContext());
+  FairParSet* p=nullptr;
+  if (strcmp(name,"FairGeoPassivePar") == 0) {
+    p = new FairGeoPassivePar(c->getConcatName().Data(), c->GetTitle(), c->getContext());
   }
   return p;
 }

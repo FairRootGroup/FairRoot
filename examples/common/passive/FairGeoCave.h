@@ -14,14 +14,13 @@
 #include <Rtypes.h>                     // for FairGeoCave::Class, Bool_t, etc
 #include <TString.h>                    // for TString
 
-#include <fstream>                      // for fstream
-
 class FairGeoMedia;
 
 class  FairGeoCave : public FairGeoSet
 {
   protected:
     TString name;
+
   public:
     FairGeoCave();
     ~FairGeoCave() {}
