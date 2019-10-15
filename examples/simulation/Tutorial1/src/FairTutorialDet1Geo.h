@@ -14,12 +14,12 @@
 
 #include <TString.h>                    // for TString
 
-class  FairTutorialDet1Geo : public FairGeoSet
+class FairTutorialDet1Geo : public FairGeoSet
 {
-
   protected:
     char modName[20];  // name of module
     char eleName[20];  // substring for elements in module
+
   public:
     FairTutorialDet1Geo();
     ~FairTutorialDet1Geo() {}

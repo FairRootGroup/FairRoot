@@ -15,15 +15,14 @@
 class TObjArray;
 class FairParamList;
 
-class FairTutorialDet1GeoPar       : public FairParGenericSet
+class FairTutorialDet1GeoPar : public FairParGenericSet
 {
   public:
+    /** List of FairGeoNodes for sensitive  volumes */
+    TObjArray* fGeoSensNodes;
 
     /** List of FairGeoNodes for sensitive  volumes */
-    TObjArray*      fGeoSensNodes;
-
-    /** List of FairGeoNodes for sensitive  volumes */
-    TObjArray*      fGeoPassNodes;
+    TObjArray* fGeoPassNodes;
 
     FairTutorialDet1GeoPar(const char* name="FairTutorialDet1GeoPar",
                            const char* title="FairTutorialDet1 Geometry Parameters",

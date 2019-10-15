@@ -18,6 +18,7 @@ class FairTutorialDet1Point;
 class FairTutorialDet1Geo;
 class FairVolume;
 class TClonesArray;
+class FairModule;
 
 class FairTutorialDet1: public FairDetector
 {

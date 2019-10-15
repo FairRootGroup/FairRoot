@@ -7,11 +7,10 @@
  ********************************************************************************/
 #include "FairTutorialDet1Geo.h"
 
-#include <stdio.h>                      // for sprintf
+#include <cstdio> // for sprintf
 
 ClassImp(FairTutorialDet1Geo)
 
-// -----   Default constructor   -------------------------------------------
 FairTutorialDet1Geo::FairTutorialDet1Geo()
   : FairGeoSet()
 {
@@ -20,8 +19,6 @@ FairTutorialDet1Geo::FairTutorialDet1Geo()
   maxSectors=0;
   maxModules=10;
 }
-
-// -------------------------------------------------------------------------
 
 const char* FairTutorialDet1Geo::getModuleName(Int_t m)
 {

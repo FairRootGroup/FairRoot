@@ -8,32 +8,19 @@
 #include "FairFastSimExample2.h"
 
 #include "FairDetectorList.h"      // for DetectorId::kTutDet
-#include "FairGeoInterface.h"      // for FairGeoInterface
-#include "FairGeoLoader.h"         // for FairGeoLoader
-#include "FairGeoNode.h"           // for FairGeoNode
-#include "FairGeoVolume.h"         // for FairGeoVolume
-#include "FairGeoMedia.h"          // for FairGeoVolume
-#include "FairGeoBuilder.h"        // for FairGeoVolume
 #include "FairRootManager.h"       // for FairRootManager
-#include "FairRun.h"               // for FairRun
-#include "FairRuntimeDb.h"         // for FairRuntimeDb
 #include "FairStack.h"             // for FairStack
 #include "FairTutorialDet1Point.h" // for FairTutorialDet1Point
-#include "FairVolume.h"            // for FairVolume
-#include "FairLogger.h"            // for logging
+#include "FairDetector.h"           // for FairDetector
 
-#include <iosfwd>            // for ostream
+#include <TGeoMatrix.h>             // for TGeoCombiTrans, TGeoRotation
+#include <TGeoVolume.h>             // for TGeoVolume
 #include <TClonesArray.h>    // for TClonesArray
-#include <TList.h>           // for TListIter, TList (ptr only)
-#include <TObjArray.h>       // for TObjArray
-#include <TString.h>         // for TString
 #include <TVirtualMC.h>      // for TVirtualMC
 #include <TVirtualMCStack.h> // for TVirtualMCStack
 
 #include <TGeoManager.h>
 #include <TGeoBBox.h>
-
-#include <stddef.h> // for NULL
 
 FairFastSimExample2::FairFastSimExample2()
     : FairFastSimDetector("TutorialDet", kTutDet)
@@ -140,7 +127,7 @@ TClonesArray* FairFastSimExample2::GetCollection(Int_t iColl) const
     }
     else
     {
-        return NULL;
+        return nullptr;
     }
 }
 

@@ -16,10 +16,10 @@
 
 class FairTutorialDet1Point;
 class TClonesArray;
+class FairModule;
 
 class FairFastSimExample : public FairFastSimDetector
 {
-
   public:
     /**      Name :  Detector Name */
     FairFastSimExample(const char* Name);
@@ -48,8 +48,7 @@ class FairFastSimExample : public FairFastSimDetector
     /**      This method is an example of how to add your own point
      *       of type FairTutorialDet1Point to the clones array
     */
-    FairTutorialDet1Point*
-        AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss);
+    FairTutorialDet1Point* AddHit(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t time, Double_t length, Double_t eLoss);
 
     /** The following methods can be implemented if you need to make
      *  any optional action in your detector during the transport.

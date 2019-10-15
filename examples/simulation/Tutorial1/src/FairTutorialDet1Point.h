@@ -15,12 +15,9 @@
 
 class FairTutorialDet1Point : public FairMCPoint
 {
-
   public:
-
     /** Default constructor **/
     FairTutorialDet1Point();
-
 
     /** Constructor with arguments
      *@param trackID  Index of MCTrack
@@ -34,10 +31,8 @@ class FairTutorialDet1Point : public FairMCPoint
     FairTutorialDet1Point(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                           Double_t tof, Double_t length, Double_t eLoss);
 
-
     /** Copy constructor **/
     //    FairTutorialDet1Point(const FairTutorialDet1Point& point) { *this = point; };
-
 
     /** Destructor **/
     virtual ~FairTutorialDet1Point();
@@ -45,9 +40,7 @@ class FairTutorialDet1Point : public FairMCPoint
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
 
-
     ClassDef(FairTutorialDet1Point,1)
-
 };
 
 #endif

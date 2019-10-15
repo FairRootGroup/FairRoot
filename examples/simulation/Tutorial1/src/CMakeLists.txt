@@ -48,16 +48,19 @@ target_link_directories(${target} PUBLIC
 
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
-  FairRoot::FairFastSim
   FairRoot::FairTools # FairLogger
   FairRoot::MCStack
+  FairRoot::FairFastSim
+  FairRoot::ParBase
   FairRoot::Passive
   FairRoot::Gen
+
   Boost::program_options
 
-  # TODO: clean this
   Core
+  Physics
   Geom
+  VMC
 )
 
 fairroot_target_root_dictionary(${target}
@@ -68,9 +71,9 @@ fairroot_target_root_dictionary(${target}
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-add_executable(tutorial1 runTutorial1.cxx)
-target_link_libraries(tutorial1 PRIVATE Tutorial1)
+add_executable(tut1 runTutorial1.cxx)
+target_link_libraries(tut1 PRIVATE Tutorial1)
 
-install(TARGETS tutorial1
+install(TARGETS tut1
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/simulation/Tutorial1/bin
 )

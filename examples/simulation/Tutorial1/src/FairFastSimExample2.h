@@ -16,10 +16,10 @@
 
 class FairTutorialDet1Point;
 class TClonesArray;
+class FairModule;
 
 class FairFastSimExample2 : public FairFastSimDetector
 {
-
   public:
     /**      Name :  Detector Name */
     FairFastSimExample2(const char* Name);

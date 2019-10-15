@@ -7,13 +7,13 @@
  ********************************************************************************/
 #include "FairTutorialDet1ContFact.h"
 
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
-#include "FairTutorialDet1GeoPar.h"     // for FairTutorialDet1GeoPar
+#include "FairRuntimeDb.h"          // for FairRuntimeDb
+#include "FairTutorialDet1GeoPar.h" // for FairTutorialDet1GeoPar
 
-#include <TList.h>                      // for TList
-#include <TString.h>                    // for TString
+#include <TList.h>                  // for TList
+#include <TString.h>                // for TString
 
-#include <string.h>                     // for strcmp, NULL
+#include <cstring>                 // for strcmp
 
 class FairParSet;
 
@@ -54,10 +54,9 @@ FairParSet* FairTutorialDet1ContFact::createContainer(FairContainer* c)
       of this container, the name is concatinated with the context.
   */
   const char* name=c->GetName();
-  FairParSet* p=NULL;
+  FairParSet* p=nullptr;
   if (strcmp(name,"FairTutorialDet1GeoPar")==0) {
-    p=new FairTutorialDet1GeoPar(c->getConcatName().Data(),
-                                 c->GetTitle(),c->getContext());
+    p=new FairTutorialDet1GeoPar(c->getConcatName().Data(), c->GetTitle(), c->getContext());
   }
   return p;
 }

@@ -13,23 +13,23 @@
 int main(int argc, char* argv[])
 {
     FairSimConfig simConfig;
-    
+
     int value = simConfig.ParseCommandLine(argc, argv);
-    
-    if(value)
+
+    if (value)
     {
         return 0;
     }
-    
-    if(simConfig.IsHelp())
+
+    if (simConfig.IsHelp())
     {
         simConfig.PrintHelpMessage();
         return 0;
     }
-    
+
     LOG(info) << "Executing runTutorial1";
-    
+
     run_tutorial1_main(simConfig);
-    
+
     return 0;
 }

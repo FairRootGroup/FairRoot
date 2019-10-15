@@ -8,14 +8,7 @@
 #include "FairTutorialDet1.h"
 
 #include "FairDetectorList.h"           // for DetectorId::kTutDet
-#include "FairGeoInterface.h"           // for FairGeoInterface
-#include "FairGeoLoader.h"              // for FairGeoLoader
-#include "FairGeoNode.h"                // for FairGeoNode
-#include "FairGeoVolume.h"              // for FairGeoVolume
 #include "FairRootManager.h"            // for FairRootManager
-#include "FairRun.h"                    // for FairRun
-#include "FairRunSim.h"                 // for FairRunSim
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairStack.h"                  // for FairStack
 #include "FairTutorialDet1Geo.h"        // for FairTutorialDet1Geo
 #include "FairTutorialDet1GeoPar.h"     // for FairTutorialDet1GeoPar
@@ -23,17 +16,11 @@
 #include "FairVolume.h"                 // for FairVolume
 #include "FairLogger.h"                 // for logging
 
-#include <iosfwd>                       // for ostream
 #include <TClonesArray.h>               // for TClonesArray
-#include <TList.h>                      // for TListIter, TList (ptr only)
-#include <TObjArray.h>                  // for TObjArray
-#include <TString.h>                    // for TString
 #include <TVirtualMC.h>                 // for TVirtualMC
 #include <TVirtualMCStack.h>            // for TVirtualMCStack
 
-#include <stddef.h>                     // for NULL
-
-FairTutorialDet1Geo* FairTutorialDet1::fgGeo = NULL;
+FairTutorialDet1Geo* FairTutorialDet1::fgGeo = nullptr;
 
 FairTutorialDet1::FairTutorialDet1()
   : FairDetector("TutorialDet", kTRUE, kTutDet),
@@ -134,18 +121,15 @@ void FairTutorialDet1::EndOfEvent()
 
 }
 
-
-
 void FairTutorialDet1::Register()
 {
-
   /** This will create a branch in the output tree called
       FairTutorialDet1Point, setting the last parameter to kFALSE means:
       this collection will not be written to the file, it will exist
       only during the simulation.
   */
 
-  if ( ! gMC->IsMT() ) {
+  if (! gMC->IsMT() ) {
     FairRootManager::Instance()->Register("TutorialDetPoint", "TutorialDet",
                                           fFairTutorialDet1PointCollection, kTRUE);
   } else {
@@ -154,11 +138,10 @@ void FairTutorialDet1::Register()
   }
 }
 
-
 TClonesArray* FairTutorialDet1::GetCollection(Int_t iColl) const
 {
   if (iColl == 0) { return fFairTutorialDet1PointCollection; }
-  else { return NULL; }
+  else { return nullptr; }
 }
 
 void FairTutorialDet1::Reset()
