@@ -47,8 +47,9 @@ target_link_libraries(${target} PUBLIC
   FairRoot::GeoBase
   FairRoot::ParBase
 
-  # TODO: clean the following
-  VMC Physics Core
+  Core
+  Physics
+  VMC
 )
 
 fairroot_target_root_dictionary(${target}

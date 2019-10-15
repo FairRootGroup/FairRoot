@@ -13,10 +13,9 @@
 #include <TList.h>                      // for TList
 #include <TString.h>                    // for TString
 
-#include <string.h>                     // for strcmp, NULL
+#include <cstring>                     // for strcmp
 
 class FairParSet;
-
 
 ClassImp(FairRutherfordContFact)
 
@@ -55,7 +54,7 @@ FairParSet* FairRutherfordContFact::createContainer(FairContainer* c)
       of this container, the name is concatinated with the context.
   */
   const char* name=c->GetName();
-  FairParSet* p=NULL;
+  FairParSet* p=nullptr;
   if (strcmp(name,"FairRutherfordGeoPar")==0) {
     p=new FairRutherfordGeoPar(c->getConcatName().Data(),
                                c->GetTitle(),c->getContext());

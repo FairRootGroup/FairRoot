@@ -7,14 +7,11 @@
  ********************************************************************************/
 #include "FairRutherfordPoint.h"
 
-#include <iosfwd>                       // for ostream
-
-#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <iostream> // for operator<<, basic_ostream, etc
 
 using std::cout;
 using std::endl;
 
-// -----   Default constructor   -------------------------------------------
 FairRutherfordPoint::FairRutherfordPoint()
   : FairMCPoint(),
     fRadius(0.),
@@ -22,9 +19,7 @@ FairRutherfordPoint::FairRutherfordPoint()
     fTheta(0.)
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Standard constructor   ------------------------------------------
 FairRutherfordPoint::FairRutherfordPoint(Int_t trackID, Int_t detID,
     TVector3 pos, TVector3 mom,
     Double_t tof, Double_t length,
@@ -36,15 +31,11 @@ FairRutherfordPoint::FairRutherfordPoint(Int_t trackID, Int_t detID,
     fTheta(theta)
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Destructor   ----------------------------------------------------
 FairRutherfordPoint::~FairRutherfordPoint()
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Public method Print   -------------------------------------------
 void FairRutherfordPoint::Print(const Option_t* /*opt*/) const
 {
   cout << "-I- FairRutherfordPoint: FairRutherford point for track " << fTrackID
@@ -56,7 +47,5 @@ void FairRutherfordPoint::Print(const Option_t* /*opt*/) const
   cout << "    Time " << fTime << " ns,  Length " << fLength
        << " cm,  Energy loss " << fELoss*1.0e06 << " keV" << endl;
 }
-// -------------------------------------------------------------------------
 
 ClassImp(FairRutherfordPoint)
-

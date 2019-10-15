@@ -7,11 +7,10 @@
  ********************************************************************************/
 #include "FairRutherfordGeo.h"
 
-#include <stdio.h>                      // for sprintf
+#include <cstdio> // for sprintf
 
 ClassImp(FairRutherfordGeo)
 
-// -----   Default constructor   -------------------------------------------
 FairRutherfordGeo::FairRutherfordGeo()
   : FairGeoSet()
 {
@@ -20,8 +19,6 @@ FairRutherfordGeo::FairRutherfordGeo()
   maxSectors=0;
   maxModules=10;
 }
-
-// -------------------------------------------------------------------------
 
 const char* FairRutherfordGeo::getModuleName(Int_t m)
 {

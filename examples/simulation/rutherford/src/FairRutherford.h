@@ -18,12 +18,11 @@ class FairRutherfordPoint;
 class FairRutherfordGeo;
 class FairVolume;
 class TClonesArray;
+class FairModule;
 
 class FairRutherford: public FairDetector
 {
-
   public:
-
     /**      Name :  Detector Name
      *       Active: kTRUE for active detectors (ProcessHits() will be called)
      *               kFALSE for inactive detectors
@@ -56,8 +55,6 @@ class FairRutherford: public FairDetector
     /**      Create the detector geometry        */
     void ConstructGeometry();
 
-
-
     /**      This method is an example of how to add your own point
      *       of type FairRutherfordPoint to the clones array
     */
@@ -72,14 +69,14 @@ class FairRutherford: public FairDetector
 
 //    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
 //                               Int_t offset) {;}
-    virtual void   SetSpecialPhysicsCuts() {;}
-    virtual void   EndOfEvent();
-    virtual void   FinishPrimary() {;}
-    virtual void   FinishRun() {;}
-    virtual void   BeginPrimary() {;}
-    virtual void   PostTrack() {;}
-    virtual void   PreTrack() {;}
-    virtual void   BeginEvent() {;}
+    virtual void SetSpecialPhysicsCuts() {}
+    virtual void EndOfEvent();
+    virtual void FinishPrimary() {}
+    virtual void FinishRun() {}
+    virtual void BeginPrimary() {}
+    virtual void PostTrack() {}
+    virtual void PreTrack() {}
+    virtual void BeginEvent() {}
 
     virtual FairModule* CloneModule() const;
 

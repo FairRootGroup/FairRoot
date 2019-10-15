@@ -8,13 +8,7 @@
 #include "FairRutherford.h"
 
 #include "FairDetectorList.h"           // for DetectorId::kFairRutherford
-#include "FairGeoInterface.h"           // for FairGeoInterface
-#include "FairGeoLoader.h"              // for FairGeoLoader
-#include "FairGeoNode.h"                // for FairGeoNode
-#include "FairGeoVolume.h"              // for FairGeoVolume
 #include "FairRootManager.h"            // for FairRootManager
-#include "FairRun.h"                    // for FairRun
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairRutherfordGeo.h"          // for FairRutherfordGeo
 #include "FairRutherfordGeoPar.h"       // for FairRutherfordGeoPar
 #include "FairRutherfordPoint.h"        // for FairRutherfordPoint
@@ -22,19 +16,10 @@
 #include "FairVolume.h"                 // for FairVolume
 
 #include <TClonesArray.h>               // for TClonesArray
-#include <TList.h>                      // for TListIter, TList (ptr only)
-#include <TObjArray.h>                  // for TObjArray
-#include <TString.h>                    // for TString
 #include <TVirtualMC.h>                 // for TVirtualMC
 #include <TVirtualMCStack.h>            // for TVirtualMCStack
 
-#include <stddef.h>                     // for NULL
-#include <iostream>                     // for cout, endl
-
-using std::cout;
-using std::endl;
-
-FairRutherfordGeo* FairRutherford::fgGeo = NULL;
+FairRutherfordGeo* FairRutherford::fgGeo = nullptr;
 
 FairRutherford::FairRutherford()
   : FairDetector("FairRutherford", kTRUE, kFairRutherford),
@@ -129,12 +114,8 @@ Bool_t  FairRutherford::ProcessHits(FairVolume* vol)
 
 void FairRutherford::EndOfEvent()
 {
-
   fFairRutherfordPointCollection->Clear();
-
 }
-
-
 
 void FairRutherford::Register()
 {
@@ -153,11 +134,10 @@ void FairRutherford::Register()
   }
 }
 
-
 TClonesArray* FairRutherford::GetCollection(Int_t iColl) const
 {
   if (iColl == 0) { return fFairRutherfordPointCollection; }
-  else { return NULL; }
+  else { return nullptr; }
 }
 
 void FairRutherford::Reset()
@@ -179,7 +159,6 @@ FairRutherfordPoint* FairRutherford::AddHit(Int_t trackID, Int_t detID,
     Double_t time, Double_t length,
     Double_t eLoss)
 {
-
   TClonesArray& clref = *fFairRutherfordPointCollection;
   Int_t size = clref.GetEntriesFast();
   return new(clref[size]) FairRutherfordPoint(trackID, detID, pos, mom,
