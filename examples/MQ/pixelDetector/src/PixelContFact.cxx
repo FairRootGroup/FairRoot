@@ -7,15 +7,16 @@
  ********************************************************************************/
 
 #include "PixelContFact.h"
-#include <string.h>         // for strcmp, NULL
 #include "FairRuntimeDb.h"  // for FairRuntimeDb
 #include "PixelDigiPar.h"   // for PixelDigiPar
 #include "PixelGeoPar.h"    // for PixelGeoPar
+
 #include <TList.h>          // for TList
 #include <TString.h>        // for TString
+
+#include <cstring>         // for strcmp
+
 class FairParSet;
-
-
 
 ClassImp(PixelContFact)
 
@@ -46,12 +47,11 @@ void PixelContFact::setAllContainers()
   containers->Add(p);
 
   FairContainer* p2 = new FairContainer ("PixelDigiParameters",
-					 "Pixel digi parameters",
-					 "TestDefaultContext");
+                                         "Pixel digi parameters",
+                                         "TestDefaultContext");
   p2->addContext("TestNonDefaultContext");
 
   containers->Add(p2);
-
 }
 
 FairParSet* PixelContFact::createContainer(FairContainer* c)
@@ -62,14 +62,12 @@ FairParSet* PixelContFact::createContainer(FairContainer* c)
       of this container, the name is concatinated with the context.
   */
   const char* name=c->GetName();
-  FairParSet* p=NULL;
-  if (strcmp(name,"PixelGeoPar")==0) {
-    p=new PixelGeoPar(c->getConcatName().Data(),
-		      c->GetTitle(),c->getContext());
+  FairParSet* p=nullptr;
+  if (strcmp(name,"PixelGeoPar") == 0) {
+    p = new PixelGeoPar(c->getConcatName().Data(), c->GetTitle(),c->getContext());
   }
-  if (strcmp(name,"PixelDigiParameters")==0) {
-    p=new PixelDigiPar(c->getConcatName().Data(),
-		       c->GetTitle(),c->getContext());
+  if (strcmp(name,"PixelDigiParameters") == 0) {
+    p = new PixelDigiPar(c->getConcatName().Data(), c->GetTitle(),c->getContext());
   }
   return p;
 }

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2017 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *  
+ *              This software is distributed under the terms of the             *
+ *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
@@ -17,29 +17,25 @@
 #define FAIRMQRUNDEVICE_H_
 
 #include <string>
-#include <TString.h>
 
 #include <FairMQDevice.h>
 
 class TObject;
-class TObjArray;
-class FairSink;
 
 class FairMQRunDevice : public FairMQDevice
 {
- public:
-    FairMQRunDevice();
-    virtual ~FairMQRunDevice();
- 
-    virtual void SendBranches();
+  public:
+   FairMQRunDevice() {}
+   virtual ~FairMQRunDevice() {}
+
+   virtual void SendBranches();
 
  protected:
-    void SendObject(TObject* obj, std::string chan);
-    
+   void SendObject(TObject* obj, const std::string& chan);
+
  private:
-    
-    FairMQRunDevice(const FairMQRunDevice&);
-    FairMQRunDevice& operator=(const FairMQRunDevice&);
+   FairMQRunDevice(const FairMQRunDevice&);
+   FairMQRunDevice& operator=(const FairMQRunDevice&);
 };
 
 #endif /* FAIRMQRUNDEVICE_H_ */

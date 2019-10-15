@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -17,81 +17,67 @@
 
 #include "FairTask.h"
 
-#include "PixelDigi.h"
+#include <Rtypes.h>
+#include <TString.h>
 
-class TString;
+class TClonesArray;
 
-#include <list>
-#include <map>
 #include <fstream>
 
 class PixelDigiWriteToBinFile : public FairTask
 {
+  public:
+    /** Default constructor **/
+    PixelDigiWriteToBinFile();
 
- public:
+    /** Standard constructor **/
+    PixelDigiWriteToBinFile(Int_t iVerbose);
 
-  /** Default constructor **/
-  PixelDigiWriteToBinFile();
+    /** Constructor with name **/
+    PixelDigiWriteToBinFile(const char* name, Int_t iVerbose);
 
+    /** Destructor **/
+    virtual ~PixelDigiWriteToBinFile();
 
-  /** Standard constructor **/
-  PixelDigiWriteToBinFile(Int_t iVerbose);
+    /** Execution **/
+    virtual void Exec(Option_t* opt);
 
+    void SetOutputFileName(TString tstr) {fOutputFileName = tstr;};
 
-  /** Constructor with name **/
-  PixelDigiWriteToBinFile(const char* name, Int_t iVerbose);
+    void SetDivideLevel(Int_t idiv) { fDivideLevel = idiv; } // 0 - event, 1 - station, 2 - sensor
 
+  private:
+    TClonesArray* fDigis; /** Input array of PixelDigi **/
 
-  /** Destructor **/
-  virtual ~PixelDigiWriteToBinFile();
+    TString  fOutputFileName;
+    Int_t fNofOutputFiles;
+    std::ofstream fOutputFiles[12]; // no more than 12 output files....
 
+    /** Get parameter containers **/
+    virtual void SetParContainers() {}
 
-  /** Execution **/
-  virtual void Exec(Option_t* opt);
+    Int_t fDivideLevel;
 
-  void SetOutputFileName(TString tstr) {fOutputFileName = tstr;};
+    Int_t fRunId;
+    Int_t fMCEntryNo;
+    Int_t fPartNo;
 
-  void SetDivideLevel(Int_t idiv) { fDivideLevel = idiv; } // 0 - event, 1 - station, 2 - sensor
+    /** Intialisation **/
+    virtual InitStatus Init();
 
- private:
+    /** Reinitialisation **/
+    virtual InitStatus ReInit();
 
-  TClonesArray*     fDigis;        /** Input array of PixelDigi **/
+    /** Reset eventwise counters **/
+    void Reset() {}
 
-  TString  fOutputFileName;
-  Int_t fNofOutputFiles;
-  std::ofstream fOutputFiles[12]; // no more than 12 output files....
+    /** Finish at the end of each event **/
+    virtual void Finish();
 
-  /** Get parameter containers **/
-  virtual void SetParContainers();
-  
-  Int_t fDivideLevel;
-  
-  Int_t fRunId;
-  Int_t fMCEntryNo;
-  Int_t fPartNo;
+    PixelDigiWriteToBinFile(const PixelDigiWriteToBinFile&);
+    PixelDigiWriteToBinFile& operator=(const PixelDigiWriteToBinFile&);
 
-  /** Intialisation **/
-  virtual InitStatus Init();
-
-
-  /** Reinitialisation **/
-  virtual InitStatus ReInit();
-
-
-  /** Reset eventwise counters **/
-  void Reset();
-
-
-  /** Finish at the end of each event **/
-  virtual void Finish();
-
-  PixelDigiWriteToBinFile(const PixelDigiWriteToBinFile&);
-  PixelDigiWriteToBinFile& operator=(const PixelDigiWriteToBinFile&);
-
-  ClassDef(PixelDigiWriteToBinFile,1);
-
+    ClassDef(PixelDigiWriteToBinFile,1);
 };
 
 #endif
-
-

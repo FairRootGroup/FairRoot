@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -15,13 +15,15 @@
 #ifndef FAIRMQPIXELFILESINKBIN_H_
 #define FAIRMQPIXELFILESINKBIN_H_
 
-#include <TClonesArray.h>
-#include <TFile.h>
-#include <TFolder.h>
-#include <TTree.h>
-#include "FairEventHeader.h"
-
 #include <FairMQDevice.h>
+
+#include <string>
+#include <vector>
+
+class TFile;
+class TFolder;
+class TObject;
+class TTree;
 
 class FairMQPixelFileSinkBin : public FairMQDevice
 {
@@ -29,24 +31,24 @@ class FairMQPixelFileSinkBin : public FairMQDevice
     FairMQPixelFileSinkBin();
     virtual ~FairMQPixelFileSinkBin();
 
-    void SetOutputFileName(std::string tempString) { fFileName = tempString; }
-    void AddOutputBranch  (std::string classString, std::string branchString) 
-    { 
-      fClassNames .push_back(classString); 
-      fBranchNames.push_back(branchString); 
+    void SetOutputFileName(const std::string& tempString) { fFileName = tempString; }
+    void AddOutputBranch(const std::string& classString, const std::string& branchString)
+    {
+      fClassNames .push_back(classString);
+      fBranchNames.push_back(branchString);
     }
-    std::string GetOutputFileName () { return fFileName;}
+    std::string GetOutputFileName () { return fFileName; }
 
-    void SetInputChannelName (std::string tstr) {fInputChannelName = tstr;}
-    void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
+    void SetInputChannelName(const std::string& tstr) { fInputChannelName = tstr; }
+    void SetAckChannelName(const std::string& tstr) { fAckChannelName = tstr; }
 
   protected:
     bool StoreData(FairMQParts&, int);
     virtual void Init();
 
  private:
-    std::string     fInputChannelName;
-    std::string     fAckChannelName;
+    std::string fInputChannelName;
+    std::string fAckChannelName;
 
     std::string fFileName;
     std::string fTreeName;
@@ -60,8 +62,8 @@ class FairMQPixelFileSinkBin : public FairMQDevice
 
     TFile* fOutFile;
     TTree* fTree;
-    unsigned int    fNObjects;
-    TObject**       fOutputObjects;
+    unsigned int fNObjects;
+    TObject** fOutputObjects;
     /* FairEventHeader* fEventHeader; */
     /* TClonesArray*    fOutput; */
     TFolder* fFolder;

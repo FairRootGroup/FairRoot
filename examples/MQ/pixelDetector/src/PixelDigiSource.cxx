@@ -18,21 +18,19 @@
 #include "PixelEventHeader.h"
 
 #include "FairLogger.h"
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairRootManager.h"
 
 #include <TClonesArray.h>
 #include <TString.h>
 
-using std::map;
-using std::set;
+#include <cstdlib>
+#include <cstring>
+#include <string>
 
-
-//_____________________________________________________________________________
 PixelDigiSource::PixelDigiSource(TString inputFileName)
   : FairSource()
-  , fEventHeader(NULL)
-  , fDigis(NULL)
+  , fEventHeader(nullptr)
+  , fDigis(nullptr)
   , fNDigis(0)
   , fTNofEvents(0)
   , fTNofDigis(0)
@@ -45,23 +43,18 @@ PixelDigiSource::PixelDigiSource(TString inputFileName)
 {
   LOG(debug) << "PixelDigiSource created------------";
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 PixelDigiSource::~PixelDigiSource()
 {
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 Bool_t PixelDigiSource::Init()
 {
-
-  // Get input array 
+  // Get input array
   FairRootManager* ioman = FairRootManager::Instance();
 
   LOG(info) << "PixelDigiSource::Init";
-  if ( ! ioman ) LOG(fatal) << "No FairRootManager";
+  if (!ioman) LOG(fatal) << "No FairRootManager";
 
   // Register output array StsDigi
   fDigis = new TClonesArray("PixelDigi",10000);
@@ -72,33 +65,29 @@ Bool_t PixelDigiSource::Init()
   ioman->Register("EventHeader.","EvtHeader", fEventHeader, kFALSE);
 
   fInputFile.open(fInputFileName.Data(),std::fstream::in);
-  
-  if ( !fInputFile.is_open() ) {
+
+  if (!fInputFile.is_open()) {
     LOG(fatal) << "PixelDigiSource::Init() fInputFile \"" << fInputFileName.Data() << "\" could not be open!";
     return kFALSE;
   }
 
   return kTRUE;
-   
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
-int ReadIntFromString(const std::string& wholestr, const std::string& pattern) {
+int ReadIntFromString(const std::string& wholestr, const std::string& pattern)
+{
   std::string tempstr = wholestr;
   tempstr.replace(0,tempstr.find(pattern)+pattern.length(),"");
   tempstr.replace(0,tempstr.find('=')+1,"");
   return atoi(tempstr.c_str());
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 Int_t PixelDigiSource::ReadEvent(UInt_t i)
 {
   fDigis->Delete();
   fNDigis = 0;
 
-  if ( i == 0 ) { 
+  if (i == 0) {
     fInputFile.clear();
     fInputFile.seekg(0, std::ios::beg);
   }
@@ -110,7 +99,7 @@ Int_t PixelDigiSource::ReadEvent(UInt_t i)
   do {
     getline(fInputFile,buffer);
     LOG(debug) << "read from file: \"" << buffer << "\"";
-    if ( buffer.find("EVENT BEGIN") == 0 ) {
+    if (buffer.find("EVENT BEGIN") == 0) {
       fRunId     = ReadIntFromString(buffer,"RUNID");
       fMCEntryNo = ReadIntFromString(buffer,"MCENTRYNO");
       fPartNo    = ReadIntFromString(buffer,"PARTNO");
@@ -120,72 +109,59 @@ Int_t PixelDigiSource::ReadEvent(UInt_t i)
 
       LOG(debug) << "GOT NEW EVENT " << fMCEntryNo << " (part " << fPartNo << ") with run id = " << fRunId;
     }
-    if ( buffer.find("EVENT") == 0 ) continue;
+    if (buffer.find("EVENT") == 0) continue;
     Int_t detId     = atoi(buffer.c_str());
-    buffer.erase(0,buffer.find(' ')+1);
+    buffer.erase(0, buffer.find(' ') + 1);
     Int_t feId      = atoi(buffer.c_str());
-    buffer.erase(0,buffer.find(' ')+1);
+    buffer.erase(0, buffer.find(' ') + 1);
     Int_t col       = atoi(buffer.c_str());
-    buffer.erase(0,buffer.find(' ')+1);
+    buffer.erase(0, buffer.find(' ') + 1);
     Int_t row       = atoi(buffer.c_str());
-    buffer.erase(0,buffer.find(' ')+1);
+    buffer.erase(0, buffer.find(' ') + 1);
     Double_t charge = atof(buffer.c_str());
     LOG(debug) << "    --/" << fNDigis << "/-->    " << detId << " / " << feId << " / " << col << " / " << row << " / " << charge;
     new ((*fDigis)[fNDigis]) PixelDigi(-1,detId,feId,col,row,charge,0.);
     fNDigis++;
-  }
-  while ( fInputFile && buffer.compare("EVENT END") );
+  } while (fInputFile && buffer.compare("EVENT END"));
   LOG(debug) << "PixelDigiSource::ReadEvent() End of";
 
-  if ( !fInputFile ) {
+  if (!fInputFile) {
     return 1;
   }
- 
+
   return 0;
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 Bool_t   PixelDigiSource::ActivateObject(TObject** obj, const char* BrName) {
-  if ( strcmp(BrName,"PixelDigis") ) 
-    *obj = (TObject*)fDigis; 
-  else if ( strcmp(BrName,"EventHeader.") )
+  if (strcmp(BrName,"PixelDigis"))
+    *obj = (TObject*)fDigis;
+  else if (strcmp(BrName,"EventHeader."))
     *obj = (TObject*)fEventHeader;
   else
     return kFALSE;
-  
+
   return kTRUE;
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void PixelDigiSource::Close()
 {
   fInputFile.close();
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 void PixelDigiSource::Reset()
 {
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
 Int_t  PixelDigiSource::CheckMaxEventNo(Int_t /*EvtEnd*/)
 {
   return -1;
 }
-//_____________________________________________________________________________
 
-//_____________________________________________________________________________
-void PixelDigiSource::FillEventHeader(FairEventHeader* feh) 
+void PixelDigiSource::FillEventHeader(FairEventHeader* feh)
 {
   ((PixelEventHeader*)feh)->SetRunId(fRunId);
   ((PixelEventHeader*)feh)->SetMCEntryNumber(fMCEntryNo);
   ((PixelEventHeader*)feh)->SetPartNo(fPartNo);
 }
-//_____________________________________________________________________________
 
 ClassImp(PixelDigiSource)
-

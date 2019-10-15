@@ -14,30 +14,20 @@
 
 #include "FairMQSimDevice.h"
 
-#include <FairMQLogger.h>
-#include <FairMQMessage.h>
-
-#include "FairOnlineSink.h"
-
-#include "FairMCEventHeader.h"
-#include "FairRootManager.h"
 #include "FairRunSim.h"
 #include "FairRuntimeDb.h"
-
-#include "FairEventHeader.h"
 #include "FairModule.h"
 #include "FairPrimaryGenerator.h"
-#include "FairParRootFileIo.h"
 #include "FairParSet.h"
 
-#include <TROOT.h>
-#include <TRint.h>
-#include <TVirtualMC.h>
-#include <TVirtualMCApplication.h>
+#include <FairMQLogger.h>
+#include <FairMQDevice.h>
+
 #include <TList.h>
-#include <TObjString.h>
 #include <TObjArray.h>
-#include "RootSerializer.h"
+#include <TCollection.h>
+
+#include <cstdio> // printf
 
 using namespace std;
 
@@ -45,18 +35,18 @@ FairMQSimDevice::FairMQSimDevice()
   : FairMQRunDevice()
   , fSimDeviceId(0)
   , fUpdateChannelName("updateChannel")
-  , fRunSim(NULL)
+  , fRunSim(nullptr)
   , fNofEvents(1)
   , fTransportName("TGeant3")
   , fMaterialsFile("")
-  , fMagneticField(NULL)
-  , fDetectorArray(NULL)
-  , fPrimaryGenerator(NULL)
+  , fMagneticField(nullptr)
+  , fDetectorArray(nullptr)
+  , fPrimaryGenerator(nullptr)
   , fStoreTrajFlag(false)
-  , fTaskArray(NULL)
-  , fFirstParameter(NULL)
-  , fSecondParameter(NULL)
-  , fSink(NULL)
+  , fTaskArray(nullptr)
+  , fFirstParameter(nullptr)
+  , fSecondParameter(nullptr)
+  , fSink(nullptr)
 {
 }
 
@@ -66,36 +56,32 @@ void FairMQSimDevice::InitTask()
 
   fRunSim->SetSink(fSink);
 
-  if ( fFirstParameter || fSecondParameter ) {
+  if (fFirstParameter || fSecondParameter) {
     FairRuntimeDb *rtdb=fRunSim->GetRuntimeDb();
-    if ( fFirstParameter )
+    if (fFirstParameter)
       rtdb->setFirstInput(fFirstParameter);
-    if ( fSecondParameter )
+    if (fSecondParameter)
       rtdb->setSecondInput(fSecondParameter);
   }
 
   fRunSim->SetName(fTransportName.data());
 
-  if ( fUserConfig.Length() > 0 )
+  if (fUserConfig.Length() > 0)
     fRunSim->SetUserConfig(fUserConfig);
-  if ( fUserCuts.Length() > 0 )
+  if (fUserCuts.Length() > 0)
     fRunSim->SetUserCuts(fUserCuts);
-  // ------------------------------------------------------------------------
 
   // -----   Create media   -------------------------------------------------
   fRunSim->SetMaterials(fMaterialsFile.data());
-  // ------------------------------------------------------------------------
 
   // -----   Magnetic field   -------------------------------------------
-  if ( fMagneticField )
+  if (fMagneticField)
     fRunSim->SetField(fMagneticField);
-  // --------------------------------------------------------------------
 
   // -----   Create geometry   ----------------------------------------------
-  for ( int idet = 0 ; idet < fDetectorArray->GetEntries() ; idet++ ) {
+  for (int idet = 0 ; idet < fDetectorArray->GetEntries() ; idet++) {
     fRunSim->AddModule((FairModule*)(fDetectorArray->At(idet)));
   }
-  // ------------------------------------------------------------------------
 
   // -----   Negotiate the run number   -------------------------------------
   // -----      via the fUpdateChannelName   --------------------------------
@@ -109,55 +95,42 @@ void FairMQSimDevice::InitTask()
   FairMQMessagePtr rep(NewMessage());
 
   unsigned int runId = 0;
-  if (Send(req, fUpdateChannelName) > 0)
-      {
-          if (Receive(rep, fUpdateChannelName) > 0)
-              {
-                  std::string repString = string(static_cast<char*>(rep->GetData()), rep->GetSize());
-                  LOG(INFO) << " -> " << repString.data();
-                  runId = stoi(repString);
-                  repString = repString.substr(repString.find_first_of('_')+1,repString.length());
-                  fSimDeviceId = stoi(repString);
-                  LOG(INFO) << "runId = " << runId << "  ///  fSimDeviceId = " << fSimDeviceId;
-              }
-      }
-  // ------------------------------------------------------------------------
+  if (Send(req, fUpdateChannelName) > 0) {
+    if (Receive(rep, fUpdateChannelName) > 0) {
+      std::string repString = string(static_cast<char*>(rep->GetData()), rep->GetSize());
+      LOG(info) << " -> " << repString.data();
+      runId = stoi(repString);
+      repString = repString.substr(repString.find_first_of('_')+1,repString.length());
+      fSimDeviceId = stoi(repString);
+      LOG(info) << "runId = " << runId << "  ///  fSimDeviceId = " << fSimDeviceId;
+    }
+  }
 
-  // ------------------------------------------------------------------------
-  if ( fPrimaryGenerator )
-      {
-          fPrimaryGenerator->SetEventNr(fSimDeviceId*fNofEvents); // run n simulations with same run id - offset the event number
-          fRunSim->SetGenerator(fPrimaryGenerator);
-      }
-  // ------------------------------------------------------------------------
+  if (fPrimaryGenerator) {
+    fPrimaryGenerator->SetEventNr(fSimDeviceId*fNofEvents); // run n simulations with same run id - offset the event number
+    fRunSim->SetGenerator(fPrimaryGenerator);
+  }
 
   fRunSim->SetStoreTraj(fStoreTrajFlag);
 
   // -----   Set tasks   ----------------------------------------------------
-  if ( fTaskArray ) {
-    for ( int itask = 0 ; itask < fTaskArray->GetEntries() ; itask++ ) {
+  if (fTaskArray) {
+    for (int itask = 0 ; itask < fTaskArray->GetEntries() ; itask++) {
       fRunSim->AddTask((FairTask*)(fTaskArray->At(itask)));
     }
   }
-  // ------------------------------------------------------------------------
 
   // -----   Initialize simulation run   ------------------------------------
   fRunSim->SetRunId(runId); // run n simulations with same run id - offset the event number
   fRunSim->Init();
-  // ------------------------------------------------------------------------
-
-}
-
-void FairMQSimDevice::PreRun()
-{
 }
 
 bool FairMQSimDevice::ConditionalRun()
 {
-    if ( fSimDeviceId == 0 )
-        UpdateParameterServer();
-    fRunSim->Run(fNofEvents);
-    return false;
+  if (fSimDeviceId == 0)
+    UpdateParameterServer();
+  fRunSim->Run(fNofEvents);
+  return false;
 }
 
 void FairMQSimDevice::UpdateParameterServer()
@@ -169,29 +142,19 @@ void FairMQSimDevice::UpdateParameterServer()
   // send the parameters to be saved
   TIter next(rtdb->getListOfContainers());
   FairParSet* cont;
-  while ((cont=static_cast<FairParSet*>(next())))
-    {
-      std::string ridString = std::string("RUNID") + std::to_string(fRunSim->GetRunId()) + std::string("RUNID") + std::string(cont->getDescription());
-      cont->setDescription(ridString.data());
-      FairMQRunDevice::SendObject(cont,fUpdateChannelName);
-    }
+  while ((cont = static_cast<FairParSet*>(next()))) {
+    std::string ridString = std::string("RUNID") + std::to_string(fRunSim->GetRunId()) + std::string("RUNID") + std::string(cont->getDescription());
+    cont->setDescription(ridString.data());
+    FairMQRunDevice::SendObject(cont, fUpdateChannelName);
+  }
 
   printf("FairMQSimDevice::UpdateParameterServer() finished\n");
 }
 
 void FairMQSimDevice::SendBranches()
 {
-    if ( !CheckCurrentState(RUNNING) )
-    {
-      fRunSim->StopMCRun();
-    }
-    FairMQRunDevice::SendBranches();
-}
-
-void FairMQSimDevice::PostRun()
-{
-}
-
-FairMQSimDevice::~FairMQSimDevice()
-{
+  if (!CheckCurrentState(RUNNING)) {
+    fRunSim->StopMCRun();
+  }
+  FairMQRunDevice::SendBranches();
 }

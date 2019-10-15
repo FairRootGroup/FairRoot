@@ -11,6 +11,9 @@
 // PixelDetector example
 #include "FairMQPixelFileSinkBin.h"
 
+#include <vector>
+#include <string>
+
 namespace bpo = boost::program_options;
 
 void addCustomOptions(bpo::options_description& options)

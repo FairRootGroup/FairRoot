@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -14,14 +14,20 @@
 
 #include "FairMQPixelSampler.h"
 
+#include "FairRunAna.h"
 #include "RootSerializer.h"
-#include <TClonesArray.h>
+#include "FairSource.h"
+#include "FairFileSource.h"
 
 #include <FairMQLogger.h>
 #include <FairMQMessage.h>
 
-#include "FairSource.h"
-#include "FairFileSource.h"
+#include <Rtypes.h>
+#include <TClonesArray.h>
+#include <TObject.h>
+
+#include <cstring>
+#include <utility> // move
 
 using namespace std;
 
@@ -29,8 +35,8 @@ FairMQPixelSampler::FairMQPixelSampler()
   : FairMQDevice()
   , fOutputChannelName("data-out")
   , fAckChannelName("")
-  , fRunAna(NULL)
-  , fSource(NULL)
+  , fRunAna(nullptr)
+  , fSource(nullptr)
   , fInputObjects()
   , fNObjects(0)
   , fMaxIndex(-1)
@@ -41,37 +47,38 @@ FairMQPixelSampler::FairMQPixelSampler()
 {
 }
 
-void FairMQPixelSampler::InitTask() 
+void FairMQPixelSampler::InitTask()
 {
   fFileNames         = fConfig->GetValue<std::vector<std::string>>("file-name");
   fMaxIndex          = fConfig->GetValue<int64_t>                 ("max-index");
   fBranchNames       = fConfig->GetValue<std::vector<std::string>>("branch-name");
   fOutputChannelName = fConfig->GetValue<std::string>             ("out-channel");
   fAckChannelName    = fConfig->GetValue<std::string>             ("ack-channel");
-  
+
   fRunAna = new FairRunAna();
 
-  if ( fSource == NULL ) 
-    {
-      fSource = new FairFileSource(fFileNames.at(0).c_str());
-      for ( unsigned int ifile = 1 ; ifile < fFileNames.size() ; ifile++ ) 
-	((FairFileSource*)fSource)->AddFile(fFileNames.at(ifile));
+  if (fSource == nullptr) {
+    fSource = new FairFileSource(fFileNames.at(0).c_str());
+    for (unsigned int ifile = 1 ; ifile < fFileNames.size() ; ifile++) {
+      ((FairFileSource*)fSource)->AddFile(fFileNames.at(ifile));
     }
+  }
 
   fSource->Init();
   LOG(info) << "Going to request " << fBranchNames.size() << "  branches:";
-  for ( unsigned int ibrn = 0 ; ibrn < fBranchNames.size() ; ibrn++ ) {
+  for (unsigned int ibrn = 0 ; ibrn < fBranchNames.size() ; ibrn++) {
     LOG(info) << " requesting branch \"" << fBranchNames[ibrn] << "\"";
     int branchStat = fSource->ActivateObject((TObject**)&fInputObjects[fNObjects],fBranchNames[ibrn].c_str()); // should check the status...
-    if ( fInputObjects[fNObjects] ) {
+    if (fInputObjects[fNObjects]) {
       LOG(info) << "Activated object \"" << fInputObjects[fNObjects] << "\" with name \"" << fBranchNames[ibrn] << "\" (" << branchStat << "), it got name: \"" << fInputObjects[fNObjects]->GetName() << "\"";
-      if ( strcmp(fInputObjects[fNObjects]->GetName(),fBranchNames[ibrn].c_str()) )
-	if ( strcmp(fInputObjects[fNObjects]->ClassName(),"TClonesArray") == 0 ) 
-	  ((TClonesArray*)fInputObjects[fNObjects])->SetName(fBranchNames[ibrn].c_str());
+      if (strcmp(fInputObjects[fNObjects]->GetName(),fBranchNames[ibrn].c_str()))
+        if (strcmp(fInputObjects[fNObjects]->ClassName(),"TClonesArray") == 0)
+          ((TClonesArray*)fInputObjects[fNObjects])->SetName(fBranchNames[ibrn].c_str());
       fNObjects++;
     }
   }
-  if ( fMaxIndex < 0 )
+
+  if (fMaxIndex < 0)
     fMaxIndex = fSource->CheckMaxEventNo();
   LOG(info) << "Input source has " << fMaxIndex << " events.";
 }
@@ -87,22 +94,22 @@ void FairMQPixelSampler::PreRun()
 
 bool FairMQPixelSampler::ConditionalRun()
 {
-  if ( fEventCounter == fMaxIndex ) return false;
-  
+  if (fEventCounter == fMaxIndex) return false;
+
   Int_t readEventReturn = fSource->ReadEvent(fEventCounter);
 
-  if ( readEventReturn != 0 ) return false;
-  
+  if (readEventReturn != 0) return false;
+
   FairMQParts parts;
-  
-  for ( int iobj = 0 ; iobj < fNObjects ; iobj++ ) {
+
+  for (int iobj = 0 ; iobj < fNObjects ; iobj++) {
     FairMQMessagePtr mess(NewMessage());
-    Serialize<RootSerializer>(*mess,fInputObjects[iobj]);
+    Serialize<RootSerializer>(*mess, fInputObjects[iobj]);
     parts.AddPart(std::move(mess));
   }
-  
+
   Send(parts, fOutputChannelName);
-  
+
   fEventCounter++;
 
   return true;
@@ -119,21 +126,17 @@ void FairMQPixelSampler::PostRun()
 
 void FairMQPixelSampler::ListenForAcks()
 {
-  if (fAckChannelName != "")
-      {
-          Long64_t numAcks = 0;
-          do
-              {
-                  unique_ptr<FairMQMessage> ack(NewMessage());
-                  if (Receive(ack, fAckChannelName) >= 0)
-                      {
-                          numAcks++;
-                      }
-              }
-          while (numAcks < fMaxIndex);
-          
-          LOG(info) << "Acknowledged " << numAcks << " messages.";
+  if (fAckChannelName != "") {
+    Long64_t numAcks = 0;
+    do {
+      unique_ptr<FairMQMessage> ack(NewMessage());
+      if (Receive(ack, fAckChannelName) >= 0) {
+        numAcks++;
       }
+    } while (numAcks < fMaxIndex);
+
+    LOG(info) << "Acknowledged " << numAcks << " messages.";
+  }
 }
 
 FairMQPixelSampler::~FairMQPixelSampler()

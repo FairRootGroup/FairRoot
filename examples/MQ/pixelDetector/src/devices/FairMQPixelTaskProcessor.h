@@ -10,6 +10,7 @@
 #define FAIRMQPIXELTASKPROCESSOR_H_
 
 #include <string>
+#include <vector>
 
 #include "FairEventHeader.h"
 #include "FairMCEventHeader.h"
@@ -19,12 +20,9 @@
 #include <FairMQDevice.h>
 #include <FairMQParts.h>
 
-#include <TClonesArray.h>
-#include <TList.h>
 #include "RootSerializer.h"
 
-
-
+#include <TList.h>
 
 template<typename T>
 class FairMQPixelTaskProcessor : public FairMQDevice
@@ -60,13 +58,13 @@ class FairMQPixelTaskProcessor : public FairMQDevice
         delete fFairTask;
     }
 
-    void SetDataToKeep(std::string tStr) { fDataToKeep = tStr;}
+    void SetDataToKeep(const std::string& tStr) { fDataToKeep = tStr; }
 
-    void SetInputChannelName (std::string tstr) {fInputChannelName = tstr;}
-    void SetOutputChannelName(std::string tstr) {fOutputChannelName = tstr;}
-    void SetParamChannelName (std::string tstr) {fParamChannelName  = tstr;}
+    void SetInputChannelName (const std::string& tstr) { fInputChannelName = tstr; }
+    void SetOutputChannelName(const std::string& tstr) { fOutputChannelName = tstr; }
+    void SetParamChannelName (const std::string& tstr) { fParamChannelName  = tstr; }
 
-    void SetStaticParameters (bool tbool)       {fStaticParameters = tbool;}
+    void SetStaticParameters (bool tbool) { fStaticParameters = tbool; }
 
   protected:
     bool ProcessData(FairMQParts& parts, int)

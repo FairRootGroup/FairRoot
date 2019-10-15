@@ -8,20 +8,16 @@
 #ifndef PIXELPOINT_H
 #define PIXELPOINT_H 1
 
-
 #include "FairMCPoint.h"
 
-#include <TObject.h>
 #include <TVector3.h>
+#include <Rtypes.h>
 
 class PixelPoint : public FairMCPoint
 {
-
   public:
-
     /** Default constructor **/
     PixelPoint();
-
 
     /** Constructor with arguments
      *@param trackID  Index of MCTrack
@@ -35,9 +31,6 @@ class PixelPoint : public FairMCPoint
     PixelPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
                      Double_t tof, Double_t length, Double_t eLoss);
 
-
-
-
     /** Destructor **/
     virtual ~PixelPoint();
 
@@ -50,7 +43,6 @@ class PixelPoint : public FairMCPoint
     PixelPoint operator=(const PixelPoint& point);
 
     ClassDef(PixelPoint,1)
-
 };
 
 #endif

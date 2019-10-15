@@ -6,11 +6,11 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "PixelGeo.h"
+
 #include <stdio.h>  // for sprintf
 
 ClassImp(PixelGeo)
 
-// -----   Default constructor   -------------------------------------------
 PixelGeo::PixelGeo()
   : FairGeoSet()
 {
@@ -21,8 +21,6 @@ PixelGeo::PixelGeo()
   maxSectors=0;
   maxModules=10;
 }
-
-// -------------------------------------------------------------------------
 
 const char* PixelGeo::getModuleName(Int_t m)
 {

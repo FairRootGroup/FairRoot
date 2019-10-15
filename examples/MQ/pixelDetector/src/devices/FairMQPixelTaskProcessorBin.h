@@ -12,7 +12,6 @@
 #include <string>
 
 #include "FairEventHeader.h"
-
 #include "FairGeoParSet.h"
 #include "FairParGenericSet.h"
 
@@ -66,13 +65,13 @@ class FairMQPixelTaskProcessorBin : public FairMQDevice
         delete fFairTask;
     }
 
-    void SetDataToKeep(std::string str) { fDataToKeep = str; }
+    void SetDataToKeep(const std::string& str) { fDataToKeep = str; }
 
-    void SetInputChannelName (std::string str) { fInputChannelName = str; }
-    void SetOutputChannelName(std::string str) { fOutputChannelName = str; }
-    void SetParamChannelName (std::string str) { fParamChannelName  = str; }
+    void SetInputChannelName (const std::string& str) { fInputChannelName = str; }
+    void SetOutputChannelName(const std::string& str) { fOutputChannelName = str; }
+    void SetParamChannelName (const std::string& str) { fParamChannelName  = str; }
 
-    void SetStaticParameters (bool tbool)       {fStaticParameters = tbool;}
+    void SetStaticParameters (bool tbool) {fStaticParameters = tbool;}
 
   protected:
     bool ProcessData(FairMQParts& parts, int)
@@ -201,7 +200,7 @@ class FairMQPixelTaskProcessorBin : public FairMQDevice
         LOG(info) << "FairMQPixelTaskProcessorBin<T>::PostRun() Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!";
     }
 
- private:
+  private:
     std::string fInputChannelName;
     std::string fOutputChannelName;
     std::string fParamChannelName;

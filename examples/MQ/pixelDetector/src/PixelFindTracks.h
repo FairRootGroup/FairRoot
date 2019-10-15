@@ -17,87 +17,70 @@
 
 #include "FairTask.h"
 
-#include "PixelHit.h"
-
-#include <list>
-#include <map>
+#include <Rtypes.h>
 
 class TClonesArray;
 class TH2F;
+class TList;
 class PixelDigiPar;
 
 class PixelFindTracks : public FairTask
 {
+  public:
+    /** Default constructor **/
+    PixelFindTracks();
 
- public:
+    /** Standard constructor **/
+    PixelFindTracks(Int_t iVerbose);
 
-  /** Default constructor **/
-  PixelFindTracks();
+    /** Constructor with name **/
+    PixelFindTracks(const char* name, Int_t iVerbose);
 
+    /** Destructor **/
+    virtual ~PixelFindTracks();
 
-  /** Standard constructor **/
-  PixelFindTracks(Int_t iVerbose);
+    /** Execution **/
+    virtual void Exec(Option_t* opt);
 
+    virtual void GetParList(TList* tempList);
+    virtual void InitMQ    (TList* tempList);
+    virtual void ExecMQ    (TList* inputList,TList* outputList);
 
-  /** Constructor with name **/
-  PixelFindTracks(const char* name, Int_t iVerbose);
+  private:
+    PixelDigiPar* fDigiPar;
 
+    TClonesArray* fHits;         /** Input array of PixelHit **/
+    TClonesArray* fTracks;       /** Output array of PixelTrack **/
 
-  /** Destructor **/
-  virtual ~PixelFindTracks();
+    Int_t         fTNofEvents;
 
+    Int_t         fNHits;
+    Int_t         fTNofHits;
 
-  /** Execution **/
-  virtual void Exec(Option_t* opt);
+    Int_t         fNTracks;
+    Int_t         fTNofTracks;
 
-  virtual void GetParList(TList* tempList);
-  virtual void InitMQ    (TList* tempList);
-  virtual void ExecMQ    (TList* inputList,TList* outputList);
+    TH2F*         fhDist2D;
 
+    /** Get parameter containers **/
+    virtual void SetParContainers();
 
- private:
+    /** Intialisation **/
+    virtual InitStatus Init();
 
-  PixelDigiPar*     fDigiPar;
+    /** Reinitialisation **/
+    virtual InitStatus ReInit();
 
-  TClonesArray*     fHits;         /** Input array of PixelHit **/
-  TClonesArray*     fTracks;       /** Output array of PixelTrack **/
+    /** Reset eventwise counters **/
+    void Reset();
 
-  Int_t             fTNofEvents;
+    /** Finish at the end of each event **/
+    virtual void Finish();
 
-  Int_t             fNHits;
-  Int_t             fTNofHits;
+    PixelFindTracks(const PixelFindTracks&);
+    PixelFindTracks& operator=(const PixelFindTracks&);
 
-  Int_t             fNTracks;
-  Int_t             fTNofTracks;
-
-  TH2F*             fhDist2D;
-
-  /** Get parameter containers **/
-  virtual void SetParContainers();
-
-
-  /** Intialisation **/
-  virtual InitStatus Init();
-
-
-  /** Reinitialisation **/
-  virtual InitStatus ReInit();
-
-
-  /** Reset eventwise counters **/
-  void Reset();
-
-
-  /** Finish at the end of each event **/
-  virtual void Finish();
-
-  PixelFindTracks(const PixelFindTracks&);
-  PixelFindTracks& operator=(const PixelFindTracks&);
-
-  ClassDef(PixelFindTracks,1);
-
+    ClassDef(PixelFindTracks,1);
 };
 
 #endif
-
-

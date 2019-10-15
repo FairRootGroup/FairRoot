@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -15,7 +15,6 @@
 #ifndef PIXELDIGIPAR_H
 #define PIXELDIGIPAR_H
 
-
 #include "FairParGenericSet.h"  // for FairParGenericSet
 #include <Rtypes.h>             // for PixelDigiPar::Class, ClassDef, PixelD...
 class FairParamList;
@@ -23,17 +22,17 @@ class FairParamList;
 //! Digitization Parameter Class for Pixel detector
 class PixelDigiPar : public FairParGenericSet
 {
- public :
-  PixelDigiPar (const char* name="PixelDigiParameters",
-		const char* title="Pixel digi parameters",
-		const char* context="TestDefaultContext");
-  ~PixelDigiPar(void);
-  void clear(void){};
-  void putParams(FairParamList* list);
-  Bool_t getParams(FairParamList* list);
-  
-  void Print(Option_t*) const;
-  
+  public:
+    PixelDigiPar(const char* name="PixelDigiParameters",
+                 const char* title="Pixel digi parameters",
+                 const char* context="TestDefaultContext");
+    ~PixelDigiPar(void);
+    void clear(void){};
+    void putParams(FairParamList* list);
+    Bool_t getParams(FairParamList* list);
+
+    void Print(Option_t*) const;
+
     Double_t GetXPitch()        const {return fDimX;}
     Double_t GetYPitch()        const {return fDimY;}
     Double_t GetThreshold()     const {return fThreshold;}
@@ -44,11 +43,11 @@ class PixelDigiPar : public FairParGenericSet
     Int_t GetMaxFEperCol()      const {return fMaxFEperCol;}
     Double_t GetClustRadius()   const {return fRadius;}
     Double_t GetFeBusClock()    const {return fFeBusClock;}
-    Double_t GetTimeStep()		const {return (1./fFeBusClock * 1000.);} ///< Time step of one clock cycle in ns
+    Double_t GetTimeStep()      const {return (1./fFeBusClock * 1000.);} ///< Time step of one clock cycle in ns
     Int_t GetChargeConvMethod() const  {return fChargeConvMethod;}
     Double_t GetPixelSorterCellWidth() const {return fPixelSorterCellWidth;}
     Int_t GetPixelSorterNumberOfCells() const {return fPixelSorterNumberOfCells;}
-    
+
     void SetXPitch(Double_t x)        {fDimX = x;}
     void SetYPitch(Double_t x)        {fDimY = x;}
     void SetThreshold(Double_t x)     {fThreshold = x;}
@@ -62,10 +61,10 @@ class PixelDigiPar : public FairParGenericSet
     void SetChargeConvMethod(Int_t x) {fChargeConvMethod = x;}
     void SetPixelSorterCellWidth(Double_t x) {fPixelSorterCellWidth = x;}
     void SetPixelSorterNumberOfCells(Int_t x) {fPixelSorterNumberOfCells=x;}
-    
+
   private:
     // Pixel Parameters
-    Int_t fFeCols;            // Colums read per Frontend 
+    Int_t fFeCols;            // Colums read per Frontend
     Int_t fFeRows;            // Rows read per Frontend
     Int_t fMaxFEperCol;       // max number of Frontend elemens per column
     Double_t fDimX;           // Pixel cell size X
@@ -79,7 +78,6 @@ class PixelDigiPar : public FairParGenericSet
     Double_t fPixelSorterCellWidth;	// Parameter for TimeStamp Sorter
     Int_t fPixelSorterNumberOfCells; // Parameter for TimeStamp Sorter
 
-    
     ClassDef(PixelDigiPar,1);
 };
 

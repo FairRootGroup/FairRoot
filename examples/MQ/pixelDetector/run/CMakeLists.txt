@@ -109,7 +109,7 @@ set(maxTestTime 60)
 
 add_test(ex_MQ_pixel_simulation ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixelSimulation.sh --work-dir ${CMAKE_CURRENT_BINARY_DIR}/../ -n 1000 -g TGeant3 -c static -s 6 --force-kill true -m 20 -v veryhigh -l false)
 set_tests_properties(ex_MQ_pixel_simulation PROPERTIES
-  DEPENDS pixel_static
+  DEPENDS ex_MQ_pixel_static
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Shell script finished successfully"
 )

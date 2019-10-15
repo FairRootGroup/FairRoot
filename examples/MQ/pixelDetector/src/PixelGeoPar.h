@@ -10,22 +10,22 @@
 
 #include "FairParGenericSet.h"  // for FairParGenericSet
 #include <Rtypes.h>             // for PixelGeoPar::Class, ClassDef, PixelGe...
-class FairParamList;  // lines 14-14
-class TObjArray;  // lines 13-13
 
-class PixelGeoPar       : public FairParGenericSet
+class FairParamList;
+class TObjArray;
+
+class PixelGeoPar : public FairParGenericSet
 {
   public:
+    /** List of FairGeoNodes for sensitive  volumes */
+    TObjArray* fGeoSensNodes;
 
     /** List of FairGeoNodes for sensitive  volumes */
-    TObjArray*      fGeoSensNodes;
-
-    /** List of FairGeoNodes for sensitive  volumes */
-    TObjArray*      fGeoPassNodes;
+    TObjArray* fGeoPassNodes;
 
     PixelGeoPar(const char* name="PixelGeoPar",
-                      const char* title="Pixel Geometry Parameters",
-                      const char* context="TestDefaultContext");
+                const char* title="Pixel Geometry Parameters",
+                const char* context="TestDefaultContext");
     ~PixelGeoPar(void);
     void clear(void);
     void putParams(FairParamList*);

@@ -15,15 +15,16 @@
 #ifndef FAIRMQPIXELSAMPLERBIN_H_
 #define FAIRMQPIXELSAMPLERBIN_H_
 
+#include <FairMQDevice.h>
+
 #include <string>
 #include <thread>
+#include <cstdint>
+#include <vector>
 
-#include <TClonesArray.h>
-
-#include "FairFileSource.h"
-#include "FairRunAna.h"
-
-#include <FairMQDevice.h>
+class FairFileSource;
+class FairRunAna;
+class TObject;
 
 class FairMQPixelSamplerBin : public FairMQDevice
 {
@@ -31,15 +32,15 @@ class FairMQPixelSamplerBin : public FairMQDevice
     FairMQPixelSamplerBin();
     virtual ~FairMQPixelSamplerBin();
 
-    void AddInputFileName  (std::string tempString) { fFileNames  .push_back(tempString); }
-    void AddInputBranchName(std::string tempString) { fBranchNames.push_back(tempString); }
+    void AddInputFileName(const std::string& tempString) { fFileNames.push_back(tempString); }
+    void AddInputBranchName(const std::string& tempString) { fBranchNames.push_back(tempString); }
 
-    void SetMaxIndex(int64_t tempInt) {fMaxIndex=tempInt;}
+    void SetMaxIndex(int64_t tempInt) { fMaxIndex = tempInt; }
 
     void ListenForAcks();
 
-    void SetOutputChannelName(std::string tstr) {fOutputChannelName = tstr;}
-    void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
+    void SetOutputChannelName(const std::string& tstr) { fOutputChannelName = tstr; }
+    void SetAckChannelName(const std::string& tstr) { fAckChannelName = tstr; }
 
   protected:
     virtual bool ConditionalRun();
@@ -59,8 +60,8 @@ class FairMQPixelSamplerBin : public FairMQDevice
 
     int             fEventCounter;
 
-    std::vector<std::string>     fBranchNames;
-    std::vector<std::string>     fFileNames;
+    std::vector<std::string> fBranchNames;
+    std::vector<std::string> fFileNames;
 
     FairMQPixelSamplerBin(const FairMQPixelSamplerBin&);
     FairMQPixelSamplerBin& operator=(const FairMQPixelSamplerBin&);

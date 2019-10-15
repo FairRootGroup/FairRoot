@@ -13,54 +13,21 @@
  */
 
 #include "FairOnlineSink.h"
-  
-#include <FairMQLogger.h>
-#include <FairMQMessage.h>
 
 #include "FairMQRunDevice.h"
-#include "FairRootManager.h"
-
-#include "FairEventHeader.h"
-#include "FairModule.h"
-#include "FairPrimaryGenerator.h"
-#include "FairParRootFileIo.h"
-#include "FairParSet.h"
 
 #include <FairMQLogger.h>
 
-using namespace std;
-
 FairOnlineSink::FairOnlineSink()
-  : FairSink()
-  , fMQRunDevice(NULL)
-{
-}
-
-FairOnlineSink::~FairOnlineSink()
-{}
-
-void FairOnlineSink::RegisterImpl(const char* , const char* , void*)
-{}
-
-void FairOnlineSink::RegisterAny(const char* /* brname */, const std::type_info& /* oi */, const std::type_info& /* pi */, void* /* obj */)
+  : fMQRunDevice(nullptr)
 {}
 
 void  FairOnlineSink::Fill()
 {
   /// Fill the Root tree.
-  LOG(DEBUG) << "called FairOnlineSink::Fill()!!!!";
-  
-  if ( fMQRunDevice )
-      fMQRunDevice->SendBranches();
+  LOG(debug) << "called FairOnlineSink::Fill()!!!!";
+
+  if (fMQRunDevice) {
+    fMQRunDevice->SendBranches();
+  }
 }
-
-Bool_t FairOnlineSink::InitSink()
-{
-    return kTRUE;
-}
-
-void  FairOnlineSink::Reset()
-{}
-
-void  FairOnlineSink::Close()
-{}

@@ -11,6 +11,10 @@
 // PixelDetector example
 #include "FairMQPixelSamplerBin.h"
 
+#include <string>
+#include <vector>
+#include <cstdint>
+
 namespace bpo = boost::program_options;
 
 void addCustomOptions(bpo::options_description& options)

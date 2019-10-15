@@ -10,13 +10,16 @@
 
 #include "FairContFact.h"
 #include "FairContFact.h"  // for FairContFact, FairContainer (ptr only)
+
 #include <Rtypes.h>        // for PixelContFact::Class, ClassDef, PixelContF...
+
 class FairParSet;
 
 class PixelContFact : public FairContFact
 {
   private:
     void setAllContainers();
+
   public:
     PixelContFact();
     ~PixelContFact() {}

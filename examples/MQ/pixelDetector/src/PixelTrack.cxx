@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -31,7 +31,7 @@ PixelTrack::PixelTrack()
 }
 
 PixelTrack::PixelTrack(Double_t x0 , Double_t ax , Double_t y0 , Double_t ay ,
-		       Double_t x0e, Double_t axe, Double_t y0e, Double_t aye)
+                       Double_t x0e, Double_t axe, Double_t y0e, Double_t aye)
   : FairTimeStamp()
   , fX0(x0)
   , fAX(ax)

@@ -15,17 +15,16 @@
 #ifndef FAIRMQPIXELMERGER_H_
 #define FAIRMQPIXELMERGER_H_
 
-#include <TClonesArray.h>
-#include <TFile.h>
-#include <TFolder.h>
-#include <TTree.h>
-#include "FairEventHeader.h"
-
 #include <FairMQDevice.h>
 
-#include "PixelEventHeader.h"
+#include <map>
+#include <string>
+#include <utility> // pair
 
-typedef std::multimap<std::pair<std::pair<int,int>,int>,TObject*> MultiMapDef;
+class PixelEventHeader;
+class TObject;
+
+typedef std::multimap<std::pair<std::pair<int, int>, int>, TObject*> MultiMapDef;
 
 class FairMQPixelMerger : public FairMQDevice
 {
@@ -39,13 +38,12 @@ class FairMQPixelMerger : public FairMQDevice
     bool MergeData(FairMQParts&, int);
     virtual void Init();
 
- private:
-
+  private:
     std::string fInputChannelName;
     std::string fOutputChannelName;
 
-    std::map     <std::pair<int,int>,int>                     fNofPartsPerEventMap;  // number of parts for pair<event number,run id>
-    MultiMapDef fObjectMap;            // TObjects for given pair<pair<event number, run,id>part>
+    std::map<std::pair<int, int>, int> fNofPartsPerEventMap;  // number of parts for pair<event number,run id>
+    MultiMapDef fObjectMap; // TObjects for given pair<pair<event number, run,id>part>
 
     std::pair<int, int> fEvRIPair;
     std::pair<std::pair<int,int>,int> fEvRIPartTrio;
@@ -56,7 +54,7 @@ class FairMQPixelMerger : public FairMQDevice
 
     int fNofParts;
     PixelEventHeader* fEventHeader;
-    
+
     FairMQPixelMerger(const FairMQPixelMerger&);
     FairMQPixelMerger& operator=(const FairMQPixelMerger&);
 };

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "Pixel.h"
@@ -12,34 +12,22 @@
 #include "PixelGeoPar.h"
 
 #include "FairDetectorList.h"           // for DetectorId::kTutDet
-#include "FairGeoInterface.h"           // for FairGeoInterface
-#include "FairGeoLoader.h"              // for FairGeoLoader
-#include "FairGeoNode.h"                // for FairGeoNode
-#include "FairGeoVolume.h"              // for FairGeoVolume
 #include "FairRootManager.h"            // for FairRootManager
-#include "FairRun.h"                    // for FairRun
 #include "FairRunSim.h"                 // for FairRunSim
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairStack.h"                  // for FairStack
 #include "FairVolume.h"                 // for FairVolume
 #include "FairLogger.h"                 // for logging
 
-#include <iosfwd>                       // for ostream
 #include <TClonesArray.h>               // for TClonesArray
-#include <TList.h>                      // for TListIter, TList (ptr only)
-#include <TObjArray.h>                  // for TObjArray
 #include <TString.h>                    // for TString
 #include <TVirtualMC.h>                 // for TVirtualMC
 #include <TVirtualMCStack.h>            // for TVirtualMCStack
-
 #include <TGeoPhysicalNode.h>
 #include <TGeoManager.h>
 #include <TGeoMatrix.h>
 
-#include <stddef.h>                     // for NULL
-
-
 #include <iostream>
+
 using std::cout;
 using std::endl;
 
@@ -86,10 +74,9 @@ void Pixel::Initialize()
 
 Bool_t  Pixel::ProcessHits(FairVolume* vol)
 {
-
   /** This method is called from the MC stepping */
   //Set parameters at entrance of volume. Reset ELoss.
-  if ( TVirtualMC::GetMC()->IsTrackEntering() ) {
+  if (TVirtualMC::GetMC()->IsTrackEntering()) {
     fELoss  = 0.;
     fTime   = TVirtualMC::GetMC()->TrackTime() * 1.0e09;
     fLength = TVirtualMC::GetMC()->TrackLength();
@@ -101,14 +88,14 @@ Bool_t  Pixel::ProcessHits(FairVolume* vol)
   fELoss += TVirtualMC::GetMC()->Edep();
 
   // Create PixelPoint at exit of active volume
-  if ( TVirtualMC::GetMC()->IsTrackExiting()    ||
-       TVirtualMC::GetMC()->IsTrackStop()       ||
-       TVirtualMC::GetMC()->IsTrackDisappeared()   ) {
+  if (TVirtualMC::GetMC()->IsTrackExiting()    ||
+      TVirtualMC::GetMC()->IsTrackStop()       ||
+      TVirtualMC::GetMC()->IsTrackDisappeared()) {
     fTrackID  = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
     fVolumeID = vol->getMCid();
 
 
-    if (fELoss == 0. ) { return kFALSE; }
+    if (fELoss == 0.) { return kFALSE; }
 
     // Taking stationNr and sectorNr from string is almost effortless.
     // Simulation of 100k events with 5 pions without magnetic field takes:
@@ -138,16 +125,11 @@ Bool_t  Pixel::ProcessHits(FairVolume* vol)
 
 void Pixel::EndOfEvent()
 {
-
   fPixelPointCollection->Clear();
-
 }
-
-
 
 void Pixel::Register()
 {
-
   /** This will create a branch in the output tree called
       PixelPoint, setting the last parameter to kFALSE means:
       this collection will not be written to the file, it will exist
@@ -156,14 +138,12 @@ void Pixel::Register()
 
   FairRootManager::Instance()->Register("PixelPoint", "Pixel",
                                         fPixelPointCollection, kTRUE);
-
 }
-
 
 TClonesArray* Pixel::GetCollection(Int_t iColl) const
 {
   if (iColl == 0) { return fPixelPointCollection; }
-  else { return NULL; }
+  else { return nullptr; }
 }
 
 void Pixel::Reset()
@@ -181,22 +161,22 @@ void Pixel::ConstructGeometry()
     ConstructASCIIGeometry<PixelGeo, PixelGeoPar>(Geo, "PixelGeoPar");
 }
 
-void Pixel::ModifyGeometry() {  
-  if ( !fMisalignDetector ) {
+void Pixel::ModifyGeometry() {
+  if (!fMisalignDetector) {
     return;
   }
-  if(0==gGeoManager) {
+  if (0==gGeoManager) {
     std::cout<<" -E- No gGeoManager in PndGemDetector::Initialize()!"<<std::endl;
     return;
   }
 
   TString tName = Form("/cave/Pixel1_1");
-  cout << tName.Data() << endl;	
+  cout << tName.Data() << endl;
   TGeoPhysicalNode* tgpn = gGeoManager->MakePhysicalNode(tName.Data());
-  if ( !tgpn ) {cout << "no thpn" << endl; return;} 
+  if (!tgpn) {cout << "no thpn" << endl; return;}
   cout << "got TGPN" << endl;
   TGeoHMatrix* tghm = static_cast<TGeoHMatrix*>(tgpn->GetOriginalMatrix());
-  if ( !tghm ) {cout << "no tghm" << endl; return;}
+  if (!tghm) {cout << "no tghm" << endl; return;}
   cout << "got TGHM" << endl;
   cout << " * * *  o r i g  * * *  o r i g  * * *  o r i g  * * *  o r i g  * * * " << endl;
   tghm->Print();
@@ -206,7 +186,7 @@ void Pixel::ModifyGeometry() {
   Double_t* trans = tghm->GetTranslation();
   cout << "trans = " << trans[0] << " " << trans[1] << " " << trans[2] << endl;
   cout << " * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * " << endl;
-  for ( Int_t ic = 0 ; ic < 3 ; ic++ ) 
+  for (Int_t ic = 0 ; ic < 3 ; ic++)
     trans[ic] += 3.-ic;//gRandom->Gaus(0.,.03);
   tghm->SetTranslation(trans);
   cout << " * * * m o v e d * * * m o v e d * * * m o v e d * * * m o v e d * * * " << endl;

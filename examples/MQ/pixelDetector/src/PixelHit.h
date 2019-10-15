@@ -17,12 +17,11 @@
 
 #include "FairHit.h"     // for FairHit
 #include <Rtypes.h>      // for PixelHit::Class, ClassDef, PixelHit::Streamer
-class TVector3;  // lines 27-27
+
+class TVector3;
 
 namespace boost { namespace serialization { class access; } }
 #include <boost/serialization/base_object.hpp>
-
-class TVector3;
 
 class PixelHit : public FairHit
 {

@@ -21,6 +21,8 @@
 namespace boost { namespace serialization { class access; } }
 #include <boost/serialization/base_object.hpp>
 
+#include <vector>
+
 class PixelTrack : public FairTimeStamp
 {
   public:
@@ -29,8 +31,7 @@ class PixelTrack : public FairTimeStamp
 
     /** Constructor **/
     PixelTrack(Double_t x0 , Double_t ax , Double_t y0 , Double_t ay ,
-	       Double_t x0e, Double_t axe, Double_t y0e, Double_t aye);
-
+               Double_t x0e, Double_t axe, Double_t y0e, Double_t aye);
 
     void SetX0   (Double_t x0)  {fX0 = x0;};
     void SetAX   (Double_t ax)  {fAX = ax;};

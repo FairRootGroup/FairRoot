@@ -16,8 +16,8 @@
 #define PixelDigi_H_
 
 #include "FairTimeStamp.h"  // for FairTimeStamp
-#include <Rtypes.h>         // for PixelDigi::Class, ClassDef, PixelDigi::St...
 
+#include <Rtypes.h>         // for PixelDigi::Class, ClassDef, PixelDigi::St...
 
 class PixelDigi : public FairTimeStamp
 {

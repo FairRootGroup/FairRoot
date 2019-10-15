@@ -13,15 +13,14 @@
 #include <Rtypes.h>                     // for Int_t, Double32_t, Double_t, etc
 #include <TLorentzVector.h>             // for TLorentzVector
 #include <TVector3.h>                   // for TVector3
+
 class PixelPoint;
 class FairVolume;
 class TClonesArray;
 
 class Pixel: public FairDetector
 {
-
   public:
-
     /**      Name :  Detector Name
      *       Active: kTRUE for active detectors (ProcessHits() will be called)
      *               kFALSE for inactive detectors
@@ -81,9 +80,7 @@ class Pixel: public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
-
   private:
-
     /** Track information to be stored until the track leaves the
     active volume.
     */

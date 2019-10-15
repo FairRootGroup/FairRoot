@@ -8,7 +8,10 @@
 
 #include "runFairMQDevice.h"
 
-// MQRunSim
+#include "Pixel.h"
+#include "PixelDigitize.h"
+#include "FairOnlineSink.h"
+
 #include "FairMQSimDevice.h"
 #include "FairModule.h"
 #include "FairCave.h"
@@ -16,28 +19,28 @@
 #include "FairBoxGenerator.h"
 #include "FairParAsciiFileIo.h"
 
-#include "Pixel.h"
-#include "PixelDigitize.h"
-
-#include "FairOnlineSink.h"
-
 #include <TRandom.h>
 #include <TSystem.h>
+#include <Rtypes.h>
+#include <TObjArray.h>
+#include <TString.h>
 
 #include <string>
 #include <stdexcept>
+#include <cstdint>
+#include <cstdlib>
 
 namespace bpo = boost::program_options;
 
 void addCustomOptions(bpo::options_description& options)
 {
     options.add_options()
-        ("random-seed",          bpo::value<int64_t>    ()->default_value(0)              , "Random seed number")
-        ("transport-name",       bpo::value<std::string>()->default_value("TGeant3")      , "Transport name")
-        ("nof-events",           bpo::value<int64_t>    ()->required()                    , "Number of events to simulate")
-        ("fairroot-config-dir",  bpo::value<std::string>()->default_value("")             , "FairRoot config dir")
-        ("param-channel-name",   bpo::value<std::string>()->default_value("updateChannel"), "Parameter update channel name")
-        ("run-digi-tasks",       bpo::value<bool>       ()->default_value(false)          , "Run digi tasks")
+        ("random-seed",         bpo::value<int64_t>    ()->default_value(0)              , "Random seed number")
+        ("transport-name",      bpo::value<std::string>()->default_value("TGeant3")      , "Transport name")
+        ("nof-events",          bpo::value<int64_t>    ()->required()                    , "Number of events to simulate")
+        ("fairroot-config-dir", bpo::value<std::string>()->default_value("")             , "FairRoot config dir")
+        ("param-channel-name",  bpo::value<std::string>()->default_value("updateChannel"), "Parameter update channel name")
+        ("run-digi-tasks",      bpo::value<bool>       ()->default_value(false)          , "Run digi tasks")
     ;
 }
 

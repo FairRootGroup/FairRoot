@@ -11,8 +11,6 @@
 
 #include <TObjArray.h>
 
-#include <iostream>
-
 ClassImp(PixelGeoPar)
 
 PixelGeoPar ::PixelGeoPar(const char* name,

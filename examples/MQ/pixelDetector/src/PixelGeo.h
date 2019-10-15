@@ -9,21 +9,23 @@
 #define PIXELGEO_H
 
 #include "FairGeoSet.h"  // for FairGeoSet
+
 #include <Rtypes.h>      // for PixelGeo::Class, ClassDef, PixelGeo::Streamer
 #include <TString.h>     // for TString
 
-class  PixelGeo : public FairGeoSet
+class PixelGeo : public FairGeoSet
 {
-
   protected:
     char modName[20];  // name of module
     char eleName[20];  // substring for elements in module
+
   public:
     PixelGeo();
     ~PixelGeo() {}
     const char* getModuleName(Int_t);
     const char* getEleName(Int_t);
     inline Int_t getModNumInMod(const TString&);
+
     ClassDef(PixelGeo,1)
 };
 

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -13,68 +13,53 @@
  */
 
 #ifndef PIXELFINDHITSTASK_H
-#define PIXELFINDHITSTASK_H 
+#define PIXELFINDHITSTASK_H
 
-
-#include "PixelPoint.h"
-
-#include <list>
-#include <map>
-#include <string>
+#include <Rtypes.h>
 
 class TList;
 class TClonesArray;
 class PixelDigiPar;
 class FairGeoParSet;
 
-
-class PixelFindHitsTask 
+class PixelFindHitsTask
 {
+  public:
+    /** Default constructor **/
+    PixelFindHitsTask();
 
- public:
+    /** Destructor **/
+    virtual ~PixelFindHitsTask();
 
-  /** Default constructor **/
-  PixelFindHitsTask();
+    // MQ
+    void Exec(TClonesArray* digis, TClonesArray* hits);
+    void Exec(TList* list, TClonesArray* hits);
+    void Init(PixelDigiPar* digipar, FairGeoParSet* geopar);
 
-  /** Destructor **/
-  virtual ~PixelFindHitsTask();
+  private:
+    FairGeoParSet* fGeoParSet;
 
-// MQ
-  void Exec(TClonesArray* digis, TClonesArray* hits);
-  void Exec(TList* list, TClonesArray* hits);
-  void Init(PixelDigiPar* digipar, FairGeoParSet* geopar);
+    Int_t fNDigis;
+    Int_t fNHits;
 
- private:
+    Int_t fTNofEvents;
+    Int_t fTNofDigis;
+    Int_t fTNofHits;
 
-  FairGeoParSet* fGeoParSet;
+    Int_t fFeCols; // Colums read per Frontend
+    Int_t fFeRows; // Rows read per Frontend
+    Int_t fMaxFEperCol; // max number of Frontend elemens per column
+    Double_t fPitchX; // Pixel cell size X
+    Double_t fPitchY; // Pixel cell size Y
 
-  Int_t             fNDigis;
-  Int_t             fNHits;
+    /** Reset eventwise counters **/
+    void Reset(TClonesArray* hits);
 
-  Int_t             fTNofEvents;
-  Int_t             fTNofDigis;
-  Int_t             fTNofHits;
+    /** Finish at the end of each event **/
+    virtual void Finish();
 
-  Int_t fFeCols;            // Colums read per Frontend 
-  Int_t fFeRows;            // Rows read per Frontend
-  Int_t fMaxFEperCol;       // max number of Frontend elemens per column
-  Double_t fPitchX;         // Pixel cell size X
-  Double_t fPitchY;         // Pixel cell size Y
-  
-
-
-  /** Reset eventwise counters **/
-  void Reset(TClonesArray* hits);
-
-
-  /** Finish at the end of each event **/
-  virtual void Finish();
-
-  PixelFindHitsTask(const PixelFindHitsTask&);
-  PixelFindHitsTask& operator=(const PixelFindHitsTask&);
-
+    PixelFindHitsTask(const PixelFindHitsTask&);
+    PixelFindHitsTask& operator=(const PixelFindHitsTask&);
 };
 
 #endif
-
-

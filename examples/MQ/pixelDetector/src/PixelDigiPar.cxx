@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -14,8 +14,9 @@
 
 #include "PixelDigiPar.h"
 #include "FairParamList.h"  // for FairParamList
+
 #include <iostream>
-// -------------------------------------------------------------------------
+
 PixelDigiPar::PixelDigiPar(const char* name, const char* title, const char* context)
 : FairParGenericSet(name,title,context),
   fFeCols(0),
@@ -34,20 +35,18 @@ PixelDigiPar::PixelDigiPar(const char* name, const char* title, const char* cont
 {
   clear();
 }
-// -------------------------------------------------------------------------
 
 // -----   Destructor   ----------------------------------------------------
-PixelDigiPar::~PixelDigiPar(void) {  
+PixelDigiPar::~PixelDigiPar(void)
+{
 }
-// -------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------
 void PixelDigiPar::putParams(FairParamList* list)
 {
   if(!list) return;
   list->add("dimX", fDimX);
   list->add("dimY", fDimY);
-  
+
   list->add("threshold", fThreshold);
   list->add("noise", fNoise);
   list->add("FECols", fFeCols);
@@ -56,16 +55,13 @@ void PixelDigiPar::putParams(FairParamList* list)
   list->add("ClustRad",fRadius);
   list->add("QCloudSigma",fCSigma);
   list->add("fe_BusClock", fFeBusClock);
-  
+
   list->add("chargeconv_method", fChargeConvMethod);
-  
+
   list->add("PixelSorterCellWidth", fPixelSorterCellWidth);
   list->add("PixelSorterNumberOfCells", fPixelSorterNumberOfCells);
-
 }
-// -------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------
 Bool_t PixelDigiPar::getParams(FairParamList* list)
 {
   if (!list) return kFALSE;
@@ -84,9 +80,7 @@ Bool_t PixelDigiPar::getParams(FairParamList* list)
   if (!list->fill("PixelSorterNumberOfCells", &fPixelSorterNumberOfCells)) return kFALSE;
   return kTRUE;
 }
-// -------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------
 void PixelDigiPar::Print(Option_t*) const
 {
   std::cout<<"SDS Pixel Digitization Parameters:"<<std::endl;
@@ -101,6 +95,5 @@ void PixelDigiPar::Print(Option_t*) const
   std::cout<<"   Charge cloud sigma (cm) = "<<fCSigma<<std::endl;
   std::cout<<"   charge conv. (0:ideal, 1:TOT)    = "<<fChargeConvMethod<<std::endl;
 }
-// -------------------------------------------------------------------------
 
 ClassImp(PixelDigiPar);

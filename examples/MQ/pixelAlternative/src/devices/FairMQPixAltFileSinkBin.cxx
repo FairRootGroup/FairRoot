@@ -35,7 +35,7 @@ void FairMQPixAltFileSinkBin::Init()
 
   LOG(info) << "SHOULD CREATE THE FILE AND TREE";
 
-  fOutFile.open(fFileName,std::fstream::out|std::fstream::binary);
+  fOutFile.open(fFileName, std::fstream::out|std::fstream::binary);
 
   OnData(fInputChannelName, &FairMQPixAltFileSinkBin::StoreData);
 }

@@ -12,7 +12,7 @@
 #include "FairGeoLoader.h"              // for FairGeoLoader
 #include "FairGeoNode.h"                // for FairGeoNode
 #include "FairGeoVolume.h"              // for FairGeoVolume
-#include "FairLogger.h"                 // for FairLogLevel::INFO, etc
+#include "FairLogger.h"
 #include "FairRun.h"                    // for FairRun
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 

@@ -13,6 +13,8 @@
 // PixelDetector example
 #include "FairMQPixelTaskProcessorBin.h"
 
+#include <string>
+
 using HitFinder = FairMQPixelTaskProcessorBin<PixelFindHits>;
 
 namespace bpo = boost::program_options;
@@ -32,7 +34,7 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 {
     std::string taskname = config.GetValue<std::string>("task-name");
 
-    std::cout << "get device with setting!" << std::endl;
+    LOG(info) << "get device with setting!";
 
     if (taskname == "PixelFindHits") {
         return new HitFinder();

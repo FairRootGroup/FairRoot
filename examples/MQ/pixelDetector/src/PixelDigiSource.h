@@ -7,7 +7,7 @@
  ********************************************************************************/
 //
 //  PixelDigiSource.h
-// 
+//
 //
 //  Created by Radoslaw Karabowicz on 19.02.2016.
 //
@@ -19,67 +19,65 @@
 #include "FairSource.h"
 
 #include <TString.h>
+#include <Rtypes.h>
 
-#include <list>  
 #include <fstream>
-  
+
 class TClonesArray;
 
-class FairLogger;
-class FairRuntimeDb;
 class PixelEventHeader;
+class FairEventHeader;
 
 class PixelDigiSource : public FairSource
 {
-public:
-  PixelDigiSource(TString inputFileName="test.dat");
-  virtual ~PixelDigiSource();
-  
-  Bool_t              Init();
+  public:
+    PixelDigiSource(TString inputFileName="test.dat");
+    virtual ~PixelDigiSource();
 
-  Int_t               ReadEvent(UInt_t i=0);
-  void                Close();
-  void                Reset();
-  
-  virtual Source_Type GetSourceType() { return kFILE; }
+    Bool_t              Init();
 
-  virtual void SetParUnpackers() {}
+    Int_t               ReadEvent(UInt_t i=0);
+    void                Close();
+    void                Reset();
 
-  virtual Bool_t InitUnpackers() { return kTRUE; }
+    virtual Source_Type GetSourceType() { return kFILE; }
 
-  virtual Bool_t ReInitUnpackers() { return kTRUE; }
+    virtual void SetParUnpackers() {}
 
-  /**Check the maximum event number we can run to*/
-  virtual Int_t  CheckMaxEventNo(Int_t EvtEnd=0);
+    virtual Bool_t InitUnpackers() { return kTRUE; }
 
-  virtual void FillEventHeader(FairEventHeader* feh);
-    
-  void SetInputFileName(TString tstr) {fInputFileName = tstr;};
+    virtual Bool_t ReInitUnpackers() { return kTRUE; }
 
-  virtual Bool_t  ActivateObject(TObject** obj, const char* BrName);
+    /**Check the maximum event number we can run to*/
+    virtual Int_t  CheckMaxEventNo(Int_t EvtEnd=0);
 
-private:
-  PixelEventHeader* fEventHeader;
-  TClonesArray*     fDigis;        /** Output array of PixelDigi **/
-  Int_t             fNDigis;
-  
-  Int_t             fTNofEvents;
-  Int_t             fTNofDigis;
+    virtual void FillEventHeader(FairEventHeader* feh);
 
-  TString  fInputFileName;
-  std::ifstream fInputFile;
+    void SetInputFileName(const TString& tstr) { fInputFileName = tstr; }
 
-  Int_t    fCurrentEntryNo;
+    virtual Bool_t  ActivateObject(TObject** obj, const char* BrName);
 
-  Int_t    fRunId;
-  Int_t    fMCEntryNo;
-  Int_t    fPartNo;
+  private:
+    PixelEventHeader* fEventHeader;
+    TClonesArray*     fDigis;        /** Output array of PixelDigi **/
+    Int_t             fNDigis;
 
-  PixelDigiSource(const PixelDigiSource&);
-  PixelDigiSource& operator=(const PixelDigiSource&);
+    Int_t             fTNofEvents;
+    Int_t             fTNofDigis;
 
-  ClassDef(PixelDigiSource, 1)
+    TString  fInputFileName;
+    std::ifstream fInputFile;
+
+    Int_t    fCurrentEntryNo;
+
+    Int_t    fRunId;
+    Int_t    fMCEntryNo;
+    Int_t    fPartNo;
+
+    PixelDigiSource(const PixelDigiSource&);
+    PixelDigiSource& operator=(const PixelDigiSource&);
+
+    ClassDef(PixelDigiSource, 1)
 };
-
 
 #endif /* defined(PIXELDIGISOURCE_H_) */

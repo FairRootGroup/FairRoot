@@ -17,6 +17,8 @@
 
 #include "FairEventHeader.h"     // for FairEventHeader
 
+#include <Rtypes.h>
+
 namespace boost { namespace serialization { class access; } }
 #include <boost/serialization/base_object.hpp>
 

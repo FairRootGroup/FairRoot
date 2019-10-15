@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -15,15 +15,16 @@
 #ifndef FAIRMQPIXELSAMPLER_H_
 #define FAIRMQPIXELSAMPLER_H_
 
+#include <FairMQDevice.h>
+
 #include <string>
 #include <thread>
+#include <cstdint>
+#include <vector>
 
-#include <TClonesArray.h>
-
-#include "FairFileSource.h"
-#include "FairRunAna.h"
-
-#include <FairMQDevice.h>
+class FairSource;
+class FairRunAna;
+class TObject;
 
 class FairMQPixelSampler : public FairMQDevice
 {
@@ -31,27 +32,27 @@ class FairMQPixelSampler : public FairMQDevice
     FairMQPixelSampler();
     virtual ~FairMQPixelSampler();
 
-    void AddInputFileName  (std::string tempString) { fFileNames  .push_back(tempString); }
-    void AddInputBranchName(std::string tempString) { fBranchNames.push_back(tempString); }
-    
-    void SetMaxIndex(int64_t tempInt) {fMaxIndex=tempInt;}
+    void AddInputFileName(const std::string& tempString) { fFileNames.push_back(tempString); }
+    void AddInputBranchName(const std::string& tempString) { fBranchNames.push_back(tempString); }
 
-    void SetSource(FairSource* tempSource) {fSource = tempSource;}
+    void SetMaxIndex(int64_t tempInt) { fMaxIndex=tempInt; }
+
+    void SetSource(FairSource* tempSource) { fSource = tempSource; }
 
     void ListenForAcks();
 
-    void SetOutputChannelName(std::string tstr) {fOutputChannelName = tstr;}
-    void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
+    void SetOutputChannelName(const std::string& tstr) {fOutputChannelName = tstr;}
+    void SetAckChannelName(const std::string& tstr) {fAckChannelName = tstr;}
 
- protected:
+  protected:
     virtual bool ConditionalRun();
     virtual void PreRun();
     virtual void PostRun();
     virtual void InitTask();
-    
- private: 
-    std::string     fOutputChannelName;
-    std::string     fAckChannelName;
+
+  private:
+    std::string fOutputChannelName;
+    std::string fAckChannelName;
 
     FairRunAna*     fRunAna;
     FairSource*     fSource;
@@ -61,8 +62,8 @@ class FairMQPixelSampler : public FairMQDevice
 
     int             fEventCounter;
 
-    std::vector<std::string>     fBranchNames;
-    std::vector<std::string>     fFileNames;
+    std::vector<std::string> fBranchNames;
+    std::vector<std::string> fFileNames;
 
     FairMQPixelSampler(const FairMQPixelSampler&);
     FairMQPixelSampler& operator=(const FairMQPixelSampler&);

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -17,92 +17,74 @@
 
 #include "FairTask.h"
 
-#include "PixelTrack.h"
-
-#include <list>
-#include <map>
+#include <Rtypes.h>
 
 class TClonesArray;
 class PixelDigiPar;
+class TList;
 
 class PixelFitTracks : public FairTask
 {
+  public:
+    /** Default constructor **/
+    PixelFitTracks();
 
- public:
+    /** Standard constructor **/
+    PixelFitTracks(Int_t iVerbose);
 
-  /** Default constructor **/
-  PixelFitTracks();
+    /** Constructor with name **/
+    PixelFitTracks(const char* name, Int_t iVerbose);
 
+    /** Destructor **/
+    virtual ~PixelFitTracks();
 
-  /** Standard constructor **/
-  PixelFitTracks(Int_t iVerbose);
+    /** Execution **/
+    virtual void Exec(Option_t* opt);
 
+    virtual void GetParList(TList* tempList);
+    virtual void InitMQ    (TList* tempList);
+    virtual void ExecMQ    (TList* inputList,TList* outputList);
 
-  /** Constructor with name **/
-  PixelFitTracks(const char* name, Int_t iVerbose);
+  private:
+    PixelDigiPar* fDigiPar;
 
+    TClonesArray* fHits;  /** Input array of PixelHit **/
+    TClonesArray* fTracks;    /** Input array of PixelTrack **/
+    TClonesArray* fFitTracks; /** Output array of PixelTrack **/
 
-  /** Destructor **/
-  virtual ~PixelFitTracks();
+    Int_t         fTNofEvents;
 
+    Int_t         fNHits;
 
-  /** Execution **/
-  virtual void Exec(Option_t* opt);
+    Int_t         fNTracks;
+    Int_t         fTNofTracks;
 
-  virtual void GetParList(TList* tempList);
-  virtual void InitMQ    (TList* tempList);
-  virtual void ExecMQ    (TList* inputList,TList* outputList);
+    Int_t         fNFitTracks;
+    Int_t         fTNofFitTracks;
 
- private:
+    Double_t LinearRegression(Int_t nval, Double_t xval[], Double_t yval[],
+            Double_t& valA0, Double_t& errA0,
+            Double_t& valA1, Double_t& errA1 );
 
-  PixelDigiPar*     fDigiPar;
+    /** Get parameter containers **/
+    virtual void SetParContainers();
 
-  TClonesArray*     fHits;          /** Input array of PixelHit **/
-  TClonesArray*     fTracks;        /** Input array of PixelTrack **/
-  TClonesArray*     fFitTracks;     /** Output array of PixelTrack **/
+    /** Intialisation **/
+    virtual InitStatus Init();
 
-  Int_t             fTNofEvents;
+    /** Reinitialisation **/
+    virtual InitStatus ReInit();
 
-  Int_t             fNHits;
+    /** Reset eventwise counters **/
+    void Reset();
 
-  Int_t             fNTracks;
-  Int_t             fTNofTracks;
+    /** Finish at the end of each event **/
+    virtual void Finish();
 
-  Int_t             fNFitTracks;
-  Int_t             fTNofFitTracks;
+    PixelFitTracks(const PixelFitTracks&);
+    PixelFitTracks& operator=(const PixelFitTracks&);
 
-
-  Double_t LinearRegression(Int_t nval, Double_t xval[], Double_t yval[], 
-			    Double_t& valA0, Double_t& errA0,
-			    Double_t& valA1, Double_t& errA1 );
-
-
-  /** Get parameter containers **/
-  virtual void SetParContainers();
-
-
-  /** Intialisation **/
-  virtual InitStatus Init();
-
-
-  /** Reinitialisation **/
-  virtual InitStatus ReInit();
-
-
-  /** Reset eventwise counters **/
-  void Reset();
-
-
-  /** Finish at the end of each event **/
-  virtual void Finish();
-
-  PixelFitTracks(const PixelFitTracks&);
-  PixelFitTracks& operator=(const PixelFitTracks&);
-
-  ClassDef(PixelFitTracks,1);
-
+    ClassDef(PixelFitTracks,1);
 };
 
 #endif
-
-

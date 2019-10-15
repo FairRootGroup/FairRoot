@@ -16,53 +16,54 @@
 #ifndef FAIRMQSIMDEVICE_H_
 #define FAIRMQSIMDEVICE_H_
 
-#include <string>
-#include <TString.h>
-
 #include "FairMQRunDevice.h"
 
-class FairEventHeader;
+#include <TString.h>
+#include <Rtypes.h>
+
+#include <string>
+#include <cstdint>
+
 class FairRunSim;
 class FairField;
 class FairParIo;
 class FairPrimaryGenerator;
-class TObject;
 class TObjArray;
 class FairSink;
 
 class FairMQSimDevice : public FairMQRunDevice
 {
- public:
+  public:
     FairMQSimDevice();
-    virtual ~FairMQSimDevice();
+    virtual ~FairMQSimDevice() {}
 
-    virtual void SetParamUpdateChannelName(TString tString) { fUpdateChannelName = tString; }
+    virtual void SetParamUpdateChannelName(const TString& tString) { fUpdateChannelName = tString; }
 
     // ------ FairRunSim setters ------
-    void SetNofEvents       (int64_t nofev)                 { fNofEvents = nofev;};
-    void SetTransportName   (std::string str)               { fTransportName = str;};
-    void SetMaterials       (std::string str)               { fMaterialsFile = str;};
-    void SetMagneticField   (FairField* field)              { fMagneticField = field;};
-    void SetDetectorArray   (TObjArray* array)              { fDetectorArray = array;};
-    void SetGenerator       (FairPrimaryGenerator* primGen) { fPrimaryGenerator = primGen;};
-    void SetStoreTraj       (bool flag=true)                { fStoreTrajFlag = flag;};
-    void SetTaskArray       (TObjArray* array)              { fTaskArray = array;};
-    void SetFirstParameter  (FairParIo* par)                { fFirstParameter  = par;};
-    void SetSecondParameter (FairParIo* par)                { fSecondParameter = par;};
-    void SetUserConfig      (const TString& Config)         { fUserConfig = Config;}
-    void SetUserCuts        (const TString& Cuts)           { fUserCuts = Cuts;}
-    void SetSink            (FairSink* sink)                { fSink = sink;}
+    void SetNofEvents       (int64_t nofev)                 { fNofEvents = nofev; }
+    void SetTransportName   (const std::string& str)        { fTransportName = str; }
+    void SetMaterials       (const std::string& str)        { fMaterialsFile = str; }
+    void SetMagneticField   (FairField* field)              { fMagneticField = field; }
+    void SetDetectorArray   (TObjArray* array)              { fDetectorArray = array; }
+    void SetGenerator       (FairPrimaryGenerator* primGen) { fPrimaryGenerator = primGen; }
+    void SetStoreTraj       (bool flag=true)                { fStoreTrajFlag = flag; }
+    void SetTaskArray       (TObjArray* array)              { fTaskArray = array; }
+    void SetFirstParameter  (FairParIo* par)                { fFirstParameter  = par; }
+    void SetSecondParameter (FairParIo* par)                { fSecondParameter = par; }
+    void SetUserConfig      (const TString& Config)         { fUserConfig = Config; }
+    void SetUserCuts        (const TString& Cuts)           { fUserCuts = Cuts; }
+    void SetSink            (FairSink* sink)                { fSink = sink; }
     // ------ ---------- -------- ------
 
     virtual void SendBranches();
 
- protected:
+  protected:
     virtual void InitTask();
-    virtual void PreRun();
-    virtual void PostRun();
+    virtual void PreRun() {}
+    virtual void PostRun() {}
     virtual bool ConditionalRun();
 
- private:
+  private:
     UInt_t fSimDeviceId;
     std::string fUpdateChannelName;
 
