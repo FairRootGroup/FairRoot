@@ -45,8 +45,10 @@ target_link_libraries(${target} PUBLIC
   FairRoot::BaseMQ # Serialization policies
   FairRoot::FairTools # FairLogger
   FairRoot::ParBase
+
   FairMQ::FairMQ
-  # TODO: clean the following
+  Boost::serialization
+
   Core
   MathCore
   RIO
@@ -82,7 +84,7 @@ add_executable(ex-serialization2-sink 2-multipart/runEx2Sink.cxx)
 target_link_libraries(ex-serialization2-sink PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
 
 add_executable(ex-serialization-generate-data data_generator/runGenerateData.cxx)
-target_link_libraries(ex-serialization-generate-data PRIVATE FairRoot::ExSerialization FairMQ::FairMQ RooFitCore RooFit Core Hist Gpad FairRoot::BaseMQ)
+target_link_libraries(ex-serialization-generate-data PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
 
 # Create a directory that will hold root input/output data file
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data_io)
@@ -91,12 +93,12 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data_io)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data_generator/startSerializationGenerateData.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startSerializationGenerateData.sh)
 
 # start MQ chains
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/1-simple/startSerializationEx1.sh.in                ${CMAKE_CURRENT_BINARY_DIR}/startSerializationEx1.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/2-multipart/startSerializationEx2.sh.in             ${CMAKE_CURRENT_BINARY_DIR}/startSerializationEx2.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/1-simple/startSerializationEx1.sh.in    ${CMAKE_CURRENT_BINARY_DIR}/startSerializationEx1.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/2-multipart/startSerializationEx2.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startSerializationEx2.sh)
 
 # test scripts
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/1-simple/testSerializationEx1.sh.in                 ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx1.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/2-multipart/testSerializationEx2.sh.in              ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx2.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/1-simple/testSerializationEx1.sh.in    ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx1.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/2-multipart/testSerializationEx2.sh.in ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx2.sh)
 
 install(TARGETS
   ex-serialization1-sampler

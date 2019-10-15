@@ -1,20 +1,15 @@
 #ifndef EX2SINK_H
 #define EX2SINK_H
 
-// std
-#include <iostream>
-#include <memory>
-
-// FairRoot
-#include <FairMQDevice.h>
+#include "MyHit.h"
 #include "SerializerExample2.h"
+
 #include "BoostSerializer.h"
 
-// root
+#include <FairMQDevice.h>
+
 #include <TFile.h>
 #include <TTree.h>
-
-#include "MyHit.h"
 
 class Ex2Sink : public FairMQDevice
 {

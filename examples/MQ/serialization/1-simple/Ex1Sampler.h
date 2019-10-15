@@ -1,15 +1,16 @@
 #ifndef EX1SAMPLER_H
 #define EX1SAMPLER_H
 
-#include <FairMQDevice.h>
-#include "RootSerializer.h"
-#include <TClonesArray.h>
+#include "MyDigi.h"
 
+#include "RootSerializer.h"
+
+#include <FairMQDevice.h>
+
+#include <TClonesArray.h>
 #include <Rtypes.h>
 #include <TFile.h>
 #include <TTree.h>
-
-#include "MyDigi.h"
 
 class Ex1Sampler : public FairMQDevice
 {

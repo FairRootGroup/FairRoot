@@ -1,22 +1,18 @@
 #ifndef EX2SAMPLER_H
 #define EX2SAMPLER_H
 
-// std
-#include <iostream>
-#include <memory>
-#include <chrono>
-
-// FairRoot
-#include <FairMQDevice.h>
+#include "MyDigi.h"
 #include "SerializerExample2.h"
+
 #include "RootSerializer.h"
 
-// root
+#include <FairMQDevice.h>
+
 #include <Rtypes.h>
 #include <TFile.h>
 #include <TTree.h>
 
-#include "MyDigi.h"
+#include <chrono>
 
 class Ex2Sampler : public FairMQDevice
 {

@@ -1,21 +1,17 @@
 #ifndef EX2PROCESSOR_H
 #define EX2PROCESSOR_H
 
-// std
-#include <iostream>
-#include <memory>
-
-// FairRoot
-#include <FairMQDevice.h>
-#include <FairMQParts.h>
 #include "SerializerExample2.h"
+#include "MyDigi.h"
+#include "MyHit.h"
+
 #include "RootSerializer.h"
 #include "BoostSerializer.h"
 
-#include <TMath.h>
+#include <FairMQDevice.h>
+#include <FairMQParts.h>
 
-#include "MyDigi.h"
-#include "MyHit.h"
+#include <TMath.h>
 
 class Ex2Processor : public FairMQDevice
 {

@@ -1,15 +1,17 @@
 #ifndef EX1PROCESSOR_H
 #define EX1PROCESSOR_H
 
-#include <FairMQDevice.h>
-#include "RootSerializer.h"
-#include <TClonesArray.h>
-#include <memory>
-
-#include <TMath.h>
-
 #include "MyDigi.h"
 #include "MyHit.h"
+
+#include "RootSerializer.h"
+
+#include <FairMQDevice.h>
+
+#include <TClonesArray.h>
+#include <TMath.h>
+
+#include <memory>
 
 class Ex1Processor : public FairMQDevice
 {
@@ -39,24 +41,24 @@ class Ex1Processor : public FairMQDevice
         while (CheckCurrentState(RUNNING))
         {
             /// RECEIVE ///
-            FairMQMessagePtr msg_in(NewMessageFor("data1", 0));
-            if (Receive(msg_in, "data1") > 0)
+            FairMQMessagePtr msgIn(NewMessageFor("data1", 0));
+            if (Receive(msgIn, "data1") > 0)
             {
                 receivedMsgs++;
 
                 /// DESERIALIZE ///
                 std::unique_ptr<TClonesArray> digis(nullptr);
-                Deserialize<RootSerializer>(*msg_in, digis);
+                Deserialize<RootSerializer>(*msgIn, digis);
 
                 /// COMPUTE ///
                 TClonesArray hits = FindHits(*digis);
 
                 /// SERIALIZE ///
-                FairMQMessagePtr msg_out(NewMessageFor("data2", 0));
-                Serialize<RootSerializer>(*msg_out, &hits);
+                FairMQMessagePtr msgOut(NewMessageFor("data2", 0));
+                Serialize<RootSerializer>(*msgOut, &hits);
 
                 /// SEND ///
-                Send(msg_out, "data2");
+                Send(msgOut, "data2");
                 sentMsgs++;
 
                 if (fNumMsgs != 0)

@@ -1,19 +1,9 @@
 #ifndef BASICSERIALIZEREXAMPLE2_H
 #define BASICSERIALIZEREXAMPLE2_H
 
-#include <memory>
-#include <string>
-#include <sstream>
-
-#include <TClonesArray.h>
-#include "MyHit.h"
-
 #include <FairMQMessage.h>
 
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
 namespace boost { namespace serialization { class access; } }
-#include <boost/serialization/vector.hpp>
 
 struct Ex2Header
 {
