@@ -2,24 +2,22 @@
 
 // MQRunSim
 #include "FairMQTransportDevice.h"
-#include "FairRuntimeDb.h"
 #include "FairModule.h"
 #include "FairCave.h"
-#include "FairParRootFileIo.h"
 #include "FairParAsciiFileIo.h"
 
-#include "Pixel.h"
 #include "PixelDigitize.h"
 
 #include "FairOnlineSink.h"
-//#include "FairRootFileSink.h"
 
 #include <TRandom.h>
-#include <TRint.h>
-#include <TROOT.h>
 #include <TSystem.h>
-#include <TVirtualMC.h>
-#include <TVirtualMCApplication.h>
+#include <TObjArray.h>
+#include <TString.h>
+
+#include <vector>
+#include <string>
+#include <cstdlib>
 
 namespace bpo = boost::program_options;
 
@@ -38,7 +36,7 @@ void addCustomOptions(bpo::options_description& options)
 
 FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 {
-    gRandom->SetSeed(config.GetValue<int64_t> ("random-seed"));
+    gRandom->SetSeed(config.GetValue<int64_t>("random-seed"));
 
     TString dir = getenv("VMCWORKDIR");
     TString tutdir = dir + "/MQ/pixelDetector";
@@ -56,9 +54,9 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     if ( config.GetValue<std::string> ("running-mode") == "rr" ) {
         LOG(INFO) << "Going to request data.";
         run->RunInPullMode(false);
-    }
-    else
+    } else {
         LOG(INFO) << "Going to pull data.";
+    }
 
     //  TString outputfilename = Form("outputfile_%d.root",(int)(getpid()));
     //  FairRootFileSink* sink = new FairRootFileSink(outputfilename);

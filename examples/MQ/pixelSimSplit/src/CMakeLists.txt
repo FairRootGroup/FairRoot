@@ -47,16 +47,14 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::BaseMQ # Serialization policies
   FairRoot::FairTools # FairLogger
-  FairRoot::ParBase
-  FairRoot::GeoBase
   FairRoot::MCStack
-  FairMQ::FairMQ
+  FairRoot::ParBase
   FairRoot::Pixel
-  FairRoot::Passive
 
-  # TODO: clean the following
-  Gen
+  FairMQ::FairMQ
+
   Core
+  VMC
 )
 
 fairroot_target_root_dictionary(${target}

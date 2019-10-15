@@ -13,13 +13,20 @@
  */
 
 #include "FairMQChunkMerger.h"
-#include <FairMQLogger.h>
+#include "FairMCSplitEventHeader.h"
 
 #include "RootSerializer.h"
-
 #include "FairMCTrack.h"
 #include "FairMCPoint.h"
-#include "FairTask.h"
+
+#include <FairMQLogger.h>
+
+#include <TClonesArray.h>
+#include <TObject.h>
+
+#include <algorithm>
+#include <vector>
+#include <cstring>
 
 using namespace std;
 
@@ -35,7 +42,7 @@ FairMQChunkMerger::FairMQChunkMerger()
   , fNofReceivedMessages(0)
   , fNofSentMessages(0)
   , fNofParts(3)
-  , fMCSplitEventHeader(NULL)
+  , fMCSplitEventHeader(nullptr)
 {
 }
 
@@ -54,15 +61,15 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
     int nofExpectedParts = 1;
 
     fNofReceivedMessages++;
-    //	  dataDuplicationFlag = false;
+    // dataDuplicationFlag = false;
 
     std::vector<TClonesArray*> tcaVector;
-    for ( int ipart = 0 ; ipart < parts.Size() ; ++ipart ) {
+    for (int ipart = 0; ipart < parts.Size(); ++ipart) {
         TObject* tempObject = nullptr;
         Deserialize<RootSerializer>(*parts.At(ipart),tempObject);
 
         //        LOG(INFO) << "Got object " << tempObject->ClassName() << " named " << tempObject->GetName();
-        if ( strcmp(tempObject->GetName(),"MCEventHeader.") == 0 ) {
+        if (strcmp(tempObject->GetName(),"MCEventHeader.") == 0) {
             fMCSplitEventHeader = dynamic_cast<FairMCSplitEventHeader*>(tempObject);
             //            LOG(info) << "GOT PART [" << fMCSplitEventHeader->GetRunID() << "][" << fMCSplitEventHeader->GetEventID() << "][" << fMCSplitEventHeader->GetChunkStart() << "]";
             fEvRIPair.first  = fMCSplitEventHeader->GetEventID();
@@ -71,59 +78,55 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
             nofExpectedParts = fMCSplitEventHeader->GetNofChunks();
 
             fRet = fObjectMap.equal_range(fEvRIPair);
-            for ( MultiMapDef::iterator it = fRet.first ; it != fRet.second ; ++it ) {
+            for (auto& it = fRet.first; it != fRet.second; ++it) {
                 //              LOG(info) << "comparing " << it->second.first << " and " << fEvCOPair.first;
-                if ( it->second.first == fMCSplitEventHeader->GetChunkStart() )
+                if (it->second.first == fMCSplitEventHeader->GetChunkStart())
                     LOG(fatal) << "got part starting at " << fEvCOPair.first << " again!!!";
             }
 
-            std::map<std::pair<int,int>,int>::iterator it2;
-            it2 = fNofPartsPerEventMap.find(fEvRIPair);
-            if ( it2 == fNofPartsPerEventMap.end() ) {
+            auto it2 = fNofPartsPerEventMap.find(fEvRIPair);
+            if (it2 == fNofPartsPerEventMap.end()) {
                 fNofPartsPerEventMap[fEvRIPair] = 1;
                 nofReceivedParts = 1;
-            }
-            else {
+            } else {
                 it2->second+=1;
                 nofReceivedParts = it2->second;
             }
-        }
-        else {
+        } else {
             tcaVector.push_back(dynamic_cast<TClonesArray*>(tempObject));
         }
     }
 
     // not all parts are there yet, have to put them in buffer
-    if ( nofReceivedParts != nofExpectedParts ) {
+    if (nofReceivedParts != nofExpectedParts) {
         // LOG(info) << "not all parts are yet here (got " << nofReceivedParts << " out of " << nofExpectedParts << ")... adding to (size = " << fObjectMap.size() << ")";
         // LOG(info) << "+" << fMCSplitEventHeader->GetName() << "[" << fEvRIPair.second << "][" << fEvRIPair.first << "][" << fEvCOPair.first << "]";
-        for ( int iarray = 0 ; iarray < tcaVector.size() ; ++iarray ) {
+        for (int iarray = 0; iarray < tcaVector.size(); ++iarray) {
             LOG(debug) << "+ [" << fEvRIPair.second << "][" << fEvRIPair.first << "][" << fEvCOPair.first << "] " << tcaVector[iarray]->GetName();
             fEvCOPair.second = (dynamic_cast<TObject*>(tcaVector[iarray]));
             fObjectMap.insert(std::pair<std::pair<int,int>,std::pair<int,TObject*>>(fEvRIPair,fEvCOPair));
         }
         //        LOG(info) << "                 now we have fObjectMap (size = " << fObjectMap.size() << ")";
-        if ( printInfo)
+        if (printInfo)
             LOG(info) << ">> [" << fMCSplitEventHeader->GetRunID() << "][" << fMCSplitEventHeader->GetEventID() << "][" << fMCSplitEventHeader->GetChunkStart() << "] Received: " << fNofReceivedMessages << " // Buffered: " << fObjectMap.size() << " // Sent: " << fNofSentMessages << " <<";
-    }
-    else {
+    } else {
         // got all the parts of the event, have to combine and send message, consisting of objects from fObjectMap
         int currentEventPart = fMCSplitEventHeader->GetChunkStart();
         fRet = fObjectMap.equal_range(fEvRIPair);
         std::vector<int> trackShift;
         LOG(debug) << "- [" << fEvRIPair.second << "][" << fEvRIPair.first << "][ALL]";
-        for ( int iarray = 0 ; iarray < tcaVector.size() ; ++iarray ) {
-            if ( strcmp(tcaVector[iarray]->GetName(),"MCTrack") != 0 ) continue; //  want only MCTrack array to renumber tracks and get track shifts...
+        for (int iarray = 0; iarray < tcaVector.size(); ++iarray) {
+            if (strcmp(tcaVector[iarray]->GetName(),"MCTrack") != 0) continue; //  want only MCTrack array to renumber tracks and get track shifts...
             //  LOG(info) << "BEFORE ADDING, TCA \"" << tcaVector[iarray]->GetName() << "\" has " << tcaVector[iarray]->GetEntries() << " entries.";
             TClonesArray* arrayToAdd;
-            for ( MultiMapDef::iterator it = fRet.first ; it != fRet.second ; ++it ) {
-                if ( it->second.first == fMCSplitEventHeader->GetChunkStart() ) continue;
-                if ( strcmp(tcaVector[iarray]->GetName(),it->second.second->GetName()) == 0 ) {
+            for (auto& it = fRet.first; it != fRet.second; ++it) {
+                if (it->second.first == fMCSplitEventHeader->GetChunkStart()) continue;
+                if (strcmp(tcaVector[iarray]->GetName(),it->second.second->GetName()) == 0) {
                     trackShift.push_back(tcaVector[iarray]->GetEntries());
                     arrayToAdd = dynamic_cast<TClonesArray*>(it->second.second);
-                    for ( int iobj = 0 ; iobj < arrayToAdd->GetEntries() ; ++iobj ) {
+                    for (int iobj = 0; iobj < arrayToAdd->GetEntries(); ++iobj) {
                         FairMCTrack* temp = dynamic_cast<FairMCTrack*>(arrayToAdd->At(iobj));
-                        if ( temp->GetMotherId() >= 0 ) {
+                        if (temp->GetMotherId() >= 0) {
                             temp->SetMotherId(temp->GetMotherId()+trackShift.back());
                         }
                     }
@@ -133,19 +136,19 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
             }
         }
 
-        for ( int iarray = 0 ; iarray < tcaVector.size() ; ++iarray ) {
-            if ( strcmp(tcaVector[iarray]->GetName(),"MCTrack") == 0 ) continue; // MCTrack already done, renumber all _other_ arrays...
+        for (int iarray = 0; iarray < tcaVector.size(); ++iarray) {
+            if (strcmp(tcaVector[iarray]->GetName(),"MCTrack") == 0) continue; // MCTrack already done, renumber all _other_ arrays...
             //            LOG(info) << "BEFORE ADDING, TCA \"" << tcaVector[iarray]->GetName() << "\" has " << tcaVector[iarray]->GetEntries() << " entries.";
             int addedArray = 0;
             TClonesArray* arrayToAdd;
 
-            for ( MultiMapDef::iterator it = fRet.first ; it != fRet.second ; ++it ) {
-                if ( it->second.first == fMCSplitEventHeader->GetChunkStart() ) continue;
-                if ( strcmp(tcaVector[iarray]->GetName(),it->second.second->GetName()) == 0 ) {
+            for (auto& it = fRet.first; it != fRet.second; ++it) {
+                if (it->second.first == fMCSplitEventHeader->GetChunkStart()) continue;
+                if (strcmp(tcaVector[iarray]->GetName(),it->second.second->GetName()) == 0) {
                     int objShift = trackShift[addedArray++];
                     //     LOG(INFO) << "trying to add " << tcaVector[iarray]->GetName() << " and " << it->second.second->GetName() << "(shift = " << objShift << ")";
                     arrayToAdd = dynamic_cast<TClonesArray*>(it->second.second);
-                    for ( int iobj = 0 ; iobj < arrayToAdd->GetEntries() ; ++iobj ) {
+                    for (int iobj = 0; iobj < arrayToAdd->GetEntries(); ++iobj) {
                         FairMCPoint* temp = dynamic_cast<FairMCPoint*>(arrayToAdd->At(iobj));
                         temp->SetTrackID(temp->GetTrackID()+objShift);
                     }
@@ -165,20 +168,20 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
         Serialize<RootSerializer>(*messEH,fMCSplitEventHeader);
         partsOut.AddPart(std::move(messEH));
 
-        for ( int iarray = 0 ; iarray < tcaVector.size() ; ++iarray ) {
+        for (int iarray = 0; iarray < tcaVector.size(); ++iarray) {
             FairMQMessagePtr mess(NewMessage());
             Serialize<RootSerializer>(*mess,tcaVector[iarray]);
             partsOut.AddPart(std::move(mess));
         }
-        //        LOG(info) << "created output message with " << partsOut.Size() << " parts.";
+        // LOG(info) << "created output message with " << partsOut.Size() << " parts.";
         Send(partsOut, fOutputChannelName);
         fNofSentMessages++;
-        if ( printInfo )
+        if (printInfo)
             LOG(info) << ">> [" << fMCSplitEventHeader->GetRunID() << "][" << fMCSplitEventHeader->GetEventID() << "][" << fMCSplitEventHeader->GetChunkStart() << "] Received: " << fNofReceivedMessages << " // Buffered: " << fObjectMap.size() << " // Sent: " << fNofSentMessages << " <<";
     }
 
-    for( MultiMapDef::iterator it = fObjectMap.begin() ; it != fObjectMap.end() ; ++it ) {
-	LOG(debug) << "= [" << it->first.second << "][" << it->first.first << "][" << it->second.first << "] " << it->second.second->GetName();
+    for (auto it = fObjectMap.begin(); it != fObjectMap.end(); ++it) {
+        LOG(debug) << "= [" << it->first.second << "][" << it->first.first << "][" << it->second.first << "] " << it->second.second->GetName();
     }
     return true;
 }

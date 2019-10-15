@@ -16,17 +16,18 @@
 #ifndef FAIRMQTRANSPORTDEVICE_H_
 #define FAIRMQTRANSPORTDEVICE_H_
 
-#include <string>
-#include <TString.h>
-
 #include "FairMQRunDevice.h"
+
+#include <TString.h>
+#include <Rtypes.h>
+
+#include <string>
+#include <cstdint>
 
 class FairMCSplitEventHeader;
 class FairRunSim;
 class FairField;
 class FairParIo;
-class FairPrimaryGenerator;
-class TObject;
 class TObjArray;
 class FairSink;
 class FairMCApplication;
@@ -35,23 +36,23 @@ class TVirtualMC;
 
 class FairMQTransportDevice : public FairMQRunDevice
 {
- public:
+  public:
     FairMQTransportDevice();
     virtual ~FairMQTransportDevice();
 
     // ------ FairRunSim setters ------
-    void SetNofEvents       (int64_t nofev)                 { fNofEvents = nofev;};
-    void SetTransportName   (std::string str)               { fTransportName = str;};
-    void SetMaterials       (std::string str)               { fMaterialsFile = str;};
-    void SetMagneticField   (FairField* field)              { fMagneticField = field;};
-    void SetDetectorArray   (TObjArray* array)              { fDetectorArray = array;};
-    void SetStoreTraj       (bool flag=true)                { fStoreTrajFlag = flag;};
-    void SetTaskArray       (TObjArray* array)              { fTaskArray = array;};
-    void SetFirstParameter  (FairParIo* par)                { fFirstParameter  = par;};
-    void SetSecondParameter (FairParIo* par)                { fSecondParameter = par;};
-    void SetUserConfig      (const TString& Config)         { fUserConfig = Config;}
-    void SetUserCuts        (const TString& Cuts)           { fUserCuts = Cuts;}
-    void SetSink            (FairSink* sink)                { fSink = sink;}
+    void SetNofEvents       (int64_t nofev)          { fNofEvents = nofev;};
+    void SetTransportName   (const std::string& str) { fTransportName = str;};
+    void SetMaterials       (const std::string& str) { fMaterialsFile = str;};
+    void SetMagneticField   (FairField* field)       { fMagneticField = field;};
+    void SetDetectorArray   (TObjArray* array)       { fDetectorArray = array;};
+    void SetStoreTraj       (bool flag=true)         { fStoreTrajFlag = flag;};
+    void SetTaskArray       (TObjArray* array)       { fTaskArray = array;};
+    void SetFirstParameter  (FairParIo* par)         { fFirstParameter  = par;};
+    void SetSecondParameter (FairParIo* par)         { fSecondParameter = par;};
+    void SetUserConfig      (const TString& Config)  { fUserConfig = Config;}
+    void SetUserCuts        (const TString& Cuts)    { fUserCuts = Cuts;}
+    void SetSink            (FairSink* sink)         { fSink = sink;}
     // ------ ---------- -------- ------
 
     void SetParamUpdateChannelName(TString tString) { fUpdateChannelName = tString; }
@@ -59,7 +60,7 @@ class FairMQTransportDevice : public FairMQRunDevice
     void RunInPullMode(bool tb=true) { fRunConditional = !tb; };
     void RunInReqMode (bool tb=true) { fRunConditional = tb; };
 
- protected:
+  protected:
     bool TransportData(FairMQParts&, int);
     //  bool TransportData(FairMQMessagePtr&, int);
     virtual void Init();
@@ -68,7 +69,7 @@ class FairMQTransportDevice : public FairMQRunDevice
     virtual void PostRun();
     virtual bool ConditionalRun();
 
- private:
+  private:
     UInt_t fRunId;
     UInt_t fTransportDeviceId;
     std::string fGeneratorChannelName;
@@ -96,7 +97,7 @@ class FairMQTransportDevice : public FairMQRunDevice
     // ------ ---------- -------- ------
 
     FairMCSplitEventHeader* fMCSplitEventHeader;
-    
+
     void UpdateParameterServer();
 
     FairMQTransportDevice(const FairMQTransportDevice&);

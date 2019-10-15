@@ -16,35 +16,29 @@
 #ifndef FAIRMQPRIMARYGENERATORDEVICE_H_
 #define FAIRMQPRIMARYGENERATORDEVICE_H_
 
-#include <string>
-#include <thread>
-
-#include <TString.h>
-
 #include <FairMQDevice.h>
 
+#include <string>
+#include <thread>
+#include <cstdint>
+
 class FairMCEventHeader;
-class FairRunSim;
-class FairField;
-class FairParIo;
 class FairPrimaryGenerator;
 class TObject;
-class TObjArray;
-class FairSink;
 class FairStack;
 
 class FairMQPrimaryGeneratorDevice : public FairMQDevice
 {
- public:
+  public:
     FairMQPrimaryGeneratorDevice();
     virtual ~FairMQPrimaryGeneratorDevice();
 
-    virtual void        SendPrimaries();
+    virtual void SendPrimaries();
 
-    void SetNofEvents       (int64_t nofev)                 { fNofEvents = nofev;};
-    void SetGenerator       (FairPrimaryGenerator* primGen) { fPrimaryGenerator = primGen;};
+    void SetNofEvents (int64_t nofev) { fNofEvents = nofev;};
+    void SetGenerator (FairPrimaryGenerator* primGen) { fPrimaryGenerator = primGen;};
 
-    void SetChunkSize(int64_t ti)    { fChunkSize = ti;};
+    void SetChunkSize(int64_t ti) { fChunkSize = ti;};
 
     void RunInPushMode(bool tb=true) { fRunConditional = tb; };
     void RunInRepMode (bool tb=true) { fRunConditional = !tb; };
@@ -54,14 +48,14 @@ class FairMQPrimaryGeneratorDevice : public FairMQDevice
     void SetGeneratorChannelName(std::string tstr) {fGeneratorChannelName = tstr;}
     void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
 
- protected:
+  protected:
     bool Reply(FairMQMessagePtr&, int);
     virtual void InitTask();
     virtual void PreRun();
     virtual void PostRun();
     virtual bool ConditionalRun();
 
- private:
+  private:
     std::string fGeneratorChannelName;
     std::string fAckChannelName;
 

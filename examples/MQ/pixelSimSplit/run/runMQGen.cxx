@@ -5,12 +5,13 @@
 #include "FairBoxGenerator.h"
 #include "FairMQPrimaryGeneratorDevice.h"
 
+#include <Rtypes.h>
 #include <TRandom.h>
-#include <TRint.h>
-#include <TROOT.h>
 #include <TSystem.h>
-#include <TVirtualMC.h>
-#include <TVirtualMCApplication.h>
+#include <TString.h>
+
+#include <string>
+#include <cstdint>
 
 namespace bpo = boost::program_options;
 
@@ -34,7 +35,7 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     TString tutdir = dir + "/MQ/pixelDetector";
 
     TString tut_configdir = config.GetValue<std::string>("fairroot-config-dir");
-    if ( tut_configdir.Length() < 1 )
+    if (tut_configdir.Length() < 1)
         tut_configdir = dir + "/common/gconfig";
     gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
 
@@ -55,11 +56,11 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     if (config.GetValue<std::string> ("running-mode") == "rr") {
         LOG(INFO) << "Going to reply with data.";
         mqDevice->RunInPushMode(false);
-    }
-    else
+    } else {
         LOG(INFO) << "Going to push data.";
+    }
 
-    mqDevice->SetNofEvents(config.GetValue<int64_t> ("nof-events"));
+    mqDevice->SetNofEvents(config.GetValue<int64_t>("nof-events"));
     mqDevice->SetGenerator(primGen);
 
     return mqDevice;

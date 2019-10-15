@@ -38,8 +38,6 @@ target_link_libraries(pixel-sim-gen PRIVATE
   ${exe_dependencies}
   FairRoot::Base # FairModule, FairPrimaryGenerator
   FairRoot::Gen # FairBoxGenerator
-  FairRoot::ParBase # FairParAsciiFileIo
-  FairRoot::Passive # FairCave
   Core # TSystem
   MathCore # TRandom
 )
@@ -49,7 +47,7 @@ add_executable(pixel-sim-transport runMQTrans.cxx)
 target_link_libraries(pixel-sim-transport PRIVATE
   ${exe_dependencies}
   FairRoot::Base # FairModule, FairPrimaryGenerator
-  FairRoot::Gen # FairBoxGenerator
+  FairRoot::Pixel
   FairRoot::ParBase # FairParAsciiFileIo
   FairRoot::Passive # FairCave
   Core # TSystem

@@ -14,43 +14,31 @@
 
 #include "FairMQPrimaryGeneratorDevice.h"
 
+#include "FairMCSplitEventHeader.h"
+#include "FairMCEventHeader.h"
+#include "FairPrimaryGenerator.h"
+#include "FairStack.h"
+#include "RootSerializer.h"
+
 #include <FairMQLogger.h>
 #include <FairMQMessage.h>
 
-#include "FairMCSplitEventHeader.h"
+#include <Rtypes.h>
+#include <TClonesArray.h>
 
-#include "FairRootManager.h"
-#include "FairRunSim.h"
-#include "FairRuntimeDb.h"
-
-#include "FairModule.h"
-#include "FairPrimaryGenerator.h"
-#include "FairParRootFileIo.h"
-#include "FairParSet.h"
-#include "FairStack.h"
-
-#include "RootSerializer.h"
-
-#include <TROOT.h>
-#include <TRint.h>
-#include <TVirtualMC.h>
-#include <TVirtualMCApplication.h>
-#include <TList.h>
-#include <TObjString.h>
-#include <TObjArray.h>
+#include <utility> // move
 
 using namespace std;
 
 FairMQPrimaryGeneratorDevice::FairMQPrimaryGeneratorDevice()
-  : FairMQDevice()
-  , fRunConditional(true)
+  : fRunConditional(true)
   , fAckChannelName("")
   , fGeneratorChannelName("primariesChannel")
   , fEventCounter(0)
   , fNofEvents(10)
-  , fPrimaryGenerator(NULL)
-  , fMCEventHeader(NULL)
-  , fStack(NULL)
+  , fPrimaryGenerator(nullptr)
+  , fMCEventHeader(nullptr)
+  , fStack(nullptr)
   , fChunkSize(0)
   , fChunkPointer(0)
   , fAckListener()
@@ -59,16 +47,16 @@ FairMQPrimaryGeneratorDevice::FairMQPrimaryGeneratorDevice()
 
 void FairMQPrimaryGeneratorDevice::InitTask()
 {
-    fAckChannelName    = fConfig->GetValue<std::string>             ("ack-channel");
+    fAckChannelName = fConfig->GetValue<std::string> ("ack-channel");
 
     fStack = new FairStack();
     fMCEventHeader = new FairMCEventHeader();
     fPrimaryGenerator->SetEvent(fMCEventHeader);
     fPrimaryGenerator->Init();
 
-    if ( !fRunConditional )
+    if (!fRunConditional)
         OnData(fGeneratorChannelName, &FairMQPrimaryGeneratorDevice::Reply);
-    if ( fChunkSize < 0 )
+    if (fChunkSize < 0)
         fChunkSize = 0;
 }
 
@@ -81,7 +69,7 @@ void FairMQPrimaryGeneratorDevice::PreRun()
 
 bool FairMQPrimaryGeneratorDevice::ConditionalRun()
 {
-    if ( !fRunConditional ) return false;
+    if (!fRunConditional) return false;
     return GenerateAndSendData();
 }
 
@@ -91,13 +79,13 @@ bool FairMQPrimaryGeneratorDevice::Reply(FairMQMessagePtr& mPtr, int /*index*/)
 }
 
 bool FairMQPrimaryGeneratorDevice::GenerateAndSendData() {
-    if ( fChunkPointer == 0 ) {
+    if (fChunkPointer == 0) {
         //        LOG(INFO) << "Reseting fStack and generating new event!!!";
         fStack->Reset();
         fPrimaryGenerator->GenerateEvent(fStack);
         ++fEventCounter;
     }
-    if ( fEventCounter > fNofEvents )
+    if (fEventCounter > fNofEvents)
         return false;
 
     FairMQParts parts;
@@ -108,11 +96,11 @@ bool FairMQPrimaryGeneratorDevice::GenerateAndSendData() {
 
     FairMCSplitEventHeader* meh = new FairMCSplitEventHeader(0,fEventCounter,1,0); // RunId will be provided in the Transport from ParameterServer
     meh->SetNPrim(prims->GetEntries());
-    if ( fChunkSize != 0 ) {
+    if (fChunkSize != 0) {
         meh->SetNofChunks ((UInt_t)(prims->GetEntries()/fChunkSize));
         meh->SetChunkStart(fChunkPointer);
         meh->SetNPrim(fChunkPointer+fChunkSize);
-        if ( fChunkPointer+fChunkSize > prims->GetEntries() )
+        if (fChunkPointer+fChunkSize > prims->GetEntries())
             meh->SetNPrim(prims->GetEntries()-fChunkPointer);
     }
 
@@ -125,20 +113,18 @@ bool FairMQPrimaryGeneratorDevice::GenerateAndSendData() {
     parts.AddPart(std::move(mess));
 
     //    LOG(INFO) << "sending event " << fEventCounter << ", chunk starts at " << fChunkPointer;
-    if (Send(parts, fGeneratorChannelName) > 0)
-        {
-        }
+    if (Send(parts, fGeneratorChannelName) > 0) {
+    }
 
     int numberofparticles = (int)prims->GetEntries();
 
-    if ( fChunkSize != 0 ) { // should send events in chunks with maximum size of fChunkSize
+    if (fChunkSize != 0) { // should send events in chunks with maximum size of fChunkSize
         // the whole work should be done after
         fChunkPointer += fChunkSize;
-        if ( fChunkPointer >= numberofparticles ) { // it means that already sent all primaries from this event
+        if (fChunkPointer >= numberofparticles) { // it means that already sent all primaries from this event
             fChunkPointer = 0; // this will cause the reset of the stack and generating new event
         }
     }
-
 
     return true;
 }
@@ -152,22 +138,18 @@ void FairMQPrimaryGeneratorDevice::PostRun()
 
 void FairMQPrimaryGeneratorDevice::ListenForAcks()
 {
-  if (fAckChannelName != "")
-      {
-          Long64_t numAcks = 0;
-          do
-              {
-                  unique_ptr<FairMQMessage> ack(NewMessage());
-                  if (Receive(ack, fAckChannelName) >= 0)
-                      {
-                          LOG(info) << "RECEIVED ACK!";
-                          numAcks++;
-                      }
-              }
-          while (numAcks < fNofEvents);
+    if (fAckChannelName != "") {
+        Long64_t numAcks = 0;
+        do {
+            FairMQMessagePtr ack(NewMessage());
+            if (Receive(ack, fAckChannelName) >= 0) {
+                LOG(info) << "RECEIVED ACK!";
+                numAcks++;
+            }
+        } while (numAcks < fNofEvents);
 
-          LOG(info) << "Acknowledged " << numAcks << " messages.";
-      }
+        LOG(info) << "Acknowledged " << numAcks << " messages.";
+    }
 }
 
 FairMQPrimaryGeneratorDevice::~FairMQPrimaryGeneratorDevice()

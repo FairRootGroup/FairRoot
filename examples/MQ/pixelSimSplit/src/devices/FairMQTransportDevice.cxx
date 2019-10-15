@@ -13,38 +13,31 @@
  */
 
 #include "FairMQTransportDevice.h"
+#include "FairMCSplitEventHeader.h"
+
+#include "FairGenericStack.h"
+#include "FairMCApplication.h"
+#include "FairModule.h"
+#include "FairParSet.h"
+#include "FairRunSim.h"
+#include "FairRuntimeDb.h"
+#include "FairTask.h"
+#include "RootSerializer.h"
 
 #include <FairMQLogger.h>
 #include <FairMQMessage.h>
 
-#include "FairOnlineSink.h"
-
-#include "FairMCSplitEventHeader.h"
-#include "FairRootManager.h"
-#include "FairRunSim.h"
-#include "FairRuntimeDb.h"
-
-#include "FairGenericStack.h"
-#include "FairMCApplication.h"
-
-#include "FairEventHeader.h"
-#include "FairModule.h"
-#include "FairParRootFileIo.h"
-#include "FairParSet.h"
-#include "FairTask.h"
-
-#include "RootSerializer.h"
-
 #include <TClonesArray.h>
-#include <TROOT.h>
-#include <TRint.h>
-#include <TVirtualMC.h>
-#include <TVirtualMCApplication.h>
+#include <TCollection.h>
 #include <TList.h>
-#include <TObjString.h>
 #include <TObjArray.h>
+#include <TObject.h>
+#include <TVirtualMC.h>
 
-#include <dlfcn.h>
+#include <cstring> // for strcmp
+#include <iostream>
+#include <vector>
+#include <dlfcn.h> // dlopen
 
 using namespace std;
 
@@ -54,27 +47,27 @@ FairMQTransportDevice::FairMQTransportDevice()
   , fRunId(0)
   , fTransportDeviceId(0)
   , fGeneratorChannelName("primariesChannel")
-  , fRunSim(NULL)
+  , fRunSim(nullptr)
   , fNofEvents(1)
   , fTransportName("TGeant3")
   , fMaterialsFile("")
-  , fMagneticField(NULL)
-  , fDetectorArray(NULL)
+  , fMagneticField(nullptr)
+  , fDetectorArray(nullptr)
   , fStoreTrajFlag(false)
-  , fTaskArray(NULL)
-  , fFirstParameter(NULL)
-  , fSecondParameter(NULL)
-  , fSink(NULL)
-  , fVMC(NULL)
-  , fStack(NULL)
-  , fMCApplication(NULL)
-  , fMCSplitEventHeader(NULL)
+  , fTaskArray(nullptr)
+  , fFirstParameter(nullptr)
+  , fSecondParameter(nullptr)
+  , fSink(nullptr)
+  , fVMC(nullptr)
+  , fStack(nullptr)
+  , fMCApplication(nullptr)
+  , fMCSplitEventHeader(nullptr)
 {
 }
 
 void FairMQTransportDevice::Init()
 {
-    if ( !fRunConditional )
+    if (!fRunConditional)
         OnData(fGeneratorChannelName, &FairMQTransportDevice::TransportData);
 }
 
@@ -88,39 +81,36 @@ void FairMQTransportDevice::InitTask()
 
     fRunSim->SetSink(fSink);
 
-    if ( fFirstParameter || fSecondParameter ) {
+    if (fFirstParameter || fSecondParameter) {
         FairRuntimeDb *rtdb=fRunSim->GetRuntimeDb();
-        if ( fFirstParameter )
+        if (fFirstParameter)
             rtdb->setFirstInput(fFirstParameter);
-        if ( fSecondParameter )
+        if (fSecondParameter)
             rtdb->setSecondInput(fSecondParameter);
     }
 
     fRunSim->SetName(fTransportName.data());
 
-    if ( fUserConfig.Length() > 0 )
+    if (fUserConfig.Length() > 0)
         fRunSim->SetUserConfig(fUserConfig);
-    if ( fUserCuts.Length() > 0 )
+    if (fUserCuts.Length() > 0)
         fRunSim->SetUserCuts(fUserCuts);
-    // ------------------------------------------------------------------------
 
     // -----   Create media   -------------------------------------------------
     fRunSim->SetMaterials(fMaterialsFile.data());
-    // ------------------------------------------------------------------------
 
     // -----   Magnetic field   -------------------------------------------
-    if ( fMagneticField )
+    if (fMagneticField)
         fRunSim->SetField(fMagneticField);
-    // --------------------------------------------------------------------
 
     // -----   Create geometry   ----------------------------------------------
-    for ( int idet = 0 ; idet < fDetectorArray->GetEntries() ; idet++ ) {
+    for (int idet = 0 ; idet < fDetectorArray->GetEntries() ; idet++) {
         fRunSim->AddModule(dynamic_cast<FairModule*>(fDetectorArray->At(idet)));
     }
 
     std::vector<std::string> detectorLibraries = fConfig->GetValue<std::vector<std::string>>("detector-library");
 
-    for ( unsigned int ilib = 0 ; ilib < detectorLibraries.size() ; ilib++ ) {
+    for (unsigned int ilib = 0 ; ilib < detectorLibraries.size() ; ilib++) {
         LOG(info) << " -----> library \"" << detectorLibraries.at(ilib) << "\"";
 
         void* handle = dlopen(detectorLibraries.at(ilib).c_str(), RTLD_LAZY);
@@ -152,8 +142,6 @@ void FairMQTransportDevice::InitTask()
         //    dlclose(handle);
     }
 
-    // ------------------------------------------------------------------------
-
     // -----   Negotiate the run number   -------------------------------------
     // -----      via the fUpdateChannelName   --------------------------------
     // -----      ask the fParamMQServer   ------------------------------------
@@ -163,36 +151,32 @@ void FairMQTransportDevice::InitTask()
                                     askForRunNumber->length(),
                                     [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
                                     askForRunNumber));
-    std::unique_ptr<FairMQMessage> rep(NewMessage());
+    FairMQMessagePtr rep(NewMessage());
 
-    if (Send(req, fUpdateChannelName) > 0)
-        {
-            if (Receive(rep, fUpdateChannelName) > 0)
-                {
-                    std::string repString = string(static_cast<char*>(rep->GetData()), rep->GetSize());
-                    LOG(INFO) << " -> " << repString.data();
-                    fRunId = stoi(repString);
-                    fMCSplitEventHeader->SetRunID(fRunId);
-                    repString = repString.substr(repString.find_first_of('_')+1,repString.length());
-                    fTransportDeviceId = stoi(repString);
-                    LOG(INFO) << "runId = " << fRunId << "  ///  fTransportDeviceId = " << fTransportDeviceId;
-                }
+    if (Send(req, fUpdateChannelName) > 0) {
+        if (Receive(rep, fUpdateChannelName) > 0) {
+            std::string repString = string(static_cast<char*>(rep->GetData()), rep->GetSize());
+            LOG(INFO) << " -> " << repString.data();
+            fRunId = stoi(repString);
+            fMCSplitEventHeader->SetRunID(fRunId);
+            repString = repString.substr(repString.find_first_of('_')+1,repString.length());
+            fTransportDeviceId = stoi(repString);
+            LOG(INFO) << "runId = " << fRunId << "  ///  fTransportDeviceId = " << fTransportDeviceId;
         }
-    // ------------------------------------------------------------------------
+    }
 
     fRunSim->SetStoreTraj(fStoreTrajFlag);
 
     // -----   Set tasks   ----------------------------------------------------
-    if ( fTaskArray ) {
-        for ( int itask = 0 ; itask < fTaskArray->GetEntries() ; itask++ ) {
+    if (fTaskArray) {
+        for (int itask = 0 ; itask < fTaskArray->GetEntries() ; itask++) {
             fRunSim->AddTask(dynamic_cast<FairTask*>(fTaskArray->At(itask)));
         }
     }
-    // ------------------------------------------------------------------------
+
     // -----   Initialize simulation run   ------------------------------------
     //    fRunSim->SetRunId(fRunId); // run n simulations with same run id - offset the event number
     fRunSim->Init();
-    // ------------------------------------------------------------------------
 
     fVMC           = TVirtualMC::GetMC();
     fMCApplication = FairMCApplication::Instance();
@@ -211,7 +195,7 @@ void FairMQTransportDevice::PreRun()
 
 bool FairMQTransportDevice::ConditionalRun()
 {
-    if ( !fRunConditional ) return false;
+    if (!fRunConditional) return false;
 
     std::string* requestString = new string("RequestData");
     FairMQMessagePtr req(NewMessage(const_cast<char*>(requestString->c_str()),
@@ -221,13 +205,11 @@ bool FairMQTransportDevice::ConditionalRun()
     FairMQParts parts;
     //    FairMQMessagePtr rep(NewMessage());
 
-    if (Send(req, fGeneratorChannelName) > 0)
-        {
-            if (Receive(parts, fGeneratorChannelName) > 0)
-                {
-                    return TransportData(parts,0);
-                }
+    if (Send(req, fGeneratorChannelName) > 0) {
+        if (Receive(parts, fGeneratorChannelName) > 0) {
+            return TransportData(parts,0);
         }
+    }
     return false;
 }
 
@@ -245,7 +227,7 @@ bool FairMQTransportDevice::TransportData(FairMQParts& mParts, int /*index*/)
 {
     TClonesArray*         chunk = nullptr;
     FairMCSplitEventHeader* meh = nullptr;
-    for ( int ipart = 0 ; ipart < mParts.Size() ; ipart++ ) {
+    for (int ipart = 0 ; ipart < mParts.Size() ; ipart++) {
         TObject* obj = nullptr;
         Deserialize<RootSerializer>(*mParts.At(ipart),obj);
         if      (strcmp(obj->GetName(),"MCEvent") == 0)
@@ -253,7 +235,7 @@ bool FairMQTransportDevice::TransportData(FairMQParts& mParts, int /*index*/)
         else if (strcmp(obj->GetName(),"TParticles") == 0)
             chunk = dynamic_cast<TClonesArray*>(obj);
     }
-    if ( chunk != nullptr ) {
+    if (chunk != nullptr) {
         fStack->SetParticleArray(chunk,meh->GetChunkStart(),meh->GetNPrim());
         fMCSplitEventHeader->SetRECC(fRunId,meh->GetEventID(),meh->GetNofChunks(),meh->GetChunkStart());
         fVMC->ProcessRun(1);
@@ -271,12 +253,11 @@ void FairMQTransportDevice::UpdateParameterServer()
     // send the parameters to be saved
     TIter next(rtdb->getListOfContainers());
     FairParSet* cont;
-    while ((cont=static_cast<FairParSet*>(next())))
-        {
-            std::string ridString = std::string("RUNID") + std::to_string(fRunSim->GetRunId()) + std::string("RUNID") + std::string(cont->getDescription());
-            cont->setDescription(ridString.data());
-            SendObject(cont,fUpdateChannelName);
-        }
+    while ((cont=static_cast<FairParSet*>(next()))) {
+        std::string ridString = std::string("RUNID") + std::to_string(fRunSim->GetRunId()) + std::string("RUNID") + std::string(cont->getDescription());
+        cont->setDescription(ridString.data());
+        SendObject(cont,fUpdateChannelName);
+    }
 
     LOG(info) << "FairMQTransportDevice::UpdateParameterServer() finished";
 }
