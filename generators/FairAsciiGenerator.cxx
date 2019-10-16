@@ -14,21 +14,16 @@
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 #include "FairLogger.h"
 
-#include <stddef.h>                     // for NULL
+#include <fstream>
 #include <climits>                      // for INT_MAX
 
-// -----   Default constructor   ------------------------------------------
 FairAsciiGenerator::FairAsciiGenerator()
   :FairGenerator(),
-   fInputFile(NULL),
+   fInputFile(nullptr),
    fFileName("")
 {
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   -----------------------------------------
 FairAsciiGenerator::FairAsciiGenerator(const char* fileName)
   :FairGenerator(),
    fInputFile(0),
@@ -37,35 +32,25 @@ FairAsciiGenerator::FairAsciiGenerator(const char* fileName)
   //  fFileName  = fileName;
   LOG(info) << "FairAsciiGenerator: Opening input file " << fileName;
   fInputFile = new std::ifstream(fFileName);
-  if ( ! fInputFile->is_open() ) {
+  if (! fInputFile->is_open()) {
     LOG(fatal) << "Cannot open input file.";
   }
 
   // fPDG=TDatabasePDG::Instance();
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Destructor   ---------------------------------------------------
 FairAsciiGenerator::~FairAsciiGenerator()
 {
   CloseInput();
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Public method ReadEvent   --------------------------------------
 Bool_t FairAsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
-
   // Check for input file
-  if ( ! fInputFile->is_open() ) {
+  if (! fInputFile->is_open()) {
     LOG(error) << "FairAsciiGenerator: Input file not open!";
     return kFALSE;
   }
-
 
   // Define event variable to be read from file
   Int_t ntracks = 0, eventID = 0;
@@ -81,7 +66,7 @@ Bool_t FairAsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   *fInputFile >> eventID >>  vx >>  vy >>  vz;
 
   // If end of input file is reached : close it and abort run
-  if ( fInputFile->eof() ) {
+  if (fInputFile->eof()) {
     LOG(info) << "FairAsciiGenerator: End of input file reached ";
     CloseInput();
     return kFALSE;
@@ -101,30 +86,21 @@ Bool_t FairAsciiGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
     // Give track to PrimaryGenerator
     primGen->AddTrack(pdgID, px, py, pz, vx, vy, vz);
-
   }
-
 
   return kTRUE;
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Private method CloseInput   ------------------------------------
 void FairAsciiGenerator::CloseInput()
 {
-  if ( fInputFile ) {
-    if ( fInputFile->is_open() ) {
+  if (fInputFile) {
+    if (fInputFile->is_open()) {
       LOG(info) << "FairAsciiGenerator: Closing input file " << fFileName;
       fInputFile->close();
     }
     delete fInputFile;
-    fInputFile = NULL;
+    fInputFile = nullptr;
   }
 }
-// ------------------------------------------------------------------------
-
 
 ClassImp(FairAsciiGenerator)
-

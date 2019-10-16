@@ -14,38 +14,31 @@
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 #include "FairLogger.h"
 
-#include <iosfwd>                       // for ostream
 #include <TF1.h>                        // for TF1
 #include <TRandom.h>                    // for TRandom, gRandom
 
-#include <algorithm>                    // for max
-#include <sstream>                      // for stringstream
+#include <algorithm> // max
 
-using std::max;
-
-// -----   Default constructor   ------------------------------------------
 FairEvtGenGenerator::FairEvtGenGenerator()
   : FairGenerator(),
     fFileName(""),
-    fInputFile(NULL),
+    fInputFile(nullptr),
     fGasmode(0),
     fRsigma (0.),
-    fDensityFunction(NULL)
+    fDensityFunction(nullptr)
 {
 }
-// ------------------------------------------------------------------------
 
-// -----   Standard constructor   -----------------------------------------
 FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName)
   :FairGenerator ("EvtGen", fileName),
    fFileName(fileName),
-   fInputFile(NULL),
+   fInputFile(nullptr),
    fGasmode(0),
    fRsigma (0.),
    fDensityFunction(0)
 {
   LOG(info) << "FairEvtGenGenerator: Opening input file " << fileName;
-  if ((fInputFile = fopen(fFileName,"r"))==NULL)
+  if ((fInputFile = fopen(fFileName,"r"))==nullptr)
     //  fInputFile = new ifstream(fFileName);
     //  if ( ! fInputFile->is_open() )
   {
@@ -54,42 +47,29 @@ FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName)
 
   // fPDG=TDatabasePDG::Instance();
 }
-// ------------------------------------------------------------------------
 
-
-// -----   Gas mode constructor   -----------------------------------------
 FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName, Double_t Rsigma, TF1* DensityFunction)
   :FairGenerator ("EvtGen", fileName),
    fFileName(fileName),
-   fInputFile(NULL),
+   fInputFile(nullptr),
    fGasmode(1),
    fRsigma (Rsigma),
    fDensityFunction(DensityFunction)
 {
   LOG(info) << "FairEvtGenGenerator: Opening input file " << fileName;
-  if ((fInputFile = fopen(fFileName,"r"))==NULL) {
+  if ((fInputFile = fopen(fFileName,"r"))==nullptr) {
     LOG(fatal) << "Cannot open input file.";
   }
-
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Destructor   ---------------------------------------------------
 FairEvtGenGenerator::~FairEvtGenGenerator()
 {
   delete fDensityFunction;
   if(fInputFile) { fclose(fInputFile); }
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Public method ReadEvent   --------------------------------------
 Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
-
   // Check for input file
   if (!fInputFile) {
     // if ( ! fInputFile->is_open() ) {
@@ -126,8 +106,8 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
       ncols += fscanf(fInputFile,"%d %d %d %d %d %d %d %g %f %f %f %f %f %f %f", &nLine, &pdgID, &nDecay, &nM1, &nM2, &nDF, &nDL, &fPx, &fPy, &fPz, &fE, &fT, &fVx, &fVy, &fVz);
 //  LOG(info) << nLine << "\t" << pdgID << "\t" << nDecay << "\t" << nM1 << "\t" << nM2 << "\t" << nDF << "\t" << nDL <<
       //  "\t" << fPx << "\t" << fPy << "\t" << fPz << "\t" << fE << "\t" << fT << "\t" << fVx << "\t" << fVy << "\t" << fVz;
-      max_nr = max(max_nr, nDF);
-      max_nr = max(max_nr, nDL);
+      max_nr = std::max(max_nr, nDF);
+      max_nr = std::max(max_nr, nDL);
       if ((nDF==-1) && (nDL==-1)) {
 
         /* Check if fGasmode is set */
@@ -173,11 +153,7 @@ Bool_t FairEvtGenGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   return kTRUE;
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Private method CloseInput   ------------------------------------
 void FairEvtGenGenerator::CloseInput()
 {
   if ( fInputFile ) {
@@ -189,11 +165,8 @@ void FairEvtGenGenerator::CloseInput()
       fclose(fInputFile);
     }
     // delete fInputFile;
-    fInputFile = NULL;
+    fInputFile = nullptr;
   }
 }
-// ------------------------------------------------------------------------
-
 
 ClassImp(FairEvtGenGenerator)
-

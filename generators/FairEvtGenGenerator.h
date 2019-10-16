@@ -78,10 +78,8 @@
  Derived from FairGenerator.
 **/
 
-
 #ifndef FAIR_EVTGENGENERATOR_H
 #define FAIR_EVTGENGENERATOR_H
-
 
 #include "FairGenerator.h"              // for FairGenerator
 
@@ -94,12 +92,9 @@ class TF1;
 
 class FairEvtGenGenerator : public FairGenerator
 {
-
   public:
-
     /** Default constructor without arguments should not be used. **/
     FairEvtGenGenerator();
-
 
     /** Standard constructor.
      ** @param fileName The input file name
@@ -110,10 +105,8 @@ class FairEvtGenGenerator : public FairGenerator
      **/
     FairEvtGenGenerator(const char* fileName, Double_t Rsigma, TF1* DensityFunction);
 
-
     /** Destructor. **/
     virtual ~FairEvtGenGenerator();
-
 
     /** Reads on event from the input file and pushes the tracks onto
      ** the stack. Abstract method in base class.
@@ -121,10 +114,7 @@ class FairEvtGenGenerator : public FairGenerator
      **/
     virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
-
-
   private:
-
     //ifstream* fInputFile;             //! Input file stream
     const Char_t* fFileName;            //! Input file Name
     FILE* fInputFile;                   //! Input file pointer
@@ -136,17 +126,15 @@ class FairEvtGenGenerator : public FairGenerator
     int    fGasmode;
     double fRsigma;
 
-
     /** PDG data base */
 
-//  TDatabasePDG *fPDG; //!
+    // TDatabasePDG *fPDG; //!
     TF1* fDensityFunction;
 
     FairEvtGenGenerator(const FairEvtGenGenerator&);
     FairEvtGenGenerator& operator=(const FairEvtGenGenerator&);
 
     ClassDef(FairEvtGenGenerator,1);
-
 };
 
 #endif

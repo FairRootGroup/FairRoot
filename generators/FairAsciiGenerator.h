@@ -25,7 +25,6 @@
  Derived from FairGenerator.
 **/
 
-
 #ifndef FAIR_ASCIIGENERATOR_H
 #define FAIR_ASCIIGENERATOR_H
 
@@ -34,28 +33,21 @@
 #include <iosfwd>                       // for ifstream
 #include <Rtypes.h>                     // for FairAsciiGenerator::Class, etc
 
-#include <fstream>                      // for ifstream
-
 class FairPrimaryGenerator;
 
 class FairAsciiGenerator : public FairGenerator
 {
-
   public:
-
     /** Default constructor without arguments should not be used. **/
     FairAsciiGenerator();
-
 
     /** Standard constructor.
      ** @param fileName The input file name
      **/
     FairAsciiGenerator(const char* fileName);
 
-
     /** Destructor. **/
     virtual ~FairAsciiGenerator();
-
 
     /** Reads on event from the input file and pushes the tracks onto
      ** the stack. Abstract method in base class.
@@ -63,13 +55,9 @@ class FairAsciiGenerator : public FairGenerator
      **/
     virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
-
-
   private:
-
     std::ifstream* fInputFile;               //! Input file stream
     const Char_t* fFileName;            //! Input file Name
-
 
     /** Private method CloseInput. Just for convenience. Closes the
      ** input file properly. Called from destructor and from ReadEvent. **/
@@ -80,10 +68,9 @@ class FairAsciiGenerator : public FairGenerator
 
     /** PDG data base */
 
-//  TDatabasePDG *fPDG; //!
+    // TDatabasePDG *fPDG; //!
 
     ClassDef(FairAsciiGenerator,1);
-
 };
 
 #endif

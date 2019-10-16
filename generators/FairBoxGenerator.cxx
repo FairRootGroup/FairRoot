@@ -34,8 +34,11 @@
 #include <TParticlePDG.h>
 #include <TDatabasePDG.h>
 #include <TMath.h>
+#include <TNamed.h>
 
-// ------------------------------------------------------------------------
+#include <cmath> // for cos, acos
+#include <cstdio> // for printf
+
 FairBoxGenerator::FairBoxGenerator() :
   FairGenerator(),
   fPDGType(0),fMult(0),fPDGMass(0),fPtMin(0),fPtMax(0),
@@ -49,7 +52,6 @@ FairBoxGenerator::FairBoxGenerator() :
   // Default constructor
 }
 
-// ------------------------------------------------------------------------
 FairBoxGenerator::FairBoxGenerator(Int_t pdgid, Int_t mult) :
   FairGenerator(),
   fPDGType(pdgid),fMult(mult),fPDGMass(0),fPtMin(0),fPtMax(0),
@@ -61,10 +63,9 @@ FairBoxGenerator::FairBoxGenerator(Int_t pdgid, Int_t mult) :
   fPointVtxIsSet(0),fBoxVtxIsSet(0),fDebug(0), fEkinRangeIsSet(0)
 {
   // Constructor. Set default kinematics limits
-  SetPhiRange  ();
+  SetPhiRange();
 }
 
-// ------------------------------------------------------------------------
 FairBoxGenerator::FairBoxGenerator(const FairBoxGenerator& rhs) :
   FairGenerator(rhs),
   fPDGType(rhs.fPDGType),fMult(rhs.fMult),fPDGMass(rhs.fPDGMass),
@@ -84,7 +85,6 @@ FairBoxGenerator::FairBoxGenerator(const FairBoxGenerator& rhs) :
   // Copy constructor
 }
 
-// ------------------------------------------------------------------------
 FairBoxGenerator& FairBoxGenerator::operator=(const FairBoxGenerator& rhs)
 {
   // Assignment operator
@@ -134,7 +134,6 @@ FairBoxGenerator& FairBoxGenerator::operator=(const FairBoxGenerator& rhs)
   return *this;
 }
 
-// ------------------------------------------------------------------------
 Bool_t  FairBoxGenerator::Init()
 {
   // Initialize generator
@@ -183,7 +182,6 @@ Bool_t  FairBoxGenerator::Init()
   return kTRUE;
 }
 
-// ------------------------------------------------------------------------
 Bool_t FairBoxGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
   // Generate one event: produce primary particles emitted from one vertex.
@@ -244,16 +242,11 @@ Bool_t FairBoxGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
 }
 
-// ------------------------------------------------------------------------
 FairGenerator* FairBoxGenerator::CloneGenerator() const
 {
   // Clone for worker (used in MT mode only)
 
   return new FairBoxGenerator(*this);
 }
-
-
-// ------------------------------------------------------------------------
-
 
 ClassImp(FairBoxGenerator)

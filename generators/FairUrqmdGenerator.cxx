@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -15,7 +15,6 @@
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 #include "FairLogger.h"                 // for logging
 
-#include <iosfwd>                       // for ostream, ifstream
 #include <TDatabasePDG.h>               // for TDatabasePDG
 #include <TLorentzVector.h>             // for TLorentzVector
 #include <TMath.h>                      // for Sqrt, sqrt
@@ -23,43 +22,39 @@
 #include <TString.h>                    // for TString, operator+
 #include <TVector3.h>                   // for TVector3
 
-#include <stdlib.h>                     // for getenv
+#include <cstdlib>                     // for getenv
 #include <climits>                      // for INT_MAX
 #include <fstream>                      // IWYU pragma: keep for ifstream
+#include <cmath> // sqrt
 
-// -----   Default constructor   ------------------------------------------
 FairUrqmdGenerator::FairUrqmdGenerator()
   :FairGenerator(),
-   fInputFile(NULL),
+   fInputFile(nullptr),
    fParticleTable(),
-   fFileName(NULL)
+   fFileName(nullptr)
 {
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   -----------------------------------------
 FairUrqmdGenerator::FairUrqmdGenerator(const char* fileName)
   :FairGenerator(),
-   fInputFile(NULL),
+   fInputFile(nullptr),
    fParticleTable(),
    fFileName(fileName)
 {
   //  fFileName = fileName;
   LOG(info) << "FairUrqmdGenerator: Opening input file " << fileName;
   fInputFile = fopen(fFileName, "r");
-  if ( ! fInputFile ) { 
-    LOG(fatal) << "Cannot open input file."; 
+  if ( ! fInputFile ) {
+    LOG(fatal) << "Cannot open input file.";
   }
   ReadConversionTable();
 }
-// ------------------------------------------------------------------------
+
 FairUrqmdGenerator::FairUrqmdGenerator(const char* fileName,  const char* conversion_table)
-:FairGenerator(),
-fInputFile(NULL),
-fParticleTable(),
-fFileName(fileName)
+  :FairGenerator(),
+  fInputFile(nullptr),
+  fParticleTable(),
+  fFileName(fileName)
 {
     //  fFileName = fileName;
     LOG(info) << "FairUrqmdGenerator: Opening input file " << fileName;
@@ -69,23 +64,17 @@ fFileName(fileName)
     }
     ReadConversionTable(conversion_table);
 }
-// ------------------------------------------------------------------------
 
-
-
-
-// -----   Destructor   ---------------------------------------------------
 FairUrqmdGenerator::~FairUrqmdGenerator()
 {
   //  LOG(debug) << "Enter Destructor of FairUrqmdGenerator";
   if ( fInputFile ) {
     fclose(fInputFile);
-    fInputFile = NULL;
+    fInputFile = nullptr;
   }
   fParticleTable.clear();
   //  LOG(debug) << "Leave Destructor of FairUrqmdGenerator";
 }
-// ------------------------------------------------------------------------
 
 namespace
 {
@@ -100,11 +89,8 @@ namespace
 
 }
 
-
-// -----   Public method ReadEvent   --------------------------------------
 Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
-
   // ---> Check for input file
   if ( ! fInputFile ) {
     LOG(error) << "FairUrqmdGenerator: Input file not open! ";
@@ -131,7 +117,7 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   if ( feof(fInputFile) ) {
     LOG(info) << "FairUrqmdGenerator : End of input file reached.";
     fclose(fInputFile);
-    fInputFile = NULL;
+    fInputFile = nullptr;
     return kFALSE;
   }
   if ( read[0] != 'U' ) {
@@ -184,7 +170,7 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   Double_t gammaCM = TMath::Sqrt( 1. / ( 1. - betaCM*betaCM) );
 
   LOG(info) << "FairUrqmdGenerator: Event " << evnr << ",  b = " << b
-	    << " fm,  multiplicity " << ntracks  << ", ekin: " 
+	    << " fm,  multiplicity " << ntracks  << ", ekin: "
 	    << ekin;
 
   // Set event id and impact parameter in MCEvent if not yet done
@@ -194,7 +180,6 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
     event->SetB(b);
     event->MarkSet(kTRUE);
   }
-
 
   // ---> Loop over tracks in the current event
   for(int itrack=0; itrack<ntracks; itrack++) {
@@ -247,15 +232,11 @@ Bool_t FairUrqmdGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
     // Give track to PrimaryGenerator
     primGen->AddTrack(pdgID, px, py, pz, 0., 0., 0.);
-
   }
 
   return kTRUE;
 }
-// ------------------------------------------------------------------------
 
-
-// -----   Public method ReadEvent   --------------------------------------
 Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
 {
   if (count<=0) { return kTRUE; }
@@ -277,7 +258,7 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
     if ( feof(fInputFile) ) {
       LOG(info) << "FairUrqmdGenerator : End of input file reached.";
       fclose(fInputFile);
-      fInputFile = NULL;
+      fInputFile = nullptr;
       return kFALSE;
     }
     if ( read[0] != 'U' ) {
@@ -331,12 +312,9 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
   }
   return kTRUE;
 }
-// ------------------------------------------------------------------------
 
-// -----   Private method ReadConverisonTable   ---------------------------
 void FairUrqmdGenerator::ReadConversionTable(TString conversion_table)
 {
-    
   TString work      = getenv("VMCWORKDIR");
   TString fileName;
 
@@ -345,15 +323,15 @@ void FairUrqmdGenerator::ReadConversionTable(TString conversion_table)
   }else{
     fileName= conversion_table.Data();
   }
-      
+
   std::ifstream* pdgconv = new std::ifstream(fileName.Data());
-  
+
   if (!pdgconv->good()) {
     LOG(fatal) << "Could not open Urqmd->PDG input file " << fileName;
   }
 
   Int_t index = 0;
-   
+
   Int_t pdgId = 0;
 
   while ( ! pdgconv->eof() ) {
@@ -369,7 +347,6 @@ void FairUrqmdGenerator::ReadConversionTable(TString conversion_table)
 	    << "UrQMD loaded";
 
 }
-// ------------------------------------------------------------------------
 
 void FairUrqmdGenerator::CheckReturnValue(Int_t retval)
 {

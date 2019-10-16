@@ -45,15 +45,14 @@ target_link_directories(${target} PUBLIC
 )
 
 target_link_libraries(${target} PUBLIC
-  FairRoot::FairTools
   FairRoot::Base # FairPrimaryGenerator, FairGenerator, FairIon, FairParticle, FairRunSim
-  # TODO: clean the following
-  # needed: Rtypes, TRandom, TParticlePDG, TDatabasePDG, TMath, TF1, TParticle, TObjArray, TVector3, TLorentzVector
+  FairRoot::FairTools
+
   Core
   EG
   MathCore
+  Hist
   Physics
-  RIO
 )
 
 fairroot_target_root_dictionary(${target}

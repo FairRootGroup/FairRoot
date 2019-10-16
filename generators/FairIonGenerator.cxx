@@ -17,32 +17,24 @@
 #include "FairRunSim.h"                 // for FairRunSim
 #include "FairLogger.h"                 // for logging
 
-#include <iosfwd>                       // for ostream
 #include <TDatabasePDG.h>               // for TDatabasePDG
 #include <TObjArray.h>                  // for TObjArray
 #include <TParticle.h>                  // for TParticle
 #include <TParticlePDG.h>               // for TParticlePDG
 
-#include <stdio.h>                      // for NULL, sprintf
+#include <cstdio>                      // for sprintf
 
-// -----   Initialsisation of static variables   --------------------------
 Int_t FairIonGenerator::fgNIon = 0;
-// ------------------------------------------------------------------------
 
-
-
-// -----   Default constructor   ------------------------------------------
 FairIonGenerator::FairIonGenerator()
   :FairGenerator(),
    fMult(0),
    fPx(0), fPy(0), fPz(0),
    fVx(0), fVy(0), fVz(0),
-   fIon(NULL),  fQ(0)
+   fIon(nullptr),  fQ(0)
 {
-//  LOG(warn) << "FairIonGenerator: "
-//               << " Please do not use the default constructor! ";
+  // LOG(warn) << "FairIonGenerator: Please do not use the default constructor!";
 }
-// ------------------------------------------------------------------------
 
 FairIonGenerator::FairIonGenerator(const Char_t* ionName, Int_t mult,
                                    Double_t px, Double_t py, Double_t pz,
@@ -51,10 +43,8 @@ FairIonGenerator::FairIonGenerator(const Char_t* ionName, Int_t mult,
    fMult(mult),
    fPx(px), fPy(py), fPz(pz),
    fVx(vx), fVy(vy), fVz(vz),
-   fIon(NULL),  fQ(0)
-
+   fIon(nullptr),  fQ(0)
 {
-
   FairRunSim* fRun=FairRunSim::Instance();
   TObjArray* UserIons=fRun->GetUserDefIons();
   TObjArray* UserParticles=fRun->GetUserDefParticles();
@@ -69,7 +59,6 @@ FairIonGenerator::FairIonGenerator(const Char_t* ionName, Int_t mult,
     fVx   = vx;
     fVy   = vy;
     fVz   = vz;
-
   } else {
     part= static_cast<FairParticle*>(UserParticles->FindObject(ionName));
     if(part) {
@@ -87,13 +76,8 @@ FairIonGenerator::FairIonGenerator(const Char_t* ionName, Int_t mult,
   if(fIon==0 && part==0 ) {
     LOG(fatal) << "Ion or Particle is not defined !";
   }
-
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Default constructor   ------------------------------------------
 FairIonGenerator::FairIonGenerator(Int_t z, Int_t a, Int_t q, Int_t mult,
                                    Double_t px, Double_t py, Double_t pz,
                                    Double_t vx, Double_t vy, Double_t vz)
@@ -101,8 +85,7 @@ FairIonGenerator::FairIonGenerator(Int_t z, Int_t a, Int_t q, Int_t mult,
    fMult(mult),
    fPx(Double_t(a)*px), fPy(Double_t(a)*py), fPz(Double_t(a)*pz),
    fVx(vx), fVy(vy), fVz(vz),
-   fIon(NULL),  fQ(0)
-
+   fIon(nullptr),  fQ(0)
 {
   fgNIon++;
   /*
@@ -124,7 +107,6 @@ FairIonGenerator::FairIonGenerator(Int_t z, Int_t a, Int_t q, Int_t mult,
     run->AddNewIon(fIon);
   }
 }
-//_________________________________________________________________________
 
 FairIonGenerator::FairIonGenerator(const FairIonGenerator& rhs)
   :FairGenerator(rhs),
@@ -143,41 +125,27 @@ FairIonGenerator::FairIonGenerator(const FairIonGenerator& rhs)
   }
 }
 
-// -----   Destructor   ---------------------------------------------------
 FairIonGenerator::~FairIonGenerator()
 {
 // if (fIon) delete fIon;
 }
-//_________________________________________________________________________
 
-
-
-// -----   Public method SetExcitationEnergy   ----------------------------
 void FairIonGenerator::SetExcitationEnergy(Double_t eExc)
 {
   fIon->SetExcEnergy(eExc);
 }
-//_________________________________________________________________________
 
-
-
-// -----   Public method SetMass   ----------------------------------------
 void FairIonGenerator::SetMass(Double_t mass)
 {
   fIon->SetMass(mass);
 }
-//_________________________________________________________________________
 
-
-
-// -----   Public method ReadEvent   --------------------------------------
 Bool_t FairIonGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
-
-// if ( ! fIon ) {
-//   LOG(warn) << "FairIonGenerator: No ion defined! ";
-//   return kFALSE;
-// }
+  // if ( ! fIon ) {
+  //   LOG(warn) << "FairIonGenerator: No ion defined! ";
+  //   return kFALSE;
+  // }
 
   TParticlePDG* thisPart =
     TDatabasePDG::Instance()->GetParticle(fIon->GetName());
@@ -200,19 +168,13 @@ Bool_t FairIonGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   }
 
   return kTRUE;
-
 }
 
-//_____________________________________________________________________________
-
-// ------------------------------------------------------------------------
 FairGenerator* FairIonGenerator::CloneGenerator() const
 {
   // Clone for worker (used in MT mode only)
 
   return new FairIonGenerator(*this);
 }
-
-//_____________________________________________________________________________
 
 ClassImp(FairIonGenerator)

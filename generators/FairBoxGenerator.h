@@ -54,45 +54,37 @@ class FairBoxGenerator : public FairGenerator
     FairBoxGenerator(Int_t pdgid, Int_t mult=1);
 
     /** Destructor **/
-    virtual ~FairBoxGenerator() {};
+    virtual ~FairBoxGenerator() {}
 
     /** Modifiers **/
-    void SetPDGType      (Int_t pdg)  {fPDGType = pdg;  };
+    void SetPDGType(Int_t pdg) { fPDGType = pdg; }
 
-    void SetMultiplicity (Int_t mult) {fMult    = mult; };
+    void SetMultiplicity(Int_t mult) { fMult = mult; }
 
-    void SetPRange(Double32_t pmin=0   , Double32_t pmax=10)
-    {fPMin=pmin; fPMax=pmax; fPRangeIsSet=kTRUE;}
+    void SetPRange(Double32_t pmin=0, Double32_t pmax=10) { fPMin=pmin; fPMax=pmax; fPRangeIsSet=kTRUE; }
 
-    void SetPtRange      (Double32_t ptmin=0   , Double32_t ptmax=10)
-    {fPtMin=ptmin; fPtMax=ptmax; fPtRangeIsSet=kTRUE;};
+    void SetPtRange(Double32_t ptmin=0, Double32_t ptmax=10) { fPtMin=ptmin; fPtMax=ptmax; fPtRangeIsSet=kTRUE; }
 
-    void SetEkinRange    (Double32_t kmin=0   , Double32_t kmax=10)
-    {fEkinMin=kmin; fEkinMax=kmax; fEkinRangeIsSet=kTRUE;}
+    void SetEkinRange(Double32_t kmin=0, Double32_t kmax=10) { fEkinMin=kmin; fEkinMax=kmax; fEkinRangeIsSet=kTRUE; }
 
-    void SetPhiRange     (Double32_t phimin=0  , Double32_t phimax=360)
-    {fPhiMin=phimin; fPhiMax=phimax;};
+    void SetPhiRange(Double32_t phimin=0, Double32_t phimax=360) { fPhiMin=phimin; fPhiMax=phimax; }
 
-    void SetEtaRange     (Double32_t etamin=-5 , Double32_t etamax=7)
-    {fEtaMin=etamin; fEtaMax=etamax; fEtaRangeIsSet=kTRUE;};
+    void SetEtaRange(Double32_t etamin=-5, Double32_t etamax=7) { fEtaMin=etamin; fEtaMax=etamax; fEtaRangeIsSet=kTRUE; }
 
-    void SetYRange       (Double32_t ymin=-5   , Double32_t ymax=7)
-    {fYMin=ymin; fYMax=ymax; fYRangeIsSet=kTRUE;};
+    void SetYRange(Double32_t ymin=-5, Double32_t ymax=7) { fYMin=ymin; fYMax=ymax; fYRangeIsSet=kTRUE; }
 
-    void SetThetaRange   (Double32_t thetamin=0, Double32_t thetamax=90)
-    {fThetaMin=thetamin; fThetaMax=thetamax; fThetaRangeIsSet=kTRUE;};
+    void SetThetaRange(Double32_t thetamin=0, Double32_t thetamax=90) { fThetaMin=thetamin; fThetaMax=thetamax; fThetaRangeIsSet=kTRUE; }
 
-    void SetCosTheta   ()
-    {fCosThetaIsSet=kTRUE;};
+    void SetCosTheta() { fCosThetaIsSet=kTRUE; }
 
-    void SetXYZ   (Double32_t x=0, Double32_t y=0, Double32_t z=0) {
+    void SetXYZ(Double32_t x=0, Double32_t y=0, Double32_t z=0) {
       fX=x;
       fY=y;
       fZ=z;
       fPointVtxIsSet=kTRUE;
     }
 
-    void SetBoxXYZ (Double32_t x1=0, Double32_t y1=0, Double32_t x2=0, Double32_t y2=0, Double32_t z=0) {
+    void SetBoxXYZ(Double32_t x1=0, Double32_t y1=0, Double32_t x2=0, Double32_t y2=0, Double32_t z=0) {
       fX1=x1;
       fY1=y1;
       fX2=x2;
@@ -147,8 +139,6 @@ class FairBoxGenerator : public FairGenerator
     Bool_t     fEkinRangeIsSet;      // True if kinetic energy range is set
 
     ClassDef(FairBoxGenerator,4);
-
 };
-
 
 #endif

@@ -13,7 +13,6 @@
 
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 
-// -----   Default constructor   ------------------------------------------
 FairParticleGenerator::FairParticleGenerator()
   : FairGenerator(),
     fPDGType(-1),
@@ -24,14 +23,9 @@ FairParticleGenerator::FairParticleGenerator()
     fVx(0),
     fVy(0),
     fVz(0)
-
 {
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   -----------------------------------------
 FairParticleGenerator::FairParticleGenerator(Int_t pdgid, Int_t mult,
     Double32_t px, Double32_t py,
     Double32_t pz, Double32_t vx,
@@ -45,41 +39,25 @@ FairParticleGenerator::FairParticleGenerator(Int_t pdgid, Int_t mult,
     fVx(vx),
     fVy(vy),
     fVz(vz)
-
 {
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Public method SetM<omentum   -----------------------------------
-void FairParticleGenerator::SetMomentum(Double32_t px, Double32_t py,
-                                        Double32_t pz)
+void FairParticleGenerator::SetMomentum(Double32_t px, Double32_t py, Double32_t pz)
 {
   fPx = px;
   fPy = py;
   fPz = pz;
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Public method SetVertex   --------------------------------------
-void FairParticleGenerator::SetVertex(Double32_t vx, Double32_t vy,
-                                      Double32_t vz)
+void FairParticleGenerator::SetVertex(Double32_t vx, Double32_t vy, Double32_t vz)
 {
   fVx = vx;
   fVy = vy;
   fVz = vz;
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Public method ReadEvent   --------------------------------------
 Bool_t FairParticleGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
-
   // Check for particle type
   if ( fPDGType == -1 ) {
     Fatal("FairParticleGenerator","PDG code not defined.");
@@ -91,10 +69,6 @@ Bool_t FairParticleGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   }
 
   return kTRUE;
-
 }
-// ------------------------------------------------------------------------
-
 
 ClassImp(FairParticleGenerator)
-

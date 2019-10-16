@@ -26,12 +26,9 @@ class FairPrimaryGenerator;
 
 class FairIonGenerator : public FairGenerator
 {
-
   public:
-
     /** Default constructor **/
     FairIonGenerator();
-
 
     /** Constructor with ion name
       ** For the generation of ions with pre-defined FairIon
@@ -45,7 +42,6 @@ class FairIonGenerator : public FairGenerator
     FairIonGenerator(const Char_t* ionName, Int_t mult, Double_t px,
                      Double_t py, Double_t pz,  Double_t vx = 0,
                      Double_t vy = 0, Double_t vz = 0);
-
 
     /** Default constructor
      ** For the generation of ions with atomic number z and mass number a.
@@ -63,16 +59,13 @@ class FairIonGenerator : public FairGenerator
                      Double_t py, Double_t pz,  Double_t vx = 0,
                      Double_t vy = 0, Double_t vz = 0);
 
-
     /** Destructor **/
     virtual ~FairIonGenerator();
-
 
     /** Modifiers **/
     void SetCharge(Int_t charge) {fQ=charge;}
     void SetExcitationEnergy(Double_t eExc);
     void SetMass(Double_t mass);
-
 
     /** Method ReadEvent
      ** Generates <mult> of the specified ions and hands hem to the
@@ -84,7 +77,6 @@ class FairIonGenerator : public FairGenerator
     virtual FairGenerator* CloneGenerator() const;
 
   private:
-
     static Int_t fgNIon;     //! Number of the instance of this class
     Int_t    fMult;          // Multiplicity per event
     Double_t fPx, fPy, fPz;  // Momentum components [GeV] per nucleon
@@ -96,10 +88,6 @@ class FairIonGenerator : public FairGenerator
     FairIonGenerator& operator=(const FairIonGenerator&);
 
     ClassDef(FairIonGenerator,1)
-
 };
 
-
 #endif
-
-

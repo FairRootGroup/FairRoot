@@ -25,17 +25,15 @@
  ** momentum is required, not momentum per nucleon.
 **/
 
-
 #ifndef FAIRSHIELDGENERATOR_H
 #define FAIRSHIELDGENERATOR_H 1
 
 #include "FairGenerator.h"              // for FairGenerator
 
-#include <iosfwd>                       // for ifstream
 #include <Rtypes.h>                     // for FairShieldGenerator::Class, etc
 #include <TString.h>                    // for TString
 
-#include <fstream>                      // for ifstream
+#include <iosfwd>                       // for ifstream
 #include <map>                          // for map
 
 class TDatabasePDG;
@@ -44,22 +42,17 @@ class FairIon;
 
 class FairShieldGenerator : public FairGenerator
 {
-
   public:
-
     /** Default constructor without arguments should not be used. **/
     FairShieldGenerator();
-
 
     /** Standard constructor.
      ** @param fileName The input file name
      **/
     FairShieldGenerator(const char* fileName);
 
-
     /** Destructor. **/
     virtual ~FairShieldGenerator();
-
 
     /** Reads on event from the input file and pushes the tracks onto
      ** the stack. Abstract method in base class.
@@ -67,25 +60,18 @@ class FairShieldGenerator : public FairGenerator
      **/
     virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
-
-
   private:
-
     std::ifstream*      fInputFile;          //! Input file stream
     const Char_t*  fFileName;           //! Input file Name
     TDatabasePDG*  fPDG;                //!  PDG database
-
 
     /** Private method CloseInput. Just for convenience. Closes the
      ** input file properly. Called from destructor and from ReadEvent. **/
     void CloseInput();
 
-
     /** Private method RegisterIons. Goes through the input file and registers
      ** any ion needed. **/
     Int_t RegisterIons();
-
-
 
     /** STL map from ion name to FairIon **/
     std::map<TString, FairIon*> fIonMap;       //!
@@ -94,7 +80,6 @@ class FairShieldGenerator : public FairGenerator
     FairShieldGenerator& operator=(const FairShieldGenerator&);
 
     ClassDef(FairShieldGenerator,1);
-
 };
 
 #endif

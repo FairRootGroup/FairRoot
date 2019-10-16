@@ -19,37 +19,30 @@
 #include <TDatabasePDG.h>               // for TDatabasePDG
 #include <TParticlePDG.h>               // for TParticlePDG
 
-#include <stdio.h>                      // for NULL, sprintf
+#include <cstdio>                      // for sprintf
 #include <utility>                      // for pair
 #include <climits>                      // for INT_MAX
+#include <fstream>                      // for ifstream
 
-using std::map;
-
-// -----   Default constructor   ------------------------------------------
 FairShieldGenerator::FairShieldGenerator()
   :FairGenerator(),
-   fInputFile(NULL),
-   fFileName(NULL),
-   fPDG(NULL),
+   fInputFile(nullptr),
+   fFileName(nullptr),
+   fPDG(nullptr),
    fIonMap()
 {
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   -----------------------------------------
 FairShieldGenerator::FairShieldGenerator(const char* fileName)
   :FairGenerator(),
-   fInputFile(NULL),
+   fInputFile(nullptr),
    fFileName(fileName),
    fPDG(TDatabasePDG::Instance()),
    fIonMap()
 {
-
   LOG(info) << "FairShieldGenerator: Opening input file " << fileName;
   fInputFile = new std::ifstream(fFileName);
-  if ( ! fInputFile->is_open() ) {
+  if (!fInputFile->is_open()) {
     LOG(fatal) << "Cannot open input file.";
   }
   LOG(info) << "FairShieldGenerator: Looking for ions...";
@@ -59,29 +52,19 @@ FairShieldGenerator::FairShieldGenerator(const char* fileName)
   LOG(info) << "FairShieldGenerator: Reopening input file " << fileName;
   fInputFile = new std::ifstream(fFileName);
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Destructor   ---------------------------------------------------
 FairShieldGenerator::~FairShieldGenerator()
 {
   CloseInput();
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Public method ReadEvent   --------------------------------------
 Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
-
   // Check for input file
-  if ( ! fInputFile->is_open() ) {
+  if (!fInputFile->is_open()) {
     LOG(error) << "FairShieldGenerator: Input file not open!";
     return kFALSE;
   }
-
 
   // Define event variable to be read from file
   Int_t    eventId = 0;
@@ -106,7 +89,7 @@ Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
 
   // If end of input file is reached : close it and abort run
-  if ( fInputFile->eof() ) {
+  if (fInputFile->eof()) {
     LOG(info) << "FairShieldGenerator: End of input file reached ";
     CloseInput();
     return kFALSE;
@@ -122,13 +105,13 @@ Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
     *fInputFile >> iPid >> iMass >> iCharge >> px >> py >> pz;
 
     // Case ion
-    if ( iPid == 1000 ) {
+    if (iPid == 1000) {
       char ionName[20];
       sprintf(ionName, "Ion_%d_%d", iMass, iCharge);
       TParticlePDG* part = fPDG->GetParticle(ionName);
-      if ( ! part ) {
+      if (!part) {
         LOG(warn) << "FairShieldGenerator::ReadEvent: Cannot find "
-		     << ionName << " in database!";
+                   << ionName << " in database!";
         continue;
       }
       pdgType = part->PdgCode();
@@ -139,59 +122,48 @@ Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   }
 
-
   return kTRUE;
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Private method CloseInput   ------------------------------------
 void FairShieldGenerator::CloseInput()
 {
-  if ( fInputFile ) {
-    if ( fInputFile->is_open() ) {
+  if (fInputFile) {
+    if (fInputFile->is_open()) {
       LOG(info) << "FairShieldGenerator: Closing input file " << fFileName;
       fInputFile->close();
     }
     delete fInputFile;
-    fInputFile = NULL;
+    fInputFile = nullptr;
   }
 }
-// ------------------------------------------------------------------------
 
-
-
-// -----   Private method RegisterIons   ----------------------------------
 Int_t FairShieldGenerator::RegisterIons()
 {
-
   Int_t nIons = 0;
   Int_t eventId, nTracks, iPid, iMass, iCharge;
   Double_t pBeam, b, px, py, pz;
   fIonMap.clear();
 
-  while ( ! fInputFile->eof()) {
+  while (!fInputFile->eof()) {
 
     *fInputFile >> eventId;
     *fInputFile >> nTracks;
     if (nTracks < 0 || nTracks > (INT_MAX-1)) LOG(fatal) << "Error reading the number of events from event header.";
     *fInputFile >> pBeam >> b;
-    if ( fInputFile->eof() ) { continue; }
+    if (fInputFile->eof()) { continue; }
     for (Int_t iTrack=0; iTrack<nTracks; iTrack++) {
       *fInputFile >> iPid >> iMass >> iCharge >> px >> py >> pz;
-      if ( iPid == 1000 ) { // ion
+      if (iPid == 1000) { // ion
         char buffer[20];
         sprintf(buffer, "Ion_%d_%d", iMass, iCharge);
         TString ionName(buffer);
-        if ( fIonMap.find(ionName) == fIonMap.end() ) { // new ion
+        if (fIonMap.find(ionName) == fIonMap.end()) { // new ion
           FairIon* ion = new FairIon(ionName, iCharge, iMass, iCharge);
           fIonMap[ionName] = ion;
           nIons++;
         }  // new ion
       }    // ion
     }      // track loop
-
   }        // event loop
 
   FairRunSim* run = FairRunSim::Instance();
@@ -202,12 +174,5 @@ Int_t FairShieldGenerator::RegisterIons()
 
   return nIons;
 }
-// ------------------------------------------------------------------------
-
-
-
-
-
 
 ClassImp(FairShieldGenerator)
-
