@@ -23,42 +23,42 @@ set_tests_properties(ex_sim_tutorial2 PROPERTIES
 
 add_test(ex_sim_tutorial2_create_digis ${CMAKE_CURRENT_BINARY_DIR}/create_digis.sh)
 set_tests_properties(ex_sim_tutorial2_create_digis PROPERTIES
-  DEPENDS tutorial2
+  DEPENDS ex_sim_tutorial2
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
 )
 
 add_test(ex_sim_tutorial2_read_digis ${CMAKE_CURRENT_BINARY_DIR}/read_digis.sh)
 set_tests_properties(ex_sim_tutorial2_read_digis PROPERTIES
-  DEPENDS tutorial2_create_digis
+  DEPENDS ex_sim_tutorial2_create_digis
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
 )
 
 add_test(ex_sim_tutorial2_run_background ${CMAKE_CURRENT_BINARY_DIR}/run_background.sh)
 set_tests_properties(ex_sim_tutorial2_run_background PROPERTIES
-  DEPENDS tutorial2_read_digis
+  DEPENDS ex_sim_tutorial2_read_digis
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
 )
 
 add_test(ex_sim_tutorial2_run_signal1 ${CMAKE_CURRENT_BINARY_DIR}/run_signal.sh 1 10)
 set_tests_properties(ex_sim_tutorial2_run_signal1 PROPERTIES
-  DEPENDS tutorial2_run_background
+  DEPENDS ex_sim_tutorial2_run_background
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
 )
 
 add_test(ex_sim_tutorial2_run_signal2 ${CMAKE_CURRENT_BINARY_DIR}/run_signal.sh 2 20)
 set_tests_properties(ex_sim_tutorial2_run_signal2 PROPERTIES
-  DEPENDS tutorial2_run_signal1
+  DEPENDS ex_sim_tutorial2_run_signal1
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
 )
 
 add_test(ex_sim_tutorial2_create_digis_mixed ${CMAKE_CURRENT_BINARY_DIR}/create_digis_mixed.sh)
 set_tests_properties(ex_sim_tutorial2_create_digis_mixed PROPERTIES
-  DEPENDS tutorial2_run_signal2
+  DEPENDS ex_sim_tutorial2_run_signal2
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
 )

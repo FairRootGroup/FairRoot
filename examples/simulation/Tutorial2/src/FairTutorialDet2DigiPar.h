@@ -13,43 +13,33 @@
 #ifndef FAIRTUTORIALDET2DIGIPAR_H
 #define FAIRTUTORIALDET2DIGIPAR_H
 
-
 #include "FairParGenericSet.h"
 
-#include <TObject.h>
-#include <TObjArray.h>
-#include <TArrayF.h>
+#include <Rtypes.h>
 #include <TArrayI.h>
 
-class FairParIo;
 class FairParamList;
-
+class TArrayF;
 
 class FairTutorialDet2DigiPar : public FairParGenericSet
 {
-
   public:
-
     /** Standard constructor **/
     FairTutorialDet2DigiPar(const char* name    = "FairTutorialDet2DigiPar",
                             const char* title   = "Tutorial Det digi parameters",
                             const char* context = "Default");
 
-
     /** Destructor **/
     virtual ~FairTutorialDet2DigiPar();
 
-
     /** Initialisation from input device**/
-    //virtual Bool_t init(FairParIo* input);
-
+    // virtual Bool_t init(FairParIo* input);
 
     /** Output to file **/
-    //  virtual Int_t write(FairParIo* output);
+    // virtual Int_t write(FairParIo* output);
 
     //  virtual void print();
     virtual void printparams();
-
 
     /** Reset all parameters **/
     virtual void clear();
@@ -58,7 +48,6 @@ class FairTutorialDet2DigiPar : public FairParGenericSet
     Bool_t getParams(FairParamList*);
 
   private:
-
     TArrayF* ftutdetdigipar;  //
     TArrayI ftutdetdigiparsector; //
     Int_t ftutdetdigiparstation; //
@@ -67,14 +56,6 @@ class FairTutorialDet2DigiPar : public FairParGenericSet
     FairTutorialDet2DigiPar& operator=(const FairTutorialDet2DigiPar&);
 
     ClassDef(FairTutorialDet2DigiPar,1);
-
-
 };
 
-
 #endif
-
-
-
-
-

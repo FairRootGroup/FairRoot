@@ -10,12 +10,15 @@
 
 #include "FairContFact.h"
 
-class FairContainer;
+#include <Rtypes.h>
+
+class FairParSet;
 
 class FairTutorialDet2ContFact : public FairContFact
 {
   private:
     void setAllContainers();
+
   public:
     FairTutorialDet2ContFact();
     ~FairTutorialDet2ContFact() {}

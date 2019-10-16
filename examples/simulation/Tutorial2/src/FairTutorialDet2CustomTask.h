@@ -10,13 +10,16 @@
 // -----              Created 25.09.17 by S.Wenzel                     ------
 // --------------------------------------------------------------------------
 
-
 #ifndef FAIRTUTORIALDET2CUSTOMTASK_H
 #define FAIRTUTORIALDET2CUSTOMTASK_H
 
-
 #include "FairTask.h"
-#include "FairTutorialDet2Point.h"
+
+#include <Rtypes.h>
+
+#include <vector>
+
+class CustomClass;
 
 class FairTutorialDet2CustomTask : public FairTask
 {

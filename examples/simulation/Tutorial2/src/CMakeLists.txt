@@ -49,12 +49,13 @@ target_link_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::FairTools # FairLogger
+  FairRoot::GeoBase # FairContFact
   FairRoot::MCStack
-  FairRoot::Gen
+  FairRoot::ParBase # FairContFact
 
-  # TODO: clean this
   Core
-  Geom
+  Physics
+  VMC
 )
 
 fairroot_target_root_dictionary(${target}

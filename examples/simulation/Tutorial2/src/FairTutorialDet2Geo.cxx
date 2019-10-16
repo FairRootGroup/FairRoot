@@ -1,26 +1,24 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairTutorialDet2Geo.h"
-#include "FairGeoNode.h"
+
+#include <cstdio>
 
 ClassImp(FairTutorialDet2Geo)
 
-// -----   Default constructor   -------------------------------------------
 FairTutorialDet2Geo::FairTutorialDet2Geo()
   : FairGeoSet()
 {
   // Constructor
-  fName="tutdet";
-  maxSectors=0;
-  maxModules=10;
+  fName = "tutdet";
+  maxSectors = 0;
+  maxModules = 10;
 }
-
-// -------------------------------------------------------------------------
 
 const char* FairTutorialDet2Geo::getModuleName(Int_t m)
 {
@@ -29,13 +27,13 @@ const char* FairTutorialDet2Geo::getModuleName(Int_t m)
       ASCII file should start with TutorialDet otherwise they will
       not be constructed
   */
-  sprintf(modName,"tutdet%i",m+1);
+  sprintf(modName, "tutdet%i", m + 1);
   return modName;
 }
 
 const char* FairTutorialDet2Geo::getEleName(Int_t m)
 {
   /** Returns the element name of Det number m */
-  sprintf(eleName,"tutdet%i",m+1);
+  sprintf(eleName, "tutdet%i", m + 1);
   return eleName;
 }

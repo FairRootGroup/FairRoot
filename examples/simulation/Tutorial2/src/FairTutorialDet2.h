@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRTUTORIALDET2_H
@@ -10,19 +10,22 @@
 
 #include "FairDetector.h"
 
-#include <TVector3.h>
-#include <TLorentzVector.h>
 #include "FairTutorialDet2Point.h"
 
-class FairVolume;
+#include <Rtypes.h>
+#include <TVector3.h>
+#include <TLorentzVector.h>
+
+#include <vector>
+
+class FairModule;
 class FairTutorialDet2Geo;
+class FairVolume;
 class TClonesArray;
 
 class FairTutorialDet2: public FairDetector
 {
-
   public:
-
     /**      Name :  Detector Name
      *       Active: kTRUE for active detectors (ProcessHits() will be called)
      *               kFALSE for inactive detectors
@@ -54,8 +57,6 @@ class FairTutorialDet2: public FairDetector
 
     /**      Create the detector geometry        */
     void ConstructGeometry();
-
-
 
     /**      This method is an example of how to add your own point
      *       of type FairTutorialDet2Point to the clones array
@@ -100,7 +101,7 @@ class FairTutorialDet2: public FairDetector
 
     TClonesArray*  fFairTutorialDet2PointCollection;
 
-    /** alternative output based on standard containers 
+    /** alternative output based on standard containers
         just to demonstrate that we can pass non TClonesArray/TObject data
     */
     using Det2PointContainer = std::vector<CustomClass>;

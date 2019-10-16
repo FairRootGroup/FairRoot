@@ -10,28 +10,29 @@
 
 #include "FairParGenericSet.h"
 
+#include <Rtypes.h>
+
 class TObjArray;
 class FairParamList;
 
-class FairTutorialDet2GeoPar       : public FairParGenericSet
+class FairTutorialDet2GeoPar : public FairParGenericSet
 {
   public:
+    /** List of FairGeoNodes for sensitive  volumes */
+    TObjArray* fGeoSensNodes;
 
     /** List of FairGeoNodes for sensitive  volumes */
-    TObjArray*      fGeoSensNodes;
+    TObjArray* fGeoPassNodes;
 
-    /** List of FairGeoNodes for sensitive  volumes */
-    TObjArray*      fGeoPassNodes;
-
-    FairTutorialDet2GeoPar(const char* name="FairTutorialDet2GeoPar",
-                           const char* title="FairTutorialDet2 Geometry Parameters",
-                           const char* context="TestDefaultContext");
+    FairTutorialDet2GeoPar(const char* name = "FairTutorialDet2GeoPar",
+                           const char* title = "FairTutorialDet2 Geometry Parameters",
+                           const char* context = "TestDefaultContext");
     ~FairTutorialDet2GeoPar(void);
     void clear(void);
     void putParams(FairParamList*);
     Bool_t getParams(FairParamList*);
-    TObjArray* GetGeoSensitiveNodes() {return fGeoSensNodes;}
-    TObjArray* GetGeoPassiveNodes()   {return fGeoPassNodes;}
+    TObjArray* GetGeoSensitiveNodes() { return fGeoSensNodes; }
+    TObjArray* GetGeoPassiveNodes()   { return fGeoPassNodes; }
 
   private:
     FairTutorialDet2GeoPar(const FairTutorialDet2GeoPar&);

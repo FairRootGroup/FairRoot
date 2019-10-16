@@ -10,12 +10,14 @@
 
 #include "FairGeoSet.h"
 
-class  FairTutorialDet2Geo : public FairGeoSet
-{
+#include <Rtypes.h>
 
+class FairTutorialDet2Geo : public FairGeoSet
+{
   protected:
     char modName[20];  // name of module
     char eleName[20];  // substring for elements in module
+
   public:
     FairTutorialDet2Geo();
     ~FairTutorialDet2Geo() {}

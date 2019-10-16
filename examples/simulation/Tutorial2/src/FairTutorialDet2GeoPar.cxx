@@ -11,8 +11,6 @@
 
 #include <TObjArray.h>
 
-#include <iostream>
-
 ClassImp(FairTutorialDet2GeoPar)
 
 FairTutorialDet2GeoPar ::FairTutorialDet2GeoPar(const char* name,

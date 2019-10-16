@@ -7,27 +7,22 @@
  ********************************************************************************/
 #include "FairTutorialDet2.h"
 
-#include "FairTutorialDet2Point.h"
 #include "FairTutorialDet2Geo.h"
 #include "FairTutorialDet2GeoPar.h"
+#include "FairTutorialDet2Point.h"
 
-#include "FairVolume.h"
-#include "FairGeoVolume.h"
-#include "FairGeoNode.h"
-#include "FairRootManager.h"
-#include "FairGeoLoader.h"
-#include "FairGeoInterface.h"
-#include "FairRun.h"
-#include "FairRuntimeDb.h"
 #include "FairDetectorList.h"
+#include "FairRootManager.h"
 #include "FairStack.h"
+#include "FairVolume.h"
 
 #include <TClonesArray.h>
 #include <TVirtualMC.h>
+#include <TVirtualMCStack.h>
+
 #ifdef NDEBUG
 #undef NDEBUG
 #endif
-#include <cassert>
 
 FairTutorialDet2Geo* FairTutorialDet2::fgGeo;   //!
 
@@ -95,7 +90,7 @@ Bool_t  FairTutorialDet2::ProcessHits(FairVolume* vol)
   /** This method is called from the MC stepping */
 
   //Set parameters at entrance of volume. Reset ELoss.
-  if ( TVirtualMC::GetMC()->IsTrackEntering() ) {
+  if (TVirtualMC::GetMC()->IsTrackEntering()) {
     fELoss  = 0.;
     fTime   = TVirtualMC::GetMC()->TrackTime() * 1.0e09;
     fLength = TVirtualMC::GetMC()->TrackLength();
@@ -107,15 +102,14 @@ Bool_t  FairTutorialDet2::ProcessHits(FairVolume* vol)
   fELoss += TVirtualMC::GetMC()->Edep();
 
   // Create FairTutorialDet2Point at exit of active volume
-  if ( TVirtualMC::GetMC()->IsTrackExiting()    ||
-       TVirtualMC::GetMC()->IsTrackStop()       ||
-       TVirtualMC::GetMC()->IsTrackDisappeared()   ) {
+  if (TVirtualMC::GetMC()->IsTrackExiting() ||
+      TVirtualMC::GetMC()->IsTrackStop()    ||
+      TVirtualMC::GetMC()->IsTrackDisappeared()) {
     fTrackID  = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
     fVolumeID = vol->getMCid();
-    if (fELoss == 0. ) { return kFALSE; }
+    if (fELoss == 0.) { return kFALSE; }
     AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
-           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-           fELoss);
+           TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, fELoss);
 
     // Increment number of tutorial det points in TParticle
     FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
@@ -130,10 +124,8 @@ void FairTutorialDet2::EndOfEvent()
   Reset();
 }
 
-
 void FairTutorialDet2::Register()
 {
-
   /** This will create a branch in the output tree called
       FairTutorialDet2Point, setting the last parameter to kFALSE means:
       this collection will not be written to the file, it will exist
@@ -141,7 +133,7 @@ void FairTutorialDet2::Register()
   */
   auto mgr = FairRootManager::Instance();
 
-  if ( ! gMC->IsMT() ) {
+  if (! gMC->IsMT()) {
     mgr->Register("TutorialDetPoint", "TutorialDet",
                   fFairTutorialDet2PointCollection, kTRUE);
   } else {
@@ -153,11 +145,10 @@ void FairTutorialDet2::Register()
   mgr->RegisterAny("TutorialCustomData", fCustomData, kTRUE);
 }
 
-
 TClonesArray* FairTutorialDet2::GetCollection(Int_t iColl) const
 {
   if (iColl == 0) { return fFairTutorialDet2PointCollection; }
-  else { return NULL; }
+  else { return nullptr; }
 }
 
 void FairTutorialDet2::Reset()
@@ -186,8 +177,7 @@ FairTutorialDet2Point* FairTutorialDet2::AddHit(Int_t trackID, Int_t detID,
   // fill this with some (meaningless) data
   fCustomData->emplace_back(pos.X(), size);
 
-  return new(clref[size]) FairTutorialDet2Point(trackID, detID, pos, mom,
-         time, length, eLoss);
+  return new(clref[size]) FairTutorialDet2Point(trackID, detID, pos, mom, time, length, eLoss);
 }
 
 FairModule* FairTutorialDet2::CloneModule() const

@@ -10,27 +10,22 @@
 // -----              Created 06.06.08 by F.Uhlig                      ------
 // --------------------------------------------------------------------------
 
-
-
 #ifndef FAIRTUTORIALDET2DIGITIZER_H
 #define FAIRTUTORIALDET2DIGITIZER_H
 
-
 #include "FairTask.h"
 
-#include <TVector3.h>
-#include "FairTutorialDet2Point.h"
+#include <Rtypes.h>
+
+#include <vector>
 
 class TClonesArray;
-
 class FairTutorialDet2DigiPar;
+class CustomClass;
 
 class FairTutorialDet2Digitizer : public FairTask
 {
   public:
-
-
-
     /** Default constructor **/
     FairTutorialDet2Digitizer();
 
@@ -59,7 +54,6 @@ class FairTutorialDet2Digitizer : public FairTask
     void Register();
 
   private:
-
     TClonesArray* fTutorialDetPoints; //! Tutorial Det MC points
     std::vector<CustomClass> const* fCustomData = nullptr; //!
     std::vector<CustomClass>* fCustomData2 = nullptr; //!
@@ -77,6 +71,6 @@ class FairTutorialDet2Digitizer : public FairTask
     FairTutorialDet2Digitizer& operator=(const FairTutorialDet2Digitizer&);
 
     ClassDef(FairTutorialDet2Digitizer,1)
-
 };
+
 #endif //FAIRTUTORIALDETDIGITIZER_H

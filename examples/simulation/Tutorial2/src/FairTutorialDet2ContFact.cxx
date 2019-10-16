@@ -12,7 +12,7 @@
 
 #include "FairRuntimeDb.h"
 
-#include <iostream>
+#include <cstring> // strcmp
 
 ClassImp(FairTutorialDet2ContFact)
 
@@ -56,15 +56,16 @@ FairParSet* FairTutorialDet2ContFact::createContainer(FairContainer* c)
       the default context
       of this container, the name is concatinated with the context.
   */
-  const char* name=c->GetName();
-  FairParSet* p=NULL;
-  if (strcmp(name,"FairTutorialDet2GeoPar")==0) {
-    p=new FairTutorialDet2GeoPar(c->getConcatName().Data(),
+  const char* name = c->GetName();
+  FairParSet* p = nullptr;
+  if (strcmp(name,"FairTutorialDet2GeoPar") == 0) {
+    p = new FairTutorialDet2GeoPar(c->getConcatName().Data(),
                                  c->GetTitle(),c->getContext());
   }
-  if (strcmp(name,"FairTutorialDet2DigiPar")==0) {
-    p=new FairTutorialDet2DigiPar(c->getConcatName().Data(),
+  if (strcmp(name,"FairTutorialDet2DigiPar") == 0) {
+    p = new FairTutorialDet2DigiPar(c->getConcatName().Data(),
                                   c->GetTitle(),c->getContext());
   }
+
   return p;
 }

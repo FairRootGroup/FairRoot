@@ -9,14 +9,11 @@
 
 #include "FairLogger.h"
 
-// -----   Default constructor   -------------------------------------------
 FairTutorialDet2Point::FairTutorialDet2Point()
   : FairMCPoint()
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Standard constructor   ------------------------------------------
 FairTutorialDet2Point::FairTutorialDet2Point(Int_t trackID, Int_t detID,
     TVector3 pos, TVector3 mom,
     Double_t tof, Double_t length,
@@ -24,13 +21,7 @@ FairTutorialDet2Point::FairTutorialDet2Point(Int_t trackID, Int_t detID,
   : FairMCPoint(trackID, detID, pos, mom, tof, length, eLoss)
 {
 }
-// -------------------------------------------------------------------------
 
-// -----   Destructor   ----------------------------------------------------
-FairTutorialDet2Point::~FairTutorialDet2Point() { }
-// -------------------------------------------------------------------------
-
-// -----   Public method Print   -------------------------------------------
 void FairTutorialDet2Point::Print(const Option_t* /*opt*/) const
 {
   LOG(info) << "FairTutorialDet2Point: TutorialDet point for track "
@@ -40,7 +31,5 @@ void FairTutorialDet2Point::Print(const Option_t* /*opt*/) const
   LOG(info) << "    Time " << fTime << " ns,  Length " << fLength
             << " cm,  Energy loss " << fELoss*1.0e06 << " keV";
 }
-// -------------------------------------------------------------------------
 
 ClassImp(FairTutorialDet2Point)
-
