@@ -27,7 +27,6 @@ class TDatabasePDG;
 
 class FairGeanePro : public FairPropagator
 {
-
   public:
     /** Default constructor **/
     FairGeanePro();
@@ -56,7 +55,6 @@ class FairGeanePro : public FairPropagator
     void Track3ToPoint(TVector3 x1, TVector3 x2, TVector3 x3, TVector3 w1, TVector3& Pfinal, Int_t& Iflag, Double_t& Dist, Double_t& Length, Double_t& Radius);
 
   public:
-
     Bool_t SetWire(TVector3 extremity1, TVector3 extremity2);
     Bool_t SetPoint(TVector3 pnt);
     Bool_t PropagateToPCA(Int_t pca);
@@ -81,7 +79,6 @@ class FairGeanePro : public FairPropagator
     void SetPrintErrors(bool printError = kTRUE) { fPrintErrors = printError; }
 
   private:
-
     TGeant3* gMC3;
     TString fPropOption;
     Float_t xlf[1];    // track length when PropagateToTrack is chosen

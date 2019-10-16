@@ -36,15 +36,20 @@ target_include_directories(${target} PUBLIC
 target_link_directories(${target} PUBLIC
   ${ROOT_LIBRARY_DIR}
   ${Geant3_LIBRARY_DIR}
-  ${Geant4_LIBRARY_DIR}
-  ${Geant4VMC_LIBRARY_DIR}
 )
 
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairField, FairTask, FairPropagator
   FairRoot::TrkBase # FairTrackPar
-  # TODO: clean the following
+
+  geant321
+
+  Core
+  EG
+  Geom
   VMC
+  Physics
+  MathCore
 )
 
 fairroot_target_root_dictionary(${target}

@@ -17,16 +17,13 @@
 #include "FairTrackParH.h"              // for FairTrackParH
 #include "FairTrackParP.h"              // for FairTrackParP
 
-#include <iosfwd>                       // for ostream
 #include <TDatabasePDG.h>               // for TDatabasePDG
-#include <TGeant3.h>                    // for TGeant3, Ertrio_t
 #include <TGeoTorus.h>                  // for TGeoTorus
 #include <TMath.h>                      // for pow, ACos, Cos, sqrt
 #include <TMathBase.h>                  // for Abs
 #include <TVector3.h>                   // for TVector3, operator-, etc
 #include <TVirtualMC.h>                 // for gMC
 
-#include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
 #include <cmath>                        // IWYU pragma: keep for fabs
 // IWYU pragma: no_include <architecture/i386/math.h>
@@ -34,14 +31,13 @@
 using std::cout;
 using std::endl;
 
-// -----   Default constructor   -------------------------------------------
 FairGeanePro::FairGeanePro()
   : FairPropagator("Geane", "Propagate Tracks"),
     gMC3(static_cast<TGeant3 *> (TVirtualMC::GetMC())),
     fPropOption(""),
     nepred(1),
     fdbPDG(TDatabasePDG::Instance()),
-    afErtrio(NULL),
+    afErtrio(nullptr),
     GeantCode(0),
     ProMode(0),
     VName(""),
@@ -61,7 +57,7 @@ FairGeanePro::FairGeanePro()
     fApp(FairGeaneApplication::Instance()),
     fPrintErrors(kTRUE)
 {
-  if(gMC3==NULL) {
+  if(gMC3==nullptr) {
     std::cerr<<"FairGeanePro::TGeant3 has not been initialized! ABORTING!"<<std::endl;
     throw;
   }
@@ -133,10 +129,7 @@ FairGeanePro::FairGeanePro()
 
 }
 
-// -----   Destructor   ----------------------------------------------------
 FairGeanePro::~FairGeanePro() { }
-
-
 
 Bool_t FairGeanePro::Propagate(FairTrackParH* TParam, FairTrackParH* TEnd, Int_t PDG)
 {
@@ -209,8 +202,8 @@ Bool_t FairGeanePro::Propagate(FairTrackParH* TParam, FairTrackParH* TEnd, Int_t
   if(fabs(p2[0]) < 1e-9 && fabs(p2[1]) < 1e-9 && fabs(p2[2]) < 1e-9) { return kFALSE; }
   TEnd->SetTrackPar(x2[0], x2[1], x2[2],p2[0],p2[1],p2[2], ch ,fCovOut );
   return kTRUE;
-
 }
+
 Bool_t FairGeanePro::Propagate(FairTrackParP* /*TStart*/, FairTrackParH* /*TEnd*/, Int_t /*PDG*/)
 {
   // Propagate a parabola track (SD system) and return a helix (SC system) (not used nor implemented)
@@ -325,9 +318,7 @@ Bool_t FairGeanePro::Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, Int_t
   TEnd->SetTrackPar(x2[0], x2[1], x2[2],p2[0],p2[1],p2[2], ch ,fCovOut, origin, di, dj, dk);
 
   return kTRUE;
-
 }
-
 
 Bool_t FairGeanePro::Propagate(FairTrackParH* /*TStart*/, FairTrackParP* /*TEnd*/, Int_t /*PDG*/)
 {
@@ -437,6 +428,7 @@ Bool_t FairGeanePro::PropagateToPlane(TVector3& v0, TVector3& v1, TVector3& v2)
   //  gMC3->Eufilp(nepred, ein, pli, plo);
   return kTRUE;
 }
+
 Bool_t FairGeanePro::PropagateToVolume(TString VolName, Int_t CopyNo , Int_t option)
 {
   // define final volume (option "V")
@@ -463,6 +455,7 @@ Bool_t FairGeanePro::PropagateToLength(Float_t length)
   ProMode=1; //need errors in representation 1 (SC)(see Geane doc)
   return kTRUE;
 }
+
 Bool_t FairGeanePro::PropagateOnlyParameters()
 {
   int index = fPropOption.Index("E");
@@ -782,12 +775,10 @@ int FairGeanePro::FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wir
   return 0;
 }
 
-
 void FairGeanePro::Track2ToLine( TVector3 X1,  TVector3 X2,  TVector3 w1,
                                  TVector3 w2,  TVector3& Pfinal, TVector3& Pwire,
                                  Int_t& Iflag, Double_t& Dist, Double_t& Length)
 {
-
   // Closest approach to a line from 2 GEANE points
   //
   // METHOD: the nearest points on the two lines
@@ -813,7 +804,6 @@ void FairGeanePro::Track2ToLine( TVector3 X1,  TVector3 X2,  TVector3 w1,
   //
   // Authors: Andrea Fontana and Alberto Rotondi 20 MAy 2007
   //
-
 
   TVector3 x21, x32, w21;
   TVector3 xw1, xw2;
@@ -869,12 +859,9 @@ void FairGeanePro::Track2ToLine( TVector3 X1,  TVector3 X2,  TVector3 w1,
   }
 }
 
-
-
 void FairGeanePro::Track2ToPoint( TVector3 X1,  TVector3 X2,  TVector3 w1, TVector3& Pfinal,
                                   Double_t& Dist, Double_t& Length, Int_t& quitFlag)
 {
-
   //
   // Closest approach to a point from 2 GEANE points
   //
@@ -914,7 +901,6 @@ void FairGeanePro::Track2ToPoint( TVector3 X1,  TVector3 X2,  TVector3 w1, TVect
   Length = (X2-X1).Mag()*t1;
 }
 
-
 void FairGeanePro::Track3ToLine(TVector3 X1, TVector3 X2, TVector3 X3,
                                 TVector3 w1, TVector3 w2,
                                 // output
@@ -922,7 +908,6 @@ void FairGeanePro::Track3ToLine(TVector3 X1, TVector3 X2, TVector3 X3,
                                 Int_t& Iflag, Double_t& Dist,
                                 Double_t& Length, Double_t& Radius)
 {
-
   // Find the closest approach points between a curve (helix)
   // and a line (wire)
   //
@@ -1165,7 +1150,6 @@ void FairGeanePro::Track3ToPoint( TVector3 X1, TVector3 X2, TVector3 X3, TVector
                                   TVector3& Pfinal, Int_t& Iflag,
                                   Double_t& Dist, Double_t& Length, Double_t& Radius)
 {
-
   // Closest approach to a point from 3 GEANE points
   //
   // METHOD: first, we go on the circle plane to have
@@ -1190,7 +1174,6 @@ void FairGeanePro::Track3ToPoint( TVector3 X1, TVector3 X2, TVector3 X3, TVector
   // Authors: Andrea Fontana and Alberto Rotondi 20 May 2007
   //
 
-
   TVector3 xp1, xp2, xp3, xp32;
   TVector3 x21, x31;
   TVector3 e1, e2, e3;
@@ -1204,7 +1187,6 @@ void FairGeanePro::Track3ToPoint( TVector3 X1, TVector3 X2, TVector3 X3, TVector
   Double_t T[3][3], TM1[3][3];
 
   Double_t Angle;
-
 
   Iflag = 0;
 
@@ -1330,5 +1312,3 @@ void FairGeanePro::GetTransportMatrix(Double_t trm[5][5])
 }
 
 ClassImp(FairGeanePro)
-
-

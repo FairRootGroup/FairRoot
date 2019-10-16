@@ -23,9 +23,8 @@ class FairField;
 class FairGeane : public  FairTask
 {
   public:
-
     /** Default constructor **/
-    //FairGeane();
+    // FairGeane();
 
     FairGeane(const char* name, TString UserConfig="",    TString UserCuts="");
 
@@ -50,8 +49,6 @@ class FairGeane : public  FairTask
   private:
     FairGeane(const FairGeane&);
     FairGeane& operator=(const FairGeane&);
-
 };
-
 
 #endif

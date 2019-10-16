@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // Class for the GEANE initialization
@@ -15,13 +15,12 @@
 #include "FairGeaneApplication.h"       // for FairGeaneApplication
 #include "FairRunAna.h"                 // for FairRunAna
 
-#include <iosfwd>                       // for ostream
 #include <TGeoManager.h>                // for TGeoManager
 #include <TROOT.h>                      // for TROOT, gROOT
 #include <TString.h>                    // for TString, operator!=, etc
 #include <TSystem.h>                    // for TSystem, gSystem
 
-#include <stdlib.h>                     // for getenv
+#include <cstdlib>                     // for getenv
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
 using std::cout;
@@ -32,7 +31,7 @@ using std::endl;
 //  cout << "This ctr should not be called by user !!"<< endl;
 //}
 // -----   Standard constructor   ------------------------------------------
-FairGeane::FairGeane(const char* name, TString UserConfig,   TString UserCuts )
+FairGeane::FairGeane(const char* name, TString UserConfig, TString UserCuts)
   :  FairTask("Geane Application"),
      fApp(new FairGeaneApplication(kTRUE)),
      fName(name),
@@ -43,30 +42,24 @@ FairGeane::FairGeane(const char* name, TString UserConfig,   TString UserCuts )
   new TGeoManager("Geometry", "Geane geometry");
   // now import the geometry from file to the empty TGeo
   TGeoManager::Import(name);
-
 }
 
-
-FairGeane::FairGeane(TString UserConfig,   TString UserCuts )
+FairGeane::FairGeane(TString UserConfig, TString UserCuts)
   : FairTask("Geane Application"),
     fApp(new FairGeaneApplication(kFALSE)),
     fName(""),
     fUserConfig(UserConfig),
     fUserCuts (UserCuts)
 {
-
-
 }
 
 void  FairGeane::SetParTask()
 {
-
   cout <<  "------------------------FairGeane::SetParTask()------------------------------" << endl;
 }
 
 InitStatus FairGeane::Init()
 {
-
   cout <<  "------------------------FairGeane::Init ()------------------------------" << endl;
 
   TString LibMacro;
@@ -80,7 +73,7 @@ InitStatus FairGeane::Init()
   work_config.ReplaceAll("//","/");
   TString config_dir= getenv("CONFIG_DIR");
   config_dir.ReplaceAll("//","/");
-   
+
   Bool_t AbsPath=kFALSE;
   if (!config_dir.EndsWith("/")) { config_dir+="/"; }
 
@@ -137,23 +130,13 @@ InitStatus FairGeane::Init()
 
 }
 
-
-
-
-// -----   Destructor   ----------------------------------------------------
-
-
-
-
 FairGeane::~FairGeane()
 {
-
 }
+
 void FairGeane::SetField(FairField* /*field*/)
 {
-
   cout<< "\033[5m\033[31m -W- FairGeane::SetField  This method is not used anymore, use FairRunAna::SetField instead \033[0m " << endl;
-
 }
 
 ClassImp(FairGeane)
