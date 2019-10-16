@@ -35,6 +35,7 @@ class FairParamObj : public TNamed
     Int_t classVersion;     // Code version of classes stored as binary
     UChar_t* streamerInfo;  // Pointer to binary array container the streamer info
     Int_t streamerInfoSize; // Size of streamer info array
+
   public:
     FairParamObj(const Text_t* name="");
     FairParamObj(FairParamObj&);
@@ -67,6 +68,7 @@ class FairParamObj : public TNamed
     UChar_t* getStreamerInfo() { return streamerInfo; }
     Int_t getStreamerInfoSize() { return streamerInfoSize; }
     void print();
+
   protected:
     template <class type> void printData(type*,Int_t);
 
@@ -96,6 +98,7 @@ class FairParamList : public TObject
           fClassIndex=0;
         }
     };
+
   public:
     FairParamList();
     ~FairParamList();
@@ -132,6 +135,7 @@ class FairParamList : public TObject
       return static_cast<FairParamObj*>(paramList->FindObject(name));
     }
     TList* getList() { return paramList; }
+
   private:
     FairParamList(const FairParamList&);
     FairParamList& operator=(const FairParamList&);
@@ -140,4 +144,3 @@ class FairParamList : public TObject
 };
 
 #endif  /* !FAIRPARAMLIST_H */
-

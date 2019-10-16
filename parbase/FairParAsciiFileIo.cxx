@@ -29,7 +29,7 @@
 #include <TString.h>                    // for TString, operator<<
 #include <TSystem.h>                    // for TSystem, gSystem
 
-#include <string.h>                     // for strcmp, NULL
+#include <string.h>                     // for strcmp
 #include <iostream>                     // for cout, cerr
 
 using std::cout;
@@ -42,7 +42,7 @@ ClassImp(FairParAsciiFileIo)
 
 FairParAsciiFileIo::FairParAsciiFileIo()
   :FairParIo(),
-   file(NULL)
+   file(nullptr)
 {
   // default destructor
   //  file=0;
@@ -66,8 +66,8 @@ Bool_t FairParAsciiFileIo::open(const Text_t* fname, const Text_t* status)
     return kFALSE;
   }
   file=new std::fstream();
-  if(strcmp(status,"in")==0) {file->open( fname, ios::in);};
-  if(strcmp(status,"out")==0) {file->open( fname, ios::out);};
+  if(strcmp(status,"in")==0) {file->open(fname, ios::in);};
+  if(strcmp(status,"out")==0) {file->open(fname, ios::out);};
   filebuf* buf = file->rdbuf();
   if (file && (buf->is_open()==1)) {
     filename=fname;
@@ -81,7 +81,7 @@ Bool_t FairParAsciiFileIo::open(const Text_t* fname, const Text_t* status)
 
 Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status)
 {
-  if ( 0 == fnamelist->GetEntries() ) {
+  if (0 == fnamelist->GetEntries()) {
     LOG(error) << "The defined list of parameter files is empty. There are no parameters initialized from the ASCII files.";
     return kFALSE;
   }
@@ -113,7 +113,6 @@ Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status)
   gSystem->Exec(catCommand);
 
   return open(outFileName, status);
-
 }
 
 void FairParAsciiFileIo::close()

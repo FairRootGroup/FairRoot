@@ -22,6 +22,7 @@
 
 #include <stdio.h>                      // for printf, sprintf
 #include <string.h>                     // for strlen, strncmp
+#include <fstream>                      // for fstream
 
 using std::ios;
 
@@ -37,7 +38,6 @@ FairDetParAsciiFileIo::FairDetParAsciiFileIo(std::fstream* f)
   "##############################################################################\n";
   */
 }
-
 
 Bool_t FairDetParAsciiFileIo::findContainer(const Text_t* name)
 {
@@ -59,7 +59,6 @@ Bool_t FairDetParAsciiFileIo::findContainer(const Text_t* name)
   return kTRUE;
 }
 
-
 Bool_t FairDetParAsciiFileIo::checkAllFound(Int_t* set, Int_t setSize)
 {
   // checks if all modules have been initialized
@@ -74,7 +73,6 @@ Bool_t FairDetParAsciiFileIo::checkAllFound(Int_t* set, Int_t setSize)
   printf("\n");
   return allFound;
 }
-
 
 void FairDetParAsciiFileIo::writeHeader(const Text_t* name, const Text_t* context,
                                         const Text_t* author, const Text_t* description)
@@ -95,7 +93,6 @@ void FairDetParAsciiFileIo::writeHeader(const Text_t* name, const Text_t* contex
   *pFile<<"//-----------------------------------------------------------"
         "-----------------\n";
 }
-
 
 void FairDetParAsciiFileIo::readComment(const Char_t* lastBuf, FairParSet* pPar)
 {
@@ -134,28 +131,6 @@ void FairDetParAsciiFileIo::writeComment(FairParSet* pPar)
     *pFile<<"description: "<<t<<"\n";
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ClassImp(FairDetParAsciiFileIo)
 /*

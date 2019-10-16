@@ -13,8 +13,6 @@
 #include <iosfwd>                       // for fstream
 #include <Rtypes.h>                     // for Int_t, Bool_t, etc
 
-#include <fstream>                      // for fstream
-
 class FairParGenericSet;
 class FairParSet;
 class TString;
@@ -26,8 +24,8 @@ class FairGenericParAsciiFileIo : public FairDetParAsciiFileIo
     ~FairGenericParAsciiFileIo() {}
     Bool_t init(FairParSet*);
     Int_t write(FairParSet*);
-  private:
 
+  private:
     ClassDef(FairGenericParAsciiFileIo,0) // I/O from Ascii file for parameter containers derived from FairParGenericSet
     Bool_t readGenericSet(FairParGenericSet* pPar);
     Int_t writeGenericSet(FairParGenericSet* pPar);

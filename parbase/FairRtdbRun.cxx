@@ -30,6 +30,7 @@
 
 #include <iomanip>                      // for setw, operator<<
 #include <iostream>                     // for cout
+#include <fstream>                      // for fstream
 
 using std::cout;
 using std::ios;

@@ -18,6 +18,7 @@ class FairDetParIo : public TNamed
 {
   protected:
     Int_t inputNumber; // input number (first or second input in runtime database)
+
   public:
     FairDetParIo();
     virtual ~FairDetParIo() {;}
@@ -38,10 +39,3 @@ class FairDetParIo : public TNamed
 };
 
 #endif  /* !HDETPARIO_H */
-
-
-
-
-
-
-

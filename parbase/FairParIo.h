@@ -23,6 +23,7 @@ class FairParIo : public TObject
     TList* detParIoList;  // list of detector I/Os
     Bool_t autoWritable;  // flag indicating if automatic write is possible
     TString filename;
+
   public:
     FairParIo();
     virtual ~FairParIo();

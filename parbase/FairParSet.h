@@ -1,16 +1,16 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRPARSET_H
 #define FAIRPARSET_H
 
-#include <TNamed.h>
 #include <Rtypes.h>                     // for Int_t, Bool_t, etc
 #include <TString.h>                    // for TString
+#include <TObject.h>
 
 class FairLogger;
 class FairParIo;
@@ -78,10 +78,8 @@ class FairParSet : public TObject
       description=r.getDescription();
     }
 
-
     virtual void fill(UInt_t) {};
     virtual void store(UInt_t) {};
-    
 
     FairParSet& operator=(const FairParSet&);
     FairParSet(const FairParSet&);
@@ -90,4 +88,3 @@ class FairParSet : public TObject
 };
 
 #endif  /* !FAIRPARSET_H */
-

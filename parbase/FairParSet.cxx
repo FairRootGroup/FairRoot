@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 //*-- AUTHOR : Ilse Koenig
@@ -17,8 +17,6 @@
 
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
-
-#include <iosfwd>                       // for ostream
 
 #include <iostream>                     // for operator<<, ostream, etc
 
@@ -118,7 +116,6 @@ FairParSet::FairParSet(const FairParSet& from)
     author(from.author),
     description(from.description),
     fLogger(FairLogger::GetLogger())
-
 {
 /*
  fName    = from.fName;
@@ -132,31 +129,27 @@ FairParSet::FairParSet(const FairParSet& from)
  owned    = from.owned;
  paramContext = from.paramContext;
  author       = from.author;
- description  = from.description; 
+ description  = from.description;
  fLogger      = from.fLogger;
 */
 }
-
 
 FairParSet& FairParSet::operator=(const FairParSet& from)
 {
   if (this == &from) {return *this;}
-  
- TObject::operator=(from);  
- fName    = from.fName;
- fTitle   = from.fTitle;
- detName  = from.detName;
- for (Int_t i=0;i<3;i++) versions[i] = from.versions[i];
- status   = from.status;
- changed  = from.changed;
- owned    = from.owned;
- paramContext = from.paramContext;
- author       = from.author;
- description  = from.description; 
- fLogger      = from.fLogger;
- 
- return *this;
+
+  TObject::operator=(from);
+  fName    = from.fName;
+  fTitle   = from.fTitle;
+  detName  = from.detName;
+  for (Int_t i=0;i<3;i++) versions[i] = from.versions[i];
+  status   = from.status;
+  changed  = from.changed;
+  owned    = from.owned;
+  paramContext = from.paramContext;
+  author       = from.author;
+  description  = from.description;
+  fLogger      = from.fLogger;
+
+  return *this;
 }
-
-
-

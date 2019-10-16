@@ -10,7 +10,6 @@
 
 #include "FairParIo.h"                  // for FairParIo
 
-#include <iosfwd>                       // for fstream
 #include <Rtypes.h>                     // for Bool_t, Text_t, etc
 
 #include <fstream>                      // for fstream, etc
@@ -21,6 +20,7 @@ class FairParAsciiFileIo : public FairParIo
 {
   protected:
     std::fstream* file;      // pointer to a file
+
   public:
     FairParAsciiFileIo();
 
@@ -51,6 +51,7 @@ class FairParAsciiFileIo : public FairParIo
     void print();
 
     std::fstream* getFile();
+
   private:
     FairParAsciiFileIo(const FairParAsciiFileIo&);
     FairParAsciiFileIo& operator=(const FairParAsciiFileIo&);

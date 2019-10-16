@@ -20,7 +20,7 @@ class FairParIo;
 class FairParSet;
 class FairRtdbRun;
 
-static TList contFactories;    //! list of container factories
+static TList contFactories; //! list of container factories
 
 class FairRuntimeDb : public TObject
 {

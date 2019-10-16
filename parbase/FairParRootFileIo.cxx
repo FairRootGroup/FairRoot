@@ -26,7 +26,7 @@
 #include "FairDetParIo.h"               // for FairDetParIo
 #include "FairRtdbRun.h"                // for FairRtdbRun
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
-#include <iosfwd>                       // for ostream, fstream
+
 #include <TCollection.h>                // for TIter
 #include <TDatime.h>                    // for TDatime
 #include <TKey.h>                       // for TKey
@@ -35,7 +35,6 @@
 #include <TObjString.h>                 // for TObjString
 #include <TString.h>                    // for TString, Form
 
-#include <stddef.h>                     // for NULL
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
 using std::cout;
@@ -45,11 +44,10 @@ using std::endl;
 ClassImp(FairParRootFile)
 ClassImp(FairParRootFileIo)
 
-//--------------------------------------------------------------------
 FairParRootFile::FairParRootFile(const Text_t* fname, Option_t* option,
                                  const Text_t* ftitle, Int_t compress)
   :TNamed(fname,  ftitle),
-   run(NULL),
+   run(nullptr),
    RootFile(TFile::Open(fname,option,ftitle,compress))
 {
 //              : TFile(fname,option,ftitle,compress) {
@@ -57,12 +55,10 @@ FairParRootFile::FairParRootFile(const Text_t* fname, Option_t* option,
   //  RootFile=TFile::Open(fname,option,ftitle,compress);
   //run=0;
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 FairParRootFile::FairParRootFile(TFile* f)
   :TNamed(f->GetName(), f->GetTitle()),
-   run(NULL),
+   run(nullptr),
    RootFile(f)
 {
 //  :TFile(f->GetName(),"UPDATE"){
@@ -71,9 +67,7 @@ FairParRootFile::FairParRootFile(TFile* f)
   //  RootFile=f;
   //  run=0;
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 FairParRootFile::~FairParRootFile()
 {
   // destructor
@@ -81,9 +75,7 @@ FairParRootFile::~FairParRootFile()
   run=0;
   //TODO: What about the file? Should it be closed or not
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 void FairParRootFile::readVersions(FairRtdbRun* currentRun)
 {
   // finds the current run containing the parameter container versions
@@ -93,24 +85,20 @@ void FairParRootFile::readVersions(FairRtdbRun* currentRun)
   run=static_cast<FairRtdbRun*>(RootFile->Get((const_cast<char*>(currentRun->GetName()))));
   //cout << "-I- FairParRootFile :: readversions " << currentRun->GetName() << " : " << run << endl;
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 FairParRootFileIo::FairParRootFileIo()
   :FairParIo(),
-   file(NULL),
+   file(nullptr),
    fMerging(kFALSE)
 {
   // constructor
   //  file=0;
   //  fMerging=kFALSE;
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 FairParRootFileIo::FairParRootFileIo(Bool_t merged)
   :FairParIo(),
-   file(NULL),
+   file(nullptr),
    fMerging(merged)
 {
   // constructor
@@ -118,17 +106,13 @@ FairParRootFileIo::FairParRootFileIo(Bool_t merged)
   //  fMerging=merged;
 
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 FairParRootFileIo::~FairParRootFileIo()
 {
   // destructor closes an open file
   close();
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option,
                                const Text_t* ftitle, Int_t compress)
 {
@@ -163,12 +147,9 @@ Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option,
   Fatal("open","Could not open input file");
   return kFALSE;
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
                                const Text_t* ftitle, Int_t compress)
-
 {
   TDatime currentDate;
   TString newParFileName = "";
@@ -222,14 +203,12 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option,
 
   return this->open(newParFileName,option,ftitle,compress);
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 Bool_t FairParRootFileIo::open(TFile* f)
 {
   // It opens a ROOT file (default option "READ"). An open file will be closed.
   // The detector I/Os for all detectors defined in the setup are activated.
-//  close();
+  // close();
   file=new FairParRootFile(f);
   if (file && file->IsOpen()) {
     filename = file->GetName();
@@ -238,9 +217,7 @@ Bool_t FairParRootFileIo::open(TFile* f)
   }
   return kFALSE;
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 void FairParRootFileIo::close()
 {
   // closes an open ROOT file and deletes the detector I/Os
@@ -253,9 +230,7 @@ void FairParRootFileIo::close()
     detParIoList->Delete();
   }
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 void FairParRootFileIo::print()
 {
   // prints the content of a open ROOT file and the list of detector I/Os
@@ -273,17 +248,13 @@ void FairParRootFileIo::print()
     cout<<"No ROOT file open\n";
   }
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 FairParRootFile* FairParRootFileIo::getParRootFile()
 {
   // returns a pointer to the current ROOT file
   return file;
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 void FairParRootFileIo::readVersions(FairRtdbRun* currentRun)
 {
   // reads the parameter container versions for the current run from
@@ -292,9 +263,7 @@ void FairParRootFileIo::readVersions(FairRtdbRun* currentRun)
     file->readVersions(currentRun);
   }
 }
-//--------------------------------------------------------------------
 
-//--------------------------------------------------------------------
 TList* FairParRootFileIo::getKeys()
 {
   // returns the list of keys found in the ROOT file
@@ -303,4 +272,3 @@ TList* FairParRootFileIo::getKeys()
   }
   return 0;
 }
-//--------------------------------------------------------------------

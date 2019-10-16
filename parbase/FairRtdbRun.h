@@ -15,7 +15,6 @@
 #include <TString.h>                    // for TString
 
 #include <stdio.h>                      // for sprintf, sscanf
-#include <fstream>                      // for fstream
 
 class TList;
 using std::fstream;
@@ -25,6 +24,7 @@ class FairParVersion : public TNamed
   protected:
     Int_t inputVersions[3]; //! version of the parameter container in the 2 possible inputs
     Int_t rootVersion;      // version of the parameter container in the ROOT output file
+
   public:
     FairParVersion() : TNamed(),rootVersion(0) {}
     FairParVersion(Text_t* name);
@@ -49,6 +49,7 @@ class FairRtdbRun : public TNamed
   protected:
     TList* parVersions;   // List of container names with the versions
     TString refRun;       //! name of the reference run for initialization
+
   public:
     FairRtdbRun();
     FairRtdbRun(const Text_t* name,const Text_t* refName="");

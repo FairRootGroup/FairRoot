@@ -12,8 +12,6 @@
 
 #include <Rtypes.h>                     // for Int_t, Text_t, etc
 
-using std::fstream;
-
 class FairParRootFile;
 class FairParSet;
 class TObject;
@@ -22,16 +20,19 @@ class FairDetParRootFileIo : public FairDetParIo
 {
   protected:
     FairParRootFile* pFile;    // pointer to parameter ROOT file
+
   public:
     FairDetParRootFileIo(FairParRootFile* f);
     virtual ~FairDetParRootFileIo() {}
     virtual Bool_t read(FairParSet*);
     Int_t write(FairParSet*);
-//  Bool_t read(HDetGeomPar*,Int_t*);
+    // Bool_t read(HDetGeomPar*,Int_t*);
+
   protected:
     Int_t findInputVersion(Text_t* contName);
     Int_t getMaxVersion(Text_t* contName);
     TObject* findContainer(Text_t* contName, Int_t version);
+
   private:
     FairDetParRootFileIo(const FairDetParRootFileIo&);
     FairDetParRootFileIo& operator= (const FairDetParRootFileIo&);

@@ -29,13 +29,12 @@
 #include "FairParSet.h"                 // for FairParSet
 #include "FairRtdbRun.h"                // for FairRtdbRun, FairParVersion
 
-#include <iosfwd>                       // for ostream
 #include <TClass.h>                     // for TClass
 #include <TCollection.h>                // for TIter
 #include <TFile.h>                      // for TFile, gFile
 
-#include <stdio.h>                      // for sprintf
-#include <string.h>                     // for strcmp, NULL, strlen
+#include <cstdio>                      // for sprintf
+#include <cstring>                     // for strcmp, strlen
 #include <iomanip>                      // for setw, operator<<
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
@@ -66,10 +65,10 @@ FairRuntimeDb::FairRuntimeDb(void)
   :TObject(),
    containerList(new TList()),
    runs(new TList()),
-   firstInput(NULL),
-   secondInput(NULL),
-   output(NULL),
-   currentRun(NULL),
+   firstInput(nullptr),
+   secondInput(nullptr),
+   output(nullptr),
+   currentRun(nullptr),
    currentFileName(""),
    versionsChanged(kFALSE),
    isRootFileOutput(kFALSE),
@@ -186,7 +185,7 @@ FairParSet* FairRuntimeDb::getContainer(const Text_t* name)
   // with the context.
   // The factory checks, if the container exists already in the runtime database. Otherwise
   // it will be created and added by the factory.
-  // The function returns a pointer to the container or NULL, if not created.
+  // The function returns a pointer to the container or nullptr, if not created.
   TIter next(&contFactories);
   FairContFact* fact;
   FairParSet* c=0;

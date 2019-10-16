@@ -48,15 +48,14 @@ class FairParRootFile : public TNamed
     FairParRootFile& operator=(const FairParRootFile&);
 
     ClassDef(FairParRootFile,0) // ROOT file for Parameter I/O
-
 };
-
 
 class FairParRootFileIo : public FairParIo
 {
   protected:
     FairParRootFile* file;  // pointer to ROOT file
     Bool_t fMerging;
+
   public:
     FairParRootFileIo();
     FairParRootFileIo(Bool_t merged);
@@ -93,4 +92,3 @@ class FairParRootFileIo : public FairParIo
 };
 
 #endif  /* !FAIRPARROOTFILEIO_H */
-

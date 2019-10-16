@@ -12,7 +12,6 @@
 
 #include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
 
-#include <iosfwd>                       // for ostream
 #include <TArrayD.h>                    // for TArrayD
 #include <TArrayF.h>                    // for TArrayF
 #include <TArrayI.h>                    // for TArrayI
@@ -22,7 +21,6 @@
 #include <TCollection.h>                // for TIter
 #include <TStreamerInfo.h>              // for TStreamerInfo
 
-#include <stdlib.h>                     // for NULL
 #include <string.h>                     // for memcpy, strcmp, strlen
 #include <iostream>                     // for operator<<, ostream, cout, etc
 
@@ -92,32 +90,31 @@
 //
 //////////////////////////////////////////////////////////////////////////////////////
 
-
 ClassImp(FairParamObj)
 ClassImp(FairParamList)
 
 FairParamObj::FairParamObj(const Text_t* name)
   :TNamed(name,""),
-   paramValue(NULL),
+   paramValue(nullptr),
    arraySize(0),
    paramType("UChar_t"),
    basicType(kFALSE),
    bytesPerValue(1),
    classVersion(-1),
-   streamerInfo(NULL),
+   streamerInfo(nullptr),
    streamerInfoSize(0)
 {
 }
 
 FairParamObj::FairParamObj(FairParamObj& o)
   :TNamed(o),
-   paramValue(NULL),
+   paramValue(nullptr),
    arraySize(o.arraySize),
    paramType(o.paramType),
    basicType(o.basicType),
    bytesPerValue(o.bytesPerValue),
    classVersion(o.classVersion),
-   streamerInfo(NULL),
+   streamerInfo(nullptr),
    streamerInfoSize(o.streamerInfoSize)
 {
   paramValue=new UChar_t[arraySize];
@@ -130,13 +127,13 @@ FairParamObj::FairParamObj(FairParamObj& o)
 
 FairParamObj::FairParamObj(const Text_t* name,Int_t value)
   :TNamed(name,""),
-   paramValue(NULL),
+   paramValue(nullptr),
    arraySize(sizeof(Int_t)),
    paramType("Int_t"),
    basicType(kTRUE),
    bytesPerValue(sizeof(Int_t)),
    classVersion(-1),
-   streamerInfo(NULL),
+   streamerInfo(nullptr),
    streamerInfoSize(0)
 {
   // Constructor for a Int_t value
@@ -146,13 +143,13 @@ FairParamObj::FairParamObj(const Text_t* name,Int_t value)
 
 FairParamObj::FairParamObj(const Text_t* name,Bool_t value)
   :TNamed(name,""),
-   paramValue(NULL),
+   paramValue(nullptr),
    arraySize(sizeof(Bool_t)),
    paramType("Bool_t"),
    basicType(kTRUE),
    bytesPerValue(sizeof(Bool_t)),
    classVersion(-1),
-   streamerInfo(NULL),
+   streamerInfo(nullptr),
    streamerInfoSize(0)
 {
   // Constructor for a Int_t value
@@ -162,13 +159,13 @@ FairParamObj::FairParamObj(const Text_t* name,Bool_t value)
 
 FairParamObj::FairParamObj(const Text_t* name,UInt_t value)
   :TNamed(name,""),
-   paramValue(NULL),
+   paramValue(nullptr),
    arraySize(sizeof(UInt_t)),
    paramType("UInt_t"),
    basicType(kTRUE),
    bytesPerValue(sizeof(UInt_t)),
    classVersion(-1),
-   streamerInfo(NULL),
+   streamerInfo(nullptr),
    streamerInfoSize(0)
 {
   // Constructor for a Int_t value
@@ -178,13 +175,13 @@ FairParamObj::FairParamObj(const Text_t* name,UInt_t value)
 
 FairParamObj::FairParamObj(const Text_t* name,Float_t value)
   :TNamed(name,""),
-   paramValue(NULL),
+   paramValue(nullptr),
    arraySize(sizeof(Float_t)),
    paramType("Float_t"),
    basicType(kTRUE),
    bytesPerValue(sizeof(Float_t)),
    classVersion(-1),
-   streamerInfo(NULL),
+   streamerInfo(nullptr),
    streamerInfoSize(0)
 {
   // Constructor for a Float_t value
@@ -194,13 +191,13 @@ FairParamObj::FairParamObj(const Text_t* name,Float_t value)
 
 FairParamObj::FairParamObj(const Text_t* name,Double_t value)
   :TNamed(name,""),
-   paramValue(NULL),
+   paramValue(nullptr),
    arraySize(sizeof(Double_t)),
    paramType("Double_t"),
    basicType(kTRUE),
    bytesPerValue(sizeof(Double_t)),
    classVersion(-1),
-   streamerInfo(NULL),
+   streamerInfo(nullptr),
    streamerInfoSize(0)
 {
   // Constructor for a Double_t value
@@ -210,13 +207,13 @@ FairParamObj::FairParamObj(const Text_t* name,Double_t value)
 
 FairParamObj::FairParamObj(const Text_t* name,const Int_t* value,const Int_t nValues)
   :TNamed(name,""),
-   paramValue(NULL),
+   paramValue(nullptr),
    arraySize(sizeof(Int_t)*nValues),
    paramType("Int_t"),
    basicType(kTRUE),
    bytesPerValue(sizeof(Int_t)),
    classVersion(-1),
-   streamerInfo(NULL),
+   streamerInfo(nullptr),
    streamerInfoSize(0)
 {
   // Constructor for an array with nValues elements of type Int_t
@@ -226,13 +223,13 @@ FairParamObj::FairParamObj(const Text_t* name,const Int_t* value,const Int_t nVa
 
 FairParamObj::FairParamObj(const Text_t* name,const UInt_t* value,const Int_t nValues)
 :TNamed(name,""),
-paramValue(NULL),
+paramValue(nullptr),
 arraySize(sizeof(UInt_t)*nValues),
 paramType("UInt_t"),
 basicType(kTRUE),
 bytesPerValue(sizeof(UInt_t)),
 classVersion(-1),
-streamerInfo(NULL),
+streamerInfo(nullptr),
 streamerInfoSize(0)
 {
    // Constructor for an array with nValues elements of type UInt_t
@@ -243,13 +240,13 @@ streamerInfoSize(0)
 
 FairParamObj::FairParamObj(const Text_t* name,const Float_t* value,const Int_t nValues)
   :TNamed(name,""),
-   paramValue(NULL),
+   paramValue(nullptr),
    arraySize(sizeof(Float_t)*nValues),
    paramType("Float_t"),
    basicType(kTRUE),
    bytesPerValue(sizeof(Float_t)),
    classVersion(-1),
-   streamerInfo(NULL),
+   streamerInfo(nullptr),
    streamerInfoSize(0)
 {
   // Constructor for an array with nValues elements of type Float_t
@@ -259,13 +256,13 @@ FairParamObj::FairParamObj(const Text_t* name,const Float_t* value,const Int_t n
 
 FairParamObj::FairParamObj(const Text_t* name,const Double_t* value,const Int_t nValues)
   :TNamed(name,""),
-   paramValue(NULL),
+   paramValue(nullptr),
    arraySize(sizeof(Double_t)*nValues),
    paramType("Double_t"),
    basicType(kTRUE),
    bytesPerValue(sizeof(Double_t)),
    classVersion(-1),
-   streamerInfo(NULL),
+   streamerInfo(nullptr),
    streamerInfoSize(0)
 {
   // Constructor for an array with nValues elements of type Double_t
@@ -275,13 +272,13 @@ FairParamObj::FairParamObj(const Text_t* name,const Double_t* value,const Int_t 
 
 FairParamObj::FairParamObj(const Text_t* name,const Text_t* value)
   :TNamed(name,""),
-   paramValue(NULL),
+   paramValue(nullptr),
    arraySize(strlen(value)),
    paramType("Text_t"),
    basicType(kTRUE),
    bytesPerValue(sizeof(Char_t)),
    classVersion(-1),
-   streamerInfo(NULL),
+   streamerInfo(nullptr),
    streamerInfoSize(0)
 {
   // Constructor for a string value
@@ -292,13 +289,13 @@ FairParamObj::FairParamObj(const Text_t* name,const Text_t* value)
 
 FairParamObj::FairParamObj(const Text_t* name,const Char_t* value,const Int_t nValues)
   :TNamed(name,""),
-   paramValue(NULL),
+   paramValue(nullptr),
    arraySize(sizeof(Char_t)*nValues),
    paramType("Char_t"),
    basicType(kTRUE),
    bytesPerValue(sizeof(Char_t)),
    classVersion(-1),
-   streamerInfo(NULL),
+   streamerInfo(nullptr),
    streamerInfoSize(0)
 {
   // Constructor for an array with nValues elements of type Char_t
@@ -308,13 +305,13 @@ FairParamObj::FairParamObj(const Text_t* name,const Char_t* value,const Int_t nV
 
 FairParamObj::FairParamObj(const Text_t* name,const UChar_t* value,const Int_t nValues)
   :TNamed(name,""),
-   paramValue(NULL),
+   paramValue(nullptr),
    arraySize(sizeof(UChar_t)*nValues),
    paramType("UChar_t"),
    basicType(kTRUE),
    bytesPerValue(sizeof(UChar_t)),
    classVersion(-1),
-   streamerInfo(NULL),
+   streamerInfo(nullptr),
    streamerInfoSize(0)
 {
   paramValue=new UChar_t[arraySize];

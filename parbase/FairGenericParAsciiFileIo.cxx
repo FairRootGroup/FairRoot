@@ -2,7 +2,7 @@
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH *
  *                                                                              *
  *              This software is distributed under the terms of the *
- *              GNU Lesser General Public Licence (LGPL) version 3,             *    
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE" *
  ********************************************************************************/
 //*-- AUTHOR : Ilse Koenig
@@ -28,6 +28,7 @@
 
 #include <stdio.h>  // for printf, sscanf
 #include <string.h> // for strcmp, memcpy, strtok, etc
+#include <fstream>                      // for fstream
 
 using std::ios;
 
@@ -145,7 +146,6 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet *pPar) {
   if (!findContainer(name)) {
     return kFALSE;
   }
-  
 
   const Char_t d[] = " \t";
   FairParamList *paramList = new FairParamList;
@@ -157,10 +157,10 @@ Bool_t FairGenericParAsciiFileIo::readGenericSet(FairParGenericSet *pPar) {
   while (buf[0] != '#' && !pFile->eof()) {
     pFile->getline(buf, maxbuf);
     if (buf[0] != '/' && buf[0] != '#') {
-      s = buf;	  
+      s = buf;
       n = s.First(':');
-      // <DB> Check if empty buffer  
-      if (s.IsNull()) continue;   
+      // <DB> Check if empty buffer
+      if (s.IsNull()) continue;
       if (n == -1) {
         Error("readCond(FairParGenericSet*)",
               "%s:\n  Missing backslash for parameter %s", name, pName.Data());

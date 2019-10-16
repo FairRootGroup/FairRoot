@@ -32,6 +32,7 @@ class FairContainer : public TNamed
     TString actualContext;
     /** Fair Logger */
     FairLogger*  fLogger;//!
+
   public:
     FairContainer( const char*, const char*, const char*);
     ~FairContainer();
@@ -55,8 +56,8 @@ class FairContFact : public TNamed
     FairParSet* getContainer(const char*);
     virtual FairParSet* createContainer(FairContainer*) {return 0;}
     virtual void activateParIo(FairParIo*) {}
-  protected:
 
+  protected:
     TList* containers;   // all parameter containers managed by this factory
     const char* getActualContext(const char* name) {
       return (static_cast<FairContainer*>(containers->FindObject(name)))->getActualContext();
@@ -64,11 +65,10 @@ class FairContFact : public TNamed
     /** Fair Logger */
     FairLogger*  fLogger;//!
     ClassDef(FairContFact,0) // base class of all factories for parameter containers
+
   private:
     FairContFact(const FairContFact&);
     FairContFact& operator=(const FairContFact&);
-
-
 };
 
 #endif  /* !FAIRCONTFACT_H */

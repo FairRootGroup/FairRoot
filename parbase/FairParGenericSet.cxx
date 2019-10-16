@@ -32,7 +32,6 @@
 #include "FairParIo.h"                  // for FairParIo
 #include "FairParamList.h"              // for FairParamList
 
-#include <iosfwd>                       // for ostream
 #include <TString.h>                    // for operator<<, TString
 
 #include <iostream>                     // for operator<<, ostream, cout, etc
@@ -55,7 +54,6 @@ Int_t FairParGenericSet::write(FairParIo* output)
   return -1;
 }
 
-
 void FairParGenericSet::printParams()
 {
   // prints information about the container
@@ -71,7 +69,3 @@ void FairParGenericSet::printParams()
   std::cout<<"---------------------------------------------\n\n";
   delete condList;
 }
-
-
-
-
