@@ -18,7 +18,6 @@
 
 using namespace std;
 
-// -----   Default constructor   -------------------------------------------
 FairTrackPar::FairTrackPar()
   : TObject(),
     fX (0.),
@@ -37,12 +36,8 @@ FairTrackPar::FairTrackPar()
     fDQp (0.),
     fq  (1)
 {
-
-
 }
-// -------------------------------------------------------------------------
 
-// -----   Constructor with parameters   -----------------------------------
 FairTrackPar::FairTrackPar(Double_t x, Double_t y, Double_t z,
                            Double_t px, Double_t py, Double_t pz, Int_t q)
 
@@ -66,13 +61,11 @@ FairTrackPar::FairTrackPar(Double_t x, Double_t y, Double_t z,
 
   Double_t p=TMath::Sqrt(fPx*fPx +fPy*fPy +fPz*fPz );
   if (p!=0) { fQp = q/p; }
-
-
 }
 
 FairTrackPar::FairTrackPar(Double_t x,  Double_t y,  Double_t z, Double_t dx, Double_t dy, Double_t dz,
-                 Double_t px, Double_t py, Double_t pz, Double_t dpx, Double_t dpy, Double_t dpz,
-				 Int_t q)
+                           Double_t px, Double_t py, Double_t pz, Double_t dpx, Double_t dpy, Double_t dpz,
+                           Int_t q)
 : TObject(),
   fX (x),
   fY (y),
@@ -93,13 +86,9 @@ FairTrackPar::FairTrackPar(Double_t x,  Double_t y,  Double_t z, Double_t dx, Do
 	Double_t p=TMath::Sqrt(fPx*fPx +fPy*fPy +fPz*fPz );
 	  if (p!=0) { fQp = q/p; }
 }
-// -------------------------------------------------------------------------
 
-// -----   Destructor   ----------------------------------------------------
 FairTrackPar::~FairTrackPar() {}
-// -------------------------------------------------------------------------
 
-// -----   Public method Print   -------------------------------------------
 void FairTrackPar::Print(Option_t* /*option*/) const
 {
   LOG(info) << "Position :(" << fX << "," << fY << "," << fZ << ")";
@@ -108,20 +97,15 @@ void FairTrackPar::Print(Option_t* /*option*/) const
 
 void FairTrackPar::GetFieldValue(const Double_t point[3], Double_t* bField)
 {
-	FairRunAna* fRun = FairRunAna::Instance();
-	if (fRun->GetField() != 0)
-		fRun->GetField()->GetFieldValue(point, bField);
-	else {
-		bField[0] = .0;
-		bField[1] = .0;
-		bField[2] = .0;
-	}
+  FairRunAna* fRun = FairRunAna::Instance();
+  if (fRun->GetField() != 0)
+    fRun->GetField()->GetFieldValue(point, bField);
+  else {
+    bField[0] = .0;
+    bField[1] = .0;
+    bField[2] = .0;
+  }
 }
 
 ClassImp(FairTrackPar)
-
-
-
-
-
 

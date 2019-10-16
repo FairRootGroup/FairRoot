@@ -15,11 +15,9 @@
 // and the covariance matrix. Or using position and momentum in LAB referance.
 
 #include "FairTrackParH.h"
-#include "FairField.h"                  // for FairField
 #include "FairGeaneUtil.h"              // for FairGeaneUtil
-#include "FairRunAna.h"                 // for FairRunAna
 #include "FairTrackParP.h"              // for FairTrackParP
-#include <iosfwd>                       // for ostream
+
 #include <TMath.h>                      // for pow, Sqrt, sqrt, Sin, Cos, etc
 #include <TMathBase.h>                  // for Abs, Sign
 

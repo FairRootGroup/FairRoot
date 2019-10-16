@@ -15,7 +15,6 @@
 
 class FairGeaneUtil : public TObject
 {
-
   public:
     FairGeaneUtil();
     ~FairGeaneUtil();
@@ -70,8 +69,6 @@ class FairGeaneUtil : public TObject
                       Int_t& IERR, Double_t& SP1,
                       Double_t* PC, Double_t* RC);
 
-    //---------------------------------------
-
     void FromMat25ToVec15(Double_t A[5][5], Double_t* V);
     void FromMatToVec(Double_t A[5][5], Double_t* V);
 
@@ -85,6 +82,5 @@ class FairGeaneUtil : public TObject
 
     ClassDef(FairGeaneUtil,1);
 };
-
 
 #endif

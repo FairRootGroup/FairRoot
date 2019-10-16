@@ -41,13 +41,11 @@ target_link_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::FairTools
   FairRoot::Base # FairRunAna, FairField
-  Boost::boost
-  Boost::serialization
-  # TODO: clean the following
-  # needed: TMath, TMatrixT, TMatrixTBase, TMatrixTUtils, TMathBase, TObject, Rtypes, TVector3
-  Physics
-  Matrix
+
   Core
+  Physics
+  MathCore
+  Matrix
 )
 
 fairroot_target_root_dictionary(${target}

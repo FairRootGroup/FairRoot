@@ -69,6 +69,4 @@ std::string FairTestOutputHandler::GetCaptureLine(int line)
   ReadContentFromFile();
 
   return fFileContent[line];
-
 }
-

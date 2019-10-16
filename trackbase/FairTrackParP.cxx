@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // Class for the representation of a track as parabola (SD system)
@@ -16,12 +16,9 @@
 
 #include "FairTrackParP.h"
 
-#include "FairField.h"                  // for FairField
 #include "FairGeaneUtil.h"              // for FairGeaneUtil
-#include "FairRunAna.h"                 // for FairRunAna
 #include "FairTrackParH.h"              // for FairTrackParH
 
-#include <iosfwd>                       // for ostream
 #include <TMath.h>                      // for Sqrt
 #include <TMathBase.h>                  // for Abs, Sign
 
@@ -36,7 +33,6 @@ using std::endl;
 
 ClassImp(FairTrackParP)
 
-// -----   Default constructor   -------------------------------------------
 FairTrackParP::FairTrackParP()
   : FairTrackPar(),
     fU (0.),
@@ -58,17 +54,14 @@ FairTrackParP::FairTrackParP()
     fkver(TVector3(0,0,0)),
     fSPU(0.)
 {
-//   Reset();
+  // Reset();
   for(Int_t i=0; i<15; i++)  {
     fCovMatrix[i]=0;
   }
   for(int i = 0; i < 6; i++) for(int j = 0; j < 6; j++) { fCovMatrix66[i][j] = 0; }
-
-
-
 }
 
-// -----   Constructor with track parameters in SD -----------------------------------
+// Constructor with track parameters in SD
 FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
                              Double_t Tw, Double_t qp,
                              Double_t CovMatrix[15],
@@ -178,7 +171,7 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
 
 }
 
-// -----   Constructor with track parameters in SD -----------------------------------
+// Constructor with track parameters in SD
 FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
                              Double_t Tw, Double_t qp,
                              Double_t CovMatrix[15],
@@ -240,20 +233,19 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   fDV   = TMath::Sqrt(fabs(fCovMatrix[12]));
   fDW   = TMath::Sqrt(fabs(fCovMatrix[14]));
 
-
   Double_t PD[3],RD[6][6],H[3],PC[3],RC[15], SP1;
   Int_t CH;
   PC[0]   = fQp;
   PC[1]   = fTV;
   PC[2]   = fTW;
-  
+
   // initialize RD
   for(Int_t i=0; i<6; i++) {
     for(Int_t k=0; k<6; k++) {
       RD[i][k] = 0;
     }
   }
-  
+
   for(Int_t i=0; i<15; i++)  {
     RC[i]=fCovMatrix[i];
   }
@@ -266,7 +258,6 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
 
   GetFieldValue(pnt, H);
 
-
   CH=fq;
 
   TVector3 momsd = TVector3(fPx_sd,fPy_sd,fPz_sd);
@@ -275,9 +266,6 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
 
   util.FromSDToMars(PC, RC, H, CH, SP1, fDJ, fDK, PD, RD);
 
-  
-  
-  
   fPx = PD[0];
   fPy = PD[1];
   fPz = PD[2];
@@ -292,7 +280,7 @@ FairTrackParP::FairTrackParP(Double_t v, Double_t w, Double_t Tv,
   fDZ  = TMath::Sqrt(fabs(RD[5][5]));
 }
 
-// -----   Constructor with track parameters in LAB -----------------------------------
+// Constructor with track parameters in LAB
 FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, TVector3 posErr, TVector3 MomErr, Int_t Q, TVector3 o, TVector3 dj, TVector3 dk)
   : FairTrackPar(pos.x(),pos.y(),pos.z(),Mom.x(),Mom.y(),Mom.z(),Q),
     fU (0.),
@@ -327,18 +315,12 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, TVector3 posErr, TVecto
   Double_t P = TMath::Sqrt(fPx*fPx +fPy*fPy +fPz*fPz );
   if(Q!=0) { fq= Q/TMath::Abs(Q); }
 
-
-
-
   FairGeaneUtil util;
   TVector3 positionsd = util.FromMARSToSDCoord(TVector3(fX, fY, fZ), forigin, fiver, fjver, fkver);
   fU = positionsd.X();
   fV = positionsd.Y();
   fW = positionsd.Z();
   fQp = fq/P;
-
-
-
 
   fDPx = MomErr.x(); //dpx
   fDPy = MomErr.y(); //dpy
@@ -373,7 +355,6 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, TVector3 posErr, TVecto
 
   GetFieldValue(pnt, H);
 
-
   CH=fq;
 
   util.FromMarsToSD(PD, RD, H, CH, fDJ, fDK, IERR, SP1, PC, RC);
@@ -394,10 +375,9 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom, TVector3 posErr, TVecto
   fPx_sd = fSPU*TMath::Sqrt( P*P / ( fTV*fTV + fTW*fTW + 1 ) );
   fPy_sd = fTV * fPx_sd;
   fPz_sd = fTW * fPx_sd;
-
 }
 
-// -----   Constructor with track parameters in LAB (with complete covariance matrix in MARS) -----------------------------------
+// Constructor with track parameters in LAB (with complete covariance matrix in MARS)
 FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom,
                              Double_t covMARS[6][6], Int_t Q,
                              TVector3 o, TVector3 dj, TVector3 dk)
@@ -458,7 +438,6 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom,
   for(int i = 0; i < 6; i++)  for(int j = 0; j < 6; j++) { RD[i][j] = covMARS[i][j]; }
   for(int i = 0; i < 6; i++) for(int j = 0; j < 6; j++) { fCovMatrix66[i][j] = RD[i][j]; }
 
-
   // retrieve field
   Double_t pnt[3];
   pnt[0] = fX;
@@ -466,7 +445,6 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom,
   pnt[2] = fZ;
 
   GetFieldValue(pnt, H);
-
 
   CH=fq;
 
@@ -489,7 +467,6 @@ FairTrackParP::FairTrackParP(TVector3 pos, TVector3 Mom,
   fPy_sd = fTV * fPx_sd;
   fPz_sd = fTW * fPx_sd;
 }
-
 
 // ctor from helix to parabola ---------------------------------------------------------------
 // -- WARNING -- please pay attention to choose a plane which DOES NOT CONTAIN the TRACK, i.e.
@@ -532,7 +509,6 @@ FairTrackParP::FairTrackParP(FairTrackParH* helix, TVector3 dj, TVector3 dk, Int
 
   GetFieldValue(pnt, H);
 
-
   Int_t CH  = helix->GetQ();
 
   Double_t DJ[3] = {dj.X(), dj.Y(), dj.Z()};
@@ -543,8 +519,7 @@ FairTrackParP::FairTrackParP(FairTrackParH* helix, TVector3 dj, TVector3 dk, Int
   Double_t PD[3], RD[15];
 
   FairGeaneUtil util;
-  util.FromSCToSD(PC, RC, H, CH, DJ, DK,
-                  IERR, SPU, PD, RD);
+  util.FromSCToSD(PC, RC, H, CH, DJ, DK, IERR, SPU, PD, RD);
 
   ierr = IERR;
 
@@ -558,20 +533,14 @@ FairTrackParP::FairTrackParP(FairTrackParH* helix, TVector3 dj, TVector3 dk, Int
                                RD,
                                o, di, dj, dk, SPU);
   else { cout << "FairTrackParP(FairTrackParH *) contructor ERROR: CANNOT convert helix to parabola" << endl; }
-
 }
 
-//define track in LAB
-
+// define track in LAB
 void FairTrackParP::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
                                 Double_t Px, Double_t Py, Double_t Pz, Int_t Q,
                                 Double_t  CovMatrix[15],
                                 TVector3 o, TVector3 /*di*/, TVector3 dj, TVector3 dk)
 {
-
-
-
-
   Reset();
   SetPlane(o, dj, dk);
 
@@ -616,7 +585,6 @@ void FairTrackParP::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
 
   GetFieldValue(pnt, H);
 
-
   CH=fq;
   util.FromMarsToSD(PD, RD, H, CH, fDJ, fDK, IERR, SP1, PC, RC);
   fTV = PC[1];
@@ -628,14 +596,11 @@ void FairTrackParP::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
   fDV   = TMath::Sqrt(fabs(fCovMatrix[12]));
   fDW   = TMath::Sqrt(fabs(fCovMatrix[14]));
 
-
-
   for(Int_t i=0; i<15; i++) { RC[i] = fCovMatrix[i]; }
 
   util.FromSDToMars(PC, RC, H, CH, SP1, fDJ, fDK, PD, RD);
 
   for(int i = 0; i < 6; i++) for(int j = 0; j < 6; j++) { fCovMatrix66[i][j] = RD[i][j]; }
-
 
   fDPx = TMath::Sqrt(fabs(RD[0][0]));
   fDPy = TMath::Sqrt(fabs(RD[1][1]));
@@ -645,8 +610,6 @@ void FairTrackParP::SetTrackPar(Double_t X,  Double_t Y,  Double_t Z,
   fDZ = TMath::Sqrt(fabs(RD[5][5]));
 
   fSPU = SP1;
-
-
 }
 
 //define track in SD
@@ -672,7 +635,6 @@ void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
     fCovMatrix[i]=CovMatrix[i];
   }
 
-
   fPx_sd = fSPU*TMath::Sqrt( P*P / ( fTV*fTV + fTW*fTW + 1 ) );
   fPy_sd = fTV * fPx_sd;
   fPz_sd = fTW * fPx_sd;
@@ -688,7 +650,6 @@ void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
   fDTW = TMath::Sqrt(fabs(fCovMatrix[9]));
   fDV  = TMath::Sqrt(fabs(fCovMatrix[12]));
   fDW  = TMath::Sqrt(fabs(fCovMatrix[14]));
-
 
   Double_t PD[3],RD[6][6],H[3],PC[3],RC[15], SP1;
   Int_t CH;
@@ -706,7 +667,7 @@ void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
       RD[i][k] = 0;
     }
   }
-  
+
   // retrieve field
   Double_t pnt[3];
   pnt[0] = fX;
@@ -715,9 +676,7 @@ void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
 
   GetFieldValue(pnt, H);
 
-
   CH=fq;
-
 
   TVector3 momsd = TVector3(fPx_sd,fPy_sd,fPz_sd);
   // SP1 = (momsd.Dot(fjver.Cross(fkver)))/TMath::Abs(momsd.Dot(fjver.Cross(fkver)));
@@ -737,7 +696,6 @@ void  FairTrackParP::SetTrackPar(Double_t v, Double_t w, Double_t Tv,
   fDX  = TMath::Sqrt(fabs(RD[3][3]));
   fDY  = TMath::Sqrt(fabs(RD[4][4]));
   fDZ  = TMath::Sqrt(fabs(RD[5][5]));
-
 }
 
 void FairTrackParP::CalCov()
@@ -745,12 +703,8 @@ void FairTrackParP::CalCov()
   //not needed
 }
 
-
-// -----   Destructor   ----------------------------------------------------
 FairTrackParP::~FairTrackParP() {}
-// -------------------------------------------------------------------------
 
-// -----   Public method Print   -------------------------------------------
 void FairTrackParP::Print(Option_t* /*option*/) const
 {
   cout << "Position : (";
@@ -758,7 +712,7 @@ void FairTrackParP::Print(Option_t* /*option*/) const
   cout << std::setprecision(2) << "Slopes : dx/dz = " << fTV << ", dy/dz = " << fTW << endl;
   cout << std::setprecision(2)  << "q/p = " << fQp << endl;
 }
-// -------------------------------------------------------------------------
+
 /*Double_t FairTrackParP::GetDX()
 { return fDX; }
 Double_t FairTrackParP::GetDY()
@@ -766,6 +720,7 @@ Double_t FairTrackParP::GetDY()
 Double_t FairTrackParP::GetDZ()
 { return fDZ; }
 */
+
 Double_t FairTrackParP::GetV()
 {
   return fV;
@@ -775,14 +730,17 @@ Double_t FairTrackParP::GetW()
 {
   return fW;
 }
+
 Double_t FairTrackParP::GetTV()
 {
   return fTV;
 }
+
 Double_t FairTrackParP::GetTW()
 {
   return fTW;
 }
+
 Double_t FairTrackParP::GetDV()
 {
   return fDV;
@@ -792,10 +750,12 @@ Double_t FairTrackParP::GetDW()
 {
   return fDW;
 }
+
 Double_t FairTrackParP::GetDTV()
 {
   return fDTV;
 }
+
 Double_t FairTrackParP::GetDTW()
 {
   return fDTW;
@@ -839,10 +799,12 @@ TVector3 FairTrackParP::GetOrigin()
 {
   return forigin;
 }
+
 TVector3 FairTrackParP::GetIVer()
 {
   return fiver;
 }
+
 TVector3 FairTrackParP::GetJVer()
 {
   return fjver;
@@ -853,9 +815,7 @@ TVector3 FairTrackParP::GetKVer()
   return fkver;
 }
 
-
-
-void  FairTrackParP::Reset()
+void FairTrackParP::Reset()
 {
   fU   = 0.;
   fV   = 0.;
@@ -877,9 +837,7 @@ void  FairTrackParP::Reset()
   fPx  = fPy  = fPz  = 0.;
   fDPx = fDPy = fDPz = 0.;
   fQp  = fDQp = fq   = 0;
-
 }
-
 
 void FairTrackParP::SetPlane(TVector3 o, TVector3 j, TVector3 k)
 {
@@ -913,16 +871,11 @@ void FairTrackParP::SetPlane(TVector3 o, TVector3 j, TVector3 k)
   fDK[1] = k.Y();
   fDK[2] = k.Z();
   fkver = TVector3(fDK[0],fDK[1],fDK[2]);
-
-
-
 }
-
 
 void FairTrackParP::SetTransportMatrix(Double_t mat[][5])
 {
   for(int i = 0; i < 5; i++) for(int j = 0; j < 5; j++) { ftrmat[i][j] = mat[i][j]; }
-
 }
 
 void FairTrackParP::GetTransportMatrix(Double_t mat[][5])

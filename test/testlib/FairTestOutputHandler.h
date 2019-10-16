@@ -9,7 +9,7 @@
 #define FAIRTESTOUTPUTHANDLER_H_
 #pragma once
 
-#include <string> //?? why not cstring
+#include <string>
 #include <vector>
 
 class FairTestOutputHandler
@@ -25,7 +25,6 @@ class FairTestOutputHandler
     void SetFileName(const std::string& filename);
 
   private:
-
     void ReadContentFromFile();
 
     std::string fFileName;

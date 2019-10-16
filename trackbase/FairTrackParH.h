@@ -26,9 +26,7 @@ class FairTrackParP;
 
 class FairTrackParH : public FairTrackPar
 {
-
   public:
-
     /** Constructor **/
     FairTrackParH();
 
@@ -79,8 +77,6 @@ class FairTrackParH : public FairTrackPar
     Double_t GetY();  /**Get Y in Lab*/
     Double_t GetZ();  /**Get Z in Lab*/
 
-
-
     /** Modifiers **/
     void SetLambda(Double_t Lm ) { fLm = Lm; };
     void SetPhi(Double_t Phi) { fPhi = Phi; };
@@ -101,9 +97,7 @@ class FairTrackParH : public FairTrackPar
     void Reset();
     ClassDef(FairTrackParH,1);
 
-
   private:
-
     /** fLm = Dip angle **/
     Double_t fLm;
     /**fPhi = azimuthal angle **/
@@ -132,8 +126,6 @@ class FairTrackParH : public FairTrackPar
        //! do not streame this to the file
     */
     Double_t cLm,sLm, cphi ,sphi; //!
-
 };
-
 
 #endif
