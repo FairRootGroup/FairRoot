@@ -16,15 +16,13 @@
 
 #include <TClonesArray.h>               // for TClonesArray
 
-#include <stddef.h>                     // for NULL
 #include <set>                          // for set, set<>::iterator, etc
 
-// ---- Default constructor -------------------------------------------
 FairTutorialDet4MilleWriter::FairTutorialDet4MilleWriter()
   :FairTask("FairTutorialDet4MilleWriter"),
    fTracks(),
    fHits(),
-   fMille(NULL),
+   fMille(nullptr),
    fWriteAscii(kFALSE),
    fVersion(1),
    fFileName("mp2tst")
@@ -32,13 +30,11 @@ FairTutorialDet4MilleWriter::FairTutorialDet4MilleWriter()
   LOG(debug) << "Default Constructor of FairTutorialDet4MilleWriter";
 }
 
-// ---- Destructor ----------------------------------------------------
 FairTutorialDet4MilleWriter::~FairTutorialDet4MilleWriter()
 {
   LOG(debug) << "Destructor of FairTutorialDet4MilleWriter";
 }
 
-// ----  Initialisation  ----------------------------------------------
 void FairTutorialDet4MilleWriter::SetParContainers()
 {
   LOG(debug) << "SetParContainers of FairTutorialDet4MilleWriter";
@@ -52,7 +48,6 @@ void FairTutorialDet4MilleWriter::SetParContainers()
   */
 }
 
-// ---- Init ----------------------------------------------------------
 InitStatus FairTutorialDet4MilleWriter::Init()
 {
   LOG(debug) << "Initilization of FairTutorialDet4MilleWriter";
@@ -62,14 +57,14 @@ InitStatus FairTutorialDet4MilleWriter::Init()
 
   // Get a pointer to the previous already existing data level
   fTracks = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetTrack"));
-  if ( ! fTracks ) {
+  if (!fTracks) {
     LOG(error) << "No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive";
     return kERROR;
   }
 
   // Get a pointer to the previous already existing data level
   fHits = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetHit"));
-  if ( ! fHits ) {
+  if (!fHits) {
     LOG(error) << "No InputDataLevelName array!\n FairTutorialDet4MilleWriter will be inactive";
     return kERROR;
   }
@@ -83,19 +78,15 @@ InitStatus FairTutorialDet4MilleWriter::Init()
     fMille = new Mille(fFileName, true, false); // write binary file needed by pede
   }
 
-
   return kSUCCESS;
-
 }
 
-// ---- ReInit  -------------------------------------------------------
 InitStatus FairTutorialDet4MilleWriter::ReInit()
 {
   LOG(debug) << "Initilization of FairTutorialDet4MilleWriter";
   return kSUCCESS;
 }
 
-// ---- Exec ----------------------------------------------------------
 void FairTutorialDet4MilleWriter::Exec(Option_t* /*option*/)
 {
   if (IsGoodEvent()) {
@@ -120,7 +111,7 @@ Bool_t FairTutorialDet4MilleWriter::IsGoodEvent()
     hit = static_cast<FairTutorialDet4Hit*>(fHits->At(iHit));
     Int_t detId = hit->GetDetectorID();
     it = detIdSet.find(detId);
-    if ( it == detIdSet.end() ) {
+    if (it == detIdSet.end()) {
       detIdSet.insert(detId);
     } else {
       // find hit in already used detector station
@@ -133,13 +124,11 @@ Bool_t FairTutorialDet4MilleWriter::IsGoodEvent()
 
 void FairTutorialDet4MilleWriter::StraightLineShiftX()
 {
-
   const Int_t nLC = 2; // number of local parameters
   // two for track x-coordinate
   // x(z) = a1*z + a2
   // dx(z)/da1 = z
   // dx(z)/da2 = 1
-
 
   const Int_t nGL = 1; // number of global parameters per point
   // taken from millepede 1 dim example
@@ -150,7 +139,6 @@ void FairTutorialDet4MilleWriter::StraightLineShiftX()
   Float_t* derGL = new Float_t[nGL]; // array of derivatives for global parameters
 
   Int_t* label = new Int_t[nGL]; // array of labels
-
 
   for (Int_t help = 0; help < nGL; help++) {
     derGL[help] = 0;
@@ -199,10 +187,8 @@ void FairTutorialDet4MilleWriter::StraightLineShiftX()
   delete[] label;
 }
 
-// ---- Exec ----------------------------------------------------------
 void FairTutorialDet4MilleWriter::StraightLineShiftXY()
 {
-
   const Int_t nLC = 4; // number of local parameters
   // two for track x-coordinate
   // x(z) = a1*z + a2
@@ -289,7 +275,6 @@ void FairTutorialDet4MilleWriter::StraightLineShiftXY()
   delete[] label;
 }
 
-// ---- Finish --------------------------------------------------------
 void FairTutorialDet4MilleWriter::Finish()
 {
   LOG(debug) << "Finish of FairTutorialDet4MilleWriter";

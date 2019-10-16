@@ -17,20 +17,17 @@
 #include <TGraphErrors.h>               // for TGraphErrors
 #include <TVector3.h>                   // for TVector3
 
-#include <stddef.h>                     // for NULL
 #include <set>                          // for set, set<>::iterator, etc
 
-// ---- Default constructor -------------------------------------------
 FairTutorialDet4StraightLineFitter::FairTutorialDet4StraightLineFitter()
   :FairTask("FairTutorialDet4StraightLineFitter"),
-   fHits(NULL),
-   fTracks(NULL),
+   fHits(nullptr),
+   fTracks(nullptr),
    fVersion(2)
 {
   LOG(debug) << "Default Constructor of FairTutorialDet4StraightLineFitter";
 }
 
-// ---- Destructor ----------------------------------------------------
 FairTutorialDet4StraightLineFitter::~FairTutorialDet4StraightLineFitter()
 {
   LOG(debug) << "Destructor of FairTutorialDet4StraightLineFitter";
@@ -40,7 +37,6 @@ FairTutorialDet4StraightLineFitter::~FairTutorialDet4StraightLineFitter()
   }
 }
 
-// ----  Initialisation  ----------------------------------------------
 void FairTutorialDet4StraightLineFitter::SetParContainers()
 {
   LOG(debug) << "SetParContainers of FairTutorialDet4StraightLineFitter";
@@ -54,7 +50,6 @@ void FairTutorialDet4StraightLineFitter::SetParContainers()
   */
 }
 
-// ---- Init ----------------------------------------------------------
 InitStatus FairTutorialDet4StraightLineFitter::Init()
 {
   LOG(debug) << "Initilization of FairTutorialDet4StraightLineFitter";
@@ -65,7 +60,7 @@ InitStatus FairTutorialDet4StraightLineFitter::Init()
   // Get a pointer to the previous already existing data level
 
   fHits = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetHit"));
-  if ( ! fHits ) {
+  if (!fHits) {
     LOG(error)<<"No InputDataLevelName array!\n"
               << "FairTutorialDet4StraightLineFitter will be inactive";
     return kERROR;
@@ -82,17 +77,14 @@ InitStatus FairTutorialDet4StraightLineFitter::Init()
   // initialize variables
 
   return kSUCCESS;
-
 }
 
-// ---- ReInit  -------------------------------------------------------
 InitStatus FairTutorialDet4StraightLineFitter::ReInit()
 {
   LOG(debug) << "Initilization of FairTutorialDet4StraightLineFitter";
   return kSUCCESS;
 }
 
-// ---- Exec ----------------------------------------------------------
 void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
 {
   LOG(debug) << "Exec of FairTutorialDet4StraightLineFitter";
@@ -100,7 +92,7 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
   if (!IsGoodEvent()) { return; }
 
   // Declare some variables
-  FairTutorialDet4Hit* hit = NULL;
+  FairTutorialDet4Hit* hit = nullptr;
 /*
   Int_t detID   = 0;        // Detector ID
   Int_t trackID = 0;        // Track index
@@ -120,7 +112,7 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
 
   for (Int_t iHit=0; iHit<nHits; iHit++) {
     hit = static_cast<FairTutorialDet4Hit*>(fHits->At(iHit));
-    if ( ! hit) { continue; }
+    if (!hit) { continue; }
 
     XPos[iHit] = hit->GetX();
     YPos[iHit] = hit->GetY();
@@ -142,7 +134,7 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
   Double_t OffY = 0.;
   Double_t Chi2Y;
 
-  if ( 2 == fVersion ) {
+  if (2 == fVersion) {
     LineGraph = new TGraphErrors(nHits, ZPos, YPos, 0, YPosErr);
     LineGraph->Fit("f1", "Q");
     SlopeY = f1->GetParameter(0);
@@ -164,7 +156,7 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
   track->SetX(OffX);
   track->SetTx(SlopeX);
   track->SetZ(0.);
-  if ( 2 == fVersion ) {
+  if (2 == fVersion) {
     track->SetY(OffY);
     track->SetTy(SlopeY);
   }
@@ -196,7 +188,7 @@ Bool_t FairTutorialDet4StraightLineFitter::IsGoodEvent()
     hit = static_cast<FairTutorialDet4Hit*>(fHits->At(iHit));
     Int_t detId = hit->GetDetectorID();
     it = detIdSet.find(detId);
-    if ( it == detIdSet.end() ) {
+    if (it == detIdSet.end()) {
       detIdSet.insert(detId);
     } else {
       // find hit in already used detector station
@@ -207,7 +199,6 @@ Bool_t FairTutorialDet4StraightLineFitter::IsGoodEvent()
   return kTRUE;
 }
 
-// ---- Finish --------------------------------------------------------
 void FairTutorialDet4StraightLineFitter::Finish()
 {
   LOG(debug) << "Finish of FairTutorialDet4StraightLineFitter";

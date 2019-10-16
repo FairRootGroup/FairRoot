@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRTUTORIALDET4GEOPAR_H
@@ -10,19 +10,19 @@
 
 #include "FairParGenericSet.h"          // for FairParGenericSet
 
-#include <Rtypes.h>                     // for ClassDef 
+#include <Rtypes.h>                     // for ClassDef
 
 class TObjArray;
 class FairParamList;
 
-class FairTutorialDet4GeoPar       : public FairParGenericSet
+class FairTutorialDet4GeoPar : public FairParGenericSet
 {
   public:
-
     FairTutorialDet4GeoPar(const char* name="FairTutorialDet4GeoPar",
                            const char* title="FairTutorialDet4 Geometry Parameters",
                            const char* context="TestDefaultContext");
-    ~FairTutorialDet4GeoPar(void);
+    ~FairTutorialDet4GeoPar(void) {}
+
     void clear(void);
     void putParams(FairParamList*);
     Bool_t getParams(FairParamList*);

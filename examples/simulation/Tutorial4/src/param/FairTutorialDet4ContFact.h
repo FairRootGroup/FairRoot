@@ -18,6 +18,7 @@ class FairTutorialDet4ContFact : public FairContFact
 {
   private:
     void setAllContainers();
+
   public:
     FairTutorialDet4ContFact();
     ~FairTutorialDet4ContFact() {}

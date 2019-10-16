@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRTUTORIALDET4_H
@@ -13,23 +13,23 @@
 #include <Rtypes.h>                     // for Int_t, Bool_t, Double32_t, etc
 #include <TArrayD.h>                    // for TArrayD
 #include <TLorentzVector.h>             // for TLorentzVector
-#include <TClonesArray.h>
 #include <TVector3.h>                   // for TVector3
+#include <TClonesArray.h>
 
-#include <string>                       // for string
+#include <string>
+#include <map>
 
 class FairTutorialDet4Point;
 class FairTutorialDet4GeoHandler;
 class FairTutorialDet4MisalignPar;
 class FairTutorialDet4Geo;
 class FairVolume;
-class TClonesArray;
+class FairModule;
+class TGeoHMatrix;
 
-class FairTutorialDet4: public FairDetector
+class FairTutorialDet4 : public FairDetector
 {
-
   public:
-
     /**      Name :  Detector Name
      *       Active: kTRUE for active detectors (ProcessHits() will be called)
      *               kFALSE for inactive detectors
@@ -51,7 +51,7 @@ class FairTutorialDet4: public FairDetector
     /**       this method is called for each step during simulation
      *       (see FairMCApplication::Stepping())
     */
-    virtual Bool_t ProcessHits( FairVolume* v=0);
+    virtual Bool_t ProcessHits(FairVolume* v=0);
 
     /**       Registers the produced collections in FAIRRootManager.     */
     virtual void   Register();
@@ -79,16 +79,15 @@ class FairTutorialDet4: public FairDetector
      *  any optional action in your detector during the transport.
     */
 
-//    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
-//                               Int_t offset) {;}
-    virtual void   SetSpecialPhysicsCuts() {;}
-    virtual void   EndOfEvent();
-    virtual void   FinishPrimary() {;}
-    virtual void   FinishRun() {;}
-    virtual void   BeginPrimary() {;}
-    virtual void   PostTrack() {;}
-    virtual void   PreTrack() {;}
-    virtual void   BeginEvent() {;}
+    // virtual void CopyClones(TClonesArray* cl1,  TClonesArray* cl2 , Int_t offset) {}
+    virtual void SetSpecialPhysicsCuts() {}
+    virtual void EndOfEvent();
+    virtual void FinishPrimary() {}
+    virtual void FinishRun() {}
+    virtual void BeginPrimary() {}
+    virtual void PostTrack() {}
+    virtual void PreTrack() {}
+    virtual void BeginEvent() {}
 
     void SetModifyGeometry(Bool_t val) { fModifyGeometry=val; }
     void SetGlobalCoordinates(Bool_t val) { fGlobalCoordinates=val; }
@@ -102,9 +101,7 @@ class FairTutorialDet4: public FairDetector
     virtual Bool_t CheckIfSensitive(std::string name);
 
   private:
-
     static FairTutorialDet4Geo* fgGeo;   //!
-
 
     /** Track information to be stored until the track leaves the
     active volume.
@@ -140,7 +137,6 @@ class FairTutorialDet4: public FairDetector
      **
      **/
     void ConstructASCIIGeometry();
-
 
     FairTutorialDet4(const FairTutorialDet4&);
     FairTutorialDet4& operator=(const FairTutorialDet4&);

@@ -15,39 +15,29 @@
 #include "FairRuntimeDb.h"    // for FairRuntimeDb
 #include "FairLogger.h"
 
-#include <iosfwd>             // for ostream
 #include <TClonesArray.h>     // for TClonesArray
 #include <TEvePointSet.h>     // for TEveBoxSet, etc
 #include <TEveManager.h>      // for TEveManager, gEve
-#include <TVector3.h>         // for TVector3
 
-
-// -----   Default constructor   -------------------------------------------
 FairTutorialDet4PointDraw::FairTutorialDet4PointDraw()
   : FairTask("FairTutorialDet4PointDraw"),
-    fPointList(NULL),
-    fGeoPar(NULL),
-    fEventManager(NULL),
-    fq(NULL),
+    fPointList(nullptr),
+    fGeoPar(nullptr),
+    fEventManager(nullptr),
+    fq(nullptr),
     fColor(),
     fStyle(),
     fGlobalCoordinates(kTRUE),
     fGeoHandler(new FairTutorialDet4GeoHandler)
 {
 }
-// -------------------------------------------------------------------------
 
-
-
-// -----   Standard constructor   ------------------------------------------
-FairTutorialDet4PointDraw::FairTutorialDet4PointDraw(const char* name,
-						     Color_t color ,
-						     Style_t mystyle)
+FairTutorialDet4PointDraw::FairTutorialDet4PointDraw(const char* name, Color_t color, Style_t mystyle)
   : FairTask(name),
-    fPointList(NULL),
-    fGeoPar(NULL),
-    fEventManager(NULL),
-    fq(NULL),
+    fPointList(nullptr),
+    fGeoPar(nullptr),
+    fEventManager(nullptr),
+    fq(nullptr),
     fColor(color),
     fStyle(mystyle),
     fGlobalCoordinates(kTRUE),
@@ -55,7 +45,6 @@ FairTutorialDet4PointDraw::FairTutorialDet4PointDraw(const char* name,
 {
 }
 
-// ----  Initialisation  ----------------------------------------------
 void FairTutorialDet4PointDraw::SetParContainers()
 {
   // Get Base Container
@@ -63,55 +52,44 @@ void FairTutorialDet4PointDraw::SetParContainers()
   FairRuntimeDb* rtdb=run->GetRuntimeDb();
 
   fGeoPar = static_cast<FairTutorialDet4GeoPar*>(rtdb->getContainer("FairTutorialDet4GeoPar"));
-
 }
-// --------------------------------------------------------------------
 
-// -------------------------------------------------------------------------
 InitStatus FairTutorialDet4PointDraw::Init()
 {
-   FairRootManager* fManager = FairRootManager::Instance();
-   fPointList = static_cast<TClonesArray*>(fManager->GetObject(GetName()));
-   if(NULL==fPointList){
-     LOG(error) << "FairTutorialDet4PointDraw::Init()  branch " << GetName()
-		<< " not found! Task will be deactivated.";
-     return kERROR;
-    }
-   fEventManager = FairEventManager::Instance();
-   fq =0;
+  FairRootManager* fManager = FairRootManager::Instance();
+  fPointList = static_cast<TClonesArray*>(fManager->GetObject(GetName()));
+  if (nullptr==fPointList) {
+    LOG(error) << "FairTutorialDet4PointDraw::Init()  branch " << GetName() << " not found! Task will be deactivated.";
+    return kERROR;
+  }
+  fEventManager = FairEventManager::Instance();
+  fq = 0;
 
-   fGlobalCoordinates = fGeoPar->IsGlobalCoordinateSystem();
+  fGlobalCoordinates = fGeoPar->IsGlobalCoordinateSystem();
 
-   return kSUCCESS;
-
-
+  return kSUCCESS;
 }
-// -------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------
 void FairTutorialDet4PointDraw::Exec(Option_t* /*option*/)
 {
-  if (IsActive()){
-
+  if (IsActive()) {
     FairTutorialDet4Point *point=0;
 
     Int_t npoints=fPointList->GetEntriesFast();
     Reset();
 
-    TEvePointSet* q = new TEvePointSet(GetName(), npoints,
-				      TEvePointSelectorConsumer::kTVT_XYZ);
+    TEvePointSet* q = new TEvePointSet(GetName(), npoints, TEvePointSelectorConsumer::kTVT_XYZ);
     q->SetOwnIds(kTRUE);
     q->SetMarkerColor(fColor);
     q->SetMarkerSize(1.5);
     q->SetMarkerStyle(fStyle);
 
-//    Int_t refCounter=0;
+    // Int_t refCounter=0;
 
     for (Int_t i=0; i<npoints; ++i) {
-
       point = static_cast<FairTutorialDet4Point*>(fPointList->At(i));
 
-      if(!point) { continue; }
+      if (!point) { continue; }
 
       // Detector ID
       Int_t detID = point->GetDetectorID();
@@ -121,7 +99,7 @@ void FairTutorialDet4PointDraw::Exec(Option_t* /*option*/)
       Double_t  y  = point->GetY();
       Double_t  z  = point->GetZ();
 
-      if(!fGlobalCoordinates) {
+      if (!fGlobalCoordinates) {
         Double_t local[3] = {x, y, z};
         Double_t global[3];
 
@@ -132,32 +110,19 @@ void FairTutorialDet4PointDraw::Exec(Option_t* /*option*/)
         z = global[2];
       }
       q->SetNextPoint(x, y, z);
-      //     q->SetPointId(GetValue(p, i));
-
+      // q->SetPointId(GetValue(p, i));
     }
+
     gEve->AddElement(q);
     gEve->Redraw3D(kFALSE);
-    fq=q;
+    fq = q;
   }
 }
 
-// -----   Destructor   ----------------------------------------------------
-FairTutorialDet4PointDraw::~FairTutorialDet4PointDraw()
-{
-}
-// -------------------------------------------------------------------------
-
-// -------------------------------------------------------------------------
-void FairTutorialDet4PointDraw::Finish()
-{
-}
-// -------------------------------------------------------------------------
-
-// -------------------------------------------------------------------------
 void FairTutorialDet4PointDraw::Reset()
 {
-  if(fq){
+  if (fq) {
     fq->Reset();
-    gEve->RemoveElement(fq, fEventManager );
+    gEve->RemoveElement(fq, fEventManager);
   }
 }

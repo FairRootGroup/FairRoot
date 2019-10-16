@@ -27,30 +27,23 @@
 #include <TRandom.h>                    // for TRandom, gRandom
 #include <TVector3.h>                   // for TVector3
 
-#include <stddef.h>                     // for NULL
-
-// -----   Default constructor   -------------------------------------------
 FairTutorialDet4HitProducerIdealMisalign::FairTutorialDet4HitProducerIdealMisalign()
   : FairTask("Missallign Hit Producer for the TutorialDet"),
-    fPointArray(NULL),
-    fHitArray(NULL),
+    fPointArray(nullptr),
+    fHitArray(nullptr),
     fShiftX(),
     fShiftY(),
     fShiftZ(),
     fRotX(),
     fRotY(),
     fRotZ(),
-    fDigiPar(NULL),
+    fDigiPar(nullptr),
     fGeoHandler(new FairTutorialDet4GeoHandler),
-    fGeoPar(NULL),
+    fGeoPar(nullptr),
     fDoMisalignment(kFALSE)
 {
 }
 
-// -----   Destructor   ----------------------------------------------------
-FairTutorialDet4HitProducerIdealMisalign::~FairTutorialDet4HitProducerIdealMisalign() { }
-
-// --------------------------------------------------
 void FairTutorialDet4HitProducerIdealMisalign::SetParContainers()
 {
 
@@ -59,17 +52,12 @@ void FairTutorialDet4HitProducerIdealMisalign::SetParContainers()
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
 
-  fDigiPar = static_cast<FairTutorialDet4MisalignPar*>
-             (rtdb->getContainer("FairTutorialDet4MissallignPar"));
-
-  fGeoPar = static_cast<FairTutorialDet4GeoPar*>
-             (rtdb->getContainer("FairTutorialDet4GeoPar"));
-
+  fDigiPar = static_cast<FairTutorialDet4MisalignPar*>(rtdb->getContainer("FairTutorialDet4MissallignPar"));
+  fGeoPar = static_cast<FairTutorialDet4GeoPar*>(rtdb->getContainer("FairTutorialDet4GeoPar"));
 }
-// --------------------------------------------------------------------
+
 InitStatus FairTutorialDet4HitProducerIdealMisalign::ReInit()
 {
-
   // Get Base Container
   FairRunAna* ana = FairRunAna::Instance();
   FairRuntimeDb* rtdb=ana->GetRuntimeDb();
@@ -87,20 +75,18 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::ReInit()
   return kSUCCESS;
 }
 
-// -----   Public method Init   --------------------------------------------
 InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
 {
-
   // Get RootManager
   FairRootManager* ioman = FairRootManager::Instance();
-  if ( ! ioman ) {
+  if (!ioman) {
     LOG(fatal) << "RootManager not instantised!";
     return kFATAL;
   }
 
   // Get input array
   fPointArray = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetPoint"));
-  if ( ! fPointArray ) {
+  if (!fPointArray) {
     LOG(fatal)<<"No TutorialDetPoint array!";
     return kFATAL;
   }
@@ -110,7 +96,6 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
   ioman->Register("TutorialDetHit", "TutorialDet", fHitArray, kTRUE);
 
   LOG(info)<< "HitProducerIdealMissallign: Initialisation successfull";
-
 
   fShiftX=fDigiPar->GetShiftX();
   fShiftY=fDigiPar->GetShiftY();
@@ -134,19 +119,18 @@ InitStatus FairTutorialDet4HitProducerIdealMisalign::Init()
   return kSUCCESS;
 
 }
-// -----   Public method Exec   --------------------------------------------
+
 void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
 {
-
   fHitArray->Clear();
 
   // Declare some variables
-  FairTutorialDet4Point* point = NULL;
+  FairTutorialDet4Point* point = nullptr;
   Int_t detID   = 0;        // Detector ID
-//  Int_t trackID = 0;        // Track index
+  // Int_t trackID = 0;        // Track index
   Double_t x, y, z;         // Position
   Double_t dx = 0.1;        // Position error
-//  Double_t tof = 0.;        // Time of flight
+  // Double_t tof = 0.;        // Time of flight
   TVector3 pos, dpos;       // Position and error vectors
 
   // Loop over TofPoints
@@ -154,15 +138,15 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
   Int_t nPoints = fPointArray->GetEntriesFast();
   for (Int_t iPoint=0; iPoint<nPoints; iPoint++) {
     point = static_cast<FairTutorialDet4Point*>(fPointArray->At(iPoint));
-    if ( ! point) { continue; }
+    if (!point) { continue; }
 
     // Detector ID
     detID = point->GetDetectorID();
 
     // MCTrack ID
-//    trackID = point->GetTrackID();
+    // trackID = point->GetTrackID();
 
-    if(fDoMisalignment) {
+    if (fDoMisalignment) {
 
       Float_t cosAlpha = TMath::Cos(fRotZ.At(detID));
       Float_t sinAlpha = TMath::Sin(fRotZ.At(detID));
@@ -184,7 +168,7 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
                  << fShiftY.At(detID)<<" cm in y-direction.";
 
       // Time of flight
-//      tof = point->GetTime();
+      // tof = point->GetTime();
 
       // Create new hit
       pos.SetXYZ(x,y,z);
@@ -192,7 +176,6 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
       new ((*fHitArray)[nHits]) FairTutorialDet4Hit(detID, iPoint, pos, dpos);
       nHits++;
     }  else {
-
       // Determine hit position
       x  = point->GetX();
       y  = point->GetY();
@@ -212,29 +195,23 @@ void FairTutorialDet4HitProducerIdealMisalign::Exec(Option_t* /*opt*/)
       LOG(info)<<"Position: "<<x<<", "<<y<<", "<<z;
       LOG(info)<<"****";
       // Time of flight
-      //tof = point->GetTime();
+      // tof = point->GetTime();
 
       // Create new hit
       pos.SetXYZ(x,y,z);
       dpos.SetXYZ(dx, dx, 0.);
       new ((*fHitArray)[nHits]) FairTutorialDet4Hit(detID, iPoint, pos, dpos);
       nHits++;
-
     }
   }
   // Event summary
-  LOG(debug)<< "Create " << nHits << " TutorialDetHits out of "
-            << nPoints << " TutorilaDetPoints created.";
-
+  LOG(debug) << "Create " << nHits << " TutorialDetHits out of " << nPoints << " TutorilaDetPoints created.";
 }
-// -------------------------------------------------------------------------
 
 Double_t FairTutorialDet4HitProducerIdealMisalign::GetHitErr(Double_t sigma)
 {
   Double_t err = gRandom->Gaus(0, sigma);
   return (TMath::Abs(err) < 3 * sigma) ? err : (err > 0) ? 3 * sigma : -3 * sigma;
 }
-
-
 
 ClassImp(FairTutorialDet4HitProducerIdealMisalign)

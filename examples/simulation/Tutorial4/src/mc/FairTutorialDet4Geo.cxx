@@ -11,7 +11,6 @@
 
 ClassImp(FairTutorialDet4Geo)
 
-// -----   Default constructor   -------------------------------------------
 FairTutorialDet4Geo::FairTutorialDet4Geo()
   : FairGeoSet()
 {
@@ -20,8 +19,6 @@ FairTutorialDet4Geo::FairTutorialDet4Geo()
   maxSectors=0;
   maxModules=100;
 }
-
-// -------------------------------------------------------------------------
 
 const char* FairTutorialDet4Geo::getModuleName(Int_t m)
 {

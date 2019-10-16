@@ -3,7 +3,6 @@
 // -----            Created 02.03.16  by F. Uhlig                      -----
 // -------------------------------------------------------------------------
 
-
 /** FairTutorialDet4PointDraw
  * @author F. Uhlig
  * @since 02.03.16
@@ -26,52 +25,45 @@ class FairTutorialDet4GeoHandler;
 class TClonesArray;
 class TEvePointSet;
 
-class FairTutorialDet4PointDraw : public FairTask {
+class FairTutorialDet4PointDraw : public FairTask
+{
+  public:
+    /** Default constructor **/
+    FairTutorialDet4PointDraw();
 
- public:
+    /** Standard constructor
+    *@param name        Name of task
+    *@param iVerbose    Verbosity level
+    **/
+    FairTutorialDet4PointDraw(const char* name, Color_t color, Style_t mstyle);
 
-  /** Default constructor **/
-  FairTutorialDet4PointDraw();
+    /** Destructor **/
+    virtual ~FairTutorialDet4PointDraw() {}
 
-  /** Standard constructor
-  *@param name        Name of task
-  *@param iVerbose    Verbosity level
-  **/
-  FairTutorialDet4PointDraw(const char* name, Color_t color ,
-			    Style_t mstyle);
+    /** Executed task **/
+    virtual void Exec(Option_t* option);
+    void Reset();
 
-  /** Destructor **/
-  virtual ~FairTutorialDet4PointDraw();
+    virtual void SetParContainers();
+    virtual InitStatus Init();
+    /** Action after each event**/
 
-   /** Executed task **/
-  virtual void Exec(Option_t* option);
-  void Reset();
+    virtual void Finish() {}
 
-  virtual void SetParContainers() ;
-  virtual InitStatus Init();
-  /** Action after each event**/
+  private:
+    TClonesArray *fPointList; //!
+    FairTutorialDet4GeoPar *fGeoPar; //!
+    FairEventManager *fEventManager;   //!
+    TEvePointSet* fq;    //!
+    Color_t fColor; //!
+    Style_t fStyle; //!
+    Bool_t fGlobalCoordinates; //!
+    FairTutorialDet4GeoHandler* fGeoHandler; //!
 
-  virtual void Finish() ;
+    FairTutorialDet4PointDraw(const FairTutorialDet4PointDraw&);
+    FairTutorialDet4PointDraw& operator=(const FairTutorialDet4PointDraw&);
 
-private:
-
-  TClonesArray *fPointList; //!
-  FairTutorialDet4GeoPar *fGeoPar; //!
-  FairEventManager *fEventManager;   //!
-  TEvePointSet* fq;    //!
-  Color_t fColor; //!
-  Style_t fStyle; //!
-  Bool_t fGlobalCoordinates; //!
-  FairTutorialDet4GeoHandler* fGeoHandler; //!
-
-  FairTutorialDet4PointDraw(const FairTutorialDet4PointDraw&);
-  FairTutorialDet4PointDraw& operator=(const FairTutorialDet4PointDraw&);
-
-  ClassDef(FairTutorialDet4PointDraw,1);
-
+    ClassDef(FairTutorialDet4PointDraw,1);
 };
 
-
 #endif
-
-

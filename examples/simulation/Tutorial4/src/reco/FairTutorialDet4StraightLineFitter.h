@@ -17,24 +17,20 @@ class TClonesArray;
 class FairTutorialDet4StraightLineFitter : public FairTask
 {
   public:
-
     /** Default constructor **/
     FairTutorialDet4StraightLineFitter();
 
     /** Constructor with parameters (Optional) **/
     //  FairTutorialDet4StraightLineFitter(Int_t verbose);
 
-
     /** Destructor **/
     ~FairTutorialDet4StraightLineFitter();
-
 
     /** Initiliazation of task at the beginning of a run **/
     virtual InitStatus Init();
 
     /** ReInitiliazation of task when the runID changes **/
     virtual InitStatus ReInit();
-
 
     /** Executed for each event. **/
     virtual void Exec(Option_t* opt);
@@ -48,7 +44,6 @@ class FairTutorialDet4StraightLineFitter : public FairTask
     void SetVersion(Int_t val) {fVersion = val;}
 
   private:
-
     /** Input array from previous already existing data level **/
     TClonesArray* fHits;
 

@@ -23,7 +23,7 @@ foreach(mcEngine IN ITEMS TGeant3 TGeant4)
 
   add_test(ex_sim_tutorial4_reco_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_reco.sh \"${mcEngine}\")
   set_tests_properties(ex_sim_tutorial4_reco_${mcEngine} PROPERTIES
-    DEPENDS run_tutorial4_${mcEngine}
+    DEPENDS ex_sim_tutorial4_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )

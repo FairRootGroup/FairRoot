@@ -80,12 +80,13 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Gen
   FairRoot::EventDisplay
 
-  # TODO: clean this
   Core
-  $<$<BOOL:${ROOT_HAS_OPENGL}>:Eve>
-  Geom
   Physics
+  Geom
   VMC
+  MathCore
+  Hist
+  $<$<BOOL:${ROOT_HAS_OPENGL}>:Eve>
 )
 
 fairroot_target_root_dictionary(${target}

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairTutorialDet4GeoPar.h"
@@ -13,17 +13,11 @@
 
 ClassImp(FairTutorialDet4GeoPar)
 
-FairTutorialDet4GeoPar ::FairTutorialDet4GeoPar(const char* name,
-						const char* title,
-						const char* context)
+FairTutorialDet4GeoPar ::FairTutorialDet4GeoPar(const char* name, const char* title, const char* context)
 : FairParGenericSet(name,title,context),
   fGeoSensNodes(new TObjArray()),
   fGeoPassNodes(new TObjArray()),
   fGlobalCoordinates(kFALSE)
-{
-}
-
-FairTutorialDet4GeoPar::~FairTutorialDet4GeoPar(void)
 {
 }
 
@@ -46,6 +40,6 @@ Bool_t FairTutorialDet4GeoPar::getParams(FairParamList* l)
   if (!l) { return kFALSE; }
   if (!l->fillObject("FairGeoNodes Sensitive List", fGeoSensNodes)) { return kFALSE; }
   if (!l->fillObject("FairGeoNodes Passive List", fGeoPassNodes)) { return kFALSE; }
-  if ( ! l->fill("GlobalCoordinates", &fGlobalCoordinates) ) { return kFALSE; }
+  if (!l->fill("GlobalCoordinates", &fGlobalCoordinates) ) { return kFALSE; }
   return kTRUE;
 }

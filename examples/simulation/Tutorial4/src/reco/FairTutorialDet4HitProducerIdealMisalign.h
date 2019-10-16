@@ -38,16 +38,12 @@ class TClonesArray;
 
 class FairTutorialDet4HitProducerIdealMisalign : public FairTask
 {
-
   public:
-
     /** Default constructor **/
     FairTutorialDet4HitProducerIdealMisalign();
 
-
     /** Destructor **/
-    ~FairTutorialDet4HitProducerIdealMisalign();
-
+    ~FairTutorialDet4HitProducerIdealMisalign() {}
 
     /** Virtual method Init **/
     virtual InitStatus Init();
@@ -57,14 +53,12 @@ class FairTutorialDet4HitProducerIdealMisalign : public FairTask
 
     virtual void SetParContainers();
 
-
     /** Virtual method Exec **/
     virtual void Exec(Option_t* opt);
 
     void DoMisalignment(Bool_t val) {fDoMisalignment=val;}
 
   private:
-
     /** Input array of CbmTofPoints **/
     TClonesArray* fPointArray; //!
 
@@ -83,8 +77,8 @@ class FairTutorialDet4HitProducerIdealMisalign : public FairTask
     FairTutorialDet4GeoPar* fGeoPar;
 
     Bool_t fDoMisalignment;
-  private:
 
+  private:
     Double_t GetHitErr(Double_t sigma);
 
     FairTutorialDet4HitProducerIdealMisalign(const FairTutorialDet4HitProducerIdealMisalign&);

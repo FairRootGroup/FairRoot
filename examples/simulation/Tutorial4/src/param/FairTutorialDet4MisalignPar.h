@@ -11,7 +11,6 @@
 #include "FairParGenericSet.h"          // for FairParGenericSet
 
 #include <Rtypes.h>                     // for ClassDef
-
 #include <TArrayD.h>                    // for TArrayD
 
 class FairParamList;
@@ -19,7 +18,6 @@ class FairParamList;
 class FairTutorialDet4MisalignPar : public FairParGenericSet
 {
   public:
-
     FairTutorialDet4MisalignPar(const char* name="FairTutorialDet4MissallignPar",
                                 const char* title="Missalignment parameter for FairTutorialDet4HitProducerIdealMissallign Parameters",
                                 const char* context="TestDefaultContext");
@@ -37,7 +35,6 @@ class FairTutorialDet4MisalignPar : public FairParGenericSet
     Int_t GetNrOfDetectors() {return fNrOfDetectors;}
 
   private:
-
     TArrayD fShiftX; // Array to hold the misalignment in x-direction
     TArrayD fShiftY; // Array to hold the misalignment in y-direction
     TArrayD fShiftZ; // Array to hold the misalignment in z-direction

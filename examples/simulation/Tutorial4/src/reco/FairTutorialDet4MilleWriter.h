@@ -19,24 +19,20 @@ class TClonesArray;
 class FairTutorialDet4MilleWriter : public FairTask
 {
   public:
-
     /** Default constructor **/
     FairTutorialDet4MilleWriter();
 
     /** Constructor with parameters (Optional) **/
     //  FairTutorialDet4MilleWriter(Int_t verbose);
 
-
     /** Destructor **/
     ~FairTutorialDet4MilleWriter();
-
 
     /** Initiliazation of task at the beginning of a run **/
     virtual InitStatus Init();
 
     /** ReInitiliazation of task when the runID changes **/
     virtual InitStatus ReInit();
-
 
     /** Executed for each event. **/
     virtual void Exec(Option_t* opt);
@@ -54,7 +50,6 @@ class FairTutorialDet4MilleWriter : public FairTask
     void SetFileName(TString val) {fFileName = val;}
 
   private:
-
     void ExecVersion1(Option_t* opt);
     void StraightLineShiftX();
     void StraightLineShiftXY();
@@ -74,7 +69,7 @@ class FairTutorialDet4MilleWriter : public FairTask
     Int_t fVersion;
 
     TString fFileName;
-    
+
     /** Output array to  new data level**/
     //  TClonesArray* <OutputDataLevel>;
 

@@ -1,43 +1,32 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairTutorialDet4.h"
 
 #include "FairDetectorList.h"           // for DetectorId::kTutDet
-#include "FairGeoInterface.h"           // for FairGeoInterface
-#include "FairGeoLoader.h"              // for FairGeoLoader
-#include "FairGeoNode.h"                // for FairGeoNode
-#include "FairGeoVolume.h"              // for FairGeoVolume
 #include "FairLogger.h"                 // for FairLogger, etc
 #include "FairRootManager.h"            // for FairRootManager
 #include "FairRun.h"                    // for FairRun
 #include "FairRuntimeDb.h"              // for FairRuntimeDb
 #include "FairStack.h"                  // for FairStack
 #include "FairTutorialDet4Geo.h"        // for FairTutorialDet4Geo
-#include "FairTutorialDet4GeoHandler.h"  // for FairTutorialDet4GeoHandler
+#include "FairTutorialDet4GeoHandler.h" // for FairTutorialDet4GeoHandler
 #include "FairTutorialDet4GeoPar.h"     // for FairTutorialDet4GeoPar
 #include "FairTutorialDet4MisalignPar.h"
 #include "FairTutorialDet4Point.h"      // for FairTutorialDet4Point
+#include "FairModule.h"                 // for FairModule
 
-#include <iosfwd>                       // for ostream
-#include <TClonesArray.h>               // for TClonesArray
-#include <TGeoManager.h>                // for TGeoManager, gGeoManager
 #include <TGeoMatrix.h>                 // for TGeoHMatrix, TGeoCombiTrans, etc
-#include <TGeoNode.h>                   // for TGeoNode
-#include <TGeoPhysicalNode.h>           // for TGeoPhysicalNode, etc
-#include <TList.h>                      // for TListIter, TList (ptr only)
-#include <TObjArray.h>                  // for TObjArray
+
 #include <TString.h>                    // for TString, operator<<, Form
 #include <TVirtualMC.h>                 // for TVirtualMC
 #include <TVirtualMCStack.h>            // for TVirtualMCStack
 
-#include <stdio.h>                      // for NULL, printf
-
-FairTutorialDet4Geo* FairTutorialDet4::fgGeo;   //!
+FairTutorialDet4Geo* FairTutorialDet4::fgGeo; //!
 
 FairTutorialDet4::FairTutorialDet4()
   : FairDetector("TutorialDet", kTRUE, kTutDet),
@@ -50,7 +39,7 @@ FairTutorialDet4::FairTutorialDet4()
     fELoss(-1),
     fFairTutorialDet4PointCollection(new TClonesArray("FairTutorialDet4Point")),
     fGeoHandler(new FairTutorialDet4GeoHandler()),
-    fMisalignPar(NULL),
+    fMisalignPar(nullptr),
     fNrOfDetectors(-1),
     fShiftX(),
     fShiftY(),
@@ -74,7 +63,7 @@ FairTutorialDet4::FairTutorialDet4(const char* name, Bool_t active)
     fELoss(-1),
     fFairTutorialDet4PointCollection(new TClonesArray("FairTutorialDet4Point")),
     fGeoHandler(new FairTutorialDet4GeoHandler()),
-    fMisalignPar(NULL),
+    fMisalignPar(nullptr),
     fNrOfDetectors(-1),
     fShiftX(),
     fShiftY(),
@@ -98,7 +87,7 @@ FairTutorialDet4::FairTutorialDet4(const FairTutorialDet4& rhs)
     fELoss(-1),
     fFairTutorialDet4PointCollection(new TClonesArray("FairTutorialDet4Point")),
     fGeoHandler(new FairTutorialDet4GeoHandler()),
-    fMisalignPar(NULL),
+    fMisalignPar(nullptr),
     fNrOfDetectors(-1),
     fShiftX(),
     fShiftY(),
@@ -120,19 +109,18 @@ FairTutorialDet4::~FairTutorialDet4()
   }
   LOG(debug4)<<"Leaving Destructor of FairTutorialDet4";
 }
+
 void FairTutorialDet4::SetParContainers()
 {
 
   LOG(info)<< "Set tutdet missallign parameters";
   // Get Base Container
   FairRun* sim = FairRun::Instance();
-  LOG_IF(FATAL, !sim) << "No run object";
+  LOG_IF (FATAL, !sim) << "No run object";
   FairRuntimeDb* rtdb=sim->GetRuntimeDb();
-  LOG_IF(FATAL, !rtdb) << "No runtime database";
+  LOG_IF (FATAL, !rtdb) << "No runtime database";
 
-  fMisalignPar = static_cast<FairTutorialDet4MisalignPar*>
-                 (rtdb->getContainer("FairTutorialDet4MissallignPar"));
-
+  fMisalignPar = static_cast<FairTutorialDet4MisalignPar*>(rtdb->getContainer("FairTutorialDet4MissallignPar"));
 }
 
 void FairTutorialDet4::Initialize()
@@ -168,7 +156,6 @@ void FairTutorialDet4::InitParContainers()
   fRotX=fMisalignPar->GetRotX();
   fRotY=fMisalignPar->GetRotY();
   fRotZ=fMisalignPar->GetRotZ();
-
 }
 
 Bool_t  FairTutorialDet4::ProcessHits(FairVolume* /*vol*/)
@@ -176,7 +163,7 @@ Bool_t  FairTutorialDet4::ProcessHits(FairVolume* /*vol*/)
   /** This method is called from the MC stepping */
 
   //Set parameters at entrance of volume. Reset ELoss.
-  if ( TVirtualMC::GetMC()->IsTrackEntering() ) {
+  if (TVirtualMC::GetMC()->IsTrackEntering()) {
     fELoss  = 0.;
     fTime   = TVirtualMC::GetMC()->TrackTime() * 1.0e09;
     fLength = TVirtualMC::GetMC()->TrackLength();
@@ -188,16 +175,15 @@ Bool_t  FairTutorialDet4::ProcessHits(FairVolume* /*vol*/)
   fELoss += TVirtualMC::GetMC()->Edep();
 
   // Create FairTutorialDet4Point at exit of active volume
-  if ( TVirtualMC::GetMC()->IsTrackExiting()    ||
+  if (TVirtualMC::GetMC()->IsTrackExiting()    ||
        TVirtualMC::GetMC()->IsTrackStop()       ||
-       TVirtualMC::GetMC()->IsTrackDisappeared()   ) {
+       TVirtualMC::GetMC()->IsTrackDisappeared()  ) {
     fTrackID  = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
-//    fVolumeID = vol->getMCid();
+    // fVolumeID = vol->getMCid();
     fVolumeID = fGeoHandler->GetUniqueDetectorId();
-    if (fELoss == 0. ) { return kFALSE; }
+    if (fELoss == 0.) { return kFALSE; }
 
-
-    if(!fGlobalCoordinates) {
+    if (!fGlobalCoordinates) {
       // Save positions in local coordinate system, so transform the
       // global coordinates into local ones.
       Double_t master[3] = {fPos.X(), fPos.Y(), fPos.Z()};
@@ -205,12 +191,10 @@ Bool_t  FairTutorialDet4::ProcessHits(FairVolume* /*vol*/)
 
       TVirtualMC::GetMC()->Gmtod(master, local, 1);
       AddHit(fTrackID, fVolumeID, TVector3(local[0], local[1], local[2]),
-	     TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-	     fELoss);
+             TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, fELoss);
     } else {
       AddHit(fTrackID, fVolumeID, TVector3(fPos.X(),  fPos.Y(),  fPos.Z()),
-	     TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength,
-	     fELoss);
+             TVector3(fMom.Px(), fMom.Py(), fMom.Pz()), fTime, fLength, fELoss);
     }
 
     // Increment number of tutorial det points in TParticle
@@ -223,34 +207,28 @@ Bool_t  FairTutorialDet4::ProcessHits(FairVolume* /*vol*/)
 
 void FairTutorialDet4::EndOfEvent()
 {
-
   fFairTutorialDet4PointCollection->Clear();
-
 }
 
 void FairTutorialDet4::Register()
 {
-
   /** This will create a branch in the output tree called
       FairTutorialDet4Point, setting the last parameter to kFALSE means:
       this collection will not be written to the file, it will exist
       only during the simulation.
   */
 
-  if ( ! gMC->IsMT() ) {
-    FairRootManager::Instance()->Register("TutorialDetPoint", "TutorialDet",
-                                          fFairTutorialDet4PointCollection, kTRUE);
+  if (!gMC->IsMT()) {
+    FairRootManager::Instance()->Register("TutorialDetPoint", "TutorialDet", fFairTutorialDet4PointCollection, kTRUE);
   } else {
-    FairRootManager::Instance()->RegisterAny("TutorialDetPoint",
-                                             fFairTutorialDet4PointCollection, kTRUE);
+    FairRootManager::Instance()->RegisterAny("TutorialDetPoint", fFairTutorialDet4PointCollection, kTRUE);
   }
 }
-
 
 TClonesArray* FairTutorialDet4::GetCollection(Int_t iColl) const
 {
   if (iColl == 0) { return fFairTutorialDet4PointCollection; }
-  else { return NULL; }
+  else { return nullptr; }
 }
 
 void FairTutorialDet4::Reset()
@@ -290,8 +268,8 @@ void FairTutorialDet4::ConstructASCIIGeometry()
     FairModule::ConstructASCIIGeometry<FairTutorialDet4Geo, FairTutorialDet4GeoPar>(fgGeo, "FairTutorialDet4GeoPar");
 }
 
-std::map<std::string, TGeoHMatrix> FairTutorialDet4::getMisalignmentMatrices(){
-
+std::map<std::string, TGeoHMatrix> FairTutorialDet4::getMisalignmentMatrices()
+{
   TString volPath;
   TString volStr   = "/cave_1/tutorial4_0/tut4_det_";
 
@@ -327,7 +305,6 @@ std::map<std::string, TGeoHMatrix> FairTutorialDet4::getMisalignmentMatrices(){
 
 void FairTutorialDet4::RegisterAlignmentMatrices()
 {
-
   if (fModifyGeometry) {
     TString volPath;
     TString volStr   = "/cave_1/tutorial4_0/tut4_det_";
@@ -371,8 +348,7 @@ FairTutorialDet4Point* FairTutorialDet4::AddHit(Int_t trackID, Int_t detID,
 {
   TClonesArray& clref = *fFairTutorialDet4PointCollection;
   Int_t size = clref.GetEntriesFast();
-  return new(clref[size]) FairTutorialDet4Point(trackID, detID, pos, mom,
-         time, length, eLoss);
+  return new(clref[size]) FairTutorialDet4Point(trackID, detID, pos, mom, time, length, eLoss);
 }
 
 FairModule* FairTutorialDet4::CloneModule() const

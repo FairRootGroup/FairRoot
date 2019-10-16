@@ -20,13 +20,8 @@
 #include <TGeoVolume.h>                 // for TGeoVolume
 #include <TVirtualMC.h>                 // for TVirtualMC
 
-#include <stdio.h>                      // for printf
-#include <string.h>                     // for nullptr, strlen, strncpy
-#include <map>                          // for map
-#include <utility>                      // for pair
-
-using std::map;
-using std::pair;
+#include <cstdio>                      // for printf
+#include <cstring>                     // for strlen, strncpy
 
 FairTutorialDet4GeoHandler::FairTutorialDet4GeoHandler()
   : TObject(),
@@ -42,7 +37,7 @@ FairTutorialDet4GeoHandler::FairTutorialDet4GeoHandler()
 
 Int_t FairTutorialDet4GeoHandler::Init(Bool_t isSimulation)
 {
-//  Int_t geoVersion = CheckGeometryVersion();
+  // Int_t geoVersion = CheckGeometryVersion();
 
   fIsSimulation=isSimulation;
 
@@ -129,7 +124,6 @@ Int_t FairTutorialDet4GeoHandler::CurrentVolID(Int_t& copy) const
   }
 }
 
-//_____________________________________________________________________________
 Int_t FairTutorialDet4GeoHandler::CurrentVolOffID(Int_t off, Int_t& copy) const
 {
   if (fIsSimulation) {
@@ -148,7 +142,6 @@ Int_t FairTutorialDet4GeoHandler::CurrentVolOffID(Int_t off, Int_t& copy) const
   }
 }
 
-//_____________________________________________________________________________
 const char* FairTutorialDet4GeoHandler::CurrentVolName() const
 {
   if (fIsSimulation) {
@@ -162,7 +155,6 @@ const char* FairTutorialDet4GeoHandler::CurrentVolName() const
   }
 }
 
-//_____________________________________________________________________________
 const char* FairTutorialDet4GeoHandler::CurrentVolOffName(Int_t off) const
 {
   if (fIsSimulation) {
@@ -180,7 +172,6 @@ const char* FairTutorialDet4GeoHandler::CurrentVolOffName(Int_t off) const
     return node->GetVolume()->GetName();
   }
 }
-
 
 void FairTutorialDet4GeoHandler::NavigateTo(TString volName)
 {

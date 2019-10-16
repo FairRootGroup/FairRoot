@@ -9,8 +9,6 @@
 
 #include "FairParamList.h"
 
-//#include <iostream>
-
 ClassImp(FairTutorialDet4MisalignPar)
 
 FairTutorialDet4MisalignPar ::FairTutorialDet4MisalignPar(const char* name,

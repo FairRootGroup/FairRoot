@@ -14,7 +14,7 @@
 #include <TList.h>                      // for TList
 #include <TString.h>                    // for TString
 
-#include <string.h>                     // for strcmp, NULL
+#include <cstring>                     // for strcmp
 
 class FairParSet;
 
@@ -62,14 +62,12 @@ FairParSet* FairTutorialDet4ContFact::createContainer(FairContainer* c)
       of this container, the name is concatinated with the context.
   */
   const char* name=c->GetName();
-  FairParSet* p=NULL;
+  FairParSet* p = nullptr;
   if (strcmp(name,"FairTutorialDet4GeoPar")==0) {
-    p=new FairTutorialDet4GeoPar(c->getConcatName().Data(),
-                                 c->GetTitle(),c->getContext());
+    p = new FairTutorialDet4GeoPar(c->getConcatName().Data(), c->GetTitle(),c->getContext());
   }
   if (strcmp(name,"FairTutorialDet4MissallignPar")==0) {
-    p=new FairTutorialDet4MisalignPar(c->getConcatName().Data(),
-                                      c->GetTitle(),c->getContext());
+    p = new FairTutorialDet4MisalignPar(c->getConcatName().Data(), c->GetTitle(),c->getContext());
   }
   return p;
 }

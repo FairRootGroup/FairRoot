@@ -6,10 +6,9 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
-// -----                 FairTutorialDet4GeoHandler header file                  -----
+// -----                 FairTutorialDet4GeoHandler header file        -----
 // -----                 Created 20/11/12  by F. Uhlig                 -----
 // -------------------------------------------------------------------------
-
 
 /** FairTutorialDet4GeoHandler.h
  ** Helper class to extract information from the GeoManager which is
@@ -33,18 +32,16 @@ class TGeoHMatrix;
 class FairTutorialDet4GeoHandler : public TObject
 {
   public:
-
     /** Constructor **/
     FairTutorialDet4GeoHandler();
 
-
     /** Destructor **/
-    ~FairTutorialDet4GeoHandler() {};
+    ~FairTutorialDet4GeoHandler() {}
 
     Int_t GetUniqueDetectorId();
     Int_t GetUniqueDetectorId(TString volName);
 
-//  Int_t GetDetectorId(Int_t uniqueId);
+    // Int_t GetDetectorId(Int_t uniqueId);
 
     Int_t Init(Bool_t isSimulation=kFALSE);
 
@@ -62,10 +59,9 @@ class FairTutorialDet4GeoHandler : public TObject
 
     void LocalToGlobal(Double_t* local, Double_t* global, Int_t detID);
 
-//  Int_t CheckGeometryVersion();
+    // Int_t CheckGeometryVersion();
 
   private:
-
     Bool_t fIsSimulation; //!
 
     Int_t fLastUsedDetectorID;  //!
@@ -76,16 +72,12 @@ class FairTutorialDet4GeoHandler : public TObject
     Double_t fGlobal[3];        //! Global centre of volume
     TGeoHMatrix* fGlobalMatrix; //!
 
-
     TString ConstructFullPathFromDetID(Int_t detID);
 
     FairTutorialDet4GeoHandler(const FairTutorialDet4GeoHandler&);
     FairTutorialDet4GeoHandler operator=(const FairTutorialDet4GeoHandler&);
 
     ClassDef(FairTutorialDet4GeoHandler,1)
-
 };
 
-
 #endif //FAIRTUTORIALDETGEOHANDLER_H
-
