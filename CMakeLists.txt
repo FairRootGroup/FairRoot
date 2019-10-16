@@ -310,13 +310,13 @@ endif()
 # Recurse into the given subdirectories.  This does not actually
 # cause another cmake executable to run.  The same process will walk through
 # the project's entire directory structure.
+add_subdirectory(fairtools)
 add_subdirectory(alignment)
 option(BUILD_MBS "Build MBS" ON)
 add_subdirectory(base)
 add_subdirectory(geobase)
 add_subdirectory(parbase)
 add_subdirectory(generators)
-add_subdirectory(fairtools)
 If(Geant3_FOUND)
  add_subdirectory(geane)
  add_subdirectory(trackbase)
