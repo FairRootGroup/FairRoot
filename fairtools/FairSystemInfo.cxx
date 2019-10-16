@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -28,7 +28,6 @@
 #error "Unknown OS."
 #endif
 
-
 Float_t FairSystemInfo::GetMaxMemory()
 {
   // Returns the maximal used memory in MB
@@ -41,7 +40,6 @@ Float_t FairSystemInfo::GetMaxMemory()
 #else
   return static_cast<Float_t>(rusage.ru_maxrss)/1024;
 #endif
-  
 }
 
 /**
@@ -74,7 +72,7 @@ size_t FairSystemInfo::GetCurrentMemory( )
     }
     fclose( fp );
     if (rss > 0 && rss < std::numeric_limits<std::size_t>::max()/pagesize) {
-      return (size_t)rss * (size_t)sysconf(_SC_PAGESIZE); 
+      return (size_t)rss * (size_t)sysconf(_SC_PAGESIZE);
     } else {
        return (size_t)0L;
     }

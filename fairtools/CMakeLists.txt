@@ -44,10 +44,13 @@ target_link_directories(${target} PUBLIC
 
 target_link_libraries(${target} PUBLIC
   FairLogger::FairLogger
-  # TODO: clean the following
+
   Core
   Graf
+  Hist
   Gpad
+  RIO
+  MathCore
 )
 
 fairroot_target_root_dictionary(${target}

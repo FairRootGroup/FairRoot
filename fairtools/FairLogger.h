@@ -23,8 +23,6 @@
 #include <string>   // for operator<<
 #include <vector>   // for vector
 
-class FairLogger;
-
 #define MESSAGE_ORIGIN __FILE__, CONVERTTOSTRING(__LINE__), __FUNCTION__
 
 // backwards-compatibility with older FairLogger calls, TODO: delete me as soon as possible
