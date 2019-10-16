@@ -96,10 +96,11 @@ target_link_directories(${target} PUBLIC
 
 target_link_libraries(${target} PUBLIC
   FairRoot::FairTools
-  # TODO: clean the following
+
   Core
+  MathCore
   Geom
-  Graf3d
+  Graf3d # TRotMatrix
 )
 
 fairroot_target_root_dictionary(${target}

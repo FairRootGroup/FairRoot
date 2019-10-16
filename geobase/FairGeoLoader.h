@@ -13,7 +13,6 @@
     email                : m.al-turany@gsi.de
  ***************************************************************************/
 
-
 #ifndef FairGeoLOADER_H
 #define FairGeoLOADER_H
 
@@ -44,8 +43,8 @@ class FairGeoLoader : public TNamed
     static FairGeoLoader*  fgInstance;//!  /**Singleton instance*/
     FairGeoInterface*    fInterface; //!  /** Hades Geometry Interface*/
     FairGeoBuilder*    fGeoBuilder; //!   /**Geometry builder*/
-    ClassDef(FairGeoLoader,1)
 
+    ClassDef(FairGeoLoader,1)
 };
 
 #endif

@@ -79,18 +79,14 @@
 
 ClassImp(FairGeoRotation)
 
-
-FairGeoRotation::FairGeoRotation(const Double_t a,const Double_t b,
-                                 const Double_t c)
+FairGeoRotation::FairGeoRotation(const Double_t a,const Double_t b, const Double_t c)
   :TObject()
 {
   // constructor taking three Euler angles
   setEulerAngles(a,b,c);
 }
 
-
-void FairGeoRotation::setEulerAngles(const Double_t a,const Double_t b,
-                                     const Double_t c)
+void FairGeoRotation::setEulerAngles(const Double_t a,const Double_t b, const Double_t c)
 {
   // sets the matrix calculating the values from the given Euler angles
   const double deg2rad=0.01745329252;
@@ -111,7 +107,6 @@ void FairGeoRotation::setEulerAngles(const Double_t a,const Double_t b,
   rot[8]=c1;
 }
 
-
 Double_t FairGeoRotation::diff2(const FairGeoRotation& r) const
 {
   // calculates the square of the difference between 2 matrices
@@ -122,7 +117,6 @@ Double_t FairGeoRotation::diff2(const FairGeoRotation& r) const
   }
   return s;
 }
-
 
 TRotMatrix* FairGeoRotation::createTRotMatrix(const Text_t* name,const Text_t* title)
 {
@@ -137,4 +131,3 @@ TRotMatrix* FairGeoRotation::createTRotMatrix(const Text_t* name,const Text_t* t
   t=new TRotMatrix(name,title,a);
   return t;
 }
-

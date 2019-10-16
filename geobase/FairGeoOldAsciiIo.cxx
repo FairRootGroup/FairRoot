@@ -27,8 +27,9 @@
 
 #include <TList.h>                      // for TList
 
-#include <string.h>                     // for strcmp, NULL
+#include <string.h>                     // for strcmp
 #include <iostream>                     // for cerr, cout
+#include <fstream>                      // for fstream
 
 using std::cout;
 using std::cerr;
@@ -42,7 +43,7 @@ FairGeoOldAsciiIo::FairGeoOldAsciiIo()
     filename(""),
     filedir(""),
     writable(kFALSE),
-    file(NULL)
+    file(nullptr)
 {
   // Constructor
 }

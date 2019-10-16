@@ -39,6 +39,7 @@
 #include <stdio.h>                      // for printf, sprintf, sscanf
 #include <string.h>                     // for strlen
 #include <ostream>                      // for basic_ostream::write
+#include <fstream>
 
 ClassImp(FairGeoSphe)
 

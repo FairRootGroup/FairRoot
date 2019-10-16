@@ -58,8 +58,8 @@ FairGeoTransform::FairGeoTransform()
     trans(FairGeoVector(0,0,0)),
     trans_cm(FairGeoVector(0,0,0))
 {
-
 }
+
 FairGeoTransform& FairGeoTransform::operator=(const FairGeoTransform& t)
 {
   rot=t.getRotMatrix();
@@ -67,7 +67,6 @@ FairGeoTransform& FairGeoTransform::operator=(const FairGeoTransform& t)
 
   return *this;
 }
-
 
 FairGeoVector FairGeoTransform::transFrom(const FairGeoVector& p) const
 {

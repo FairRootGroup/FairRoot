@@ -25,8 +25,10 @@ class FairGeoRootBuilder : public FairGeoBuilder
   private:
     FairGeoRootBuilder(const FairGeoRootBuilder&);
     FairGeoRootBuilder& operator=(const FairGeoRootBuilder&);
+
   protected:
     TGeoManager* geoManager; // ROOT geometry manager
+
   public:
     FairGeoRootBuilder();
     FairGeoRootBuilder(const char*,const char*);

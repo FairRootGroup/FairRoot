@@ -41,6 +41,7 @@
 #include <stdio.h>                      // for printf, sprintf, sscanf
 #include <string.h>                     // for strlen
 #include <ostream>                      // for basic_ostream::write
+#include <fstream>
 
 ClassImp(FairGeoPgon)
 
@@ -53,7 +54,6 @@ FairGeoPgon::FairGeoPgon()
   nParam=0;
 }
 
-
 FairGeoPgon::~FairGeoPgon()
 {
   // default destructor
@@ -64,7 +64,6 @@ FairGeoPgon::~FairGeoPgon()
   delete position;
   position=0;
 }
-
 
 Int_t FairGeoPgon::readPoints(std::fstream* pFile,FairGeoVolume* volu)
 {
@@ -90,7 +89,6 @@ Int_t FairGeoPgon::readPoints(std::fstream* pFile,FairGeoVolume* volu)
   return nPoints;
 }
 
-
 Bool_t FairGeoPgon::writePoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // writes the 'points' decribed above to ascii file
@@ -105,7 +103,6 @@ Bool_t FairGeoPgon::writePoints(std::fstream* pFile,FairGeoVolume* volu)
   return kTRUE;
 }
 
-
 void FairGeoPgon::printPoints(FairGeoVolume* volu)
 {
   // prints volume points to screen
@@ -115,7 +112,6 @@ void FairGeoPgon::printPoints(FairGeoVolume* volu)
     else { printf("%3i\n",static_cast<Int_t>(v(0))); }
   }
 }
-
 
 TArrayD* FairGeoPgon::calcVoluParam(FairGeoVolume* volu)
 {
@@ -134,7 +130,7 @@ TArrayD* FairGeoPgon::calcVoluParam(FairGeoVolume* volu)
   param->AddAt(v1(1),k++);
   param->AddAt(v1(2),k++);
   param->AddAt((nPoints-2),k++);
-  for(Int_t i=2; i<nPoints; i++) {
+  for (Int_t i=2; i<nPoints; i++) {
     FairGeoVector& v=*(volu->getPoint(i));
     param->AddAt(v(0)/fac,k++);
     param->AddAt(v(1)/fac,k++);
@@ -142,7 +138,6 @@ TArrayD* FairGeoPgon::calcVoluParam(FairGeoVolume* volu)
   }
   return param;
 }
-
 
 void FairGeoPgon::calcVoluPosition(FairGeoVolume*,
                                    const FairGeoTransform& dTC,const FairGeoTransform& mTR)

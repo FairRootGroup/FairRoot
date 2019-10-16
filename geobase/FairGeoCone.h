@@ -13,9 +13,6 @@
 #include <iosfwd>                       // for fstream
 #include <Rtypes.h>                     // for FairGeoCone::Class, Bool_t, etc
 
-#include <iosfwd>                       // for fstream
-
-
 class FairGeoTransform;
 class FairGeoVolume;
 class TArrayD;

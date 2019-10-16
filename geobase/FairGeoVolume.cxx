@@ -28,8 +28,6 @@
 /////////////////////////////////////////////////////////////
 #include "FairGeoVolume.h"
 
-#include <iosfwd>                       // for ostream
-
 #include <iostream>                     // for operator<<, basic_ostream, etc
 
 using std::cout;
@@ -145,7 +143,6 @@ Double_t FairGeoVolume::getVolParameter( Int_t nPoint, Int_t pos )
   else { return -1; }
 }
 
-
 FairGeoVolume::~FairGeoVolume()
 {
   if (points) {
@@ -154,4 +151,3 @@ FairGeoVolume::~FairGeoVolume()
     points=0;
   }
 }
-

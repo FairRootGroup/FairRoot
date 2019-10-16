@@ -17,7 +17,6 @@
 #include "FairGeoInterface.h"           // for FairGeoInterface
 #include "FairGeoRootBuilder.h"         // for FairGeoRootBuilder
 
-#include <iosfwd>                       // for ostream
 #include <TGeoManager.h>                // for TGeoManager
 
 #include <string.h>                     // for strncmp
@@ -28,12 +27,12 @@ using std::cout;
 using std::endl;
 
 FairGeoLoader* FairGeoLoader::fgInstance=0;
-//_____________________________________________________________________________
+
 FairGeoLoader* FairGeoLoader::Instance()
 {
   return fgInstance;
 }
-//_____________________________________________________________________________
+
 FairGeoLoader::FairGeoLoader()
   :TNamed(),
    fInterface(NULL),
@@ -41,7 +40,7 @@ FairGeoLoader::FairGeoLoader()
 {
   fgInstance=this;
 }
-//_____________________________________________________________________________
+
 FairGeoLoader::FairGeoLoader(const char* Name, const char* title)
   :TNamed(Name,title),
    fInterface(NULL),
@@ -65,14 +64,11 @@ FairGeoLoader::FairGeoLoader(const char* Name, const char* title)
   }
 
   fInterface->setGeomBuilder(fGeoBuilder);
-
 }
-//_____________________________________________________________________________
+
 FairGeoLoader::~FairGeoLoader()
 {
   delete fInterface;
-
 }
-//_____________________________________________________________________________
 
 ClassImp(FairGeoLoader)

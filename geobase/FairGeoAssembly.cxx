@@ -25,6 +25,7 @@
 #include <stdio.h>                      // for printf, sprintf
 #include <string.h>                     // for strlen
 #include <ostream>                      // for fstream, etc
+#include <fstream>
 
 ClassImp(FairGeoAssembly)
 
@@ -37,7 +38,6 @@ FairGeoAssembly::FairGeoAssembly()
   nParam=0;
   param=new TArrayD(nParam);
 }
-
 
 FairGeoAssembly::~FairGeoAssembly()
 {
@@ -63,7 +63,6 @@ Int_t FairGeoAssembly::readPoints(std::fstream*,FairGeoVolume*)
   return 1;
 }
 
-
 TArrayD* FairGeoAssembly::calcVoluParam(FairGeoVolume*)
 {
   // nothing to calculate
@@ -84,7 +83,6 @@ Bool_t FairGeoAssembly::writePoints(std::fstream* pFile,FairGeoVolume* volu)
   return kTRUE;
 }
 
-
 void FairGeoAssembly::printPoints(FairGeoVolume* volu)
 {
   // prints volume points to screen
@@ -93,8 +91,6 @@ void FairGeoAssembly::printPoints(FairGeoVolume* volu)
     printf("%9.3f\n",v(0));
   }
 }
-
-
 
 void FairGeoAssembly::calcVoluPosition(FairGeoVolume*,
                                        const FairGeoTransform& dTC,const FairGeoTransform& mTR)
@@ -105,4 +101,3 @@ void FairGeoAssembly::calcVoluPosition(FairGeoVolume*,
   center->setTransVector(t);
   posInMother(dTC,mTR);
 }
-

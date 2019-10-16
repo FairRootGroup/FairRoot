@@ -12,7 +12,6 @@
 
 #include "FairGeoVector.h"              // for FairGeoVector
 
-#include <iosfwd>                       // for ostream
 #include <Rtypes.h>                     // for Double_t, Int_t, Bool_t, etc
 
 #include <iostream>                     // for operator<<, cout, ostream, etc
@@ -27,6 +26,7 @@ class FairGeoRotation : public TObject
 {
   protected:
     Double_t rot[9];
+
   public:
     inline FairGeoRotation();
     inline FairGeoRotation(const FairGeoRotation&);

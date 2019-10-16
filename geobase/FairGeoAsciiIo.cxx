@@ -24,6 +24,7 @@
 #include <stdio.h>                      // for sscanf
 #include <string.h>                     // for strcmp, strlen, strtok, etc
 #include <iostream>                     // for cout
+#include <fstream>                      // for fstream
 
 using std::cout;
 using std::endl;
@@ -36,7 +37,7 @@ FairGeoAsciiIo::FairGeoAsciiIo()
     filename(""),
     filedir(""),
     writable(kFALSE),
-    file(NULL)
+    file(nullptr)
 {
   // Constructor
 }
@@ -226,7 +227,7 @@ Bool_t FairGeoAsciiIo::readDetectorSetup(FairGeoInterface* interface)
           if (ss&&strlen(ss)>3) {
             secNo=static_cast<Int_t>(ss[3]-'0')-1;
             for(Int_t i=0; i<maxModules&&mod; i++) {
-              ss=strtok(NULL,d);
+              ss=strtok(nullptr,d);
               if (ss) { sscanf(ss,"%i",&mod[i]); }
             }
             set->setModules(secNo,mod);

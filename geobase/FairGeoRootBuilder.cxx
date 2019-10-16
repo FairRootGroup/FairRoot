@@ -30,20 +30,21 @@
 #include <TGeoVolume.h>                 // for TGeoVolume, etc
 #include <TString.h>                    // for TString
 
-#include <stdio.h>                      // for NULL, sprintf
+#include <cstdio>                      // for sprintf
+#include <fstream>
 
 ClassImp(FairGeoRootBuilder)
 
 FairGeoRootBuilder::FairGeoRootBuilder()
   : FairGeoBuilder(),
-    geoManager(NULL)
+    geoManager(nullptr)
 {
   // Default constructor
 }
 
 FairGeoRootBuilder::FairGeoRootBuilder(const char* name,const char* title)
   : FairGeoBuilder(name,title),
-    geoManager(NULL)
+    geoManager(nullptr)
 {
   // Constructor
 }
@@ -69,10 +70,6 @@ Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat)
     Error("createNode","Mother volume of %s not found\n",volu->GetName());
     return kFALSE;
   }
-
-
-
-
 
   TGeoVolume* rv=0;
   FairGeoNode* cv=volu->getCopyNode();
@@ -108,8 +105,9 @@ Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat)
   }
   if (!rv) { return kFALSE; }
   volu->setRootVolume(rv);
-  if (volu->isTopNode()) { geoManager->SetTopVolume(rv); }
-  else {
+  if (volu->isTopNode()) {
+    geoManager->SetTopVolume(rv);
+  } else {
     FairGeoTransform* trans=volu->getPosition();
     const FairGeoRotation& rot=trans->getRotMatrix();
     const FairGeoVector& pos=trans->getTransVector();

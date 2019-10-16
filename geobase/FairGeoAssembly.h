@@ -13,8 +13,6 @@
 #include <iosfwd>                       // for fstream
 #include <Rtypes.h>                     // for FairGeoAssembly::Class, etc
 
-#include <iosfwd>                       // for fstream
-
 class FairGeoTransform;
 class FairGeoVolume;
 class TArrayD;
@@ -25,8 +23,7 @@ class FairGeoAssembly : public FairGeoBasicShape
     FairGeoAssembly();
     ~FairGeoAssembly();
     TArrayD* calcVoluParam(FairGeoVolume*);
-    void calcVoluPosition(FairGeoVolume*,
-                          const FairGeoTransform&,const FairGeoTransform&);
+    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&,const FairGeoTransform&);
     Int_t readPoints(std::fstream* pFile,FairGeoVolume* volu);
     Bool_t writePoints(std::fstream*,FairGeoVolume*);
     void printPoints(FairGeoVolume* volu);

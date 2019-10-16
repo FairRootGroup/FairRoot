@@ -8,16 +8,15 @@
 #ifndef FAIRGEOSET_H
 #define FAIRGEOSET_H
 
-#include <TNamed.h>                     // for TNamed
 
 #include "FairGeoNode.h"
 
-#include <iosfwd>                       // for fstream
+#include <TNamed.h>                     // for TNamed
 #include <Rtypes.h>                     // for Int_t, Bool_t, etc
+
+#include <iosfwd>                       // for fstream
 #include <TList.h>                      // for TList
 #include <TString.h>                    // for TString
-
-#include <fstream>                      // for fstream
 
 //class FairGeoNode;
 class FairGeoShapes;
@@ -32,7 +31,6 @@ class TArrayI;
  */
 class  FairGeoSet : public TNamed
 {
-
   protected:
     Int_t hadesGeo;
 
@@ -46,11 +44,12 @@ class  FairGeoSet : public TNamed
         //
         //        }
         ~FairGeoCopyNode() {}
+
       private:
         FairGeoCopyNode(const FairGeoCopyNode&);
         FairGeoCopyNode& operator=(const FairGeoCopyNode&);
-
     };
+
     TList* volumes;         /** list of volumes */
     TList* masterNodes;     /** pointer to list of mother volumes from other detector parts*/
     Int_t maxSectors;       /** maximum number of sectors (-1 for detectors outside any sector)*/
@@ -68,6 +67,7 @@ class  FairGeoSet : public TNamed
     Bool_t readVolumeParams(std::fstream&,FairGeoMedia*,FairGeoNode*,TList* l=0);
     Bool_t readKeepIn(std::fstream&,FairGeoMedia*,TString&);
     Bool_t readModule(std::fstream&,FairGeoMedia*,TString&,TString&,Bool_t a=kFALSE);
+
   public :
     virtual ~FairGeoSet();
     void setShapes(FairGeoShapes* s) {pShapes=s;}
@@ -100,6 +100,7 @@ class  FairGeoSet : public TNamed
     virtual Bool_t create(FairGeoBuilder*);
     void compare(FairGeoSet&);
     ClassDef(FairGeoSet,0) //
+
   private:
     FairGeoSet(const FairGeoSet&);
     FairGeoSet& operator=(const FairGeoSet&);

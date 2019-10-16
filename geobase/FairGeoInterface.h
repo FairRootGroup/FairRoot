@@ -33,7 +33,6 @@ enum EHGeoDetPart {
   kFairGeoEcal   =  8
 };
 
-
 /**
  * Class to manage geometry for simulations
  * @author Ilse koenig
@@ -52,6 +51,7 @@ class FairGeoInterface : public TObject
     TList*        masterNodes; /** list of mother nodes used by several sets */
     TString       setupFile;   /** file with detector setups (subsets) */
     FairGeoBuilder* geoBuilder;  /** actually used geometry builder */
+
   public:
     FairGeoInterface();
     ~FairGeoInterface();
@@ -85,6 +85,7 @@ class FairGeoInterface : public TObject
     Bool_t readSetupFile();
     void print();
     void SetNoOfSets(Int_t n) {nSets=n;} //
+
   private:
     FairGeoInterface(const FairGeoInterface&);
     FairGeoInterface& operator=(const FairGeoInterface&);

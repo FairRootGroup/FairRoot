@@ -10,13 +10,13 @@
 
 #include <TObject.h>                    // for TObject
 
-#include <iosfwd>                       // for ostream, istream
 #include <Rtypes.h>                     // for Double_t, Bool_t, Int_t, etc
 #include <TMath.h>                      // for pow, floor, sqrt
 #include <TMathBase.h>                  // for Abs
 
 #include <stdio.h>                      // for printf
 #include <iostream>                     // for operator<<, ostream, etc
+#include <cmath>
 
 class FairGeoVector : public TObject
 {
@@ -25,6 +25,7 @@ class FairGeoVector : public TObject
     Double_t y;
     Double_t z;
     inline void round(Double_t d,Int_t n);
+
   public:
     FairGeoVector(Double_t dx=0,Double_t dy=0,Double_t dz=0)
       : TObject(),x(dx),y(dy),z(dz) {}

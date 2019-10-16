@@ -14,8 +14,6 @@
 #include <Rtypes.h>                     // for Bool_t, kFALSE, etc
 #include <TString.h>                    // for TString
 
-#include <fstream>                      // for fstream
-
 class FairGeoInterface;
 class FairGeoMedia;
 class FairGeoNode;

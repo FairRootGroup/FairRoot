@@ -32,7 +32,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include"FairGeoShapes.h"
+#include "FairGeoShapes.h"
 
 #include "FairGeoVolume.h"
 #include "FairGeoBasicShape.h"
@@ -51,6 +51,8 @@
 #include "FairGeoAssembly.h"
 
 #include <TList.h>
+
+#include <fstream>                      // for fstream
 
 ClassImp(FairGeoShapes)
 

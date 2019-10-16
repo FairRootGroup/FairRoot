@@ -24,8 +24,9 @@
 
 #include <cmath>                       // IWYU pragma: keep for abs
 // IWYU pragma: no_include <architecture/i386/math.h>
-#include <stdio.h>                      // for NULL, sscanf
+#include <cstdio>                      // for sscanf
 #include <iostream>                     // for operator<<, basic_ostream, etc
+#include <fstream>
 
 using std::cout;
 using std::endl;
@@ -38,18 +39,17 @@ FairGeoNode::FairGeoNode()
     center(FairGeoTransform()),
     volumeType(kFairGeoElement),
     created(kFALSE),
-    copyNode(NULL),
-    rootVolume(NULL),
+    copyNode(nullptr),
+    rootVolume(nullptr),
     pShape(0),
-    pMother(NULL),
-    medium(NULL),
-    labTransform(NULL),
+    pMother(nullptr),
+    medium(nullptr),
+    labTransform(nullptr),
     fDaughterList(new TObjArray(5)),
     fTruncName("")
 {
   // Constructor
   clear();
-
 }
 
 FairGeoNode::FairGeoNode(FairGeoNode& r)
@@ -60,9 +60,9 @@ FairGeoNode::FairGeoNode(FairGeoNode& r)
    created(kFALSE),
    copyNode(r.getCopyNode()),
    rootVolume(r.getRootVolume()),
-   pShape(NULL),
-   pMother(NULL),
-   medium(NULL),
+   pShape(nullptr),
+   pMother(nullptr),
+   medium(nullptr),
    labTransform(new FairGeoTransform(*(r.getLabTransform()))),
    fDaughterList(new TObjArray(*(r.GetListOfDaughters()))),
    fTruncName(r.getTruncName())
@@ -74,7 +74,6 @@ FairGeoNode::FairGeoNode(FairGeoNode& r)
   setVolumePar(r);
   if (r.isActive()) { active=kTRUE; }
   if (r.isCreated()) { created=kTRUE; }
-
 }
 
 FairGeoNode::~FairGeoNode()
@@ -131,7 +130,6 @@ Int_t FairGeoNode::getCopyNo()
   // Returns the copy number
   Int_t n=0;
   if (fHadFormat == 1 ) {
-
     Int_t l=fName.Length();
     if (l>4) {
       TString s(fName);

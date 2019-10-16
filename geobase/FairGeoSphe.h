@@ -10,7 +10,6 @@
 
 #include "FairGeoBasicShape.h"          // for FairGeoBasicShape
 
-#include <iosfwd>                       // for fstream
 #include <Rtypes.h>                     // for FairGeoPcon::Class, Bool_t, etc
 
 #include <iosfwd>                       // for fstream
@@ -29,8 +28,7 @@ class FairGeoSphe : public FairGeoBasicShape
     FairGeoSphe();
     ~FairGeoSphe();
     TArrayD* calcVoluParam(FairGeoVolume*);
-    void calcVoluPosition(FairGeoVolume*,
-                          const FairGeoTransform&,const FairGeoTransform&);
+    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&,const FairGeoTransform&);
     Int_t readPoints(std::fstream*,FairGeoVolume*);
     Bool_t writePoints(std::fstream*,FairGeoVolume*);
     void printPoints(FairGeoVolume* volu);

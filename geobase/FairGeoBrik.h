@@ -12,7 +12,6 @@
 
 #include <Rtypes.h>                     // for FairGeoBrik::Class, etc
 
-
 class FairGeoTransform;
 class FairGeoVolume;
 class TArrayD;
@@ -23,8 +22,7 @@ class FairGeoBrik : public FairGeoBasicShape
     FairGeoBrik();
     ~FairGeoBrik();
     TArrayD* calcVoluParam(FairGeoVolume*);
-    void calcVoluPosition(FairGeoVolume*,
-                          const FairGeoTransform&,const FairGeoTransform&);
+    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&,const FairGeoTransform&);
     ClassDef(FairGeoBrik,0) // class for geometry shape BOX or BRIK
 };
 

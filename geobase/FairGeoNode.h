@@ -14,7 +14,6 @@
 #include "FairGeoMedium.h"              // for FairGeoMedium
 #include "FairGeoTransform.h"           // for FairGeoTransform
 
-#include <iosfwd>                       // for fstream
 #include <Rtypes.h>                     // for Bool_t, FairGeoNode::Class, etc
 #include <TObjArray.h>                  // for TObjArray
 #include <TString.h>                    // for TString

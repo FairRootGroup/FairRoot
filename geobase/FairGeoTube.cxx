@@ -41,6 +41,7 @@
 #include <stdio.h>                      // for printf, sprintf, sscanf
 #include <string.h>                     // for strlen
 #include <ostream>                      // for basic_ostream::write
+#include <fstream>
 
 ClassImp(FairGeoTube)
 
@@ -54,7 +55,6 @@ FairGeoTube::FairGeoTube()
   param=new TArrayD(nParam);
 }
 
-
 FairGeoTube::~FairGeoTube()
 {
   // default destructor
@@ -65,7 +65,6 @@ FairGeoTube::~FairGeoTube()
   delete position;
   position=0;
 }
-
 
 Int_t FairGeoTube::readPoints(std::fstream* pFile,FairGeoVolume* volu)
 {
@@ -91,7 +90,6 @@ Int_t FairGeoTube::readPoints(std::fstream* pFile,FairGeoVolume* volu)
   return nPoints;
 }
 
-
 Bool_t FairGeoTube::writePoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // writes the 3 'points' decribed above to ascii file
@@ -106,7 +104,6 @@ Bool_t FairGeoTube::writePoints(std::fstream* pFile,FairGeoVolume* volu)
   return kTRUE;
 }
 
-
 void FairGeoTube::printPoints(FairGeoVolume* volu)
 {
   // prints volume points to screen
@@ -116,7 +113,6 @@ void FairGeoTube::printPoints(FairGeoVolume* volu)
     else { printf("%9.3f%10.3f\n",v(0),v(1)); }
   }
 }
-
 
 TArrayD* FairGeoTube::calcVoluParam(FairGeoVolume* volu)
 {
@@ -129,7 +125,6 @@ TArrayD* FairGeoTube::calcVoluParam(FairGeoVolume* volu)
   param->AddAt(TMath::Abs(v(2))/fac/2.,2);
   return param;
 }
-
 
 void FairGeoTube::calcVoluPosition(FairGeoVolume* volu,
                                    const FairGeoTransform& dTC,const FairGeoTransform& mTR)

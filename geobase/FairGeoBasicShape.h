@@ -13,8 +13,6 @@
 #include <iosfwd>                       // for fstream
 #include <Rtypes.h>                     // for Int_t, etc
 
-#include <fstream>                      // for fstream
-
 class FairGeoTransform;
 class FairGeoVolume;
 class TArrayD;

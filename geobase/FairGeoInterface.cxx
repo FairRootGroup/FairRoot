@@ -30,12 +30,11 @@
 #include "FairGeoSet.h"                 // for FairGeoSet
 #include "FairGeoShapes.h"              // for FairGeoShapes
 
-#include <iosfwd>                       // for ostream
 #include <TClass.h>                     // for TClass
 #include <TList.h>                      // for TList
 #include <TObjArray.h>                  // for TObjArray
 
-#include <stdio.h>                      // for sprintf, NULL
+#include <stdio.h>                      // for sprintf
 #include <string.h>                     // for strcmp
 #include <sys/select.h>                 // for time_t
 #include <time.h>                       // for tm, localtime, time
@@ -48,9 +47,9 @@ ClassImp(FairGeoInterface)
 
 FairGeoInterface::FairGeoInterface()
   :TObject(),
-   fileInput(NULL),
-   oraInput(NULL),
-   output(NULL),
+   fileInput(nullptr),
+   oraInput(nullptr),
+   output(nullptr),
    nSets(0),
    nActualSets(0),
    sets(new TObjArray()),
@@ -58,7 +57,7 @@ FairGeoInterface::FairGeoInterface()
    shapes(new FairGeoShapes()),
    masterNodes(new TList()),
    setupFile(""),
-   geoBuilder(NULL)
+   geoBuilder(nullptr)
 {
   // Constructor
 }
@@ -476,5 +475,3 @@ Bool_t FairGeoInterface::readSetupFile()
   }
   return rc;
 }
-
-

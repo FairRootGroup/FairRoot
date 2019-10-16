@@ -44,6 +44,7 @@
 #include <stdio.h>                      // for printf, sprintf, sscanf
 #include <string.h>                     // for strlen
 #include <ostream>                      // for basic_ostream::write
+#include <fstream>
 
 ClassImp(FairGeoTubs)
 
@@ -57,7 +58,6 @@ FairGeoTubs::FairGeoTubs()
   param=new TArrayD(nParam);
 }
 
-
 FairGeoTubs::~FairGeoTubs()
 {
   // default destructor
@@ -68,7 +68,6 @@ FairGeoTubs::~FairGeoTubs()
   delete position;
   position=0;
 }
-
 
 Int_t FairGeoTubs::readPoints(std::fstream* pFile,FairGeoVolume* volu)
 {
@@ -93,7 +92,6 @@ Int_t FairGeoTubs::readPoints(std::fstream* pFile,FairGeoVolume* volu)
   return nPoints;
 }
 
-
 Bool_t FairGeoTubs::writePoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // writes the 4 'points' decribed above to ascii file
@@ -108,7 +106,6 @@ Bool_t FairGeoTubs::writePoints(std::fstream* pFile,FairGeoVolume* volu)
   return kTRUE;
 }
 
-
 void FairGeoTubs::printPoints(FairGeoVolume* volu)
 {
   // prints volume points to screen
@@ -118,7 +115,6 @@ void FairGeoTubs::printPoints(FairGeoVolume* volu)
     else { printf("%9.3f%10.3f\n",v(0),v(1)); }
   }
 }
-
 
 TArrayD* FairGeoTubs::calcVoluParam(FairGeoVolume* volu)
 {
@@ -135,9 +131,7 @@ TArrayD* FairGeoTubs::calcVoluParam(FairGeoVolume* volu)
   return param;
 }
 
-
-void FairGeoTubs::calcVoluPosition(FairGeoVolume* volu,
-                                   const FairGeoTransform& dTC,const FairGeoTransform& mTR)
+void FairGeoTubs::calcVoluPosition(FairGeoVolume* volu, const FairGeoTransform& dTC,const FairGeoTransform& mTR)
 {
   // calculates the position of the center of the volume in the intrinsic
   // coordinate system and stores it in the data element 'center'

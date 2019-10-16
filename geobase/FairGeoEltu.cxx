@@ -41,6 +41,7 @@
 #include <stdio.h>                      // for printf, sprintf, sscanf
 #include <string.h>                     // for strlen
 #include <ostream>                      // for fstream, etc
+#include <fstream>
 
 ClassImp(FairGeoEltu)
 
@@ -53,7 +54,6 @@ FairGeoEltu::FairGeoEltu()
   nParam=3;
   param=new TArrayD(nParam);
 }
-
 
 FairGeoEltu::~FairGeoEltu()
 {
@@ -71,7 +71,6 @@ FairGeoEltu::~FairGeoEltu()
     position=0;
   }
 }
-
 
 Int_t FairGeoEltu::readPoints(std::fstream* pFile,FairGeoVolume* volu)
 {
@@ -97,7 +96,6 @@ Int_t FairGeoEltu::readPoints(std::fstream* pFile,FairGeoVolume* volu)
   return nPoints;
 }
 
-
 Bool_t FairGeoEltu::writePoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // writes the 3 'points' decribed above to ascii file
@@ -112,7 +110,6 @@ Bool_t FairGeoEltu::writePoints(std::fstream* pFile,FairGeoVolume* volu)
   return kTRUE;
 }
 
-
 void FairGeoEltu::printPoints(FairGeoVolume* volu)
 {
   // prints volume points to screen
@@ -122,7 +119,6 @@ void FairGeoEltu::printPoints(FairGeoVolume* volu)
     else { printf("%9.3f%10.3f\n",v(0),v(1)); }
   }
 }
-
 
 TArrayD* FairGeoEltu::calcVoluParam(FairGeoVolume* volu)
 {
@@ -135,7 +131,6 @@ TArrayD* FairGeoEltu::calcVoluParam(FairGeoVolume* volu)
   param->AddAt(TMath::Abs(v(2))/fac/2.,2);
   return param;
 }
-
 
 void FairGeoEltu::calcVoluPosition(FairGeoVolume* volu,
                                    const FairGeoTransform& dTC,const FairGeoTransform& mTR)

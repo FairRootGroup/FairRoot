@@ -21,6 +21,7 @@ class FairGeoCompositeVolume : public FairGeoVolume
 {
   protected:
     TObjArray* components;    // array of components (type FairGeoVolume)
+
   public:
     FairGeoCompositeVolume(Int_t nComp=0);
     ~FairGeoCompositeVolume();
@@ -31,10 +32,10 @@ class FairGeoCompositeVolume : public FairGeoVolume
     void clear();
     void print();
     ClassDef(FairGeoCompositeVolume,1)
+
   private:
     FairGeoCompositeVolume(const FairGeoCompositeVolume& );
     FairGeoCompositeVolume& operator=(const FairGeoCompositeVolume&);
-
 };
 
 #endif /* !FAIRGEOCOMPOSITEVOLUME_H */

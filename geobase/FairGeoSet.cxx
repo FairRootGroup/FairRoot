@@ -27,8 +27,9 @@
 #include <TString.h>                    // for TString, operator<<
 
 #include <ctype.h>                      // for isalpha
-#include <string.h>                     // for NULL, strcmp
+#include <string.h>                     // for strcmp
 #include <iostream>                     // for cout
+#include <fstream>                      // for fstream
 
 class FairGeoMedium;
 
@@ -42,12 +43,12 @@ FairGeoSet::FairGeoSet()
   : TNamed(),
     hadesGeo(0),
     volumes(new TList()),
-    masterNodes(NULL),
+    masterNodes(nullptr),
     maxSectors(0),
     maxKeepinVolumes(0),
     maxModules(0),
-    modules(NULL),
-    pShapes(NULL),
+    modules(nullptr),
+    pShapes(nullptr),
     geoFile(""),
     author(""),
     description("")

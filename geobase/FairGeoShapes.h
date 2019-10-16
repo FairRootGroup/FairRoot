@@ -14,8 +14,6 @@
 #include <Rtypes.h>                     // for FairGeoShapes::Class, etc
 #include <TString.h>                    // for TString
 
-#include <fstream>                      // for fstream
-
 class FairGeoVolume;
 class FairGeoBasicShape;
 class TList;
@@ -28,8 +26,10 @@ class  FairGeoShapes : public TObject
   private:
     FairGeoShapes(const FairGeoShapes&);
     FairGeoShapes& operator=(const FairGeoShapes&);
+
   protected:
     TList* shapes;  // list of already created shape classes
+
   public :
     FairGeoShapes();
     ~FairGeoShapes();

@@ -24,6 +24,7 @@ class FairGeoTransform : public TObject
     FairGeoRotation rot;   /** rotation matrix, describing the orientation*/
     FairGeoVector trans;   /** translation vector, describing the position*/
     FairGeoVector trans_cm;   /** translation vector, describing the position in cm*/
+
   public:
     FairGeoTransform();
     inline FairGeoTransform(const FairGeoTransform& t);
@@ -62,9 +63,7 @@ inline FairGeoTransform::FairGeoTransform(const FairGeoTransform& t)
     trans(t.getTransVector()),
     trans_cm(FairGeoVector(0,0,0))
 {
-
 }
-
 
 inline void FairGeoTransform::setTransform(const FairGeoTransform& t)
 {

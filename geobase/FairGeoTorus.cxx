@@ -31,6 +31,7 @@
 #include <stdio.h>                      // for printf, sprintf, sscanf
 #include <string.h>                     // for strlen
 #include <ostream>                      // for basic_ostream::write
+#include <fstream>
 
 ClassImp(FairGeoTorus)
 
@@ -43,7 +44,6 @@ FairGeoTorus::FairGeoTorus()
   nParam=5;
   param=new TArrayD(nParam);
 }
-
 
 FairGeoTorus::~FairGeoTorus()
 {
@@ -81,7 +81,6 @@ Int_t FairGeoTorus::readPoints(std::fstream* pFile,FairGeoVolume* volu)
   return nPoints;
 }
 
-
 TArrayD* FairGeoTorus::calcVoluParam(FairGeoVolume* volu)
 {
   // calculates the parameters needed to create the shape
@@ -96,7 +95,6 @@ TArrayD* FairGeoTorus::calcVoluParam(FairGeoVolume* volu)
 
   v=*(volu->getPoint(4));
   param->AddAt(v(0),4);
-
 
   return param;
 }
@@ -114,7 +112,6 @@ Bool_t FairGeoTorus::writePoints(std::fstream* pFile,FairGeoVolume* volu)
   return kTRUE;
 }
 
-
 void FairGeoTorus::printPoints(FairGeoVolume* volu)
 {
   // prints volume points to screen
@@ -124,10 +121,7 @@ void FairGeoTorus::printPoints(FairGeoVolume* volu)
   }
 }
 
-
-
-void FairGeoTorus::calcVoluPosition(FairGeoVolume*,
-                                    const FairGeoTransform& dTC,const FairGeoTransform& mTR)
+void FairGeoTorus::calcVoluPosition(FairGeoVolume*, const FairGeoTransform& dTC,const FairGeoTransform& mTR)
 {
   // calls the function posInMother(...) to calculate the position of the
   // volume in its mother
@@ -135,4 +129,3 @@ void FairGeoTorus::calcVoluPosition(FairGeoVolume*,
   center->setTransVector(t);
   posInMother(dTC,mTR);
 }
-

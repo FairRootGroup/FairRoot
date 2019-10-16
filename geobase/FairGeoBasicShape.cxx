@@ -27,6 +27,7 @@
 #include <stdio.h>                      // for printf, sprintf, sscanf
 #include <string.h>                     // for strlen
 #include <iostream>                     // for cout
+#include <fstream>                      // for fstream
 
 using std::cout;
 
@@ -42,7 +43,6 @@ FairGeoBasicShape::FairGeoBasicShape()
 {
   // default constructor
 }
-
 
 FairGeoBasicShape::~FairGeoBasicShape()
 {
@@ -60,7 +60,6 @@ FairGeoBasicShape::~FairGeoBasicShape()
     position=0;
   }
 }
-
 
 Int_t FairGeoBasicShape::readPoints(std::fstream* pFile,FairGeoVolume* volu)
 {
@@ -81,7 +80,6 @@ Int_t FairGeoBasicShape::readPoints(std::fstream* pFile,FairGeoVolume* volu)
   return nPoints;
 }
 
-
 Bool_t FairGeoBasicShape::writePoints(std::fstream* pFile,FairGeoVolume* volu)
 {
   // writes nPoints with 3 components to Ascii file
@@ -95,7 +93,6 @@ Bool_t FairGeoBasicShape::writePoints(std::fstream* pFile,FairGeoVolume* volu)
   return kTRUE;
 }
 
-
 void FairGeoBasicShape::printPoints(FairGeoVolume* volu)
 {
   // prints nPoints with 3 components to screen
@@ -104,7 +101,6 @@ void FairGeoBasicShape::printPoints(FairGeoVolume* volu)
     printf("%9.3f%10.3f%10.3f\n",v(0),v(1),v(2));
   }
 }
-
 
 void FairGeoBasicShape::calcVoluPosition(FairGeoVolume* volu,
     const FairGeoTransform& mTR)
@@ -117,7 +113,6 @@ void FairGeoBasicShape::calcVoluPosition(FairGeoVolume* volu,
   FairGeoTransform& dTC=volu->getTransform();
   calcVoluPosition(volu,dTC,mTR);
 }
-
 
 void FairGeoBasicShape::posInMother(const FairGeoTransform& dTC,
                                     const FairGeoTransform& mTR)
@@ -135,7 +130,6 @@ void FairGeoBasicShape::posInMother(const FairGeoTransform& dTC,
   position->setTransVector(t*=0.1);
 }
 
-
 void FairGeoBasicShape::printParam()
 {
   // prints the parameters of the ROOT shape
@@ -144,7 +138,3 @@ void FairGeoBasicShape::printParam()
     cout<<'\n';
   }
 }
-
-
-
-

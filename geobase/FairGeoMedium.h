@@ -13,8 +13,6 @@
 #include <iosfwd>                       // for fstream
 #include <Rtypes.h>                     // for Double_t, Int_t, Bool_t, etc
 
-#include <fstream>                      // for fstream
-
 /**
  * Class for tracking medium
  * @author ilse koenig

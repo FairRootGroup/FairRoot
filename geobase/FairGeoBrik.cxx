@@ -41,7 +41,6 @@ FairGeoBrik::FairGeoBrik()
   param=new TArrayD(nParam);
 }
 
-
 FairGeoBrik::~FairGeoBrik()
 {
   // destructor
@@ -59,7 +58,6 @@ FairGeoBrik::~FairGeoBrik()
   }
 }
 
-
 TArrayD* FairGeoBrik::calcVoluParam(FairGeoVolume* volu)
 {
   // calculates the parameters needed to create the shape
@@ -71,9 +69,7 @@ TArrayD* FairGeoBrik::calcVoluParam(FairGeoVolume* volu)
   return param;
 }
 
-
-void FairGeoBrik::calcVoluPosition(FairGeoVolume* volu,
-                                   const FairGeoTransform& dTC,const FairGeoTransform& mTR)
+void FairGeoBrik::calcVoluPosition(FairGeoVolume* volu, const FairGeoTransform& dTC,const FairGeoTransform& mTR)
 {
   // calls the function posInMother(...) to calculate the position of the
   // volume in its mother
@@ -83,8 +79,3 @@ void FairGeoBrik::calcVoluPosition(FairGeoVolume* volu,
   center->setTransVector(trans);
   posInMother(dTC,mTR);
 }
-
-
-
-
-

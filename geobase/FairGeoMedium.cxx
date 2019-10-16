@@ -17,12 +17,12 @@
 
 #include <TString.h>                    // for TString
 
-#include <stddef.h>                     // for NULL
 #include <cmath>                        // for pow, log
 // IWYU pragma: no_include <architecture/i386/math.h>
 #include <iostream>                     // for cout
 #include <stdlib.h>                     // for abs
 #include <climits>                      // for INT_MAX
+#include <fstream>                      // for fstream
 
 using std::cout;
 using std::log;
@@ -36,9 +36,9 @@ FairGeoMedium::FairGeoMedium(const char* name)
     autoflag(1),
     nComponents(0),
     weightFac(0),
-    ca(NULL),
-    cz(NULL),
-    cw(NULL),
+    ca(nullptr),
+    cz(nullptr),
+    cw(nullptr),
     density(0),
     radLen(0),
     sensFlag(0),
@@ -50,10 +50,10 @@ FairGeoMedium::FairGeoMedium(const char* name)
     maxde(-1),
     minstep(-1),
     npckov(0),
-    ppckov(NULL),
-    absco(NULL),
-    effic(NULL),
-    rindex(NULL)
+    ppckov(nullptr),
+    absco(nullptr),
+    effic(nullptr),
+    rindex(nullptr)
 {
   // Constructor for a medium with name and index id
 //  SetName(name);

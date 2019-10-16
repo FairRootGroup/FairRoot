@@ -28,6 +28,7 @@ class FairGeoVolume : public TNamed
 {
   private:
     FairGeoVolume& operator=(const  FairGeoVolume&);
+
   protected:
     TString shape;              /**eant shape of the volume*/
     TString mother;            /** Name of the mother volume*/

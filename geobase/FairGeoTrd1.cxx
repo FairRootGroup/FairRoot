@@ -55,7 +55,6 @@ FairGeoTrd1::FairGeoTrd1()
   intrinsicRot.setElement(1.,7);
 }
 
-
 FairGeoTrd1::~FairGeoTrd1()
 {
   // destructor
@@ -66,7 +65,6 @@ FairGeoTrd1::~FairGeoTrd1()
   delete position;
   position=0;
 }
-
 
 TArrayD* FairGeoTrd1::calcVoluParam(FairGeoVolume* volu)
 {
@@ -84,9 +82,7 @@ TArrayD* FairGeoTrd1::calcVoluParam(FairGeoVolume* volu)
   return param;
 }
 
-
-void FairGeoTrd1::calcVoluPosition(FairGeoVolume* volu,
-                                   const FairGeoTransform& dTC,const FairGeoTransform& mTR)
+void FairGeoTrd1::calcVoluPosition(FairGeoVolume* volu, const FairGeoTransform& dTC,const FairGeoTransform& mTR)
 {
   // calls the function posInMother(...) to calculate the position of the
   // volume in its mother
@@ -102,4 +98,3 @@ void FairGeoTrd1::calcVoluPosition(FairGeoVolume* volu,
   center->setRotMatrix(intrinsicRot);
   posInMother(dTC,mTR);
 }
-

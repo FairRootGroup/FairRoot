@@ -34,4 +34,3 @@ FairGeoBuilder::FairGeoBuilder(const char* name,const char* title)
 {
   // Constructor
 }
-
