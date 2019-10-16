@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -23,15 +23,15 @@ class FairYamlVMCConfig : public FairGenericVMCConfig
 {
   public:
     FairYamlVMCConfig();
-    virtual ~FairYamlVMCConfig();
+    virtual ~FairYamlVMCConfig() {}
 
     virtual void Setup(const char* mcEngine);
 
- private:
+  private:
     TString ObtainYamlFileName(const char* mcEngine);
-    void    StoreYamlInfo();
-    
- protected:
+    void StoreYamlInfo();
+
+  protected:
     void SetupGeant3();
     void SetupGeant4();
     virtual void SetupStack() = 0;

@@ -14,37 +14,42 @@
 #include "FairLogger.h"
 #include "FairRunSim.h"
 #include "FairFastSimRunConfiguration.h"
+#include "FairSink.h"                       // for FairSink
 
 #include <TGeant3.h>
 #include <TGeant3TGeo.h>
 #include <TGeant4.h>
 
-#include <TROOT.h>
+#include <Rtypes.h>
 #include <TString.h>
+#include <TObjString.h>                     // for TObjString
+#include <TObject.h>                        // for TObject, TObject::kSingleKey
+#include <TSystem.h>                        // for TSystem, gSystem
+#include <TVirtualMC.h>                     // for TVirtualMC
 
-//_____________________________________________________________________________
+#include <vector>                           // for vector
+#include <ostream>                          // for operator<<, ostringstream
+#include <string>                           // for string, basic_string, cha...
+#include <cstring>                         // for strcmp, strncmp
+#include <cstdlib>                         // for getenv
+
 FairYamlVMCConfig::FairYamlVMCConfig()
     : FairGenericVMCConfig()
 {
 }
-//_____________________________________________________________________________
-FairYamlVMCConfig::~FairYamlVMCConfig()
-{
-}
 
-//_____________________________________________________________________________
 void FairYamlVMCConfig::Setup(const char* mcEngine)
 {
-    if ( ! ( (strcmp(mcEngine,"TGeant4")==0) || (strcmp(mcEngine,"TGeant3")==0) ) ) {
+    if (!((strcmp(mcEngine,"TGeant4")==0) || (strcmp(mcEngine,"TGeant3")==0))) {
         LOG(fatal) << "FairYamlVMCConfig::Setup() Engine \"" << mcEngine << "\" unknown!";
     }
 
     TString yamlFileName = ObtainYamlFileName(mcEngine);
     fYamlConfig = YAML::LoadFile(yamlFileName.Data());
 
-    if(strcmp(mcEngine,"TGeant4") == 0 ) {
+    if (strcmp(mcEngine,"TGeant4") == 0) {
         SetupGeant4();
-    } else if(strcmp(mcEngine,"TGeant3") == 0 ) {
+    } else if (strcmp(mcEngine,"TGeant3") == 0) {
         SetupGeant3();
     }
     SetupStack();
@@ -53,13 +58,13 @@ void FairYamlVMCConfig::Setup(const char* mcEngine)
     StoreYamlInfo();
 }
 
-//_____________________________________________________________________________
-void FairYamlVMCConfig::SetupGeant3() {
+void FairYamlVMCConfig::SetupGeant3()
+{
     LOG(info) << "FairYamlVMCConfig::SetupGeant3() called";
     FairRunSim *fRun = FairRunSim::Instance();
     TString* gModel = fRun->GetGeoModel();
-    TGeant3* geant3 = NULL;
-    if ( strncmp(gModel->Data(),"TGeo",4) == 0 ) {
+    TGeant3* geant3 = nullptr;
+    if (strncmp(gModel->Data(),"TGeo",4) == 0) {
         geant3
             = new  TGeant3TGeo("C++ Interface to Geant3");
     }else{
@@ -71,13 +76,13 @@ void FairYamlVMCConfig::SetupGeant3() {
         geant3->SetTRIG(fYamlConfig["G3_TRIG"].as<int>());
     if (fYamlConfig["G3_SWIT"]) {
         std::vector<int> intVect = fYamlConfig["G3_SWIT"].as<std::vector<int>>();
-        if ( intVect.size() != 2 )
+        if (intVect.size() != 2)
             LOG(fatal) << "FairSetupGeant3: expecting 2 integers to setup G3_SWIT";
         geant3->SetSWIT(intVect[0], intVect[1]);
     }
     if (fYamlConfig["G3_DEBU"]) {
         std::vector<int> intVect = fYamlConfig["G3_DEBU"].as<std::vector<int>>();
-        if ( intVect.size() != 3 )
+        if (intVect.size() != 3)
             LOG(fatal) << "FairSetupGeant3: expecting 3 integers to setup G3_DEBU";
         geant3->SetDEBU(intVect[0], intVect[1], intVect[2]);
     }
@@ -98,8 +103,8 @@ void FairYamlVMCConfig::SetupGeant3() {
 
 }
 
-//_____________________________________________________________________________
-void FairYamlVMCConfig::SetupGeant4() {
+void FairYamlVMCConfig::SetupGeant4()
+{
     LOG(info) << "FairYamlVMCConfig::SetupGeant4() called";
 
     if (!fYamlConfig["Geant4_UserGeometry"]) {
@@ -117,7 +122,7 @@ void FairYamlVMCConfig::SetupGeant4() {
         specialStacking = fYamlConfig["Geant4_SpecialStacking"].as<bool>();
     }
     bool mtMode = FairRunSim::Instance()->IsMT();
-    
+
     FairFastSimRunConfiguration* runConfiguration
         = new FairFastSimRunConfiguration(fYamlConfig["Geant4_UserGeometry"]  .as<std::string>(),
                                           fYamlConfig["Geant4_PhysicsList"]   .as<std::string>(),
@@ -130,10 +135,10 @@ void FairYamlVMCConfig::SetupGeant4() {
     LOG(info) << geant4->GetName() << " MonteCarlo engine created!.";
 }
 
-//_____________________________________________________________________________
-void FairYamlVMCConfig::SetCuts() {
+void FairYamlVMCConfig::SetCuts()
+{
     LOG(info) << "FairYamlVMCConfig::SetCuts() called";
-    if ( fYamlConfig["MonteCarlo_Process"] ) {
+    if (fYamlConfig["MonteCarlo_Process"]) {
         YAML::Node mcProcess = fYamlConfig["MonteCarlo_Process"];
         TVirtualMC *MC =TVirtualMC::GetMC();
         for (auto it = mcProcess.begin(); it != mcProcess.end(); ++it) {
@@ -142,7 +147,7 @@ void FairYamlVMCConfig::SetCuts() {
         }
     }
 
-    if ( fYamlConfig["MonteCarlo_Cut"] ) {
+    if (fYamlConfig["MonteCarlo_Cut"]) {
         YAML::Node mcProcess = fYamlConfig["MonteCarlo_Cut"];
         TVirtualMC *MC =TVirtualMC::GetMC();
         for (auto it = mcProcess.begin(); it != mcProcess.end(); ++it) {
@@ -152,9 +157,8 @@ void FairYamlVMCConfig::SetCuts() {
     }
 }
 
-//_____________________________________________________________________________
-TString FairYamlVMCConfig::ObtainYamlFileName(const char* mcEngine) {
-
+TString FairYamlVMCConfig::ObtainYamlFileName(const char* mcEngine)
+{
     TString lUserConfig = FairRunSim::Instance()->GetUserConfig();
 
     TString work = getenv("VMCWORKDIR");
@@ -169,11 +173,11 @@ TString FairYamlVMCConfig::ObtainYamlFileName(const char* mcEngine) {
     TString configFileWithPath;
 
     TString configFile;
-    if(lUserConfig.IsNull()) {
-        if(strcmp(mcEngine,"TGeant4") == 0 ) {
+    if (lUserConfig.IsNull()) {
+        if (strcmp(mcEngine,"TGeant4") == 0) {
             configFile = "g4Config.yaml";
         }
-        if(strcmp(mcEngine,"TGeant3") == 0 ) {
+        if (strcmp(mcEngine,"TGeant3") == 0) {
             configFile = "g3Config.yaml";
         }
         lUserConfig = configFile;
@@ -188,14 +192,14 @@ TString FairYamlVMCConfig::ObtainYamlFileName(const char* mcEngine) {
                   << config_dir.Data() << " to get \"" << configFile.Data() << "\"";
         configFileWithPath=configFile;
     } else {
-        if(AbsPath) { configFileWithPath = lUserConfig; }
+        if (AbsPath) { configFileWithPath = lUserConfig; }
         else { configFileWithPath =work_config+lUserConfig; }
     }
     return configFileWithPath;
 }
 
-//_____________________________________________________________________________
-void FairYamlVMCConfig::StoreYamlInfo() {
+void FairYamlVMCConfig::StoreYamlInfo()
+{
     std::ostringstream nodestring;
     nodestring << "TGeant3\n";
     nodestring << fYamlConfig;

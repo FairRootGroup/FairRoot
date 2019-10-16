@@ -43,13 +43,15 @@ target_link_directories(${target} PUBLIC
 
 target_link_libraries(${target} PUBLIC
   FairRoot::FairTools
-  FairRoot::Base # FairRunSim
-  # TODO: clean the following
+  FairRoot::Base # FairGenericVMCConfig
+  FairRoot::FairFastSim # FairFastSimRunConfiguration
+
   geant321
   geant4vmc
-  Pythia6
-  FairFastSim
   yaml-cpp
+
+  Core
+  VMC
 )
 
 fairroot_target_root_dictionary(${target}
