@@ -29,20 +29,23 @@
 //  @brief  Modified for FairRoot
 
 #include <FairMCApplication.h>
-#include <TVirtualMC.h>
-#include <sstream>
-#include <TH1F.h>
-#include <TFile.h>
+
 #include <TTree.h>
+#include <TAxis.h>              // for TAxis
+#include <TFile.h>              // for TAxis
+#include <TH1.h>                // for TH1F
+#include <TVirtualMC.h>
+#include <TVirtualMCStack.h>    // for TVirtualMCStack
 
 #include <dlfcn.h>
 #include <iostream>
 #include <map>
 #include <set>
+#include <cassert>
+#include <utility>              // for pair
 #ifdef NDEBUG
 #undef NDEBUG
 #endif
-#include <cassert>
 
 class StepLogger
 {
@@ -54,53 +57,50 @@ class StepLogger
   std::map<int, int> volumetostepsGlobal;
   std::map<int, char const*> idtovolname;
 
-
   // TODO: consider writing to a TTree/TFile
- public:
-  void addStep(TVirtualMC* mc)
-  {
-    assert(mc);
-    stepcounter++;
-    auto stack=mc->GetStack();
-    assert(stack);
-    trackset.insert(stack->GetCurrentTrackNumber());
-    pdgset.insert(mc->TrackPid());
-    int copyNo;
-    auto id = mc->CurrentVolID(copyNo);
-    if (volumetosteps.find(id) == volumetosteps.end()){
-      volumetosteps.insert(std::pair<int, int>(id, 0));
+  public:
+    void addStep(TVirtualMC* mc)
+    {
+      assert(mc);
+      stepcounter++;
+      auto stack=mc->GetStack();
+      assert(stack);
+      trackset.insert(stack->GetCurrentTrackNumber());
+      pdgset.insert(mc->TrackPid());
+      int copyNo;
+      auto id = mc->CurrentVolID(copyNo);
+      if (volumetosteps.find(id) == volumetosteps.end()){
+        volumetosteps.insert(std::pair<int, int>(id, 0));
+      } else {
+        volumetosteps[id]++;
+      }
+      if (volumetostepsGlobal.find(id) == volumetostepsGlobal.end()){
+        volumetostepsGlobal.insert(std::pair<int, int>(id, 0));
+      } else {
+        volumetostepsGlobal[id]++;
+      }
+      if (idtovolname.find(id) == idtovolname.end()) {
+        idtovolname.insert(std::pair<int, char const*>(id, mc->CurrentVolName()));
+      }
     }
-    else {
-      volumetosteps[id]++;
-    }
-    if (volumetostepsGlobal.find(id) == volumetostepsGlobal.end()){
-      volumetostepsGlobal.insert(std::pair<int, int>(id, 0));
-    }
-    else {
-      volumetostepsGlobal[id]++;
-    }
-    if (idtovolname.find(id) == idtovolname.end()) {
-      idtovolname.insert(std::pair<int, char const*>(id, mc->CurrentVolName()));
-    }
-  }
 
-  void clear() {
-    stepcounter = 0;
-    trackset.clear();
-    pdgset.clear();
-    volumetosteps.clear();
-  }
-
-  void flush() {
-    std::cerr << "did " << stepcounter << " steps \n";
-    std::cerr << "transported " << trackset.size() << " different tracks \n";
-    std::cerr << "transported " << pdgset.size() << " different types \n";
-    // summarize steps per volume
-    for (auto& p : volumetosteps) {
-      std::cout << " VolName " << idtovolname[p.first] << " COUNT " << p.second << "\n";
+    void clear() {
+      stepcounter = 0;
+      trackset.clear();
+      pdgset.clear();
+      volumetosteps.clear();
     }
-    clear();
-  }
+
+    void flush() {
+      std::cerr << "did " << stepcounter << " steps \n";
+      std::cerr << "transported " << trackset.size() << " different tracks \n";
+      std::cerr << "transported " << pdgset.size() << " different types \n";
+      // summarize steps per volume
+      for (auto& p : volumetosteps) {
+        std::cout << " VolName " << idtovolname[p.first] << " COUNT " << p.second << "\n";
+      }
+      clear();
+    }
 
     void flushFinal() {
         // summarize steps per volume
@@ -136,13 +136,13 @@ extern "C" void dispatchStepping(FairMCApplication* app, char const* libname, ch
       std::stringstream stream;
       stream << libname << ".so";
       libHandle = dlopen(stream.str().c_str(), RTLD_NOW);
-    } 
+    }
     if (!libHandle){
       // try appending *.dylib
       std::stringstream stream;
       stream << libname << ".dylib";
       libHandle = dlopen(stream.str().c_str(), RTLD_NOW);
-    } 
+    }
     assert(libHandle);
     void* symbolAddress = dlsym(libHandle, origFunctionName);
     assert(symbolAddress);
@@ -169,13 +169,13 @@ extern "C" void dispatchFinishEvent(FairMCApplication* app, char const* libname,
       std::stringstream stream;
       stream << libname << ".so";
       libHandle = dlopen(stream.str().c_str(), RTLD_NOW);
-    } 
+    }
     if (!libHandle){
       // try appending *.dylib
       std::stringstream stream;
       stream << libname << ".dylib";
       libHandle = dlopen(stream.str().c_str(), RTLD_NOW);
-    } 
+    }
     assert(libHandle);
     void* symbolAddress = dlsym(libHandle, origFunctionName);
     assert(symbolAddress);
@@ -202,13 +202,13 @@ extern "C" void dispatchFinishRun(FairMCApplication* app, char const* libname, c
       std::stringstream stream;
       stream << libname << ".so";
       libHandle = dlopen(stream.str().c_str(), RTLD_NOW);
-    } 
+    }
     if (!libHandle){
       // try appending *.dylib
       std::stringstream stream;
       stream << libname << ".dylib";
       libHandle = dlopen(stream.str().c_str(), RTLD_NOW);
-    } 
+    }
     assert(libHandle);
     void* symbolAddress = dlsym(libHandle, origFunctionName);
     assert(symbolAddress);

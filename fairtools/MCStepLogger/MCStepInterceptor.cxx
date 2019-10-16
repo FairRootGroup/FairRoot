@@ -28,10 +28,6 @@
 //  @since  2018-10-22
 //  @brief  Modified for FairRoot
 
-class FairMCApplication;
-#include <iostream>
-
-
 // (re)declare symbols to be able to hook into them
 #define DECLARE_INTERCEPT_SYMBOLS(APP)                                                       \
   class APP                                                                                  \
@@ -74,7 +70,6 @@ extern "C" void flushFinalLog();
      flushFinalLog();                                                                        \
      dispatchFinishRun(baseptr, LIB, SYMBOL);                                                \
   }                                                                                          \
-
 
 // the runtime will now dispatch to these functions due to LD_PRELOAD
 INTERCEPT_STEPPING(FairMCApplication,"libBase","_ZN17FairMCApplication8SteppingEv")

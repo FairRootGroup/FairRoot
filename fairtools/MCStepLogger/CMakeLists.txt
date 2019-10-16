@@ -26,8 +26,12 @@ target_link_directories(${target} PUBLIC
 
 target_link_libraries(${target} PUBLIC
   FairRoot::Base
-  # TODO: clean the following
+
   Core
+  Tree
+  Hist
+  RIO
+  VMC
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
