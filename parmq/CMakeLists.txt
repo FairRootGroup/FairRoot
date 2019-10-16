@@ -37,9 +37,11 @@ target_link_libraries(${target} PUBLIC
   FairRoot::BaseMQ # Serialization policies
   FairRoot::ParBase # FairRuntimeDb, ...
   FairRoot::FairTools # FairLogger
+
   FairMQ::FairMQ
-  # TODO: clean the following
-  # which ROOT libs for TGeoManager, TClass, RTypes ?
+
+  Core
+  Geom
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})

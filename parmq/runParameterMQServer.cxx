@@ -15,6 +15,8 @@
 #include "runFairMQDevice.h"
 #include "ParameterMQServer.h"
 
+#include <string>
+
 namespace bpo = boost::program_options;
 
 void addCustomOptions(bpo::options_description& options)

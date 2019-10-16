@@ -12,19 +12,21 @@
  * @author M. Al-Turany, A. Rybalchenko
  */
 
-#include <TGeoManager.h>
-#include "RootSerializer.h"
-#include <TClass.h>
-#include <Rtypes.h>
+#include "ParameterMQServer.h"
 
+#include "RootSerializer.h"
 #include "FairRuntimeDb.h"
 #include "FairParAsciiFileIo.h"
 #include "FairParRootFileIo.h"
 #include "FairParGenericSet.h"
 #include "FairRunIdGenerator.h"
 
-#include "ParameterMQServer.h"
 #include <FairMQLogger.h>
+
+#include <TGeoManager.h>
+#include <Rtypes.h>
+
+#include <cstdlib> // getenv
 
 using namespace std;
 

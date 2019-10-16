@@ -20,7 +20,6 @@
 #include <FairMQDevice.h>
 
 class FairRuntimeDb;
-class FairMQMessage;
 
 class ParameterMQServer : public FairMQDevice
 {
