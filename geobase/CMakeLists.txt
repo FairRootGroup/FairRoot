@@ -43,40 +43,7 @@ set(sources
   FairGeoVolume.cxx
 )
 
-set(headers
-  FairGeoAsciiIo.h
-  FairGeoAssembly.h
-  FairGeoBasicShape.h
-  FairGeoBrik.h
-  FairGeoBuilder.h
-  FairGeoCompositeVolume.h
-  FairGeoCone.h
-  FairGeoCons.h
-  FairGeoEltu.h
-  FairGeoInterface.h
-  FairGeoIo.h
-  FairGeoLoader.h
-  FairGeoMatrix.h
-  FairGeoMedia.h
-  FairGeoMedium.h
-  FairGeoNode.h
-  FairGeoOldAsciiIo.h
-  FairGeoPcon.h
-  FairGeoPgon.h
-  FairGeoRootBuilder.h
-  FairGeoRotation.h
-  FairGeoSet.h
-  FairGeoShapes.h
-  FairGeoSphe.h
-  FairGeoTorus.h
-  FairGeoTransform.h
-  FairGeoTrap.h
-  FairGeoTrd1.h
-  FairGeoTube.h
-  FairGeoTubs.h
-  FairGeoVector.h
-  FairGeoVolume.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

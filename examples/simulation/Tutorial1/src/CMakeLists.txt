@@ -19,16 +19,7 @@ set(sources
   FairTutorialDet1Point.cxx
 )
 
-set(headers
-  FairFastSimExample.h
-  FairFastSimExample2.h
-  FairSimConfig.h
-  FairTutorialDet1.h
-  FairTutorialDet1ContFact.h
-  FairTutorialDet1Geo.h
-  FairTutorialDet1GeoPar.h
-  FairTutorialDet1Point.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

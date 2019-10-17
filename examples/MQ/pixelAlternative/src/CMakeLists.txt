@@ -8,26 +8,25 @@
 
 set(target PixelAlt)
 
-set(sources
+set(no_dict_sources
   devices/FairMQPixAltFileSinkBin.cxx
   devices/FairMQPixAltSamplerBin.cxx
+)
 
+fair_change_extensions_if_exists(.cxx .h "${no_dict_sources}" no_dict_headers)
+
+list(APPEND no_dict_headers
+  devices/FairMQPixAltTaskProcessorBin.h
+)
+
+set(sources
   PixelAltDigiWriteToRootVector.cxx
   PixelAltFindHits.cxx
 )
 
-set(no_dict_headers
-  devices/FairMQPixAltFileSinkBin.h
-  devices/FairMQPixAltSamplerBin.h
-  devices/FairMQPixAltTaskProcessorBin.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
-set(headers
-  PixelAltDigiWriteToRootVector.h
-  PixelAltFindHits.h
-)
-
-add_library(${target} SHARED ${sources} ${headers} ${no_dict_headers})
+add_library(${target} SHARED ${sources} ${no_dict_sources} ${headers} ${no_dict_headers})
 add_library(FairRoot::${target} ALIAS ${target})
 set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 

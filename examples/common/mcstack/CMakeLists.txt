@@ -13,10 +13,10 @@ set(sources
   FairStack.cxx
 )
 
-set(headers
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
+
+list(APPEND headers
   FairDetectorList.h
-  FairMCTrack.h
-  FairStack.h
 )
 
 add_library(${target} SHARED ${sources} ${headers})

@@ -15,12 +15,7 @@ set(sources
   FairMQExHistoServer.cxx
 )
 
-set(headers
-  FairMQExHistoCanvasDrawer.h
-  FairMQExHistoCanvasDrawerExample.h
-  FairMQExHistoDevice.h
-  FairMQExHistoServer.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

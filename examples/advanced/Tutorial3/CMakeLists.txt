@@ -39,30 +39,7 @@ set(sources
   $<$<BOOL:${Flatbuffers_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadHit_generated.h>
 )
 
-set(headers
-  data/FairTestDetectorDigi.h
-  data/FairTestDetectorHit.h
-  data/FairTestDetectorPoint.h
-
-  digitization/FairTestDetectorDigiTask.h
-  digitization/FairTestDetectorHitProducerSmearing.h
-
-  reconstruction/FairTestDetectorRecoTask.h
-
-  simulation/FairConstField.h
-  simulation/FairConstPar.h
-  simulation/FairMapPar.h
-  simulation/FairTestDetector.h
-  simulation/FairTestDetectorContFact.h
-  simulation/FairTestDetectorGeo.h
-  simulation/FairTestDetectorGeoPar.h
-
-  timeBasedSimulation/FairTestDetectorDigiRingSorter.h
-  timeBasedSimulation/FairTestDetectorDigiSorterTask.h
-  timeBasedSimulation/FairTestDetectorDigiWriteoutBuffer.h
-  timeBasedSimulation/FairTestDetectorTimeDigiTask.h
-  timeBasedSimulation/FairTestDetectorTimeRecoTask.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 if(Protobuf_FOUND)
   set(PROTOBUF_USED true)

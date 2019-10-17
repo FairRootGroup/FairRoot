@@ -25,22 +25,7 @@ set(sources
   FairRuntimeDb.cxx
 )
 
-set(headers
-  FairContFact.h
-  FairDetParAsciiFileIo.h
-  FairDetParIo.h
-  FairDetParRootFileIo.h
-  FairGenericParAsciiFileIo.h
-  FairGenericParRootFileIo.h
-  FairParamList.h
-  FairParAsciiFileIo.h
-  FairParGenericSet.h
-  FairParIo.h
-  FairParRootFileIo.h
-  FairParSet.h
-  FairRtdbRun.h
-  FairRuntimeDb.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

@@ -108,7 +108,7 @@ ENDMACRO (CHANGE_FILE_EXTENSION)
 # The input list is not changed at all
 # Ex: fair_change_file_extension_ifexists(*.cxx *.h "${TRD_SRCS}" TRD_HEADERS)
 ################################################################################
-function(fair_change_extensions_ifexists ext1 ext2 list output)
+function(fair_change_extensions_if_exists ext1 ext2 list output)
   if(${ext1} MATCHES "^[*][.]+.*$")
     string(REGEX REPLACE "^[*]+([.].*)$" "\\1" ext1new ${ext1})
   else()

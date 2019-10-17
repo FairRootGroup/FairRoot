@@ -18,11 +18,7 @@ set(sources
   FairMQExParamsParOne.cxx
 )
 
-set(headers
-  FairMQExParamsClient.h
-  FairMQExParamsContFact.h
-  FairMQExParamsParOne.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

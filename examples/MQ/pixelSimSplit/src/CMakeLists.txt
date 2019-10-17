@@ -8,25 +8,25 @@
 
 set(target SimMQ)
 
-set(sources
+set(no_dict_sources
   devices/FairMQChunkMerger.cxx
   devices/FairMQPrimaryGeneratorDevice.cxx
   devices/FairMQTransportDevice.cxx
-
-  FairMCSplitEventHeader.cxx
 )
 
-set(no_dict_headers
-  devices/FairMQChunkMerger.h
-  devices/FairMQPrimaryGeneratorDevice.h
+fair_change_extensions_if_exists(.cxx .h "${no_dict_sources}" no_dict_headers)
+
+list(APPEND no_dict_sources
   devices/FairMQTransportDevice.h
 )
 
-set(headers
-  FairMCSplitEventHeader.h
+set(sources
+  FairMCSplitEventHeader.cxx
 )
 
-add_library(${target} SHARED ${sources} ${headers} ${no_dict_headers})
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
+
+add_library(${target} SHARED ${sources} ${no_dict_sources} ${headers} ${no_dict_headers})
 add_library(FairRoot::${target} ALIAS ${target})
 set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 

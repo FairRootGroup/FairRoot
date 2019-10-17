@@ -8,7 +8,7 @@
 
 set(target Pixel)
 
-set(sources
+set(no_dict_sources
   devices/FairMQPixelFileSink.cxx
   devices/FairMQPixelFileSinkBin.cxx
   devices/FairMQPixelMerger.cxx
@@ -18,7 +18,16 @@ set(sources
   devices/FairMQSimDevice.cxx
   devices/PixelFindHitsTask.cxx
   FairOnlineSink.cxx
+)
 
+fair_change_extensions_if_exists(.cxx .h "${no_dict_sources}" no_dict_headers)
+
+list(APPEND no_dict_headers
+  devices/FairMQPixelTaskProcessor.h
+  devices/FairMQPixelTaskProcessorBin.h
+)
+
+set(sources
   Pixel.cxx
   PixelContFact.cxx
   PixelDigi.cxx
@@ -39,43 +48,13 @@ set(sources
   PixelTrack.cxx
 )
 
-set(no_dict_headers
-  devices/FairMQPixelFileSink.h
-  devices/FairMQPixelFileSinkBin.h
-  devices/FairMQPixelMerger.h
-  devices/FairMQPixelSampler.h
-  devices/FairMQPixelSamplerBin.h
-  devices/FairMQPixelTaskProcessor.h
-  devices/FairMQPixelTaskProcessorBin.h
-  devices/FairMQRunDevice.h
-  devices/FairMQSimDevice.h
-  devices/PixelFindHitsTask.h
-  FairOnlineSink.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
-set(headers
-  Pixel.h
-  PixelContFact.h
-  PixelDigi.h
-  PixelDigiBinSource.h
-  PixelDigiPar.h
-  PixelDigiSource.h
-  PixelDigitize.h
-  PixelDigiWriteToBinFile.h
-  PixelDigiWriteToFile.h
-  PixelEventHeader.h
-  PixelFindHits.h
-  PixelFindTracks.h
-  PixelFitTracks.h
-  PixelGeo.h
-  PixelGeoPar.h
-  PixelHit.h
+list(APPEND headers
   PixelPayload.h
-  PixelPoint.h
-  PixelTrack.h
 )
 
-add_library(${target} SHARED ${sources} ${headers} ${no_dict_headers})
+add_library(${target} SHARED ${sources} ${no_dict_sources} ${headers} ${no_dict_headers})
 add_library(FairRoot::${target} ALIAS ${target})
 set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 

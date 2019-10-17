@@ -18,15 +18,7 @@ set(sources
   FairUrqmdGenerator.cxx
 )
 
-set(headers
-  FairAsciiGenerator.h
-  FairBoxGenerator.h
-  FairEvtGenGenerator.h
-  FairIonGenerator.h
-  FairParticleGenerator.h
-  FairShieldGenerator.h
-  FairUrqmdGenerator.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

@@ -16,13 +16,7 @@ set(sources
   FairRutherfordPoint.cxx
 )
 
-set(headers
-  FairRutherford.h
-  FairRutherfordContFact.h
-  FairRutherfordGeo.h
-  FairRutherfordGeoPar.h
-  FairRutherfordPoint.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

@@ -12,9 +12,7 @@ set(sources
   ParameterMQServer.cxx
 )
 
-set(headers
-  ParameterMQServer.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

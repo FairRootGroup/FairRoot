@@ -15,11 +15,9 @@ set(sources
   fLmd.c
 )
 
-set(headers
-  f_evt.h
-  f_stccomm.h
-  f_ut_utime.h
-  fLmd.h
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
+
+list(APPEND headers
   portnum_def.h
   s_bufhe_swap.h
   s_bufhe.h

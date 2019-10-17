@@ -12,8 +12,6 @@ set(sources
   data/FairTutorialDet4Point.cxx
   data/FairTutorialDet4Hit.cxx
 
-  $<$<BOOL:${ROOT_HAS_OPENGL}>:display/FairTutorialDet4PointDraw.cxx>
-
   mc/FairTutorialDet4.cxx
   mc/FairTutorialDet4Geo.cxx
 
@@ -29,26 +27,13 @@ set(sources
   tools/Mille.cc
 )
 
-set(headers
-  data/FairTutorialDet4Point.h
-  data/FairTutorialDet4Hit.h
+if(ROOT_HAS_OPENGL)
+  list(APPEND sources
+    display/FairTutorialDet4PointDraw.cxx
+  )
+endif()
 
-  display/FairTutorialDet4PointDraw.h
-
-  mc/FairTutorialDet4.h
-  mc/FairTutorialDet4Geo.h
-
-  param/FairTutorialDet4ContFact.h
-  param/FairTutorialDet4GeoPar.h
-  param/FairTutorialDet4MisalignPar.h
-
-  reco/FairTutorialDet4HitProducerIdealMisalign.h
-  reco/FairTutorialDet4StraightLineFitter.h
-  reco/FairTutorialDet4MilleWriter.h
-
-  tools/FairTutorialDet4GeoHandler.h
-  tools/Mille.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

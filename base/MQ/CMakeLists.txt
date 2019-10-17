@@ -13,7 +13,9 @@ set(sources
   tasks/FairMQSamplerTask.cxx
 )
 
-set(headers
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
+
+list(APPEND headers
   baseMQtools/baseMQtools.h
   devices/FairMQLmdSampler.h
   devices/FairMQProcessor.h
@@ -30,8 +32,6 @@ set(headers
   policies/Storage/BoostDataSaver.h
   policies/Storage/RootOutFileManager.h
   policies/Storage/TriviallyCopyableDataSaver.h
-  tasks/FairMQProcessorTask.h
-  tasks/FairMQSamplerTask.h
 )
 
 add_library(${target} SHARED ${sources} ${headers})

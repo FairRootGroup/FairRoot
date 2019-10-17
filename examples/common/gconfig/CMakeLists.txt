@@ -12,9 +12,7 @@ set(sources
   FairVMCConfig.cxx
 )
 
-set(headers
-  FairVMCConfig.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

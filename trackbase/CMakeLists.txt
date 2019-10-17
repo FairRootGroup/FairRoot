@@ -15,12 +15,7 @@ set(sources
   FairTrackParP.cxx
 )
 
-set(headers
-  FairGeaneUtil.h
-  FairTrackPar.h
-  FairTrackParH.h
-  FairTrackParP.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

@@ -16,11 +16,7 @@ set(sources
   FairMBSTask.cxx
 )
 
-set(headers
-  FairMBSUnpack.h
-  FairMBSRawItem.h
-  FairMBSTask.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

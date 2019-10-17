@@ -26,21 +26,7 @@ set(sources
   FairXMLNode.cxx
 )
 
-set(headers
-  FairBoxSet.h
-  FairBoxSetDraw.h
-  FairBoxSetEditor.h
-  FairEventManager.h
-  FairEventManagerEditor.h
-  FairHitDraw.h
-  FairHitPointSetDraw.h
-  FairMCPointDraw.h
-  FairMCTracks.h
-  FairMCTracksEditor.h
-  FairPointSetDraw.h
-  FairTimeStampPointDraw.h
-  FairXMLNode.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

@@ -21,18 +21,7 @@ set(sources
   FairMCStage.cxx
 )
 
-set(headers
-  FairMCDataCrawler.h
-  FairMCEntry.h
-  FairMCList.h
-  FairMCMatch.h
-  FairMCMatchCreatorTask.h
-  FairMCMatchLoaderTask.h
-  FairMCMatchSelectorTask.h
-  FairMCObject.h
-  FairMCResult.h
-  FairMCStage.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})

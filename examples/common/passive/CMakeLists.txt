@@ -21,18 +21,7 @@ set(sources
   FairTarget.cxx
 )
 
-set(headers
-  FairCave.h
-  FairGeoCave.h
-  FairGeoMagnet.h
-  FairGeoPassivePar.h
-  FairGeoPipe.h
-  FairGeoTarget.h
-  FairMagnet.h
-  FairPassiveContFact.h
-  FairPipe.h
-  FairTarget.h
-)
+fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
