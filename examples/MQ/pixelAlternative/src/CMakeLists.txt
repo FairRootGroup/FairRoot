@@ -13,7 +13,7 @@ set(no_dict_sources
   devices/FairMQPixAltSamplerBin.cxx
 )
 
-fair_change_extensions_if_exists(.cxx .h "${no_dict_sources}" no_dict_headers)
+fair_change_extensions_if_exists(.cxx .h FILES "${no_dict_sources}" OUTVAR no_dict_headers)
 
 list(APPEND no_dict_headers
   devices/FairMQPixAltTaskProcessorBin.h
@@ -24,7 +24,7 @@ set(sources
   PixelAltFindHits.cxx
 )
 
-fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
+fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
 add_library(${target} SHARED ${sources} ${no_dict_sources} ${headers} ${no_dict_headers})
 add_library(FairRoot::${target} ALIAS ${target})

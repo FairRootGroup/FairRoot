@@ -13,7 +13,7 @@ set(sources
   FairStack.cxx
 )
 
-fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
+fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
 list(APPEND headers
   FairDetectorList.h

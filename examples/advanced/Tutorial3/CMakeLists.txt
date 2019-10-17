@@ -39,7 +39,7 @@ set(sources
   $<$<BOOL:${Flatbuffers_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadHit_generated.h>
 )
 
-fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
+fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
 if(Protobuf_FOUND)
   set(PROTOBUF_USED true)

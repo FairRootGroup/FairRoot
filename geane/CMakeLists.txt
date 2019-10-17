@@ -13,7 +13,7 @@ set(sources
   FairGeanePro.cxx
 )
 
-fair_change_extensions_if_exists(.cxx .h "${sources}" headers)
+fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
