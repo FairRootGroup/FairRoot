@@ -102,6 +102,34 @@ MACRO (CHANGE_FILE_EXTENSION FILE_EXT1 FILE_EXT2 OUTVAR LIST)
 ENDMACRO (CHANGE_FILE_EXTENSION)
 
 ################################################################################
+# Exchange file extention of file in list from ext1 to ext2,
+# only if the resulting file exists in CMAKE_CURRENT_SOURCE_DIR,
+# and assign the newly created list to 'output'.
+# The input list is not changed at all
+# Ex: fair_change_file_extension_ifexists(*.cxx *.h "${TRD_SRCS}" TRD_HEADERS)
+################################################################################
+function(fair_change_extensions_ifexists ext1 ext2 list output)
+  if(${ext1} MATCHES "^[*][.]+.*$")
+    string(REGEX REPLACE "^[*]+([.].*)$" "\\1" ext1new ${ext1})
+  else()
+    set(ext1new ${ext1})
+  endif()
+  if(${ext2} MATCHES "^[*][.]+.*$")
+    string(REGEX REPLACE "^[*]+([.].*)$" "\\1" ext2new ${ext2})
+  else()
+    set(ext2new ${ext2})
+  endif()
+  foreach(file ${list})
+    set(newFile "")
+    string(REGEX REPLACE "^(.*)${ext1new}$" "\\1${ext2new}" newFile ${file})
+    if(NOT ${file} STREQUAL ${newFile} AND EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${newFile})
+      list(APPEND result ${newFile})
+    endif()
+  endforeach()
+  set(${output} ${result} PARENT_SCOPE)
+endfunction()
+
+################################################################################
 #
 # Macro get string with a colon seperated string of
 # pathes or any other colon sperated list.
