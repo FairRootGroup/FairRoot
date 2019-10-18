@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # The rename script exchange all occurence of NewDetector or NEWDETECTOR
-# by the name given by the first parameter. If the detector is for example 
+# by the name given by the first parameter. If the detector is for example
 # the Trd of the Cbm experiment a good name is CbmTrd. Normaly one should
 # use the naming convention of the experiment.
 # Also the filenames any many more things are changed automatically. In the
@@ -15,9 +15,9 @@ if [ $# -ne 1 ]; then
   echo "The script will exchange all default names by the new name"
   echo "********"
   exit 1
-fi  
+fi
 
-TaskName=$1 
+TaskName=$1
 TaskNameUpper=$(echo $TaskName | tr [:lower:] [:upper:])
 
 #ProjectName=$(echo $2 | tr [:lower:] [:upper:])
@@ -25,11 +25,11 @@ TaskNameUpper=$(echo $TaskName | tr [:lower:] [:upper:])
 #RelativeDir=$(basename $PWD)
 #Prefix=$3
 
-for i in $(ls NewTask*); do 
+for i in $(ls NewTask*); do
   oldfile=$i
   newfile=$(echo $oldfile | sed "s/NewTask/$TaskName/")
   mv $oldfile $newfile
-done 
+done
 
 arch=`uname -s | tr '[A-Z]' '[a-z]'`
 case "$arch" in
@@ -52,14 +52,14 @@ find . -name "*.cxx" -exec sed -e "s/NEWTASK/$TaskNameUpper/g" $sedstring "{}" "
 
 case "$arch" in
     darwin)
-      rm *.bak           
+      rm *.bak
       ;;
     *)
       echo "Platform not supported"
-      exit 1  
+      exit 1
       ;;
 esac
-                                                
+
 echo "********"
 echo "Edit the CMakeLists.txt and the LinkDef file in the directory."
 echo "Add in both files the new task."

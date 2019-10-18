@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# The rename script exchange all occurence of NewParameterContainer 
-# or NEWPARAMETERCONTAINER by the name given by the first parameter. 
+# The rename script exchange all occurence of NewParameterContainer
+# or NEWPARAMETERCONTAINER by the name given by the first parameter.
 
 #set -xv
 
@@ -12,16 +12,16 @@ if [ $# -ne 1 ]; then
   echo "The script will exchange all default names by the new name"
   echo "********"
   exit 1
-fi  
+fi
 
-ContainerName=$1 
+ContainerName=$1
 ContainerNameUpper=$(echo $ContainerName | tr [:lower:] [:upper:])
 
-for i in $(ls NewParameterContainer*); do 
+for i in $(ls NewParameterContainer*); do
   oldfile=$i
   newfile=$(echo $oldfile | sed "s/NewParameterContainer/$ContainerName/")
   mv $oldfile $newfile
-done 
+done
 
 arch=`uname -s | tr '[A-Z]' '[a-z]'`
 case "$arch" in
@@ -56,7 +56,7 @@ echo "********"
 echo "Edit the container factory File and add there the new container."
 echo "Edit the newly created parameter container header file and define"
 echo "a good title in the constructor."
-echo "Edit also the CMakeLists.txt and LinkDef files." 
+echo "Edit also the CMakeLists.txt and LinkDef files."
 echo "Add in both files the new parameter container."
 echo "********"
 
