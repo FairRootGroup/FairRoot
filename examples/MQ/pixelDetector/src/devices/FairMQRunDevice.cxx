@@ -91,7 +91,7 @@ void FairMQRunDevice::SendBranches()
               else {
                   TObject* object   = FairRootManager::Instance()->GetObject(ObjStr->GetString());
                   if ( object ) {
-                      objClone = object->Clone();
+                      TObject* objClone = object->Clone();
                       FairMQMessagePtr mess(NewMessage());
                       Serialize<RootSerializer>(*mess,objClone);
                       parts.AddPart(std::move(mess));
