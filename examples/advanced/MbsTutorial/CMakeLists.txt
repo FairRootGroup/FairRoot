@@ -52,7 +52,8 @@ fairroot_target_root_dictionary(${target}
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-install(FILES sample_data_2.lmd unpack_mbs.C DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/advanced/MbsTutorial)
+install(FILES sample_data_2.lmd DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/advanced/MbsTutorial/data)
+install(FILES unpack_mbs.C DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/advanced/MbsTutorial/macros)
 
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/unpack_mbs.C)
 
