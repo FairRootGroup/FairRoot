@@ -15,7 +15,7 @@ set(sources
   fLmd.c
 )
 
-fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
+fair_change_extensions_if_exists(.c .h FILES "${sources}" OUTVAR headers)
 
 list(APPEND headers
   portnum_def.h
