@@ -85,6 +85,7 @@ void FairMQRunDevice::SendBranches()
                       }
                   }
                   else {
+                      LOG(warning) << "FairMQRunDevice::SendBranches() hasn't got knowledge how to send any branch \"" << ObjStr->GetString().Data() << "\"";
                       continue;
                   }
               }
