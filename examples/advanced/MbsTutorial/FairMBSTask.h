@@ -11,6 +11,8 @@
 
 #include "FairTask.h"
 
+#include <Rtypes.h>
+
 class TClonesArray;
 class TH1F;
 
@@ -23,9 +25,9 @@ class FairMBSTask : public FairTask
   public:
     /** Standard Constructor. */
     FairMBSTask(const char* name, Int_t iVerbose);
-    
+
     /** Destructor. */
-    virtual ~FairMBSTask();
+    virtual ~FairMBSTask() {}
 
     /** Initialization of the task. */
     virtual InitStatus Init();
@@ -34,10 +36,10 @@ class FairMBSTask : public FairTask
     virtual void Exec(Option_t*);
 
     /** Called at the end of each event. */
-    virtual void FinishEvent();
+    virtual void FinishEvent() {}
 
     /** Called at the end of task. */
-    virtual void FinishTask();
+    virtual void FinishTask() {}
 
   private:
     TClonesArray* fRawData; /**< Array with input data. */

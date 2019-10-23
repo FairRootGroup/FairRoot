@@ -37,12 +37,8 @@ target_link_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::Base
   FairRoot::FairTools # FairLogger
-  FairRoot::MbsAPI
 
-  # TODO: clean the following
   Core
-  Hist
-  Gpad
 )
 
 fairroot_target_root_dictionary(${target}

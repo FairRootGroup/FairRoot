@@ -27,10 +27,6 @@ FairMBSTask::FairMBSTask(const char* name, Int_t iVerbose)
 {
 }
 
-FairMBSTask::~FairMBSTask()
-{
-}
-
 InitStatus FairMBSTask::Init()
 {
     FairRootManager* mgr = FairRootManager::Instance();
@@ -102,14 +98,6 @@ void FairMBSTask::Exec(Option_t*)
         fhClock->Fill(item->GetClock());
         fhTacCh->Fill(item->GetTacCh());
     }
-}
-
-void FairMBSTask::FinishEvent()
-{
-}
-
-void FairMBSTask::FinishTask()
-{
 }
 
 ClassImp(FairMBSTask)

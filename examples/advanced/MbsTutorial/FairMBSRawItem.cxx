@@ -22,13 +22,13 @@ FairMBSRawItem::FairMBSRawItem()
 }
 
 FairMBSRawItem::FairMBSRawItem(UShort_t sam,
-                                 UShort_t gtb,
-                                 UShort_t tacAddr,
-                                 UShort_t tacCh,
-                                 UShort_t cal,
-                                 UShort_t clock,
-                                 UShort_t tacData,
-                                 UShort_t qdcData)
+                               UShort_t gtb,
+                               UShort_t tacAddr,
+                               UShort_t tacCh,
+                               UShort_t cal,
+                               UShort_t clock,
+                               UShort_t tacData,
+                               UShort_t qdcData)
     : TObject()
     , fSam(sam)
     , fGtb(gtb)

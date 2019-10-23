@@ -11,6 +11,8 @@
 
 #include "FairUnpack.h"
 
+#include <Rtypes.h>
+
 class TClonesArray;
 
 /**
@@ -31,18 +33,15 @@ class FairMBSUnpack : public FairUnpack
 
     /** Initialization. Called once, before the event loop. */
     virtual Bool_t Init();
-    
+
     /** Process an MBS sub-event. */
     virtual Bool_t DoUnpack(Int_t* data, Int_t size);
-    
+
     /** Clear the output structures. */
     virtual void Reset();
 
     /** Method for controling the functionality. */
-    inline Int_t GetNHitsTotal()
-    {
-        return fNHitsTotal;
-    }
+    Int_t GetNHitsTotal() { return fNHitsTotal; }
 
   protected:
     /** Register the output structures. */

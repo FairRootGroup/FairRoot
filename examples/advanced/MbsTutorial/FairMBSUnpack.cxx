@@ -11,14 +11,12 @@
 
 // Fair headers
 #include "FairRootManager.h"
-#include "FairRunOnline.h"
 #include "FairLogger.h"
 
 // Land headers
 #include "FairMBSRawItem.h"
 #include "FairMBSUnpack.h"
 
-// FairMBSUnpack: Constructor
 FairMBSUnpack::FairMBSUnpack(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control)
     : FairUnpack(type, subType, procId, subCrate, control)
     , fRawData(new TClonesArray("FairMBSRawItem"))
@@ -27,21 +25,18 @@ FairMBSUnpack::FairMBSUnpack(Short_t type, Short_t subType, Short_t procId, Shor
 {
 }
 
-// Virtual FairMBSUnpack: Public method
 FairMBSUnpack::~FairMBSUnpack()
 {
     LOG(info) << "FairMBSUnpack: Delete instance";
     delete fRawData;
 }
 
-// Init: Public method
 Bool_t FairMBSUnpack::Init()
 {
     Register();
     return kTRUE;
 }
 
-// Register: Protected method
 void FairMBSUnpack::Register()
 {
     //  LOG(debug) << "Registering";
@@ -73,8 +68,7 @@ Bool_t FairMBSUnpack::DoUnpack(Int_t* data, Int_t size)
         UInt_t l_lec = (p1[0] & 0x00f00000) >> 20;
         UInt_t l_da_siz = (p1[0] & 0x000001ff);
 
-        LOG(debug) << "FairMBSUnpack : SAM:" << l_sam_id << ",  GTB:" << l_gtb_id << ",  lec:" << l_lec
-                   << ",  size:" << l_da_siz;
+        LOG(debug) << "FairMBSUnpack : SAM:" << l_sam_id << ",  GTB:" << l_gtb_id << ",  lec:" << l_lec << ",  size:" << l_da_siz;
 
         l_i += 1;
 
@@ -111,9 +105,9 @@ Bool_t FairMBSUnpack::DoUnpack(Int_t* data, Int_t size)
     }
 
     LOG(debug) << "FairMBSUnpack : Number of hits in LAND: " << fNHits;
-    
+
     fNHitsTotal += fNHits;
-    
+
     return kTRUE;
 }
 

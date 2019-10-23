@@ -9,6 +9,7 @@
 #ifndef FAIRMBSRAWITEM_H
 #define FAIRMBSRAWITEM_H
 
+#include <Rtypes.h>
 #include <TObject.h>
 
 /**
@@ -41,42 +42,16 @@ class FairMBSRawItem : public TObject
 
     FairMBSRawItem(const FairMBSRawItem&);
 
-    virtual ~FairMBSRawItem()
-    {
-    }
+    virtual ~FairMBSRawItem() {}
 
-    inline const UShort_t& GetSam() const
-    {
-        return fSam;
-    }
-    inline const UShort_t& GetGtb() const
-    {
-        return fGtb;
-    }
-    inline const UShort_t& GetTacCh() const
-    {
-        return fTacCh;
-    }
-    inline const UShort_t& GetTacAddr() const
-    {
-        return fTacAddr;
-    }
-    inline const UShort_t& GetCal() const
-    {
-        return fCal;
-    }
-    inline const UShort_t& GetClock() const
-    {
-        return fClock;
-    }
-    inline const UShort_t& GetTacData() const
-    {
-        return fTacData;
-    }
-    inline const UShort_t& GetQdcData() const
-    {
-        return fQdcData;
-    }
+    const UShort_t& GetSam() const { return fSam; }
+    const UShort_t& GetGtb() const { return fGtb; }
+    const UShort_t& GetTacCh() const { return fTacCh; }
+    const UShort_t& GetTacAddr() const { return fTacAddr; }
+    const UShort_t& GetCal() const { return fCal; }
+    const UShort_t& GetClock() const { return fClock; }
+    const UShort_t& GetTacData() const { return fTacData; }
+    const UShort_t& GetQdcData() const { return fQdcData; }
 
   protected:
     UShort_t fSam;     /**< SAM value. */
