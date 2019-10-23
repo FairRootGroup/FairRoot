@@ -40,5 +40,5 @@ list(APPEND tests
 foreach(test IN LISTS tests)
   add_executable(${test} ${test}.cxx)
   target_link_libraries(${test} ${dependencies})
-  add_test(${test} ${CMAKE_BINARY_DIR}/bin/${test})
+  add_test(${test} ${CMAKE_CURRENT_BINARY_DIR}/${test})
 endforeach()
