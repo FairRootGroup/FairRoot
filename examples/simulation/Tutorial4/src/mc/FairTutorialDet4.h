@@ -98,7 +98,7 @@ class FairTutorialDet4 : public FairDetector
 
     virtual void RegisterAlignmentMatrices();
 
-    virtual Bool_t CheckIfSensitive(std::string name);
+    virtual Bool_t IsSensitive(const std::string& name);
 
   private:
     static FairTutorialDet4Geo* fgGeo;   //!

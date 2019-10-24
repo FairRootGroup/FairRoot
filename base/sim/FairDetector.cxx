@@ -81,7 +81,7 @@ void FairDetector::DefineSensitiveVolumes()
   TIter next(volumes);
   TGeoVolume* volume;
   while ( ( volume = static_cast<TGeoVolume*>(next()) ) ) {
-    if ( CheckIfSensitive(volume->GetName()) ) {
+    if ( IsSensitive(volume->GetName()) ) {
       LOG(info)<<"Sensitive Volume "<< volume->GetName();
       AddSensitiveVolume(volume);
     }

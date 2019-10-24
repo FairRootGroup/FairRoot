@@ -55,7 +55,7 @@ class FairFastSimExample : public FairFastSimDetector
     */
     virtual void EndOfEvent();
 
-    virtual Bool_t      CheckIfSensitive(std::string name);
+    virtual Bool_t      IsSensitive(const std::string& name);
 
     virtual FairModule* CloneModule() const;
 

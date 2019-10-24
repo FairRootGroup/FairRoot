@@ -93,6 +93,8 @@ class FairModule:  public TNamed
 
     /**Set the sensitivity flag for volumes, called from ConstructASCIIRootGeometry(), and has to be implimented for detectors
      * which use ConstructASCIIRootGeometry() to build the geometry */
+    virtual Bool_t      IsSensitive(const std::string& name);
+    /**The function below is depracated, please change to the new method above */
     virtual Bool_t      CheckIfSensitive(std::string name);
     /**called from ConstructRootGeometry()*/
     virtual void        ExpandNode(TGeoNode* Node);

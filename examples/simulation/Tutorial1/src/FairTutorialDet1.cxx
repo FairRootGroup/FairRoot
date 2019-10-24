@@ -144,7 +144,7 @@ void FairTutorialDet1::Reset()
   fFairTutorialDet1PointCollection->Clear();
 }
 
-Bool_t FairTutorialDet1::CheckIfSensitive(std::string name)
+Bool_t FairTutorialDet1::IsSensitive(const std::string& name)
 {
     if ( name.find("tutdet") != std::string::npos ) {
         return kTRUE;

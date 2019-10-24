@@ -175,7 +175,7 @@ void Pixel::ConstructGeometry()
     ConstructASCIIGeometry<PixelGeo, PixelGeoPar>(Geo, "PixelGeoPar");
 }
 
-Bool_t Pixel::CheckIfSensitive(std::string name)
+Bool_t Pixel::IsSensitive(const std::string& name)
 {
     if ( name.find("Pixel") != std::string::npos ) {
         return kTRUE;

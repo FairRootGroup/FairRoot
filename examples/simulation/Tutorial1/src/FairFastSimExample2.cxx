@@ -162,7 +162,7 @@ FairTutorialDet1Point* FairFastSimExample2::AddHit(Int_t trackID,
     return new (clref[size]) FairTutorialDet1Point(trackID, detID, pos, mom, time, length, eLoss);
 }
 
-Bool_t FairFastSimExample2::CheckIfSensitive(std::string name)
+Bool_t FairFastSimExample2::IsSensitive(const std::string& name)
 {
     return name == "fast_sim_vol_n2";
 }
