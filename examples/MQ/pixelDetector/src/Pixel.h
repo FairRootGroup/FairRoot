@@ -80,7 +80,7 @@ class Pixel: public FairDetector
     virtual void   PreTrack() {;}
     virtual void   BeginEvent() {;}
 
-    virtual Bool_t      CheckIfSensitive(std::string name);
+    virtual Bool_t      IsSensitive(const std::string& name);
     virtual FairModule* CloneModule() const;
 
  private:

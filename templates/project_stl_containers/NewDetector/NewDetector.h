@@ -72,7 +72,7 @@ class NewDetector : public FairDetector
 
     virtual FairModule* CloneModule() const;
 
-    virtual Bool_t CheckIfSensitive(std::string name);
+    virtual Bool_t IsSensitive(const std::string& name);
     
     virtual TClonesArray* GetCollection(Int_t iColl) const { return NULL; }
 

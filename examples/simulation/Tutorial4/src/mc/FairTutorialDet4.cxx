@@ -247,7 +247,7 @@ void FairTutorialDet4::ConstructGeometry()
   }
 }
 
-Bool_t FairTutorialDet4::CheckIfSensitive(std::string name)
+Bool_t FairTutorialDet4::IsSensitive(const std::string& name)
 {
     if ( name.find("tut4") != std::string::npos ) {
         return kTRUE;

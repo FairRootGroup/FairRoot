@@ -22,7 +22,7 @@ class FairMagnet : public FairModule
     virtual ~FairMagnet();
     void ConstructGeometry();
     void ConstructASCIIGeometry();
-    Bool_t CheckIfSensitive(std::string name);
+    Bool_t IsSensitive(const std::string& name);
 
     virtual FairModule* CloneModule() const;
 

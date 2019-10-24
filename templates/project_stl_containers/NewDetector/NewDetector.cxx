@@ -249,7 +249,7 @@ void NewDetector::DefineSensitiveVolumes()
     TGeoVolume* volume;
     while ((volume = static_cast<TGeoVolume*>(next())))
     {
-        if (CheckIfSensitive(volume->GetName()))
+        if (IsSensitive(volume->GetName()))
         {
             LOG(debug2) << "Sensitive Volume " << volume->GetName();
             AddSensitiveVolume(volume);
@@ -257,7 +257,7 @@ void NewDetector::DefineSensitiveVolumes()
     }
 }
 
-Bool_t NewDetector::CheckIfSensitive(std::string name)
+Bool_t NewDetector::IsSensitive(const std::string& name)
 {
     if ( name.find("Det") != std::string::npos ) {
         return kTRUE;

@@ -479,7 +479,7 @@ void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
     AssignMediumAtImport(curVol);
 
     // Check if the volume is sensitive
-    if ( (this->InheritsFrom("FairDetector")) && CheckIfSensitive(curVol->GetName())) {
+    if ( (this->InheritsFrom("FairDetector")) && IsSensitive(curVol->GetName())) {
         LOG(debug2)<<"Sensitive Volume "<< curVol->GetName();
         AddSensitiveVolume(curVol);
     }
@@ -557,8 +557,15 @@ void FairModule::ConstructASCIIGeometry()
 
 Bool_t FairModule::CheckIfSensitive(std::string)
 {
-  LOG(warn)<<"The method CheckIfSensitive has to be implemented in the detector class which inherits from FairModule";
-  return kFALSE;
+    LOG(warn)<<"Implement IsSensitive in the detector class which inherits from FairModule";
+    return kFALSE;
+}
+
+//__________________________________________________________________________
+Bool_t FairModule::IsSensitive(const std::string& name)
+{
+    LOG(warn)<<"The method CheckIfSensitive is deprecated. Use IsSensitive.";
+    return CheckIfSensitive(name);
 }
 
 void FairModule::ExpandNode(TGeoNode* fN)
@@ -583,7 +590,7 @@ void FairModule::ExpandNode(TGeoNode* fN)
       LOG(debug2)<<"Register Volume " << v->GetName();
       v->RegisterYourself();
     }
-    if ( (this->InheritsFrom("FairDetector")) && CheckIfSensitive(v->GetName())) {
+    if ( (this->InheritsFrom("FairDetector")) && IsSensitive(v->GetName())) {
       LOG(debug2)<<"Sensitive Volume "<< v->GetName();
       AddSensitiveVolume(v);
     }
