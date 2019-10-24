@@ -191,28 +191,11 @@ find_package2(PUBLIC msgpack)
 find_package2(PUBLIC Flatbuffers)
 
 find_package2(PUBLIC Geant3)
-if(Geant3_FOUND)
-  Set(Geant3_LIBRARY_DIR ${Geant3_DIR}/${Geant3_CMAKE_INSTALL_LIBDIR})
-  FIND_PATH(Geant3_SYSTEM_DIR NAMES data PATHS
-           ${Geant3_DIR}/../../share/geant3
-           NO_DEFAULT_PATH)
-endif()
-
 find_package2(PUBLIC Geant4)
 
 Find_Package2(PUBLIC VGM)
 
 find_package2(PUBLIC Geant4VMC)
-if(Geant4VMC_FOUND)
-  # TODO: upstream this
-  set_target_properties(geant4vmc PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "${Geant4VMC_INCLUDE_DIRS}")
-  Set(Geant4VMC_LIBRARY_DIR "${Geant4VMC_DIR}/${Geant4VMC_CMAKE_INSTALL_LIBDIR}")
-  Set(Geant4VMC_SHARE_DIR "${Geant4VMC_DIR}/share")
-  Find_Path(Geant4VMC_MACRO_DIR NAMES g4libs.C PATHS
-    ${Geant4VMC_SHARE_DIR}/Geant4VMC-${Geant4VMC_VERSION}/examples/macro
-    NO_DEFAULT_PATH
-  )
-Endif()
 
 find_package2(PUBLIC IWYU)
 if(WITH_GO_EXAMPLE)
@@ -513,7 +496,8 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
       list(GET geant4vmc_include 0 geant4vmc_include)
       get_filename_component(prefix ${geant4vmc_include}/../.. ABSOLUTE)
     elseif(${dep} STREQUAL Geant3)
-      string(REPLACE ":" ";" geant3_include ${Geant3_INCLUDE_DIRS})
+      get_target_property(geant3_include geant321 INTERFACE_INCLUDE_DIRECTORIES)
+      string(REPLACE ":" ";" geant3_include ${geant3_include})
       list(GET geant3_include 0 geant3_include)
       get_filename_component(prefix ${geant3_include}/../.. ABSOLUTE)
     elseif(${dep} STREQUAL Geant4)
