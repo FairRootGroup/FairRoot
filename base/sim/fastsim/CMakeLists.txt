@@ -26,7 +26,6 @@ target_include_directories(${target} PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
   # TODO: delete me once using targets
-  $<BUILD_INTERFACE:${Geant4_INCLUDE_DIRS}>
   $<BUILD_INTERFACE:${Geant4VMC_INCLUDE_DIRS}>
 
   # TODO: DELETE ME ONCE USING root targets
@@ -35,8 +34,6 @@ target_include_directories(${target} PUBLIC
 
 target_link_directories(${target} PUBLIC
   ${ROOT_LIBRARY_DIR}
-  ${Geant4_LIBRARY_DIR}
-  ${Geant4VMC_LIBRARY_DIR}
 )
 
 target_link_libraries(${target} PUBLIC

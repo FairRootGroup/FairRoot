@@ -24,7 +24,6 @@ target_include_directories(${target} PUBLIC
 
   # TODO: delete me once using targets
   $<BUILD_INTERFACE:${Geant3_INCLUDE_DIRS}>
-  $<BUILD_INTERFACE:${Geant4_INCLUDE_DIRS}>
   $<BUILD_INTERFACE:${Geant4VMC_INCLUDE_DIRS}>
   $<BUILD_INTERFACE:${YAML_CPP_INCLUDE_DIR}>
 
@@ -34,9 +33,6 @@ target_include_directories(${target} PUBLIC
 
 target_link_directories(${target} PUBLIC
   ${ROOT_LIBRARY_DIR}
-  ${Geant3_LIBRARY_DIR}
-  ${Geant4_LIBRARY_DIR}
-  ${Geant4VMC_LIBRARY_DIR}
 )
 
 target_link_libraries(${target} PUBLIC
