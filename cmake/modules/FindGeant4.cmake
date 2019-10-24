@@ -6,7 +6,9 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-find_package(Geant4 CONFIG)
+find_package(${CMAKE_FIND_PACKAGE_NAME} CONFIG)
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(${CMAKE_FIND_PACKAGE_NAME} HANDLE_COMPONENTS CONFIG_MODE)
 
 # Add missing include directory properties on Geant4 imported targets
 if(Geant4_FOUND AND Geant4_INCLUDE_DIRS)
