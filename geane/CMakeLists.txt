@@ -23,16 +23,12 @@ target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
-  # TODO: delete me once using targets
-  $<BUILD_INTERFACE:${Geant3_INCLUDE_DIRS}>
-
   # TODO: DELETE ME ONCE USING root targets
   ${ROOT_INCLUDE_DIR}
 )
 
 target_link_directories(${target} PUBLIC
   ${ROOT_LIBRARY_DIR}
-  ${Geant3_LIBRARY_DIR}
 )
 
 target_link_libraries(${target} PUBLIC
