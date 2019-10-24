@@ -260,6 +260,11 @@ EndMacro(ROOT_GENERATE_ROOTMAP)
 
 Macro(GENERATE_LIBRARY)
 
+  # TODO: remove this backwards-compatibility check when no longer needed
+  if(DEFINED FAIRROOT_LIBRARY_PROPERTIES AND NOT DEFINED PROJECT_LIBRARY_PROPERTIES)
+    set(PROJECT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
+  endif()
+
   set(Int_LIB ${LIBRARY_NAME})
 
   Set(HeaderRuleName "${Int_LIB}_HEADER_RULES")
