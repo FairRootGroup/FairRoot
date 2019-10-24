@@ -30,6 +30,9 @@ project(FAIRROOT VERSION ${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${F
 # is checked
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
+# Generate compile_commands.json file (https://clang.llvm.org/docs/JSONCompilationDatabase.html)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Define CMAKE_INSTALL_*DIR family of variables
 include(GNUInstallDirs)
 include(FairRootTargetRootDictionary)
