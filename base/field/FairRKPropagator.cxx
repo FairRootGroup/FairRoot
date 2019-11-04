@@ -9,8 +9,11 @@
 
 #include "FairField.h"                  // for FairField
 
-#include <TMath.h>                      // for Sqrt
-#include <TMathBase.h>                  // for Abs
+#include "FairTrackParP.h"
+#include "TVector3.h"
+
+#include "TMath.h"                      // for Sqrt
+#include "TMathBase.h"                  // for Abs
 
 #include <stdio.h>                      // for printf
 
@@ -29,6 +32,35 @@ FairRKPropagator::~FairRKPropagator()
 {
   // Destructor.
 }
+
+//______________________________________________________________________________
+void FairRKPropagator::PropagateToPlane(Int_t PDG, Double_t Charge, FairTrackParP* TStart, TVector3& v0, TVector3& v1, TVector3& v2, FairTrackParP* TEnd)
+{
+    Double_t momIn    = TMath::Sqrt(TStart->GetPx()*TStart->GetPx()+TStart->GetPy()*TStart->GetPy()+TStart->GetPz()*TStart->GetPz());
+    if ( momIn == 0. ) return;
+    Double_t vecIn[7] = {TStart->GetX(),        TStart->GetY(),        TStart->GetZ(),
+                         TStart->GetPx()/momIn, TStart->GetPy()/momIn, TStart->GetPz()/momIn,
+                         momIn};
+    Double_t vecOut[7];
+    Double_t vec1[3] = {v1.X(),v1.Y(),v1.Z()};
+    Double_t vec2[3] = {v2.X(),v2.Y(),v2.Z()};
+    Double_t vec3[3] = {v0.X(),v0.Y(),v0.Z()};
+    PropagateToPlane(Charge,vecIn,vec1,vec2,vec3,vecOut);
+    TEnd->SetX  (vecOut[0]);
+    TEnd->SetY  (vecOut[1]);
+    TEnd->SetZ  (vecOut[2]);
+    TEnd->SetPx (vecOut[3]*vecOut[6]);
+    TEnd->SetPy (vecOut[4]*vecOut[6]);
+    TEnd->SetPz (vecOut[5]*vecOut[6]);
+    TEnd->SetQp (Charge/vecOut[6]);
+    TEnd->SetDX (0.);
+    TEnd->SetDY (0.);
+    TEnd->SetDZ (0.);
+    TEnd->SetDPx(0.);
+    TEnd->SetDPy(0.);
+    TEnd->SetDPz(0.);
+}
+
 //______________________________________________________________________________
 void FairRKPropagator::PropagateToPlane(Double_t Charge, Double_t* vecRKIn, Double_t* vec1, Double_t* vec2, Double_t* vec3, Double_t* vecOut)
 {

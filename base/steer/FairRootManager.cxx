@@ -139,6 +139,10 @@ FairRootManager::~FairRootManager()
   LOG(debug) << "Leave Destructor of FairRootManager";
   delete fEventHeader;
   delete fSourceChain;
+  if ( fSink )
+      delete fSink;
+  if ( fSource )
+      delete fSource;
 
   // Global cleanup
   TMCAutoLock lk(&deleteMutex);

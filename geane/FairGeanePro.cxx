@@ -131,6 +131,13 @@ FairGeanePro::FairGeanePro()
 
 FairGeanePro::~FairGeanePro() { }
 
+//______________________________________________________________________________
+void FairGeanePro::PropagateToPlane(Int_t PDG, Double_t Charge, FairTrackParP* TStart, TVector3& v0, TVector3& v1, TVector3& v2, FairTrackParP* TEnd)
+{
+    PropagateToPlane(v0,v1,v2);
+    Propagate(TStart,TEnd,PDG);
+}
+
 Bool_t FairGeanePro::Propagate(FairTrackParH* TParam, FairTrackParH* TEnd, Int_t PDG)
 {
   // Propagate a helix track and return a helix (SC system)

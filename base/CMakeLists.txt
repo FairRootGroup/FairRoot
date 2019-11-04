@@ -1,85 +1,37 @@
-################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
-#                                                                              #
-#              This software is distributed under the terms of the             #
-#              GNU Lesser General Public Licence (LGPL) version 3,             #
-#                  copied verbatim in the file "LICENSE"                       #
-################################################################################
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
+# Create a library called "libBase" which includes the source files given in
+# the array .
+# The extension is already found.  Any number of sources could be listed here.
 
-if(Geant4_FOUND AND Geant4VMC_FOUND)
-  add_subdirectory(sim/fastsim)
-endif()
+If(Geant4_FOUND AND Geant4VMC_FOUND)
+  add_subdirectory (sim/fastsim)
+EndIf()
 
-set(target Base)
+If(NOT DEFINED BUILD_MBS)
+  Set(BUILD_MBS TRUE)
+EndIf(NOT DEFINED BUILD_MBS)
 
-set(sources
-  event/FairEventBuilder.cxx
-  event/FairEventBuilderManager.cxx
-  event/FairEventHeader.cxx
-  event/FairFileHeader.cxx
-  event/FairFileInfo.cxx
-  event/FairHit.cxx
-  event/FairLink.cxx
-  event/FairMCEventHeader.cxx
-  event/FairMCPoint.cxx
-  event/FairMesh.cxx
-  event/FairMultiLinkedData_Interface.cxx
-  event/FairMultiLinkedData.cxx
-  event/FairPrintFairLinks.cxx
-  event/FairRadLenPoint.cxx
-  event/FairRadMapPoint.cxx
-  event/FairRecoEventHeader.cxx
-  event/FairRunInfo.cxx
-  event/FairTimeStamp.cxx
-  event/FairTrackParam.cxx
-
-  field/FairField.cxx
-  field/FairFieldFactory.cxx
-  field/FairPropagator.cxx
-  field/FairRKPropagator.cxx
-
-  sim/FairBaseContFact.cxx
-  sim/FairBaseParSet.cxx
-  sim/FairDetector.cxx
-  sim/FairGeaneApplication.cxx
-  sim/FairGenerator.cxx
-  sim/FairGenericStack.cxx
-  sim/FairGenericVMCConfig.cxx
-  sim/FairGeoParSet.cxx
-  sim/FairIon.cxx
-  sim/FairMCApplication.cxx
-  sim/FairModule.cxx
-  sim/FairParticle.cxx
-  sim/FairPrimaryGenerator.cxx
-  sim/FairRunIdGenerator.cxx
-  sim/FairVolume.cxx
-  sim/FairVolumeList.cxx
-
-  sink/FairRootFileSink.cxx
-  sink/FairSink.cxx
-
-  source/FairFileSource.cxx
-  source/FairMixedSource.cxx
-  source/FairOnlineSource.cxx
-  source/FairSource.cxx
-
-  steer/FairAnaSelector.cxx
-  steer/FairLinkManager.cxx
-  steer/FairRadGridManager.cxx
-  steer/FairRadLenManager.cxx
-  steer/FairRadMapManager.cxx
-  steer/FairRingSorter.cxx
-  steer/FairRingSorterTask.cxx
-  steer/FairRootManager.cxx
-  steer/FairRun.cxx
-  steer/FairRunAna.cxx
-  steer/FairRunAnaProof.cxx
-  steer/FairRunOnline.cxx
-  steer/FairRunSim.cxx
-  steer/FairTask.cxx
-  steer/FairTrajFilter.cxx
-  steer/FairTSBufferFunctional.cxx
-  steer/FairWriteoutBuffer.cxx
+Set(INCLUDE_DIRECTORIES
+  ${CMAKE_SOURCE_DIR}/logger
+  ${CMAKE_SOURCE_DIR}/fairtools
+  ${CMAKE_SOURCE_DIR}/geobase
+  ${CMAKE_SOURCE_DIR}/parbase
+  ${CMAKE_SOURCE_DIR}/trackbase
+  ${CMAKE_SOURCE_DIR}/base
+  ${CMAKE_SOURCE_DIR}/base/steer
+  ${CMAKE_SOURCE_DIR}/base/event
+  ${CMAKE_SOURCE_DIR}/base/field
+  ${CMAKE_SOURCE_DIR}/base/sim
+  ${CMAKE_SOURCE_DIR}/base/source
+  ${CMAKE_SOURCE_DIR}/base/sink
+  ${CMAKE_SOURCE_DIR}/alignment
+  ${FairLogger_INCDIR}
 )
 
 if(BUILD_MBS)

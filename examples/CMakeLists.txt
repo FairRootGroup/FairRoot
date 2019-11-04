@@ -17,7 +17,7 @@ if(Geant3_FOUND)
     add_subdirectory(simulation/Tutorial1)
   endif()
   add_subdirectory(simulation/Tutorial2)
-  add_subdirectory(advanced/geane)
+  add_subdirectory(advanced/propagator)
 
   add_subdirectory(simulation/Tutorial4)
   if(FairMQ_FOUND AND Boost_FOUND)
