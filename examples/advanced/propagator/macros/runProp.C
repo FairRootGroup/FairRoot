@@ -5,11 +5,15 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-int runGeane()
+int runProp(std::string propName="geane")
 {
+    if ( propName!="geane" && propName!="rk" ) {
+        cout << "Choose either \"geane\" or \"rk\"." << endl;
+        return 1;
+    }
 
     TString dir = getenv("VMCWORKDIR");
-    TString tutdir = dir + "/simulation/geane";
+    TString tutdir = dir + "/advanced/propagator";
 
     TString tut_geomdir = dir + "/common/geometry";
     gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
@@ -21,13 +25,13 @@ int runGeane()
     Int_t iVerbose = 0; // just forget about it, for the moment
 
     // Input file (MC events)
-    TString inFile = "geane.mc.root";
+    TString inFile = "prop.mc.root";
 
     // Parameter file
-    TString parFile = "geane.par.root";
+    TString parFile = "prop.par.root";
 
     // Output file
-    TString outFile = "geane.cal.root";
+    TString outFile = Form("prop.%s.cal.root",propName.data());
 
     // -----   Timer   --------------------------------------------------------
     TStopwatch timer;
@@ -47,15 +51,26 @@ int runGeane()
     fMagField->SetField(0.,0.,20.); // values are in kG
     fMagField->SetFieldRegion(-150, 150, -150, 150, -250, 250);// values are in cm (xmin,xmax,ymin,ymax,zmin,zmax)
     fRun->SetField(fMagField);
-    
-    // -----   TorinoDetector hit  producers   ---------------------------------
-    FairGeane *Geane = new FairGeane();
-    fRun->AddTask(Geane);
 
-    FairTutGeaneTr* geaneTask = new FairTutGeaneTr();
-    fRun->AddTask(geaneTask);
+    // -----   Set propagator and run   ---------------------------------------
+    if ( propName == "geane" ) {
+        FairGeane *Geane = new FairGeane();
+        fRun->AddTask(Geane);
+    }
+
+    FairTutPropTr* propTask = new FairTutPropTr();
+    if ( propName == "rk" ) {
+        FairRKPropagator* propagator = new FairRKPropagator(fMagField);
+        propTask->SetPropagator(propagator);
+    }
+    fRun->AddTask(propTask);
 
     fRun->Init();
+
+    if ( propName == "geane" ) {
+        FairGeanePro *GeaneProp = new FairGeanePro();
+        propTask->SetPropagator(GeaneProp);
+    }
 
     timer.Start();
     fRun->Run();

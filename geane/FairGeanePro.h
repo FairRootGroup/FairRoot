@@ -78,6 +78,8 @@ class FairGeanePro : public FairPropagator
 
     void SetPrintErrors(bool printError = kTRUE) { fPrintErrors = printError; }
 
+    virtual void PropagateToPlane(Int_t PDG, Double_t Charge, FairTrackParP* TStart, TVector3& v0, TVector3& v1, TVector3& v2, FairTrackParP* TEnd);
+
   private:
     TGeant3* gMC3;
     TString fPropOption;

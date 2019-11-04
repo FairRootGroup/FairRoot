@@ -5,43 +5,50 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-int runPull(bool drawHist = false)
+int runPull(std::string propName="geane", bool drawHist = false)
 {
     gROOT->Reset();
     gStyle->SetOptFit(1);
 
-    TFile *f=new TFile("geane.cal.root");
+    TFile *f=new TFile(Form("prop.%s.cal.root",propName.data()));
     TTree *simtree=(TTree*)f->Get("cbmsim") ;
 
-    TClonesArray* fTrackParGeane = new TClonesArray("FairTrackParP");
+    TClonesArray* fTrackParProp  = new TClonesArray("FairTrackParP");
     TClonesArray* fTrackParIni   = new TClonesArray("FairTrackParP");
     TClonesArray* fTrackParFinal = new TClonesArray("FairTrackParP");
 
-    TH1F *hQP = new TH1F("hQP","charge over momentum",100,-10.,10.);
-    TH1F *hX  = new TH1F("hX", "position X",100,-10,10);
-    TH1F *hY  = new TH1F("hY", "position Y",100,-10,10);
-    TH1F *hPx = new TH1F("hPx","momentum X",100, -10,10);
-    TH1F *hPy = new TH1F("hPy","momentum Y",100,-10,10);
-    TH1F *hPz = new TH1F("hPz","momentum Z",100,-10,10);
+    Double_t maxDist = 0.1;
+    TH1F *hQP = new TH1F("hQP","charge over momentum",200,-maxDist,maxDist);
+    TH1F *hX  = new TH1F("hX", "position X",200,-maxDist,maxDist);
+    TH1F *hY  = new TH1F("hY", "position Y",200,-maxDist,maxDist);
+    TH1F *hPx = new TH1F("hPx","momentum X",200,-maxDist,maxDist);
+    TH1F *hPy = new TH1F("hPy","momentum Y",200,-maxDist,maxDist);
+    TH1F *hPz = new TH1F("hPz","momentum Z",200,-maxDist,maxDist);
 
-    simtree->SetBranchAddress("GeaneTrackFinal",&fTrackParFinal);
-    simtree->SetBranchAddress("GeaneTrackPar",&fTrackParGeane);
+    simtree->SetBranchAddress("PropTrackFinal",&fTrackParFinal);
+    simtree->SetBranchAddress("PropTrackPar",&fTrackParProp);
     FairTrackParP *fTrkF;
     FairTrackParP *fTrkG;
     Int_t Nevents= simtree->GetEntriesFast();
     cout<<Nevents<<endl;
     for(Int_t i=0; i<Nevents; i++){
         simtree->GetEntry(i);
-        for (Int_t k=0; k<fTrackParGeane->GetEntriesFast(); k++)	{
+        for (Int_t k=0; k<fTrackParProp->GetEntriesFast(); k++)	{
             fTrkF = (FairTrackParP *)fTrackParFinal->At(k);
-            fTrkG = (FairTrackParP *)fTrackParGeane->At(k);
+            fTrkG = (FairTrackParP *)fTrackParProp ->At(k);
             if(fTrkF &&fTrkG ){
-                if(fTrkG->GetDQp()) hQP->Fill((fTrkF->GetQp()-fTrkG->GetQp())/fTrkG->GetDQp());
-                if(fTrkG->GetDX() ) hX ->Fill((fTrkF->GetX() -fTrkG->GetX()) /fTrkG->GetDX());
-                if(fTrkG->GetDY() ) hY ->Fill((fTrkF->GetY() -fTrkG->GetY()) /fTrkG->GetDY());
-                if(fTrkG->GetDPx()) hPx->Fill((fTrkF->GetPx()-fTrkG->GetPx())/fTrkG->GetDPx());
-                if(fTrkG->GetDPy()) hPy->Fill((fTrkF->GetPy()-fTrkG->GetPy())/fTrkG->GetDPy());
-                if(fTrkG->GetDPz()) hPz->Fill((fTrkF->GetPz()-fTrkG->GetPz())/fTrkG->GetDPz());
+                hQP->Fill(fTrkF->GetQp()-fTrkG->GetQp());
+                hX ->Fill(fTrkF->GetX() -fTrkG->GetX());
+                hY ->Fill(fTrkF->GetY() -fTrkG->GetY());
+                hPx->Fill(fTrkF->GetPx()-fTrkG->GetPx());
+                hPy->Fill(fTrkF->GetPy()-fTrkG->GetPy());
+                hPz->Fill(fTrkF->GetPz()-fTrkG->GetPz());
+                // if(fTrkG->GetDQp()) hQP->Fill((fTrkF->GetQp()-fTrkG->GetQp())/fTrkG->GetDQp());
+                // if(fTrkG->GetDX() ) hX ->Fill((fTrkF->GetX() -fTrkG->GetX()) /fTrkG->GetDX());
+                // if(fTrkG->GetDY() ) hY ->Fill((fTrkF->GetY() -fTrkG->GetY()) /fTrkG->GetDY());
+                // if(fTrkG->GetDPx()) hPx->Fill((fTrkF->GetPx()-fTrkG->GetPx())/fTrkG->GetDPx());
+                // if(fTrkG->GetDPy()) hPy->Fill((fTrkF->GetPy()-fTrkG->GetPy())/fTrkG->GetDPy());
+                // if(fTrkG->GetDPz()) hPz->Fill((fTrkF->GetPz()-fTrkG->GetPz())/fTrkG->GetDPz());
             }
         }
     }
@@ -66,15 +73,15 @@ int runPull(bool drawHist = false)
         c->cd(6);
         hPz->Draw();
         hPz-> Fit("gaus");
-        
+
         c->cd();
     }
 
     TF1* fitX = new TF1("fitX","gaus",-5.,5.);
     hX->Fit("fitX","QN");
 
-    if ( fitX->GetParameter(1) > -0.03 && fitX->GetParameter(1) < 0.03 && 
-         fitX->GetParameter(2) >  0.   && fitX->GetParameter(1) < 1.5 )
+    if ( fitX->GetParameter(1) > -1.e-3 && fitX->GetParameter(1) < 1.e-3 &&
+         fitX->GetParameter(2) >  0.    && fitX->GetParameter(2) < 1.e-2 )
         cout << "Macro finished successfully. Mean (" << fitX->GetParameter(1) << ") and sigma (" << fitX->GetParameter(2) << ") inside limits." << endl;
     else
         cout << "Macro failed. Mean (" << fitX->GetParameter(1) << ") or sigma (" << fitX->GetParameter(2) << ") too far off." << endl;
