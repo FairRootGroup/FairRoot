@@ -14,10 +14,9 @@
 
 #include "FairPropagator.h"                     // for TNamed
 
-#include <Rtypes.h>                     // for Int_t, Bool_t, Double_t, etc
-#include <TGeant3.h>                    // for Ertrio_t, etc
-#include <TString.h>                    // for TString
-#include <TVector3.h>                   // for TVector3
+#include "TGeant3.h"                    // for Ertrio_t, etc
+#include "TString.h"                    // for TString
+#include "TVector3.h"                   // for TVector3
 
 class FairTrackPar;
 class FairTrackParP;
@@ -34,92 +33,132 @@ class FairGeanePro : public FairPropagator
     /** Destructor **/
     ~FairGeanePro();
 
-    Bool_t Propagate(FairTrackParH* TStart, FairTrackParH* TEnd, Int_t PDG);
-    Bool_t Propagate(FairTrackParP* TStart, FairTrackParH* TEnd, Int_t PDG);
-    Bool_t Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, Int_t PDG);
-    Bool_t Propagate(FairTrackParH* TStart, FairTrackParP* TEnd, Int_t PDG);
-    Bool_t Propagate(Float_t* x1, Float_t* p1, Float_t* x2, Float_t* p2,Int_t PDG);
-    Bool_t PropagateToPlane(TVector3& v0, TVector3& v1, TVector3& v2);
-    Bool_t PropagateFromPlane(TVector3& v1, TVector3& v2);
-    Bool_t PropagateToVolume(TString VolName, Int_t CopyNo ,Int_t option);
-    Bool_t PropagateToLength(Float_t length);
-    Bool_t PropagateOnlyParameters();
+    /* Old methods that still should be working */
+    virtual bool Propagate(FairTrackParH* TStart, FairTrackParH* TEnd, int PDG);
+    virtual bool Propagate(FairTrackParP* TStart, FairTrackParH* TEnd, int PDG);
+    virtual bool Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, int PDG);
+    virtual bool Propagate(FairTrackParH* TStart, FairTrackParP* TEnd, int PDG);
+    virtual bool Propagate(float* x1, float* p1, float* x2, float* p2, int PDG);
+
+    /* Old methods that still should be working */
+
+    /**New method to set the plane to propagate particles to
+     @v0 v1 v2  Plane defining vectors
+    */
+    virtual bool SetDestinationPlane(TVector3& v0, TVector3& v1, TVector3& v2);
+
+    /**New method to set the plane to propagate particles from
+     @v0 v1     Plane defining vectors
+    */
+    virtual bool SetOriginPlane(TVector3& v0, TVector3& v1);
+
+    /**New method to set the volume to propagate particles to
+       @volName Volume name
+       @copyNo  Copy number
+       @option  Option
+    */
+    virtual bool SetDestinationVolume(std::string volName, int copyNo, int option);
+    
+    /**New method to set the length to propagate particles to
+       @length  Track length
+    */
+    virtual bool SetDestinationLength(float length);
+
+    /**New method to set to propagate only parameters
+    */
+    virtual bool SetPropagateOnlyParameters();
+
+    /* ====== Depracated functions ====== */
+    bool PropagateToPlane(TVector3& v0, TVector3& v1, TVector3& v2);
+    bool PropagateFromPlane(TVector3& v1, TVector3& v2);
+    bool PropagateToVolume(TString VolName, int CopyNo ,int option);
+    bool PropagateToLength(float length);
+    bool PropagateOnlyParameters();
+    /* ====== ====== ====== ====== ====== */
 
     void Init(FairTrackPar* TParam);
-    Bool_t Propagate(Int_t PDG);
+    bool Propagate(int PDG);
 
   private:
-    void Track2ToLine(TVector3 x1, TVector3 x2, TVector3 w1, TVector3 w2, TVector3& Pfinal, TVector3& Pwire, Int_t& Iflag, Double_t& Dist, Double_t& Length);
-    void Track2ToPoint(TVector3 x1, TVector3 x2, TVector3 w1, TVector3& Pfinal, Double_t& Dist, Double_t& Length, Int_t& quitFlag);
-    void Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3, TVector3 w1, TVector3 w2, TVector3& Pfinal, TVector3& Wire, Int_t& Iflag, Double_t& Dist, Double_t& Length, Double_t& Radius);
-    void Track3ToPoint(TVector3 x1, TVector3 x2, TVector3 x3, TVector3 w1, TVector3& Pfinal, Int_t& Iflag, Double_t& Dist, Double_t& Length, Double_t& Radius);
+    void Track2ToLine(TVector3 x1, TVector3 x2, TVector3 w1, TVector3 w2, TVector3& Pfinal, TVector3& Pwire, int& Iflag, double& Dist, double& Length);
+    void Track2ToPoint(TVector3 x1, TVector3 x2, TVector3 w1, TVector3& Pfinal, double& Dist, double& Length, int& quitFlag);
+    void Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3, TVector3 w1, TVector3 w2, TVector3& Pfinal, TVector3& Wire, int& Iflag, double& Dist, double& Length, double& Radius);
+    void Track3ToPoint(TVector3 x1, TVector3 x2, TVector3 x3, TVector3 w1, TVector3& Pfinal, int& Iflag, double& Dist, double& Length, double& Radius);
 
   public:
-    Bool_t SetWire(TVector3 extremity1, TVector3 extremity2);
-    Bool_t SetPoint(TVector3 pnt);
-    Bool_t PropagateToPCA(Int_t pca);
-    Bool_t PropagateToPCA(Int_t pca, Int_t dir);
-    int FindPCA(Int_t pca, Int_t PDGCode, TVector3 point, TVector3 wire1, TVector3 wire2, Double_t maxdistance, Double_t& Rad, TVector3& vpf, TVector3& vwi, Double_t& Di, Float_t& trklength);
-    TVector3 GetPCAOnWire() { return fvwi; }
-    TVector3 GetPCAOnTrack() { return fvpf; }
-    Float_t GetLengthAtPCA() { return ftrklength; }
-    Float_t GetTimeAtPCA() { return ftrktime; }
-    Bool_t PropagateToVirtualPlaneAtPCA(Int_t pca);
-    Bool_t BackTrackToVertex();
-    Bool_t BackTrackToVirtualPlaneAtPCA(Int_t pca);
-    void setBackProp() {fPropOption="BPE";}
-
+    /* ====== Depracated functions ====== */
+    bool SetWire(TVector3 extremity1, TVector3 extremity2);
+    bool SetPoint(TVector3 pnt);
+    bool PropagateToPCA(int pca);
+    bool PropagateToPCA(int pca, int dir);
     // function to call the FindPCA alone to retrieve
     // the PCA.
-    Bool_t ActualFindPCA(Int_t pca, FairTrackParP* par, Int_t dir);
+    bool ActualFindPCA(int pca, FairTrackParP* par, int dir);
+    /* ====== ====== ====== ====== ====== */
+
+    virtual bool SetPCAWire(TVector3 extremity1, TVector3 extremity2);
+    virtual bool SetPCAPoint(TVector3 pnt);
+    virtual bool SetPCAPropagation(int pca, int dir = 1, FairTrackParP* par = nullptr);
+
+    virtual TVector3 GetPCAOnWire() { return fvwi; }
+    virtual TVector3 GetPCAOnTrack() { return fvpf; }
+    virtual float GetLengthAtPCA() { return ftrklength; }
+    virtual float GetTimeAtPCA() { return ftrktime; }
+
+    virtual bool PropagateToVirtualPlaneAtPCA(int pca);
+    virtual bool BackTrackToVertex();
+    virtual bool BackTrackToVirtualPlaneAtPCA(int pca);
+    void setBackProp() {fPropOption="BPE";}
+
+    virtual int FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wire1, TVector3 wire2, double maxdistance, double& Rad, TVector3& vpf, TVector3& vwi, double& Di, float& trklength);
 
     // transport matrix
-    void GetTransportMatrix(Double_t trm[5][5]);
+    void GetTransportMatrix(double trm[5][5]);
 
     void SetPrintErrors(bool printError = kTRUE) { fPrintErrors = printError; }
 
-    virtual void PropagateToPlane(Int_t PDG, Double_t Charge, FairTrackParP* TStart, TVector3& v0, TVector3& v1, TVector3& v2, FairTrackParP* TEnd);
+    virtual void PropagateToPlane(int PDG, double Charge, FairTrackParP* TStart, TVector3& v0, TVector3& v1, TVector3& v2, FairTrackParP* TEnd);
 
   private:
     TGeant3* gMC3;
     TString fPropOption;
-    Float_t xlf[1];    // track length when PropagateToTrack is chosen
-    Float_t ein[15];   // Input error matrix
-    Int_t nepred;      // Number of predictions
+    float xlf[1];    // track length when PropagateToTrack is chosen
+    float ein[15];   // Input error matrix
+    int nepred;      // Number of predictions
     TDatabasePDG* fdbPDG;
-    Float_t pli[6];
-    Float_t x2[3];
-    Float_t p2[3];
+    float pli[6];
+    float x2[3];
+    float p2[3];
     /*   TVector3 Pos; */
     /*   TVector3 PosErr; */
     /*   TVector3 Mom; */
     /*   TArrayD *fErrorMat; */
     Ertrio_t* afErtrio;
-    Float_t x1[3];
-    Float_t p1[3];
-    Int_t GeantCode;
+    float x1[3];
+    float p1[3];
+    int GeantCode;
     /*   FairTrackParH *fTrkParH; */
     /*   FairTrackParP *fTrkParP; */
     /*   FairTrackPar *fTrkPar; */
-    Int_t ProMode;
+    int ProMode;
     /*   FairField *fField; */
-    Float_t plo[12];
+    float plo[12];
     TString VName;
-    Int_t VCopyNo;
-    Bool_t VEnter;
+    int VCopyNo;
+    bool VEnter;
 
     TVector3 fpoint, fwire1, fwire2;
-    Int_t fPCA;
-    Double_t fRad, fDi;
+    int fPCA;
+    double fRad, fDi;
     TVector3 fvpf, fvwi;
-    Float_t ftrklength;
-    Float_t ftrktime;
-    Int_t flag;
+    float ftrklength;
+    float ftrktime;
+    int flag;
     FairGeaneApplication* fApp;
-    Double_t trpmat[5][5];
+    double trpmat[5][5];
 
     // if kFALSE --> do not print the ABORT messages
-    Bool_t fPrintErrors;
+    bool fPrintErrors;
 
     FairGeanePro(const FairGeanePro&);
     FairGeanePro& operator=(const FairGeanePro&);
