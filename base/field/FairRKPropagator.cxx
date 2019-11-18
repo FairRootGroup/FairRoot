@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairRKPropagator.h"
@@ -12,6 +12,7 @@
 #include "FairTrackParP.h"
 #include "TVector3.h"
 
+#include "TDatabasePDG.h"
 #include "TMath.h"                      // for Sqrt
 #include "TMathBase.h"                  // for Abs
 
@@ -21,9 +22,17 @@ ClassImp(FairRKPropagator);
 
 //______________________________________________________________________________
 FairRKPropagator::FairRKPropagator(FairField* field)
-:   FairPropagator("FairRKPropagator", "Runge-Kutta propagator"),
-    fMaxStep(10.0),
-    fMagField (field)
+    : FairPropagator("FairRKPropagator", "Runge-Kutta propagator")
+    , fMaxStep(10.0)
+    , fMagField (field)
+    , fPropagationFlag(NONE)
+    , fDefPlaneV0()
+    , fDefPlaneV1()
+    , fDefPlaneV2()
+    , fPCAPropagationType(0)
+    , fPCAPropagationDir(1)
+    , fPCAPropagationPar(nullptr)
+
 {
   //  fMaxStep=10.0;
 }
@@ -33,26 +42,85 @@ FairRKPropagator::~FairRKPropagator()
   // Destructor.
 }
 
+double FairRKPropagator::GetChargeFromPDG(int pdg) {
+    TDatabasePDG* pdgDB = TDatabasePDG::Instance();
+    return pdgDB->GetParticle(pdg)->Charge()/3.;  // Charge(): charge in units of |e|/3
+}
+
+bool FairRKPropagator::Propagate(FairTrackParH* TStart, FairTrackParH* TEnd, int PDG) {
+    LOG(warning) << "FairRKPropagator::Propagate not implemented yet";
+    return false;
+}
+
+bool FairRKPropagator::Propagate(FairTrackParP* TStart, FairTrackParH* TEnd, int PDG) {
+    LOG(warning) << "FairRKPropagator::Propagate not implemented yet";
+    return false;
+}
+
+bool FairRKPropagator::Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, int PDG) {
+    if ( fPropagationFlag == TOPLANE ) {
+        PropagateToPlane(PDG, TStart, fDefPlaneV0, fDefPlaneV1, fDefPlaneV2, TEnd);
+        return true;
+    }
+    LOG(warning) << "FairRKPropagator::Propagate not implemented yet or plane to propagate not set";
+    return false;
+}
+
+bool FairRKPropagator::Propagate(FairTrackParH* TStart, FairTrackParP* TEnd, int PDG) {
+    LOG(warning) << "FairRKPropagator::Propagate not implemented yet";
+    return false;
+}
+
+bool FairRKPropagator::Propagate(float* x1, float* p1, float* x2, float* p2, int PDG) {
+    LOG(warning) << "FairRKPropagator::Propagate not implemented yet";
+    return false;
+}
+
+bool FairRKPropagator::SetDestinationPlane(TVector3& v0, TVector3& v1, TVector3& v2) {
+    fDefPlaneV0 = v0;
+    fDefPlaneV1 = v1;
+    fDefPlaneV2 = v2;
+    fPropagationFlag = TOPLANE;
+    return true;
+}
+
+bool FairRKPropagator::SetOriginPlane(TVector3& v0, TVector3& v1) {
+    LOG(warning) << "FairRKPropagator::SetLengthToPropagateTo not implemented yet";
+    return false;
+}
+
+bool FairRKPropagator::SetDestinationVolume(std::string volName, int copyNo, int option) {
+    LOG(warning) << "FairRKPropagator::SetDestinationVolume not implemented yet";
+    return false;
+}
+
+bool FairRKPropagator::SetDestinationLength(float length) {
+    LOG(warning) << "FairRKPropagator::SetDestinationLength not implemented yet";
+    return false;
+}
+
+
 //______________________________________________________________________________
-void FairRKPropagator::PropagateToPlane(Int_t PDG, Double_t Charge, FairTrackParP* TStart, TVector3& v0, TVector3& v1, TVector3& v2, FairTrackParP* TEnd)
+void FairRKPropagator::PropagateToPlane(int PDG, FairTrackParP* TStart, TVector3& v0, TVector3& v1, TVector3& v2, FairTrackParP* TEnd)
 {
-    Double_t momIn    = TMath::Sqrt(TStart->GetPx()*TStart->GetPx()+TStart->GetPy()*TStart->GetPy()+TStart->GetPz()*TStart->GetPz());
+    double charge = GetChargeFromPDG(PDG);
+    double momIn    = TMath::Sqrt(TStart->GetPx()*TStart->GetPx()+TStart->GetPy()*TStart->GetPy()+TStart->GetPz()*TStart->GetPz());
     if ( momIn == 0. ) return;
-    Double_t vecIn[7] = {TStart->GetX(),        TStart->GetY(),        TStart->GetZ(),
-                         TStart->GetPx()/momIn, TStart->GetPy()/momIn, TStart->GetPz()/momIn,
-                         momIn};
-    Double_t vecOut[7];
-    Double_t vec1[3] = {v1.X(),v1.Y(),v1.Z()};
-    Double_t vec2[3] = {v2.X(),v2.Y(),v2.Z()};
-    Double_t vec3[3] = {v0.X(),v0.Y(),v0.Z()};
-    PropagateToPlane(Charge,vecIn,vec1,vec2,vec3,vecOut);
+    double vecIn[7] = {TStart->GetX(),        TStart->GetY(),        TStart->GetZ(),
+                       TStart->GetPx()/momIn, TStart->GetPy()/momIn, TStart->GetPz()/momIn,
+                       momIn};
+    double vecOut[7];
+    double vec1[3] = {v1.X(),v1.Y(),v1.Z()};
+    double vec2[3] = {v2.X(),v2.Y(),v2.Z()};
+    double vec3[3] = {v0.X(),v0.Y(),v0.Z()};
+    PropagateToPlane(charge,vecIn,vec1,vec2,vec3,vecOut);
     TEnd->SetX  (vecOut[0]);
     TEnd->SetY  (vecOut[1]);
     TEnd->SetZ  (vecOut[2]);
     TEnd->SetPx (vecOut[3]*vecOut[6]);
     TEnd->SetPy (vecOut[4]*vecOut[6]);
     TEnd->SetPz (vecOut[5]*vecOut[6]);
-    TEnd->SetQp (Charge/vecOut[6]);
+    TEnd->SetQp (charge/vecOut[6]);
     TEnd->SetDX (0.);
     TEnd->SetDY (0.);
     TEnd->SetDZ (0.);
@@ -62,20 +130,130 @@ void FairRKPropagator::PropagateToPlane(Int_t PDG, Double_t Charge, FairTrackPar
 }
 
 //______________________________________________________________________________
-void FairRKPropagator::PropagateToPlane(Double_t Charge, Double_t* vecRKIn, Double_t* vec1, Double_t* vec2, Double_t* vec3, Double_t* vecOut)
+bool FairRKPropagator::SetPCAPropagation(int pca, int dir, FairTrackParP* par) {
+    if ( abs(dir) != 1 ) {
+        LOG(warning) << "Set PCA dir to +1 or -1.";
+        return false;
+    }
+    fPCAPropagationType = pca;
+    fPCAPropagationDir  = dir;
+    fPCAPropagationPar  = par;
+    return true;
+}
+
+//______________________________________________________________________________
+int FairRKPropagator::FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wire1, TVector3 wire2, double maxdistance, double& Rad, TVector3& vpf, TVector3& vwi, double& Di, float& trklength) {
+
+    if ( pca != 1 && pca != 2 ) {
+        LOG(info) << "FairRKPropagator::FindPCA implemented for point (pca=1) and wire (pca=2) only";
+        return 1;
+    }
+    double charge = GetChargeFromPDG(PDGCode);
+    double momIn  = fPCAPropagationDir* // if set to -1, it will back propagate
+        TMath::Sqrt(fPCAPropagationPar->GetPx()*fPCAPropagationPar->GetPx()+
+                    fPCAPropagationPar->GetPy()*fPCAPropagationPar->GetPy()+
+                    fPCAPropagationPar->GetPz()*fPCAPropagationPar->GetPz());
+    if ( momIn == 0. ) return 1;
+    double vecIn[7] = {fPCAPropagationPar->GetX(),        fPCAPropagationPar->GetY(),        fPCAPropagationPar->GetZ(),
+                       fPCAPropagationPar->GetPx()/momIn, fPCAPropagationPar->GetPy()/momIn, fPCAPropagationPar->GetPz()/momIn,
+                       momIn};
+
+    double diff;
+    if ( pca == 1 )
+        diff = sqrt((vecIn[0]-point.X())*(vecIn[0]-point.X())+
+                    (vecIn[1]-point.Y())*(vecIn[1]-point.Y())+
+                    (vecIn[2]-point.Z())*(vecIn[2]-point.Z()));
+    else if ( pca == 2 )
+        diff = CalculatePointToWireDistance(TVector3(fPCAPropagationPar->GetX(), fPCAPropagationPar->GetY(), fPCAPropagationPar->GetZ()), wire1, wire2, vwi);
+
+    fMaxStep = diff/25;
+    double res_old= diff;
+    double res = 100.0;
+    double vecOut[7];
+    double vecOutT[7];
+    for (int i=0; i< 7; i++) {vecOut[i]=0; vecOutT[i]=0;}
+
+    int nIter=0;
+    trklength = 0.;
+
+    do {
+        double stepLength = Step(charge,vecIn,vecOut);
+        double newDiff;
+        if ( pca == 1 )
+            newDiff = sqrt((vecOut[0]-point.X())*(vecOut[0]-point.X())+
+                           (vecOut[1]-point.Y())*(vecOut[1]-point.Y())+
+                           (vecOut[2]-point.Z())*(vecOut[2]-point.Z()));
+        else if ( pca == 2 )
+            newDiff = CalculatePointToWireDistance(TVector3(vecOut[0], vecOut[1], vecOut[2]), wire1, wire2, vwi);
+
+        res=newDiff/diff;
+        if( TMath::Abs(res)< 0.01 || res >res_old ) {
+            break;
+        } else {
+            for (int i=0; i< 7; i++) {
+                vecOutT[i]=vecOut[i];
+                vecIn  [i]=vecOut[i];
+            }
+            res_old=res;
+            trklength += stepLength;
+        }
+        if(nIter++>1000) { break; }
+    } while(1);
+    if (res > res_old) for (int k=0; k< 7; k++) { vecOut[k]=vecOutT[k]; }
+
+    vpf.SetX(vecOut[0]);
+    vpf.SetY(vecOut[1]);
+    vpf.SetZ(vecOut[2]);
+
+    if ( pca == 1 )
+        Di = sqrt((vecOut[0]-point.X())*(vecOut[0]-point.X())+
+                  (vecOut[1]-point.Y())*(vecOut[1]-point.Y())+
+                  (vecOut[2]-point.Z())*(vecOut[2]-point.Z()));
+    else if ( pca == 2 )
+        Di = CalculatePointToWireDistance(TVector3(vecOut[0], vecOut[1], vecOut[2]), wire1, wire2, vwi);
+    return 0;
+}
+//______________________________________________________________________________
+
+//______________________________________________________________________________
+double FairRKPropagator::CalculatePointToWireDistance(TVector3 point, TVector3 wire1, TVector3 wire2, TVector3& vwi)
+{
+    TVector3 ab = wire2 - wire1;
+    TVector3 av = point - wire1;
+
+    if ( av.Dot(ab) <= 0.0 ) {         // Point is lagging behind start of the segment, so perpendicular distance is not viable
+        vwi = wire1;
+        return av.Mag();               // Use distance to start of segment instead
+    }
+
+    TVector3 bv = point - wire2;
+
+    if ( bv.Dot(ab) >= 0.0 ) {         // Point is advanced past the end of the segment, so perpendicular distance is not viable
+        vwi = wire2;
+        return bv.Mag();               // Use distance to end of the segment instead
+    }
+
+    vwi = ( ab.Dot(av) / ab.Mag() / ab.Mag() ) * ab;
+    vwi += wire1;
+    return (ab.Cross(av)).Mag() / ab.Mag();       // Perpendicular distance of point to segment
+}
+//______________________________________________________________________________
+
+//______________________________________________________________________________
+void FairRKPropagator::PropagateToPlane(double Charge, double* vecRKIn, double* vec1, double* vec2, double* vec3, double* vecOut)
 {
   /**
   vec1 & vec2 are vectors on the plane
   vec3 a point on the plane
   */
-  Double_t Norm[3];
-  Double_t Mag;
-  Double_t dist[3];
-  Double_t distance[3];
-  Double_t vecRKoutT[7];
+  double Norm[3];
+  double Mag;
+  double dist[3];
+  double distance[3];
+  double vecRKoutT[7];
 
-  for (Int_t i=0; i< 7; i++) {vecRKoutT[i]=0;}
-    
+  for (int i=0; i< 7; i++) {vecRKoutT[i]=0;}
+
   Norm[0]=vec1[1]*vec2[2] - vec2[2] * vec2[1]; // a2b3 − a3b2,
   Norm[1]=vec1[2]*vec2[0] - vec1[0] * vec2[2]; // a3b1 − a1b3;
   Norm[2]=vec1[0]*vec2[1] - vec1[1] * vec2[0];
@@ -97,14 +275,14 @@ void FairRKPropagator::PropagateToPlane(Double_t Charge, Double_t* vecRKIn, Doub
   distance[1]=Norm[1]*dist[1];
   distance[2]=Norm[2]*dist[2];
 //   printf(" distance = %f %f %f  \n ", distance[0],distance[1],distance[2]);
-  Double_t diff = TMath::Abs(distance[0]+distance[1]+distance[2]);
+  double diff = TMath::Abs(distance[0]+distance[1]+distance[2]);
   fMaxStep = diff;
-  Double_t res = 100.0;
-  Double_t res_old = 100.0;
+  double res = 100.0;
+  double res_old = 100.0;
 
-  Double_t vecRKOut[7];
-  // for (Int_t i=0; i< 7; i++) {vecRKOut[i]=0;}
-  Int_t nIter=0;
+  double vecRKOut[7];
+  // for (int i=0; i< 7; i++) {vecRKOut[i]=0;}
+  int nIter=0;
 
   //  printf("I am in CPU code  %f %f  %f  res= %f  diff = %f \n ", vecRKIn[0], vecRKIn[1],vecRKIn[2], res, diff);
 
@@ -119,7 +297,7 @@ void FairRKPropagator::PropagateToPlane(Double_t Charge, Double_t* vecRKIn, Doub
     if( res< 0.001 || res >res_old ) {
       break;
     } else {
-      for (Int_t i=0; i< 7; i++) {
+      for (int i=0; i< 7; i++) {
         vecRKIn[i]=vecRKOut[i];
         vecRKoutT[i]=vecRKOut[i];
       }
@@ -129,49 +307,49 @@ void FairRKPropagator::PropagateToPlane(Double_t Charge, Double_t* vecRKIn, Doub
   } while(1);
 //  printf("The results is  %f %f %f  , no of iter %i \n", vecRKOut[0],vecRKOut[1],vecRKOut[2], nIter);
 //  printf("\n");
-  for (Int_t i=0; i< 7; i++) {
+  for (int i=0; i< 7; i++) {
     if (res > res_old) { vecOut[i]=vecRKoutT[i]; }
     else { vecOut[i]=vecRKOut[i]; }
   }
 }
 //______________________________________________________________________________
-void FairRKPropagator::Propagate(Double_t Charge, Double_t* vecRKIn, Double_t* Pos)
+void FairRKPropagator::Propagate(double Charge, double* vecRKIn, double* Pos)
 {
-  Double_t diff = Pos[2] - vecRKIn[2];
+  double diff = Pos[2] - vecRKIn[2];
   fMaxStep = diff/25;
-  Double_t res_old= diff;
-  Double_t res = 100.0;
-  Double_t vecRKOut[7];
-  Double_t vecRKOutT[7];
-  for (Int_t i=0; i< 7; i++) {vecRKOut[i]=0; vecRKOutT[i]=0;}
+  double res_old= diff;
+  double res = 100.0;
+  double vecRKOut[7];
+  double vecRKOutT[7];
+  for (int i=0; i< 7; i++) {vecRKOut[i]=0; vecRKOutT[i]=0;}
 
-  Int_t nIter=0;
+  int nIter=0;
   do {
     Step(Charge,vecRKIn,vecRKOut);
     res=(vecRKOut[2]-Pos[2])/diff;
     if( TMath::Abs(res)< 0.01 || res >res_old ) {
       break;
     } else {
-      for (Int_t i=0; i< 7; i++) {
+      for (int i=0; i< 7; i++) {
         vecRKOutT[i]=vecRKOut[i];
         vecRKIn[i]=vecRKOut[i];
       }
     }
     if(nIter++>1000) { break; }
   } while(1);
-  if (res > res_old) for (Int_t k=0; k< 7; k++) { vecRKOut[k]=vecRKOutT[k]; }
-  for (Int_t k=0; k< 3; k++) { printf(" vecRKOut[%i] =%f ", k, vecRKOut[k] ); }
+  if (res > res_old) for (int k=0; k< 7; k++) { vecRKOut[k]=vecRKOutT[k]; }
+  for (int k=0; k< 3; k++) { printf(" vecRKOut[%i] =%f ", k, vecRKOut[k] ); }
   printf("\n");
 }
 //______________________________________________________________________________
-void FairRKPropagator::Step(Double_t Charge, Double_t* vecRKIn, Double_t* vecOut)
+double FairRKPropagator::Step(double Charge, double* vecRKIn, double* vecOut)
 {
 
-  Double_t vecRKOut[7];
-  for (Int_t i=0; i< 7; i++) { vecRKOut[i]=0; }
-//  for (Int_t i=0; i< 7; i++) printf( "vectRKIn(%i)=%f  \n",i ,vecRKIn[i]);
+  double vecRKOut[7];
+  for (int i=0; i< 7; i++) { vecRKOut[i]=0; }
+//  for (int i=0; i< 7; i++) printf( "vectRKIn(%i)=%f  \n",i ,vecRKIn[i]);
 //  printf(" ---------------------------------------------------------------- \n");
-  OneStepRungeKutta(Charge,fMaxStep, vecRKIn, vecRKOut);
+  double stepLength = OneStepRungeKutta(Charge,fMaxStep, vecRKIn, vecRKOut);
   //  printf(" now at     x=%f  y=%f  z=%f \n", vecRKOut[0],vecRKOut[1],vecRKOut[2]);
   vecOut[0] = vecRKOut[0];
   vecOut[1] = vecRKOut[1];
@@ -181,11 +359,12 @@ void FairRKPropagator::Step(Double_t Charge, Double_t* vecRKIn, Double_t* vecOut
   vecOut[4] = vecRKOut[4];
   vecOut[5] = vecRKOut[5];
 
+  return stepLength;
 }
 
 //______________________________________________________________________________
-Double_t FairRKPropagator::OneStepRungeKutta(Double_t charge, Double_t step,
-    Double_t* vect, Double_t* vout)
+double FairRKPropagator::OneStepRungeKutta(double charge, double step,
+    double* vect, double* vout)
 {
 
   // Wrapper to step with method RungeKutta.
@@ -212,55 +391,55 @@ Double_t FairRKPropagator::OneStepRungeKutta(Double_t charge, Double_t step,
   /// *                *
   /// ******************************************************************
 
-  Double_t h2, h4, f[4];
-  Double_t xyzt[3], a=0, b=0, c=0, ph,ph2;
-  Double_t secxs[4],secys[4],seczs[4]; //hxp[3];
-  Double_t /*g1 , g2, g3, g4, g5, g6,*/ ang2, dxt, dyt, dzt;
-  Double_t est, at, bt, ct, cba;
-//  Double_t /*f1, f2, f3, f4, rho, tet, hnorm, hp, rho1, sint, cost*/;
+  double h2, h4, f[4];
+  double xyzt[3], a=0, b=0, c=0, ph,ph2;
+  double secxs[4],secys[4],seczs[4]; //hxp[3];
+  double /*g1 , g2, g3, g4, g5, g6,*/ ang2, dxt, dyt, dzt;
+  double est, at, bt, ct, cba;
+//  double /*f1, f2, f3, f4, rho, tet, hnorm, hp, rho1, sint, cost*/;
 
-  Double_t x=0;
-  Double_t y=0;
-  Double_t z=0;
+  double x=0;
+  double y=0;
+  double z=0;
 
-  Double_t track_length = 0.;
+  double track_length = 0.;
 
-  Double_t xt;
-  Double_t yt;
-  Double_t zt;
+  double xt;
+  double yt;
+  double zt;
 
-  Double_t maxit = 1992;
-  Double_t maxcut = 11;
+  double maxit = 1992;
+  double maxcut = 11;
 
-  const Double_t hmin   = 1e-4; // !!! MT ADD,  should be member
-  const Double_t kdlt   = 1e-6; // !!! MT CHANGE from 1e-4, should be member
-  const Double_t kdlt32 = kdlt/32.;
-  const Double_t kthird = 1./3.;
-  const Double_t khalf  = 0.5;
-  const Double_t kec    = 2.99792458e-4;
-  const Double_t kpisqua = 9.86960440109;
-  /*  const Int_t kix  = 0;
-    const Int_t kiy  = 1;
-    const Int_t kiz  = 2;
-    const Int_t kipx = 3;
-    const Int_t kipy = 4;
-    const Int_t kipz = 5;
+  const double hmin   = 1e-4; // !!! MT ADD,  should be member
+  const double kdlt   = 1e-6; // !!! MT CHANGE from 1e-4, should be member
+  const double kdlt32 = kdlt/32.;
+  const double kthird = 1./3.;
+  const double khalf  = 0.5;
+  const double kec    = 2.99792458e-4;
+  const double kpisqua = 9.86960440109;
+  /*  const int kix  = 0;
+    const int kiy  = 1;
+    const int kiz  = 2;
+    const int kipx = 3;
+    const int kipy = 4;
+    const int kipz = 5;
   */
   // *.
   // *.    ------------------------------------------------------------------
   // *.
   // *             this constant is for units cm,gev/c and kgauss
   // *
-  Int_t iter = 0;
-  Int_t ncut = 0;
-  for(Int_t j = 0; j < 7; j++) {
+  int iter = 0;
+  int ncut = 0;
+  for(int j = 0; j < 7; j++) {
     vout[j] = vect[j];
   }
 
-  Double_t pinv   = kec * charge / vect[6];
-  Double_t tl = 0.;
-  Double_t h = step;
-  Double_t rest;
+  double pinv   = kec * charge / vect[6];
+  double tl = 0.;
+  double h = step;
+  double rest;
 
   do {
     rest  = step - tl;
