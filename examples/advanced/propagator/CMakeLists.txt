@@ -5,5 +5,5 @@
  #              GNU Lesser General Public Licence (LGPL) version 3,             #  
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-Add_Subdirectory(src)
-Add_Subdirectory(macros)
+add_subdirectory(src)
+add_subdirectory(macros)
