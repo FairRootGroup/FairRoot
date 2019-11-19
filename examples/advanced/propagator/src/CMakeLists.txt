@@ -6,30 +6,9 @@
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 
-set(INCLUDE_DIRECTORIES
-  ${BASE_INCLUDE_DIRECTORIES}
-  ${CMAKE_SOURCE_DIR}/examples/advanced/propagator/src
-  ${CMAKE_SOURCE_DIR}/examples/common/mcstack
-  ${CMAKE_SOURCE_DIR}/base/field
-  ${CMAKE_SOURCE_DIR}/trackbase
-  ${FairLogger_INCDIR}
-)
+set(target PropagatorExample)
 
-set(SYSTEM_INCLUDE_DIRECTORIES
-  ${SYSTEM_INCLUDE_DIRECTORIES}
-  ${Geant3_INCLUDE_DIRS}
-)
-
-include_directories(${INCLUDE_DIRECTORIES})
-include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-
-set(LINK_DIRECTORIES
-  ${ROOT_LIBRARY_DIR}
-)
-
-link_directories(${LINK_DIRECTORIES})
-
-set(SRCS
+set(sources
   FairTutPropContFact.cxx
   FairTutPropDet.cxx
   FairTutPropGeo.cxx
@@ -38,24 +17,47 @@ set(SRCS
   FairTutPropTr.cxx
 )
 
-set(HEADERS
-  FairTutPropContFact.h
-  FairTutPropDet.h
-  FairTutPropGeo.h
-  FairTutPropGeoPar.h
-  FairTutPropPoint.h
-  FairTutPropTr.h
+fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
+
+add_library(${target} SHARED ${sources} ${headers})
+add_library(FairRoot::${target} ALIAS ${target})
+set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+
+target_compile_definitions(${target} PUBLIC ${defs})
+
+target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+
+  # TODO: DELETE ME ONCE USING root targets
+  ${ROOT_INCLUDE_DIR}
 )
 
-set(LINKDEF TutPropLinkDef.h)
-set(LIBRARY_NAME PropagatorExample)
-set(DEPENDENCIES
-    Base
-    GeoBase
-    ParBase
-    MCStack
-    Gen
-    TrkBase
+target_link_directories(${target} PUBLIC
+  ${ROOT_LIBRARY_DIR}
 )
 
-GENERATE_LIBRARY()
+target_link_libraries(${target} PUBLIC
+  FairRoot::Base # FairRunIdGenerator
+  FairRoot::BaseMQ # Serialization policies
+  FairRoot::FairTools # FairLogger
+  FairRoot::GeoBase # FairGeoSet
+  FairRoot::MCStack
+  FairRoot::ParBase # FairRuntimeDb, FairContFact, FairParamList
+  FairRoot::TrkBase # FairPropagator
+
+  Core # Rtypes
+  MathCore # TRandom
+  Physics # TVector3, TLorentzVector
+  RIO # TFile
+  Tree # TTree
+)
+
+fairroot_target_root_dictionary(${target}
+  HEADERS ${headers}
+  LINKDEF TutPropLinkDef.h
+)
+
+install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

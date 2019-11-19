@@ -13,6 +13,9 @@ set(sources
   FairTrackPar.cxx
   FairTrackParH.cxx
   FairTrackParP.cxx
+
+  FairPropagator.cxx
+  FairRKPropagator.cxx
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)

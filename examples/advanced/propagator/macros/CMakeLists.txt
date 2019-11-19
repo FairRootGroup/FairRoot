@@ -9,22 +9,22 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/runMC.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/runProp.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/runPull.C)
 
-Set(MaxTestTime 60)
+set(maxTestTime 60)
 
-Add_Test(runPropagatorMC
+add_test(runPropagatorMC
          ${CMAKE_CURRENT_BINARY_DIR}/runMC.sh)
-Set_Tests_Properties(runPropagatorMC PROPERTIES TIMEOUT ${MaxTestTime})
-Set_Tests_Properties(runPropagatorMC PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
+set_tests_properties(runPropagatorMC PROPERTIES TIMEOUT ${maxTestTime})
+set_tests_properties(runPropagatorMC PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 
-Add_Test(runPropagator
+add_test(runPropagator
          ${CMAKE_CURRENT_BINARY_DIR}/runProp.sh)
-Set_Tests_Properties(runPropagator PROPERTIES DEPENDS runPropagatorMC)
-Set_Tests_Properties(runPropagator PROPERTIES TIMEOUT ${MaxTestTime})
-Set_Tests_Properties(runPropagator PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
+set_tests_properties(runPropagator PROPERTIES DEPENDS runPropagatorMC)
+set_tests_properties(runPropagator PROPERTIES TIMEOUT ${maxTestTime})
+set_tests_properties(runPropagator PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 
-Add_Test(runPropagatorPull
+add_test(runPropagatorPull
          ${CMAKE_CURRENT_BINARY_DIR}/runPull.sh)
-Set_Tests_Properties(runPropagatorPull PROPERTIES DEPENDS runPropagator)
-Set_Tests_Properties(runPropagatorPull PROPERTIES TIMEOUT ${MaxTestTime})
-Set_Tests_Properties(runPropagatorPull PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
+set_tests_properties(runPropagatorPull PROPERTIES DEPENDS runPropagator)
+set_tests_properties(runPropagatorPull PROPERTIES TIMEOUT ${maxTestTime})
+set_tests_properties(runPropagatorPull PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
 
