@@ -163,7 +163,7 @@ int FairRKPropagator::FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wir
         diff = sqrt((vecIn[0]-point.X())*(vecIn[0]-point.X())+
                     (vecIn[1]-point.Y())*(vecIn[1]-point.Y())+
                     (vecIn[2]-point.Z())*(vecIn[2]-point.Z()));
-    else if ( pca == 2 )
+    else //if ( pca == 2 )
         diff = CalculatePointToWireDistance(TVector3(fPCAPropagationPar->GetX(), fPCAPropagationPar->GetY(), fPCAPropagationPar->GetZ()), wire1, wire2, vwi);
 
     fMaxStep = diff/25;
@@ -183,7 +183,7 @@ int FairRKPropagator::FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wir
             newDiff = sqrt((vecOut[0]-point.X())*(vecOut[0]-point.X())+
                            (vecOut[1]-point.Y())*(vecOut[1]-point.Y())+
                            (vecOut[2]-point.Z())*(vecOut[2]-point.Z()));
-        else if ( pca == 2 )
+        else //if ( pca == 2 )
             newDiff = CalculatePointToWireDistance(TVector3(vecOut[0], vecOut[1], vecOut[2]), wire1, wire2, vwi);
 
         res=newDiff/diff;
