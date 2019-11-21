@@ -850,7 +850,7 @@ void FairGeanePro::Track2ToLine( TVector3 X1,  TVector3 X2,  TVector3 w1,
   TVector3 x21, x32, w21;
   TVector3 xw1, xw2;
 
-  double a1, b1, c1, d1, e1, t1, s1;
+  double a1, b1, c1, d1, e1;
   double Delta1;
 
   double Eps = 1.E-08;
@@ -873,8 +873,8 @@ void FairGeanePro::Track2ToLine( TVector3 X1,  TVector3 X2,  TVector3 w1,
   Delta1 = a1*c1-b1*b1;
 
   if(Delta1 > Eps) {
-    t1 = (a1*e1-b1*d1)/Delta1;
-    s1 = (b1*e1-c1*d1)/Delta1;
+    double t1 = (a1*e1-b1*d1)/Delta1;
+    double s1 = (b1*e1-c1*d1)/Delta1;
 
     Pfinal = (X1 + x21*s1);
     Pwire  = (w1 + w21*t1);

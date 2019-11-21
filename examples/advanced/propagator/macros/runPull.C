@@ -5,8 +5,13 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-int runPull(std::string propName="geane", bool drawHist = false)
+int runPull(std::string propName="rk", bool drawHist = false)
 {
+    if ( propName!="geane" && propName!="rk" ) {
+        cout << "Choose either \"geane\" or \"rk\"." << endl;
+        return 1;
+    }
+
     gROOT->Reset();
     gStyle->SetOptFit(1);
 

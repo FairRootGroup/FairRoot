@@ -5,10 +5,6 @@
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# Create a library called "libBase" which includes the source files given in
-# the array .
-# The extension is already found.  Any number of sources could be listed here.
-
 If(Geant4_FOUND AND Geant4VMC_FOUND)
   add_subdirectory (sim/fastsim)
 EndIf()

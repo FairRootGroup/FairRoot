@@ -11,7 +11,6 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT=false)
     gRandom->SetSeed(randomSeed);
 
     TString dir = getenv("VMCWORKDIR");
-    TString tutdir = dir + "/advanced/propagator";
 
     TString tut_geomdir = dir + "/common/geometry";
     gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
