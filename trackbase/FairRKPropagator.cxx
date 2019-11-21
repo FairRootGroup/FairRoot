@@ -391,22 +391,13 @@ double FairRKPropagator::OneStepRungeKutta(double charge, double step,
   /// *                *
   /// ******************************************************************
 
-  double h2, h4, f[4];
-  double xyzt[3], a=0, b=0, c=0, ph,ph2;
+  double f[4];
+  double xyzt[3];
   double secxs[4],secys[4],seczs[4]; //hxp[3];
-  double /*g1 , g2, g3, g4, g5, g6,*/ ang2, dxt, dyt, dzt;
-  double est, at, bt, ct, cba;
-//  double /*f1, f2, f3, f4, rho, tet, hnorm, hp, rho1, sint, cost*/;
-
-  double x=0;
-  double y=0;
-  double z=0;
+  //  double /*g1 , g2, g3, g4, g5, g6,*/;
+  //  double /*f1, f2, f3, f4, rho, tet, hnorm, hp, rho1, sint, cost*/;
 
   double track_length = 0.;
-
-  double xt;
-  double yt;
-  double zt;
 
   double maxit = 1992;
   double maxcut = 11;
@@ -439,10 +430,9 @@ double FairRKPropagator::OneStepRungeKutta(double charge, double step,
   double pinv   = kec * charge / vect[6];
   double tl = 0.;
   double h = step;
-  double rest;
 
   do {
-    rest  = step - tl;
+    double rest  = step - tl;
     //printf(" Step  no. %i  x=%f  y=%f  z=%f  px/p = %f  py/p =%f  pz/p= %f \n", iter, x,y,z,a,b,c);
     if (TMath::Abs(h) > TMath::Abs(rest)) {
       h = rest;
@@ -452,36 +442,36 @@ double FairRKPropagator::OneStepRungeKutta(double charge, double step,
     fMagField->GetFieldValue( vout, f);
 
     // * start of integration
-    x      = vout[0];
-    y      = vout[1];
-    z      = vout[2];
-    a      = vout[3];
-    b      = vout[4];
-    c      = vout[5];
+    double x      = vout[0];
+    double y      = vout[1];
+    double z      = vout[2];
+    double a      = vout[3];
+    double b      = vout[4];
+    double c      = vout[5];
 
-    h2     = khalf * h;
-    h4     = khalf * h2;
-    ph     = pinv * h;
-    ph2    = khalf * ph;
+    double h2     = khalf * h;
+    double h4     = khalf * h2;
+    double ph     = pinv * h;
+    double ph2    = khalf * ph;
 
 //   printf(" -------------------------------------------  h2 = %f\n",h2);
 
     secxs[0] = (b * f[2] - c * f[1]) * ph2;
     secys[0] = (c * f[0] - a * f[2]) * ph2;
     seczs[0] = (a * f[1] - b * f[0]) * ph2;
-    ang2 = (secxs[0]*secxs[0] + secys[0]*secys[0] + seczs[0]*seczs[0]);
+    double ang2 = (secxs[0]*secxs[0] + secys[0]*secys[0] + seczs[0]*seczs[0]);
     if (ang2 > kpisqua) { break; }
 
-    dxt    = h2 * a + h4 * secxs[0];
-    dyt    = h2 * b + h4 * secys[0];
-    dzt    = h2 * c + h4 * seczs[0];
-    xt     = x + dxt;
-    yt     = y + dyt;
-    zt     = z + dzt;
+    double dxt    = h2 * a + h4 * secxs[0];
+    double dyt    = h2 * b + h4 * secys[0];
+    double dzt    = h2 * c + h4 * seczs[0];
+    double xt     = x + dxt;
+    double yt     = y + dyt;
+    double zt     = z + dzt;
 //   printf(" Position 1 at  xt=%f  yt=%f  zt=%f  \n", xt, yt, zt);
 //   printf(" differance     dxt=%f  dyt=%f  dzt=%f  \n", dxt, dyt, dzt);
     // * second intermediate point
-    est = TMath::Abs(dxt) + TMath::Abs(dyt) + TMath::Abs(dzt);
+    double est = TMath::Abs(dxt) + TMath::Abs(dyt) + TMath::Abs(dzt);
     if (est > h) {
       if (ncut++ > maxcut) { break; }
       h *= khalf;
@@ -496,9 +486,9 @@ double FairRKPropagator::OneStepRungeKutta(double charge, double step,
 
 
 
-    at     = a + secxs[0];
-    bt     = b + secys[0];
-    ct     = c + seczs[0];
+    double at     = a + secxs[0];
+    double bt     = b + secys[0];
+    double ct     = c + seczs[0];
 
     secxs[1] = (bt * f[2] - ct * f[1]) * ph2;
     secys[1] = (ct * f[0] - at * f[2]) * ph2;
@@ -562,7 +552,7 @@ double FairRKPropagator::OneStepRungeKutta(double charge, double step,
     if (est < kdlt32) {
       h *= 2.;
     }
-    cba    = 1./ TMath::Sqrt(a*a + b*b + c*c);
+    double cba    = 1./ TMath::Sqrt(a*a + b*b + c*c);
     vout[0] = x;
     vout[1] = y;
     vout[2] = z;

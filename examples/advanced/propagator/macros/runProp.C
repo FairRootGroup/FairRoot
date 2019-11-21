@@ -5,7 +5,7 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-int runProp(std::string propName="geane")
+int runProp(std::string propName="rk")
 {
     if ( propName!="geane" && propName!="rk" ) {
         cout << "Choose either \"geane\" or \"rk\"." << endl;
@@ -13,7 +13,6 @@ int runProp(std::string propName="geane")
     }
 
     TString dir = getenv("VMCWORKDIR");
-    TString tutdir = dir + "/advanced/propagator";
 
     TString tut_geomdir = dir + "/common/geometry";
     gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
