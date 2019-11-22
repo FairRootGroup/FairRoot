@@ -48,8 +48,8 @@ class FairOnlineSink : public FairSink
 
     virtual Int_t     Write(const char* /* name=0 */, Int_t /* option=0 */, Int_t /* bufsize=0 */) {return -1;}
 
-    virtual void      RegisterImpl(const char* , const char* , void* ) {}
-    virtual void      RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj) {}
+    virtual void      RegisterImpl(const char* , const char* , void* );
+    virtual void      RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj);
 
     virtual void      WriteFolder() {}
     virtual bool      CreatePersistentBranchesAny() {return false;}
@@ -71,7 +71,7 @@ class FairOnlineSink : public FairSink
         T GetPersistentBranchAny(const char* name) const;
 
 
- private: 
+ private:
     FairMQRunDevice* fMQRunDevice;
 
     // private helper function to emit a warning

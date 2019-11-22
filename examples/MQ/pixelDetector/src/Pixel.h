@@ -53,10 +53,6 @@ class Pixel: public FairDetector
     /**      Create the detector geometry        */
     void ConstructGeometry();
 
-    /**      Misalign the detector geometry        */
-    void ModifyGeometry();
-    void SetMisalignDetector(Bool_t tb=kTRUE) { fMisalignDetector = tb; }
-
     /**      This method is an example of how to add your own point
      *       of type PixelPoint to the clones array
     */
@@ -97,7 +93,6 @@ class Pixel: public FairDetector
 
     /** container for data points */
 
-    Bool_t         fMisalignDetector;
     TClonesArray*  fPixelPointCollection;
 
     Pixel(const Pixel&);

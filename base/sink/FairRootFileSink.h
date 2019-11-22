@@ -70,7 +70,7 @@ class FairRootFileSink : public FairSink
 
     virtual FairSink*   CloneSink();
 
-private:
+ private:
     /** Title of input sink, could be input, background or signal*/
     TString fOutputTitle;
     /** ROOT file */
