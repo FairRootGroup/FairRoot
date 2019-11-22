@@ -29,7 +29,7 @@ class FairField;
 class FairParIo;
 class FairPrimaryGenerator;
 class TObjArray;
-class FairOnlineSink;
+class FairSink;
 
 class FairMQSimDevice : public FairMQRunDevice
 {
@@ -81,7 +81,7 @@ class FairMQSimDevice : public FairMQRunDevice
     FairParIo*            fSecondParameter;   // second input (used if not found in first input)
     TString               fUserConfig;        //!                  /** Macro for geant configuration*/
     TString               fUserCuts;          //!                  /** Macro for geant cuts*/
-    FairOnlineSink*       fSink;
+    FairSink*             fSink;
     // ------ ---------- -------- ------
 
     void UpdateParameterServer();

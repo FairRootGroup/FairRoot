@@ -16,6 +16,8 @@
 
 #include "FairMQRunDevice.h"
 
+#include "FairRootManager.h"
+
 #include <FairMQLogger.h>
 
 FairOnlineSink::FairOnlineSink()
@@ -27,10 +29,6 @@ FairOnlineSink::FairOnlineSink()
 FairOnlineSink::FairOnlineSink(const FairOnlineSink&)
   : FairSink()
   , fMQRunDevice(nullptr)
-{
-}
-
-FairOnlineSink::~FairOnlineSink()
 {
 }
 
@@ -65,14 +63,9 @@ void FairOnlineSink::Fill()
 {
   /// Fill the Root tree.
   LOG(debug) << "[" << FairRootManager::Instance()->GetInstanceId() << "] called FairOnlineSink::Fill()!!!!";
-  
+
   if ( fMQRunDevice )
       fMQRunDevice->SendBranches();
-}
- 
-Bool_t FairOnlineSink::InitSink()
-{
-    return kTRUE;
 }
 
 //_____________________________________________________________________________
