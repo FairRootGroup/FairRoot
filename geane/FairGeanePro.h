@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // Class for the interface to propagate track parameters with GEANE
@@ -13,6 +13,8 @@
 #define FAIRGEANEPRO_H 1
 
 #include "FairPropagator.h"                     // for TNamed
+
+#include "FairLogger.h"
 
 #include "TGeant3.h"                    // for Ertrio_t, etc
 #include "TString.h"                    // for TString
@@ -58,7 +60,7 @@ class FairGeanePro : public FairPropagator
        @option  Option
     */
     virtual bool SetDestinationVolume(std::string volName, int copyNo, int option);
-    
+
     /**New method to set the length to propagate particles to
        @length  Track length
     */
@@ -87,6 +89,8 @@ class FairGeanePro : public FairPropagator
 
   public:
     /* ====== Depracated functions ====== */
+    int FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wire1, TVector3 wire2, double maxdistance, double& Rad, TVector3& vpf, TVector3& vwi, double& Di, float& trklength);
+
     bool SetWire(TVector3 extremity1, TVector3 extremity2);
     bool SetPoint(TVector3 pnt);
     bool PropagateToPCA(int pca);
@@ -94,30 +98,41 @@ class FairGeanePro : public FairPropagator
     // function to call the FindPCA alone to retrieve
     // the PCA.
     bool ActualFindPCA(int pca, FairTrackParP* par, int dir);
+
+    TVector3 GetPCAOnWire() {
+        LOG(warning) << "Function GetPCAOnWire obsolete, contact FairRoot group if you need it.";
+        return fvwi;
+    }
+    TVector3 GetPCAOnTrack() {
+        LOG(warning) << "Function GetPCAOnTrack obsolete, contact FairRoot group if you need it.";
+        return fvpf;
+    }
+    float GetLengthAtPCA() {
+        LOG(warning) << "Function GetLengthAtPCA obsolete, contact FairRoot group if you need it.";
+        return ftrklength;
+    }
+    float GetTimeAtPCA() {
+        LOG(warning) << "Function GetTimeAtPCA obsolete, contact FairRoot group if you need it.";
+        return ftrktime;
+    }
+
+    bool PropagateToVirtualPlaneAtPCA(int pca);
+    bool BackTrackToVertex();
+    bool BackTrackToVirtualPlaneAtPCA(int pca);
     /* ====== ====== ====== ====== ====== */
 
-    virtual bool SetPCAWire(TVector3 extremity1, TVector3 extremity2);
-    virtual bool SetPCAPoint(TVector3 pnt);
+    void setBackProp() {
+        fPropOption="BPE";
+    }
+
     virtual bool SetPCAPropagation(int pca, int dir = 1, FairTrackParP* par = nullptr);
 
-    virtual TVector3 GetPCAOnWire() { return fvwi; }
-    virtual TVector3 GetPCAOnTrack() { return fvpf; }
-    virtual float GetLengthAtPCA() { return ftrklength; }
-    virtual float GetTimeAtPCA() { return ftrktime; }
-
-    virtual bool PropagateToVirtualPlaneAtPCA(int pca);
-    virtual bool BackTrackToVertex();
-    virtual bool BackTrackToVirtualPlaneAtPCA(int pca);
-    void setBackProp() {fPropOption="BPE";}
-
-    virtual int FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wire1, TVector3 wire2, double maxdistance, double& Rad, TVector3& vpf, TVector3& vwi, double& Di, float& trklength);
+    virtual int FindPCA(PCASetupStruct pcastruct);
 
     // transport matrix
     void GetTransportMatrix(double trm[5][5]);
 
     void SetPrintErrors(bool printError = kTRUE) { fPrintErrors = printError; }
-
-    virtual void PropagateToPlane(int PDG, double Charge, FairTrackParP* TStart, TVector3& v0, TVector3& v1, TVector3& v2, FairTrackParP* TEnd);
 
   private:
     TGeant3* gMC3;

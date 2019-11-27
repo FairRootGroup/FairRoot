@@ -130,13 +130,6 @@ FairGeanePro::FairGeanePro()
 
 FairGeanePro::~FairGeanePro() { }
 
-//______________________________________________________________________________
-void FairGeanePro::PropagateToPlane(int PDG, double Charge, FairTrackParP* TStart, TVector3& v0, TVector3& v1, TVector3& v2, FairTrackParP* TEnd)
-{
-    SetDestinationPlane(v0,v1,v2);
-    Propagate(TStart,TEnd,PDG);
-}
-
 bool FairGeanePro::Propagate(FairTrackParH* TParam, FairTrackParH* TEnd, int PDG)
 {
   // Propagate a helix track and return a helix (SC system)
@@ -472,47 +465,47 @@ bool FairGeanePro::SetPropagateOnlyParameters()
 
 bool FairGeanePro::PropagateFromPlane(TVector3& v1, TVector3& v2)
 {
-    LOG(warning) << "Function PropagateFromPlane obsolete, use SetOriginPlane.";
+    LOG(warning) << "Function PropagateFromPlane depracated, use SetOriginPlane.";
     return SetOriginPlane(v1,v2);
 }
 
 bool FairGeanePro::PropagateToPlane(TVector3& v0, TVector3& v1, TVector3& v2)
 {
-    LOG(warning) << "Function PropagateToPlane obsolete, use SetDestinationPlane.";
+    LOG(warning) << "Function PropagateToPlane depracated, use SetDestinationPlane.";
     return SetDestinationPlane(v0,v1,v2);
 }
 
 bool FairGeanePro::PropagateToVolume(TString VolName, int CopyNo , int option)
 {
-    LOG(warning) << "Function PropagateToVolume obsolete, use SetDestinationVolume.";
+    LOG(warning) << "Function PropagateToVolume depracated, use SetDestinationVolume.";
     return SetDestinationVolume(VolName.Data(),CopyNo,option);
 }
 
 bool FairGeanePro::PropagateToLength(float length)
 {
-    LOG(warning) << "Function PropagateToLength obsolete, use SetDestinationLength.";
+    LOG(warning) << "Function PropagateToLength depracated, use SetDestinationLength.";
     return SetDestinationLength(length);
 }
 
 bool FairGeanePro::PropagateOnlyParameters()
 {
-    LOG(warning) << "Function PropagateOnlyParameters obsolete, use SetPropagateOnlyParameters.";
+    LOG(warning) << "Function PropagateOnlyParameters depracated, use SetPropagateOnlyParameters.";
     return SetPropagateOnlyParameters();
 }
 
-bool FairGeanePro::SetPCAWire(TVector3 extremity1, TVector3 extremity2)
+bool FairGeanePro::SetWire(TVector3 extremity1, TVector3 extremity2)
 {
-    // define wires for PCA extrapolation in STT
+    LOG(warning) << "Function SetWire depracated, contact FairRoot group if you need it.";
     fwire1 = extremity1;
     fwire2 = extremity2;
     return true;
 }
 
-bool FairGeanePro::SetPCAPoint(TVector3 pnt)
+bool FairGeanePro::SetPoint(TVector3 pnt)
 {
-  // define point for PCA extrapolation in TPC
-  fpoint = pnt;
-  return true;
+    LOG(warning) << "Function SetPoint depracated, contact FairRoot group if you need it.";
+    fpoint = pnt;
+    return true;
 }
 
 bool FairGeanePro::SetPCAPropagation(int pca, int dir, FairTrackParP* par)
@@ -545,38 +538,27 @@ bool FairGeanePro::SetPCAPropagation(int pca, int dir, FairTrackParP* par)
     return kTRUE;
 }
 
-bool FairGeanePro::SetWire(TVector3 extremity1, TVector3 extremity2)
-{
-    LOG(warning) << "Function SetWire obsolete, use SetPCAWire.";
-    return SetPCAWire(extremity1,extremity2);
-}
-
-bool FairGeanePro::SetPoint(TVector3 pnt)
-{
-    LOG(warning) << "Function SetPoint obsolete, use SetPCAPoint.";
-    return SetPCAPoint(pnt);
-}
-
 bool FairGeanePro::PropagateToPCA(int pca)
 {
-    LOG(warning) << "Function PropagateToPCA obsolete, use SetPCAPropagation.";
+    LOG(warning) << "Function PropagateToPCA depracated, use SetPCAPropagation.";
     return SetPCAPropagation(pca);
 }
 
 bool FairGeanePro::PropagateToPCA(int pca, int dir)
 {
-    LOG(warning) << "Function PropagateToPCA obsolete, use SetPCAPropagation.";
+    LOG(warning) << "Function PropagateToPCA depracated, use SetPCAPropagation.";
     return SetPCAPropagation(pca,dir);
 }
 
 bool FairGeanePro::ActualFindPCA(int pca, FairTrackParP* par, int dir)
 {
-    LOG(warning) << "Function ActualFindPCA obsolete, use SetPCAPropagation.";
+    LOG(warning) << "Function ActualFindPCA depracated, use SetPCAPropagation.";
     return SetPCAPropagation(pca,dir,par);
 }
 
 bool FairGeanePro::BackTrackToVertex()
 {
+  LOG(warning) << "Function BackTrackToVertex questionable, contact FairRoot if you need it.";
   // through track length
   fPropOption="BLE";
   ProMode=1; //need errors in representation 1 (SC)(see Geane doc)
@@ -593,6 +575,7 @@ bool FairGeanePro::BackTrackToVertex()
 
 bool FairGeanePro::PropagateToVirtualPlaneAtPCA(int pca)
 {
+  LOG(warning) << "Function PropagateToVirtualPlaneAtPCA questionable, contact FairRoot if you need it.";
   // through track length
   fPropOption="LE";
   ProMode=3; //need errors in representation 3 (SD)(see Geane doc)
@@ -609,6 +592,7 @@ bool FairGeanePro::PropagateToVirtualPlaneAtPCA(int pca)
 
 bool FairGeanePro::BackTrackToVirtualPlaneAtPCA(int pca)
 {
+  LOG(warning) << "Function BackTrackToVirtualPlaneAtPCA questionable, contact FairRoot if you need it.";
   // through track length
   fPropOption="BLE";
   ProMode=3; //need errors in representation 3 (SD)(see Geane doc)
@@ -625,7 +609,12 @@ bool FairGeanePro::BackTrackToVirtualPlaneAtPCA(int pca)
 
 //=====================
 
-int FairGeanePro::FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wire1, TVector3 wire2, double maxdistance, double& Rad, TVector3& vpf, TVector3& vwi, double& Di, float& trklength)
+int FairGeanePro::FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wire1, TVector3 wire2, double maxdistance, double& Rad, TVector3& vpf, TVector3& vwi, double& Di, float& trklength) {
+    LOG(warning) << "Function FindPCA(many parameters) depracated, it is replaced by FindPCA(PCASetupStruct).";
+    return FindPCA(PCASetupStruct{pca,PDGCode,point,wire1,wire2,maxdistance,Rad,vpf,vwi,Di,trklength});
+}
+
+int FairGeanePro::FindPCA(PCASetupStruct pcastruct)
 {
   // find the point of closest approach of the track to a point(measured position) or to a line(wire)
 
@@ -644,52 +633,52 @@ int FairGeanePro::FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wire1, 
   // .. Di : distance between track and wire in the PCA
   // .. trklength : track length to add to the GEANE one
 
-  float pf[3] = {static_cast<float>(point.X()), static_cast<float>(point.Y()), static_cast<float>(point.Z())};
-  float w1[3] = {static_cast<float>(wire1.X()), static_cast<float>(wire1.Y()), static_cast<float>(wire1.Z())};
-  float w2[3] = {static_cast<float>(wire2.X()), static_cast<float>(wire2.Y()), static_cast<float>(wire2.Z())};
+    float pf[3] = {static_cast<float>(pcastruct.Point.X()), static_cast<float>(pcastruct.Point.Y()), static_cast<float>(pcastruct.Point.Z())};
+    float w1[3] = {static_cast<float>(pcastruct.Wire1.X()), static_cast<float>(pcastruct.Wire1.Y()), static_cast<float>(pcastruct.Wire1.Z())};
+    float w2[3] = {static_cast<float>(pcastruct.Wire2.X()), static_cast<float>(pcastruct.Wire2.Y()), static_cast<float>(pcastruct.Wire2.Z())};
 
-  GeantCode=fdbPDG->ConvertPdgToGeant3(PDGCode);
+    GeantCode=fdbPDG->ConvertPdgToGeant3(pcastruct.PDGCode);
 
-  // flags Rotondi's function
-  int flg=0;
+    // flags Rotondi's function
+    int flg=0;
 
-  // cl track length to the three last points of closest approach
-  // dst assigned distance between initial point in ERTRAK and PFINAL along straight line (currently noy used)
-  float cl[3],dst;
+    // cl track length to the three last points of closest approach
+    // dst assigned distance between initial point in ERTRAK and PFINAL along straight line (currently noy used)
+    float cl[3],dst;
 
-  // GEANE filled points
-  float po1[3],po2[3],po3[3];
+    // GEANE filled points
+    float po1[3],po2[3],po3[3];
 
-  // cl track length to the three last points of closest approach
-  float clen[3];
+    // cl track length to the three last points of closest approach
+    float clen[3];
 
-  // track length to add to GEANE computed one
-  double Le=0.0;
-  double dist1,dist2;
+    // track length to add to GEANE computed one
+    double Le=0.0;
+    double dist1,dist2;
 
-  // initialization of some variables
-  dst = 999.;
-  cl[0] = 0;
-  cl[1] = 0;
-  cl[2] = 0;
+    // initialization of some variables
+    dst = 999.;
+    cl[0] = 0;
+    cl[1] = 0;
+    cl[2] = 0;
 
-  // GEANE filled points
-  po1[0]=0;
-  po1[1]=0;
-  po1[2]=0;
-  po2[0]=0;
-  po2[1]=0;
-  po2[2]=0;
-  po3[0]=0;
-  po3[1]=0;
-  po3[2]=0;
+    // GEANE filled points
+    po1[0]=0;
+    po1[1]=0;
+    po1[2]=0;
+    po2[0]=0;
+    po2[1]=0;
+    po2[2]=0;
+    po3[0]=0;
+    po3[1]=0;
+    po3[2]=0;
 
-  gMC3->SetClose(pca,pf,dst,w1,w2,po1,po2,po3,cl);
+    gMC3->SetClose(pcastruct.PCA,pf,dst,w1,w2,po1,po2,po3,cl);
 
   // maximum distance calculated 2 * geometric distance
   // start point - end point (the point to which we want
   // to find the PCA)
-  float stdlength[1] = {static_cast<float>(maxdistance)};
+  float stdlength[1] = {static_cast<float>(pcastruct.MaxDistance)};
 
   gMC3->Eufill(1, ein, stdlength);
 
@@ -709,96 +698,96 @@ int FairGeanePro::FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wire1, 
     po1[2] = po2[2];
   }
 
-  if(pca == 1) {
+  if(pcastruct.PCA == 1) {
     if((po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2])
         || (po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])) {
       int quitFlag=0;
-      Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,quitFlag);
+      Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),pcastruct.OnTrackPCA,pcastruct.Distance,Le,quitFlag);
       if(quitFlag!=0) {
-          if(fPrintErrors) { LOG(fatal) << "FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
+          if(fPrintErrors) { LOG(warning) << "FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
         return 1;
       } //abort
     } else {
-      Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(pf),vpf,flg,Di,Le,Rad);
+      Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(pf),pcastruct.OnTrackPCA,flg,pcastruct.Distance,Le,pcastruct.Radius);
       if(flg==1) {
         int quitFlag=0;
-        Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),vpf,Di,Le,quitFlag);
+        Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),pcastruct.OnTrackPCA,pcastruct.Distance,Le,quitFlag);
         if(quitFlag!=0) {
-          if(fPrintErrors) { LOG(fatal) << "FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
+          if(fPrintErrors) { LOG(warning) << "FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
           return 1;
         } //abort
       } else if(flg==2) {
-        if(fPrintErrors) { LOG(fatal)<<"FairGeanePro:FindPCA: Track3ToPoint flg " << flg << " ABORT"; }
+        if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track3ToPoint flg " << flg << " ABORT"; }
         return 1;
       } //abort
     }
     // if the propagation to closest approach to a POINT  is performed
     // vwi is the point itself (with respect to which the PCA is calculated)
-    vwi = point;
-  } else if(pca == 2) {
+    pcastruct.OnWirePCA = pcastruct.Point;
+  } else if(pcastruct.PCA == 2) {
     if((po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2])
         || (po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])) {
       Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
-                   TVector3(w2),vpf,vwi,flg,Di,Le);
+                   TVector3(w2),pcastruct.OnTrackPCA,pcastruct.OnWirePCA,flg,pcastruct.Distance,Le);
       if(flg==1) {
-        dist1 = (vwi-TVector3(w1)).Mag();
-        dist2 = (vwi-TVector3(w2)).Mag();
+        dist1 = (pcastruct.OnWirePCA-TVector3(w1)).Mag();
+        dist2 = (pcastruct.OnWirePCA-TVector3(w2)).Mag();
         int quitFlag=0;
-        dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
-        Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
+        dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),pcastruct.OnTrackPCA,pcastruct.Distance,Le,quitFlag):
+        Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),pcastruct.OnTrackPCA,pcastruct.Distance,Le,quitFlag);
         if(quitFlag!=0) {
-          if(fPrintErrors) { LOG(fatal)<<"FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
+          if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
           return 1;
         } //abort
       } else if(flg==2) {
-        if(fPrintErrors) { LOG(fatal)<<"FairGeanePro:FindPCA: Track2ToLine flg " << flg << " ABORT"; }
+        if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track2ToLine flg " << flg << " ABORT"; }
         return 1;
       }
     } else {
       Track3ToLine(TVector3(po1),TVector3(po2),TVector3(po3),
-                   TVector3(w1),TVector3(w2),vpf,vwi,flg,Di,Le,Rad);
+                   TVector3(w1),TVector3(w2),pcastruct.OnTrackPCA,pcastruct.OnWirePCA,flg,pcastruct.Distance,Le,pcastruct.Radius);
       if(flg==1) {
         Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
-                     TVector3(w2),vpf,vwi,flg,Di,Le);
+                     TVector3(w2),pcastruct.OnTrackPCA,pcastruct.OnWirePCA,flg,pcastruct.Distance,Le);
         if(flg==1) {
-          dist1 = (vwi-TVector3(w1)).Mag();
-          dist2 = (vwi-TVector3(w2)).Mag();
+          dist1 = (pcastruct.OnWirePCA-TVector3(w1)).Mag();
+          dist2 = (pcastruct.OnWirePCA-TVector3(w2)).Mag();
           int quitFlag=0;
-          dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
-          Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
+          dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),pcastruct.OnTrackPCA,pcastruct.Distance,Le,quitFlag):
+          Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),pcastruct.OnTrackPCA,pcastruct.Distance,Le,quitFlag);
           if(quitFlag!=0) {
-            if(fPrintErrors) { LOG(fatal)<<"FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
+            if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
             return 1;
           } //abort
         } else if(flg==2) {
-          if(fPrintErrors) { LOG(fatal)<<"FairGeanePro:FindPCA: Track2ToLine flg " << flg << " ABORT"; }
+          if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track2ToLine flg " << flg << " ABORT"; }
           return 1;
         }
       } else if(flg==2) {
-        dist1 = (vwi-TVector3(w1)).Mag();
-        dist2 = (vwi-TVector3(w2)).Mag();
+        dist1 = (pcastruct.OnWirePCA-TVector3(w1)).Mag();
+        dist2 = (pcastruct.OnWirePCA-TVector3(w2)).Mag();
 
-        dist1<dist2?Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(w1),vpf,flg,Di,Le,Rad):
-        Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(w2),vpf,flg,Di,Le,Rad);
+        dist1<dist2?Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(w1),pcastruct.OnTrackPCA,flg,pcastruct.Distance,Le,pcastruct.Radius):
+        Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(w2),pcastruct.OnTrackPCA,flg,pcastruct.Distance,Le,pcastruct.Radius);
         if(flg==2) {
-          if(fPrintErrors) { LOG(fatal)<<"FairGeanePro:FindPCA: Track3ToLine flg " << flg << " ABORT"; }
+          if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track3ToLine flg " << flg << " ABORT"; }
           return 1;
         } //abort
       } else if(flg==3) {
-        dist1 = (vwi-TVector3(w1)).Mag();
-        dist2 = (vwi-TVector3(w2)).Mag();
+        dist1 = (pcastruct.OnWirePCA-TVector3(w1)).Mag();
+        dist2 = (pcastruct.OnWirePCA-TVector3(w2)).Mag();
         int quitFlag=0;
-        dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),vpf,Di,Le,quitFlag):
-        Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),vpf,Di,Le,quitFlag);
+        dist1<dist2?Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w1),pcastruct.OnTrackPCA,pcastruct.Distance,Le,quitFlag):
+        Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),pcastruct.OnTrackPCA,pcastruct.Distance,Le,quitFlag);
         if(quitFlag!=0) {
-          if(fPrintErrors) { LOG(fatal)<<"FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
+          if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
           return 1;
         } //abort
       } else if(flg==4) {
         Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
-                     TVector3(w2),vpf,vwi,flg,Di,Le);
+                     TVector3(w2),pcastruct.OnTrackPCA,pcastruct.OnWirePCA,flg,pcastruct.Distance,Le);
         if(flg==2) {
-          if(fPrintErrors) { LOG(fatal)<<"FairGeanePro:FindPCA: Track2ToLine flg " << flg << " ABORT"; }
+          if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track2ToLine flg " << flg << " ABORT"; }
           return 1;
         }
       }
@@ -808,10 +797,10 @@ int FairGeanePro::FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wire1, 
 
   // calculated track length corresponding
   // to the point of closest approach
-  trklength = clen[0]+Le;
+  pcastruct.TrackLength = clen[0]+Le;
 
   // PCA before starting point
-  if(trklength<0) { return 1; }
+  if(pcastruct.TrackLength<0) { return 1; }
   flag = flg;
 
   return 0;
