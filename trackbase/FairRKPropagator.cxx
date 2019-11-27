@@ -48,18 +48,80 @@ double FairRKPropagator::GetChargeFromPDG(int pdg) {
 }
 
 bool FairRKPropagator::Propagate(FairTrackParH* TStart, FairTrackParH* TEnd, int PDG) {
-    LOG(warning) << "FairRKPropagator::Propagate not implemented yet";
+    if ( fPropagationFlag == TOPLANE ) {
+        float x1[3] = {(float)TStart->GetX (),(float)TStart->GetY (),(float)TStart->GetZ ()};
+        float p1[3] = {(float)TStart->GetPx(),(float)TStart->GetPy(),(float)TStart->GetPz()};
+        float x2[3] = {0.,0.,0.};
+        float p2[3] = {0.,0.,0.};
+        bool ret = Propagate(x1,p1,x2,p2,PDG);
+        if ( !ret ) return false;
+        TEnd->SetX  (x2[0]);
+        TEnd->SetY  (x2[1]);
+        TEnd->SetZ  (x2[2]);
+        TEnd->SetPx (p2[0]);
+        TEnd->SetPy (p2[1]);
+        TEnd->SetPz (p2[2]);
+        TEnd->SetQp (GetChargeFromPDG(PDG)/sqrt(p2[0]*p2[0]+p2[1]*p2[1]+p2[2]*p2[2]));
+        TEnd->SetDX (0.);
+        TEnd->SetDY (0.);
+        TEnd->SetDZ (0.);
+        TEnd->SetDPx(0.);
+        TEnd->SetDPy(0.);
+        TEnd->SetDPz(0.);
+        return true;
+    }
+    LOG(warning) << "FairRKPropagator::Propagate not implemented yet or plane to propagate not set";
     return false;
 }
 
 bool FairRKPropagator::Propagate(FairTrackParP* TStart, FairTrackParH* TEnd, int PDG) {
-    LOG(warning) << "FairRKPropagator::Propagate not implemented yet";
+    if ( fPropagationFlag == TOPLANE ) {
+        float x1[3] = {(float)TStart->GetX (),(float)TStart->GetY (),(float)TStart->GetZ ()};
+        float p1[3] = {(float)TStart->GetPx(),(float)TStart->GetPy(),(float)TStart->GetPz()};
+        float x2[3] = {0.,0.,0.};
+        float p2[3] = {0.,0.,0.};
+        bool ret = Propagate(x1,p1,x2,p2,PDG);
+        if ( !ret ) return false;
+        TEnd->SetX  (x2[0]);
+        TEnd->SetY  (x2[1]);
+        TEnd->SetZ  (x2[2]);
+        TEnd->SetPx (p2[0]);
+        TEnd->SetPy (p2[1]);
+        TEnd->SetPz (p2[2]);
+        TEnd->SetQp (GetChargeFromPDG(PDG)/sqrt(p2[0]*p2[0]+p2[1]*p2[1]+p2[2]*p2[2]));
+        TEnd->SetDX (0.);
+        TEnd->SetDY (0.);
+        TEnd->SetDZ (0.);
+        TEnd->SetDPx(0.);
+        TEnd->SetDPy(0.);
+        TEnd->SetDPz(0.);
+        return true;
+    }
+    LOG(warning) << "FairRKPropagator::Propagate not implemented yet or plane to propagate not set";
     return false;
 }
 
 bool FairRKPropagator::Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, int PDG) {
     if ( fPropagationFlag == TOPLANE ) {
-        PropagateToPlane(PDG, TStart, fDefPlaneV0, fDefPlaneV1, fDefPlaneV2, TEnd);
+        float x1[3] = {(float)TStart->GetX (),(float)TStart->GetY (),(float)TStart->GetZ ()};
+        float p1[3] = {(float)TStart->GetPx(),(float)TStart->GetPy(),(float)TStart->GetPz()};
+        float x2[3] = {0.,0.,0.};
+        float p2[3] = {0.,0.,0.};
+        bool ret = Propagate(x1,p1,x2,p2,PDG);
+        if ( !ret ) return false;
+        TEnd->SetX  (x2[0]);
+        TEnd->SetY  (x2[1]);
+        TEnd->SetZ  (x2[2]);
+        TEnd->SetPx (p2[0]);
+        TEnd->SetPy (p2[1]);
+        TEnd->SetPz (p2[2]);
+        TEnd->SetQp (GetChargeFromPDG(PDG)/sqrt(p2[0]*p2[0]+p2[1]*p2[1]+p2[2]*p2[2]));
+        TEnd->SetDX (0.);
+        TEnd->SetDY (0.);
+        TEnd->SetDZ (0.);
+        TEnd->SetDPx(0.);
+        TEnd->SetDPy(0.);
+        TEnd->SetDPz(0.);
         return true;
     }
     LOG(warning) << "FairRKPropagator::Propagate not implemented yet or plane to propagate not set";
@@ -67,13 +129,51 @@ bool FairRKPropagator::Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, int
 }
 
 bool FairRKPropagator::Propagate(FairTrackParH* TStart, FairTrackParP* TEnd, int PDG) {
+    if ( fPropagationFlag == TOPLANE ) {
+        float x1[3] = {(float)TStart->GetX (),(float)TStart->GetY (),(float)TStart->GetZ ()};
+        float p1[3] = {(float)TStart->GetPx(),(float)TStart->GetPy(),(float)TStart->GetPz()};
+        float x2[3] = {0.,0.,0.};
+        float p2[3] = {0.,0.,0.};
+        bool ret = Propagate(x1,p1,x2,p2,PDG);
+        if ( !ret ) return false;
+        TEnd->SetX  (x2[0]);
+        TEnd->SetY  (x2[1]);
+        TEnd->SetZ  (x2[2]);
+        TEnd->SetPx (p2[0]);
+        TEnd->SetPy (p2[1]);
+        TEnd->SetPz (p2[2]);
+        TEnd->SetQp (GetChargeFromPDG(PDG)/sqrt(p2[0]*p2[0]+p2[1]*p2[1]+p2[2]*p2[2]));
+        TEnd->SetDX (0.);
+        TEnd->SetDY (0.);
+        TEnd->SetDZ (0.);
+        TEnd->SetDPx(0.);
+        TEnd->SetDPy(0.);
+        TEnd->SetDPz(0.);
+        return true;
+    }
     LOG(warning) << "FairRKPropagator::Propagate not implemented yet";
     return false;
 }
 
 bool FairRKPropagator::Propagate(float* x1, float* p1, float* x2, float* p2, int PDG) {
-    LOG(warning) << "FairRKPropagator::Propagate not implemented yet";
-    return false;
+    double charge = GetChargeFromPDG(PDG);
+    double momIn    = TMath::Sqrt(p1[0]*p1[0]+p1[1]*p1[1]+p1[2]*p1[2]);
+    if ( momIn == 0. ) return false;
+    double vecIn[7] = {x1[0]      ,x1[1]      ,x1[2],
+                       p1[0]/momIn,p1[1]/momIn,p1[2]/momIn,
+                       momIn};
+    double vecOut[7];
+    double vec1[3] = {fDefPlaneV1.X(),fDefPlaneV1.Y(),fDefPlaneV1.Z()};
+    double vec2[3] = {fDefPlaneV2.X(),fDefPlaneV2.Y(),fDefPlaneV2.Z()};
+    double vec3[3] = {fDefPlaneV0.X(),fDefPlaneV0.Y(),fDefPlaneV0.Z()};
+    PropagateToPlane(charge,vecIn,vec1,vec2,vec3,vecOut);
+    x2[0] = vecOut[0];
+    x2[1] = vecOut[1];
+    x2[2] = vecOut[2];
+    p2[0] = vecOut[3]*vecOut[6];
+    p2[1] = vecOut[4]*vecOut[6];
+    p2[2] = vecOut[5]*vecOut[6];
+    return true;
 }
 
 bool FairRKPropagator::SetDestinationPlane(TVector3& v0, TVector3& v1, TVector3& v2) {
@@ -99,36 +199,6 @@ bool FairRKPropagator::SetDestinationLength(float length) {
     return false;
 }
 
-
-//______________________________________________________________________________
-void FairRKPropagator::PropagateToPlane(int PDG, FairTrackParP* TStart, TVector3& v0, TVector3& v1, TVector3& v2, FairTrackParP* TEnd)
-{
-    double charge = GetChargeFromPDG(PDG);
-    double momIn    = TMath::Sqrt(TStart->GetPx()*TStart->GetPx()+TStart->GetPy()*TStart->GetPy()+TStart->GetPz()*TStart->GetPz());
-    if ( momIn == 0. ) return;
-    double vecIn[7] = {TStart->GetX(),        TStart->GetY(),        TStart->GetZ(),
-                       TStart->GetPx()/momIn, TStart->GetPy()/momIn, TStart->GetPz()/momIn,
-                       momIn};
-    double vecOut[7];
-    double vec1[3] = {v1.X(),v1.Y(),v1.Z()};
-    double vec2[3] = {v2.X(),v2.Y(),v2.Z()};
-    double vec3[3] = {v0.X(),v0.Y(),v0.Z()};
-    PropagateToPlane(charge,vecIn,vec1,vec2,vec3,vecOut);
-    TEnd->SetX  (vecOut[0]);
-    TEnd->SetY  (vecOut[1]);
-    TEnd->SetZ  (vecOut[2]);
-    TEnd->SetPx (vecOut[3]*vecOut[6]);
-    TEnd->SetPy (vecOut[4]*vecOut[6]);
-    TEnd->SetPz (vecOut[5]*vecOut[6]);
-    TEnd->SetQp (charge/vecOut[6]);
-    TEnd->SetDX (0.);
-    TEnd->SetDY (0.);
-    TEnd->SetDZ (0.);
-    TEnd->SetDPx(0.);
-    TEnd->SetDPy(0.);
-    TEnd->SetDPz(0.);
-}
-
 //______________________________________________________________________________
 bool FairRKPropagator::SetPCAPropagation(int pca, int dir, FairTrackParP* par) {
     if ( abs(dir) != 1 ) {
@@ -142,13 +212,13 @@ bool FairRKPropagator::SetPCAPropagation(int pca, int dir, FairTrackParP* par) {
 }
 
 //______________________________________________________________________________
-int FairRKPropagator::FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wire1, TVector3 wire2, double maxdistance, double& Rad, TVector3& vpf, TVector3& vwi, double& Di, float& trklength) {
+int FairRKPropagator::FindPCA(PCASetupStruct pcastruct) {
 
-    if ( pca != 1 && pca != 2 ) {
+    if ( pcastruct.PCA != 1 && pcastruct.PCA != 2 ) {
         LOG(info) << "FairRKPropagator::FindPCA implemented for point (pca=1) and wire (pca=2) only";
         return 1;
     }
-    double charge = GetChargeFromPDG(PDGCode);
+    double charge = GetChargeFromPDG(pcastruct.PDGCode);
     double momIn  = fPCAPropagationDir* // if set to -1, it will back propagate
         TMath::Sqrt(fPCAPropagationPar->GetPx()*fPCAPropagationPar->GetPx()+
                     fPCAPropagationPar->GetPy()*fPCAPropagationPar->GetPy()+
@@ -159,12 +229,12 @@ int FairRKPropagator::FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wir
                        momIn};
 
     double diff;
-    if ( pca == 1 )
-        diff = sqrt((vecIn[0]-point.X())*(vecIn[0]-point.X())+
-                    (vecIn[1]-point.Y())*(vecIn[1]-point.Y())+
-                    (vecIn[2]-point.Z())*(vecIn[2]-point.Z()));
-    else //if ( pca == 2 )
-        diff = CalculatePointToWireDistance(TVector3(fPCAPropagationPar->GetX(), fPCAPropagationPar->GetY(), fPCAPropagationPar->GetZ()), wire1, wire2, vwi);
+    if ( pcastruct.PCA == 1 )
+        diff = sqrt((vecIn[0]-pcastruct.Point.X())*(vecIn[0]-pcastruct.Point.X())+
+                    (vecIn[1]-pcastruct.Point.Y())*(vecIn[1]-pcastruct.Point.Y())+
+                    (vecIn[2]-pcastruct.Point.Z())*(vecIn[2]-pcastruct.Point.Z()));
+    else //if ( pcastruct.PCA == 2 )
+        diff = CalculatePointToWireDistance(TVector3(fPCAPropagationPar->GetX(), fPCAPropagationPar->GetY(), fPCAPropagationPar->GetZ()), pcastruct.Wire1, pcastruct.Wire2, pcastruct.OnWirePCA);
 
     fMaxStep = diff/25;
     double res_old= diff;
@@ -174,17 +244,17 @@ int FairRKPropagator::FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wir
     for (int i=0; i< 7; i++) {vecOut[i]=0; vecOutT[i]=0;}
 
     int nIter=0;
-    trklength = 0.;
+    pcastruct.TrackLength = 0.;
 
     do {
         double stepLength = Step(charge,vecIn,vecOut);
         double newDiff;
-        if ( pca == 1 )
-            newDiff = sqrt((vecOut[0]-point.X())*(vecOut[0]-point.X())+
-                           (vecOut[1]-point.Y())*(vecOut[1]-point.Y())+
-                           (vecOut[2]-point.Z())*(vecOut[2]-point.Z()));
-        else //if ( pca == 2 )
-            newDiff = CalculatePointToWireDistance(TVector3(vecOut[0], vecOut[1], vecOut[2]), wire1, wire2, vwi);
+        if ( pcastruct.PCA == 1 )
+            newDiff = sqrt((vecOut[0]-pcastruct.Point.X())*(vecOut[0]-pcastruct.Point.X())+
+                           (vecOut[1]-pcastruct.Point.Y())*(vecOut[1]-pcastruct.Point.Y())+
+                           (vecOut[2]-pcastruct.Point.Z())*(vecOut[2]-pcastruct.Point.Z()));
+        else //if ( pcastruct.PCA == 2 )
+            newDiff = CalculatePointToWireDistance(TVector3(vecOut[0], vecOut[1], vecOut[2]), pcastruct.Wire1, pcastruct.Wire2, pcastruct.OnWirePCA);
 
         res=newDiff/diff;
         if( TMath::Abs(res)< 0.01 || res >res_old ) {
@@ -195,22 +265,22 @@ int FairRKPropagator::FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wir
                 vecIn  [i]=vecOut[i];
             }
             res_old=res;
-            trklength += stepLength;
+            pcastruct.TrackLength += stepLength;
         }
         if(nIter++>1000) { break; }
     } while(1);
     if (res > res_old) for (int k=0; k< 7; k++) { vecOut[k]=vecOutT[k]; }
 
-    vpf.SetX(vecOut[0]);
-    vpf.SetY(vecOut[1]);
-    vpf.SetZ(vecOut[2]);
+    pcastruct.OnTrackPCA.SetX(vecOut[0]);
+    pcastruct.OnTrackPCA.SetY(vecOut[1]);
+    pcastruct.OnTrackPCA.SetZ(vecOut[2]);
 
-    if ( pca == 1 )
-        Di = sqrt((vecOut[0]-point.X())*(vecOut[0]-point.X())+
-                  (vecOut[1]-point.Y())*(vecOut[1]-point.Y())+
-                  (vecOut[2]-point.Z())*(vecOut[2]-point.Z()));
-    else if ( pca == 2 )
-        Di = CalculatePointToWireDistance(TVector3(vecOut[0], vecOut[1], vecOut[2]), wire1, wire2, vwi);
+    if ( pcastruct.PCA == 1 )
+        pcastruct.Distance = sqrt((vecOut[0]-pcastruct.Point.X())*(vecOut[0]-pcastruct.Point.X())+
+                                  (vecOut[1]-pcastruct.Point.Y())*(vecOut[1]-pcastruct.Point.Y())+
+                                  (vecOut[2]-pcastruct.Point.Z())*(vecOut[2]-pcastruct.Point.Z()));
+    else //if ( pcastruct.PCA == 2 )
+        pcastruct.Distance = CalculatePointToWireDistance(TVector3(vecOut[0], vecOut[1], vecOut[2]), pcastruct.Wire1, pcastruct.Wire2, pcastruct.OnWirePCA);
     return 0;
 }
 //______________________________________________________________________________

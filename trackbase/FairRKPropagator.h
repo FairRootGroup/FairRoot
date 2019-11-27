@@ -68,12 +68,6 @@ class FairRKPropagator : public FairPropagator
 
     /* =========================================================================================================================================== */
 
-    virtual bool Propagate(FairTrackParH* TStart, FairTrackParH* TEnd, int PDG);
-    virtual bool Propagate(FairTrackParP* TStart, FairTrackParH* TEnd, int PDG);
-    virtual bool Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, int PDG);
-    virtual bool Propagate(FairTrackParH* TStart, FairTrackParP* TEnd, int PDG);
-    virtual bool Propagate(float* x1, float* p1, float* x2, float* p2, int PDG);
-
     /**New method to set the plane to propagate particles to
      @v0 v1 v2  Plane defining vectors
     */
@@ -100,17 +94,15 @@ class FairRKPropagator : public FairPropagator
     */
     virtual bool SetPropagateOnlyParameters() {return true;}
 
-    /**New method to propagate particle to specific plane
-     @PDG       Particle code
-     @TStart    Start parameter, containing position and momentum with their corresponding errors
-     @v0 v1 v2  Plane defining vectors
-     @TEnd      End parameter, to be filled by the function
-    */
-    virtual void PropagateToPlane(int PDG, FairTrackParP* TStart, TVector3& v0, TVector3& v1, TVector3& v2, FairTrackParP* TEnd);
+    virtual bool Propagate(FairTrackParH* TStart, FairTrackParH* TEnd, int PDG);
+    virtual bool Propagate(FairTrackParP* TStart, FairTrackParH* TEnd, int PDG);
+    virtual bool Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, int PDG);
+    virtual bool Propagate(FairTrackParH* TStart, FairTrackParP* TEnd, int PDG);
+    virtual bool Propagate(float* x1, float* p1, float* x2, float* p2, int PDG);
 
     virtual bool SetPCAPropagation(int pca, int dir = 1, FairTrackParP* par = nullptr);
 
-    virtual int FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wire1, TVector3 wire2, double maxdistance, double& Rad, TVector3& vpf, TVector3& vwi, double& Di, float& trklength);
+    virtual int FindPCA(PCASetupStruct pcastruct);
 
     virtual ~FairRKPropagator();
     ClassDef(FairRKPropagator, 2);

@@ -80,7 +80,7 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT=false)
 
     boxGen->SetThetaRange (   theta,   theta+0.01);
     boxGen->SetPRange     (momentum,momentum+0.01);
-    boxGen->SetPhiRange   (0.,360.);
+    boxGen->SetPhiRange   (0.,360.);  // 10.,10. when looking for PCA
     boxGen->SetDebug(kTRUE);
 
     primGen->AddGenerator(boxGen);
