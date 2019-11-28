@@ -9,6 +9,7 @@
 
 #include "FairField.h"                  // for FairField
 
+#include "FairTrackParH.h"
 #include "FairTrackParP.h"
 #include "TVector3.h"
 
