@@ -102,7 +102,7 @@ class FairRKPropagator : public FairPropagator
 
     virtual bool SetPCAPropagation(int pca, int dir = 1, FairTrackParP* par = nullptr);
 
-    virtual int FindPCA(PCASetupStruct pcastruct);
+    virtual PCAOutputStruct FindPCA(int PCA, int PDGCode, TVector3 Point, TVector3 Wire1, TVector3 Wire2, double MaxDistance);
 
     virtual ~FairRKPropagator();
     ClassDef(FairRKPropagator, 2);

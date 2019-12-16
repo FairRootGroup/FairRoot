@@ -610,34 +610,43 @@ bool FairGeanePro::BackTrackToVirtualPlaneAtPCA(int pca)
 //=====================
 
 int FairGeanePro::FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wire1, TVector3 wire2, double maxdistance, double& Rad, TVector3& vpf, TVector3& vwi, double& Di, float& trklength) {
-    LOG(warning) << "Function FindPCA(many parameters) depracated, it is replaced by FindPCA(PCASetupStruct).";
-    return FindPCA(PCASetupStruct{pca,PDGCode,point,wire1,wire2,maxdistance,Rad,vpf,vwi,Di,trklength});
+    LOG(warning) << "Function FindPCA(many parameters) depracated, it is replaced by PCAOutputStruct FindPCA(pca, PDGCode, point, wire1, wire2, maxdistance).";
+    PCAOutputStruct pcaoutput = FindPCA(pca,PDGCode,point,wire1,wire2,maxdistance);
+    Rad       = pcaoutput.Radius;
+    vpf       = pcaoutput.OnTrackPCA;
+    vwi       = pcaoutput.OnWirePCA;
+    Di        = pcaoutput.Distance;
+    trklength = pcaoutput.TrackLength;
+    return pcaoutput.PCAStatusFlag;
 }
 
-int FairGeanePro::FindPCA(PCASetupStruct pcastruct)
+PCAOutputStruct FairGeanePro::FindPCA(int PCA, int PDGCode, TVector3 Point, TVector3 Wire1, TVector3 Wire2, double MaxDistance)
 {
-  // find the point of closest approach of the track to a point(measured position) or to a line(wire)
+    // find the point of closest approach of the track to a point(measured position) or to a line(wire)
 
-  // INPUT ----------------------------------------
-  // .. pca = ic = 1 closest approach to point
-  //        = 2 closest approach to wire
-  //        = 0 no closest approach
-  // .. PDGCode = pdg code of the particle
-  // .. point point with respect to which calculate the closest approach
-  // .. wire, wire2 line with respect to which calculate the closest approach
-  // .. maxdistance = geometrical distance[start - point/wire extr] * 2
-  // OUTPUT ----------------------------------------
-  // .. Rad radius if the found circle
-  // .. vpf: point of closest approach on track
-  // .. vwi: point of closest approach on wire
-  // .. Di : distance between track and wire in the PCA
-  // .. trklength : track length to add to the GEANE one
+    // INPUT ----------------------------------------
+    // .. pca = ic = 1 closest approach to point
+    //        = 2 closest approach to wire
+    //        = 0 no closest approach
+    // .. PDGCode = pdg code of the particle
+    // .. point point with respect to which calculate the closest approach
+    // .. wire, wire2 line with respect to which calculate the closest approach
+    // .. maxdistance = geometrical distance[start - point/wire extr] * 2
+    // OUTPUT STRUCT ----------------------------------------
+    // .. PCAStatusFlag 0 by success, else otherwise
+    // .. Radius      : radius if the found circle
+    // .. OnTrackPCA  : point of closest approach on track
+    // .. OnWirePCA   : point of closest approach on wire
+    // .. Distance    : distance between track and wire in the PCA
+    // .. TrackLength : track length to add to the GEANE one
 
-    float pf[3] = {static_cast<float>(pcastruct.Point.X()), static_cast<float>(pcastruct.Point.Y()), static_cast<float>(pcastruct.Point.Z())};
-    float w1[3] = {static_cast<float>(pcastruct.Wire1.X()), static_cast<float>(pcastruct.Wire1.Y()), static_cast<float>(pcastruct.Wire1.Z())};
-    float w2[3] = {static_cast<float>(pcastruct.Wire2.X()), static_cast<float>(pcastruct.Wire2.Y()), static_cast<float>(pcastruct.Wire2.Z())};
+    PCAOutputStruct pcastruct;
 
-    GeantCode=fdbPDG->ConvertPdgToGeant3(pcastruct.PDGCode);
+    float pf[3] = {static_cast<float>(Point.X()), static_cast<float>(Point.Y()), static_cast<float>(Point.Z())};
+    float w1[3] = {static_cast<float>(Wire1.X()), static_cast<float>(Wire1.Y()), static_cast<float>(Wire1.Z())};
+    float w2[3] = {static_cast<float>(Wire2.X()), static_cast<float>(Wire2.Y()), static_cast<float>(Wire2.Z())};
+
+    GeantCode=fdbPDG->ConvertPdgToGeant3(PDGCode);
 
     // flags Rotondi's function
     int flg=0;
@@ -673,19 +682,19 @@ int FairGeanePro::FindPCA(PCASetupStruct pcastruct)
     po3[1]=0;
     po3[2]=0;
 
-    gMC3->SetClose(pcastruct.PCA,pf,dst,w1,w2,po1,po2,po3,cl);
+    gMC3->SetClose(PCA,pf,dst,w1,w2,po1,po2,po3,cl);
 
   // maximum distance calculated 2 * geometric distance
   // start point - end point (the point to which we want
   // to find the PCA)
-  float stdlength[1] = {static_cast<float>(pcastruct.MaxDistance)};
+  float stdlength[1] = {static_cast<float>(MaxDistance)};
 
   gMC3->Eufill(1, ein, stdlength);
 
   //check needed for low momentum tracks
   gMC3->Ertrak(x1,p1,x2,p2,GeantCode, fPropOption.Data());
-  if(x2[0]<-1.E29) { return 1; }
-  if(gMC3->IsTrackOut()) { return 1; }
+  if(x2[0]<-1.E29) { return pcastruct; }
+  if(gMC3->IsTrackOut()) { return pcastruct; }
   gMC3->GetClose(po1,po2,po3,clen);
 
   // check on cases when only two steps are performed!
@@ -698,14 +707,14 @@ int FairGeanePro::FindPCA(PCASetupStruct pcastruct)
     po1[2] = po2[2];
   }
 
-  if(pcastruct.PCA == 1) {
+  if(PCA == 1) {
     if((po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2])
         || (po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])) {
       int quitFlag=0;
       Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),pcastruct.OnTrackPCA,pcastruct.Distance,Le,quitFlag);
       if(quitFlag!=0) {
           if(fPrintErrors) { LOG(warning) << "FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
-        return 1;
+        return pcastruct;
       } //abort
     } else {
       Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(pf),pcastruct.OnTrackPCA,flg,pcastruct.Distance,Le,pcastruct.Radius);
@@ -714,17 +723,17 @@ int FairGeanePro::FindPCA(PCASetupStruct pcastruct)
         Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(pf),pcastruct.OnTrackPCA,pcastruct.Distance,Le,quitFlag);
         if(quitFlag!=0) {
           if(fPrintErrors) { LOG(warning) << "FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
-          return 1;
+          return pcastruct;
         } //abort
       } else if(flg==2) {
         if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track3ToPoint flg " << flg << " ABORT"; }
-        return 1;
+        return pcastruct;
       } //abort
     }
     // if the propagation to closest approach to a POINT  is performed
     // vwi is the point itself (with respect to which the PCA is calculated)
-    pcastruct.OnWirePCA = pcastruct.Point;
-  } else if(pcastruct.PCA == 2) {
+    pcastruct.OnWirePCA = Point;
+  } else if(PCA == 2) {
     if((po1[0] == po2[0] && po1[1] == po2[1] && po1[2] == po2[2])
         || (po2[0] == po3[0] && po2[1] == po3[1] && po2[2] == po3[2])) {
       Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
@@ -737,11 +746,11 @@ int FairGeanePro::FindPCA(PCASetupStruct pcastruct)
         Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),pcastruct.OnTrackPCA,pcastruct.Distance,Le,quitFlag);
         if(quitFlag!=0) {
           if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
-          return 1;
+          return pcastruct;
         } //abort
       } else if(flg==2) {
         if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track2ToLine flg " << flg << " ABORT"; }
-        return 1;
+        return pcastruct;
       }
     } else {
       Track3ToLine(TVector3(po1),TVector3(po2),TVector3(po3),
@@ -757,11 +766,11 @@ int FairGeanePro::FindPCA(PCASetupStruct pcastruct)
           Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),pcastruct.OnTrackPCA,pcastruct.Distance,Le,quitFlag);
           if(quitFlag!=0) {
             if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
-            return 1;
+            return pcastruct;
           } //abort
         } else if(flg==2) {
           if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track2ToLine flg " << flg << " ABORT"; }
-          return 1;
+          return pcastruct;
         }
       } else if(flg==2) {
         dist1 = (pcastruct.OnWirePCA-TVector3(w1)).Mag();
@@ -771,7 +780,7 @@ int FairGeanePro::FindPCA(PCASetupStruct pcastruct)
         Track3ToPoint(TVector3(po1),TVector3(po2),TVector3(po3),TVector3(w2),pcastruct.OnTrackPCA,flg,pcastruct.Distance,Le,pcastruct.Radius);
         if(flg==2) {
           if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track3ToLine flg " << flg << " ABORT"; }
-          return 1;
+          return pcastruct;
         } //abort
       } else if(flg==3) {
         dist1 = (pcastruct.OnWirePCA-TVector3(w1)).Mag();
@@ -781,14 +790,14 @@ int FairGeanePro::FindPCA(PCASetupStruct pcastruct)
         Track2ToPoint(TVector3(po1),TVector3(po3),TVector3(w2),pcastruct.OnTrackPCA,pcastruct.Distance,Le,quitFlag);
         if(quitFlag!=0) {
           if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track2ToPoint quitFlag " << quitFlag << " ABORT"; }
-          return 1;
+          return pcastruct;
         } //abort
       } else if(flg==4) {
         Track2ToLine(TVector3(po1),TVector3(po3),TVector3(w1),
                      TVector3(w2),pcastruct.OnTrackPCA,pcastruct.OnWirePCA,flg,pcastruct.Distance,Le);
         if(flg==2) {
           if(fPrintErrors) { LOG(warning)<<"FairGeanePro:FindPCA: Track2ToLine flg " << flg << " ABORT"; }
-          return 1;
+          return pcastruct;
         }
       }
 
@@ -800,10 +809,11 @@ int FairGeanePro::FindPCA(PCASetupStruct pcastruct)
   pcastruct.TrackLength = clen[0]+Le;
 
   // PCA before starting point
-  if(pcastruct.TrackLength<0) { return 1; }
+  if(pcastruct.TrackLength<0) { return pcastruct; }
   flag = flg;
 
-  return 0;
+  pcastruct.PCAStatusFlag = 0;
+  return pcastruct;
 }
 
 void FairGeanePro::Track2ToLine( TVector3 X1,  TVector3 X2,  TVector3 w1,
