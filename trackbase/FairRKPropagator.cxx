@@ -214,7 +214,7 @@ bool FairRKPropagator::SetPCAPropagation(int pca, int dir, FairTrackParP* par) {
 
 //______________________________________________________________________________
 PCAOutputStruct FairRKPropagator::FindPCA(int PCA, int PDGCode, TVector3 Point, TVector3 Wire1, TVector3 Wire2, double MaxDistance) {
-    PCAOutputStruct pcastruct;
+    PCAOutputStruct pcastruct = PCAOutputStruct();
 
     if ( PCA != 1 && PCA != 2 ) {
         LOG(info) << "FairRKPropagator::FindPCA implemented for point (pca=1) and wire (pca=2) only";

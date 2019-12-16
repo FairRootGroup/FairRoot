@@ -31,7 +31,9 @@ struct PCAOutputStruct {
     // .. OnWirePCA   : point of closest approach on wire
     // .. Distance    : distance between track and wire in the PCA
     // .. TrackLength : track length to add to the GEANE one
-    int             PCAStatusFlag = 1;
+    PCAOutputStruct() : PCAStatusFlag(1), Radius(0.), OnTrackPCA(TVector3(0.,0.,0.)), OnWirePCA(TVector3(0.,0.,0.)), Distance(0.), TrackLength(0.){
+    }
+    int             PCAStatusFlag;
     double          Radius;
     TVector3        OnTrackPCA;
     TVector3        OnWirePCA;
