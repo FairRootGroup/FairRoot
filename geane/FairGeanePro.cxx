@@ -640,7 +640,7 @@ PCAOutputStruct FairGeanePro::FindPCA(int PCA, int PDGCode, TVector3 Point, TVec
     // .. Distance    : distance between track and wire in the PCA
     // .. TrackLength : track length to add to the GEANE one
 
-    PCAOutputStruct pcastruct;
+    PCAOutputStruct pcastruct = PCAOutputStruct();
 
     float pf[3] = {static_cast<float>(Point.X()), static_cast<float>(Point.Y()), static_cast<float>(Point.Z())};
     float w1[3] = {static_cast<float>(Wire1.X()), static_cast<float>(Wire1.Y()), static_cast<float>(Wire1.Z())};
