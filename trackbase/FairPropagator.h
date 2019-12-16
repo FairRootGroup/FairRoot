@@ -23,32 +23,20 @@ class FairTrackPar;
 class FairTrackParH;
 class FairTrackParP;
 
-struct PCASetupStruct {
-    // INPUT ----------------------------------------
-    // .. pca = ic = 1 closest approach to point
-    //        = 2 closest approach to wire
-    //        = 0 no closest approach
-    // .. PDGCode = pdg code of the particle
-    // .. point point with respect to which calculate the closest approach
-    // .. wire, wire2 line with respect to which calculate the closest approach
-    // .. maxdistance = geometrical distance[start - point/wire extr] * 2
-    // OUTPUT ----------------------------------------
-    // .. Rad radius if the found circle
-    // .. vpf: point of closest approach on track
-    // .. vwi: point of closest approach on wire
-    // .. Di : distance between track and wire in the PCA
-    // .. trklength : track length to add to the GEANE one
-    int             PCA;
-    int             PDGCode;
-    TVector3 Point;
-    TVector3 Wire1;
-    TVector3 Wire2;
-    double          MaxDistance;
-    double&         Radius;
-    TVector3&       OnTrackPCA;
-    TVector3&       OnWirePCA;
-    double&         Distance;
-    float&          TrackLength;
+struct PCAOutputStruct {
+    // OUTPUT STRUCT ----------------------------------------
+    // .. PCAStatusFlag 0 by success, else otherwise
+    // .. Radius      : radius if the found circle
+    // .. OnTrackPCA  : point of closest approach on track
+    // .. OnWirePCA   : point of closest approach on wire
+    // .. Distance    : distance between track and wire in the PCA
+    // .. TrackLength : track length to add to the GEANE one
+    int             PCAStatusFlag = 1;
+    double          Radius;
+    TVector3        OnTrackPCA;
+    TVector3        OnWirePCA;
+    double          Distance;
+    float           TrackLength;
 };
 
 class FairPropagator : public TNamed
@@ -105,7 +93,15 @@ class FairPropagator : public TNamed
     // .. par = initial track parameters
     virtual bool SetPCAPropagation(int pca, int dir = 1, FairTrackParP* par = nullptr) { return kTRUE; }
 
-    virtual int FindPCA(PCASetupStruct pcastruct) { return 1; }
+    // INPUT ----------------------------------------
+    // .. pca = ic = 1 closest approach to point
+    //        = 2 closest approach to wire
+    //        = 0 no closest approach
+    // .. PDGCode = pdg code of the particle
+    // .. point point with respect to which calculate the closest approach
+    // .. wire, wire2 line with respect to which calculate the closest approach
+    // .. maxdistance = geometrical distance[start - point/wire extr] * 2
+    virtual PCAOutputStruct FindPCA(int PCA, int PDGCode, TVector3 Point, TVector3 Wire1, TVector3 Wire2, double MaxDistance) { return PCAOutputStruct(); }
 
     ClassDef(FairPropagator, 1)
 };

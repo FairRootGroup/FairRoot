@@ -213,29 +213,30 @@ bool FairRKPropagator::SetPCAPropagation(int pca, int dir, FairTrackParP* par) {
 }
 
 //______________________________________________________________________________
-int FairRKPropagator::FindPCA(PCASetupStruct pcastruct) {
+PCAOutputStruct FairRKPropagator::FindPCA(int PCA, int PDGCode, TVector3 Point, TVector3 Wire1, TVector3 Wire2, double MaxDistance) {
+    PCAOutputStruct pcastruct;
 
-    if ( pcastruct.PCA != 1 && pcastruct.PCA != 2 ) {
+    if ( PCA != 1 && PCA != 2 ) {
         LOG(info) << "FairRKPropagator::FindPCA implemented for point (pca=1) and wire (pca=2) only";
-        return 1;
+        return pcastruct;
     }
-    double charge = GetChargeFromPDG(pcastruct.PDGCode);
+    double charge = GetChargeFromPDG(PDGCode);
     double momIn  = fPCAPropagationDir* // if set to -1, it will back propagate
         TMath::Sqrt(fPCAPropagationPar->GetPx()*fPCAPropagationPar->GetPx()+
                     fPCAPropagationPar->GetPy()*fPCAPropagationPar->GetPy()+
                     fPCAPropagationPar->GetPz()*fPCAPropagationPar->GetPz());
-    if ( momIn == 0. ) return 1;
+    if ( momIn == 0. ) return pcastruct;
     double vecIn[7] = {fPCAPropagationPar->GetX(),        fPCAPropagationPar->GetY(),        fPCAPropagationPar->GetZ(),
                        fPCAPropagationPar->GetPx()/momIn, fPCAPropagationPar->GetPy()/momIn, fPCAPropagationPar->GetPz()/momIn,
                        momIn};
 
     double diff;
-    if ( pcastruct.PCA == 1 )
-        diff = sqrt((vecIn[0]-pcastruct.Point.X())*(vecIn[0]-pcastruct.Point.X())+
-                    (vecIn[1]-pcastruct.Point.Y())*(vecIn[1]-pcastruct.Point.Y())+
-                    (vecIn[2]-pcastruct.Point.Z())*(vecIn[2]-pcastruct.Point.Z()));
-    else //if ( pcastruct.PCA == 2 )
-        diff = CalculatePointToWireDistance(TVector3(fPCAPropagationPar->GetX(), fPCAPropagationPar->GetY(), fPCAPropagationPar->GetZ()), pcastruct.Wire1, pcastruct.Wire2, pcastruct.OnWirePCA);
+    if ( PCA == 1 )
+        diff = sqrt((vecIn[0]-Point.X())*(vecIn[0]-Point.X())+
+                    (vecIn[1]-Point.Y())*(vecIn[1]-Point.Y())+
+                    (vecIn[2]-Point.Z())*(vecIn[2]-Point.Z()));
+    else //if ( PCA == 2 )
+        diff = CalculatePointToWireDistance(TVector3(fPCAPropagationPar->GetX(), fPCAPropagationPar->GetY(), fPCAPropagationPar->GetZ()), Wire1, Wire2, pcastruct.OnWirePCA);
 
     fMaxStep = diff/25;
     double res_old= diff;
@@ -250,12 +251,12 @@ int FairRKPropagator::FindPCA(PCASetupStruct pcastruct) {
     do {
         double stepLength = Step(charge,vecIn,vecOut);
         double newDiff;
-        if ( pcastruct.PCA == 1 )
-            newDiff = sqrt((vecOut[0]-pcastruct.Point.X())*(vecOut[0]-pcastruct.Point.X())+
-                           (vecOut[1]-pcastruct.Point.Y())*(vecOut[1]-pcastruct.Point.Y())+
-                           (vecOut[2]-pcastruct.Point.Z())*(vecOut[2]-pcastruct.Point.Z()));
-        else //if ( pcastruct.PCA == 2 )
-            newDiff = CalculatePointToWireDistance(TVector3(vecOut[0], vecOut[1], vecOut[2]), pcastruct.Wire1, pcastruct.Wire2, pcastruct.OnWirePCA);
+        if ( PCA == 1 )
+            newDiff = sqrt((vecOut[0]-Point.X())*(vecOut[0]-Point.X())+
+                           (vecOut[1]-Point.Y())*(vecOut[1]-Point.Y())+
+                           (vecOut[2]-Point.Z())*(vecOut[2]-Point.Z()));
+        else //if ( PCA == 2 )
+            newDiff = CalculatePointToWireDistance(TVector3(vecOut[0], vecOut[1], vecOut[2]), Wire1, Wire2, pcastruct.OnWirePCA);
 
         res=newDiff/diff;
         if( TMath::Abs(res)< 0.01 || res >res_old ) {
@@ -276,13 +277,14 @@ int FairRKPropagator::FindPCA(PCASetupStruct pcastruct) {
     pcastruct.OnTrackPCA.SetY(vecOut[1]);
     pcastruct.OnTrackPCA.SetZ(vecOut[2]);
 
-    if ( pcastruct.PCA == 1 )
-        pcastruct.Distance = sqrt((vecOut[0]-pcastruct.Point.X())*(vecOut[0]-pcastruct.Point.X())+
-                                  (vecOut[1]-pcastruct.Point.Y())*(vecOut[1]-pcastruct.Point.Y())+
-                                  (vecOut[2]-pcastruct.Point.Z())*(vecOut[2]-pcastruct.Point.Z()));
+    if ( PCA == 1 )
+        pcastruct.Distance = sqrt((vecOut[0]-Point.X())*(vecOut[0]-Point.X())+
+                                  (vecOut[1]-Point.Y())*(vecOut[1]-Point.Y())+
+                                  (vecOut[2]-Point.Z())*(vecOut[2]-Point.Z()));
     else //if ( pcastruct.PCA == 2 )
-        pcastruct.Distance = CalculatePointToWireDistance(TVector3(vecOut[0], vecOut[1], vecOut[2]), pcastruct.Wire1, pcastruct.Wire2, pcastruct.OnWirePCA);
-    return 0;
+        pcastruct.Distance = CalculatePointToWireDistance(TVector3(vecOut[0], vecOut[1], vecOut[2]), Wire1, Wire2, pcastruct.OnWirePCA);
+    pcastruct.PCAStatusFlag = 0;
+    return pcastruct;
 }
 //______________________________________________________________________________
 

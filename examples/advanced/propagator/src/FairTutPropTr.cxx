@@ -170,20 +170,18 @@ void FairTutPropTr::Exec(Option_t*) {
         fPro->Propagate(fStart, fWro, -PDGCode);
 
         /*
-        LOG(info) << "SetPCAPropagation from " << fFinal->GetX() << ", " << fFinal->GetY() << ", " << fFinal->GetZ() << " / " << fFinal->GetPx() << ", " << fFinal->GetPy() << ", " << fFinal->GetPz();
+        LOG(info) << "SetPCAPropagation from " << fFinal->GetX() << ", " << fFinal->GetY() << ", " << fFinal->GetZ()
+                  << " / " << fFinal->GetPx() << ", " << fFinal->GetPy() << ", " << fFinal->GetPz();
         fPro->SetPCAPropagation(1,-1,fFinal);
-        double Rad;
-        TVector3 vpf(0.,0.,0.);
-        TVector3 vwi(0.,0.,0.);
-        double Di;
-        float trklength;
         LOG(info) << "FindPCA";
-        int findpca = fPro->FindPCA(PCASetupStruct{1, PDGCode, TVector3(2.5,0.5,15.), TVector3(0.,0.,0.), TVector3(0.,0.,0.), 15., Rad, vpf,  vwi, Di, trklength});
-        LOG(info) << "findpca = " << findpca << " with distance " << Di << ", closest point at (" << vpf.X() << "," << vpf.Y() << "," << vpf.Z() << ")";
+        PCAOutputStruct pcaToPoint = fPro->FindPCA(1, PDGCode, TVector3(2.5,0.5,15.), TVector3(0.,0.,0.), TVector3(0.,0.,0.), 15.);
+        LOG(info) << "findpca = " << pcaToPoint.PCAStatusFlag << " with distance " << pcaToPoint.Distance
+                  << ", closest point at (" << pcaToPoint.OnTrackPCA.X() << "," << pcaToPoint.OnTrackPCA.Y() << "," << pcaToPoint.OnTrackPCA.Z() << ")";
 
-        //int findpca = fPro->FindPCA(PCASetupStruct{2, PDGCode, TVector3(0.,0.,0.), TVector3(-10.,-10.,15.), TVector3(10.,10.,15.), 15., Rad, vpf,  vwi, Di, trklength});
-        //LOG(info) << "findpca = " << findpca << " with distance " << Di << ", closest point at (" << vpf.X() << "," << vpf.Y() << "," << vpf.Z() << ")"
-        //          << ", on the wire (" << vwi.X() << "," << vwi.Y() << "," << vwi.Z() << ")";
+        PCAOutputStruct pcaToWire = fPro->FindPCA(2, PDGCode, TVector3(0.,0.,0.), TVector3(-10.,-10.,15.), TVector3(10.,10.,15.), 15.);
+        LOG(info) << "findpca = " << pcaToWire.PCAStatusFlag << " with distance " << pcaToWire.Distance
+                  << ", closest point at (" << pcaToWire.OnTrackPCA.X() << "," << pcaToWire.OnTrackPCA.Y() << "," << pcaToWire.OnTrackPCA.Z() << ")"
+                  << ", on the wire (" << pcaToWire.OnWirePCA.X() << "," << pcaToWire.OnWirePCA.Y() << "," << pcaToWire.OnWirePCA.Z() << ")";
         */
     }
 }
