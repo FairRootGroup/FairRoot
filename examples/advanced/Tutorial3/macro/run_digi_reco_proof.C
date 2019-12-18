@@ -31,7 +31,7 @@ void run_digi_reco_proof(Int_t nofFiles, TString mcEngine="TGeant3" )
   TStopwatch timer;
 
   // -----   Reconstruction run   -------------------------------------------
-  FairRunAnaProof *fRun= new FairRunAnaProof("");
+  FairRunAnaProof *fRun= new FairRunAnaProof("workers=4");
   TString inFile=Form("file://%s/data/testrun_%s_f%d.root",workDir.Data(),mcEngine.Data(),0);
   if ( nofFiles == 1 )
       inFile=Form("file://%s/data/testrun_%s.root",workDir.Data(),mcEngine.Data());
