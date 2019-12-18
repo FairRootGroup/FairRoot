@@ -2,6 +2,12 @@
 
 source @CMAKE_BINARY_DIR@/config.sh -p
 
+echo "*********************************************************************"
+pwd
+echo "*********************************************************************"
+ps -fea
+echo "*********************************************************************"
+
 MAXINDEX="--max-index -1"
 TRANSPORT="--transport zeromq"
 VERBOSE="--severity INFO"
@@ -99,6 +105,9 @@ else
 fi
 ###########################
 
+echo "*********************************************************************"
+echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b $INPUTFILE | tail -1
+echo "*********************************************************************"
 
 
 ########################### Start the chain of the devices
@@ -107,16 +116,16 @@ fi
 ########################## start Parameter server
 SERVER="@fairroot_bin_dir@/"
 SERVER+="parmq-server $TRANSPORT"
-SERVER+=" --id pixDet-parmq-server --channel-config name=param,type=rep,method=bind,rateLogging=0,address=tcp://*:5105"
+SERVER+=" --id pixDet-parmq-server --channel-config name=param,type=rep,method=bind,rateLogging=0,address=tcp://*:5405"
 SERVER+=" --channel-name param --first-input-name $ROOTPARAM --second-input-name $ASCIIPARAM --second-input-type ASCII $CONTROL"
 
 ########################## start SAMPLER
 SAMPLER="@pixel_bin_dir@/"
 SAMPLER+="pixel-sampler $TRANSPORT"
 SAMPLER+=" --id pixDet-sampler1 --severity info"
-SAMPLER+=" --channel-config name=data-out,type=push,method=bind,rateLogging=1,address=tcp://*:5106"
+SAMPLER+=" --channel-config name=data-out,type=push,method=bind,rateLogging=1,address=tcp://*:5406"
 if [ "$COMMAND" == "static" ]; then
-    SAMPLER+=" --ack-channel ack --channel-config name=ack,type=pull,method=bind,rateLogging=0,address=tcp://*:5108"
+    SAMPLER+=" --ack-channel ack --channel-config name=ack,type=pull,method=bind,rateLogging=0,address=tcp://*:5408"
 fi
 SAMPLER+=" --file-name $INPUTFILE --branch-name $INPUTBRANCH --branch-name EventHeader. $MAXINDEX $CONTROL"
 
@@ -124,9 +133,9 @@ SAMPLER+=" --file-name $INPUTFILE --branch-name $INPUTBRANCH --branch-name Event
 PROCESSOR="@pixel_bin_dir@/"
 PROCESSOR+="pixel-processor $TRANSPORT"
 PROCESSOR+=" $VERBOSE"
-PROCESSOR+=" --channel-config name=param,type=req,method=connect,rateLogging=0,address=tcp://localhost:5105"
-PROCESSOR+=" --channel-config name=data-in,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5106"
-PROCESSOR+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5107"
+PROCESSOR+=" --channel-config name=param,type=req,method=connect,rateLogging=0,address=tcp://localhost:5405"
+PROCESSOR+=" --channel-config name=data-in,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5406"
+PROCESSOR+=" --channel-config name=data-out,type=push,method=connect,rateLogging=1,address=tcp://localhost:5407"
 PROCESSOR+=" $FAIRTASKNAME $CONTROL"
 
 for (( i=0 ; i<$NOFPROCESSORS ; i++ ))
@@ -137,9 +146,9 @@ done
 ########################## start FILESINK
 FILESINK="@pixel_bin_dir@/"
 FILESINK+="pixel-sink $TRANSPORT"
-FILESINK+=" --id pixDet-sink1 --channel-config name=data-in,type=pull,method=bind,rateLogging=1,address=tcp://*:5107"
+FILESINK+=" --id pixDet-sink1 --channel-config name=data-in,type=pull,method=bind,rateLogging=1,address=tcp://*:5407"
 if [ "$COMMAND" == "static" ]; then
-    FILESINK+=" --ack-channel ack --channel-config name=ack,type=push,method=connect,rateLogging=0,address=tcp://localhost:5108"
+    FILESINK+=" --ack-channel ack --channel-config name=ack,type=push,method=connect,rateLogging=0,address=tcp://localhost:5408"
 fi
 FILESINK+=" --file-name $OUTPUTFILE $CONTROL"
 

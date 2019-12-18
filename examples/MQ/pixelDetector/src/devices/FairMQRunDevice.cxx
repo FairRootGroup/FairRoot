@@ -101,9 +101,8 @@ void FairMQRunDevice::SendBranches()
             }
         }
         if ( parts.Size() > 0 ) {
-            mtx.lock();
+            std::unique_lock<std::mutex> lock(mtx);
             Send(parts,mi.first.data());
-            mtx.unlock();
         }
     }
 }

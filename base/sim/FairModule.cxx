@@ -557,14 +557,15 @@ void FairModule::ConstructASCIIGeometry()
 
 Bool_t FairModule::CheckIfSensitive(std::string)
 {
-    LOG(warn)<<"Implement IsSensitive in the detector class which inherits from FairModule";
+    LOG(warn)<<"The method CheckIfSensitive is deprecated. Use IsSensitive.";
     return kFALSE;
 }
 
 //__________________________________________________________________________
 Bool_t FairModule::IsSensitive(const std::string& name)
 {
-    LOG(warn)<<"The method CheckIfSensitive is deprecated. Use IsSensitive.";
+    LOG(warn)<<"Implement IsSensitive in the detector class which inherits from FairModule";
+    LOG(warn)<<"For now calling the obsolete function CheckIfSensitive";
     return CheckIfSensitive(name);
 }
 
