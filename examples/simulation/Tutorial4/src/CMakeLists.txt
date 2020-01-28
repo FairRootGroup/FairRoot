@@ -27,7 +27,7 @@ set(sources
   tools/Mille.cc
 )
 
-if(ROOT_HAS_OPENGL)
+if(${ROOT_HAS_OPENGL})
   list(APPEND sources
     display/FairTutorialDet4PointDraw.cxx
   )
@@ -63,7 +63,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::GeoBase
   FairRoot::ParBase
   FairRoot::Gen
-  FairRoot::EventDisplay
+  $<$<BOOL:${ROOT_HAS_OPENGL}>:FairRoot::EventDisplay>
 
   Core
   Physics

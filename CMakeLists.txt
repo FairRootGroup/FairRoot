@@ -308,11 +308,14 @@ If(Geant3_FOUND)
  add_subdirectory(trackbase)
 EndIf ()
 
-execute_process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --has-opengl OUTPUT_VARIABLE ROOT_HAS_OPENGL)
-if(${ROOT_HAS_OPENGL} MATCHES "yes")
+execute_process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --has-opengl OUTPUT_VARIABLE
+    ROOT_HAS_OPENGL_VAR)
+if(${ROOT_HAS_OPENGL_VAR} MATCHES "yes")
   add_subdirectory(eventdisplay)
+  Set(ROOT_HAS_OPENGL TRUE)
 else()
   message(STATUS "eventdisplay will not be built, because ROOT has no opengl support.")
+  Set(ROOT_HAS_OPENGL FALSE)
 endif()
 
 add_subdirectory(MbsAPI)
