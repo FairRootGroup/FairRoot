@@ -127,9 +127,10 @@ TClonesArray* FairTSBufferFunctional::GetData(Double_t stopParameter)
 TClonesArray* FairTSBufferFunctional::GetData(Double_t startParameter, Double_t stopParameter)
 {
   if (fStartFunction != 0) {
-    fBufferArray->Clear();
+    fBufferArray->Delete();
+    fOutputArray->Delete();
     Int_t startIndex = FindStartIndex(startParameter);
-    std::cout << "StartIndex: " << startIndex << "/" << GetBranchIndex() << std::endl;
+//    std::cout << "StartParameter : " << startParameter << " StartIndex: " << startIndex << "/" << GetBranchIndex() << " size BufferArray " << fBufferArray->GetEntries() <<std::endl;
     if (startIndex > -1) {
       ReadInEntry(fBranchIndex);
       fBufferArray->AbsorbObjects(fInputArray, startIndex, fInputArray->GetEntries() -1);
