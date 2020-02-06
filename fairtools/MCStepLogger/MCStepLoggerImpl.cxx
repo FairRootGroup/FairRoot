@@ -148,7 +148,7 @@ extern "C" void dispatchStepping(FairMCApplication* app, char const* libname, ch
     assert(symbolAddress);
     // hack since C++ does not allow casting to C++ member function pointers
     // thanks to gist.github.com/mooware/1174572
-    memcpy(&origMethod, &symbolAddress, sizeof(&symbolAddress));
+    memcpy(&origMethod, &symbolAddress, sizeof(symbolAddress));
   }
   (app->*origMethod)();
 }
@@ -181,7 +181,7 @@ extern "C" void dispatchFinishEvent(FairMCApplication* app, char const* libname,
     assert(symbolAddress);
     // hack since C++ does not allow casting to C++ member function pointers
     // thanks to gist.github.com/mooware/1174572
-    memcpy(&origMethod, &symbolAddress, sizeof(&symbolAddress));
+    memcpy(&origMethod, &symbolAddress, sizeof(symbolAddress));
   }
   (app->*origMethod)();
 }
@@ -214,7 +214,7 @@ extern "C" void dispatchFinishRun(FairMCApplication* app, char const* libname, c
     assert(symbolAddress);
     // hack since C++ does not allow casting to C++ member function pointers
     // thanks to gist.github.com/mooware/1174572
-    memcpy(&origMethod, &symbolAddress, sizeof(&symbolAddress));
+    memcpy(&origMethod, &symbolAddress, sizeof(symbolAddress));
   }
   (app->*origMethod)();
 }
