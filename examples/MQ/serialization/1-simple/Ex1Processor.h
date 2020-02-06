@@ -38,7 +38,7 @@ class Ex1Processor : public FairMQDevice
         int receivedMsgs = 0;
         int sentMsgs = 0;
 
-        while (CheckCurrentState(RUNNING))
+        while (!NewStatePending())
         {
             /// RECEIVE ///
             FairMQMessagePtr msgIn(NewMessageFor("data1", 0));

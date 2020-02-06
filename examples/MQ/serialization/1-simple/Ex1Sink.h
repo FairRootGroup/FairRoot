@@ -56,7 +56,7 @@ class Ex1Sink : public FairMQDevice
     virtual void Run()
     {
         int receivedMsgs = 0;
-        while (CheckCurrentState(RUNNING))
+        while (!NewStatePending())
         {
             FairMQMessagePtr msg(NewMessage());
             if (Receive(msg, "data2") > 0)

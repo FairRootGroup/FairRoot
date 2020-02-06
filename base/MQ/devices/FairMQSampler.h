@@ -189,7 +189,7 @@ class FairMQSampler : public FairMQDevice
                 ++numAcks;
             }
 
-            if (!CheckCurrentState(RUNNING))
+            if (NewStatePending())
             {
                 break;
             }

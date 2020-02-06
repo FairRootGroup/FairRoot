@@ -155,8 +155,8 @@ void FairMQSimDevice::UpdateParameterServer()
 
 void FairMQSimDevice::SendBranches()
 {
-  if (!CheckCurrentState(RUNNING)) {
-    fRunSim->StopMCRun();
-  }
-  FairMQRunDevice::SendBranches();
+    if ( NewStatePending() ) {
+        fRunSim->StopMCRun();
+    }
+    FairMQRunDevice::SendBranches();
 }

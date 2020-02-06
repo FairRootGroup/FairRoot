@@ -49,7 +49,7 @@ class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPol
     virtual void Run()
     {
         int receivedMsg = 0;
-        while (CheckCurrentState(RUNNING))
+        while (!NewStatePending())
         {
             std::unique_ptr<FairMQMessage> msg(NewMessage());
             if (Receive(msg, fInputChanName) > 0)

@@ -210,7 +210,7 @@ if(NOT DEFINED GTEST_ROOT)
   set(GTEST_ROOT ${SIMPATH})
 endif()
 
-find_package2(PUBLIC FairMQ VERSION 1.2.3)
+find_package2(PUBLIC FairMQ VERSION 1.4.0)
 find_package2(PUBLIC DDS)
 
 If(FAIRSOFT_EXTERN)
