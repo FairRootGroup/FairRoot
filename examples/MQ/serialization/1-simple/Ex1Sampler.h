@@ -70,7 +70,7 @@ class Ex1Sampler : public FairMQDevice
             Serialize<RootSerializer>(*msg, fInput);
             Send(msg, "data1");
             sentMsgs++;
-            if (!CheckCurrentState(RUNNING))
+            if (NewStatePending())
             {
                 break;
             }

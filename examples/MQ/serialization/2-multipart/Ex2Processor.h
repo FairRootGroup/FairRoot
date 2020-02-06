@@ -39,7 +39,7 @@ class Ex2Processor : public FairMQDevice
         int receivedMsgs = 0;
         int sentMsgs = 0;
 
-        while (CheckCurrentState(RUNNING))
+        while (!NewStatePending())
         {
             FairMQParts partsIn;
 

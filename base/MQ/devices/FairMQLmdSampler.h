@@ -146,7 +146,7 @@ class FairMQLmdSampler : public FairMQDevice
     }
     void Run()
     {
-        while (CheckCurrentState(RUNNING))//&& !fStop)
+        while (!NewStatePending())//&& !fStop)
         {
             if (1 == ReadEvent())
             {

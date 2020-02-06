@@ -110,7 +110,7 @@ class FairMQUnpacker : public FairMQDevice
     {
         FairMQChannel& inputChannel = fChannels.at(fInputChannelName).at(0);
 
-        while (CheckCurrentState(RUNNING))
+        while (!NewStatePending())
         {
             FairMQMessagePtr msgSize(NewMessage());
             FairMQMessagePtr msg(NewMessage());

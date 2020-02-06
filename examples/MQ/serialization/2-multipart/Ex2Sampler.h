@@ -89,7 +89,7 @@ class Ex2Sampler : public FairMQDevice
                 sentMsgs++;
             }
 
-            if (!CheckCurrentState(RUNNING))
+            if (NewStatePending())
             {
                 break;
             }

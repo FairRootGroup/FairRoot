@@ -59,7 +59,7 @@ class Ex2Sink : public FairMQDevice
     virtual void Run()
     {
         int receivedMsgs = 0;
-        while (CheckCurrentState(RUNNING))
+        while (!NewStatePending())
         {
             FairMQParts parts;
             if (Receive(parts, "data2") > 0)
