@@ -199,7 +199,14 @@ class FairStack : public FairGenericStack
     }
 
     /** Clone this object (used in MT mode only) */
-    virtual FairGenericStack* CloneStack() const { return new FairStack(); }
+    virtual FairGenericStack* CloneStack() const {
+        FairStack* clonedStack = new FairStack();
+        clonedStack->StoreSecondaries(fStoreSecondaries);
+        clonedStack->SetMinPoints(fMinPoints);
+        clonedStack->SetEnergyCut(fEnergyCut);
+        clonedStack->StoreMothers(fStoreMothers);
+        return clonedStack;
+    }
 
   private:
     /** STL stack (FILO) used to handle the TParticles for tracking **/
