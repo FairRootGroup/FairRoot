@@ -94,18 +94,18 @@ function(fairroot_target_root_dictionary target)
   get_property(lib_output_dir
                TARGET ${target}
                PROPERTY LIBRARY_OUTPUT_DIRECTORY)
-  # if(NOT lib_output_dir)
+  if(NOT lib_output_dir)
     set(lib_output_dir ${CMAKE_BINARY_DIR}/lib)
-  # endif()
+  endif()
 
   # Define the names of generated files
-  get_property(basename TARGET ${target} PROPERTY OUTPUT_NAME)
+  get_property(basename TARGET ${target} PROPERTY LIBRARY_OUTPUT_NAME)
   if(NOT basename)
     set(basename ${target})
   endif()
   set(dictionary G__${basename})
   set(dictionaryFile ${CMAKE_CURRENT_BINARY_DIR}/${dictionary}.cxx)
-  set(pcmBase ${dictionary}_rdict.pcm)
+  set(pcmBase lib${basename}_rdict.pcm)
   set(pcmFile ${lib_output_dir}/${pcmBase})
   set(rootmapFile ${lib_output_dir}/lib${basename}.rootmap)
 
@@ -131,12 +131,14 @@ function(fairroot_target_root_dictionary target)
   add_custom_command(
     OUTPUT ${dictionaryFile} ${pcmFile} ${rootmapFile}
     VERBATIM
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${lib_output_dir}"
     COMMAND ${CMAKE_COMMAND} -E env "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$ENV{LD_LIBRARY_PATH}"
-      ${ROOT_CINT_EXECUTABLE}
+      $<TARGET_FILE:ROOT::rootcling>
       -f ${dictionaryFile}
       -inlineInputHeader
       -rmf ${rootmapFile}
       -rml $<TARGET_FILE_NAME:${target}>
+      -s lib${basename}
       -I$<JOIN:${includeDirs},$<SEMICOLON>-I>
       $<$<BOOL:${prop}>:-D$<JOIN:${prop},$<SEMICOLON>-D>>
       ${headers}
@@ -149,12 +151,10 @@ function(fairroot_target_root_dictionary target)
   target_sources(${target} PRIVATE ${dictionaryFile})
 
   get_property(libs TARGET ${target} PROPERTY INTERFACE_LINK_LIBRARIES)
-  if(NOT RIO IN_LIST libs)
-  # if(NOT ROOT::RIO IN_LIST libs)
+  if(NOT ROOT::RIO IN_LIST libs)
     # add ROOT::IO if not already there as a target that has a Root dictionary
     # has to depend on ... Root
-    target_link_libraries(${target} PUBLIC RIO)
-    # target_link_libraries(${target} PUBLIC ROOT::RIO)
+    target_link_libraries(${target} PUBLIC ROOT::RIO)
   endif()
 
   # Get the list of include directories that will be required to compile the

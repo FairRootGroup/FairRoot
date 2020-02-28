@@ -36,7 +36,7 @@ list(APPEND headers
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
-set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+fairroot_add_standard_library_properties(${target})
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "9")
   target_compile_options(${target} PRIVATE "-Wno-stringop-overflow")
@@ -44,7 +44,7 @@ endif()
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+  $<INSTALL_INTERFACE:${PROJECT_INSTALL_INCDIR}>
 )
 
 check_symbol_exists(CLOCK_REALTIME "time.h" HAS_CLOCK_REALTIME)
@@ -58,5 +58,8 @@ target_compile_definitions(${target} PRIVATE
   $<$<BOOL:${HAS_CLOCK_REALTIME}>:_HAS_CLOCK_REALTIME>
 )
 
-install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
-install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(TARGETS ${target}
+  EXPORT ${PROJECT_EXPORT_SET}
+  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers}
+  DESTINATION ${PROJECT_INSTALL_INCDIR})
