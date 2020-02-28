@@ -6,23 +6,22 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target FairTest)
+find_library(Pythia6_LIBRARY
+  NAMES Pythia6 pythia6)
 
-set(sources
-  FairCaptureOutputNew.cxx
-  FairTestOutputHandler.cxx
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(Pythia6
+  REQUIRED_VARS Pythia6_LIBRARY
 )
 
-fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
+if(Pythia6_FOUND)
+  get_filename_component(Pythia6_LIBRARY_DIR ${Pythia6_LIBRARY} DIRECTORY)
+  get_filename_component(Pythia6_PREFIX ${Pythia6_LIBRARY_DIR}/.. ABSOLUTE)
 
-add_library(${target} SHARED ${sources} ${headers})
-add_library(FairRoot::${target} ALIAS ${target})
-fairroot_add_standard_library_properties(${target})
-
-target_include_directories(${target} PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-)
-
-target_link_libraries(${target} PUBLIC
-  GTest::GTest
-)
+  if(NOT TARGET Pythia6)
+    add_library(Pythia6 UNKNOWN IMPORTED)
+    set_target_properties(Pythia6 PROPERTIES
+      IMPORTED_LOCATION ${Pythia6_LIBRARY}
+    )
+  endif()
+endif()

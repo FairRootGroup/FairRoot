@@ -13,34 +13,30 @@ set(no_dict_sources
   devices/FairMQPixAltSamplerBin.cxx
 )
 
-fair_change_extensions_if_exists(.cxx .h FILES "${no_dict_sources}" OUTVAR no_dict_headers)
+fairroot_change_extensions_if_exists(.cxx .h FILES "${no_dict_sources}" OUTVAR no_dict_headers)
 
 list(APPEND no_dict_headers
   devices/FairMQPixAltTaskProcessorBin.h
 )
+
+fairroot_copy(HEADERS ${no_dict_headers} TO ${CMAKE_BINARY_DIR}/${PROJECT_INSTALL_INCDIR})
 
 set(sources
   PixelAltDigiWriteToRootVector.cxx
   PixelAltFindHits.cxx
 )
 
-fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
+fairroot_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
+fairroot_copy(HEADERS ${headers} TO ${CMAKE_BINARY_DIR}/${PROJECT_INSTALL_INCDIR})
 
 add_library(${target} SHARED ${sources} ${no_dict_sources} ${headers} ${no_dict_headers})
 add_library(FairRoot::${target} ALIAS ${target})
-set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+fairroot_add_standard_library_properties(${target})
 
 target_include_directories(${target} PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/${PROJECT_INSTALL_INCDIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/devices>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-
-  # TODO: DELETE ME ONCE USING root targets
-  ${ROOT_INCLUDE_DIR}
-)
-
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
+  $<INSTALL_INTERFACE:${PROJECT_INSTALL_INCDIR}>
 )
 
 target_link_libraries(${target} PUBLIC
@@ -51,12 +47,12 @@ target_link_libraries(${target} PUBLIC
   FairRoot::BaseMQ # Serialization policies
   FairMQ::FairMQ
 
-  Tree
-  RIO # TFile
-  Core
-  MathCore # Sqrt
-  Physics # TVector3
-  Geom # TGeo...
+  ROOT::Tree
+  ROOT::RIO # TFile
+  ROOT::Core
+  ROOT::MathCore # Sqrt
+  ROOT::Physics # TVector3
+  ROOT::Geom # TGeo...
 )
 
 fairroot_target_root_dictionary(${target}
@@ -64,5 +60,8 @@ fairroot_target_root_dictionary(${target}
   LINKDEF PixelAltLinkDef.h
 )
 
-install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
-install(FILES ${headers} ${no_dict_headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(TARGETS ${target}
+  EXPORT ${PROJECT_EXPORT_SET}
+  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers}
+  DESTINATION ${PROJECT_INSTALL_INCDIR})

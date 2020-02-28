@@ -16,29 +16,22 @@ set(sources
   FairMBSTask.cxx
 )
 
-fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
+fairroot_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
+fairroot_copy(HEADERS ${headers} TO ${CMAKE_BINARY_DIR}/${PROJECT_INSTALL_INCDIR})
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
-set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+fairroot_add_standard_library_properties(${target})
 
 target_include_directories(${target} PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-
-  # TODO: DELETE ME ONCE USING root targets
-  ${ROOT_INCLUDE_DIR}
-)
-
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
+  $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/${PROJECT_INSTALL_INCDIR}>
+  $<INSTALL_INTERFACE:${PROJECT_INSTALL_INCDIR}>
 )
 
 target_link_libraries(${target} PUBLIC
   FairRoot::Base
   FairRoot::FairTools # FairLogger
-
-  Core
+  ROOT::Core
 )
 
 fairroot_target_root_dictionary(${target}
@@ -46,14 +39,18 @@ fairroot_target_root_dictionary(${target}
   LINKDEF MbsTutorialLinkDef.h
 )
 
-install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
-install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(TARGETS ${target}
+  EXPORT ${PROJECT_EXPORT_SET}
+  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers}
+  DESTINATION ${PROJECT_INSTALL_INCDIR})
 install(FILES sample_data_2.lmd DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/advanced/MbsTutorial/data)
 install(FILES unpack_mbs.C DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/advanced/MbsTutorial/macros)
 
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/unpack_mbs.C)
-
-add_test(ex_unpack_mbs ${CMAKE_CURRENT_BINARY_DIR}/unpack_mbs.sh)
+add_test(NAME ex_unpack_mbs
+  COMMAND bash -c "source ${CMAKE_BINARY_DIR}/config.sh && \
+          root -b -q -l ${CMAKE_CURRENT_SOURCE_DIR}/unpack_mbs.C"
+)
 set_tests_properties(ex_unpack_mbs PROPERTIES
   TIMEOUT "30"
   PASS_REGULAR_EXPRESSION "Macro finished successfully"

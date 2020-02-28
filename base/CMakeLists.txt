@@ -5,10 +5,6 @@
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-If(Geant4_FOUND AND Geant4VMC_FOUND)
-  add_subdirectory (sim/fastsim)
-EndIf()
-
 set(target Base)
 
 set(sources
@@ -93,23 +89,16 @@ if(BUILD_MBS)
   )
 endif()
 
-fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
+fairroot_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
+fairroot_copy(HEADERS ${headers} TO ${CMAKE_BINARY_DIR}/${PROJECT_INSTALL_INCDIR})
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
-set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+fairroot_add_standard_library_properties(${target})
 
 target_include_directories(${target} PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/steer>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sim>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/event>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/field>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/source>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/sink>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-
-  # DELETE ME ONCE USING root targets
-  ${ROOT_INCLUDE_DIR}
+  $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/${PROJECT_INSTALL_INCDIR}>
+  $<INSTALL_INTERFACE:${PROJECT_INSTALL_INCDIR}>
 )
 
 target_link_libraries(${target} PUBLIC
@@ -120,26 +109,26 @@ target_link_libraries(${target} PUBLIC
   Boost::serialization
   $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
 
-  RHTTP # THttpServer
-  Core
-  EG
-  Geom
-  GeomPainter # TGeoTrack
-  Hist
-  MathCore
-  Matrix
-  Net # TSocket
-  Physics
-  Proof
-  RIO
-  Tree
-  VMC
-  $<$<BOOL:${ROOT_GDML_FOUND}>:Gdml>
+  ROOT::RHTTP # THttpServer
+  ROOT::Core
+  ROOT::EG
+  ROOT::Geom
+  ROOT::GeomPainter # TGeoTrack
+  ROOT::Hist
+  ROOT::MathCore
+  ROOT::Matrix
+  ROOT::Net # TSocket
+  ROOT::Physics
+  ROOT::Proof
+  ROOT::RIO
+  ROOT::Tree
+  ${VMC_LIB}
+  $<$<BOOL:${ROOT_gdml_FOUND}>:ROOT::Gdml>
 )
 
 target_compile_definitions(${target} PRIVATE
   $<$<BOOL:${BUILD_MBS}>:BUILD_MBS>
-  $<$<BOOL:${ROOT_GDML_FOUND}>:ROOT_HAS_GDML>
+  $<$<BOOL:${ROOT_gdml_FOUND}>:ROOT_HAS_GDML>
   # $<$<PLATFORM_ID:Linux>:Linux>
 )
 
@@ -148,5 +137,8 @@ fairroot_target_root_dictionary(${target}
   LINKDEF FairLinkDef.h
 )
 
-install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
-install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(TARGETS ${target}
+  EXPORT ${PROJECT_EXPORT_SET}
+  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers}
+  DESTINATION ${PROJECT_INSTALL_INCDIR})

@@ -6,60 +6,41 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/create_digis_mixed.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/create_digis.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/read_digis.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_background.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_signal.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial2.C)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
+set(tut2 "ex_sim_tutorial2")
+set(root "source ${CMAKE_BINARY_DIR}/config.sh && root -b -q -l ${CMAKE_CURRENT_SOURCE_DIR}")
 
-set(maxTestTime 60)
+add_test(NAME ${tut2} COMMAND bash -c "${root}/run_tutorial2.C")
 
-add_test(ex_sim_tutorial2 ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial2.sh)
-set_tests_properties(ex_sim_tutorial2 PROPERTIES
-  TIMEOUT ${maxTestTime}
-  PASS_REGULAR_EXPRESSION "Macro finished successfully"
-)
+add_test(NAME ${tut2}_create_digis COMMAND bash -c "${root}/create_digis.C")
+set_tests_properties(${tut2}_create_digis PROPERTIES DEPENDS ${tut2})
 
-add_test(ex_sim_tutorial2_create_digis ${CMAKE_CURRENT_BINARY_DIR}/create_digis.sh)
-set_tests_properties(ex_sim_tutorial2_create_digis PROPERTIES
-  DEPENDS ex_sim_tutorial2
-  TIMEOUT ${maxTestTime}
-  PASS_REGULAR_EXPRESSION "Macro finished successfully"
-)
+add_test(NAME ${tut2}_read_digis COMMAND bash -c "${root}/read_digis.C")
+set_tests_properties(${tut2}_read_digis PROPERTIES DEPENDS ${tut2}_create_digis)
 
-add_test(ex_sim_tutorial2_read_digis ${CMAKE_CURRENT_BINARY_DIR}/read_digis.sh)
-set_tests_properties(ex_sim_tutorial2_read_digis PROPERTIES
-  DEPENDS ex_sim_tutorial2_create_digis
-  TIMEOUT ${maxTestTime}
-  PASS_REGULAR_EXPRESSION "Macro finished successfully"
-)
+add_test(NAME ${tut2}_run_background COMMAND bash -c "${root}/run_background.C")
+set_tests_properties(${tut2}_run_background PROPERTIES DEPENDS ${tut2}_read_digis)
 
-add_test(ex_sim_tutorial2_run_background ${CMAKE_CURRENT_BINARY_DIR}/run_background.sh)
-set_tests_properties(ex_sim_tutorial2_run_background PROPERTIES
-  DEPENDS ex_sim_tutorial2_read_digis
-  TIMEOUT ${maxTestTime}
-  PASS_REGULAR_EXPRESSION "Macro finished successfully"
-)
+add_test(NAME ${tut2}_run_signal1 COMMAND bash -c "${root}/run_signal.C\\(1,10\\)")
+set_tests_properties(${tut2}_run_signal1 PROPERTIES DEPENDS ${tut2}_run_background)
 
-add_test(ex_sim_tutorial2_run_signal1 ${CMAKE_CURRENT_BINARY_DIR}/run_signal.sh 1 10)
-set_tests_properties(ex_sim_tutorial2_run_signal1 PROPERTIES
-  DEPENDS ex_sim_tutorial2_run_background
-  TIMEOUT ${maxTestTime}
-  PASS_REGULAR_EXPRESSION "Macro finished successfully"
-)
+add_test(NAME ${tut2}_run_signal2 COMMAND bash -c "${root}/run_signal.C\\(2,20\\)")
+set_tests_properties(${tut2}_run_signal2 PROPERTIES DEPENDS ${tut2}_run_signal1)
 
-add_test(ex_sim_tutorial2_run_signal2 ${CMAKE_CURRENT_BINARY_DIR}/run_signal.sh 2 20)
-set_tests_properties(ex_sim_tutorial2_run_signal2 PROPERTIES
-  DEPENDS ex_sim_tutorial2_run_signal1
-  TIMEOUT ${maxTestTime}
-  PASS_REGULAR_EXPRESSION "Macro finished successfully"
-)
+add_test(NAME ${tut2}_create_digis_mixed COMMAND bash -c "${root}/create_digis_mixed.C")
+set_tests_properties(${tut2}_create_digis_mixed PROPERTIES DEPENDS ${tut2}_run_signal2)
 
-add_test(ex_sim_tutorial2_create_digis_mixed ${CMAKE_CURRENT_BINARY_DIR}/create_digis_mixed.sh)
-set_tests_properties(ex_sim_tutorial2_create_digis_mixed PROPERTIES
-  DEPENDS ex_sim_tutorial2_run_signal2
-  TIMEOUT ${maxTestTime}
+set_tests_properties(
+  ${tut2}
+  ${tut2}_create_digis
+  ${tut2}_read_digis
+  ${tut2}_run_background
+  ${tut2}_run_signal1
+  ${tut2}_run_signal2
+  ${tut2}_create_digis_mixed
+
+  PROPERTIES
+  TIMEOUT 60
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
 )
 

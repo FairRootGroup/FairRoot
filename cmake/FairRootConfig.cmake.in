@@ -1,0 +1,40 @@
+################################################################################
+#    Copyright (C) 2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
+
+@PACKAGE_INIT@
+
+### General variables for project discovery/inspection
+set(@PROJECT_NAME@_VERSION @PROJECT_VERSION@)
+set(@PROJECT_NAME@_GIT_VERSION @PROJECT_GIT_VERSION@)
+set(@PROJECT_NAME@_GIT_DATE @PROJECT_GIT_DATE@)
+
+set(@PROJECT_NAME@_PREFIX @PACKAGE_CMAKE_INSTALL_PREFIX@)
+set(@PROJECT_NAME@_BINDIR @PACKAGE_CMAKE_INSTALL_PREFIX@/@PROJECT_INSTALL_BINDIR@)
+set(@PROJECT_NAME@_INCDIR @PACKAGE_CMAKE_INSTALL_PREFIX@/@PROJECT_INSTALL_INCDIR@)
+set(@PROJECT_NAME@_LIBDIR @PACKAGE_CMAKE_INSTALL_PREFIX@/@PROJECT_INSTALL_LIBDIR@)
+set(@PROJECT_NAME@_DATADIR @PACKAGE_CMAKE_INSTALL_PREFIX@/@PROJECT_INSTALL_DATADIR@)
+set(@PROJECT_NAME@_CMAKEMODDIR @PACKAGE_CMAKE_INSTALL_PREFIX@/@PROJECT_INSTALL_CMAKEMODDIR@)
+
+set(@PROJECT_NAME@_CXX_STANDARD_REQUIRED @CMAKE_CXX_STANDARD_REQUIRED@)
+set(@PROJECT_NAME@_CXX_STANDARD @CMAKE_CXX_STANDARD@)
+set(@PROJECT_NAME@_CXX_EXTENSIONS @CMAKE_CXX_EXTENSIONS@)
+set(@PROJECT_NAME@_VERSION_HOTFIX @PROJECT_VERSION_HOTFIX@)
+set(@PROJECT_NAME@_BUILD_TYPE @CMAKE_BUILD_TYPE@)
+set(@PROJECT_NAME@_BUILD_TYPE_UPPER @PROJECT_BUILD_TYPE_UPPER@)
+set(@PROJECT_NAME@_CXX_FLAGS @PROJECT_CXX_FLAGS@)
+set(VMCWORKDIR @VMCWORKDIR@)
+
+### Import cmake modules
+set(CMAKE_MODULE_PATH ${@PROJECT_NAME@_CMAKEMODDIR} ${CMAKE_MODULE_PATH})
+
+@PACKAGE_DEPENDENCIES@
+
+### Import targets
+include(@PACKAGE_CMAKE_INSTALL_PREFIX@/@PACKAGE_INSTALL_DESTINATION@/@PROJECT_EXPORT_SET@.cmake)
+
+@PACKAGE_COMPONENTS@

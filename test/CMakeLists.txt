@@ -6,5 +6,5 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-add_subdirectory(testlib)
-add_Subdirectory(fairtools)
+#add_subdirectory(testlib)
+#add_Subdirectory(fairtools)

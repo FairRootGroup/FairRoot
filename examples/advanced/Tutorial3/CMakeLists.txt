@@ -39,7 +39,7 @@ set(sources
   $<$<BOOL:${Flatbuffers_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadHit_generated.h>
 )
 
-fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
+fairroot_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
 if(Protobuf_FOUND)
   set(PROTOBUF_USED true)
@@ -83,34 +83,32 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3AllProxy.sh.in     
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3PushPull.sh.in       ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3PushPull.sh)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3ExtraProcessor.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3ExtraProcessor.sh)
 
+fairroot_copy(HEADERS ${headers} TO ${CMAKE_BINARY_DIR}/${PROJECT_INSTALL_INCDIR})
+
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
-set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+fairroot_add_standard_library_properties(${target})
 
 target_compile_definitions(${target} PUBLIC ${defs})
 
 target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/${PROJECT_INSTALL_INCDIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/data>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/digitization>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MQ/data>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MQ/fileSink>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MQ/processorTask>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MQ/run>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/MQ/samplerTask>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/reconstruction>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/simulation>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/timeBasedSimulation>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-
-  # TODO: DELETE ME ONCE USING root targets
-  ${ROOT_INCLUDE_DIR}
+  $<INSTALL_INTERFACE:${PROJECT_INSTALL_INCDIR}>
 )
 
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
-)
+if(Flatbuffers_FOUND)
+  if(TARGET flatbuffers::flatbuffers_shared)
+    set(flatbuffers_lib flatbuffers::flatbuffers_shared)
+  else()
+    set(flatbuffers_lib flatbuffers::flatbuffers)
+  endif()
+endif()
 
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
@@ -124,14 +122,14 @@ target_link_libraries(${target} PUBLIC
 
   Boost::serialization
   $<$<BOOL:${Protobuf_FOUND}>:protobuf::libprotobuf>
-  $<$<BOOL:${Flatbuffers_FOUND}>:flatbuffers::flatbuffers>
+  $<$<BOOL:${Flatbuffers_FOUND}>:${flatbuffers_lib}>
   $<$<BOOL:${msgpack_FOUND}>:msgpackc>
 
-  Core # Rtypes
-  MathCore # TRandom
-  Physics # TVector3, TLorentzVector
-  RIO # TFile
-  Tree # TTree
+  ROOT::Core # Rtypes
+  ROOT::MathCore # TRandom
+  ROOT::Physics # TVector3, TLorentzVector
+  ROOT::RIO # TFile
+  ROOT::Tree # TTree
 )
 
 fairroot_target_root_dictionary(${target}
@@ -139,8 +137,11 @@ fairroot_target_root_dictionary(${target}
   LINKDEF FairTestDetectorLinkDef.h
 )
 
-install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
-install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(TARGETS ${target}
+  EXPORT ${PROJECT_EXPORT_SET}
+  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers}
+  DESTINATION ${PROJECT_INSTALL_INCDIR})
 
 add_executable(tut3-sampler MQ/run/runTestDetectorSampler.cxx)
 target_link_libraries(tut3-sampler PRIVATE FairRoot::BaseMQ FairRoot::FairTestDetector FairMQ::FairMQ)

@@ -1,39 +1,28 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial4_createMatrices.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial4_createGeometryFile.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial4_createParameterFile.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial4.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_reco.C)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
+set(tut4 "ex_sim_tutorial4")
+set(run "source ${CMAKE_BINARY_DIR}/config.sh && root -b -q -l ${CMAKE_CURRENT_SOURCE_DIR}/run")
 
-set(maxTestTime 60)
+foreach(mce IN ITEMS TGeant3 TGeant4)
+  add_test(NAME ${tut4}_${mce} COMMAND bash -c "${run}_tutorial4.C\\(10,\\\"${mce}\\\"\\)")
 
-foreach(mcEngine IN ITEMS TGeant3 TGeant4)
-  add_test(ex_sim_tutorial4_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial4.sh 10 \"${mcEngine}\")
-  set_tests_properties(ex_sim_tutorial4_${mcEngine} PROPERTIES
-    TIMEOUT ${maxTestTime}
+  add_test(NAME ${tut4}_reco_${mce} COMMAND bash -c "${run}_reco.C\\(\\\"${mce}\\\"\\)")
+  set_tests_properties(${tut4}_reco_${mce} PROPERTIES DEPENDS ${tut4}_${mce})
+
+  set_tests_properties(${tut4}_${mce} ${tut4}_reco_${mce} PROPERTIES
+    TIMEOUT 60
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
-
-  add_test(ex_sim_tutorial4_reco_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_reco.sh \"${mcEngine}\")
-  set_tests_properties(ex_sim_tutorial4_reco_${mcEngine} PROPERTIES
-    DEPENDS ex_sim_tutorial4_${mcEngine}
-    TIMEOUT ${maxTestTime}
-    PASS_REGULAR_EXPRESSION "Macro finished successfully"
-  )
-endforeach(mcEngine IN ITEMS TGeant3 TGeant4)
+endforeach()
 
 install(FILES
-  eventDisplay.C
-  run_reco.C
-  Create_Tutorial4_Geometry.C
-  run_tutorial4.C
-  plots.C
+  eventDisplay.C run_reco.C Create_Tutorial4_Geometry.C run_tutorial4.C plots.C
   DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/simulation/Tutorial4
 )

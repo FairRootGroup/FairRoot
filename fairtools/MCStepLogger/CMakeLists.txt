@@ -10,28 +10,17 @@ set(sources
 
 add_library(${target} SHARED ${sources})
 add_library(FairRoot::${target} ALIAS ${target})
-set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
-
-target_include_directories(${target} PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-
-  # TODO: DELETE ME ONCE USING root targets
-  ${ROOT_INCLUDE_DIR}
-)
-
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
-)
+fairroot_add_standard_library_properties(${target})
 
 target_link_libraries(${target} PUBLIC
   FairRoot::Base
-
-  Core
-  Tree
-  Hist
-  RIO
-  VMC
+  ROOT::Core
+  ROOT::Tree
+  ROOT::Hist
+  ROOT::RIO
+  ${VMC_LIB} # TVirtualMC
 )
 
-install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(TARGETS ${target}
+  EXPORT ${PROJECT_EXPORT_SET}
+  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})

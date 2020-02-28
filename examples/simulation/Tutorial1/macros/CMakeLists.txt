@@ -1,54 +1,34 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/load_all_libs.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial1_mesh.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial1_pythia6.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial1_pythia8.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial1_urqmd.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial1.C)
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data)
+set(tut1 "ex_sim_tutorial1")
+set(root "source ${CMAKE_BINARY_DIR}/config.sh && root -b -q -l ${CMAKE_CURRENT_SOURCE_DIR}")
 
-set(maxTestTime 60)
+add_test(NAME load_all_libs COMMAND bash -c "${root}/load_all_libs.C\\(\\\"${CMAKE_BINARY_DIR}/${PROJECT_INSTALL_LIBDIR}\\\"\\)")
 
-add_test(load_all_libs ${CMAKE_CURRENT_BINARY_DIR}/load_all_libs.sh)
-set_tests_properties(load_all_libs PROPERTIES
-  TIMEOUT ${maxTestTime}
-  PASS_REGULAR_EXPRESSION "Macro finished succesfully"
-)
+foreach(mce IN ITEMS TGeant3 TGeant4)
+  add_test(NAME ${tut1}_mesh_${mce} COMMAND bash -c "${root}/run_tutorial1_mesh.C\\(10,\\\"${mce}\\\"\\)")
+  add_test(NAME ${tut1}_pythia6_${mce} COMMAND bash -c "${root}/run_tutorial1_pythia6.C\\(10,\\\"${mce}\\\"\\)")
+  add_test(NAME ${tut1}_pythia8_${mce} COMMAND bash -c "${root}/run_tutorial1_pythia8.C\\(10,\\\"${mce}\\\"\\)")
+  add_test(NAME ${tut1}_urqmd_${mce} COMMAND bash -c "${root}/run_tutorial1_urqmd.C\\(2,\\\"${mce}\\\"\\)")
+  add_test(NAME ${tut1}_${mce} COMMAND bash -c "${root}/run_tutorial1.C\\(10,\\\"${mce}\\\"\\)")
 
-foreach(mcEngine IN ITEMS TGeant3 TGeant4)
-  add_test(ex_sim_tutorial1_mesh_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_mesh.sh 10 \"${mcEngine}\")
-  set_tests_properties(ex_sim_tutorial1_mesh_${mcEngine} PROPERTIES
-    TIMEOUT ${maxTestTime}
-    PASS_REGULAR_EXPRESSION "Macro finished successfully"
-  )
+  set_tests_properties(
+    load_all_libs
+    ${tut1}_mesh_${mce}
+    ${tut1}_pythia6_${mce}
+    ${tut1}_pythia8_${mce}
+    ${tut1}_urqmd_${mce}
+    ${tut1}_${mce}
 
-  add_test(ex_sim_tutorial1_pythia6_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_pythia6.sh 10 \"${mcEngine}\")
-  set_tests_properties(ex_sim_tutorial1_pythia6_${mcEngine} PROPERTIES
-    TIMEOUT ${maxTestTime}
-    PASS_REGULAR_EXPRESSION "Macro finished successfully"
-  )
-
-  add_test(ex_sim_tutorial1_pythia8_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_pythia8.sh 10 \"${mcEngine}\")
-  set_tests_properties(ex_sim_tutorial1_pythia8_${mcEngine} PROPERTIES
-    TIMEOUT ${maxTestTime}
-    PASS_REGULAR_EXPRESSION "Macro finished successfully"
-  )
-
-  add_test(ex_sim_tutorial1_urqmd_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_urqmd.sh 2 \"${mcEngine}\")
-  set_tests_properties(ex_sim_tutorial1_urqmd_${mcEngine} PROPERTIES
-    TIMEOUT ${maxTestTime}
-    PASS_REGULAR_EXPRESSION "Macro finished successfully"
-  )
-
-  add_test(ex_sim_tutorial1_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1.sh 10 \"${mcEngine}\")
-  set_tests_properties(ex_sim_tutorial1_${mcEngine} PROPERTIES
-    TIMEOUT ${maxTestTime}
+    PROPERTIES
+    TIMEOUT 60
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
 endforeach()
@@ -56,5 +36,3 @@ endforeach()
 install(FILES run_tutorial1_mesh.C run_tutorial1_pythia6.C run_tutorial1_pythia8.C run_tutorial1_urqmd.C run_tutorial1.C
   DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/simulation/Tutorial1
 )
-
-
