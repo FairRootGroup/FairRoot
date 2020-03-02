@@ -37,7 +37,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::MCConfigurator # FairYamlVMCConfig
   FairRoot::MCStack # FairStack
 
-  VMC # TVirtualMC
+  VMCLibrary # TVirtualMC
 )
 
 fairroot_target_root_dictionary(${target}

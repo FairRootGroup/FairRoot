@@ -190,6 +190,8 @@ find_package2(PUBLIC Protobuf)
 find_package2(PUBLIC msgpack)
 find_package2(PUBLIC Flatbuffers)
 
+find_package2(PUBLIC VMC)
+
 find_package2(PUBLIC Geant3)
 find_package2(PUBLIC Geant4)
 
@@ -494,6 +496,9 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
       endif()
     elseif(${dep} STREQUAL yaml-cpp)
       get_filename_component(prefix ${YAML_CPP_INCLUDE_DIR}/.. ABSOLUTE)
+  elseif(${dep} STREQUAL VMC)
+      get_target_property(vmc_include VMCLibrary INTERFACE_INCLUDE_DIRECTORIES)
+      get_filename_component(prefix ${vmc_include}/../.. ABSOLUTE)
     elseif(${dep} STREQUAL Geant4VMC)
       string(REPLACE ":" ";" geant4vmc_include ${Geant4VMC_INCLUDE_DIRS})
       list(GET geant4vmc_include 0 geant4vmc_include)

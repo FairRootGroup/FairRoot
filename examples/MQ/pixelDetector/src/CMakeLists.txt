@@ -92,7 +92,8 @@ target_link_libraries(${target} PUBLIC
   Physics
   Geom
   Hist
-  VMC
+
+  VMCLibrary
 )
 
 fairroot_target_root_dictionary(${target}

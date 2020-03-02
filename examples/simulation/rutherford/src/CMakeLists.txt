@@ -43,7 +43,8 @@ target_link_libraries(${target} PUBLIC
 
   Core
   Physics
-  VMC
+
+  VMCLibrary
 )
 
 fairroot_target_root_dictionary(${target}

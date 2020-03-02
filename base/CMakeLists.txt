@@ -133,8 +133,9 @@ target_link_libraries(${target} PUBLIC
   Proof
   RIO
   Tree
-  VMC
   $<$<BOOL:${ROOT_GDML_FOUND}>:Gdml>
+
+  VMCLibrary
 )
 
 target_compile_definitions(${target} PRIVATE

@@ -68,10 +68,11 @@ target_link_libraries(${target} PUBLIC
   Core
   Physics
   Geom
-  VMC
   MathCore
   Hist
   $<$<BOOL:${ROOT_HAS_OPENGL}>:Eve>
+
+  VMCLibrary
 )
 
 fairroot_target_root_dictionary(${target}

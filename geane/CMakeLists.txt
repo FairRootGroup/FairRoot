@@ -40,9 +40,10 @@ target_link_libraries(${target} PUBLIC
   Core
   EG
   Geom
-  VMC
   Physics
   MathCore
+
+  VMCLibrary
 )
 
 fairroot_target_root_dictionary(${target}
