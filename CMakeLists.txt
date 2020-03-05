@@ -520,7 +520,7 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
       get_target_property(fmt_include fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
       get_filename_component(prefix ${fmt_include}/.. ABSOLUTE)
     elseif(${dep} STREQUAL Flatbuffers)
-      get_target_property(flatbuffers_include flatbuffers::flatbuffers INTERFACE_INCLUDE_DIRECTORIES)
+      get_target_property(flatbuffers_include flatbuffers::flatbuffers_shared INTERFACE_INCLUDE_DIRECTORIES)
       get_filename_component(prefix ${flatbuffers_include}/.. ABSOLUTE)
     endif()
 
