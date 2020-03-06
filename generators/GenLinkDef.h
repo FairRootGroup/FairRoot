@@ -20,5 +20,6 @@
 #pragma link C++ class  FairUrqmdGenerator+;
 #pragma link C++ class  FairBoxGenerator+;
 #pragma link C++ class  FairEvtGenGenerator+;
+#pragma link C++ class  FairYPtGenerator+;
 
 #endif

@@ -16,6 +16,7 @@ set(sources
   FairParticleGenerator.cxx
   FairShieldGenerator.cxx
   FairUrqmdGenerator.cxx
+  FairYPtGenerator.cxx
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
