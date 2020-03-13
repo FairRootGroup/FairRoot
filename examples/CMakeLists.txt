@@ -36,8 +36,4 @@ if(FairMQ_FOUND AND Boost_FOUND)
   add_subdirectory(MQ/histogramServer)
 endif()
 
-if(Go_FOUND AND ZeroMQ_FOUND)
-  add_subdirectory(advanced/GoTutorial)
-endif()
-
 add_subdirectory(advanced/MbsTutorial)

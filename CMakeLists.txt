@@ -198,12 +198,6 @@ Find_Package2(PUBLIC VGM)
 find_package2(PUBLIC Geant4VMC)
 
 find_package2(PUBLIC IWYU)
-if(WITH_GO_EXAMPLE)
-  find_package2(PUBLIC Go VERSION 1.7)
-  if(Go_FOUND)
-    set(Go_VERSION "${GO_VERSION}")
-  endif()
-endif()
 
 find_package2(PUBLIC GSL)
 if(NOT DEFINED GTEST_ROOT)
@@ -564,14 +558,6 @@ else()
   set(unittests_summary "${BRed} NO${CR}     (default, enable with ${BMagenta}-DBUILD_UNITTESTS=ON${CR})")
 endif()
 message(STATUS "  ${BWhite}Unit tests${CR}          ${unittests_summary}")
-
-if(WITH_GO_EXAMPLE)
-  set(Go_summary "${BGreen} YES${CR}    (disable with ${BMagenta}-DWITH_GO_EXAMPLE=OFF${CR})")
-else()
-   set(Go_summary "${BRed} NO${CR}     (default, enable with ${BMagenta}-DWITH_GO_EXAMPLE=ON${CR})")
-endif()
-message(STATUS "  ${BWhite}Go Example ${CR}         ${Go_summary}")
-
 
 message(STATUS "  ")
 ################################################################################
