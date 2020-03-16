@@ -27,10 +27,8 @@
 Int_t FairIonGenerator::fgNIon = 0;
 
 FairIonGenerator::FairIonGenerator()
-  :FairGenerator(),
-   fMult(0),
+  :FairBaseMCGenerator(),
    fPx(0), fPy(0), fPz(0),
-   fVx(0), fVy(0), fVz(0),
    fIon(nullptr),  fQ(0)
 {
   // LOG(warn) << "FairIonGenerator: Please do not use the default constructor!";
@@ -39,12 +37,12 @@ FairIonGenerator::FairIonGenerator()
 FairIonGenerator::FairIonGenerator(const Char_t* ionName, Int_t mult,
                                    Double_t px, Double_t py, Double_t pz,
                                    Double_t vx, Double_t vy, Double_t vz)
-  :FairGenerator(),
-   fMult(mult),
+  :FairBaseMCGenerator(),
    fPx(px), fPy(py), fPz(pz),
-   fVx(vx), fVy(vy), fVz(vz),
    fIon(nullptr),  fQ(0)
 {
+  SetVertex(vx, vy, vz);
+  SetMultiplicity(mult);
   FairRunSim* fRun=FairRunSim::Instance();
   TObjArray* UserIons=fRun->GetUserDefIons();
   TObjArray* UserParticles=fRun->GetUserDefParticles();
@@ -52,25 +50,17 @@ FairIonGenerator::FairIonGenerator(const Char_t* ionName, Int_t mult,
   fIon =static_cast<FairIon*>(UserIons->FindObject(ionName));
   if(fIon) {
     fgNIon++;
-    fMult = mult;
     fPx   = Double_t(fIon->GetA()) * px;
     fPy   = Double_t(fIon->GetA()) * py;
     fPz   = Double_t(fIon->GetA()) * pz;
-    fVx   = vx;
-    fVy   = vy;
-    fVz   = vz;
   } else {
     part= static_cast<FairParticle*>(UserParticles->FindObject(ionName));
     if(part) {
       fgNIon++;
       TParticle* particle=part->GetParticle();
-      fMult = mult;
       fPx   = Double_t(particle->GetMass()/0.92827231) * px;
       fPy   = Double_t(particle->GetMass()/0.92827231) * py;
       fPz   = Double_t(particle->GetMass()/0.92827231) * pz;
-      fVx   = vx;
-      fVy   = vy;
-      fVz   = vz;
     }
   }
   if(fIon==0 && part==0 ) {
@@ -81,13 +71,13 @@ FairIonGenerator::FairIonGenerator(const Char_t* ionName, Int_t mult,
 FairIonGenerator::FairIonGenerator(Int_t z, Int_t a, Int_t q, Int_t mult,
                                    Double_t px, Double_t py, Double_t pz,
                                    Double_t vx, Double_t vy, Double_t vz)
-  :FairGenerator(),
-   fMult(mult),
+  :FairBaseMCGenerator(),
    fPx(Double_t(a)*px), fPy(Double_t(a)*py), fPz(Double_t(a)*pz),
-   fVx(vx), fVy(vy), fVz(vz),
    fIon(nullptr),  fQ(0)
 {
   fgNIon++;
+  SetVertex(vx, vy, vz);
+  SetMultiplicity(mult);
   /*
   fMult = mult;
   fPx   = Double_t(a) * px;
@@ -109,10 +99,8 @@ FairIonGenerator::FairIonGenerator(Int_t z, Int_t a, Int_t q, Int_t mult,
 }
 
 FairIonGenerator::FairIonGenerator(const FairIonGenerator& rhs)
-  :FairGenerator(rhs),
-   fMult(rhs.fMult),
+  :FairBaseMCGenerator(rhs),
    fPx(rhs.fPx), fPy(rhs.fPy), fPz(rhs.fPz),
-   fVx(rhs.fVx), fVy(rhs.fVy), fVz(rhs.fVz),
    fIon(rhs.fIon), // CHECK
    fQ(0)
 {
@@ -146,7 +134,7 @@ Bool_t FairIonGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   //   LOG(warn) << "FairIonGenerator: No ion defined! ";
   //   return kFALSE;
   // }
-
+  GenerateEventParameters();
   TParticlePDG* thisPart =
     TDatabasePDG::Instance()->GetParticle(fIon->GetName());
   if ( ! thisPart ) {
@@ -157,14 +145,14 @@ Bool_t FairIonGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   int pdgType = thisPart->PdgCode();
 
-  LOG(info) << "FairIonGenerator: Generating " << fMult << " ions of type "
+  LOG(info) << "FairIonGenerator: Generating " << GetMultiplicity() << " ions of type "
 	    << fIon->GetName() << " (PDG code " << pdgType << ")";
   LOG(info) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
-	    << ") Gev from vertex (" << fVx << ", " << fVy
-	    << ", " << fVz << ") cm";
+	    << ") Gev from vertex (" << fX << ", " << fY
+	    << ", " << fZ << ") cm";
 
-  for(Int_t i=0; i<fMult; i++) {
-    primGen->AddTrack(pdgType, fPx, fPy, fPz, fVx, fVy, fVz);
+  for(Int_t i=0; i<GetMultiplicity(); i++) {
+    primGen->AddTrack(pdgType, fPx, fPy, fPz, fX, fY, fZ);
   }
 
   return kTRUE;

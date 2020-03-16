@@ -15,35 +15,30 @@
 #include <TRandom.h>
 
 FairYPtGenerator::FairYPtGenerator():
-  FairGenerator(),
-  fPdg(211),fMultiplicity(1),
-  fMass2(0.13957018*0.13957018),
+  FairBaseMCGenerator(),
   fYPt(){
 
 }
 
 FairYPtGenerator::FairYPtGenerator(const FairYPtGenerator &copy):
-  FairGenerator(copy),
-  fPdg(copy.fPdg),fMultiplicity(copy.fMultiplicity),
-  fMass2(copy.fMass2),
+  FairBaseMCGenerator(copy),
   fYPt(*(TH2D*)copy.Clone()){
 }
 
 FairYPtGenerator& FairYPtGenerator::operator =(const FairYPtGenerator &other) {
   if (this == &other) return *this;
-  TNamed::operator=(other);
-  fPdg = other.fPdg;
-  fMultiplicity = other.fMultiplicity;
-  fMass2 = other.fMass2;
+  FairBaseMCGenerator::operator=(other);
   fYPt = *static_cast<TH2D*>(other.fYPt.Clone());
   return *this;
 }
 
-void FairYPtGenerator::SetYPt(TH2D *yPt) {
-  fYPt = *static_cast<TH2D*>(yPt->Clone());
+void FairYPtGenerator::SetYPt(const TH2D &yPt) {
+  yPt.Copy(fYPt);
+  fYPt.SetDirectory(0x0);
 }
 
 Bool_t FairYPtGenerator::Init() {
+  if(FairBaseMCGenerator::Init()==kFALSE)return kFALSE;
   fYPt.ResetStats();
   for(int i=1;i<=fYPt.GetNbinsX();i++){
     for(int j=1;j<fYPt.GetNbinsY();j++){
@@ -53,16 +48,8 @@ Bool_t FairYPtGenerator::Init() {
       }
     }
   }
-  if(fMass2<0){
-    LOG(error)<<"FairYPtGenerator negative mass !";
-    return kFALSE;
-  }
   if(fYPt.GetEntries()==0){
     LOG(error)<<"FairYPtGenerator lack  entries !";
-    return kFALSE;
-  }
-  if(fMultiplicity<=0){
-    LOG(error)<<"FairYPtGenerator bad multiplicity  !";
     return kFALSE;
   }
   return kTRUE;
@@ -70,31 +57,21 @@ Bool_t FairYPtGenerator::Init() {
 
 Bool_t FairYPtGenerator::ReadEvent(FairPrimaryGenerator *primGen) {
   Double_t pt, y;
-  for(int i=0;i<fMultiplicity;i++){
+  GenerateEventParameters();
+  for(int i=0;i<GetMultiplicity();i++){
     fYPt.GetRandom2(y,pt);
-    Double_t e = TMath::Sqrt(pt*pt+fMass2);
+    Double_t e = TMath::Sqrt(pt*pt+GetMass2());
     Double_t phi = gRandom->Uniform(-TMath::Pi(),TMath::Pi());
     Double_t pz  = TMath::Sign(e*0.5,y)*TMath::Exp(-y)*(TMath::Exp(2.0*y)-1.0);
     Double_t px = pt*TMath::Cos(phi);
     Double_t py = pt*TMath::Sin(phi);
-    primGen->AddTrack(fPdg, px, py, pz, 0, 0, 0);
+    primGen->AddTrack(GetPDGType(), px, py, pz, fX, fY, fZ);
   }
   return kTRUE;
 }
 
 FairGenerator* FairYPtGenerator::CloneGenerator() const {
   return new FairYPtGenerator(*this);
-}
-
-void FairYPtGenerator::SetPDGType(Int_t pdg) {
-  fPdg = pdg;
-  TDatabasePDG *db = TDatabasePDG::Instance();
-  TParticlePDG *p = db->GetParticle(pdg);
-  if(p==nullptr){
-    fMass2 = -1;
-  }else{
-    fMass2 = p->Mass()*p->Mass();
-  }
 }
 
 void FairYPtGenerator::GetYPt(Double_t &y, Double_t &pt) {

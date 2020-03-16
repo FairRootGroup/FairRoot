@@ -17,14 +17,13 @@
 #ifndef FAIRIONGENERATOR_H
 #define FAIRIONGENERATOR_H
 
-#include "FairGenerator.h"              // for FairGenerator
-
 #include <Rtypes.h>                     // for Double_t, Int_t, etc
+#include "FairBaseMCGenerator.h"              // for FairGenerator
 
 class FairIon;
 class FairPrimaryGenerator;
 
-class FairIonGenerator : public FairGenerator
+class FairIonGenerator : public FairBaseMCGenerator
 {
   public:
     /** Default constructor **/
@@ -78,9 +77,7 @@ class FairIonGenerator : public FairGenerator
 
   private:
     static Int_t fgNIon;     //! Number of the instance of this class
-    Int_t    fMult;          // Multiplicity per event
     Double_t fPx, fPy, fPz;  // Momentum components [GeV] per nucleon
-    Double_t fVx, fVy, fVz;  // Vertex coordinates [cm]
     FairIon*   fIon;          // Pointer to the FairIon to be generated
     Int_t    fQ;    // Electric charge [e]
 

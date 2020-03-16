@@ -11,15 +11,13 @@
 #ifndef FAIRYPTGENERATOR_H_
 #define FAIRYPTGENERATOR_H_
 
-#include "FairGenerator.h"
 #include "TH2D.h"
+#include "FairBaseMCGenerator.h"
 
-class FairYPtGenerator : public FairGenerator{
+class FairYPtGenerator : public FairBaseMCGenerator{
   public:
     FairYPtGenerator();
-    void SetMultiplicity(Int_t mult) {fMultiplicity = mult;}
-    void SetPDGType(Int_t pdg);
-    void SetYPt(TH2D *yPt);
+    void SetYPt(const TH2D &yPt);
     virtual Bool_t Init();
     virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
     virtual FairGenerator* CloneGenerator() const;
@@ -27,14 +25,9 @@ class FairYPtGenerator : public FairGenerator{
   protected:
     FairYPtGenerator(const FairYPtGenerator &copy);
     FairYPtGenerator& operator=(const FairYPtGenerator &other);
-    Int_t GetMultiplicity()const{return fMultiplicity;};
-    Int_t GetPDGType()const{return fPdg;};
-    Double_t GetMass2()const{return fMass2;};
+    Double_t GetMass2()const{return GetPDGMass()*GetPDGMass();};
     void GetYPt(Double_t &y, Double_t &pt);
   private:
-    Int_t fPdg; // Particle type
-    Int_t fMultiplicity; // Multiplicity
-    Double_t fMass2; // M2 of generated particle
     TH2D fYPt;// Y-Pt distribution
     ClassDef(FairYPtGenerator,1)
 };

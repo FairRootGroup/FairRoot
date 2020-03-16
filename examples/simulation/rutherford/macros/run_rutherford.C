@@ -97,6 +97,16 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine="TGeant4", Bool_t isMT=
   primGen->AddGenerator(boxGen1);
 
 
+
+  FairYPtGenerator *ypt = new FairYPtGenerator();
+  //create some TH2D with y-pt distribution
+  TH2D ypt_hist("ypt","ypt;y;p_{T}",100,-2,2,100,0,2);
+  ypt_hist.Fill(0.1,0.2);
+  ypt_hist.Fill(0.1,0.4);
+  ypt->SetYPt(ypt_hist);
+  ypt->SetMultiplicity(10);
+  ypt->SetPDGType(211);
+  primGen->AddGenerator(ypt);
   // ------------------------------------------------------------------------
 
   run->SetStoreTraj(kTRUE);
