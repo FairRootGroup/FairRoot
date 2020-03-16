@@ -12,7 +12,7 @@
 #include "FairGenerator.h"
 
 /**
- * abstract class for generators that use user input to generate partcles
+ * abstract class for generators that use "macro input" to generate partcles
  */
 class FairBaseMCGenerator : public FairGenerator{
 public:

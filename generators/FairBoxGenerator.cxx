@@ -133,7 +133,7 @@ void FairBoxGenerator::SetBoxXYZ(Double32_t x1, Double32_t y1, Double32_t x2, Do
     Double_t dY = 0.5*(Y2 - Y1);
     Double_t x   = 0.5*(X1+X2);
     Double_t y  = 0.5*(Y1+Y2);
-    SetVertex(x, y, z, dX, dX, 0, kBox);
+    SetVertex(x, y, z, dX, dY, 0, kBox);
 }
 
 Bool_t  FairBoxGenerator::Init()
