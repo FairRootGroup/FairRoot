@@ -35,12 +35,12 @@
 #define FAIR_BOXGENERATOR_H
 
 #include "FairGenerator.h"              // for FairGenerator
-
 #include <Rtypes.h>                     // for Double32_t, Bool_t, kTRUE, etc
+#include "FairBaseMCGenerator.h"
 
 class FairPrimaryGenerator;
 
-class FairBoxGenerator : public FairGenerator
+class FairBoxGenerator : public FairBaseMCGenerator
 {
   public:
 
@@ -57,9 +57,6 @@ class FairBoxGenerator : public FairGenerator
     virtual ~FairBoxGenerator() {}
 
     /** Modifiers **/
-    void SetPDGType(Int_t pdg) { fPDGType = pdg; }
-
-    void SetMultiplicity(Int_t mult) { fMult = mult; }
 
     void SetPRange(Double32_t pmin=0, Double32_t pmax=10) { fPMin=pmin; fPMax=pmax; fPRangeIsSet=kTRUE; }
 
@@ -77,21 +74,9 @@ class FairBoxGenerator : public FairGenerator
 
     void SetCosTheta() { fCosThetaIsSet=kTRUE; }
 
-    void SetXYZ(Double32_t x=0, Double32_t y=0, Double32_t z=0) {
-      fX=x;
-      fY=y;
-      fZ=z;
-      fPointVtxIsSet=kTRUE;
-    }
+    void SetXYZ(Double32_t x=0, Double32_t y=0, Double32_t z=0);
 
-    void SetBoxXYZ(Double32_t x1=0, Double32_t y1=0, Double32_t x2=0, Double32_t y2=0, Double32_t z=0) {
-      fX1=x1;
-      fY1=y1;
-      fX2=x2;
-      fY2=y2;
-      fZ=z;
-      fBoxVtxIsSet=kTRUE;
-    }
+    void SetBoxXYZ(Double32_t x1=0, Double32_t y1=0, Double32_t x2=0, Double32_t y2=0, Double32_t z=0);
 
     void SetDebug(Bool_t debug=0) {fDebug = debug;}
 
@@ -112,18 +97,13 @@ class FairBoxGenerator : public FairGenerator
     FairBoxGenerator& operator=(const FairBoxGenerator&);
 
   private:
-    Int_t      fPDGType;             // Particle type (PDG encoding)
-    Int_t      fMult;                // Multiplicity
 
-    Double32_t fPDGMass;             // Particle mass [GeV]
     Double32_t fPtMin,  fPtMax;      // Transverse momentum range [GeV]
     Double32_t fPhiMin, fPhiMax;     // Azimuth angle range [degree]
     Double32_t fEtaMin, fEtaMax;     // Pseudorapidity range in lab system
     Double32_t fYMin,   fYMax;       // Rapidity range in lab system
     Double32_t fPMin,   fPMax;       // Momentum range in lab system
     Double32_t fThetaMin, fThetaMax; // Polar angle range in lab system [degree]
-    Double32_t fX, fY, fZ;           // Point vertex coordinates [cm]
-    Double32_t fX1, fY1, fX2, fY2;   // Box vertex coords (x1,y1)->(x2,y2)
     Double32_t fEkinMin,fEkinMax;    // Kinetic Energy range in lab system [GeV]
 
     Bool_t     fEtaRangeIsSet;       // True if eta range is set
@@ -133,8 +113,6 @@ class FairBoxGenerator : public FairGenerator
     //cos(theta) is set (default -> not set)
     Bool_t     fPtRangeIsSet;        // True if transverse momentum range is set
     Bool_t     fPRangeIsSet;         // True if abs.momentum range is set
-    Bool_t     fPointVtxIsSet;       // True if point vertex is set
-    Bool_t     fBoxVtxIsSet;         // True if box vertex is set
     Bool_t     fDebug;               // Debug switch
     Bool_t     fEkinRangeIsSet;      // True if kinetic energy range is set
 

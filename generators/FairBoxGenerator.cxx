@@ -40,46 +40,44 @@
 #include <cstdio> // for printf
 
 FairBoxGenerator::FairBoxGenerator() :
-  FairGenerator(),
-  fPDGType(0),fMult(0),fPDGMass(0),fPtMin(0),fPtMax(0),
+  FairBaseMCGenerator(),fPtMin(0),fPtMax(0),
   fPhiMin(0),fPhiMax(0),fEtaMin(0),fEtaMax(0),fYMin(0),fYMax(0),
-  fPMin(0),fPMax(0),fThetaMin(0),fThetaMax(0),fX(0),fY(0),fZ(0),
-  fX1(0),fY1(0),fX2(0),fY2(0),fEkinMin(0),fEkinMax(0),
+  fPMin(0),fPMax(0),fThetaMin(0),fThetaMax(0),
+  fEkinMin(0),fEkinMax(0),
   fEtaRangeIsSet(0),fYRangeIsSet(0),fThetaRangeIsSet(0),
   fCosThetaIsSet(0),fPtRangeIsSet(0),fPRangeIsSet(0),
-  fPointVtxIsSet(0),fBoxVtxIsSet(0),fDebug(0),fEkinRangeIsSet(0)
+  fDebug(0),fEkinRangeIsSet(0)
 {
   // Default constructor
 }
 
 FairBoxGenerator::FairBoxGenerator(Int_t pdgid, Int_t mult) :
-  FairGenerator(),
-  fPDGType(pdgid),fMult(mult),fPDGMass(0),fPtMin(0),fPtMax(0),
+        FairBaseMCGenerator(),
+  fPtMin(0),fPtMax(0),
   fPhiMin(0),fPhiMax(0),fEtaMin(0),fEtaMax(0),fYMin(0),fYMax(0),
-  fPMin(0),fPMax(0),fThetaMin(0),fThetaMax(0),fX(0),fY(0),fZ(0),
-  fX1(0),fY1(0),fX2(0),fY2(0),fEkinMin(0),fEkinMax(0),
+  fPMin(0),fPMax(0),fThetaMin(0),fThetaMax(0),
+  fEkinMin(0),fEkinMax(0),
   fEtaRangeIsSet(0), fYRangeIsSet(0),fThetaRangeIsSet(0),
   fCosThetaIsSet(0), fPtRangeIsSet(0), fPRangeIsSet(0),
-  fPointVtxIsSet(0),fBoxVtxIsSet(0),fDebug(0), fEkinRangeIsSet(0)
+ fDebug(0), fEkinRangeIsSet(0)
 {
   // Constructor. Set default kinematics limits
+  SetPDGType(pdgid);
+  SetMultiplicity(mult);
   SetPhiRange();
 }
 
 FairBoxGenerator::FairBoxGenerator(const FairBoxGenerator& rhs) :
-  FairGenerator(rhs),
-  fPDGType(rhs.fPDGType),fMult(rhs.fMult),fPDGMass(rhs.fPDGMass),
+        FairBaseMCGenerator(rhs),
   fPtMin(rhs.fPtMin),fPtMax(rhs.fPtMax),
   fPhiMin(rhs.fPhiMin),fPhiMax(rhs.fPhiMax),fEtaMin(rhs.fEtaMin),
   fEtaMax(rhs.fEtaMax),fYMin(rhs.fYMin),fYMax(rhs.fYMax),
   fPMin(rhs.fPMin),fPMax(rhs.fPMax),fThetaMin(rhs.fThetaMin),
-  fThetaMax(rhs.fThetaMax),fX(rhs.fX),fY(rhs.fY),fZ(rhs.fZ),
-  fX1(rhs.fX1),fY1(rhs.fY1),fX2(rhs.fX2),fY2(rhs.fY2),
+  fThetaMax(rhs.fThetaMax),
   fEkinMin(rhs.fEkinMin),fEkinMax(rhs.fEkinMax),
   fEtaRangeIsSet(rhs.fEtaRangeIsSet), fYRangeIsSet(rhs.fYRangeIsSet),
   fThetaRangeIsSet(rhs.fThetaRangeIsSet),fCosThetaIsSet(rhs.fCosThetaIsSet),
   fPtRangeIsSet(rhs.fPtRangeIsSet), fPRangeIsSet(rhs.fPRangeIsSet),
-  fPointVtxIsSet(rhs.fPointVtxIsSet),fBoxVtxIsSet(rhs.fBoxVtxIsSet),
   fDebug(rhs.fDebug), fEkinRangeIsSet(rhs.fEkinRangeIsSet)
 {
   // Copy constructor
@@ -93,12 +91,9 @@ FairBoxGenerator& FairBoxGenerator::operator=(const FairBoxGenerator& rhs)
   if (this == &rhs) return *this;
 
   // base class assignment
-  TNamed::operator=(rhs);
+  FairBaseMCGenerator::operator=(rhs);
 
   // assignment operator
-  fPDGType = rhs.fPDGType;
-  fMult = rhs.fMult;
-  fPDGMass = rhs.fPDGMass;
   fPtMin = rhs.fPtMin;
   fPtMax = rhs.fPtMax;
   fPhiMin = rhs.fPhiMin;
@@ -111,13 +106,6 @@ FairBoxGenerator& FairBoxGenerator::operator=(const FairBoxGenerator& rhs)
   fPMax = rhs.fPMax;
   fThetaMin = rhs.fThetaMin;
   fThetaMax = rhs.fThetaMax;
-  fX = rhs.fX;
-  fY = rhs.fY;
-  fZ = rhs.fZ;
-  fX1 = rhs.fX1;
-  fY1 = rhs.fY1;
-  fX2 = rhs.fX2;
-  fY2 = rhs.fY2;
   fEkinMin = rhs.fEkinMin;
   fEkinMax = rhs.fEkinMax;
   fEtaRangeIsSet = rhs.fEtaRangeIsSet;
@@ -126,26 +114,38 @@ FairBoxGenerator& FairBoxGenerator::operator=(const FairBoxGenerator& rhs)
   fCosThetaIsSet = rhs.fCosThetaIsSet;
   fPtRangeIsSet = rhs.fPtRangeIsSet;
   fPRangeIsSet = rhs.fPRangeIsSet;
-  fPointVtxIsSet = rhs.fPointVtxIsSet;
-  fBoxVtxIsSet = rhs.fBoxVtxIsSet;
   fDebug = rhs.fDebug;
   fEkinRangeIsSet = rhs.fEkinRangeIsSet;
 
   return *this;
 }
 
+void FairBoxGenerator::SetXYZ(Double32_t x, Double32_t y, Double32_t z){
+    SetVertex(x,y,z, 0, 0, 0, kBox);
+}
+
+void FairBoxGenerator::SetBoxXYZ(Double32_t x1, Double32_t y1, Double32_t x2, Double32_t y2, Double32_t z){
+    Double_t X1  = TMath::Min(x1,x2);
+    Double_t X2 = TMath::Max(x1,x2);
+    Double_t Y1  = TMath::Min(y1,y2);
+    Double_t Y2 = TMath::Max(y1,y2);
+    Double_t dX = 0.5*(X2 - X1);
+    Double_t dY = 0.5*(Y2 - Y1);
+    Double_t x   = 0.5*(X1+X2);
+    Double_t y  = 0.5*(Y1+Y2);
+    SetVertex(x, y, z, dX, dX, 0, kBox);
+}
+
 Bool_t  FairBoxGenerator::Init()
 {
-  // Initialize generator
-
+  // Initialize parent generator
+  if(FairBaseMCGenerator::Init()==kFALSE) return kFALSE;
   // Check for particle type
   TDatabasePDG* pdgBase = TDatabasePDG::Instance();
-  TParticlePDG* particle = pdgBase->GetParticle(fPDGType);
+  TParticlePDG* particle = pdgBase->GetParticle(GetPDGType());
 
   if (! particle) {
-    Fatal("FairBoxGenerator","PDG code %d not defined.",fPDGType);
-  } else {
-    fPDGMass = particle->Mass();
+    Fatal("FairBoxGenerator","PDG code %d not defined.",GetPDGType());
   }
 
   if (fPhiMax-fPhiMin>360){
@@ -157,8 +157,8 @@ Bool_t  FairBoxGenerator::Init()
       Fatal("Init()","FairBoxGenerator: Cannot set P and Ekin ranges simultaneously");
     } else {
       // Transform EkinRange to PRange, calculate momentum in GeV, p = √(K² + 2Kmc²)
-      fPMin = TMath::Sqrt(fEkinMin*fEkinMin + 2*fEkinMin*fPDGMass);
-      fPMax = TMath::Sqrt(fEkinMax*fEkinMax + 2*fEkinMax*fPDGMass);
+      fPMin = TMath::Sqrt(fEkinMin*fEkinMin + 2*fEkinMin*GetPDGMass());
+      fPMax = TMath::Sqrt(fEkinMax*fEkinMax + 2*fEkinMax*GetPDGMass());
       fPRangeIsSet = kTRUE;
       fEkinRangeIsSet = kFALSE;
     }
@@ -174,11 +174,6 @@ Bool_t  FairBoxGenerator::Init()
        (fYRangeIsSet     && fEtaRangeIsSet) ) {
     Fatal("Init()","FairBoxGenerator: Cannot set Y, Theta or Eta ranges simultaneously");
   }
-  if (fPointVtxIsSet && fBoxVtxIsSet) {
-    Fatal("Init()","FairBoxGenerator: Cannot set point and box vertices simultaneously");
-  }
-
-
   return kTRUE;
 }
 
@@ -191,9 +186,9 @@ Bool_t FairBoxGenerator::ReadEvent(FairPrimaryGenerator* primGen)
   // cos(theta)
 
   Double32_t pabs=0, phi, pt=0, theta=0, eta, y, mt, px, py, pz=0;
-
+  GenerateEventParameters();
   // Generate particles
-  for (Int_t k = 0; k < fMult; k++) {
+  for (Int_t k = 0; k < GetMultiplicity(); k++) {
     phi = gRandom->Uniform(fPhiMin,fPhiMax) * TMath::DegToRad();
 
     if      (fPRangeIsSet ) { pabs = gRandom->Uniform(fPMin,fPMax); }
@@ -211,7 +206,7 @@ Bool_t FairBoxGenerator::ReadEvent(FairPrimaryGenerator* primGen)
       theta = 2*TMath::ATan(TMath::Exp(-eta));
     } else if (fYRangeIsSet) {
       y     = gRandom->Uniform(fYMin,fYMax);
-      mt = TMath::Sqrt(fPDGMass*fPDGMass + pt*pt);
+      mt = TMath::Sqrt(GetPDGMass()*GetPDGMass() + pt*pt);
       pz = mt * TMath::SinH(y);
     }
 
@@ -227,16 +222,11 @@ Bool_t FairBoxGenerator::ReadEvent(FairPrimaryGenerator* primGen)
     px = pt*TMath::Cos(phi);
     py = pt*TMath::Sin(phi);
 
-    if (fBoxVtxIsSet) {
-      fX = gRandom->Uniform(fX1,fX2);
-      fY = gRandom->Uniform(fY1,fY2);
-    }
-
     if (fDebug)
       printf("BoxGen: kf=%d, p=(%.2f, %.2f, %.2f) GeV, x=(%.1f, %.1f, %.1f) cm\n",
-             fPDGType, px, py, pz, fX, fY, fZ);
+             GetPDGType(), px, py, pz, fX, fY, fZ);
 
-    primGen->AddTrack(fPDGType, px, py, pz, fX, fY, fZ);
+    primGen->AddTrack(GetPDGType(), px, py, pz, fX, fY, fZ);
   }
   return kTRUE;
 

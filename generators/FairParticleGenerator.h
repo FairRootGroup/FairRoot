@@ -23,13 +23,12 @@
 #ifndef FAIR_PARTICLEGENERATOR_H
 #define FAIR_PARTICLEGENERATOR_H
 
-#include "FairGenerator.h"              // for FairGenerator
-
 #include <Rtypes.h>                     // for Double32_t, Int_t, etc
+#include "FairBaseMCGenerator.h"              // for FairGenerator
 
 class FairPrimaryGenerator;
 
-class FairParticleGenerator : public FairGenerator
+class FairParticleGenerator : public FairBaseMCGenerator
 {
   public:
     /** Default constructor. **/
@@ -50,10 +49,7 @@ class FairParticleGenerator : public FairGenerator
     virtual ~FairParticleGenerator() {};
 
     /** Modifiers **/
-    void SetPDGType(Int_t pdg)       {fPDGType = pdg;  };
-    void SetMultiplicity(Int_t mult) {fMult    = mult; };
     void SetMomentum(Double32_t px, Double32_t py, Double32_t pz);
-    void SetVertex(Double32_t vx, Double32_t vy, Double32_t vz);
 
     /** Creates an event with given type and multiplicity.
      **@param primGen  pointer to the FairPrimaryGenerator
@@ -61,10 +57,7 @@ class FairParticleGenerator : public FairGenerator
     virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
   private:
-    Int_t      fPDGType;       // Particle type (PDG encoding)
-    Int_t      fMult;          // Multiplicity
     Double32_t fPx, fPy, fPz;  // Momentum components [GeV]
-    Double32_t fVx, fVy, fVz;  // Vertex coordinates [cm]
 
     ClassDef(FairParticleGenerator,1);
 };
