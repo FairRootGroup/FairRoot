@@ -6,8 +6,8 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
-#ifndef FAIRBASEMCGENERATOR_H_
-#define FAIRBASEMCGENERATOR_H_
+#ifndef FAIR_BASEMCGENERATOR_H_
+#define FAIR_BASEMCGENERATOR_H_
 
 #include "FairGenerator.h"
 
@@ -51,8 +51,14 @@ protected:
 	/**
 	 * generate event parameters like current event
 	 */
-	void GenerateEventParameters();
-    Double32_t fX, fY, fZ;           // current vertex coordinates [cm]
+	virtual void GenerateEventParameters();
+    Double_t GetVxAv()const{return fVx;};
+    Double_t GetVyAv()const{return fVy;};
+    Double_t GetVzAv()const{return fVz;};
+    Double_t GetVxRms()const{return fVex;}
+    Double_t GetVyRms()const{return fVey;}
+    Double_t GetVzRms()const{return fVez;}
+    Double_t fX, fY, fZ;           // current vertex coordinates [cm]
 private:
     Int_t fPDGType;	// Particle type (PDG encoding)
 	Int_t fMult;			//Multiplicity;
@@ -63,4 +69,4 @@ private:
 	ClassDef(FairBaseMCGenerator,1)
 };
 
-#endif /* FAIRBASEMCGENERATOR_H_ */
+#endif /* FAIR_BASEMCGENERATOR_H_ */

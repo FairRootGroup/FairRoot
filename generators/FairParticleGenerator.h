@@ -59,7 +59,7 @@ class FairParticleGenerator : public FairBaseMCGenerator
   private:
     Double32_t fPx, fPy, fPz;  // Momentum components [GeV]
 
-    ClassDef(FairParticleGenerator,1);
+    ClassDef(FairParticleGenerator,2);
 };
 
 #endif

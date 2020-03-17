@@ -27,7 +27,7 @@
  */
 
 #include "FairBoxGenerator.h"
-
+#include "FairLogger.h"
 #include "FairPrimaryGenerator.h"
 
 #include <TRandom.h>
@@ -46,7 +46,7 @@ FairBoxGenerator::FairBoxGenerator() :
   fEkinMin(0),fEkinMax(0),
   fEtaRangeIsSet(0),fYRangeIsSet(0),fThetaRangeIsSet(0),
   fCosThetaIsSet(0),fPtRangeIsSet(0),fPRangeIsSet(0),
-  fDebug(0),fEkinRangeIsSet(0)
+ fEkinRangeIsSet(0)
 {
   // Default constructor
 }
@@ -59,7 +59,7 @@ FairBoxGenerator::FairBoxGenerator(Int_t pdgid, Int_t mult) :
   fEkinMin(0),fEkinMax(0),
   fEtaRangeIsSet(0), fYRangeIsSet(0),fThetaRangeIsSet(0),
   fCosThetaIsSet(0), fPtRangeIsSet(0), fPRangeIsSet(0),
- fDebug(0), fEkinRangeIsSet(0)
+ fEkinRangeIsSet(0)
 {
   // Constructor. Set default kinematics limits
   SetPDGType(pdgid);
@@ -78,7 +78,7 @@ FairBoxGenerator::FairBoxGenerator(const FairBoxGenerator& rhs) :
   fEtaRangeIsSet(rhs.fEtaRangeIsSet), fYRangeIsSet(rhs.fYRangeIsSet),
   fThetaRangeIsSet(rhs.fThetaRangeIsSet),fCosThetaIsSet(rhs.fCosThetaIsSet),
   fPtRangeIsSet(rhs.fPtRangeIsSet), fPRangeIsSet(rhs.fPRangeIsSet),
-  fDebug(rhs.fDebug), fEkinRangeIsSet(rhs.fEkinRangeIsSet)
+   fEkinRangeIsSet(rhs.fEkinRangeIsSet)
 {
   // Copy constructor
 }
@@ -114,7 +114,6 @@ FairBoxGenerator& FairBoxGenerator::operator=(const FairBoxGenerator& rhs)
   fCosThetaIsSet = rhs.fCosThetaIsSet;
   fPtRangeIsSet = rhs.fPtRangeIsSet;
   fPRangeIsSet = rhs.fPRangeIsSet;
-  fDebug = rhs.fDebug;
   fEkinRangeIsSet = rhs.fEkinRangeIsSet;
 
   return *this;
@@ -145,16 +144,16 @@ Bool_t  FairBoxGenerator::Init()
   TParticlePDG* particle = pdgBase->GetParticle(GetPDGType());
 
   if (! particle) {
-    Fatal("FairBoxGenerator","PDG code %d not defined.",GetPDGType());
+    LOG(fatal)<<"FairBoxGenerator: PDG "<< GetPDGType()<< " not defined";
   }
 
   if (fPhiMax-fPhiMin>360){
-    Fatal("Init()","FairBoxGenerator: phi range is too wide: %f<phi<%f",
-          fPhiMin,fPhiMax);
+    LOG(fatal)<<"FairBoxGenerator:Init(): phi range is too wide: "
+            <<fPhiMin<<"<phi<"<<fPhiMax;
   }
   if (fEkinRangeIsSet){
     if (fPRangeIsSet){
-      Fatal("Init()","FairBoxGenerator: Cannot set P and Ekin ranges simultaneously");
+      LOG(fatal)<<"FairBoxGenerator:Init(): Cannot set P and Ekin ranges simultaneously";
     } else {
       // Transform EkinRange to PRange, calculate momentum in GeV, p = √(K² + 2Kmc²)
       fPMin = TMath::Sqrt(fEkinMin*fEkinMin + 2*fEkinMin*GetPDGMass());
@@ -164,15 +163,15 @@ Bool_t  FairBoxGenerator::Init()
     }
   }
   if (fPRangeIsSet && fPtRangeIsSet) {
-    Fatal("Init()","FairBoxGenerator: Cannot set P and Pt ranges simultaneously");
+    LOG(fatal)<<"FairBoxGenerator:Init():  Cannot set P and Pt ranges simultaneously";
   }
   if (fPRangeIsSet && fYRangeIsSet) {
-    Fatal("Init()","FairBoxGenerator: Cannot set P and Y ranges simultaneously");
+    LOG(fatal)<<"FairBoxGenerator:Init():  Cannot set P and Y ranges simultaneously";
   }
   if ( (fThetaRangeIsSet && fYRangeIsSet) ||
        (fThetaRangeIsSet && fEtaRangeIsSet) ||
        (fYRangeIsSet     && fEtaRangeIsSet) ) {
-    Fatal("Init()","FairBoxGenerator: Cannot set Y, Theta or Eta ranges simultaneously");
+    LOG(fatal)<<"FairBoxGenerator:Init():  Cannot set Y, Theta or Eta ranges simultaneously";
   }
   return kTRUE;
 }
@@ -222,10 +221,8 @@ Bool_t FairBoxGenerator::ReadEvent(FairPrimaryGenerator* primGen)
     px = pt*TMath::Cos(phi);
     py = pt*TMath::Sin(phi);
 
-    if (fDebug)
-      printf("BoxGen: kf=%d, p=(%.2f, %.2f, %.2f) GeV, x=(%.1f, %.1f, %.1f) cm\n",
-             GetPDGType(), px, py, pz, fX, fY, fZ);
-
+    LOG(debug)<<"FairBoxGen:  "<<
+            Form("PDG %i p=(%.2f, %.2f, %.2f) GeV,",GetPDGType(),px,py,pz);
     primGen->AddTrack(GetPDGType(), px, py, pz, fX, fY, fZ);
   }
   return kTRUE;
