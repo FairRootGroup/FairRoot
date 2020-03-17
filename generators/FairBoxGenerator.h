@@ -78,8 +78,11 @@ class FairBoxGenerator : public FairBaseMCGenerator
 
     void SetBoxXYZ(Double32_t x1=0, Double32_t y1=0, Double32_t x2=0, Double32_t y2=0, Double32_t z=0);
 
-    void SetDebug(Bool_t debug=0) {fDebug = debug;}
-
+    /**
+     * not used, for backward compatibility, please user FairLogger to set debug mode
+     * @param
+     */
+    void SetDebug(Bool_t /*debug*/){}
     /** Initializer **/
     Bool_t Init();
 
@@ -113,10 +116,9 @@ class FairBoxGenerator : public FairBaseMCGenerator
     //cos(theta) is set (default -> not set)
     Bool_t     fPtRangeIsSet;        // True if transverse momentum range is set
     Bool_t     fPRangeIsSet;         // True if abs.momentum range is set
-    Bool_t     fDebug;               // Debug switch
     Bool_t     fEkinRangeIsSet;      // True if kinetic energy range is set
 
-    ClassDef(FairBoxGenerator,4);
+    ClassDef(FairBoxGenerator,5);
 };
 
 #endif

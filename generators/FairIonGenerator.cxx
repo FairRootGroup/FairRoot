@@ -145,13 +145,9 @@ Bool_t FairIonGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
   int pdgType = thisPart->PdgCode();
 
-  LOG(info) << "FairIonGenerator: Generating " << GetMultiplicity() << " ions of type "
-	    << fIon->GetName() << " (PDG code " << pdgType << ")";
-  LOG(info) << "    Momentum (" << fPx << ", " << fPy << ", " << fPz
-	    << ") Gev from vertex (" << fX << ", " << fY
-	    << ", " << fZ << ") cm";
-
   for(Int_t i=0; i<GetMultiplicity(); i++) {
+    LOG(debug)<<"FairIonGenerator: Generating ion "  <<fIon->GetName()<<
+      Form(" p=(%.2f, %.2f, %.2f) GeV,",fPx,fPy,fPz);
     primGen->AddTrack(pdgType, fPx, fPy, fPz, fX, fY, fZ);
   }
 

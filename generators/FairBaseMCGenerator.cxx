@@ -7,6 +7,7 @@
  *		Warsaw University of Technology, Faculty of Physics
  */
 #include "FairBaseMCGenerator.h"
+#include "FairLogger.h"
 
 #include <TParticlePDG.h>
 #include <TDatabasePDG.h>
@@ -70,6 +71,8 @@ Bool_t FairBaseMCGenerator::Init() {
     TDatabasePDG *pid = TDatabasePDG::Instance();
     TParticlePDG *p = pid->GetParticle(fPDGType);
     if(p!=nullptr){
+        LOG(info)<<this->ClassName()<<": particle with PDG ="<<GetPDGType()
+                <<" Found";
         fPDGMass = p->Mass();
     }
     return kTRUE;
@@ -109,4 +112,6 @@ void FairBaseMCGenerator::GenerateEventParameters() {
         }
     }break;
     }
+    LOG(info) << this->ClassName()<< ": Event,  vertex = ("
+              << fX << "," << fY << "," << fZ << ") cm,  multiplicity " << fMult;
 }

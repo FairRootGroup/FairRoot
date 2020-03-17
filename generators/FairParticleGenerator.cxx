@@ -10,6 +10,7 @@
 // -----          Created 09/07/04  by V. Friese / D.Bertini           -----
 // -------------------------------------------------------------------------
 #include "FairParticleGenerator.h"
+#include "FairLogger.h"
 
 #include "FairPrimaryGenerator.h"       // for FairPrimaryGenerator
 
@@ -46,13 +47,15 @@ void FairParticleGenerator::SetMomentum(Double32_t px, Double32_t py, Double32_t
 Bool_t FairParticleGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
   // Check for particle type
-  GenerateVertex();
+  GenerateEventParameters();
   if ( GetPDGType() == -1 ) {
-    Fatal("FairParticleGenerator","PDG code not defined.");
+    LOG(fatal)<<"FairParticleGenerator PDG code not defined";
   }
 
   // Generate particles
   for (Int_t k = 0; k < GetMultiplicity(); k++) {
+      LOG(debug)<<"FairParticleGenerator:  "<<
+              Form("PDG %i p=(%.2f, %.2f, %.2f) GeV,",GetPDGType(),fPx,fPy,fPz);
     primGen->AddTrack(GetPDGType(), fPx, fPy, fPz, fX, fY, fZ);
   }
 
