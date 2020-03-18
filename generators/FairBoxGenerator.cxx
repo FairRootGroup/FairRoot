@@ -67,58 +67,6 @@ FairBoxGenerator::FairBoxGenerator(Int_t pdgid, Int_t mult) :
   SetPhiRange();
 }
 
-FairBoxGenerator::FairBoxGenerator(const FairBoxGenerator& rhs) :
-        FairBaseMCGenerator(rhs),
-  fPtMin(rhs.fPtMin),fPtMax(rhs.fPtMax),
-  fPhiMin(rhs.fPhiMin),fPhiMax(rhs.fPhiMax),fEtaMin(rhs.fEtaMin),
-  fEtaMax(rhs.fEtaMax),fYMin(rhs.fYMin),fYMax(rhs.fYMax),
-  fPMin(rhs.fPMin),fPMax(rhs.fPMax),fThetaMin(rhs.fThetaMin),
-  fThetaMax(rhs.fThetaMax),
-  fEkinMin(rhs.fEkinMin),fEkinMax(rhs.fEkinMax),
-  fEtaRangeIsSet(rhs.fEtaRangeIsSet), fYRangeIsSet(rhs.fYRangeIsSet),
-  fThetaRangeIsSet(rhs.fThetaRangeIsSet),fCosThetaIsSet(rhs.fCosThetaIsSet),
-  fPtRangeIsSet(rhs.fPtRangeIsSet), fPRangeIsSet(rhs.fPRangeIsSet),
-   fEkinRangeIsSet(rhs.fEkinRangeIsSet)
-{
-  // Copy constructor
-}
-
-FairBoxGenerator& FairBoxGenerator::operator=(const FairBoxGenerator& rhs)
-{
-  // Assignment operator
-
-  // check assignment to self
-  if (this == &rhs) return *this;
-
-  // base class assignment
-  FairBaseMCGenerator::operator=(rhs);
-
-  // assignment operator
-  fPtMin = rhs.fPtMin;
-  fPtMax = rhs.fPtMax;
-  fPhiMin = rhs.fPhiMin;
-  fPhiMax = rhs.fPhiMax;
-  fEtaMin = rhs.fEtaMin;
-  fEtaMax = rhs.fEtaMax;
-  fYMin = rhs.fYMin;
-  fYMax = rhs.fYMax;
-  fPMin = rhs.fPMin;
-  fPMax = rhs.fPMax;
-  fThetaMin = rhs.fThetaMin;
-  fThetaMax = rhs.fThetaMax;
-  fEkinMin = rhs.fEkinMin;
-  fEkinMax = rhs.fEkinMax;
-  fEtaRangeIsSet = rhs.fEtaRangeIsSet;
-  fYRangeIsSet = rhs.fYRangeIsSet;
-  fThetaRangeIsSet = rhs.fThetaRangeIsSet;
-  fCosThetaIsSet = rhs.fCosThetaIsSet;
-  fPtRangeIsSet = rhs.fPtRangeIsSet;
-  fPRangeIsSet = rhs.fPRangeIsSet;
-  fEkinRangeIsSet = rhs.fEkinRangeIsSet;
-
-  return *this;
-}
-
 void FairBoxGenerator::SetXYZ(Double32_t x, Double32_t y, Double32_t z){
     SetVertex(x,y,z, 0, 0, 0, kBox);
 }
