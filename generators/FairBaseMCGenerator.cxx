@@ -23,34 +23,6 @@ FairBaseMCGenerator::FairBaseMCGenerator() :
   fX(0),fY(0),fZ(0){
 }
 
-FairBaseMCGenerator::FairBaseMCGenerator(const FairBaseMCGenerator &other):
-    FairGenerator(other),
-    fPDGType(other.fPDGType),fMult(other.fMult),fVertexSmear(other.fVertexSmear),
-    fPDGMass(other.fPDGMass),fVx(other.fVx),fVy(other.fVy),
-    fVz(other.fVz),fVex(other.fVex),fVey(other.fVey),
-    fVez(other.fVez),fX(0),fY(0),fZ(0){
-}
-
-FairBaseMCGenerator& FairBaseMCGenerator::operator =(
-        const FairBaseMCGenerator &rhs) {
-    if(this==&rhs) return *this;
-    TNamed::operator=(rhs);
-    fPDGType = rhs.fPDGType;
-    fMult = rhs.fMult;
-    fVertexSmear = rhs.fVertexSmear;
-    fPDGMass = rhs.fPDGMass;
-    fVx = rhs.fVx;
-    fVy = rhs.fVy;
-    fVz = rhs.fVz;
-    fVex = rhs.fVex;
-    fVey = rhs.fVey;
-    fVez = rhs.fVez;
-    fX = rhs.fX;
-    fY = rhs.fY;
-    fZ = rhs.fZ;
-    return *this;
-}
-
 void FairBaseMCGenerator::SetVertex(Double_t vx, Double_t vy, Double_t vz,
         Double_t evx, Double_t evy, Double_t evz, eVertexSmear VertexSmear) {
     fX = fVx = vx;

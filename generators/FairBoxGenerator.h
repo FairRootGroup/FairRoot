@@ -96,8 +96,8 @@ class FairBoxGenerator : public FairBaseMCGenerator
 
   protected:
     /** Copy constructor. **/
-    FairBoxGenerator(const FairBoxGenerator&);
-    FairBoxGenerator& operator=(const FairBoxGenerator&);
+    FairBoxGenerator(const FairBoxGenerator&)=default;
+    FairBoxGenerator& operator=(const FairBoxGenerator&)=default;
 
   private:
 

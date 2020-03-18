@@ -22,8 +22,6 @@ public:
 		kExp
 	};
 	FairBaseMCGenerator();
-	FairBaseMCGenerator(const FairBaseMCGenerator &other);
-	FairBaseMCGenerator& operator=(const FairBaseMCGenerator &rhs);
 	/**
 	 * set PDG code of generated particles
 	 * @param pdg
@@ -45,6 +43,8 @@ public:
     virtual Bool_t Init();
 	virtual ~FairBaseMCGenerator();
 protected:
+	FairBaseMCGenerator(const FairBaseMCGenerator &other) = default;
+    FairBaseMCGenerator& operator=(const FairBaseMCGenerator &rhs) = default;
 	Int_t GetPDGType()const{return fPDGType;};
 	Int_t GetMultiplicity()const{return fMult;};
 	Double_t GetPDGMass()const{return fPDGMass;};
