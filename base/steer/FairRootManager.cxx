@@ -209,6 +209,10 @@ void FairRootManager::RegisterImpl(const char* name, const char *folderName, T* 
       {
 	fSink->RegisterImpl(name,folderName,obj);
       }
+    else
+      {
+        LOG(fatal) << "The sink does not exist to store persistent branches.";
+      }
   }
   AddMemoryBranch(name, obj);
   AddBranchToList(name);

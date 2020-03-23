@@ -8,6 +8,7 @@
 #ifndef FAIR_ROOT_MANAGER_H
 #define FAIR_ROOT_MANAGER_H
 
+#include "FairLogger.h"
 #include "FairSink.h"
 #include "FairSource.h"
 
@@ -419,7 +420,10 @@ void FairRootManager::RegisterAny(const char* brname, T *& obj, bool persistence
   if (persistence) {
     auto& ot = typeid(T*);
     auto& pt = typeid(T);
-    fSink->RegisterAny(brname,ot,pt,&obj);
+    if ( fSink )
+      fSink->RegisterAny(brname,ot,pt,&obj);
+    else
+      LOG(fatal) << "The sink does not exist to store persistent branches.";
   }
 }
 
