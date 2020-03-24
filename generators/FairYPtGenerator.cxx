@@ -19,9 +19,24 @@ FairYPtGenerator::FairYPtGenerator():
   fYPt(){
 }
 
+FairYPtGenerator::FairYPtGenerator(const FairYPtGenerator& base):
+    FairBaseMCGenerator(base)
+    {
+    base.fYPt.Copy(this->fYPt) ;
+    fYPt.SetDirectory(nullptr);
+}
+
+FairYPtGenerator& FairYPtGenerator::operator=(const FairYPtGenerator&rhs){
+    if(&rhs==this) return *this;
+    FairBaseMCGenerator::operator =(rhs);
+    rhs.fYPt.Copy(fYPt);
+    fYPt.SetDirectory(nullptr);
+    return *this;
+}
+
 void FairYPtGenerator::SetYPt(const TH2D &yPt) {
   yPt.Copy(fYPt);
-  fYPt.SetDirectory(0x0);
+  fYPt.SetDirectory(nullptr);
 }
 
 Bool_t FairYPtGenerator::Init() {

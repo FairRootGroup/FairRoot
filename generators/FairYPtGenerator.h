@@ -23,6 +23,8 @@ class FairYPtGenerator : public FairBaseMCGenerator{
     virtual FairGenerator* CloneGenerator() const;
     virtual ~FairYPtGenerator();
   protected:
+    FairYPtGenerator(const FairYPtGenerator& base);
+    FairYPtGenerator& operator=(const FairYPtGenerator&rhs);
     Double_t GetMass2()const{return GetPDGMass()*GetPDGMass();};
     void GetYPt(Double_t &y, Double_t &pt);
   private:
