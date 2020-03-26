@@ -36,7 +36,7 @@ list(APPEND headers
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
-set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+fairroot_add_standard_library_properties(${target})
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/devices>
@@ -46,14 +46,7 @@ target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/policies/Serialization>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/policies/Storage>
   $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/MbsAPI>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-
-  # TODO: DELETE ME ONCE USING root targets
-  ${ROOT_INCLUDE_DIR} # TClonesArray, TMessage, etc
-)
-
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR} # Net
+  $<INSTALL_INTERFACE:${PROJECT_INSTALL_INCDIR}>
 )
 
 target_link_libraries(${target} PUBLIC
@@ -67,11 +60,14 @@ target_link_libraries(${target} PUBLIC
   Boost::serialization
   Boost::filesystem
 
-  Net # TMessage
-  Core # Rtypes, TClonesArray
-  RIO # TFile
-  Tree # TTree
+  ROOT::Net # TMessage
+  ROOT::Core # Rtypes, TClonesArray
+  ROOT::RIO # TFile
+  ROOT::Tree # TTree
 )
 
-install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
-install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(TARGETS ${target}
+  EXPORT ${PROJECT_EXPORT_SET}
+  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers}
+  DESTINATION ${PROJECT_INSTALL_INCDIR})
