@@ -68,7 +68,7 @@ target_link_libraries(${target} PUBLIC
   Core
   Physics
   Geom
-  VMC
+  ${VMCLIB}
   MathCore
   Hist
   $<$<BOOL:${ROOT_HAS_OPENGL}>:Eve>

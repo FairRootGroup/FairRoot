@@ -130,6 +130,15 @@ If(ROOT_FOUND)
                  )
   String(STRIP ${ROOT_LIBRARIES} ROOT_LIBRARIES)
 
+  if("${ROOT_VERSION_MAJOR}.${ROOT_VERSION_MINOR}" VERSION_GREATER 6.16)
+    Execute_Process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --has-vmc
+                    OUTPUT_VARIABLE ROOT_vmc_FOUND
+                   )
+    String(STRIP ${ROOT_vmc_FOUND} ROOT_vmc_FOUND)
+  else()
+    set(ROOT_vmc_FOUND yes)
+  endif()
+
   # Make variables changeble to the advanced user
   Mark_As_Advanced(ROOT_LIBRARY_DIR ROOT_INCLUDE_DIR ROOT_DEFINITIONS)
 

@@ -43,7 +43,7 @@ target_link_libraries(${target} PUBLIC
 
   Geom # TGeoManager
   Core # Rtypes
-  VMC # TVirtualMC
+  ${VMCLIB} # TVirtualMC
   EG # TParticle
   Physics # TVector
 )

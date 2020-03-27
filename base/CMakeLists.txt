@@ -133,7 +133,7 @@ target_link_libraries(${target} PUBLIC
   Proof
   RIO
   Tree
-  VMC
+  ${VMCLIB}
   $<$<BOOL:${ROOT_GDML_FOUND}>:Gdml>
 )
 
