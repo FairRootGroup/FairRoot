@@ -43,7 +43,7 @@ target_link_libraries(${target} PUBLIC
   Physics # TLorentzVector, TVector3
   MathCore # TMath
   EG # TDatabasePDG, TParticle
-  VMC # TMCProcess
+  ${VMCLIB} # TMCProcess
 )
 
 fairroot_target_root_dictionary(${target}

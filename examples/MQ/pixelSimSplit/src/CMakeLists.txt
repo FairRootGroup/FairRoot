@@ -54,7 +54,7 @@ target_link_libraries(${target} PUBLIC
   FairMQ::FairMQ
 
   Core
-  VMC
+  ${VMCLIB}
 )
 
 fairroot_target_root_dictionary(${target}

@@ -46,7 +46,7 @@ target_link_libraries(${target} PUBLIC
 
   Core
   Physics
-  VMC
+  ${VMCLIB}
 )
 
 fairroot_target_root_dictionary(${target}

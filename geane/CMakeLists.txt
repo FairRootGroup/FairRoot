@@ -40,7 +40,7 @@ target_link_libraries(${target} PUBLIC
   Core
   EG
   Geom
-  VMC
+  ${VMCLIB}
   Physics
   MathCore
 )

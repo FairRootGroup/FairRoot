@@ -51,7 +51,7 @@ target_link_libraries(${target} PUBLIC
   Core
   Physics
   Geom
-  VMC
+  ${VMCLIB}
 )
 
 fairroot_target_root_dictionary(${target}
