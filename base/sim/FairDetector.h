@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRDETECTOR_H
@@ -49,7 +49,7 @@ class FairDetector : public FairModule
     */
     virtual Bool_t ProcessHits( FairVolume* v=0)=0;
     /**
-      this is called at the end of an event
+      this is called at the end of an event after the call to tree fill in the FairRootManager
     */
     virtual void EndOfEvent() {}
     /**
@@ -57,23 +57,45 @@ class FairDetector : public FairModule
     */
     virtual void Register()=0;
 
-    /** Gets the produced collections **/
+    /**
+     Gets the produced collections
+    */
     virtual TClonesArray* GetCollection(Int_t iColl) const = 0;
-
     /**
       has to be called after each event to reset the containers
     */
     virtual void Reset()=0;
 
     virtual void CopyClones( TClonesArray*,  TClonesArray*, Int_t) {}
-
+    /**
+     User actions after finishing of a primary track
+    */
     virtual void FinishPrimary() {}
+    /**
+     Finish MC Run
+    */
     virtual void FinishRun() {}
+    /**
+     User actions at beginning of a primary track
+    */
     virtual void BeginPrimary() {}
+    /**
+     User actions after finishing of each track
+    */
     virtual void PostTrack() {}
+    /**
+     User actions at beginning of each track
+    */
     virtual void PreTrack() {}
+    /**
+     User actions at beginning of event
+    */
     virtual void BeginEvent() {}
+    /**
+     this is called at the end of an event before the call to tree fill in the FairRootManager
+    */
     virtual void FinishEvent() {}
+
     void SaveGeoParams();
     Int_t  GetDetId() {
       return fDetId;
