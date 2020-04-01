@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bigbuffersize',['BIGBUFFERSIZE',['../PixelPayload_8h.html#aa8e031b344ddd898bb295ddf5b76397f',1,'PixelPayload.h']]]
+  ['architecture_5fid',['ARCHITECTURE_ID',['../d2/d84/build_2CMakeFiles_23_814_80_2CompilerIdC_2CMakeCCompilerId_8c.html#aba35d0d200deaeb06aee95ca297acb28',1,'ARCHITECTURE_ID():&#160;CMakeCCompilerId.c'],['../de/d89/build_2CMakeFiles_23_814_80_2CompilerIdCXX_2CMakeCXXCompilerId_8cpp.html#aba35d0d200deaeb06aee95ca297acb28',1,'ARCHITECTURE_ID():&#160;CMakeCXXCompilerId.cpp'],['../d8/d7f/CMakeFiles_23_814_80_2CompilerIdC_2CMakeCCompilerId_8c.html#aba35d0d200deaeb06aee95ca297acb28',1,'ARCHITECTURE_ID():&#160;CMakeCCompilerId.c'],['../db/d46/CMakeFiles_23_814_80_2CompilerIdCXX_2CMakeCXXCompilerId_8cpp.html#aba35d0d200deaeb06aee95ca297acb28',1,'ARCHITECTURE_ID():&#160;CMakeCXXCompilerId.cpp'],['../d4/dc1/xbuild_2CMakeFiles_23_814_80_2CompilerIdC_2CMakeCCompilerId_8c.html#aba35d0d200deaeb06aee95ca297acb28',1,'ARCHITECTURE_ID():&#160;CMakeCCompilerId.c'],['../db/d49/xbuild_2CMakeFiles_23_814_80_2CompilerIdCXX_2CMakeCXXCompilerId_8cpp.html#aba35d0d200deaeb06aee95ca297acb28',1,'ARCHITECTURE_ID():&#160;CMakeCXXCompilerId.cpp']]]
 ];
