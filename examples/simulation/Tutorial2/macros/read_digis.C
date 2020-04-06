@@ -34,20 +34,44 @@ void read_digis(){
     FairParRootFileIo* io1=new FairParRootFileIo();
     io1->open(parFile.Data(),"UPDATE");
 
+    // Fallback solution if paramters are not found in database (ROOT file)
     FairParAsciiFileIo* parInput2 = new FairParAsciiFileIo();
     TString tutDetDigiFile = gSystem->Getenv("VMCWORKDIR");
     tutDetDigiFile += "/simulation/Tutorial2/parameters/tutdet.digi.par";
     parInput2->open(tutDetDigiFile.Data(),"in");
 
+
+    // The parameter container is initialized from first input since it
+    // is available from the ROOT parameter file. The second input is the
+    // fallback when a parameter container is not found in the first
+    // input. If you want to overwrite a paramter container already
+    // existing in the "database" (ROOT file) you have to change the
+    // order of the inputs. In this case the ASCII file has to be the
+    // first input.
     rtdb->setFirstInput(io1);
     rtdb->setSecondInput(parInput2);
 
+    // It is needed to request the parameter container before the run is
+    // initialized. Otherwise the runtime database does not know that the
+    // parameter container is needed and creates one with the default
+    // constructor of the parameter container which is an empty one.
+    // Normally the request is done in the function SetParContainers of the task.
+    // You can check what happens if no parameter conatiner is requested
+    // by disabling the next line.
+    rtdb->getContainer("FairTutorialDet2DigiPar");
     rtdb->print();
 
     fRun->Init();
 
     rtdb->getContainer("FairTutorialDet2DigiPar")->print();
+
+    // First short version to print the parameters
+    // If you want to confirm that the parameters are really there you can
+    // print them by disabling the following line
+    // static_cast<FairTutorialDet2DigiPar*>(rtdb->getContainer("FairTutorialDet2DigiPar"))->printparams();
+
     rtdb->saveOutput();
+
     // -- Print out the random seed from the simulation ----------------------
     FairBaseParSet* BasePar= (FairBaseParSet *)
                                      rtdb->getContainer("FairBaseParSet");
@@ -55,13 +79,21 @@ void read_digis(){
 
     // -----------------------------------------------------------------------
 
+    // Second version to print the parameters
+    // which also shows how to change and save them again
+
     FairTutorialDet2DigiPar* DigiPar = (FairTutorialDet2DigiPar*)
                                       rtdb->getContainer("FairTutorialDet2DigiPar");
 
     DigiPar->setChanged();
     DigiPar->setInputVersion(fRun->GetRunId(),1);
+    // If you want to confirm that the parameters are really there you can
+    // print them by disabling the following line
     DigiPar->printParams();
+
     rtdb->print();
+    rtdb->saveOutput();
+
     fRun->Run();
 
     // -----   Finish   -------------------------------------------------------
