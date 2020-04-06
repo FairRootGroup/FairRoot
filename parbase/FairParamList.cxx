@@ -476,7 +476,7 @@ template <class type> void FairParamObj::printData(type* val, Int_t nParams)
 
 FairParamList::FairParamList()
   :TObject(),
-   paramList(new TList()),
+   paramList(new THashTable()),
    fLogger(FairLogger::GetLogger())
 {
   // Constructor

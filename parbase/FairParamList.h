@@ -13,7 +13,7 @@
 #include <Rtypes.h>                     // for Text_t, Int_t, Bool_t, etc
 #include <TArrayC.h>                    // for TArrayC
 #include <TFile.h>                      // for TFile
-#include <TList.h>                      // for TList
+#include <THashTable.h>                 // for THashTable
 #include <TObject.h>                    // for TObject
 #include <TROOT.h>                      // for TROOT, gROOT
 #include <TSeqCollection.h>             // for TSeqCollection
@@ -82,7 +82,7 @@ class FairParamObj : public TNamed
 class FairParamList : public TObject
 {
   protected:
-    TList* paramList;      // List for parameters stored as string
+    THashTable* paramList;      // List for parameters stored as string
     FairLogger* fLogger;  // FairRoot logging mechanism
     class FairParamTFile : public TFile
     {
@@ -134,7 +134,7 @@ class FairParamList : public TObject
     FairParamObj* find(const Text_t* name) {
       return static_cast<FairParamObj*>(paramList->FindObject(name));
     }
-    TList* getList() { return paramList; }
+    THashTable* getList() { return paramList; }
 
   private:
     FairParamList(const FairParamList&);

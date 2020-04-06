@@ -23,7 +23,7 @@
 #include "FairParamList.h"     // for FairParamObj, FairParamList
 
 #include <TCollection.h> // for TIter
-#include <TList.h>       // for TList
+#include <THashTable.h>  // for THashTable
 #include <TString.h>     // for TString, operator<<
 
 #include <stdio.h>  // for printf, sscanf
@@ -285,7 +285,7 @@ Int_t FairGenericParAsciiFileIo::writeGenericSet(FairParGenericSet *pPar) {
               "-----------------\n";
     FairParamList *paramList = new FairParamList;
     pPar->putParams(paramList);
-    TList *pList = paramList->getList();
+    THashTable *pList = paramList->getList();
     TIter next(pList);
     FairParamObj *po;
     while ((po = static_cast<FairParamObj*>(next()))) {
