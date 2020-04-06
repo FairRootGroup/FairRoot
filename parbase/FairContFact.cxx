@@ -218,3 +218,19 @@ void FairContFact::print()
         c->print();
     }
 }
+
+Bool_t FairContFact::AddContainer(FairContainer* cont)
+{
+    // Check if a container already exist in the List of containers
+    // If it alread exist print an error message and return kFALSE
+    // such that the user can handle the issue
+    if (nullptr != containers->FindObject(cont)) {
+        LOG(error) << "The container " << cont->GetName() << " already exist in the "
+                   << "container factory " << GetName() << ".\n"
+                   << "Duplicate container is not added.";
+        return kFALSE;
+    }
+
+    containers->Add(cont);
+    return kTRUE;
+}
