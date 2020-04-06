@@ -55,6 +55,8 @@ class FairContFact : public TNamed
     FairParSet* getContainer(const char*);
     virtual FairParSet* createContainer(FairContainer*) { return 0; }
     virtual void activateParIo(FairParIo*) {}
+    /// @param[in] container Transfers ownership if return value is true
+    Bool_t AddContainer(FairContainer*);
 
   protected:
     TList* containers;   // all parameter containers managed by this factory
