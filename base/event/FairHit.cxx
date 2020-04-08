@@ -20,7 +20,7 @@ FairHit::FairHit()
 {
 }
 
-FairHit::FairHit(Int_t detID, TVector3& pos, TVector3& dpos, Int_t index)
+FairHit::FairHit(Int_t detID, const TVector3& pos, const TVector3& dpos, Int_t index)
   :FairTimeStamp(),
    fDx          (dpos.X()),
    fDy          (dpos.Y()),

@@ -32,8 +32,8 @@ class MyHit : public FairHit
     MyHit();
 
     /** Constructor **/
-    MyHit(Int_t detID, Int_t mcindex, TVector3& pos, TVector3& dpos);
-    MyHit(Int_t detID, Int_t mcindex, TVector3& pos, TVector3& dpos, Double_t timeStamp, Double_t timeStampError);
+    MyHit(Int_t detID, Int_t mcindex, const TVector3& pos, const TVector3& dpos);
+    MyHit(Int_t detID, Int_t mcindex, const TVector3& pos, const TVector3& dpos, Double_t timeStamp, Double_t timeStampError);
 
     /** Destructor **/
     virtual ~MyHit();

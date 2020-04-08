@@ -382,7 +382,7 @@ void FairGeanePro::Init(FairTrackPar* TParam)
   p2[2]=0;
 }
 
-bool FairGeanePro::SetOriginPlane(TVector3& v1, TVector3& v2)
+bool FairGeanePro::SetOriginPlane(const TVector3& v1, const TVector3& v2)
 {
   // define initial plane (option "P")
   TVector3 v1u=v1.Unit();
@@ -396,7 +396,7 @@ bool FairGeanePro::SetOriginPlane(TVector3& v1, TVector3& v2)
   return kTRUE;
 }
 
-bool FairGeanePro::SetDestinationPlane(TVector3& v0, TVector3& v1, TVector3& v2)
+bool FairGeanePro::SetDestinationPlane(const TVector3& v0, const TVector3& v1, const TVector3& v2)
 {
   // define final plane (option "P")
   // uncomment to set the initial error to zero
@@ -463,13 +463,13 @@ bool FairGeanePro::SetPropagateOnlyParameters()
   return kTRUE;
 }
 
-bool FairGeanePro::PropagateFromPlane(TVector3& v1, TVector3& v2)
+bool FairGeanePro::PropagateFromPlane(const TVector3& v1, const TVector3& v2)
 {
     LOG(warning) << "Function PropagateFromPlane depracated, use SetOriginPlane.";
     return SetOriginPlane(v1,v2);
 }
 
-bool FairGeanePro::PropagateToPlane(TVector3& v0, TVector3& v1, TVector3& v2)
+bool FairGeanePro::PropagateToPlane(const TVector3& v0, const TVector3& v1, const TVector3& v2)
 {
     LOG(warning) << "Function PropagateToPlane depracated, use SetDestinationPlane.";
     return SetDestinationPlane(v0,v1,v2);
