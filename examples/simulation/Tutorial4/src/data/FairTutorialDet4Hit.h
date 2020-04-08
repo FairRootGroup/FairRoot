@@ -19,7 +19,7 @@ class FairTutorialDet4Hit : public FairHit
   public:
     /** Default constructor **/
     FairTutorialDet4Hit();
-    FairTutorialDet4Hit(Int_t detID, Int_t mcindex, TVector3& pos, TVector3& dpos);
+    FairTutorialDet4Hit(Int_t detID, Int_t mcindex, const TVector3& pos, const TVector3& dpos);
 
     /** Destructor **/
     virtual ~FairTutorialDet4Hit();

@@ -21,12 +21,12 @@ MyHit::MyHit()
 {
 }
 
-MyHit::MyHit(Int_t detID, Int_t mcindex, TVector3& pos, TVector3& dpos)
+MyHit::MyHit(Int_t detID, Int_t mcindex, const TVector3& pos, const TVector3& dpos)
     : FairHit(detID, pos, dpos, mcindex)
 {
 }
 
-MyHit::MyHit(Int_t detID, Int_t mcindex, TVector3& pos, TVector3& dpos, Double_t timeStamp, Double_t timeStampError)
+MyHit::MyHit(Int_t detID, Int_t mcindex, const TVector3& pos, const TVector3& dpos, Double_t timeStamp, Double_t timeStampError)
     : FairHit(detID, pos, dpos, mcindex)//
 {
 	SetTimeStamp(timeStamp);

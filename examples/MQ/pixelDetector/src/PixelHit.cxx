@@ -19,7 +19,7 @@ PixelHit::PixelHit()
 {
 }
 
-PixelHit::PixelHit(Int_t detID, Int_t mcindex, TVector3& pos, TVector3& dpos)
+PixelHit::PixelHit(Int_t detID, Int_t mcindex, const TVector3& pos, const TVector3& dpos)
     : FairHit(detID, pos, dpos, mcindex)
 {
 }

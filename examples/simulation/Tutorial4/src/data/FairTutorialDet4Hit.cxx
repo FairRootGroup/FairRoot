@@ -12,7 +12,7 @@ FairTutorialDet4Hit::FairTutorialDet4Hit()
 {
 }
 
-FairTutorialDet4Hit::FairTutorialDet4Hit(Int_t detID, Int_t mcindex, TVector3& pos, TVector3& dpos)
+FairTutorialDet4Hit::FairTutorialDet4Hit(Int_t detID, Int_t mcindex, const TVector3& pos, const TVector3& dpos)
   : FairHit(detID, pos, dpos, mcindex)
 {
 }

@@ -30,7 +30,7 @@ class PixelHit : public FairHit
     PixelHit();
 
     /** Constructor **/
-    PixelHit(Int_t detID, Int_t mcindex, TVector3& pos, TVector3& dpos);
+    PixelHit(Int_t detID, Int_t mcindex, const TVector3& pos, const TVector3& dpos);
 
     /** Destructor **/
     virtual ~PixelHit();
