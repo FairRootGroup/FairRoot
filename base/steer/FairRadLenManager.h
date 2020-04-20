@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -12,8 +12,8 @@
 #ifndef FAIRRADLENMANAGER_H
 #define FAIRRADLENMANAGER_H 1
 
-#include <Rtypes.h>                     // for Float_t, Double_t, Int_t, etc
-#include <TLorentzVector.h>             // for TLorentzVector
+#include <Rtypes.h>           // for Float_t, Double_t, Int_t, etc
+#include <TLorentzVector.h>   // for TLorentzVector
 
 class TClonesArray;
 
@@ -39,7 +39,7 @@ class FairRadLenManager
     /**
      * Class definition.
      */
-    ClassDef(FairRadLenManager,1);
+    ClassDef(FairRadLenManager, 1);
 
   private:
     FairRadLenManager(const FairRadLenManager&);
@@ -50,43 +50,43 @@ class FairRadLenManager
     /**
      * collection of point
      */
-    TClonesArray*  fPointCollection;
+    TClonesArray* fPointCollection;
     /**track index */
-    Int_t          fTrackID;           //!
+    Int_t fTrackID;   //!
     /**volume id */
-    Int_t          fVolumeID;          //!
+    Int_t fVolumeID;   //!
     /**  entry position in global frame*/
-    TLorentzVector fPosIn;             //!
+    TLorentzVector fPosIn;   //!
     /**  exit position in global frame*/
-    TLorentzVector fPosOut;            //!
+    TLorentzVector fPosOut;   //!
     /**  momentum in*/
-    TLorentzVector fMomIn;             //!
+    TLorentzVector fMomIn;   //!
     /**  momentum out*/
-    TLorentzVector fMomOut;            //!
+    TLorentzVector fMomOut;   //!
     /**track time */
-    Double_t       fTime;                //!
+    Double_t fTime;   //!
     /**track length */
-    Double_t       fLength;              //!
+    Double_t fLength;   //!
     /** energy loss */
-    Double_t       fELoss;               //!
+    Double_t fELoss;   //!
     /** mass umber*/
-    Float_t        fA;
+    Float_t fA;
     /** atomic number*/
-    Float_t        fZmat;
+    Float_t fZmat;
     /**  density */
-    Float_t        fDensity;
+    Float_t fDensity;
     /**radition length */
-    Float_t        fRadl;
+    Float_t fRadl;
     /**absorption length */
-    Float_t        fAbsl;
+    Float_t fAbsl;
 
   public:
     /**Add point to collection*/
-    void  AddPoint(Int_t& ModuleId);
+    void AddPoint(Int_t& ModuleId);
     /**initialize the manager*/
-    void  Init();
+    void Init();
     /**reset*/
-    void  Reset();
+    void Reset();
     /**
      * This function is used to access the methods of the class.
      * @return Pointer to the singleton FairRadLenManager object, created

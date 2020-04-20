@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -----------------------------------------------------------------------------
@@ -17,6 +17,7 @@
 #define FAIRMBSSOURCE_H
 
 #include "FairOnlineSource.h"
+
 #include <Rtypes.h>
 
 class FairMbsSource : public FairOnlineSource
@@ -27,13 +28,17 @@ class FairMbsSource : public FairOnlineSource
     virtual ~FairMbsSource();
 
     virtual Bool_t Init() = 0;
-    virtual Int_t ReadEvent(UInt_t=0) = 0;
+    virtual Int_t ReadEvent(UInt_t = 0) = 0;
     virtual void Close() = 0;
 
   protected:
-    Bool_t Unpack(Int_t* data, Int_t size,
-                  Short_t type, Short_t subType,
-                  Short_t procId, Short_t subCrate, Short_t control);
+    Bool_t Unpack(Int_t* data,
+                  Int_t size,
+                  Short_t type,
+                  Short_t subType,
+                  Short_t procId,
+                  Short_t subCrate,
+                  Short_t control);
 
     ClassDef(FairMbsSource, 0)
 };

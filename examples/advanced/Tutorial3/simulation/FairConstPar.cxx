@@ -7,10 +7,10 @@
  ********************************************************************************/
 #include "FairConstPar.h"
 
-#include "FairConstField.h" // for FairConstField
-#include "FairParamList.h"  // for FairParamList
+#include "FairConstField.h"   // for FairConstField
+#include "FairParamList.h"    // for FairParamList
 
-#include <TString.h> // for TString
+#include <TString.h>   // for TString
 
 class FairField;
 
@@ -32,14 +32,11 @@ FairConstPar::FairConstPar()
     fType = 0;
 }
 
-FairConstPar::~FairConstPar()
-{
-}
+FairConstPar::~FairConstPar() {}
 
 void FairConstPar::putParams(FairParamList* list)
 {
-    if (!list)
-    {
+    if (!list) {
         return;
     }
 
@@ -58,48 +55,37 @@ void FairConstPar::putParams(FairParamList* list)
 
 Bool_t FairConstPar::getParams(FairParamList* list)
 {
-    if (!list)
-    {
+    if (!list) {
         return kFALSE;
     }
-    if (!list->fill("Field Type", &fType))
-    {
+    if (!list->fill("Field Type", &fType)) {
         return kFALSE;
     }
-    if (!list->fill("Field min x", &fXmin))
-    {
+    if (!list->fill("Field min x", &fXmin)) {
         return kFALSE;
     }
-    if (!list->fill("Field max x", &fXmax))
-    {
+    if (!list->fill("Field max x", &fXmax)) {
         return kFALSE;
     }
-    if (!list->fill("Field min y", &fYmin))
-    {
+    if (!list->fill("Field min y", &fYmin)) {
         return kFALSE;
     }
-    if (!list->fill("Field max y", &fYmax))
-    {
+    if (!list->fill("Field max y", &fYmax)) {
         return kFALSE;
     }
-    if (!list->fill("Field min z", &fZmin))
-    {
+    if (!list->fill("Field min z", &fZmin)) {
         return kFALSE;
     }
-    if (!list->fill("Field max z", &fZmax))
-    {
+    if (!list->fill("Field max z", &fZmax)) {
         return kFALSE;
     }
-    if (!list->fill("Field Bx", &fBx))
-    {
+    if (!list->fill("Field Bx", &fBx)) {
         return kFALSE;
     }
-    if (!list->fill("Field By", &fBy))
-    {
+    if (!list->fill("Field By", &fBy)) {
         return kFALSE;
     }
-    if (!list->fill("Field Bz", &fBz))
-    {
+    if (!list->fill("Field Bz", &fBz)) {
         return kFALSE;
     }
     return kTRUE;
@@ -122,4 +108,4 @@ void FairConstPar::SetParameters(FairField* field)
     fType = fieldConst->GetType();
 }
 
-ClassImp(FairConstPar)
+ClassImp(FairConstPar);

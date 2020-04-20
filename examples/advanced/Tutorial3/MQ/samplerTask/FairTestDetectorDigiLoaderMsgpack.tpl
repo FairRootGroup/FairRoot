@@ -11,11 +11,12 @@
 #include <msgpack.hpp>
 
 // Types to be used as template parameters.
-struct MsgPack {};
-// struct MsgPackRef { msgpack::vrefbuffer vbuf; std::vector<msgpack::type::tuple<int, int, int, double, double>> digis; };
-// struct MsgPackStream {};
+struct MsgPack
+{};
+// struct MsgPackRef { msgpack::vrefbuffer vbuf; std::vector<msgpack::type::tuple<int, int, int, double, double>> digis;
+// }; struct MsgPackStream {};
 
-template <>
+template<>
 void FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>::Exec(Option_t* /*opt*/)
 {
     int nDigis = fInput->GetEntriesFast();
@@ -25,18 +26,19 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>::Exec(Option_t* /
 
     std::vector<msgpack::type::tuple<int, int, int, double, double>> digis;
 
-    for (int i = 0; i < nDigis; ++i)
-    {
+    for (int i = 0; i < nDigis; ++i) {
         FairTestDetectorDigi* digi = static_cast<FairTestDetectorDigi*>(fInput->At(i));
-        digis.push_back(std::make_tuple(digi->GetX(), digi->GetY(), digi->GetZ(), digi->GetTimeStamp(), digi->GetTimeStampError()));
+        digis.push_back(
+            std::make_tuple(digi->GetX(), digi->GetY(), digi->GetZ(), digi->GetTimeStamp(), digi->GetTimeStampError()));
     }
 
     packer.pack(digis);
 
-    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(sbuf->data(),
-                                                                 sbuf->size(),
-                                                                 [](void* /* data */, void* obj) { delete static_cast<msgpack::sbuffer*>(obj); },
-                                                                 sbuf));
+    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(
+        sbuf->data(),
+        sbuf->size(),
+        [](void* /* data */, void* obj) { delete static_cast<msgpack::sbuffer*>(obj); },
+        sbuf));
 }
 
 // MsgPackRef version sends the vector of tuples without copying it into the sbuffer
@@ -60,7 +62,8 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>::Exec(Option_t* /
 
 //     msgpack::pack(container->vbuf, container->digis);
 
-//     fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(container->vbuf.vector()->iov_base, container->vbuf.vector()->iov_len, free_vrefbuffer, container));
+//     fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(container->vbuf.vector()->iov_base,
+//     container->vbuf.vector()->iov_len, free_vrefbuffer, container));
 // }
 
 // MsgPackStream version copies the data values into a stream of tuples.

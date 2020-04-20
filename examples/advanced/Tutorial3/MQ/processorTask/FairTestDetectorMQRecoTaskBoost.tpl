@@ -13,7 +13,7 @@
 // example TOut: FairTestDetectorHit
 // example TPayloadIn: boost::archive::binary_iarchive
 // example TPayloadOut: boost::archive::binary_oarchive
-template <typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
+template<typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 void FairTestDetectorMQRecoTask<TIn, TOut, TPayloadIn, TPayloadOut>::Exec(Option_t* opt)
 {
     BoostSerializer<TIn>().Deserialize(*fPayload, fRecoTask.fDigiArray);

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -15,10 +15,10 @@
 #ifndef FAIRTIMESTAMPPOINTDRAW_H_
 #define FAIRTIMESTAMPPOINTDRAW_H_
 
-#include "FairBoxSetDraw.h"             // for FairBoxSetDraw
+#include "FairBoxSetDraw.h"   // for FairBoxSetDraw
 
-#include <Rtypes.h>                     // for Int_t, etc
-#include <TVector3.h>                   // for TVector3
+#include <Rtypes.h>     // for Int_t, etc
+#include <TVector3.h>   // for TVector3
 
 class TObject;
 
@@ -31,7 +31,7 @@ class FairTimeStampPointDraw : public FairBoxSetDraw
 
   private:
     virtual TVector3 GetVector(TObject* obj);
-    virtual Int_t GetValue(TObject* obj,Int_t i);
+    virtual Int_t GetValue(TObject* obj, Int_t i);
 
     ClassDef(FairTimeStampPointDraw, 1);
 };

@@ -11,7 +11,6 @@
 // -----                Created 26/03/14  by M. Al-Turany              -----
 // -------------------------------------------------------------------------
 
-
 #ifndef MyFieldCreator_H
 #define MyFieldCreator_H
 
@@ -21,22 +20,21 @@ class MyFieldPar;
 
 class FairField;
 
-class MyFieldCreator : public FairFieldFactory 
+class MyFieldCreator : public FairFieldFactory
 {
 
- public:
-  MyFieldCreator();
-  virtual ~MyFieldCreator();
-  virtual FairField* createFairField();
-  virtual void SetParm();
-  ClassDef(MyFieldCreator,1);
-  
- protected:
-  MyFieldPar* fFieldPar;
-  
- private:
-  MyFieldCreator(const MyFieldCreator&);
-  MyFieldCreator& operator=(const MyFieldCreator&);
+  public:
+    MyFieldCreator();
+    virtual ~MyFieldCreator();
+    virtual FairField* createFairField();
+    virtual void SetParm();
+    ClassDef(MyFieldCreator, 1);
 
+  protected:
+    MyFieldPar* fFieldPar;
+
+  private:
+    MyFieldCreator(const MyFieldCreator&);
+    MyFieldCreator& operator=(const MyFieldCreator&);
 };
-#endif //MyFieldCreator_H
+#endif   // MyFieldCreator_H

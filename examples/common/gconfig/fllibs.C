@@ -23,11 +23,11 @@
 
 void fllibs()
 {
-/// Macro function for loading FLUKA libraries
+    /// Macro function for loading FLUKA libraries
 
-  cout << "Loading Fluka libraries ..." << endl;
+    cout << "Loading Fluka libraries ..." << endl;
 
-  gSystem->Load("libfluka.so");
+    gSystem->Load("libfluka.so");
 
-  cout << "Loading Fluka libraries ... finished" << endl;
+    cout << "Loading Fluka libraries ... finished" << endl;
 }

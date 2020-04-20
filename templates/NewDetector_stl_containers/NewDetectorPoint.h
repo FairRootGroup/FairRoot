@@ -27,12 +27,12 @@ class NewDetectorPoint
      *@param eLoss    Energy deposit [GeV]
      **/
     NewDetectorPoint(Int_t trackID,
-                        Int_t detID,
-                        TVector3 pos,
-                        TVector3 mom,
-                        Double_t tof,
-                        Double_t length,
-                        Double_t eLoss);
+                     Int_t detID,
+                     TVector3 pos,
+                     TVector3 mom,
+                     Double_t tof,
+                     Double_t length,
+                     Double_t eLoss);
 
     /** Destructor **/
     virtual ~NewDetectorPoint();
@@ -41,7 +41,7 @@ class NewDetectorPoint
     virtual void Print(const Option_t* opt) const;
 
     /** Accessors */
-    uint32_t GetEventID() const { return fEventId; } /// event identifier
+    uint32_t GetEventID() const { return fEventId; }   /// event identifier
     int GetTrackID() const { return fTrackID; }
     double GetPx() const { return fPx; }
     double GetPy() const { return fPy; }
@@ -71,14 +71,14 @@ class NewDetectorPoint
     void SetPosition(const TVector3& pos);
 
   protected:
-    int fTrackID;         ///< Track index
-    uint32_t fEventId;    ///< MC Event id
-    double fPx, fPy, fPz; ///< Momentum components [GeV]
-    double fTime;         ///< Time since event start [ns]
-    double fLength;       ///< Track length since creation [cm]
-    double fELoss;        ///< Energy loss at this point [GeV]
-    int fDetectorID;      ///< Detector unique identifier
-    double fX, fY, fZ;    ///< Position of hit [cm]
+    int fTrackID;           ///< Track index
+    uint32_t fEventId;      ///< MC Event id
+    double fPx, fPy, fPz;   ///< Momentum components [GeV]
+    double fTime;           ///< Time since event start [ns]
+    double fLength;         ///< Track length since creation [cm]
+    double fELoss;          ///< Energy loss at this point [GeV]
+    int fDetectorID;        ///< Detector unique identifier
+    double fX, fY, fZ;      ///< Position of hit [cm]
 
   private:
     /** Copy constructor **/

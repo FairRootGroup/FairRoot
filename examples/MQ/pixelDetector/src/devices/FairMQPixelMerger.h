@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -16,10 +16,9 @@
 #define FAIRMQPIXELMERGER_H_
 
 #include <FairMQDevice.h>
-
 #include <map>
 #include <string>
-#include <utility> // pair
+#include <utility>   // pair
 
 class PixelEventHeader;
 class TObject;
@@ -42,11 +41,11 @@ class FairMQPixelMerger : public FairMQDevice
     std::string fInputChannelName;
     std::string fOutputChannelName;
 
-    std::map<std::pair<int, int>, int> fNofPartsPerEventMap;  // number of parts for pair<event number,run id>
-    MultiMapDef fObjectMap; // TObjects for given pair<pair<event number, run,id>part>
+    std::map<std::pair<int, int>, int> fNofPartsPerEventMap;   // number of parts for pair<event number,run id>
+    MultiMapDef fObjectMap;   // TObjects for given pair<pair<event number, run,id>part>
 
     std::pair<int, int> fEvRIPair;
-    std::pair<std::pair<int,int>,int> fEvRIPartTrio;
+    std::pair<std::pair<int, int>, int> fEvRIPartTrio;
     std::pair<MultiMapDef::iterator, MultiMapDef::iterator> fRet;
 
     int fNofReceivedMessages;

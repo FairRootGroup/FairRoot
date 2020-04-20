@@ -15,51 +15,50 @@
 #ifndef FAIRTUTGEANETR_H
 #define FAIRTUTGEANETR_H 1
 
-
-#include "FairTask.h"
 #include "FairPropagator.h"
+#include "FairTask.h"
 
 class TClonesArray;
 class FairTutPropPoint;
 
 class FairTutPropTr : public FairTask
 {
- public:
-  /** Default constructor **/
-  FairTutPropTr();
+  public:
+    /** Default constructor **/
+    FairTutPropTr();
 
-  /** Destructor **/
-  ~FairTutPropTr();
+    /** Destructor **/
+    ~FairTutPropTr();
 
-  /** Virtual method Init **/
-  virtual InitStatus Init();
+    /** Virtual method Init **/
+    virtual InitStatus Init();
 
-  /** Virtual method Exec **/
-  virtual void Exec(Option_t* opt);
+    /** Virtual method Exec **/
+    virtual void Exec(Option_t* opt);
 
-  void SetPropagator(FairPropagator* prop) { fPro = prop; }
+    void SetPropagator(FairPropagator* prop) { fPro = prop; }
 
- private:
-  void Reset();
+  private:
+    void Reset();
 
-  /** Finish at the end of run **/
-  virtual void Finish();
+    /** Finish at the end of run **/
+    virtual void Finish();
 
-  void InitPropagator();
-  bool fPropagatorSet;
+    void InitPropagator();
+    bool fPropagatorSet;
 
-  /** Input array of Points **/
-  TClonesArray* fPointArray;
+    /** Input array of Points **/
+    TClonesArray* fPointArray;
 
-  /** Output array of Hits **/
-  TClonesArray* fTrackParIni;   // initial MC track parameters
-  TClonesArray* fTrackParFinal; // final MC track parameters
-  TClonesArray* fTrackParProp; // calculated track parameters
-  TClonesArray* fTrackParWrong; // demonstrate effect of wrong charge
+    /** Output array of Hits **/
+    TClonesArray* fTrackParIni;     // initial MC track parameters
+    TClonesArray* fTrackParFinal;   // final MC track parameters
+    TClonesArray* fTrackParProp;    // calculated track parameters
+    TClonesArray* fTrackParWrong;   // demonstrate effect of wrong charge
 
-  FairPropagator *fPro;
+    FairPropagator* fPro;
 
-  ClassDef(FairTutPropTr,1);
+    ClassDef(FairTutPropTr, 1);
 };
 
-#endif //FAIRTUTGEANETR_H
+#endif   // FAIRTUTGEANETR_H

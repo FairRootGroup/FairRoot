@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -15,14 +15,12 @@
 #ifndef FairTestDetectorDigiWriteoutBuffer_H_
 #define FairTestDetectorDigiWriteoutBuffer_H_
 
-#include "FairWriteoutBuffer.h" // for FairWriteoutBuffer
-
-#include "FairTestDetectorDigi.h" // for FairTestDetectorDigi
+#include "FairTestDetectorDigi.h"   // for FairTestDetectorDigi
+#include "FairWriteoutBuffer.h"     // for FairWriteoutBuffer
 
 #include <Rtypes.h>
-#include <TString.h> // for TString
-
-#include <map> // for map
+#include <TString.h>   // for TString
+#include <map>         // for map
 
 class FairTimeStamp;
 

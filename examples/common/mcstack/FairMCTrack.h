@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -23,14 +23,13 @@
 #ifndef FAIRMCTRACK_H
 #define FAIRMCTRACK_H 1
 
-#include <TObject.h>                    // for TObject
+#include "FairDetectorList.h"   // for DetectorId
 
-#include "FairDetectorList.h"           // for DetectorId
-
-#include <Rtypes.h>                     // for Double_t, Int_t, Double32_t, etc
-#include <TLorentzVector.h>             // for TLorentzVector
-#include <TMath.h>                      // for Sqrt
-#include <TVector3.h>                   // for TVector3
+#include <Rtypes.h>           // for Double_t, Int_t, Double32_t, etc
+#include <TLorentzVector.h>   // for TLorentzVector
+#include <TMath.h>            // for Sqrt
+#include <TObject.h>          // for TObject
+#include <TVector3.h>         // for TVector3
 
 class TParticle;
 
@@ -41,9 +40,16 @@ class FairMCTrack : public TObject
     FairMCTrack();
 
     /**  Standard constructor  **/
-    FairMCTrack(Int_t pdgCode, Int_t motherID, Double_t px, Double_t py,
-                Double_t pz, Double_t x, Double_t y, Double_t z,
-                Double_t t, Int_t nPoints);
+    FairMCTrack(Int_t pdgCode,
+                Int_t motherID,
+                Double_t px,
+                Double_t py,
+                Double_t pz,
+                Double_t x,
+                Double_t y,
+                Double_t z,
+                Double_t t,
+                Int_t nPoints);
 
     /**  Copy constructor  **/
     FairMCTrack(const FairMCTrack& track);
@@ -64,26 +70,26 @@ class FairMCTrack : public TObject
 #pragma clang diagnostic pop
 #endif
     /**  Accessors  **/
-    Int_t    GetPdgCode()  const { return fPdgCode; }
-    Int_t    GetMotherId() const { return fMotherId; }
-    Double_t GetPx()       const { return fPx; }
-    Double_t GetPy()       const { return fPy; }
-    Double_t GetPz()       const { return fPz; }
-    Double_t GetStartX()   const { return fStartX; }
-    Double_t GetStartY()   const { return fStartY; }
-    Double_t GetStartZ()   const { return fStartZ; }
-    Double_t GetStartT()   const { return fStartT; }
-    Double_t GetMass()     const;
-    Double_t GetEnergy()   const;
-    Double_t GetPt()       const { return TMath::Sqrt(fPx*fPx+fPy*fPy); }
-    Double_t GetP() const { return TMath::Sqrt(fPx*fPx+fPy*fPy+fPz*fPz); }
+    Int_t GetPdgCode() const { return fPdgCode; }
+    Int_t GetMotherId() const { return fMotherId; }
+    Double_t GetPx() const { return fPx; }
+    Double_t GetPy() const { return fPy; }
+    Double_t GetPz() const { return fPz; }
+    Double_t GetStartX() const { return fStartX; }
+    Double_t GetStartY() const { return fStartY; }
+    Double_t GetStartZ() const { return fStartZ; }
+    Double_t GetStartT() const { return fStartT; }
+    Double_t GetMass() const;
+    Double_t GetEnergy() const;
+    Double_t GetPt() const { return TMath::Sqrt(fPx * fPx + fPy * fPy); }
+    Double_t GetP() const { return TMath::Sqrt(fPx * fPx + fPy * fPy + fPz * fPz); }
     Double_t GetRapidity() const;
     void GetMomentum(TVector3& momentum);
     void Get4Momentum(TLorentzVector& momentum);
     void GetStartVertex(TVector3& vertex);
 
     /** Accessors to the number of MCPoints in the detectors **/
-    Int_t GetNPoints(DetectorId detId)  const;
+    Int_t GetNPoints(DetectorId detId) const;
 
     /**  Modifiers  **/
     void SetMotherId(Int_t id) { fMotherId = id; }
@@ -91,10 +97,10 @@ class FairMCTrack : public TObject
 
   private:
     /**  PDG particle code  **/
-    Int_t  fPdgCode;
+    Int_t fPdgCode;
 
     /**  Index of mother track. -1 for primary particles.  **/
-    Int_t  fMotherId;
+    Int_t fMotherId;
 
     /** Momentum components at start vertex [GeV]  **/
     Double32_t fPx, fPy, fPz;
@@ -119,30 +125,21 @@ class FairMCTrack : public TObject
      **/
     Int_t fNPoints;
 
-    ClassDef(FairMCTrack,2);
+    ClassDef(FairMCTrack, 2);
 };
 
 // ==========   Inline functions   ========================================
 
 inline Double_t FairMCTrack::GetEnergy() const
 {
-  Double_t mass = GetMass();
-  return TMath::Sqrt(mass*mass + fPx*fPx + fPy*fPy + fPz*fPz );
+    Double_t mass = GetMass();
+    return TMath::Sqrt(mass * mass + fPx * fPx + fPy * fPy + fPz * fPz);
 }
 
-inline void FairMCTrack::GetMomentum(TVector3& momentum)
-{
-  momentum.SetXYZ(fPx,fPy,fPz);
-}
+inline void FairMCTrack::GetMomentum(TVector3& momentum) { momentum.SetXYZ(fPx, fPy, fPz); }
 
-inline void FairMCTrack::Get4Momentum(TLorentzVector& momentum)
-{
-  momentum.SetXYZT(fPx,fPy,fPz,GetEnergy());
-}
+inline void FairMCTrack::Get4Momentum(TLorentzVector& momentum) { momentum.SetXYZT(fPx, fPy, fPz, GetEnergy()); }
 
-inline void FairMCTrack::GetStartVertex(TVector3& vertex)
-{
-  vertex.SetXYZ(fStartX,fStartY,fStartZ);
-}
+inline void FairMCTrack::GetStartVertex(TVector3& vertex) { vertex.SetXYZ(fStartX, fStartY, fStartZ); }
 
 #endif

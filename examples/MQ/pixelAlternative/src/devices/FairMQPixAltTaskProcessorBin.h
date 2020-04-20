@@ -9,21 +9,18 @@
 #ifndef FAIRMQPIXALTTASKPROCESSORBIN_H_
 #define FAIRMQPIXALTTASKPROCESSORBIN_H_
 
-#include <string>
-
 #include "FairEventHeader.h"
 #include "FairGeoParSet.h"
 #include "FairParGenericSet.h"
+#include "PixelDigi.h"
+#include "PixelPayload.h"
+#include "RootSerializer.h"
 
 #include <FairMQDevice.h>
 #include <FairMQParts.h>
-
 #include <TClonesArray.h>
 #include <TList.h>
-#include "RootSerializer.h"
-
-#include "PixelPayload.h"
-#include "PixelDigi.h"
+#include <string>
 
 template<typename T>
 class FairMQPixAltTaskProcessorBin : public FairMQDevice
@@ -52,11 +49,11 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
         delete fFairTask;
     }
 
-    void SetDataToKeep(const std::string& tStr) { fDataToKeep = tStr;}
+    void SetDataToKeep(const std::string& tStr) { fDataToKeep = tStr; }
 
-    void SetInputChannelName(const std::string& tstr) {fInputChannelName = tstr;}
-    void SetOutputChannelName(const std::string& tstr) {fOutputChannelName = tstr;}
-    void SetParamChannelName(const std::string& tstr) {fParamChannelName  = tstr;}
+    void SetInputChannelName(const std::string& tstr) { fInputChannelName = tstr; }
+    void SetOutputChannelName(const std::string& tstr) { fOutputChannelName = tstr; }
+    void SetParamChannelName(const std::string& tstr) { fParamChannelName = tstr; }
 
   protected:
     bool ProcessData(FairMQParts& parts, int)
@@ -64,10 +61,11 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
         // LOG(debug)<<"message received with " << parts.Size() << " parts!";
         fReceivedMsgs++;
 
-        if (parts.Size() == 0) return 0; // probably impossible, but still check
+        if (parts.Size() == 0)
+            return 0;   // probably impossible, but still check
 
         // expecting even number of parts in the form: header,data,header,data,header,data and so on...
-        int nPPE = 2; // nof parts per event
+        int nPPE = 2;   // nof parts per event
 
         if (parts.Size() % nPPE >= 1)
             LOG(info) << "received " << parts.Size() << " parts, will ignore last part!!!";
@@ -75,14 +73,16 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
         // creating output multipart message
         FairMQParts partsOut;
 
-        for (int ievent = 0 ; ievent < parts.Size()/nPPE ; ievent++) {
+        for (int ievent = 0; ievent < parts.Size() / nPPE; ievent++) {
             // the first part should be the event header
-            PixelPayload::EventHeader* payloadE = static_cast<PixelPayload::EventHeader*>(parts.At(nPPE*ievent)->GetData());
-            // LOG(debug) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " << payloadE->fPartNo << ")";
+            PixelPayload::EventHeader* payloadE =
+                static_cast<PixelPayload::EventHeader*>(parts.At(nPPE * ievent)->GetData());
+            // LOG(debug) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " <<
+            // payloadE->fPartNo << ")";
 
             fNewRunId = payloadE->fRunId;
             if (fNewRunId != fCurrentRunId) {
-                fCurrentRunId=fNewRunId;
+                fCurrentRunId = fNewRunId;
                 UpdateParameters();
                 fFairTask->InitMQ(fParCList);
 
@@ -90,25 +90,25 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
             }
 
             // the second part should the TClonesArray with necessary data... now assuming Digi
-            PixelPayload::Digi* payloadD = static_cast<PixelPayload::Digi*>(parts.At(nPPE*ievent+1)->GetData());
-            int digiArraySize = parts.At(nPPE*ievent+1)->GetSize();
-            int nofDigis      = digiArraySize / sizeof(PixelPayload::Digi);
+            PixelPayload::Digi* payloadD = static_cast<PixelPayload::Digi*>(parts.At(nPPE * ievent + 1)->GetData());
+            int digiArraySize = parts.At(nPPE * ievent + 1)->GetSize();
+            int nofDigis = digiArraySize / sizeof(PixelPayload::Digi);
 
             // LOG(debug) << "    EVENT HAS " << nofDigis << " DIGIS!!!";
 
             // create eventHeader part
             PixelPayload::EventHeader* header = new PixelPayload::EventHeader();
-            header->fRunId     = payloadE->fRunId;
+            header->fRunId = payloadE->fRunId;
             header->fMCEntryNo = payloadE->fMCEntryNo;
-            header->fPartNo    = payloadE->fPartNo;
-            FairMQMessagePtr msgHeader(NewMessage(header,
-                                                  sizeof(PixelPayload::EventHeader),
-                                                  [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); }
-                                                  ));
+            header->fPartNo = payloadE->fPartNo;
+            FairMQMessagePtr msgHeader(
+                NewMessage(header, sizeof(PixelPayload::EventHeader), [](void* data, void* /*hint*/) {
+                    delete static_cast<PixelPayload::EventHeader*>(data);
+                }));
             partsOut.AddPart(std::move(msgHeader));
 
             // create part with hits
-            int hitsSize = nofDigis*sizeof(PixelPayload::Hit);
+            int hitsSize = nofDigis * sizeof(PixelPayload::Hit);
 
             FairMQMessagePtr msgTCA = NewMessage(hitsSize);
 
@@ -116,7 +116,7 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
 
             // actually find hits
             int nofHits = 0;
-            fFairTask->ExecMQ(payloadD,nofDigis,hitPayload,nofHits);
+            fFairTask->ExecMQ(payloadD, nofDigis, hitPayload, nofHits);
 
             partsOut.AddPart(std::move(msgTCA));
         }
@@ -129,10 +129,10 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
 
     virtual void Init()
     {
-        fDataToKeep        = fConfig->GetValue<std::string>("keep-data");
-        fInputChannelName  = fConfig->GetValue<std::string>("in-channel");
+        fDataToKeep = fConfig->GetValue<std::string>("keep-data");
+        fInputChannelName = fConfig->GetValue<std::string>("in-channel");
         fOutputChannelName = fConfig->GetValue<std::string>("out-channel");
-        fParamChannelName  = fConfig->GetValue<std::string>("par-channel");
+        fParamChannelName = fConfig->GetValue<std::string>("par-channel");
 
         // fHitFinder->InitMQ(fRootParFileName,fAsciiParFileName);
         fFairTask = new T();
@@ -147,7 +147,8 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
 
     virtual void PostRun()
     {
-        LOG(info) << "FairMQPixAltTaskProcessorBin<T>::PostRun() Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!";
+        LOG(info) << "FairMQPixAltTaskProcessorBin<T>::PostRun() Received " << fReceivedMsgs << " and sent "
+                  << fSentMsgs << " messages!";
     }
 
   private:
@@ -157,10 +158,10 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
 
     void UpdateParameters()
     {
-        for (int iparC = 0 ; iparC < fParCList->GetEntries() ; iparC++) {
+        for (int iparC = 0; iparC < fParCList->GetEntries(); iparC++) {
             FairParGenericSet* tempObj = (FairParGenericSet*)(fParCList->At(iparC));
             fParCList->Remove(tempObj);
-            fParCList->AddAt(UpdateParameter(tempObj),iparC);
+            fParCList->AddAt(UpdateParameter(tempObj), iparC);
         }
     }
 
@@ -169,18 +170,20 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
         std::string paramName = thisPar->GetName();
 
         std::string* reqStr = new std::string(paramName + "," + std::to_string(fCurrentRunId));
-        LOG(warn) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << " (" << thisPar << ")";
-        FairMQMessagePtr req(NewMessage(const_cast<char*>(reqStr->c_str()),
-                                                      reqStr->length(),
-                                                      [](void* /*data*/, void* obj){ delete static_cast<std::string*>(obj); },
-                                                      reqStr));
+        LOG(warn) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << " (" << thisPar
+                  << ")";
+        FairMQMessagePtr req(NewMessage(
+            const_cast<char*>(reqStr->c_str()),
+            reqStr->length(),
+            [](void* /*data*/, void* obj) { delete static_cast<std::string*>(obj); },
+            reqStr));
         FairMQMessagePtr rep(NewMessage());
 
         if (Send(req, fParamChannelName) > 0) {
             if (Receive(rep, fParamChannelName) > 0) {
                 thisPar = nullptr;
-                Deserialize<RootSerializer>(*rep,thisPar);
-                LOG(info) << "Received parameter"<< paramName <<" from the server (" << thisPar << ")";
+                Deserialize<RootSerializer>(*rep, thisPar);
+                LOG(info) << "Received parameter" << paramName << " from the server (" << thisPar << ")";
                 return thisPar;
             }
         }

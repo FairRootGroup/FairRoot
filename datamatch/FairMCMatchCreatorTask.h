@@ -1,15 +1,14 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
 // -----                 FAIRMCMATCHCREATORTASK header file             -----
 // -----                  Created 20/03/07  by R.Kliemt               -----
 // -------------------------------------------------------------------------
-
 
 /** FAIRMCMATCHCREATORTASK.h
  *@author T.Stockmanns <t.stockmanns@fz-juelich.de>
@@ -20,12 +19,11 @@
 #ifndef FAIRMCMATCHCREATORTASK_H
 #define FAIRMCMATCHCREATORTASK_H
 
-#include "FairTask.h"                   // for InitStatus, FairTask
+#include "FairTask.h"   // for InitStatus, FairTask
 
-#include <Rtypes.h>                     // for Bool_t, etc
-
-#include <map>                          // for map
-#include <string>                       // for string
+#include <Rtypes.h>   // for Bool_t, etc
+#include <map>        // for map
+#include <string>     // for string
 
 class FairMCMatch;
 class TClonesArray;
@@ -39,14 +37,12 @@ class FairMCMatchCreatorTask : public FairTask
     /** Destructor **/
     virtual ~FairMCMatchCreatorTask();
 
-
     /** Virtual method Init **/
     virtual void SetParContainers();
-    void SetPersistance(Bool_t pers) {fPersistance = pers;}
-    Bool_t GetPersistance() {return fPersistance;}
+    void SetPersistance(Bool_t pers) { fPersistance = pers; }
+    Bool_t GetPersistance() { return fPersistance; }
 
     virtual InitStatus Init();
-
 
     /** Virtual method Exec **/
     virtual void Exec(Option_t* opt);
@@ -61,7 +57,7 @@ class FairMCMatchCreatorTask : public FairTask
   private:
     std::map<std::string, TClonesArray*> fBranches;
     Bool_t fPersistance;
-    TClonesArray* fMCLink;//->
+    TClonesArray* fMCLink;   //->
     Int_t fEventNr;
 
     InitStatus InitBranches();
@@ -75,8 +71,7 @@ class FairMCMatchCreatorTask : public FairTask
     FairMCMatchCreatorTask(const FairMCMatchCreatorTask&);
     FairMCMatchCreatorTask& operator=(const FairMCMatchCreatorTask&);
 
-    ClassDef(FairMCMatchCreatorTask,1);
-
+    ClassDef(FairMCMatchCreatorTask, 1);
 };
 
 #endif

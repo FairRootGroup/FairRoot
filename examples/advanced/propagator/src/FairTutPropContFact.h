@@ -8,9 +8,8 @@
 #ifndef FAIRTUTPROPCONTFACT_H_
 #define FAIRTUTPROPCONTFACT_H_
 
-#include "FairContFact.h" // for FairContFact, etc
-
-#include "Rtypes.h" // for ClassDef
+#include "FairContFact.h"   // for FairContFact, etc
+#include "Rtypes.h"         // for ClassDef
 
 class FairParSet;
 
@@ -21,11 +20,9 @@ class FairTutPropContFact : public FairContFact
 
   public:
     FairTutPropContFact();
-    ~FairTutPropContFact()
-    {
-    }
+    ~FairTutPropContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef(FairTutPropContFact, 0) // Factory for all FairTutProp parameter containers
+    ClassDef(FairTutPropContFact, 0)   // Factory for all FairTutProp parameter containers
 };
 
 #endif /* FAIRTUTPROPCONTFACT_H_ */

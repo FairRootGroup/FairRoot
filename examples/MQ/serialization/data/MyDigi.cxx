@@ -30,5 +30,4 @@ MyDigi::MyDigi(Int_t x, Int_t y, Int_t z, Double_t timeStamp, Double_t timeStamp
     , fZ(z)
 {}
 
-MyDigi::~MyDigi()
-{}
+MyDigi::~MyDigi() {}

@@ -29,49 +29,49 @@
 //  @brief  Modified for FairRoot
 
 // (re)declare symbols to be able to hook into them
-#define DECLARE_INTERCEPT_SYMBOLS(APP)                                                       \
-  class APP                                                                                  \
-  {                                                                                          \
-     public:                                                                                 \
-       void Stepping();                                                                      \
-       void FinishEvent();                                                                   \
-       void FinishRun();                                                                     \
-  };                                                                                         \
+#define DECLARE_INTERCEPT_SYMBOLS(APP)                                                                                 \
+    class APP                                                                                                          \
+    {                                                                                                                  \
+      public:                                                                                                          \
+        void Stepping();                                                                                               \
+        void FinishEvent();                                                                                            \
+        void FinishRun();                                                                                              \
+    };
 
 DECLARE_INTERCEPT_SYMBOLS(FairMCApplication)
 
-extern "C" void performLogging(FairMCApplication*);
-extern "C" void dispatchStepping(FairMCApplication*, char const *libname, char const*);
-extern "C" void dispatchFinishEvent(FairMCApplication*, char const *libname, char const*);
-extern "C" void dispatchFinishRun(FairMCApplication*, char const *libname, char const*);
+extern "C" void performLogging(FairMCApplication *);
+extern "C" void dispatchStepping(FairMCApplication *, char const *libname, char const *);
+extern "C" void dispatchFinishEvent(FairMCApplication *, char const *libname, char const *);
+extern "C" void dispatchFinishRun(FairMCApplication *, char const *libname, char const *);
 extern "C" void flushLog();
 extern "C" void flushFinalLog();
 
-#define INTERCEPT_STEPPING(APP, LIB, SYMBOL)                                                 \
-  void APP::Stepping()                                                                       \
-  {                                                                                          \
-     auto baseptr=reinterpret_cast<FairMCApplication*>(this);                                \
-     performLogging(baseptr);                                                                \
-     dispatchStepping(baseptr, LIB, SYMBOL);                                                 \
-  }                                                                                          \
+#define INTERCEPT_STEPPING(APP, LIB, SYMBOL)                                                                           \
+    void APP::Stepping()                                                                                               \
+    {                                                                                                                  \
+        auto baseptr = reinterpret_cast<FairMCApplication *>(this);                                                    \
+        performLogging(baseptr);                                                                                       \
+        dispatchStepping(baseptr, LIB, SYMBOL);                                                                        \
+    }
 
-#define INTERCEPT_FINISHEVENT(APP, LIB, SYMBOL)                                              \
-  void APP::FinishEvent()                                                                    \
-  {                                                                                          \
-     auto baseptr=reinterpret_cast<FairMCApplication*>(this);                                \
-     flushLog();                                                                             \
-     dispatchFinishEvent(baseptr, LIB, SYMBOL);                                              \
-  }                                                                                          \
+#define INTERCEPT_FINISHEVENT(APP, LIB, SYMBOL)                                                                        \
+    void APP::FinishEvent()                                                                                            \
+    {                                                                                                                  \
+        auto baseptr = reinterpret_cast<FairMCApplication *>(this);                                                    \
+        flushLog();                                                                                                    \
+        dispatchFinishEvent(baseptr, LIB, SYMBOL);                                                                     \
+    }
 
-#define INTERCEPT_FINISHRUN(APP, LIB, SYMBOL)                                                \
-  void APP::FinishRun()                                                                      \
-  {                                                                                          \
-     auto baseptr=reinterpret_cast<FairMCApplication*>(this);                                \
-     flushFinalLog();                                                                        \
-     dispatchFinishRun(baseptr, LIB, SYMBOL);                                                \
-  }                                                                                          \
+#define INTERCEPT_FINISHRUN(APP, LIB, SYMBOL)                                                                          \
+    void APP::FinishRun()                                                                                              \
+    {                                                                                                                  \
+        auto baseptr = reinterpret_cast<FairMCApplication *>(this);                                                    \
+        flushFinalLog();                                                                                               \
+        dispatchFinishRun(baseptr, LIB, SYMBOL);                                                                       \
+    }
 
 // the runtime will now dispatch to these functions due to LD_PRELOAD
-INTERCEPT_STEPPING(FairMCApplication,"libBase","_ZN17FairMCApplication8SteppingEv")
-INTERCEPT_FINISHEVENT(FairMCApplication,"libBase","_ZN17FairMCApplication11FinishEventEv")
-INTERCEPT_FINISHRUN(FairMCApplication,"libBase","_ZN17FairMCApplication9FinishRunEv")
+INTERCEPT_STEPPING(FairMCApplication, "libBase", "_ZN17FairMCApplication8SteppingEv")
+INTERCEPT_FINISHEVENT(FairMCApplication, "libBase", "_ZN17FairMCApplication11FinishEventEv")
+INTERCEPT_FINISHRUN(FairMCApplication, "libBase", "_ZN17FairMCApplication9FinishRunEv")

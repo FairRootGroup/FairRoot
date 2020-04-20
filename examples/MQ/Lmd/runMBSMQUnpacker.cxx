@@ -12,14 +12,15 @@
  * Created on January 15, 2015, 1:57 PM
  */
 
-#include "runFairMQDevice.h"
-#include "FairMQUnpacker.h"
 #include "FairMBSUnpacker.h"
+#include "FairMQUnpacker.h"
+#include "runFairMQDevice.h"
 
 namespace bpo = boost::program_options;
 
 void addCustomOptions(bpo::options_description& options)
 {
+    // clang-format off
     options.add_options()
         ("lmd-type",      bpo::value<short>(),       "sub-event type")
         ("lmd-sub-type",  bpo::value<short>(),       "sub-event subType")
@@ -28,9 +29,7 @@ void addCustomOptions(bpo::options_description& options)
         ("lmd-control",   bpo::value<short>(),       "sub-event control")
         ("lmd-chan-name", bpo::value<std::string>(), "LMD input channel name")
         ("out-chan-name", bpo::value<std::string>(), "output channel name");
+    // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)
-{
-    return new FairMQUnpacker<FairMBSUnpacker>();
-}
+FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/) { return new FairMQUnpacker<FairMBSUnpacker>(); }

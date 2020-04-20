@@ -14,84 +14,84 @@
  */
 
 #ifndef MYPODDATA_H
-#define	MYPODDATA_H
+#define MYPODDATA_H
 
 // for root types
-#include <iosfwd>   
-#include <Rtypes.h> 
+#include <Rtypes.h>
+#include <iosfwd>
 
-namespace boost { namespace serialization { class access; } }
+namespace boost {
+namespace serialization {
+class access;
+}
+}   // namespace boost
 #include <boost/serialization/base_object.hpp>
 
-namespace MyPodData
+namespace MyPodData {
+
+class TimeStamp
 {
+  public:
+    Double_t fTimeStamp;
+    Double_t fTimeStampError;
 
-    class TimeStamp
+    // method to use boost serialization
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
-      public:
-        Double_t fTimeStamp;
-        Double_t fTimeStampError;
-        
-        // method to use boost serialization
-        template<class Archive>
-        void serialize(Archive & ar, const unsigned int /*version*/) 
-        {
-            ar & fTimeStamp;
-            ar & fTimeStampError;
-        }
-        friend class boost::serialization::access;
-        
-    };
+        ar& fTimeStamp;
+        ar& fTimeStampError;
+    }
+    friend class boost::serialization::access;
+};
 
-    class Digi : public TimeStamp
+class Digi : public TimeStamp
+{
+  public:
+    Int_t fX;
+    Int_t fY;
+    Int_t fZ;
+
+    // method to use boost serialization
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
-      public:
-        Int_t fX;
-        Int_t fY;
-        Int_t fZ;
-        
-        // method to use boost serialization
-        template<class Archive>
-        void serialize(Archive & ar, const unsigned int /*version*/) 
-        {
-            ar & boost::serialization::base_object<TimeStamp>(*this);
-            ar & fX;
-            ar & fY;
-            ar & fZ;
-        }
-        friend class boost::serialization::access;
-        
-    };
+        ar& boost::serialization::base_object<TimeStamp>(*this);
+        ar& fX;
+        ar& fY;
+        ar& fZ;
+    }
+    friend class boost::serialization::access;
+};
 
-    class Hit : public TimeStamp
+class Hit : public TimeStamp
+{
+  public:
+    Int_t detID;
+    Int_t mcindex;
+    Double_t posX;
+    Double_t posY;
+    Double_t posZ;
+    Double_t dposX;
+    Double_t dposY;
+    Double_t dposZ;
+
+    // method to use boost serialization
+    template<class Archive>
+    void serialize(Archive& ar, const unsigned int /*version*/)
     {
-      public:
-        Int_t detID;
-        Int_t mcindex;
-        Double_t posX;
-        Double_t posY;
-        Double_t posZ;
-        Double_t dposX;
-        Double_t dposY;
-        Double_t dposZ;
-        
-        // method to use boost serialization
-        template<class Archive>
-        void serialize(Archive & ar, const unsigned int /*version*/) 
-        {
-            ar & boost::serialization::base_object<TimeStamp>(*this);
-            ar & detID;
-            ar & mcindex;
-            ar & posX;
-            ar & posY;
-            ar & posZ;
-            ar & dposX;
-            ar & dposY;
-            ar & dposZ;
-        }
-        friend class boost::serialization::access;
-    };
-}
+        ar& boost::serialization::base_object<TimeStamp>(*this);
+        ar& detID;
+        ar& mcindex;
+        ar& posX;
+        ar& posY;
+        ar& posZ;
+        ar& dposX;
+        ar& dposY;
+        ar& dposZ;
+    }
+    friend class boost::serialization::access;
+};
+}   // namespace MyPodData
 
-#endif	/* MYPODDATA_H */
-
+#endif /* MYPODDATA_H */

@@ -1,15 +1,14 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
 // -----    FairTutorialDet4HitProducerIdealMissallign header file      -----
 // -----                  Created 11.02.13 by F. Uhlig                 -----
 // -------------------------------------------------------------------------
-
 
 /** FairTutorialDet4HitProducerIdealMissallign.h
  *@author Florian Uhlig <f.uhlig@gsi.de>
@@ -22,14 +21,13 @@
  ** The position error is set to 1 mm.
  **/
 
-
 #ifndef FAIRTUTORIALDET4HITPRODUCERIDEALMISSALLIGN_H
 #define FAIRTUTORIALDET4HITPRODUCERIDEALMISSALLIGN_H 1
 
-#include "FairTask.h"                   // for InitStatus, FairTask
+#include "FairTask.h"   // for InitStatus, FairTask
 
-#include <Rtypes.h>                     // for Bool_t, Double_t, etc
-#include <TArrayD.h>                    // for TArrayD
+#include <Rtypes.h>    // for Bool_t, Double_t, etc
+#include <TArrayD.h>   // for TArrayD
 
 class FairTutorialDet4MisalignPar;
 class FairTutorialDet4GeoPar;
@@ -56,14 +54,14 @@ class FairTutorialDet4HitProducerIdealMisalign : public FairTask
     /** Virtual method Exec **/
     virtual void Exec(Option_t* opt);
 
-    void DoMisalignment(Bool_t val) {fDoMisalignment=val;}
+    void DoMisalignment(Bool_t val) { fDoMisalignment = val; }
 
   private:
     /** Input array of CbmTofPoints **/
-    TClonesArray* fPointArray; //!
+    TClonesArray* fPointArray;   //!
 
     /** Output array of CbmTofHits **/
-    TClonesArray* fHitArray;  //!
+    TClonesArray* fHitArray;   //!
 
     TArrayD fShiftX;
     TArrayD fShiftY;
@@ -84,8 +82,7 @@ class FairTutorialDet4HitProducerIdealMisalign : public FairTask
     FairTutorialDet4HitProducerIdealMisalign(const FairTutorialDet4HitProducerIdealMisalign&);
     FairTutorialDet4HitProducerIdealMisalign& operator=(const FairTutorialDet4HitProducerIdealMisalign&);
 
-    ClassDef(FairTutorialDet4HitProducerIdealMisalign,1);
-
+    ClassDef(FairTutorialDet4HitProducerIdealMisalign, 1);
 };
 
 #endif

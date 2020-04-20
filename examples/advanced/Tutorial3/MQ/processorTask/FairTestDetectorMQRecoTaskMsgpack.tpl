@@ -11,11 +11,12 @@
 #include <msgpack.hpp>
 
 // Types to be used as template parameters.
-struct MsgPack {};
-// struct MsgPackRef { msgpack::vrefbuffer vbuf; std::vector<msgpack::type::tuple<int, int, double, double, double, double, double, double>> hits; };
-// struct MsgPackStream {};
+struct MsgPack
+{};
+// struct MsgPackRef { msgpack::vrefbuffer vbuf; std::vector<msgpack::type::tuple<int, int, double, double, double,
+// double, double, double>> hits; }; struct MsgPackStream {};
 
-template <>
+template<>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPack, MsgPack>::Exec(Option_t* opt)
 {
     // deserialize
@@ -36,14 +37,13 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 
     fRecoTask.fDigiArray->Clear();
 
-    for (int i = 0; i < numEntries; ++i)
-    {
-        new ((*fRecoTask.fDigiArray)[i]) FairTestDetectorDigi(std::get<0>(digis.at(i)), std::get<1>(digis.at(i)), std::get<2>(digis.at(i)), std::get<3>(digis.at(i)));
+    for (int i = 0; i < numEntries; ++i) {
+        new ((*fRecoTask.fDigiArray)[i]) FairTestDetectorDigi(
+            std::get<0>(digis.at(i)), std::get<1>(digis.at(i)), std::get<2>(digis.at(i)), std::get<3>(digis.at(i)));
         static_cast<FairTestDetectorDigi*>(((*fRecoTask.fDigiArray)[i]))->SetTimeStampError(std::get<4>(digis.at(i)));
     }
 
-    if (!fRecoTask.fDigiArray)
-    {
+    if (!fRecoTask.fDigiArray) {
         LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
     }
 
@@ -58,18 +58,25 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 
     std::vector<msgpack::type::tuple<int, int, double, double, double, double, double, double>> hits;
 
-    for (int i = 0; i < numEntries; ++i)
-    {
+    for (int i = 0; i < numEntries; ++i) {
         FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask.fHitArray->At(i));
-        hits.push_back(std::make_tuple(hit->GetDetectorID(), hit->GetRefIndex(), hit->GetX(), hit->GetY(), hit->GetZ(), hit->GetDx(), hit->GetDy(), hit->GetDz()));
+        hits.push_back(std::make_tuple(hit->GetDetectorID(),
+                                       hit->GetRefIndex(),
+                                       hit->GetX(),
+                                       hit->GetY(),
+                                       hit->GetZ(),
+                                       hit->GetDx(),
+                                       hit->GetDy(),
+                                       hit->GetDz()));
     }
 
     packer.pack(hits);
 
-    fPayload->Rebuild(sbuf->data(),
-                      sbuf->size(),
-                      [](void* /* data */, void* obj) { delete static_cast<msgpack::sbuffer*>(obj); },
-                      sbuf);
+    fPayload->Rebuild(
+        sbuf->data(),
+        sbuf->size(),
+        [](void* /* data */, void* obj) { delete static_cast<msgpack::sbuffer*>(obj); },
+        sbuf);
 }
 
 // MsgPackRef version sends the vector of tuples without copying it into the sbuffer
@@ -79,7 +86,8 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 // }
 
 // template <>
-// void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPackRef, MsgPackRef>::Exec(Option_t* opt)
+// void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPackRef, MsgPackRef>::Exec(Option_t*
+// opt)
 // {
 //     msgpack::unpacked msg;
 //     msgpack::unpack(&msg, static_cast<char*>(fPayload->GetData()), fPayload->GetSize());
@@ -94,7 +102,8 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 
 //     for (int i = 0; i < numEntries; ++i)
 //     {
-//         new ((*fRecoTask.fDigiArray)[i]) FairTestDetectorDigi(std::get<0>(digis.at(i)), std::get<1>(digis.at(i)), std::get<2>(digis.at(i)), std::get<3>(digis.at(i)));
+//         new ((*fRecoTask.fDigiArray)[i]) FairTestDetectorDigi(std::get<0>(digis.at(i)), std::get<1>(digis.at(i)),
+//         std::get<2>(digis.at(i)), std::get<3>(digis.at(i)));
 //     }
 
 //     if (!fRecoTask.fDigiArray)
@@ -109,16 +118,19 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 //     for (int i = 0; i < numEntries; ++i)
 //     {
 //         FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask.fHitArray->At(i));
-//         container->hits.push_back(std::make_tuple(hit->GetDetectorID(), hit->GetX(), hit->GetY(), hit->GetZ(), hit->GetDx(), hit->GetDy(), hit->GetDz()));
+//         container->hits.push_back(std::make_tuple(hit->GetDetectorID(), hit->GetX(), hit->GetY(), hit->GetZ(),
+//         hit->GetDx(), hit->GetDy(), hit->GetDz()));
 //     }
 
 //     msgpack::pack(container->vbuf, container->hits);
 
-//     fPayload->Rebuild(container->vbuf.vector()->iov_base, container->vbuf.vector()->iov_len, free_vrefbuffer, container);
+//     fPayload->Rebuild(container->vbuf.vector()->iov_base, container->vbuf.vector()->iov_len, free_vrefbuffer,
+//     container);
 // }
 
 // template <>
-// void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPackStream, MsgPackStream>::Exec(Option_t* opt)
+// void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPackStream,
+// MsgPackStream>::Exec(Option_t* opt)
 // {
 //     fRecoTask.fDigiArray->Clear();
 
@@ -136,8 +148,8 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 //         msgpack::object digiObj = msg.get();
 //         msgpack::type::tuple<int, int, int, double, double> digi;
 //         digiObj.convert(&digi);
-//         new ((*fRecoTask.fDigiArray)[numEntries]) FairTestDetectorDigi(std::get<0>(digi), std::get<1>(digi), std::get<2>(digi), std::get<3>(digi));
-//         numEntries++;
+//         new ((*fRecoTask.fDigiArray)[numEntries]) FairTestDetectorDigi(std::get<0>(digi), std::get<1>(digi),
+//         std::get<2>(digi), std::get<3>(digi)); numEntries++;
 //     }
 
 //     if (!fRecoTask.fDigiArray)
@@ -153,7 +165,8 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPa
 //     for (int i = 0; i < numEntries; ++i)
 //     {
 //         FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask.fHitArray->At(i));
-//         packer.pack(std::make_tuple(hit->GetDetectorID(), hit->GetX(), hit->GetY(), hit->GetZ(), hit->GetDx(), hit->GetDy(), hit->GetDz()));
+//         packer.pack(std::make_tuple(hit->GetDetectorID(), hit->GetX(), hit->GetY(), hit->GetZ(), hit->GetDx(),
+//         hit->GetDy(), hit->GetDz()));
 //     }
 
 //     fPayload->Rebuild(sbuf->data(), sbuf->size(), free_sbuffer, sbuf);

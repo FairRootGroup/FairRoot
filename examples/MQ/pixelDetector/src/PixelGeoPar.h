@@ -1,15 +1,16 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef PIXELGEOPAR_H
 #define PIXELGEOPAR_H
 
-#include "FairParGenericSet.h"  // for FairParGenericSet
-#include <Rtypes.h>             // for PixelGeoPar::Class, ClassDef, PixelGe...
+#include "FairParGenericSet.h"   // for FairParGenericSet
+
+#include <Rtypes.h>   // for PixelGeoPar::Class, ClassDef, PixelGe...
 
 class FairParamList;
 class TObjArray;
@@ -23,21 +24,21 @@ class PixelGeoPar : public FairParGenericSet
     /** List of FairGeoNodes for sensitive  volumes */
     TObjArray* fGeoPassNodes;
 
-    PixelGeoPar(const char* name="PixelGeoPar",
-                const char* title="Pixel Geometry Parameters",
-                const char* context="TestDefaultContext");
+    PixelGeoPar(const char* name = "PixelGeoPar",
+                const char* title = "Pixel Geometry Parameters",
+                const char* context = "TestDefaultContext");
     ~PixelGeoPar(void);
     void clear(void);
     void putParams(FairParamList*);
     Bool_t getParams(FairParamList*);
-    TObjArray* GetGeoSensitiveNodes() {return fGeoSensNodes;}
-    TObjArray* GetGeoPassiveNodes()   {return fGeoPassNodes;}
+    TObjArray* GetGeoSensitiveNodes() { return fGeoSensNodes; }
+    TObjArray* GetGeoPassiveNodes() { return fGeoPassNodes; }
 
   private:
     PixelGeoPar(const PixelGeoPar&);
     PixelGeoPar& operator=(const PixelGeoPar&);
 
-    ClassDef(PixelGeoPar,1)
+    ClassDef(PixelGeoPar, 1)
 };
 
 #endif

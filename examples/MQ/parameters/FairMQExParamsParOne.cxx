@@ -1,28 +1,25 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairMQExParamsParOne.h"
 
+#include "FairLogger.h"
 #include "FairParamList.h"
 
-#include "FairLogger.h"
 #include <TString.h>
 
-FairMQExParamsParOne::FairMQExParamsParOne(const char* name, const char* title, const char* context) :
-    FairParGenericSet(name, title, context),
-    fParameterValue(0)
+FairMQExParamsParOne::FairMQExParamsParOne(const char* name, const char* title, const char* context)
+    : FairParGenericSet(name, title, context)
+    , fParameterValue(0)
 {
     detName = "TutorialDet";
 }
 
-FairMQExParamsParOne::~FairMQExParamsParOne()
-{
-    clear();
-}
+FairMQExParamsParOne::~FairMQExParamsParOne() { clear(); }
 
 void FairMQExParamsParOne::clear()
 {
@@ -40,8 +37,7 @@ void FairMQExParamsParOne::putParams(FairParamList* list)
 {
     LOG(info) << "FairMQExParamsParOne::putParams()";
 
-    if (!list)
-    {
+    if (!list) {
         return;
     }
 
@@ -52,17 +48,15 @@ Bool_t FairMQExParamsParOne::getParams(FairParamList* list)
 {
     LOG(info) << "FairMQExParamsParOne::getParams()";
 
-    if (!list)
-    {
+    if (!list) {
         return kFALSE;
     }
 
-    if (!list->fill("Example7ParameterValue", &fParameterValue))
-    {
+    if (!list->fill("Example7ParameterValue", &fParameterValue)) {
         return kFALSE;
     }
 
     return kTRUE;
 }
 
-ClassImp(FairMQExParamsParOne)
+ClassImp(FairMQExParamsParOne);

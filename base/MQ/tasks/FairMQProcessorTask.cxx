@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -14,26 +14,14 @@
 
 #include "FairMQProcessorTask.h"
 
-
 FairMQProcessorTask::FairMQProcessorTask()
     : fPayload()
-{
-}
+{}
 
-FairMQProcessorTask::~FairMQProcessorTask()
-{
-}
+FairMQProcessorTask::~FairMQProcessorTask() {}
 
-void FairMQProcessorTask::Exec(Option_t* /*opt*/)
-{
-}
+void FairMQProcessorTask::Exec(Option_t* /*opt*/) {}
 
-void FairMQProcessorTask::SetPayload(std::unique_ptr<FairMQMessage>& msg)
-{
-    fPayload = std::move(msg);
-}
+void FairMQProcessorTask::SetPayload(std::unique_ptr<FairMQMessage>& msg) { fPayload = std::move(msg); }
 
-void FairMQProcessorTask::GetPayload(std::unique_ptr<FairMQMessage>& msg)
-{
-    msg = std::move(fPayload);
-}
+void FairMQProcessorTask::GetPayload(std::unique_ptr<FairMQMessage>& msg) { msg = std::move(fPayload); }

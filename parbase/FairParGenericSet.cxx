@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 //*-- AUTHOR : Ilse Koenig
@@ -28,44 +28,53 @@
 ///////////////////////////////////////////////////////////////////////////
 #include "FairParGenericSet.h"
 
-#include "FairDetParIo.h"               // for FairDetParIo
-#include "FairParIo.h"                  // for FairParIo
-#include "FairParamList.h"              // for FairParamList
+#include "FairDetParIo.h"    // for FairDetParIo
+#include "FairParIo.h"       // for FairParIo
+#include "FairParamList.h"   // for FairParamList
 
-#include <TString.h>                    // for operator<<, TString
+#include <TString.h>   // for operator<<, TString
+#include <iostream>    // for operator<<, ostream, cout, etc
 
-#include <iostream>                     // for operator<<, ostream, cout, etc
-
-ClassImp(FairParGenericSet)
+ClassImp(FairParGenericSet);
 
 Bool_t FairParGenericSet::init(FairParIo* inp)
 {
-  // intitializes the container from an input
-  FairDetParIo* input=inp->getDetParIo("FairGenericParIo");
-  if (input) { return (input->init(this)); }
-  return kFALSE;
+    // intitializes the container from an input
+    FairDetParIo* input = inp->getDetParIo("FairGenericParIo");
+    if (input) {
+        return (input->init(this));
+    }
+    return kFALSE;
 }
 
 Int_t FairParGenericSet::write(FairParIo* output)
 {
-  // writes the container to an output
-  FairDetParIo* out=output->getDetParIo("FairGenericParIo");
-  if (out) { return out->write(this); }
-  return -1;
+    // writes the container to an output
+    FairDetParIo* out = output->getDetParIo("FairGenericParIo");
+    if (out) {
+        return out->write(this);
+    }
+    return -1;
 }
 
 void FairParGenericSet::printParams()
 {
-  // prints information about the container
-  std::cout<<"\n---------------------------------------------\n";
-  std::cout<<"-----  "<<GetName()<<"  -----\n";
-  if (!paramContext.IsNull()) { std::cout<<"--  Context/Purpose:  "<<paramContext<<'\n'; }
-  if (!author.IsNull()) { std::cout<<"--  Author:           "<<author<<'\n'; }
-  if (!description.IsNull()) { std::cout<<"--  Description:      "<<description<<'\n'; }
-  std::cout<<"---------------------------------------------\n";
-  FairParamList* condList = new FairParamList;
-  putParams(condList);
-  condList->print();
-  std::cout<<"---------------------------------------------\n\n";
-  delete condList;
+    // prints information about the container
+    std::cout << "\n---------------------------------------------\n";
+    std::cout << "-----  " << GetName() << "  -----\n";
+    if (!paramContext.IsNull()) {
+        std::cout << "--  Context/Purpose:  " << paramContext << '\n';
+    }
+    if (!author.IsNull()) {
+        std::cout << "--  Author:           " << author << '\n';
+    }
+    if (!description.IsNull()) {
+        std::cout << "--  Description:      " << description << '\n';
+    }
+    std::cout << "---------------------------------------------\n";
+    FairParamList* condList = new FairParamList;
+    putParams(condList);
+    condList->print();
+    std::cout << "---------------------------------------------\n\n";
+    delete condList;
 }

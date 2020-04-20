@@ -9,7 +9,7 @@
 
 #include "RootSerializer.h"
 
-template <>
+template<>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage>::Exec(Option_t* opt)
 {
     RootSerializer().Deserialize(*fPayload, fRecoTask.fDigiArray);

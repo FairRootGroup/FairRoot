@@ -16,7 +16,6 @@
 #define PIXELALTFINDHITS_H 1
 
 #include "FairTask.h"
-
 #include "PixelPayload.h"
 
 #include <Rtypes.h>
@@ -45,15 +44,15 @@ class PixelAltFindHits : public FairTask
 
     virtual void GetParList(TList* tempList);
     virtual void InitMQ(TList* tempList);
-    virtual void ExecMQ(TList* inputList,TList* outputList);
-    virtual void ExecMQ(PixelPayload::Digi *digiPalVector, int nofDigis, PixelPayload::Hit* hitPalVector, int& nofHits);
+    virtual void ExecMQ(TList* inputList, TList* outputList);
+    virtual void ExecMQ(PixelPayload::Digi* digiPalVector, int nofDigis, PixelPayload::Hit* hitPalVector, int& nofHits);
 
   private:
     PixelDigiPar* fDigiPar;
     FairGeoParSet* fGeoParSet;
 
     TClonesArray* fDigis; /** Input array of PixelDigi **/
-    TClonesArray* fHits; /** Output array of PixelHit **/
+    TClonesArray* fHits;  /** Output array of PixelHit **/
 
     Int_t fNDigis;
     Int_t fNHits;
@@ -62,15 +61,23 @@ class PixelAltFindHits : public FairTask
     Int_t fTNofDigis;
     Int_t fTNofHits;
 
-    Int_t fFeCols; // Colums read per Frontend
-    Int_t fFeRows; // Rows read per Frontend
-    Int_t fMaxFEperCol; // max number of Frontend elemens per column
-    Double_t fPitchX; // Pixel cell size X
-    Double_t fPitchY; // Pixel cell size Y
+    Int_t fFeCols;        // Colums read per Frontend
+    Int_t fFeRows;        // Rows read per Frontend
+    Int_t fMaxFEperCol;   // max number of Frontend elemens per column
+    Double_t fPitchX;     // Pixel cell size X
+    Double_t fPitchY;     // Pixel cell size Y
 
-    Int_t FindHit(Int_t detId, Int_t feId, Int_t col, Int_t row, Int_t index,
-                  Double_t& posX, Double_t& posY, Double_t& posZ,
-                  Double_t& errX, Double_t& errY, Double_t& errZ);
+    Int_t FindHit(Int_t detId,
+                  Int_t feId,
+                  Int_t col,
+                  Int_t row,
+                  Int_t index,
+                  Double_t& posX,
+                  Double_t& posY,
+                  Double_t& posZ,
+                  Double_t& errX,
+                  Double_t& errY,
+                  Double_t& errZ);
 
     /** Get parameter containers **/
     virtual void SetParContainers();
@@ -90,7 +97,7 @@ class PixelAltFindHits : public FairTask
     PixelAltFindHits(const PixelAltFindHits&);
     PixelAltFindHits& operator=(const PixelAltFindHits&);
 
-    ClassDef(PixelAltFindHits,1);
+    ClassDef(PixelAltFindHits, 1);
 };
 
 #endif

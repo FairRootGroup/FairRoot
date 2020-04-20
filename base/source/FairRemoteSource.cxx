@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -----------------------------------------------------------------------------
@@ -12,80 +12,76 @@
 // -----------------------------------------------------------------------------
 #include "FairRemoteSource.h"
 
-#include <unistd.h> // usleep
-
-#include "ptrevmbsdef.h"          // MBS data definitions
+#include "MRevBuffer.h"
+#include "ptrevmbsdef.h"   // MBS data definitions
 
 #include <TSocket.h>
-
-#include "MRevBuffer.h"
+#include <unistd.h>   // usleep
 
 FairRemoteSource::FairRemoteSource(char* node)
-  : FairMbsSource(),
-    fNode(node),
-    fSocket(nullptr),
-    fBuffer(new MRevBuffer(1)),
-    fREvent(nullptr)
-{
-}
+    : FairMbsSource()
+    , fNode(node)
+    , fSocket(nullptr)
+    , fBuffer(new MRevBuffer(1))
+    , fREvent(nullptr)
+{}
 
 FairRemoteSource::FairRemoteSource(const FairRemoteSource& source)
-  : FairMbsSource(source),
-    fNode(const_cast<char*>(source.GetNode())),
-    fSocket(nullptr),
-    fBuffer(new MRevBuffer(1)),
-    fREvent(nullptr)
-{
-}
+    : FairMbsSource(source)
+    , fNode(const_cast<char*>(source.GetNode()))
+    , fSocket(nullptr)
+    , fBuffer(new MRevBuffer(1))
+    , fREvent(nullptr)
+{}
 
-FairRemoteSource::~FairRemoteSource()
-{
-  delete fBuffer;
-}
+FairRemoteSource::~FairRemoteSource() { delete fBuffer; }
 
 Bool_t FairRemoteSource::Init()
 {
-  fBuffer->RevStatus(0);
-  fSocket = fBuffer->RevOpen(fNode, 6003, 0);
-  fBuffer->RevStatus(0);
-  if(! fSocket) {
-    return kFALSE;
-  }
-  return kTRUE;
+    fBuffer->RevStatus(0);
+    fSocket = fBuffer->RevOpen(fNode, 6003, 0);
+    fBuffer->RevStatus(0);
+    if (!fSocket) {
+        return kFALSE;
+    }
+    return kTRUE;
 }
 
 Int_t FairRemoteSource::ReadEvent(UInt_t)
 {
-  usleep(10000);
-  fREvent = fBuffer->RevGet(fSocket, 0, 0);
-  fBuffer->RevStatus(0);
-  if(! fREvent) {
-    return 1;
-  }
-
-  // Decode event header
-  Bool_t result = Unpack(fREvent->GetData(), sizeof(sMbsEv101), -2, -2, -2, -2, -2);
-
-  for(Int_t i = 0; i < fREvent->nSubEvt; i++) {
-    if(Unpack(fREvent->pSubEvt[i], fREvent->subEvtSize[i],
-              fREvent->subEvtType[i], fREvent->subEvtSubType[i],
-              fREvent->subEvtProcId[i], fREvent->subEvtSubCrate[i],
-              fREvent->subEvtControl[i])) {
-      result = kTRUE;
+    usleep(10000);
+    fREvent = fBuffer->RevGet(fSocket, 0, 0);
+    fBuffer->RevStatus(0);
+    if (!fREvent) {
+        return 1;
     }
-  }
 
-  if(! result) {
-    return 2;
-  }
+    // Decode event header
+    Bool_t result = Unpack(fREvent->GetData(), sizeof(sMbsEv101), -2, -2, -2, -2, -2);
 
-  return 0;
+    for (Int_t i = 0; i < fREvent->nSubEvt; i++) {
+        if (Unpack(fREvent->pSubEvt[i],
+                   fREvent->subEvtSize[i],
+                   fREvent->subEvtType[i],
+                   fREvent->subEvtSubType[i],
+                   fREvent->subEvtProcId[i],
+                   fREvent->subEvtSubCrate[i],
+                   fREvent->subEvtControl[i])) {
+            result = kTRUE;
+        }
+    }
+
+    if (!result) {
+        return 2;
+    }
+
+    return 0;
 }
 
 void FairRemoteSource::Close()
 {
-  fBuffer->RevClose(fSocket);
-  fBuffer->RevStatus(0);
+    fBuffer->RevClose(fSocket);
+    fBuffer->RevStatus(0);
 }
 
-ClassImp(FairRemoteSource)
+ClassImp(FairRemoteSource);

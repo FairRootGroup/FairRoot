@@ -28,8 +28,7 @@ TEST_F(FairToolsTest, ManipToScreen)
 
     int minLines = std::min(expectedNumberOfLines, noLines);
 
-    for (int i = 0; i < minLines; ++i)
-    {
+    for (int i = 0; i < minLines; ++i) {
         EXPECT_EQ(expectedResult[i], fHandler.GetCaptureLine(i));
     }
 }

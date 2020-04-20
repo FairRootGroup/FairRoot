@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /***************************************************************************
@@ -16,9 +16,8 @@
 #ifndef FairGeoLOADER_H
 #define FairGeoLOADER_H
 
-#include <TNamed.h>                     // for TNamed
-
-#include <Rtypes.h>                     // for FairGeoLoader::Class, etc
+#include <Rtypes.h>   // for FairGeoLoader::Class, etc
+#include <TNamed.h>   // for TNamed
 
 class FairGeoInterface;
 class FairGeoBuilder;
@@ -32,19 +31,19 @@ class FairGeoLoader : public TNamed
     FairGeoLoader(const char* Name, const char* title);
     FairGeoLoader();
     virtual ~FairGeoLoader();
-    FairGeoInterface* getGeoInterface() {return fInterface;}
-    FairGeoBuilder*   getGeoBuilder() {return   fGeoBuilder; }
+    FairGeoInterface* getGeoInterface() { return fInterface; }
+    FairGeoBuilder* getGeoBuilder() { return fGeoBuilder; }
     /** static access method*/
     static FairGeoLoader* Instance();
 
   private:
     FairGeoLoader(const FairGeoLoader&);
     FairGeoLoader& operator=(const FairGeoLoader&);
-    static FairGeoLoader*  fgInstance;//!  /**Singleton instance*/
-    FairGeoInterface*    fInterface; //!  /** Hades Geometry Interface*/
-    FairGeoBuilder*    fGeoBuilder; //!   /**Geometry builder*/
+    static FairGeoLoader* fgInstance;   //!  /**Singleton instance*/
+    FairGeoInterface* fInterface;       //!  /** Hades Geometry Interface*/
+    FairGeoBuilder* fGeoBuilder;        //!   /**Geometry builder*/
 
-    ClassDef(FairGeoLoader,1)
+    ClassDef(FairGeoLoader, 1)
 };
 
 #endif

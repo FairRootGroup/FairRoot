@@ -14,14 +14,13 @@
 #ifndef FAIRTESTDETECTORDIGILOADER_H
 #define FAIRTESTDETECTORDIGILOADER_H
 
-#include <iostream>
-#include <array>
-
-#include "FairTestDetectorPayload.h"
-#include "FairTestDetectorDigi.h"
-
 #include "FairMQSamplerTask.h"
+#include "FairTestDetectorDigi.h"
+#include "FairTestDetectorPayload.h"
+
 #include <FairMQLogger.h>
+#include <array>
+#include <iostream>
 
 template<typename TOut, typename TPayloadOut>
 class FairTestDetectorDigiLoader : public FairMQSamplerTask

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -15,11 +15,11 @@
 #include "FairTestDetectorDigiSorterTask.h"
 
 #include "FairLogger.h"
-#include "FairRootManager.h"      // for FairRootManager
-#include "FairTestDetectorDigi.h" // for FairTestDetectorDigi, etc
+#include "FairRootManager.h"        // for FairRootManager
+#include "FairTestDetectorDigi.h"   // for FairTestDetectorDigi, etc
 #include "FairTestDetectorDigiRingSorter.h"
 
-#include <TClonesArray.h> // for TClonesArray
+#include <TClonesArray.h>   // for TClonesArray
 
 class FairRingSorter;
 class FairTimeStamp;
@@ -40,8 +40,7 @@ void FairTestDetectorDigiSorterTask::AddNewDataToTClonesArray(FairTimeStamp* dat
 {
     FairRootManager* ioman = FairRootManager::Instance();
     TClonesArray* myArray = ioman->GetTClonesArray(fOutputBranch);
-    if (fVerbose > 1)
-    {
+    if (fVerbose > 1) {
         LOG(info) << "AddNewDataToTClonesArray Data: ";
         LOG(info) << static_cast<FairTestDetectorDigi*>(data)->ToString();
     }

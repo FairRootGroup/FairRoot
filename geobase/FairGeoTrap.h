@@ -8,11 +8,10 @@
 #ifndef FAIRGEOTRAP_H
 #define FAIRGEOTRAP_H
 
-#include "FairGeoBasicShape.h"          // for FairGeoBasicShape
+#include "FairGeoBasicShape.h"   // for FairGeoBasicShape
+#include "FairGeoRotation.h"     // for FairGeoRotation
 
-#include "FairGeoRotation.h"            // for FairGeoRotation
-
-#include <Rtypes.h>                     // for FairGeoPcon::Class, Bool_t, etc
+#include <Rtypes.h>   // for FairGeoPcon::Class, Bool_t, etc
 
 class FairGeoTransform;
 class FairGeoVolume;
@@ -27,8 +26,8 @@ class FairGeoTrap : public FairGeoBasicShape
     FairGeoTrap();
     ~FairGeoTrap();
     TArrayD* calcVoluParam(FairGeoVolume*);
-    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&,const FairGeoTransform&);
-    ClassDef(FairGeoTrap,0) // class for geometry shape TRAP
+    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&);
+    ClassDef(FairGeoTrap, 0)   // class for geometry shape TRAP
 };
 
-#endif  /* !FAIRGEOTRAP_H */
+#endif /* !FAIRGEOTRAP_H */

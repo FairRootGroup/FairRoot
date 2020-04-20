@@ -4,15 +4,15 @@
 
 #include <msgpack.hpp>
 
-struct MsgPack {};
+struct MsgPack
+{};
 // struct MsgPackRef { msgpack::vrefbuffer* container; void* content; };
 // struct MsgPackStream {};
 
-template <>
+template<>
 void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::InitTask()
 {
-    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/)
-    {
+    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
 
         // deserialize
@@ -33,15 +33,13 @@ void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::InitTask()
 
         fOutput->Delete();
 
-        for (int i = 0; i < numEntries; ++i)
-        {
+        for (int i = 0; i < numEntries; ++i) {
             TVector3 pos(std::get<2>(hits.at(i)), std::get<3>(hits.at(i)), std::get<4>(hits.at(i)));
             TVector3 dpos(std::get<5>(hits.at(i)), std::get<6>(hits.at(i)), std::get<7>(hits.at(i)));
             new ((*fOutput)[i]) FairTestDetectorHit(std::get<0>(hits.at(i)), std::get<1>(hits.at(i)), pos, dpos);
         }
 
-        if (fOutput->IsEmpty())
-        {
+        if (fOutput->IsEmpty()) {
             LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
         }
 

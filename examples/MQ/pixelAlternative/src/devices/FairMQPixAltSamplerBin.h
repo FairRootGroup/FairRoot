@@ -18,12 +18,11 @@
 #include "PixelPayload.h"
 
 #include <FairMQDevice.h>
-
+#include <cstdint>
+#include <fstream>
 #include <string>
 #include <thread>
-#include <fstream>
 #include <vector>
-#include <cstdint>
 
 class TBranch;
 class TChain;

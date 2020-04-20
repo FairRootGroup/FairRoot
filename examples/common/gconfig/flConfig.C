@@ -10,19 +10,20 @@
 void Config()
 {
 
-    new  TFluka("C++ Interface to Fluka", 1/*verbositylevel*/);
+    new TFluka("C++ Interface to Fluka", 1 /*verbositylevel*/);
 
     cout << "GConfig: Fluka has been created." << endl;
 
     FairStack *st = new FairStack();
     st->SetMinPoints(0);
-    TVirtual::GetMC()->SetStack( st ) ;
-    TVirtual::GetMC()->SetProcess("CKOV",1);
+    TVirtual::GetMC()->SetStack(st);
+    TVirtual::GetMC()->SetProcess("CKOV", 1);
 
-   // set the common cuts
+    // set the common cuts
     TString configm(gSystem->Getenv("VMCWORKDIR"));
     TString cuts = configm + "/gconfig/SetCuts.C";
-    cout << "Physics cuts with script \n "<<  cuts.Data() << endl;
-    Int_t cut=gROOT->LoadMacro(cuts.Data());
-    if(cut==0)gInterpreter->ProcessLine("SetCuts()");
+    cout << "Physics cuts with script \n " << cuts.Data() << endl;
+    Int_t cut = gROOT->LoadMacro(cuts.Data());
+    if (cut == 0)
+        gInterpreter->ProcessLine("SetCuts()");
 }

@@ -10,8 +10,8 @@
 #include <TClonesArray.h>
 
 // Fair headers
-#include "FairRootManager.h"
 #include "FairLogger.h"
+#include "FairRootManager.h"
 
 // Land headers
 #include "FairMBSRawItem.h"
@@ -22,8 +22,7 @@ FairMBSUnpack::FairMBSUnpack(Short_t type, Short_t subType, Short_t procId, Shor
     , fRawData(new TClonesArray("FairMBSRawItem"))
     , fNHits(0)
     , fNHitsTotal(0)
-{
-}
+{}
 
 FairMBSUnpack::~FairMBSUnpack()
 {
@@ -42,8 +41,7 @@ void FairMBSUnpack::Register()
     //  LOG(debug) << "Registering";
     LOG(info) << "FairMBSUnpack : Registering...";
     FairRootManager* fMan = FairRootManager::Instance();
-    if (!fMan)
-    {
+    if (!fMan) {
         return;
     }
     fMan->Register("MBSRawItem", "MBS", fRawData, kTRUE);
@@ -58,24 +56,23 @@ Bool_t FairMBSUnpack::DoUnpack(Int_t* data, Int_t size)
 
     Int_t n17 = 0;
 
-    while (l_i < size)
-    {
+    while (l_i < size) {
         n17 = 0;
 
         UInt_t* p1 = reinterpret_cast<UInt_t*>(data + l_i);
-        UInt_t l_sam_id = (p1[0] & 0xf0000000) >> 28; // identifies the sam
-        UInt_t l_gtb_id = (p1[0] & 0x0f000000) >> 24; // 0 or 1, identifies which of the 2 cables of the sam
+        UInt_t l_sam_id = (p1[0] & 0xf0000000) >> 28;   // identifies the sam
+        UInt_t l_gtb_id = (p1[0] & 0x0f000000) >> 24;   // 0 or 1, identifies which of the 2 cables of the sam
         UInt_t l_lec = (p1[0] & 0x00f00000) >> 20;
         UInt_t l_da_siz = (p1[0] & 0x000001ff);
 
-        LOG(debug) << "FairMBSUnpack : SAM:" << l_sam_id << ",  GTB:" << l_gtb_id << ",  lec:" << l_lec << ",  size:" << l_da_siz;
+        LOG(debug) << "FairMBSUnpack : SAM:" << l_sam_id << ",  GTB:" << l_gtb_id << ",  lec:" << l_lec
+                   << ",  size:" << l_da_siz;
 
         l_i += 1;
 
         p1 = reinterpret_cast<UInt_t*>((data + l_i));
 
-        for (UInt_t i1 = 0; i1 < l_da_siz; i1 += 2)
-        {
+        for (UInt_t i1 = 0; i1 < l_da_siz; i1 += 2) {
             UInt_t tac_addr;
             UInt_t tac_ch;
             UInt_t cal;
@@ -90,8 +87,7 @@ Bool_t FairMBSUnpack::DoUnpack(Int_t* data, Int_t size)
             qdc_data = (p1[i1 + 1] & 0x00000fff);
             l_i += 2;
 
-            if (16 == tac_ch)
-            {
+            if (16 == tac_ch) {
                 n17 += 1;
             }
             LOG(debug) << "FairMBSUnpack : TAC ADDR IS " << tac_addr << ",  TAC CH IS " << tac_ch << ",  TAC Data IS "
@@ -119,4 +115,4 @@ void FairMBSUnpack::Reset()
     fNHits = 0;
 }
 
-ClassImp(FairMBSUnpack)
+ClassImp(FairMBSUnpack);

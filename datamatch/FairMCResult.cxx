@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -17,20 +17,15 @@
 ClassImp(FairMCResult);
 
 FairMCResult::FairMCResult()
-  : FairMCObject(),
-    fStartType(-1),
-    fStopType(-1)
-{
-}
+    : FairMCObject()
+    , fStartType(-1)
+    , fStopType(-1)
+{}
 
-FairMCResult::~FairMCResult()
-{
-}
+FairMCResult::~FairMCResult() {}
 
 FairMCResult::FairMCResult(Int_t start, Int_t stop)
-  : FairMCObject(),
-    fStartType(start),
-    fStopType(stop)
-{
-}
-
+    : FairMCObject()
+    , fStartType(start)
+    , fStopType(stop)
+{}

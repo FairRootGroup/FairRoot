@@ -1,17 +1,17 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRTUTORIALDET4MILLEWRITER_H
 #define FAIRTUTORIALDET4MILLEWRITER_H
 
-#include "FairTask.h"                   // for InitStatus, FairTask
+#include "FairTask.h"   // for InitStatus, FairTask
 
+#include <Rtypes.h>   // for Option_t, Bool_t, etc
 #include <TString.h>
-#include <Rtypes.h>                     // for Option_t, Bool_t, etc
 
 class Mille;
 class TClonesArray;
@@ -43,11 +43,11 @@ class FairTutorialDet4MilleWriter : public FairTask
     /** Finish task called at the end of the run **/
     virtual void Finish();
 
-    void SetWriteAscii(Bool_t val) {fWriteAscii = val;}
+    void SetWriteAscii(Bool_t val) { fWriteAscii = val; }
 
-    void SetVersion(Int_t val) {fVersion = val;}
+    void SetVersion(Int_t val) { fVersion = val; }
 
-    void SetFileName(TString val) {fFileName = val;}
+    void SetFileName(TString val) { fFileName = val; }
 
   private:
     void ExecVersion1(Option_t* opt);
@@ -76,7 +76,7 @@ class FairTutorialDet4MilleWriter : public FairTask
     FairTutorialDet4MilleWriter(const FairTutorialDet4MilleWriter&);
     FairTutorialDet4MilleWriter operator=(const FairTutorialDet4MilleWriter&);
 
-    ClassDef(FairTutorialDet4MilleWriter,1);
+    ClassDef(FairTutorialDet4MilleWriter, 1);
 };
 
 #endif

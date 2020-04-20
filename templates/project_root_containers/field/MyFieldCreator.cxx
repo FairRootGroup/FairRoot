@@ -12,61 +12,56 @@
 
 #include "MyFieldCreator.h"
 
-#include "MyFieldPar.h"
-#include "MyConstField.h"
-
+#include "FairField.h"
 #include "FairRunAna.h"
 #include "FairRuntimeDb.h"
-#include "FairField.h"
+#include "MyConstField.h"
+#include "MyFieldPar.h"
 
 #include <iostream>
-using std::cout;
 using std::cerr;
+using std::cout;
 using std::endl;
 
 static MyFieldCreator gMyFieldCreator;
 
 MyFieldCreator::MyFieldCreator()
-  :FairFieldFactory(),
-   fFieldPar(NULL)
+    : FairFieldFactory()
+    , fFieldPar(NULL)
 {
-	fCreator=this;
+    fCreator = this;
 }
 
-MyFieldCreator::~MyFieldCreator()
-{
-}
+MyFieldCreator::~MyFieldCreator() {}
 
 void MyFieldCreator::SetParm()
 {
-  FairRunAna *Run = FairRunAna::Instance();
-  FairRuntimeDb *RunDB = Run->GetRuntimeDb();
-  fFieldPar = (MyFieldPar*) RunDB->getContainer("MyFieldPar");
-
+    FairRunAna *Run = FairRunAna::Instance();
+    FairRuntimeDb *RunDB = Run->GetRuntimeDb();
+    fFieldPar = (MyFieldPar *)RunDB->getContainer("MyFieldPar");
 }
 
-FairField* MyFieldCreator::createFairField()
-{ 
-  FairField *fMagneticField=0;
+FairField *MyFieldCreator::createFairField()
+{
+    FairField *fMagneticField = 0;
 
-  if ( ! fFieldPar ) {
-    cerr << "-E-  No field parameters available!"
-	 << endl;
-  }else{
-	// Instantiate correct field type
-	Int_t fType = fFieldPar->GetType();
-	if      ( fType == 0 ) fMagneticField = new MyConstField(fFieldPar);
-    else cerr << "-W- FairRunAna::GetField: Unknown field type " << fType
-		<< endl;
-	cout << "New field at " << fMagneticField << ", type " << fType << endl;
-	// Initialise field
-	if ( fMagneticField ) {
-		fMagneticField->Init();
-		fMagneticField->Print("");
-	}
-  }
-  return fMagneticField;
+    if (!fFieldPar) {
+        cerr << "-E-  No field parameters available!" << endl;
+    } else {
+        // Instantiate correct field type
+        Int_t fType = fFieldPar->GetType();
+        if (fType == 0)
+            fMagneticField = new MyConstField(fFieldPar);
+        else
+            cerr << "-W- FairRunAna::GetField: Unknown field type " << fType << endl;
+        cout << "New field at " << fMagneticField << ", type " << fType << endl;
+        // Initialise field
+        if (fMagneticField) {
+            fMagneticField->Init();
+            fMagneticField->Print("");
+        }
+    }
+    return fMagneticField;
 }
 
-
-ClassImp(MyFieldCreator)
+ClassImp(MyFieldCreator);

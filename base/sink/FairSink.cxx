@@ -13,23 +13,20 @@
 // -----------------------------------------------------------------------------
 
 #include "FairSink.h"
+
 #include <TFolder.h>
 #include <TTree.h>
 
 FairSink::FairSink()
-  : fRunId(0)
-  , fOutFolder(0)
-{
-}
+    : fRunId(0)
+    , fOutFolder(0)
+{}
 
 FairSink::FairSink(const FairSink& sink)
-  : fRunId(sink.fRunId)
-  , fOutFolder(0)
-{
-}
+    : fRunId(sink.fRunId)
+    , fOutFolder(0)
+{}
 
-FairSink::~FairSink()
-{
-}
+FairSink::~FairSink() {}
 
-ClassImp(FairSink)
+ClassImp(FairSink);

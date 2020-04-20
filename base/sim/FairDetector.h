@@ -8,9 +8,9 @@
 #ifndef FAIRDETECTOR_H
 #define FAIRDETECTOR_H
 
-#include "FairModule.h"                 // for FairModule
+#include "FairModule.h"   // for FairModule
 
-#include <Rtypes.h>                     // for Int_t, Bool_t, etc
+#include <Rtypes.h>   // for Int_t, Bool_t, etc
 
 class FairLogger;
 class FairVolume;
@@ -31,7 +31,7 @@ class FairDetector : public FairModule
       Active: kTRUE for active detectors  (ProcessHits() will be called)
               kFALSE for inactive detectors
     */
-    FairDetector(const char* Name, Bool_t Active, Int_t DetId=0);
+    FairDetector(const char* Name, Bool_t Active, Int_t DetId = 0);
     /**
       default constructor
     */
@@ -47,7 +47,7 @@ class FairDetector : public FairModule
     /**
       this method is called for each step during simulation (see FairMCApplication::Stepping())
     */
-    virtual Bool_t ProcessHits( FairVolume* v=0)=0;
+    virtual Bool_t ProcessHits(FairVolume* v = 0) = 0;
     /**
       this is called at the end of an event after the call to tree fill in the FairRootManager
     */
@@ -55,7 +55,7 @@ class FairDetector : public FairModule
     /**
       Registers the produced collections in FAIRRootManager.
     */
-    virtual void Register()=0;
+    virtual void Register() = 0;
 
     /**
      Gets the produced collections
@@ -64,9 +64,9 @@ class FairDetector : public FairModule
     /**
       has to be called after each event to reset the containers
     */
-    virtual void Reset()=0;
+    virtual void Reset() = 0;
 
-    virtual void CopyClones( TClonesArray*,  TClonesArray*, Int_t) {}
+    virtual void CopyClones(TClonesArray*, TClonesArray*, Int_t) {}
     /**
      User actions after finishing of a primary track
     */
@@ -97,22 +97,19 @@ class FairDetector : public FairModule
     virtual void FinishEvent() {}
 
     void SaveGeoParams();
-    Int_t  GetDetId() {
-      return fDetId;
-    }
+    Int_t GetDetId() { return fDetId; }
 
   protected:
     /** Copy constructor */
     FairDetector(const FairDetector&);
     /** Assignment operator */
-    FairDetector& operator= (const FairDetector&);
+    FairDetector& operator=(const FairDetector&);
 
     void DefineSensitiveVolumes();
 
-    Int_t fDetId; // Detector Id has to be set from ctr.
-    FairLogger* fLogger;  //! /// FairLogger
+    Int_t fDetId;          // Detector Id has to be set from ctr.
+    FairLogger* fLogger;   //! /// FairLogger
 
-    ClassDef(FairDetector,1)
-
+    ClassDef(FairDetector, 1)
 };
-#endif //FAIRDETECTOR_H
+#endif   // FAIRDETECTOR_H

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -12,13 +12,14 @@
 
 /**
  * 24.10.07  implement constructor with ion name. M. Al-Turany
-*/
+ */
 
 #ifndef FAIRIONGENERATOR_H
 #define FAIRIONGENERATOR_H
 
-#include <Rtypes.h>                     // for Double_t, Int_t, etc
-#include "FairBaseMCGenerator.h"              // for FairGenerator
+#include "FairBaseMCGenerator.h"   // for FairGenerator
+
+#include <Rtypes.h>   // for Double_t, Int_t, etc
 
 class FairIon;
 class FairPrimaryGenerator;
@@ -30,7 +31,7 @@ class FairIonGenerator : public FairBaseMCGenerator
     FairIonGenerator();
 
     /** Constructor with ion name
-      ** For the generation of ions with pre-defined FairIon
+     ** For the generation of ions with pre-defined FairIon
      ** By default, the  excitation energy is zero. This can be changed with the
      ** respective modifiers.
      **@param ionName  Ion name
@@ -38,9 +39,14 @@ class FairIonGenerator : public FairBaseMCGenerator
      **@param px,py,pz  Momentum components [GeV] per nucleon!
      **@param vx,vy,vz  Vertex coordinates [cm]
      **/
-    FairIonGenerator(const Char_t* ionName, Int_t mult, Double_t px,
-                     Double_t py, Double_t pz,  Double_t vx = 0,
-                     Double_t vy = 0, Double_t vz = 0);
+    FairIonGenerator(const Char_t* ionName,
+                     Int_t mult,
+                     Double_t px,
+                     Double_t py,
+                     Double_t pz,
+                     Double_t vx = 0,
+                     Double_t vy = 0,
+                     Double_t vz = 0);
 
     /** Default constructor
      ** For the generation of ions with atomic number z and mass number a.
@@ -54,15 +60,22 @@ class FairIonGenerator : public FairBaseMCGenerator
      **@param px,py,pz  Momentum components [GeV] per nucleon!
      **@param vx,vy,vz  Vertex coordinates [cm]
      **/
-    FairIonGenerator(Int_t z, Int_t a, Int_t q, Int_t mult, Double_t px,
-                     Double_t py, Double_t pz,  Double_t vx = 0,
-                     Double_t vy = 0, Double_t vz = 0);
+    FairIonGenerator(Int_t z,
+                     Int_t a,
+                     Int_t q,
+                     Int_t mult,
+                     Double_t px,
+                     Double_t py,
+                     Double_t pz,
+                     Double_t vx = 0,
+                     Double_t vy = 0,
+                     Double_t vz = 0);
 
     /** Destructor **/
     virtual ~FairIonGenerator();
 
     /** Modifiers **/
-    void SetCharge(Int_t charge) {fQ=charge;}
+    void SetCharge(Int_t charge) { fQ = charge; }
     void SetExcitationEnergy(Double_t eExc);
     void SetMass(Double_t mass);
 
@@ -76,15 +89,15 @@ class FairIonGenerator : public FairBaseMCGenerator
     virtual FairGenerator* CloneGenerator() const;
 
   private:
-    static Int_t fgNIon;     //! Number of the instance of this class
-    Double_t fPx, fPy, fPz;  // Momentum components [GeV] per nucleon
-    FairIon*   fIon;          // Pointer to the FairIon to be generated
-    Int_t    fQ;    // Electric charge [e]
+    static Int_t fgNIon;      //! Number of the instance of this class
+    Double_t fPx, fPy, fPz;   // Momentum components [GeV] per nucleon
+    FairIon* fIon;            // Pointer to the FairIon to be generated
+    Int_t fQ;                 // Electric charge [e]
 
     FairIonGenerator(const FairIonGenerator&);
     FairIonGenerator& operator=(const FairIonGenerator&);
 
-    ClassDef(FairIonGenerator,2)
+    ClassDef(FairIonGenerator, 2)
 };
 
 #endif

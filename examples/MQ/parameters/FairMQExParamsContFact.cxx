@@ -6,12 +6,12 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
+#include "FairMQExParamsContFact.h"
+
+#include "FairMQExParamsParOne.h"
 #include "FairRuntimeDb.h"
 
-#include "FairMQExParamsContFact.h"
-#include "FairMQExParamsParOne.h"
-
-#include <cstring> // strcmp
+#include <cstring>   // strcmp
 
 static FairMQExParamsContFact gFairMQExParamsContFact;
 
@@ -25,7 +25,8 @@ FairMQExParamsContFact::FairMQExParamsContFact()
 
 void FairMQExParamsContFact::setAllContainers()
 {
-    FairContainer* container = new FairContainer("FairMQExParamsParOne", "FairMQExParamsParOne Parameters", "TestDefaultContext");
+    FairContainer* container =
+        new FairContainer("FairMQExParamsParOne", "FairMQExParamsParOne Parameters", "TestDefaultContext");
     container->addContext("TestNonDefaultContext");
 
     containers->Add(container);
@@ -36,8 +37,7 @@ FairParSet* FairMQExParamsContFact::createContainer(FairContainer* container)
     const char* name = container->GetName();
     FairParSet* p = nullptr;
 
-    if (strcmp(name, "FairMQExParamsParOne") == 0)
-    {
+    if (strcmp(name, "FairMQExParamsParOne") == 0) {
         p = new FairMQExParamsParOne(container->getConcatName().Data(), container->GetTitle(), container->getContext());
     }
 

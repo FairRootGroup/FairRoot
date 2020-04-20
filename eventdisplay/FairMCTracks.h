@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -20,11 +20,11 @@
 #ifndef FAIRMCTRACKS_H
 #define FAIRMCTRACKS_H
 
-#include "FairTask.h"                   // for FairTask, InitStatus
+#include "FairTask.h"   // for FairTask, InitStatus
 
-#include <Rtypes.h>                     // for Double_t, etc
-#include <TEveTrackPropagator.h>        // IWYU pragma: keep needed by cint
-#include <TString.h>                    // for TString
+#include <Rtypes.h>                // for Double_t, etc
+#include <TEveTrackPropagator.h>   // IWYU pragma: keep needed by cint
+#include <TString.h>               // for TString
 
 class FairEventManager;
 class TClonesArray;
@@ -39,16 +39,16 @@ class FairMCTracks : public FairTask
     FairMCTracks();
 
     /** Standard constructor
-    *@param name        Name of task
-    *@param iVerbose    Verbosity level
-    **/
+     *@param name        Name of task
+     *@param iVerbose    Verbosity level
+     **/
     FairMCTracks(const char* name, Int_t iVerbose = 1);
 
     /** Destructor **/
     virtual ~FairMCTracks();
 
     /** Set verbosity level. For this task and all of the subtasks. **/
-    void SetVerbose(Int_t iVerbose) {fVerbose = iVerbose;}
+    void SetVerbose(Int_t iVerbose) { fVerbose = iVerbose; }
     /** Executed task **/
     virtual void Exec(Option_t* option);
     virtual InitStatus Init();
@@ -60,13 +60,13 @@ class FairMCTracks : public FairTask
     TEveTrackList* GetTrGroup(TParticle* P);
 
   protected:
-    TClonesArray*  fTrackList;  //!
+    TClonesArray* fTrackList;   //!
     TEveTrackPropagator* fTrPr;
-    FairEventManager* fEventManager;  //!
+    FairEventManager* fEventManager;   //!
     TObjArray* fEveTrList;
-    TString fEvent; //!
-    TEveTrackList* fTrList;  //!
-    //TEveElementList *fTrackCont;
+    TString fEvent;           //!
+    TEveTrackList* fTrList;   //!
+    // TEveElementList *fTrackCont;
 
     Double_t MinEnergyLimit;
     Double_t MaxEnergyLimit;
@@ -76,7 +76,7 @@ class FairMCTracks : public FairTask
     FairMCTracks(const FairMCTracks&);
     FairMCTracks& operator=(const FairMCTracks&);
 
-    ClassDef(FairMCTracks,1);
+    ClassDef(FairMCTracks, 1);
 };
 
 #endif

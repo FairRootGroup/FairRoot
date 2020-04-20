@@ -14,131 +14,130 @@
 
 #include "FairMQPixelSampler.h"
 
-#include "FairRunAna.h"
-#include "RootSerializer.h"
-#include "FairSource.h"
 #include "FairFileSource.h"
+#include "FairRunAna.h"
+#include "FairSource.h"
+#include "RootSerializer.h"
 
 #include <FairMQLogger.h>
 #include <FairMQMessage.h>
-
 #include <Rtypes.h>
 #include <TClonesArray.h>
 #include <TObject.h>
-
 #include <cstring>
-#include <utility> // move
+#include <utility>   // move
 
 using namespace std;
 
 FairMQPixelSampler::FairMQPixelSampler()
-  : FairMQDevice()
-  , fOutputChannelName("data-out")
-  , fAckChannelName("")
-  , fRunAna(nullptr)
-  , fSource(nullptr)
-  , fInputObjects()
-  , fNObjects(0)
-  , fMaxIndex(-1)
-  , fEventCounter(0)
-  , fBranchNames()
-  , fFileNames()
-  , fAckListener()
-{
-}
+    : FairMQDevice()
+    , fOutputChannelName("data-out")
+    , fAckChannelName("")
+    , fRunAna(nullptr)
+    , fSource(nullptr)
+    , fInputObjects()
+    , fNObjects(0)
+    , fMaxIndex(-1)
+    , fEventCounter(0)
+    , fBranchNames()
+    , fFileNames()
+    , fAckListener()
+{}
 
 void FairMQPixelSampler::InitTask()
 {
-  fFileNames         = fConfig->GetValue<std::vector<std::string>>("file-name");
-  fMaxIndex          = fConfig->GetValue<int64_t>                 ("max-index");
-  fBranchNames       = fConfig->GetValue<std::vector<std::string>>("branch-name");
-  fOutputChannelName = fConfig->GetValue<std::string>             ("out-channel");
-  fAckChannelName    = fConfig->GetValue<std::string>             ("ack-channel");
+    fFileNames = fConfig->GetValue<std::vector<std::string>>("file-name");
+    fMaxIndex = fConfig->GetValue<int64_t>("max-index");
+    fBranchNames = fConfig->GetValue<std::vector<std::string>>("branch-name");
+    fOutputChannelName = fConfig->GetValue<std::string>("out-channel");
+    fAckChannelName = fConfig->GetValue<std::string>("ack-channel");
 
-  fRunAna = new FairRunAna();
+    fRunAna = new FairRunAna();
 
-  if (fSource == nullptr) {
-    fSource = new FairFileSource(fFileNames.at(0).c_str());
-    for (unsigned int ifile = 1 ; ifile < fFileNames.size() ; ifile++) {
-      ((FairFileSource*)fSource)->AddFile(fFileNames.at(ifile));
+    if (fSource == nullptr) {
+        fSource = new FairFileSource(fFileNames.at(0).c_str());
+        for (unsigned int ifile = 1; ifile < fFileNames.size(); ifile++) {
+            ((FairFileSource*)fSource)->AddFile(fFileNames.at(ifile));
+        }
     }
-  }
 
-  fSource->Init();
-  LOG(info) << "Going to request " << fBranchNames.size() << "  branches:";
-  for (unsigned int ibrn = 0 ; ibrn < fBranchNames.size() ; ibrn++) {
-    LOG(info) << " requesting branch \"" << fBranchNames[ibrn] << "\"";
-    int branchStat = fSource->ActivateObject((TObject**)&fInputObjects[fNObjects],fBranchNames[ibrn].c_str()); // should check the status...
-    if (fInputObjects[fNObjects]) {
-      LOG(info) << "Activated object \"" << fInputObjects[fNObjects] << "\" with name \"" << fBranchNames[ibrn] << "\" (" << branchStat << "), it got name: \"" << fInputObjects[fNObjects]->GetName() << "\"";
-      if (strcmp(fInputObjects[fNObjects]->GetName(),fBranchNames[ibrn].c_str()))
-        if (strcmp(fInputObjects[fNObjects]->ClassName(),"TClonesArray") == 0)
-          ((TClonesArray*)fInputObjects[fNObjects])->SetName(fBranchNames[ibrn].c_str());
-      fNObjects++;
+    fSource->Init();
+    LOG(info) << "Going to request " << fBranchNames.size() << "  branches:";
+    for (unsigned int ibrn = 0; ibrn < fBranchNames.size(); ibrn++) {
+        LOG(info) << " requesting branch \"" << fBranchNames[ibrn] << "\"";
+        int branchStat = fSource->ActivateObject((TObject**)&fInputObjects[fNObjects],
+                                                 fBranchNames[ibrn].c_str());   // should check the status...
+        if (fInputObjects[fNObjects]) {
+            LOG(info) << "Activated object \"" << fInputObjects[fNObjects] << "\" with name \"" << fBranchNames[ibrn]
+                      << "\" (" << branchStat << "), it got name: \"" << fInputObjects[fNObjects]->GetName() << "\"";
+            if (strcmp(fInputObjects[fNObjects]->GetName(), fBranchNames[ibrn].c_str()))
+                if (strcmp(fInputObjects[fNObjects]->ClassName(), "TClonesArray") == 0)
+                    ((TClonesArray*)fInputObjects[fNObjects])->SetName(fBranchNames[ibrn].c_str());
+            fNObjects++;
+        }
     }
-  }
 
-  if (fMaxIndex < 0)
-    fMaxIndex = fSource->CheckMaxEventNo();
-  LOG(info) << "Input source has " << fMaxIndex << " events.";
+    if (fMaxIndex < 0)
+        fMaxIndex = fSource->CheckMaxEventNo();
+    LOG(info) << "Input source has " << fMaxIndex << " events.";
 }
 
 void FairMQPixelSampler::PreRun()
 {
-  if (fAckChannelName != "") {
-    fAckListener = thread(&FairMQPixelSampler::ListenForAcks, this);
-  }
+    if (fAckChannelName != "") {
+        fAckListener = thread(&FairMQPixelSampler::ListenForAcks, this);
+    }
 
-  LOG(info) << "FairMQPixelSampler::PreRun() finished!";
+    LOG(info) << "FairMQPixelSampler::PreRun() finished!";
 }
 
 bool FairMQPixelSampler::ConditionalRun()
 {
-  if (fEventCounter == fMaxIndex) return false;
+    if (fEventCounter == fMaxIndex)
+        return false;
 
-  Int_t readEventReturn = fSource->ReadEvent(fEventCounter);
+    Int_t readEventReturn = fSource->ReadEvent(fEventCounter);
 
-  if (readEventReturn != 0) return false;
+    if (readEventReturn != 0)
+        return false;
 
-  FairMQParts parts;
+    FairMQParts parts;
 
-  for (int iobj = 0 ; iobj < fNObjects ; iobj++) {
-    FairMQMessagePtr mess(NewMessage());
-    Serialize<RootSerializer>(*mess, fInputObjects[iobj]);
-    parts.AddPart(std::move(mess));
-  }
+    for (int iobj = 0; iobj < fNObjects; iobj++) {
+        FairMQMessagePtr mess(NewMessage());
+        Serialize<RootSerializer>(*mess, fInputObjects[iobj]);
+        parts.AddPart(std::move(mess));
+    }
 
-  Send(parts, fOutputChannelName);
+    Send(parts, fOutputChannelName);
 
-  fEventCounter++;
+    fEventCounter++;
 
-  return true;
+    return true;
 }
 
 void FairMQPixelSampler::PostRun()
 {
-  if (fAckChannelName != "") {
-    fAckListener.join();
-  }
+    if (fAckChannelName != "") {
+        fAckListener.join();
+    }
 
-  LOG(info) << "PostRun() finished!";
+    LOG(info) << "PostRun() finished!";
 }
 
 void FairMQPixelSampler::ListenForAcks()
 {
-  if (fAckChannelName != "") {
-    Long64_t numAcks = 0;
-    do {
-      unique_ptr<FairMQMessage> ack(NewMessage());
-      if (Receive(ack, fAckChannelName) >= 0) {
-        numAcks++;
-      }
-    } while (numAcks < fMaxIndex);
+    if (fAckChannelName != "") {
+        Long64_t numAcks = 0;
+        do {
+            unique_ptr<FairMQMessage> ack(NewMessage());
+            if (Receive(ack, fAckChannelName) >= 0) {
+                numAcks++;
+            }
+        } while (numAcks < fMaxIndex);
 
-    LOG(info) << "Acknowledged " << numAcks << " messages.";
-  }
+        LOG(info) << "Acknowledged " << numAcks << " messages.";
+    }
 }
 
-FairMQPixelSampler::~FairMQPixelSampler()
-{
-}
+FairMQPixelSampler::~FairMQPixelSampler() {}

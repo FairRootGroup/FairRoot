@@ -9,20 +9,17 @@
 #ifndef FAIRMQPIXELTASKPROCESSOR_H_
 #define FAIRMQPIXELTASKPROCESSOR_H_
 
-#include <string>
-#include <vector>
-
 #include "FairEventHeader.h"
-#include "FairMCEventHeader.h"
 #include "FairGeoParSet.h"
+#include "FairMCEventHeader.h"
 #include "FairParGenericSet.h"
+#include "RootSerializer.h"
 
 #include <FairMQDevice.h>
 #include <FairMQParts.h>
-
-#include "RootSerializer.h"
-
 #include <TList.h>
+#include <string>
+#include <vector>
 
 template<typename T>
 class FairMQPixelTaskProcessor : public FairMQDevice
@@ -60,11 +57,11 @@ class FairMQPixelTaskProcessor : public FairMQDevice
 
     void SetDataToKeep(const std::string& tStr) { fDataToKeep = tStr; }
 
-    void SetInputChannelName (const std::string& tstr) { fInputChannelName = tstr; }
+    void SetInputChannelName(const std::string& tstr) { fInputChannelName = tstr; }
     void SetOutputChannelName(const std::string& tstr) { fOutputChannelName = tstr; }
-    void SetParamChannelName (const std::string& tstr) { fParamChannelName  = tstr; }
+    void SetParamChannelName(const std::string& tstr) { fParamChannelName = tstr; }
 
-    void SetStaticParameters (bool tbool) { fStaticParameters = tbool; }
+    void SetStaticParameters(bool tbool) { fStaticParameters = tbool; }
 
   protected:
     bool ProcessData(FairMQParts& parts, int)
@@ -80,10 +77,10 @@ class FairMQPixelTaskProcessor : public FairMQDevice
             Deserialize<RootSerializer>(*parts.At(ipart), obj);
             tempObjects.push_back(obj);
             // LOG(trace) << "got TObject with name \"" << tempObjects[ipart]->GetName() << "\".";
-            if (strcmp(tempObjects.back()->GetName(),"EventHeader.") == 0) {
+            if (strcmp(tempObjects.back()->GetName(), "EventHeader.") == 0) {
                 fEventHeader = (FairEventHeader*)(tempObjects.back());
             }
-            if (strcmp(tempObjects.back()->GetName(),"MCEventHeader.") == 0) {
+            if (strcmp(tempObjects.back()->GetName(), "MCEventHeader.") == 0) {
                 fMCEventHeader = (FairMCEventHeader*)(tempObjects.back());
             } else {
                 fInput->Add(tempObjects.back());
@@ -116,24 +113,25 @@ class FairMQPixelTaskProcessor : public FairMQDevice
 
         if (!fDataToKeep.empty()) {
             objectToKeep = (fInput->FindObject(fDataToKeep.c_str()))->Clone();
-            if (objectToKeep) fOutput->Add(objectToKeep);
+            if (objectToKeep)
+                fOutput->Add(objectToKeep);
         }
 
         FairMQParts partsOut;
 
         if (fEventHeader) {
             FairMQMessagePtr mess(NewMessage());
-            Serialize<RootSerializer>(*mess,fEventHeader);
+            Serialize<RootSerializer>(*mess, fEventHeader);
             partsOut.AddPart(std::move(mess));
         } else if (fMCEventHeader) {
             FairMQMessagePtr mess(NewMessage());
-            Serialize<RootSerializer>(*mess,fMCEventHeader);
+            Serialize<RootSerializer>(*mess, fMCEventHeader);
             partsOut.AddPart(std::move(mess));
         }
 
         for (int iobj = 0; iobj < fOutput->GetEntries(); iobj++) {
             FairMQMessagePtr mess(NewMessage());
-            Serialize<RootSerializer>(*mess,fOutput->At(iobj));
+            Serialize<RootSerializer>(*mess, fOutput->At(iobj));
             partsOut.AddPart(std::move(mess));
         }
 
@@ -155,11 +153,11 @@ class FairMQPixelTaskProcessor : public FairMQDevice
 
     virtual void Init()
     {
-        fDataToKeep        = fConfig->GetValue<std::string>("keep-data");
-        fInputChannelName  = fConfig->GetValue<std::string>("in-channel");
+        fDataToKeep = fConfig->GetValue<std::string>("keep-data");
+        fInputChannelName = fConfig->GetValue<std::string>("in-channel");
         fOutputChannelName = fConfig->GetValue<std::string>("out-channel");
-        fParamChannelName  = fConfig->GetValue<std::string>("par-channel");
-        fStaticParameters  = fConfig->GetValue<bool>       ("static-pars");
+        fParamChannelName = fConfig->GetValue<std::string>("par-channel");
+        fStaticParameters = fConfig->GetValue<bool>("static-pars");
 
         fFairTask = new T();
         fFairTask->SetStreamProcessing(kTRUE);
@@ -176,7 +174,8 @@ class FairMQPixelTaskProcessor : public FairMQDevice
 
     virtual void PostRun()
     {
-        LOG(info) << "FairMQPixelTaskProcessor<T>::PostRun() Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!";
+        LOG(info) << "FairMQPixelTaskProcessor<T>::PostRun() Received " << fReceivedMsgs << " and sent " << fSentMsgs
+                  << " messages!";
     }
 
   private:
@@ -198,19 +197,21 @@ class FairMQPixelTaskProcessor : public FairMQDevice
         std::string paramName = thisPar->GetName();
 
         std::string* reqStr = new std::string(paramName + "," + std::to_string(fCurrentRunId));
-        LOG(debug) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << " (" << thisPar << ")";
+        LOG(debug) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << " (" << thisPar
+                   << ")";
 
-        FairMQMessagePtr req(NewMessage(const_cast<char*>(reqStr->c_str()),
-                                        reqStr->length(),
-                                        [](void* /* data */, void* hint){ delete static_cast<std::string*>(hint); },
-                                        reqStr));
+        FairMQMessagePtr req(NewMessage(
+            const_cast<char*>(reqStr->c_str()),
+            reqStr->length(),
+            [](void* /* data */, void* hint) { delete static_cast<std::string*>(hint); },
+            reqStr));
         FairMQMessagePtr rep(NewMessage());
 
         if (Send(req, fParamChannelName) > 0) {
             if (Receive(rep, fParamChannelName) > 0) {
                 thisPar = nullptr;
                 Deserialize<RootSerializer>(*rep, thisPar);
-                LOG(info) << "Received parameter"<< paramName <<" from the server (" << thisPar << ")";
+                LOG(info) << "Received parameter" << paramName << " from the server (" << thisPar << ")";
                 return thisPar;
             }
         }
@@ -218,10 +219,10 @@ class FairMQPixelTaskProcessor : public FairMQDevice
         return nullptr;
     }
 
-    FairEventHeader*   fEventHeader;
+    FairEventHeader* fEventHeader;
     FairMCEventHeader* fMCEventHeader;
-    TList*             fInput;
-    TList*             fOutput;
+    TList* fInput;
+    TList* fOutput;
 
     bool fStaticParameters;
     int fNewRunId;

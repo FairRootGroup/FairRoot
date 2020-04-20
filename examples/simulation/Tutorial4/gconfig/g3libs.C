@@ -9,11 +9,11 @@
 
 void g3libs()
 {
-  cout << "Loading Geant3 libraries ..." << endl;
+    cout << "Loading Geant3 libraries ..." << endl;
 
-  gSystem->Load("libPythia6");
-  gSystem->Load("libEGPythia6");
-  gSystem->Load("libgeant321");
+    gSystem->Load("libPythia6");
+    gSystem->Load("libEGPythia6");
+    gSystem->Load("libgeant321");
 
-  cout << "Loading Geant3 libraries ... finished" << endl;
+    cout << "Loading Geant3 libraries ... finished" << endl;
 }

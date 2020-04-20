@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -10,20 +10,18 @@
 // -----                  Created 20/03/07  by R.Kliemt               -----
 // -------------------------------------------------------------------------
 
-
 /** PNDMCMATCHCREATORTASK.h
  *@author T.Stockmanns <t.stockmanns@fz-juelich.de>
  **
  ** Displays all available informations for a given event
  **/
 
-
 #ifndef FAIRMCMATCHLOADERTASK_H
 #define FAIRMCMATCHLOADERTASK_H
 
-#include "FairTask.h"                   // for FairTask, InitStatus
+#include "FairTask.h"   // for FairTask, InitStatus
 
-#include <Rtypes.h>                     // for ClassDef
+#include <Rtypes.h>   // for ClassDef
 
 class FairMCMatch;
 class TClonesArray;
@@ -37,11 +35,9 @@ class FairMCMatchLoaderTask : public FairTask
     /** Destructor **/
     virtual ~FairMCMatchLoaderTask();
 
-
     /** Virtual method Init **/
     virtual void SetParContainers();
     virtual InitStatus Init();
-
 
     /** Virtual method Exec **/
     virtual void Exec(Option_t* opt);
@@ -66,7 +62,7 @@ class FairMCMatchLoaderTask : public FairTask
     FairMCMatchLoaderTask(const FairMCMatchLoaderTask&);
     FairMCMatchLoaderTask& operator=(const FairMCMatchLoaderTask&);
 
-    ClassDef(FairMCMatchLoaderTask,1);
+    ClassDef(FairMCMatchLoaderTask, 1);
 };
 
 #endif

@@ -23,7 +23,7 @@ class FairMQExParamsContFact : public FairContFact
     ~FairMQExParamsContFact() {}
 
     FairParSet* createContainer(FairContainer*);
-    ClassDef(FairMQExParamsContFact,0)
+    ClassDef(FairMQExParamsContFact, 0)
 };
 
-#endif  /* FAIRMQEXPARAMSCONTFACT_H */
+#endif /* FAIRMQEXPARAMSCONTFACT_H */

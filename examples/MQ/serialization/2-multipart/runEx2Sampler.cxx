@@ -12,18 +12,17 @@
  * Created on January 15, 2015, 1:57 PM
  */
 
-#include "runFairMQDevice.h"
 #include "Ex2Sampler.h"
+#include "runFairMQDevice.h"
 
 namespace bpo = boost::program_options;
 
 void addCustomOptions(bpo::options_description& options)
 {
+    // clang-format off
     options.add_options()
         ("input-file", bpo::value<std::string>(), "Path to the input file");
+    // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)
-{
-    return new Ex2Sampler();
-}
+FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/) { return new Ex2Sampler(); }

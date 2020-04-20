@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -13,12 +13,11 @@
 #ifndef FAIRRADGRIDMANAGER_H
 #define FAIRRADGRIDMANAGER_H 1
 
-#include <Rtypes.h>                     // for Float_t, Double_t, Int_t, etc
-#include <TLorentzVector.h>             // for TLorentzVector
-#include <TObjArray.h>                  // for TObjArray
-#include <TString.h>                    // for TString
-
-#include <iostream>                     // for basic_ostream::operator<<, etc
+#include <Rtypes.h>           // for Float_t, Double_t, Int_t, etc
+#include <TLorentzVector.h>   // for TLorentzVector
+#include <TObjArray.h>        // for TObjArray
+#include <TString.h>          // for TString
+#include <iostream>           // for basic_ostream::operator<<, etc
 
 class FairMesh;
 class TClonesArray;
@@ -44,7 +43,7 @@ class FairRadGridManager
     /**
      * Class definition.
      */
-    ClassDef(FairRadGridManager,1);
+    ClassDef(FairRadGridManager, 1);
 
   private:
     FairRadGridManager(const FairRadGridManager&);
@@ -55,35 +54,35 @@ class FairRadGridManager
     /**
      * collection of point
      */
-    TClonesArray*  fPointCollection;
+    TClonesArray* fPointCollection;
     /**track index */
-    Int_t          fTrackID;           //!
+    Int_t fTrackID;   //!
     /**volume id */
-    Int_t          fVolumeID;          //!
+    Int_t fVolumeID;   //!
     /**  entry position in global frame*/
-    TLorentzVector fPosIn;             //!
+    TLorentzVector fPosIn;   //!
     /**  exit position in global frame*/
-    TLorentzVector fPosOut;            //!
+    TLorentzVector fPosOut;   //!
     /**  momentum in*/
-    TLorentzVector fMomIn;             //!
+    TLorentzVector fMomIn;   //!
     /**  momentum out*/
-    TLorentzVector fMomOut;            //!
+    TLorentzVector fMomOut;   //!
     /**track time */
-    Double_t       fTime;              //!
+    Double_t fTime;   //!
     /**track length */
-    Double_t       fLength;            //!
+    Double_t fLength;   //!
     /** energy loss */
-    Double_t       fELoss;             //!
+    Double_t fELoss;   //!
     /** mass umber*/
-    Float_t        fA;
+    Float_t fA;
     /** atomic number*/
-    Float_t        fZmat;
+    Float_t fZmat;
     /**  density */
-    Float_t        fDensity;
+    Float_t fDensity;
     /**radition length */
-    Float_t        fRadl;
+    Float_t fRadl;
     /**absorption length */
-    Float_t        fAbsl;
+    Float_t fAbsl;
     /**estimator*/
     Int_t fEstimator;
     /** the mesh */
@@ -95,20 +94,21 @@ class FairRadGridManager
 
   public:
     TObjArray* GetMeshList() { return fMeshList; }
-    void AddMeshList ( TObjArray* list ) {
-      std::cout << " grid manag " << list->GetEntriesFast() << std::endl;
-      fMeshList = list;
+    void AddMeshList(TObjArray* list)
+    {
+        std::cout << " grid manag " << list->GetEntriesFast() << std::endl;
+        fMeshList = list;
     }
-    Bool_t  IsTrackInside(TLorentzVector& vec, FairMesh* aMesh);
-    Bool_t  IsTrackEntering(TLorentzVector& vec1,TLorentzVector& vec2);
+    Bool_t IsTrackInside(TLorentzVector& vec, FairMesh* aMesh);
+    Bool_t IsTrackEntering(TLorentzVector& vec1, TLorentzVector& vec2);
     /** fill the 2D mesh */
     void FillMeshList();
     /**initialize the manager*/
-    void  Init();
+    void Init();
     /**reset*/
-    void  Reset();
+    void Reset();
     /**set output file name*/
-    void    SetOutputFileName(TString tempString) { fOutputFileName = tempString; }
+    void SetOutputFileName(TString tempString) { fOutputFileName = tempString; }
     TString GetOutputFileName() { return fOutputFileName; }
     /**
      * This function is used to access the methods of the class.

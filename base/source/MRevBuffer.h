@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 //////////////////////////////////////////////////////////////////////
@@ -24,31 +24,31 @@
 #ifndef MRevBuffer_H
 #define MRevBuffer_H
 
-#include <TObject.h>                    // for TObject
-#include <Rtypes.h>                     // for Int_t, ClassDef, etc
+#include <Rtypes.h>    // for Int_t, ClassDef, etc
+#include <TObject.h>   // for TObject
 
 class TSocket;
 
 class REvent : public TObject
 {
   private:
-    Int_t  iSize;              // event size (byte)
-    Int_t  iNumb;              // event number
-    Int_t*  piData;            // event parameter
+    Int_t iSize;     // event size (byte)
+    Int_t iNumb;     // event number
+    Int_t* piData;   // event parameter
 
     REvent(const REvent&);
     REvent& operator=(const REvent&);
 
   public:
-    REvent();                  // constructor
-    ~REvent();                 // destructor
+    REvent();    // constructor
+    ~REvent();   // destructor
 
     void ReFillHead(Int_t* pHead);   // unpack and fill event header
     void ReFillData(Int_t* pData);   // unpack and fill event data
 
-    Int_t ReGetNumb();               // get event number
-    Int_t ReGetSize();               // get event size
-    Int_t ReGetData(Int_t ichan);    // get event parameter ichan
+    Int_t ReGetNumb();              // get event number
+    Int_t ReGetSize();              // get event size
+    Int_t ReGetData(Int_t ichan);   // get event parameter ichan
     Int_t* GetData() { return piData; }
 
     Int_t nSubEvt;
@@ -60,44 +60,44 @@ class REvent : public TObject
     Short_t subEvtControl[100];
     Int_t* pSubEvt[100];
 
-    ClassDef(REvent, 0)           // prototype for event
+    ClassDef(REvent, 0)   // prototype for event
 };
 
 class MRevBuffer : public TObject
 {
   private:
-    TSocket* pTSocket;     // ptr socket of channel to event server
-    Int_t  iSocket;        // socket id of channel to event server
-    Int_t  iBufNo1;        // first buffer no. received (test)
-    Int_t  iBufNo2;        // last buffer no. received (test)
-    Int_t  iDebug;         // verbosity level (test)
-    Int_t  iSwap;          // > 0: swap event data
-    Int_t  iStatus;        // current status of server
+    TSocket* pTSocket;   // ptr socket of channel to event server
+    Int_t iSocket;       // socket id of channel to event server
+    Int_t iBufNo1;       // first buffer no. received (test)
+    Int_t iBufNo2;       // last buffer no. received (test)
+    Int_t iDebug;        // verbosity level (test)
+    Int_t iSwap;         // > 0: swap event data
+    Int_t iStatus;       // current status of server
 
-    Int_t  iBufSizeAlloc;  // allocated buffer size
-    Int_t  iBufSize;       // size current buffer
-    Int_t  iBufNo;         // current buffer no.
-    Int_t  iFragBegin;     // > 0: last buffer ended with fragment
-    Int_t  iFragConc;      // no. of concatenated fragments
-    Int_t  iFragBeginIgn;  // no. of ignored fragment begins
-    Int_t  iFragEndIgn;    // no. of ignored fragment ends
+    Int_t iBufSizeAlloc;   // allocated buffer size
+    Int_t iBufSize;        // size current buffer
+    Int_t iBufNo;          // current buffer no.
+    Int_t iFragBegin;      // > 0: last buffer ended with fragment
+    Int_t iFragConc;       // no. of concatenated fragments
+    Int_t iFragBeginIgn;   // no. of ignored fragment begins
+    Int_t iFragEndIgn;     // no. of ignored fragment ends
 
-    Int_t  iHeadPar;       // no. of (4 byte) parms buffer header
-    Int_t  iEvtMax;        // no. of events requested
-    Int_t  iEvtNo;         // last event no. handled
-    Int_t  iEvtRel;        // rel. event no. in buffer
-    Int_t  iEvtBuf;        // no. of events in current buffer
-    Int_t  iEvtPar;        // no. of parameters in event (incl. len)
-    Int_t*  piBuf;         // ptr event buffer
-    Int_t*  piNextEvt;     // ptr first element next event
-    REvent* pEvt;          // ptr event class
+    Int_t iHeadPar;     // no. of (4 byte) parms buffer header
+    Int_t iEvtMax;      // no. of events requested
+    Int_t iEvtNo;       // last event no. handled
+    Int_t iEvtRel;      // rel. event no. in buffer
+    Int_t iEvtBuf;      // no. of events in current buffer
+    Int_t iEvtPar;      // no. of parameters in event (incl. len)
+    Int_t* piBuf;       // ptr event buffer
+    Int_t* piNextEvt;   // ptr first element next event
+    REvent* pEvt;       // ptr event class
 
     MRevBuffer(const MRevBuffer&);
     MRevBuffer& operator=(const MRevBuffer&);
 
   public:
-    MRevBuffer(Int_t iMode); // constructor
-    ~MRevBuffer();            // destructor
+    MRevBuffer(Int_t iMode);   // constructor
+    ~MRevBuffer();             // destructor
 
     TSocket* RevOpen(char* pNode, Int_t iPort, Int_t iEvent);
     // input: node name and port number server, req. no. of events
@@ -130,9 +130,9 @@ class MRevBuffer : public TObject
     Int_t RevBufsize();
     // get size of current buffer (byte)
 
-    void  RevClose(TSocket* pSocket);           // input Socket ptr
+    void RevClose(TSocket* pSocket);   // input Socket ptr
 
-    ClassDef(MRevBuffer, 0)        // prototype for remote event buffer
+    ClassDef(MRevBuffer, 0)   // prototype for remote event buffer
 };
 
-#endif     // !MRevBuffer_H
+#endif   // !MRevBuffer_H

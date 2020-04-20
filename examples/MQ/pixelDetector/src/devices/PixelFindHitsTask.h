@@ -46,11 +46,11 @@ class PixelFindHitsTask
     Int_t fTNofDigis;
     Int_t fTNofHits;
 
-    Int_t fFeCols; // Colums read per Frontend
-    Int_t fFeRows; // Rows read per Frontend
-    Int_t fMaxFEperCol; // max number of Frontend elemens per column
-    Double_t fPitchX; // Pixel cell size X
-    Double_t fPitchY; // Pixel cell size Y
+    Int_t fFeCols;        // Colums read per Frontend
+    Int_t fFeRows;        // Rows read per Frontend
+    Int_t fMaxFEperCol;   // max number of Frontend elemens per column
+    Double_t fPitchX;     // Pixel cell size X
+    Double_t fPitchY;     // Pixel cell size Y
 
     /** Reset eventwise counters **/
     void Reset(TClonesArray* hits);

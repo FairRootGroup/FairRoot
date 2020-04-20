@@ -7,20 +7,19 @@
  ********************************************************************************/
 #include "FairFastSimExample2.h"
 
-#include "FairDetectorList.h"      // for DetectorId::kTutDet
-#include "FairRootManager.h"       // for FairRootManager
-#include "FairStack.h"             // for FairStack
-#include "FairTutorialDet1Point.h" // for FairTutorialDet1Point
-#include "FairDetector.h"           // for FairDetector
+#include "FairDetector.h"            // for FairDetector
+#include "FairDetectorList.h"        // for DetectorId::kTutDet
+#include "FairRootManager.h"         // for FairRootManager
+#include "FairStack.h"               // for FairStack
+#include "FairTutorialDet1Point.h"   // for FairTutorialDet1Point
 
-#include <TGeoMatrix.h>             // for TGeoCombiTrans, TGeoRotation
-#include <TGeoVolume.h>             // for TGeoVolume
-#include <TClonesArray.h>    // for TClonesArray
-#include <TVirtualMC.h>      // for TVirtualMC
-#include <TVirtualMCStack.h> // for TVirtualMCStack
-
-#include <TGeoManager.h>
+#include <TClonesArray.h>   // for TClonesArray
 #include <TGeoBBox.h>
+#include <TGeoManager.h>
+#include <TGeoMatrix.h>        // for TGeoCombiTrans, TGeoRotation
+#include <TGeoVolume.h>        // for TGeoVolume
+#include <TVirtualMC.h>        // for TVirtualMC
+#include <TVirtualMCStack.h>   // for TVirtualMCStack
 
 FairFastSimExample2::FairFastSimExample2()
     : FairFastSimDetector("TutorialDet", kTutDet)
@@ -32,8 +31,7 @@ FairFastSimExample2::FairFastSimExample2()
     , fLength(-1.)
     , fELoss(-1)
     , fPointsArray(new TClonesArray("FairTutorialDet1Point"))
-{
-}
+{}
 
 FairFastSimExample2::FairFastSimExample2(const char* name)
     : FairFastSimDetector(name, kTutDet)
@@ -45,8 +43,7 @@ FairFastSimExample2::FairFastSimExample2(const char* name)
     , fLength(-1.)
     , fELoss(-1)
     , fPointsArray(new TClonesArray("FairTutorialDet1Point"))
-{
-}
+{}
 
 FairFastSimExample2::FairFastSimExample2(const FairFastSimExample2& rhs)
     : FairFastSimDetector(rhs)
@@ -58,13 +55,11 @@ FairFastSimExample2::FairFastSimExample2(const FairFastSimExample2& rhs)
     , fLength(-1.)
     , fELoss(-1)
     , fPointsArray(new TClonesArray("FairTutorialDet1Point"))
-{
-}
+{}
 
 FairFastSimExample2::~FairFastSimExample2()
 {
-    if (fPointsArray)
-    {
+    if (fPointsArray) {
         fPointsArray->Delete();
         delete fPointsArray;
     }
@@ -80,7 +75,7 @@ void FairFastSimExample2::FastSimProcessParticle()
     FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
 
     stack->FastSimMoveParticleTo(
-        24., 24., 50. + 5. + 0.1, TVirtualMC::GetMC()->TrackTime(), fMom.X(), fMom.Y(), fMom.Z(), 0.99*fMom.E());
+        24., 24., 50. + 5. + 0.1, TVirtualMC::GetMC()->TrackTime(), fMom.X(), fMom.Y(), fMom.Z(), 0.99 * fMom.E());
 
     fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
     fVolumeID = 0;
@@ -114,12 +109,9 @@ void FairFastSimExample2::Register()
 
 TClonesArray* FairFastSimExample2::GetCollection(Int_t iColl) const
 {
-    if (iColl == 0)
-    {
+    if (iColl == 0) {
         return fPointsArray;
-    }
-    else
-    {
+    } else {
         return nullptr;
     }
 }
@@ -150,23 +142,20 @@ void FairFastSimExample2::ConstructGeometry()
 }
 
 FairTutorialDet1Point* FairFastSimExample2::AddHit(Int_t trackID,
-                                              Int_t detID,
-                                              TVector3 pos,
-                                              TVector3 mom,
-                                              Double_t time,
-                                              Double_t length,
-                                              Double_t eLoss)
+                                                   Int_t detID,
+                                                   TVector3 pos,
+                                                   TVector3 mom,
+                                                   Double_t time,
+                                                   Double_t length,
+                                                   Double_t eLoss)
 {
     TClonesArray& clref = *fPointsArray;
     Int_t size = clref.GetEntriesFast();
     return new (clref[size]) FairTutorialDet1Point(trackID, detID, pos, mom, time, length, eLoss);
 }
 
-Bool_t FairFastSimExample2::IsSensitive(const std::string& name)
-{
-    return name == "fast_sim_vol_n2";
-}
+Bool_t FairFastSimExample2::IsSensitive(const std::string& name) { return name == "fast_sim_vol_n2"; }
 
 FairModule* FairFastSimExample2::CloneModule() const { return new FairFastSimExample2(*this); }
 
-ClassImp(FairFastSimExample2)
+ClassImp(FairFastSimExample2);

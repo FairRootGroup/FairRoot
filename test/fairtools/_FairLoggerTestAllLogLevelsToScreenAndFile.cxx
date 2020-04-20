@@ -1,6 +1,5 @@
 #include "_TestFairLogger.h"
 
-
 TEST_P(LogLevelTest, testAllLogLevelsToScreenAndFile)
 {
     fLogger->SetLogFileLevel(fLogLevelSettingToTest.c_str());

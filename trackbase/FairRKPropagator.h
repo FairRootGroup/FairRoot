@@ -6,11 +6,11 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
-* Runge-Kutte Track propagator
-* @author M. Al-Turany
-* @version 0.2
-* @since 22.1.10
-*/
+ * Runge-Kutte Track propagator
+ * @author M. Al-Turany
+ * @version 0.2
+ * @since 22.1.10
+ */
 
 #ifndef RKPropagator
 #define RKPropagator
@@ -21,24 +21,30 @@ class FairField;
 class FairTrackParP;
 class TVector3;
 
-enum PropagationFlag {NONE, TOPLANE, TOVOLUME, TOLENGTH};
+enum PropagationFlag
+{
+    NONE,
+    TOPLANE,
+    TOVOLUME,
+    TOLENGTH
+};
 
 class FairRKPropagator : public FairPropagator
 {
   private:
-    FairRKPropagator(const FairRKPropagator&);            // Not implemented
-    FairRKPropagator& operator=(const FairRKPropagator&); // Not implemented
+    FairRKPropagator(const FairRKPropagator&);              // Not implemented
+    FairRKPropagator& operator=(const FairRKPropagator&);   // Not implemented
     double fMaxStep;
-    FairField*              fMagField;
+    FairField* fMagField;
 
-    PropagationFlag         fPropagationFlag;
-    TVector3                fDefPlaneV0;
-    TVector3                fDefPlaneV1;
-    TVector3                fDefPlaneV2;
+    PropagationFlag fPropagationFlag;
+    TVector3 fDefPlaneV0;
+    TVector3 fDefPlaneV1;
+    TVector3 fDefPlaneV2;
 
-    int                     fPCAPropagationType;
-    int                     fPCAPropagationDir;
-    FairTrackParP*          fPCAPropagationPar;
+    int fPCAPropagationType;
+    int fPCAPropagationDir;
+    FairTrackParP* fPCAPropagationPar;
 
     double GetChargeFromPDG(int pdg);
     double CalculatePointToWireDistance(TVector3 point, TVector3 wire1, TVector3 wire2, TVector3& vwi);
@@ -66,7 +72,8 @@ class FairRKPropagator : public FairPropagator
 
     void PropagateToPlane(double Charge, double* vecRKIn, double* vec1, double* vec2, double* vec3, double* vecOut);
 
-    /* =========================================================================================================================================== */
+    /* ===========================================================================================================================================
+     */
 
     /**New method to set the plane to propagate particles to
      @v0 v1 v2  Plane defining vectors
@@ -91,8 +98,8 @@ class FairRKPropagator : public FairPropagator
     virtual bool SetDestinationLength(float length);
 
     /**New method to set to propagate only parameters
-    */
-    virtual bool SetPropagateOnlyParameters() {return true;}
+     */
+    virtual bool SetPropagateOnlyParameters() { return true; }
 
     virtual bool Propagate(FairTrackParH* TStart, FairTrackParH* TEnd, int PDG);
     virtual bool Propagate(FairTrackParP* TStart, FairTrackParH* TEnd, int PDG);
@@ -102,7 +109,12 @@ class FairRKPropagator : public FairPropagator
 
     virtual bool SetPCAPropagation(int pca, int dir = 1, FairTrackParP* par = nullptr);
 
-    virtual PCAOutputStruct FindPCA(int PCA, int PDGCode, TVector3 Point, TVector3 Wire1, TVector3 Wire2, double MaxDistance);
+    virtual PCAOutputStruct FindPCA(int PCA,
+                                    int PDGCode,
+                                    TVector3 Point,
+                                    TVector3 Wire1,
+                                    TVector3 Wire2,
+                                    double MaxDistance);
 
     virtual ~FairRKPropagator();
     ClassDef(FairRKPropagator, 2);

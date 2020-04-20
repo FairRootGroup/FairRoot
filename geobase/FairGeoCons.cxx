@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 //*-- AUTHOR : Ilse Koenig
@@ -36,125 +36,135 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "FairGeoCons.h"
 
-#include "FairGeoTransform.h"           // for FairGeoTransform
-#include "FairGeoVector.h"              // for FairGeoVector
-#include "FairGeoVolume.h"              // for FairGeoVolume
+#include "FairGeoTransform.h"   // for FairGeoTransform
+#include "FairGeoVector.h"      // for FairGeoVector
+#include "FairGeoVolume.h"      // for FairGeoVolume
 
-#include <TArrayD.h>                    // for TArrayD
-#include <TMathBase.h>                  // for Abs
-#include <TString.h>                    // for TString
-
-#include <stdio.h>                      // for printf, sprintf, sscanf
-#include <string.h>                     // for strlen
-#include <ostream>                      // for fstream, etc
+#include <TArrayD.h>     // for TArrayD
+#include <TMathBase.h>   // for Abs
+#include <TString.h>     // for TString
 #include <fstream>
+#include <ostream>    // for fstream, etc
+#include <stdio.h>    // for printf, sprintf, sscanf
+#include <string.h>   // for strlen
 
-ClassImp(FairGeoCons)
+ClassImp(FairGeoCons);
 
 FairGeoCons::FairGeoCons()
-  :FairGeoBasicShape()
+    : FairGeoBasicShape()
 {
-  // constructor
-  fName="CONS";
-  nPoints=5;
-  nParam=7;
-  param=new TArrayD(nParam);
+    // constructor
+    fName = "CONS";
+    nPoints = 5;
+    nParam = 7;
+    param = new TArrayD(nParam);
 }
 
 FairGeoCons::~FairGeoCons()
 {
-  // default destructor
-  if (param) {
-    delete param;
-    param=0;
-  }
-  if (center) {
-    delete center;
-    center=0;
-  }
-  if (position) {
-    delete position;
-    position=0;
-  }
-}
-
-Int_t FairGeoCons::readPoints(std::fstream* pFile,FairGeoVolume* volu)
-{
-  // reads the 5 'points' decribed above from ascii file
-  // if the array of points is not existing in the volume it is created and
-  // the values are stored inside
-  // returns the number of points
-  if (!pFile) { return 0; }
-  if (volu->getNumPoints()!=nPoints) { volu->createPoints(nPoints); }
-  Double_t x,y,z;
-  const Int_t maxbuf=155;
-  Text_t buf[maxbuf];
-  for(Int_t i=0; i<nPoints; i++) {
-    pFile->getline(buf,maxbuf);
-    if (i==0 || i==2) {
-      sscanf(buf,"%lf%lf%lf",&x,&y,&z);
-      volu->setPoint(i,x,y,z);
-    } else {
-      sscanf(buf,"%lf%lf",&x,&y);
-      volu->setPoint(i,x,y,0.0);
+    // default destructor
+    if (param) {
+        delete param;
+        param = 0;
     }
-  }
-  return nPoints;
+    if (center) {
+        delete center;
+        center = 0;
+    }
+    if (position) {
+        delete position;
+        position = 0;
+    }
 }
 
-Bool_t FairGeoCons::writePoints(std::fstream* pFile,FairGeoVolume* volu)
+Int_t FairGeoCons::readPoints(std::fstream* pFile, FairGeoVolume* volu)
 {
-  // writes the 5 'points' decribed above to ascii file
-  if (!pFile) { return kFALSE; }
-  Text_t buf[155];
-  for(Int_t i=0; i<nPoints; i++) {
-    FairGeoVector& v=*(volu->getPoint(i));
-    if (i==0 || i==2) { sprintf(buf,"%9.3f%10.3f%10.3f\n",v(0),v(1),v(2)); }
-    else { sprintf(buf,"%9.3f%10.3f\n",v(0),v(1)); }
-    pFile->write(buf,strlen(buf));
-  }
-  return kTRUE;
+    // reads the 5 'points' decribed above from ascii file
+    // if the array of points is not existing in the volume it is created and
+    // the values are stored inside
+    // returns the number of points
+    if (!pFile) {
+        return 0;
+    }
+    if (volu->getNumPoints() != nPoints) {
+        volu->createPoints(nPoints);
+    }
+    Double_t x, y, z;
+    const Int_t maxbuf = 155;
+    Text_t buf[maxbuf];
+    for (Int_t i = 0; i < nPoints; i++) {
+        pFile->getline(buf, maxbuf);
+        if (i == 0 || i == 2) {
+            sscanf(buf, "%lf%lf%lf", &x, &y, &z);
+            volu->setPoint(i, x, y, z);
+        } else {
+            sscanf(buf, "%lf%lf", &x, &y);
+            volu->setPoint(i, x, y, 0.0);
+        }
+    }
+    return nPoints;
+}
+
+Bool_t FairGeoCons::writePoints(std::fstream* pFile, FairGeoVolume* volu)
+{
+    // writes the 5 'points' decribed above to ascii file
+    if (!pFile) {
+        return kFALSE;
+    }
+    Text_t buf[155];
+    for (Int_t i = 0; i < nPoints; i++) {
+        FairGeoVector& v = *(volu->getPoint(i));
+        if (i == 0 || i == 2) {
+            sprintf(buf, "%9.3f%10.3f%10.3f\n", v(0), v(1), v(2));
+        } else {
+            sprintf(buf, "%9.3f%10.3f\n", v(0), v(1));
+        }
+        pFile->write(buf, strlen(buf));
+    }
+    return kTRUE;
 }
 
 void FairGeoCons::printPoints(FairGeoVolume* volu)
 {
-  // prints volume points to screen
-  for(Int_t i=0; i<nPoints; i++) {
-    FairGeoVector& v=*(volu->getPoint(i));
-    if (i==0 || i==2) { printf("%9.3f%10.3f%10.3f\n",v(0),v(1),v(2)); }
-    else { printf("%9.3f%10.3f\n",v(0),v(1)); }
-  }
+    // prints volume points to screen
+    for (Int_t i = 0; i < nPoints; i++) {
+        FairGeoVector& v = *(volu->getPoint(i));
+        if (i == 0 || i == 2) {
+            printf("%9.3f%10.3f%10.3f\n", v(0), v(1), v(2));
+        } else {
+            printf("%9.3f%10.3f\n", v(0), v(1));
+        }
+    }
 }
 
 TArrayD* FairGeoCons::calcVoluParam(FairGeoVolume* volu)
 {
-  // calculates the parameters needed to create the shape CONS
-  Double_t fac=10.;
-  FairGeoVector v=*(volu->getPoint(2)) - *(volu->getPoint(0));
-  param->AddAt(TMath::Abs(v(2))/fac/2.,0);
-  FairGeoVector& v1=*(volu->getPoint(1));
-  param->AddAt(v1(0)/fac,1);
-  param->AddAt(v1(1)/fac,2);
-  FairGeoVector& v3=*(volu->getPoint(3));
-  param->AddAt(v3(0)/fac,3);
-  param->AddAt(v3(1)/fac,4);
-  FairGeoVector& v4=*(volu->getPoint(4));
-  param->AddAt(v4(0),5);
-  param->AddAt(v4(1),6);
-  return param;
+    // calculates the parameters needed to create the shape CONS
+    Double_t fac = 10.;
+    FairGeoVector v = *(volu->getPoint(2)) - *(volu->getPoint(0));
+    param->AddAt(TMath::Abs(v(2)) / fac / 2., 0);
+    FairGeoVector& v1 = *(volu->getPoint(1));
+    param->AddAt(v1(0) / fac, 1);
+    param->AddAt(v1(1) / fac, 2);
+    FairGeoVector& v3 = *(volu->getPoint(3));
+    param->AddAt(v3(0) / fac, 3);
+    param->AddAt(v3(1) / fac, 4);
+    FairGeoVector& v4 = *(volu->getPoint(4));
+    param->AddAt(v4(0), 5);
+    param->AddAt(v4(1), 6);
+    return param;
 }
 
-void FairGeoCons::calcVoluPosition(FairGeoVolume* volu,
-                                   const FairGeoTransform& dTC,const FairGeoTransform& mTR)
+void FairGeoCons::calcVoluPosition(FairGeoVolume* volu, const FairGeoTransform& dTC, const FairGeoTransform& mTR)
 {
-  // calculates the position of the center of the volume in the intrinsic
-  // coordinate system and stores it in the data element 'center'
-  // calls the function posInMother(...) to calculate the position of the
-  // volume in its mother
-  Double_t t[3]= {0.,0.,0.};
-  FairGeoVector v=*(volu->getPoint(2)) + *(volu->getPoint(0));
-  t[2]=v(2)/2.;
-  center->clear();
-  center->setTransVector(t);
-  posInMother(dTC,mTR);
+    // calculates the position of the center of the volume in the intrinsic
+    // coordinate system and stores it in the data element 'center'
+    // calls the function posInMother(...) to calculate the position of the
+    // volume in its mother
+    Double_t t[3] = {0., 0., 0.};
+    FairGeoVector v = *(volu->getPoint(2)) + *(volu->getPoint(0));
+    t[2] = v(2) / 2.;
+    center->clear();
+    center->setTransVector(t);
+    posInMother(dTC, mTR);
 }

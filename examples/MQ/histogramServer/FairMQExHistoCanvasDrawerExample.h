@@ -12,8 +12,8 @@
 
 class TCanvas;
 
-#include <memory>
 #include <functional>
+#include <memory>
 
 class FairMQExHistoCanvasDrawerExample : public FairMQExHistoCanvasDrawer
 {

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 //* $Id: */
@@ -11,7 +11,6 @@
 // -----                     FairEventBuilder header file                -----
 // -----                  Created 23/09/2013 by R. Karabowicz          -----
 // -------------------------------------------------------------------------
-
 
 /** FairEventBuilder
  *@author Radoslaw Karabowicz <r.karabowicz@gsi.de>
@@ -32,18 +31,17 @@
 #ifndef FAIREVENTBUILDER_H
 #define FAIREVENTBUILDER_H 1
 
-#include "FairWriteoutBuffer.h"
 #include "FairRecoEventHeader.h"
+#include "FairWriteoutBuffer.h"
 
+#include <Rtypes.h>
 #include <TStopwatch.h>
 #include <TString.h>
-#include <Rtypes.h>
-
+#include <utility>   // pair
 #include <vector>
-#include <utility> // pair
 
 class TClonesArray;
-//class FairRecoEventHeader;
+// class FairRecoEventHeader;
 
 class FairEventBuilder : public FairWriteoutBuffer
 {
@@ -79,15 +77,15 @@ class FairEventBuilder : public FairWriteoutBuffer
     TString GetBuilderName() { return fBuilderName; }
 
   private:
-    TString    fBuilderName;
+    TString fBuilderName;
 
     TStopwatch fTimer;
-    Double_t   fExecTime;
+    Double_t fExecTime;
 
-    Int_t      fIdentifier;
-    Double_t   fMaxAllowedEventCreationTime;
+    Int_t fIdentifier;
+    Double_t fMaxAllowedEventCreationTime;
 
-    ClassDef(FairEventBuilder,1);
+    ClassDef(FairEventBuilder, 1);
 };
 
 #endif

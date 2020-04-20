@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -13,10 +13,9 @@
 #ifndef FAIRFILEHEADER_H
 #define FAIRFILEHEADER_H
 
-#include <TNamed.h>                     // for TNamed
-
-#include <Rtypes.h>                     // for UInt_t, etc
-#include <TString.h>                    // for TString
+#include <Rtypes.h>    // for UInt_t, etc
+#include <TNamed.h>    // for TNamed
+#include <TString.h>   // for TString
 
 class FairFileInfo;
 class TFile;
@@ -24,7 +23,7 @@ class TList;
 
 /**
  *  File Header Class
-   **@author M.Al-Turany <m.al-turany@gsi.de>
+ **@author M.Al-Turany <m.al-turany@gsi.de>
  */
 class FairFileHeader : public TNamed
 {
@@ -36,8 +35,8 @@ class FairFileHeader : public TNamed
     void AddTaskClassName(TString taskname);
 
     /** Set the run ID for this run
-       * @param runid : unique run id
-       */
+     * @param runid : unique run id
+     */
     void SetRunId(UInt_t runid) { fRunId = runid; }
 
     /** Get the run ID for this run*/
@@ -69,7 +68,7 @@ class FairFileHeader : public TNamed
     FairFileHeader(const FairFileHeader&);
     FairFileHeader& operator=(const FairFileHeader&);
 
-    ClassDef(FairFileHeader,2)
+    ClassDef(FairFileHeader, 2)
 };
 
 #endif

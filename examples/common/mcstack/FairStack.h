@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -35,18 +35,15 @@
 #ifndef FAIRSTACK_H
 #define FAIRSTACK_H
 
-#include "FairGenericStack.h"           // for FairGenericStack
+#include "FairDetectorList.h"   // for DetectorId
+#include "FairGenericStack.h"   // for FairGenericStack
 
-#include "FairDetectorList.h"           // for DetectorId
-
-#include <Rtypes.h>                     // for Int_t, Double_t, Bool_t, etc
-#include <TMCProcess.h>                 // for TMCProcess
-
-#include <map>                          // for map, map<>::iterator
-#include <stack>                        // for stack
-#include <utility>                      // for pair
-
+#include <Rtypes.h>       // for Int_t, Double_t, Bool_t, etc
+#include <TMCProcess.h>   // for TMCProcess
 #include <TParticle.h>
+#include <map>       // for map, map<>::iterator
+#include <stack>     // for stack
+#include <utility>   // for pair
 
 class TClonesArray;
 class TRefArray;
@@ -77,19 +74,44 @@ class FairStack : public FairGenericStack
      *@param weight    Particle weight
      *@param is        Generation status code (whatever that means)
      **/
-    virtual void PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode,
-                           Double_t px, Double_t py, Double_t pz,
-                           Double_t e, Double_t vx, Double_t vy,
-                           Double_t vz, Double_t time, Double_t polx,
-                           Double_t poly, Double_t polz, TMCProcess proc,
-                           Int_t& ntr, Double_t weight, Int_t is);
+    virtual void PushTrack(Int_t toBeDone,
+                           Int_t parentID,
+                           Int_t pdgCode,
+                           Double_t px,
+                           Double_t py,
+                           Double_t pz,
+                           Double_t e,
+                           Double_t vx,
+                           Double_t vy,
+                           Double_t vz,
+                           Double_t time,
+                           Double_t polx,
+                           Double_t poly,
+                           Double_t polz,
+                           TMCProcess proc,
+                           Int_t& ntr,
+                           Double_t weight,
+                           Int_t is);
 
-    virtual void PushTrack(Int_t toBeDone, Int_t parentID, Int_t pdgCode,
-                           Double_t px, Double_t py, Double_t pz,
-                           Double_t e, Double_t vx, Double_t vy,
-                           Double_t vz, Double_t time, Double_t polx,
-                           Double_t poly, Double_t polz, TMCProcess proc,
-                           Int_t& ntr, Double_t weight, Int_t is,Int_t secondParentId);
+    virtual void PushTrack(Int_t toBeDone,
+                           Int_t parentID,
+                           Int_t pdgCode,
+                           Double_t px,
+                           Double_t py,
+                           Double_t pz,
+                           Double_t e,
+                           Double_t vx,
+                           Double_t vy,
+                           Double_t vz,
+                           Double_t time,
+                           Double_t polx,
+                           Double_t poly,
+                           Double_t polz,
+                           TMCProcess proc,
+                           Int_t& ntr,
+                           Double_t weight,
+                           Int_t is,
+                           Int_t secondParentId);
 
     /** Get next particle for tracking from the stack.
      ** Declared in TVirtualMCStack
@@ -109,7 +131,7 @@ class FairStack : public FairGenericStack
      ** Declared in TVirtualMCStack
      *@param iTrack  track number
      **/
-    virtual void SetCurrentTrack(Int_t iTrack)   { fCurrentTrack     = iTrack; }
+    virtual void SetCurrentTrack(Int_t iTrack) { fCurrentTrack = iTrack; }
 
     /** Get total number of tracks
      ** Declared in TVirtualMCStack
@@ -129,7 +151,7 @@ class FairStack : public FairGenericStack
     /** Get the number of the current track
      ** Declared in TVirtualMCStack
      **/
-    virtual Int_t GetCurrentTrackNumber() const;// { return fCurrentTrack; }
+    virtual Int_t GetCurrentTrackNumber() const;   // { return fCurrentTrack; }
 
     /** Get the track number of the parent of the current track
      ** Declared in TVirtualMCStack
@@ -143,7 +165,7 @@ class FairStack : public FairGenericStack
     virtual void FillTrackArray();
 
     /** Update the track index in the MCTracks and MCPoints **/
-    virtual void UpdateTrackIndex(TRefArray* detArray=0);
+    virtual void UpdateTrackIndex(TRefArray* detArray = 0);
 
     /** Resets arrays and stack and deletes particles and tracks **/
     virtual void Reset();
@@ -158,9 +180,9 @@ class FairStack : public FairGenericStack
 
     /** Modifiers  **/
     void StoreSecondaries(Bool_t choice = kTRUE) { fStoreSecondaries = choice; }
-    void SetMinPoints(Int_t min)                 { fMinPoints        = min;    }
-    void SetEnergyCut(Double_t eMin)             { fEnergyCut        = eMin;   }
-    void StoreMothers(Bool_t choice = kTRUE)     { fStoreMothers     = choice; }
+    void SetMinPoints(Int_t min) { fMinPoints = min; }
+    void SetEnergyCut(Double_t eMin) { fEnergyCut = eMin; }
+    void StoreMothers(Bool_t choice = kTRUE) { fStoreMothers = choice; }
 
     /** Increment number of points for the current track in a given detector
      *@param iDet  Detector unique identifier
@@ -177,8 +199,9 @@ class FairStack : public FairGenericStack
     TParticle* GetParticle(Int_t trackId) const;
     TClonesArray* GetListOfParticles() { return fParticles; }
 
-    void SetParticleArray(TClonesArray* partArray) {
-        for ( Int_t ipart = 0 ; ipart < partArray->GetEntries() ; ipart++ ) {
+    void SetParticleArray(TClonesArray* partArray)
+    {
+        for (Int_t ipart = 0; ipart < partArray->GetEntries(); ipart++) {
             ((TParticle*)(partArray->At(ipart)))->SetUniqueID(fNPrimaries);
             fStack.push((TParticle*)partArray->At(ipart));
             AddParticle((TParticle*)partArray->At(ipart));
@@ -187,8 +210,9 @@ class FairStack : public FairGenericStack
         }
     }
 
-    void SetParticleArray(TClonesArray* partArray, Int_t partFrom, Int_t partTo) {
-        for ( Int_t ipart = partFrom ; ipart < partTo ; ipart++ ) {
+    void SetParticleArray(TClonesArray* partArray, Int_t partFrom, Int_t partTo)
+    {
+        for (Int_t ipart = partFrom; ipart < partTo; ipart++) {
             ((TParticle*)(partArray->At(ipart)))->SetUniqueID(fNPrimaries);
             ((TParticle*)(partArray->At(ipart)))->SetStatusCode(fNPrimaries);
             fStack.push((TParticle*)partArray->At(ipart));
@@ -199,7 +223,8 @@ class FairStack : public FairGenericStack
     }
 
     /** Clone this object (used in MT mode only) */
-    virtual FairGenericStack* CloneStack() const {
+    virtual FairGenericStack* CloneStack() const
+    {
         FairStack* clonedStack = new FairStack();
         clonedStack->StoreSecondaries(fStoreSecondaries);
         clonedStack->SetMinPoints(fMinPoints);
@@ -210,39 +235,39 @@ class FairStack : public FairGenericStack
 
   private:
     /** STL stack (FILO) used to handle the TParticles for tracking **/
-    std::stack<TParticle*>  fStack;           //!
+    std::stack<TParticle*> fStack;   //!
 
     /** Array of TParticles (contains all TParticles put into or created
      ** by the transport
      **/
-    TClonesArray* fParticles;            //!
+    TClonesArray* fParticles;   //!
 
     /** Array of FairMCTracks containg the tracks written to the output **/
     TClonesArray* fTracks;
 
     /** STL map from particle index to storage flag  **/
-    std::map<Int_t, Bool_t>           fStoreMap;        //!
-    std::map<Int_t, Bool_t>::iterator fStoreIter;       //!
+    std::map<Int_t, Bool_t> fStoreMap;              //!
+    std::map<Int_t, Bool_t>::iterator fStoreIter;   //!
 
     /** STL map from particle index to track index  **/
-    std::map<Int_t, Int_t>            fIndexMap;        //!
-    std::map<Int_t, Int_t>::iterator  fIndexIter;       //!
+    std::map<Int_t, Int_t> fIndexMap;              //!
+    std::map<Int_t, Int_t>::iterator fIndexIter;   //!
 
     /** STL map from track index and detector ID to number of MCPoints **/
-    std::map<std::pair<Int_t, Int_t>, Int_t> fPointsMap;     //!
+    std::map<std::pair<Int_t, Int_t>, Int_t> fPointsMap;   //!
 
     /** Some indizes and counters **/
-    Int_t fCurrentTrack;  //! Index of current track
-    Int_t fNPrimaries;    //! Number of primary particles
-    Int_t fNParticles;    //! Number of entries in fParticles
-    Int_t fNTracks;       //! Number of entries in fTracks
-    Int_t fIndex;         //! Used for merging
+    Int_t fCurrentTrack;   //! Index of current track
+    Int_t fNPrimaries;     //! Number of primary particles
+    Int_t fNParticles;     //! Number of entries in fParticles
+    Int_t fNTracks;        //! Number of entries in fTracks
+    Int_t fIndex;          //! Used for merging
 
     /** Variables defining the criteria for output selection **/
-    Bool_t     fStoreSecondaries;
-    Int_t      fMinPoints;
+    Bool_t fStoreSecondaries;
+    Int_t fMinPoints;
     Double32_t fEnergyCut;
-    Bool_t     fStoreMothers;
+    Bool_t fStoreMothers;
 
     /** Mark tracks for output using selection criteria  **/
     void SelectTracks();
@@ -250,7 +275,7 @@ class FairStack : public FairGenericStack
     FairStack(const FairStack&);
     FairStack& operator=(const FairStack&);
 
-    ClassDef(FairStack,1)
+    ClassDef(FairStack, 1)
 };
 
 #endif

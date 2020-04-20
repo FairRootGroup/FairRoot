@@ -54,6 +54,7 @@ class FairMBSUnpack : public FairUnpack
 
     FairMBSUnpack(const FairMBSUnpack&);
     FairMBSUnpack& operator=(const FairMBSUnpack&);
+
   public:
     // Class definition
     ClassDef(FairMBSUnpack, 1)

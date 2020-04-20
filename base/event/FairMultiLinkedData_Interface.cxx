@@ -6,32 +6,49 @@
  */
 
 #include "FairMultiLinkedData_Interface.h"
-#include "FairRootManager.h"            // for FairRootManager
+
+#include "FairRootManager.h"   // for FairRootManager
 
 ClassImp(FairMultiLinkedData_Interface);
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(FairMultiLinkedData& links, Bool_t)
-  :TObject(), fLink(nullptr)
+    : TObject()
+    , fLink(nullptr)
 {
     SetLinks(links);
 }
 
-FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(TString dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
-  :TObject(), fLink(nullptr)
+FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(TString dataType,
+                                                             std::vector<Int_t> links,
+                                                             Int_t fileId,
+                                                             Int_t evtId,
+                                                             Bool_t persistanceCheck,
+                                                             Bool_t bypass,
+                                                             Float_t mult)
+    : TObject()
+    , fLink(nullptr)
 {
     FairMultiLinkedData data(dataType, links, fileId, evtId, persistanceCheck, bypass, mult);
     SetLinks(data);
 }
 
-FairMultiLinkedData_Interface::FairMultiLinkedData_Interface( Int_t dataType, std::vector<Int_t> links, Int_t fileId, Int_t evtId, Bool_t persistanceCheck, Bool_t bypass, Float_t mult)
-  :TObject(), fLink(nullptr)
+FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(Int_t dataType,
+                                                             std::vector<Int_t> links,
+                                                             Int_t fileId,
+                                                             Int_t evtId,
+                                                             Bool_t persistanceCheck,
+                                                             Bool_t bypass,
+                                                             Float_t mult)
+    : TObject()
+    , fLink(nullptr)
 {
     FairMultiLinkedData data(dataType, links, fileId, evtId, persistanceCheck, bypass, mult);
     SetLinks(data);
 }
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(const FairMultiLinkedData_Interface& toCopy)
-  :TObject(toCopy), fLink(nullptr)
+    : TObject(toCopy)
+    , fLink(nullptr)
 {
     if (toCopy.GetPointerToLinks() != 0) {
         SetInsertHistory(kFALSE);
@@ -57,7 +74,7 @@ FairMultiLinkedData* FairMultiLinkedData_Interface::CreateFairMultiLinkedData()
 {
     if (FairRootManager::Instance() != 0) {
         if (FairRootManager::Instance()->GetUseFairLinks()) {
-            if (fLink == 0){
+            if (fLink == 0) {
                 fLink = new FairMultiLinkedData();
             }
             return fLink;
@@ -68,7 +85,7 @@ FairMultiLinkedData* FairMultiLinkedData_Interface::CreateFairMultiLinkedData()
 
 std::set<FairLink> FairMultiLinkedData_Interface::GetLinks() const
 {
-    if (GetPointerToLinks() != 0){
+    if (GetPointerToLinks() != 0) {
         return GetPointerToLinks()->GetLinks();
     } else {
         std::set<FairLink> emptySet;
@@ -78,7 +95,7 @@ std::set<FairLink> FairMultiLinkedData_Interface::GetLinks() const
 
 Int_t FairMultiLinkedData_Interface::GetNLinks() const
 {
-    if (GetPointerToLinks() != 0){
+    if (GetPointerToLinks() != 0) {
         return GetPointerToLinks()->GetNLinks();
     } else {
         return 0;
@@ -87,7 +104,7 @@ Int_t FairMultiLinkedData_Interface::GetNLinks() const
 
 FairLink FairMultiLinkedData_Interface::GetLink(Int_t pos) const
 {
-    if (GetPointerToLinks() != 0){
+    if (GetPointerToLinks() != 0) {
         return GetPointerToLinks()->GetLink(pos);
     } else {
         FairLink emptyLink;
@@ -107,7 +124,7 @@ FairLink FairMultiLinkedData_Interface::GetEntryNr() const
 
 FairMultiLinkedData FairMultiLinkedData_Interface::GetLinksWithType(Int_t type) const
 {
-    if (GetPointerToLinks() != 0){
+    if (GetPointerToLinks() != 0) {
         return GetPointerToLinks()->GetLinksWithType(type);
     } else {
         FairMultiLinkedData emptyLinks;
@@ -117,7 +134,7 @@ FairMultiLinkedData FairMultiLinkedData_Interface::GetLinksWithType(Int_t type) 
 
 std::vector<FairLink> FairMultiLinkedData_Interface::GetSortedMCTracks()
 {
-    if (GetPointerToLinks() != 0){
+    if (GetPointerToLinks() != 0) {
         return GetPointerToLinks()->GetSortedMCTracks();
     } else {
         std::vector<FairLink> empty;
@@ -128,7 +145,7 @@ std::vector<FairLink> FairMultiLinkedData_Interface::GetSortedMCTracks()
 void FairMultiLinkedData_Interface::SetLinks(FairMultiLinkedData links)
 {
     CreateFairMultiLinkedData();
-    if (GetPointerToLinks() != 0){
+    if (GetPointerToLinks() != 0) {
         GetPointerToLinks()->SetLinks(links);
     }
 }
@@ -136,7 +153,7 @@ void FairMultiLinkedData_Interface::SetLinks(FairMultiLinkedData links)
 void FairMultiLinkedData_Interface::SetLink(FairLink link)
 {
     CreateFairMultiLinkedData();
-    if (GetPointerToLinks() != 0){
+    if (GetPointerToLinks() != 0) {
         GetPointerToLinks()->SetLink(link);
     }
 }
@@ -152,7 +169,7 @@ void FairMultiLinkedData_Interface::SetEntryNr(FairLink val)
 void FairMultiLinkedData_Interface::AddLinks(FairMultiLinkedData links, Float_t mult)
 {
     CreateFairMultiLinkedData();
-    if (GetPointerToLinks() != 0){
+    if (GetPointerToLinks() != 0) {
         GetPointerToLinks()->AddLinks(links, mult);
     }
 }
@@ -160,18 +177,19 @@ void FairMultiLinkedData_Interface::AddLinks(FairMultiLinkedData links, Float_t 
 void FairMultiLinkedData_Interface::AddLink(FairLink link)
 {
     CreateFairMultiLinkedData();
-    if (GetPointerToLinks() != 0){
+    if (GetPointerToLinks() != 0) {
         GetPointerToLinks()->AddLink(link);
     }
 }
 
 void FairMultiLinkedData_Interface::AddInterfaceData(FairMultiLinkedData_Interface* data)
 {
-    SetInsertHistory(kFALSE); //todo add previous history value
+    SetInsertHistory(kFALSE);   // todo add previous history value
     if (data->GetEntryNr().GetType() != -1)
         AddLink(data->GetEntryNr());
     else
-        std::cout << "-E- FairMultiLinkedData_Interface::AddInterfaceData EntryNr == " << data->GetEntryNr() << std::endl;
+        std::cout << "-E- FairMultiLinkedData_Interface::AddInterfaceData EntryNr == " << data->GetEntryNr()
+                  << std::endl;
 
     if (data->GetPointerToLinks() != 0) {
         AddLinks(*data->GetPointerToLinks());
@@ -189,7 +207,7 @@ void FairMultiLinkedData_Interface::SetInsertHistory(Bool_t val)
 
 void FairMultiLinkedData_Interface::ResetLinks()
 {
-    if (GetPointerToLinks() != 0){
+    if (GetPointerToLinks() != 0) {
         GetPointerToLinks()->ResetLinks();
     }
 }

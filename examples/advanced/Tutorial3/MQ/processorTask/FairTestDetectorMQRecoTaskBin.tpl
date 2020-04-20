@@ -6,8 +6,11 @@
  */
 
 // Implementation of FairTestDetectorMQRecoTask::Exec() with pure binary transport data format
-template <>
-void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorPayload::Digi, TestDetectorPayload::Hit>::Exec(Option_t* opt)
+template<>
+void FairTestDetectorMQRecoTask<FairTestDetectorDigi,
+                                FairTestDetectorHit,
+                                TestDetectorPayload::Digi,
+                                TestDetectorPayload::Hit>::Exec(Option_t* opt)
 {
     int inputSize = fPayload->GetSize();
     int numEntries = inputSize / sizeof(TestDetectorPayload::Digi);
@@ -16,14 +19,13 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 
     fRecoTask.fDigiArray->Clear();
 
-    for (int i = 0; i < numEntries; ++i)
-    {
-        new ((*fRecoTask.fDigiArray)[i]) FairTestDetectorDigi(input[i].fX, input[i].fY, input[i].fZ, input[i].fTimeStamp);
+    for (int i = 0; i < numEntries; ++i) {
+        new ((*fRecoTask.fDigiArray)[i])
+            FairTestDetectorDigi(input[i].fX, input[i].fY, input[i].fZ, input[i].fTimeStamp);
         static_cast<FairTestDetectorDigi*>(((*fRecoTask.fDigiArray)[i]))->SetTimeStampError(input[i].fTimeStampError);
     }
 
-    if (!fRecoTask.fDigiArray)
-    {
+    if (!fRecoTask.fDigiArray) {
         LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
     }
 
@@ -35,10 +37,8 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 
     TestDetectorPayload::Hit* output = static_cast<TestDetectorPayload::Hit*>(fPayload->GetData());
 
-    if (inputSize > 0)
-    {
-        for (int i = 0; i < numEntries; ++i)
-        {
+    if (inputSize > 0) {
+        for (int i = 0; i < numEntries; ++i) {
             FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask.fHitArray->At(i));
 
             output[i].detID = hit->GetDetectorID();

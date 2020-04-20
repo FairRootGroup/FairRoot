@@ -10,18 +10,16 @@
 
 #include "FairTestDetectorPayload.pb.h"
 
-template <>
+template<>
 void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>::Exec(Option_t* /*opt*/)
 {
     int nDigis = fInput->GetEntriesFast();
 
     TestDetectorProto::DigiPayload dp;
 
-    for (int i = 0; i < nDigis; ++i)
-    {
+    for (int i = 0; i < nDigis; ++i) {
         FairTestDetectorDigi* digi = static_cast<FairTestDetectorDigi*>(fInput->At(i));
-        if (!digi)
-        {
+        if (!digi) {
             continue;
         }
         TestDetectorProto::Digi* d = dp.add_digi();
@@ -35,10 +33,11 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPay
     std::string* str = new std::string();
     dp.SerializeToString(str);
 
-    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(const_cast<char*>(str->c_str()),
-                                                                 str->length(),
-                                                                 [](void* /* data */, void* obj) { delete static_cast<std::string*>(obj); },
-                                                                 str));
+    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(
+        const_cast<char*>(str->c_str()),
+        str->length(),
+        [](void* /* data */, void* obj) { delete static_cast<std::string*>(obj); },
+        str));
 }
 
 #endif /* PROTOBUF */

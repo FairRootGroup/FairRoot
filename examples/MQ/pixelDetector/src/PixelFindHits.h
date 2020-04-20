@@ -43,28 +43,28 @@ class PixelFindHits : public FairTask
     virtual void Exec(Option_t* opt);
 
     virtual void GetParList(TList* tempList);
-    virtual void InitMQ    (TList* tempList);
-    virtual void ExecMQ    (TList* inputList, TList* outputList);
+    virtual void InitMQ(TList* tempList);
+    virtual void ExecMQ(TList* inputList, TList* outputList);
 
   private:
-    PixelDigiPar*  fDigiPar;
+    PixelDigiPar* fDigiPar;
     FairGeoParSet* fGeoParSet;
 
-    TClonesArray*  fDigis;        /** Input array of PixelDigi **/
-    TClonesArray*  fHits;         /** Output array of PixelHit **/
+    TClonesArray* fDigis; /** Input array of PixelDigi **/
+    TClonesArray* fHits;  /** Output array of PixelHit **/
 
-    Int_t          fNDigis;
-    Int_t          fNHits;
+    Int_t fNDigis;
+    Int_t fNHits;
 
-    Int_t          fTNofEvents;
-    Int_t          fTNofDigis;
-    Int_t          fTNofHits;
+    Int_t fTNofEvents;
+    Int_t fTNofDigis;
+    Int_t fTNofHits;
 
-    Int_t fFeCols;            // Colums read per Frontend
-    Int_t fFeRows;            // Rows read per Frontend
-    Int_t fMaxFEperCol;       // max number of Frontend elemens per column
-    Double_t fPitchX;         // Pixel cell size X
-    Double_t fPitchY;         // Pixel cell size Y
+    Int_t fFeCols;        // Colums read per Frontend
+    Int_t fFeRows;        // Rows read per Frontend
+    Int_t fMaxFEperCol;   // max number of Frontend elemens per column
+    Double_t fPitchX;     // Pixel cell size X
+    Double_t fPitchY;     // Pixel cell size Y
 
     /** Get parameter containers **/
     virtual void SetParContainers();
@@ -84,7 +84,7 @@ class PixelFindHits : public FairTask
     PixelFindHits(const PixelFindHits&);
     PixelFindHits& operator=(const PixelFindHits&);
 
-    ClassDef(PixelFindHits,1);
+    ClassDef(PixelFindHits, 1);
 };
 
 #endif

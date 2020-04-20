@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -81,11 +81,10 @@
 #ifndef FAIR_EVTGENGENERATOR_H
 #define FAIR_EVTGENGENERATOR_H
 
-#include "FairGenerator.h"              // for FairGenerator
+#include "FairGenerator.h"   // for FairGenerator
 
-#include <Rtypes.h>                     // for FairEvtGenGenerator::Class, etc
-
-#include <stdio.h>                      // for FILE
+#include <Rtypes.h>   // for FairEvtGenGenerator::Class, etc
+#include <stdio.h>    // for FILE
 
 class FairPrimaryGenerator;
 class TF1;
@@ -115,15 +114,15 @@ class FairEvtGenGenerator : public FairGenerator
     virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
   private:
-    //ifstream* fInputFile;             //! Input file stream
-    const Char_t* fFileName;            //! Input file Name
-    FILE* fInputFile;                   //! Input file pointer
+    // ifstream* fInputFile;             //! Input file stream
+    const Char_t* fFileName;   //! Input file Name
+    FILE* fInputFile;          //! Input file pointer
 
     /** Private method CloseInput. Just for convenience. Closes the
      ** input file properly. Called from destructor and from ReadEvent. **/
     void CloseInput();
 
-    int    fGasmode;
+    int fGasmode;
     double fRsigma;
 
     /** PDG data base */
@@ -134,7 +133,7 @@ class FairEvtGenGenerator : public FairGenerator
     FairEvtGenGenerator(const FairEvtGenGenerator&);
     FairEvtGenGenerator& operator=(const FairEvtGenGenerator&);
 
-    ClassDef(FairEvtGenGenerator,1);
+    ClassDef(FairEvtGenGenerator, 1);
 };
 
 #endif

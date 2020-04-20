@@ -18,8 +18,7 @@ FairMBSRawItem::FairMBSRawItem()
     , fClock(0)
     , fTacData(0)
     , fQdcData(0)
-{
-}
+{}
 
 FairMBSRawItem::FairMBSRawItem(UShort_t sam,
                                UShort_t gtb,
@@ -38,8 +37,7 @@ FairMBSRawItem::FairMBSRawItem(UShort_t sam,
     , fClock(clock)
     , fTacData(tacData)
     , fQdcData(qdcData)
-{
-}
+{}
 
 FairMBSRawItem::FairMBSRawItem(const FairMBSRawItem& right)
     : TObject(right)
@@ -51,7 +49,6 @@ FairMBSRawItem::FairMBSRawItem(const FairMBSRawItem& right)
     , fClock(right.fClock)
     , fTacData(right.fTacData)
     , fQdcData(right.fQdcData)
-{
-}
+{}
 
-ClassImp(FairMBSRawItem)
+ClassImp(FairMBSRawItem);

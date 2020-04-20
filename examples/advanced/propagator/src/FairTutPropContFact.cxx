@@ -7,13 +7,12 @@
  ********************************************************************************/
 #include "FairTutPropContFact.h"
 
-#include "FairRuntimeDb.h"          // for FairRuntimeDb
-#include "FairTutPropGeoPar.h"      // for FairTutPropGeoPar
+#include "FairRuntimeDb.h"       // for FairRuntimeDb
+#include "FairTutPropGeoPar.h"   // for FairTutPropGeoPar
+#include "TList.h"               // for TList
+#include "TString.h"             // for TString
 
-#include "TList.h"   // for TList
-#include "TString.h" // for TString
-
-#include <string.h> // for strcmp, NULL
+#include <string.h>   // for strcmp, NULL
 
 class FairParSet;
 
@@ -50,12 +49,11 @@ FairParSet* FairTutPropContFact::createContainer(FairContainer* c)
         of this container, the name is concatinated with the context.
     */
     const char* name = c->GetName();
-    if (strcmp(name, "FairTutPropGeoPar") == 0)
-    {
+    if (strcmp(name, "FairTutPropGeoPar") == 0) {
         return new FairTutPropGeoPar(c->getConcatName().Data(), c->GetTitle(), c->getContext());
     }
 
     return nullptr;
 }
 
-ClassImp(FairTutPropContFact)
+ClassImp(FairTutPropContFact);

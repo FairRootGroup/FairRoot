@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   BinaryBaseClassSerializer.h
  * Author: winckler
  *
@@ -10,7 +10,7 @@
 
 #include <FairMQMessage.h>
 
-template <typename TPayload>
+template<typename TPayload>
 class BinaryBaseClassSerializer
 {
   public:
@@ -23,28 +23,20 @@ class BinaryBaseClassSerializer
     BinaryBaseClassSerializer(const BinaryBaseClassSerializer&) = delete;
     BinaryBaseClassSerializer operator=(const BinaryBaseClassSerializer&) = delete;
 
-    virtual ~BinaryBaseClassSerializer()
-    {}
+    virtual ~BinaryBaseClassSerializer() {}
 
     void GetPayload(FairMQMessage* msg)
     {
         int inputSize = msg->GetSize();
-        if (inputSize > 0)
-        {
+        if (inputSize > 0) {
             fNumInput = inputSize / sizeof(TPayload);
         }
         fPayload = static_cast<TPayload*>(msg->GetData());
     }
 
-    void SetMessage(FairMQMessage* msg)
-    {
-        fMessage = msg;
-    }
+    void SetMessage(FairMQMessage* msg) { fMessage = msg; }
 
-    FairMQMessage* GetMessage()
-    {
-        return fMessage;
-    }
+    FairMQMessage* GetMessage() { return fMessage; }
 
   protected:
     TPayload* fPayload;
@@ -53,4 +45,3 @@ class BinaryBaseClassSerializer
 };
 
 #endif /* BINARYBASECLASSSERIALIZER_H */
-

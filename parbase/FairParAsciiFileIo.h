@@ -1,25 +1,24 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRPARASCIFILEIIO_H
 #define FAIRPARASCIFILEIIO_H
 
-#include "FairParIo.h"                  // for FairParIo
+#include "FairParIo.h"   // for FairParIo
 
-#include <Rtypes.h>                     // for Bool_t, Text_t, etc
-
-#include <fstream>                      // for fstream, etc
+#include <Rtypes.h>   // for Bool_t, Text_t, etc
+#include <fstream>    // for fstream, etc
 
 class TList;
 
 class FairParAsciiFileIo : public FairParIo
 {
   protected:
-    std::fstream* file;      // pointer to a file
+    std::fstream* file;   // pointer to a file
 
   public:
     FairParAsciiFileIo();
@@ -30,21 +29,25 @@ class FairParAsciiFileIo : public FairParIo
     // opens file
     // if a file is already open, this file will be closed
     // activates detector I/Os
-    Bool_t open(const Text_t* fname, const Text_t* status="in");
+    Bool_t open(const Text_t* fname, const Text_t* status = "in");
 
     // concatenate files whose names are stored in the TList
     // TList holds list od TObjStrings
     // create file all.par in local working directory
     // calls open to open the generated file all.par
-    Bool_t open(const TList* fnamelist, const Text_t* status="in");
+    Bool_t open(const TList* fnamelist, const Text_t* status = "in");
 
     // closes file
     void close();
 
     // returns kTRUE if file is open
-    Bool_t check() {
-      if (file) { return (file->rdbuf()->is_open()==1); }
-      else { return kFALSE; }
+    Bool_t check()
+    {
+        if (file) {
+            return (file->rdbuf()->is_open() == 1);
+        } else {
+            return kFALSE;
+        }
     }
 
     // prints information about the file and the detector I/Os
@@ -56,8 +59,7 @@ class FairParAsciiFileIo : public FairParIo
     FairParAsciiFileIo(const FairParAsciiFileIo&);
     FairParAsciiFileIo& operator=(const FairParAsciiFileIo&);
 
-    ClassDef(FairParAsciiFileIo,0) // Parameter I/O from ASCII files
+    ClassDef(FairParAsciiFileIo, 0)   // Parameter I/O from ASCII files
 };
 
-#endif  /* !FAIRPARASCIIFILEIO_H */
-
+#endif /* !FAIRPARASCIIFILEIO_H */

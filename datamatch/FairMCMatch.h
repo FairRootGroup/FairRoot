@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -15,21 +15,19 @@
 #ifndef FAIRMCMATCH_H_
 #define FAIRMCMATCH_H_
 
+#include "FairMCEntry.h"           // for FairMCEntry
+#include "FairMCResult.h"          // for FairMCResult
+#include "FairMCStage.h"           // for FairMCStage
+#include "FairMultiLinkedData.h"   // for FairMultiLinkedData
+#include "FairRootManager.h"       // for FairRootManager
 
-#include "FairMCEntry.h"                // for FairMCEntry
-#include "FairMCResult.h"               // for FairMCResult
-#include "FairMCStage.h"                // for FairMCStage
-#include "FairMultiLinkedData.h"        // for FairMultiLinkedData
-#include "FairRootManager.h"            // for FairRootManager
-
-#include <Rtypes.h>                     // for Int_t, FairMCMatch::Class, etc
-#include <TNamed.h>                     // for TNamed
-#include <TString.h>                    // for TString
-
-#include <iostream>                     // for ostream, cout, endl
-#include <map>                          // for map, etc
-#include <string>                       // for string
-#include <utility>                      // for pair
+#include <Rtypes.h>    // for Int_t, FairMCMatch::Class, etc
+#include <TNamed.h>    // for TNamed
+#include <TString.h>   // for TString
+#include <iostream>    // for ostream, cout, endl
+#include <map>         // for map, etc
+#include <string>      // for string
+#include <utility>     // for pair
 
 class FairLink;
 class TClonesArray;
@@ -37,17 +35,18 @@ class TClonesArray;
 typedef std::map<Int_t, FairMCStage*>::iterator TListIterator;
 typedef std::map<Int_t, FairMCStage*>::const_iterator TListIteratorConst;
 
-class FairMCMatch: public TNamed
+class FairMCMatch : public TNamed
 {
   public:
     FairMCMatch();
     FairMCMatch(const char* name, const char* title)
-      : TNamed(name, title),
-        fUltimateStage(0),
-        fList(),
-        fFinalStageML(),
-        fVerbose(0) {
-      fFinalStageML.SetPersistanceCheck(kFALSE);
+        : TNamed(name, title)
+        , fUltimateStage(0)
+        , fList()
+        , fFinalStageML()
+        , fVerbose(0)
+    {
+        fFinalStageML.SetPersistanceCheck(kFALSE);
     }
 
     virtual ~FairMCMatch();
@@ -68,31 +67,31 @@ class FairMCMatch: public TNamed
 
     FairMCResult GetMCInfo(Int_t start, Int_t stop);
     FairMCResult GetMCInfo(TString start, TString stop);
-    FairMCEntry  GetMCInfoSingle(FairLink aLink, Int_t stop);
-    FairMCEntry  GetMCInfoSingle(FairLink aLink, TString stop);
+    FairMCEntry GetMCInfoSingle(FairLink aLink, Int_t stop);
+    FairMCEntry GetMCInfoSingle(FairLink aLink, TString stop);
 
-    int GetNMCStages() const {return fList.size();}
+    int GetNMCStages() const { return fList.size(); }
 
-    FairMCStage* GetMCStage(int index) const {
-      TListIteratorConst iter = fList.begin();
-      for (int i = 0; i < index; i++) {
-        iter++;
-      }
-      return (iter->second);
+    FairMCStage* GetMCStage(int index) const
+    {
+        TListIteratorConst iter = fList.begin();
+        for (int i = 0; i < index; i++) {
+            iter++;
+        }
+        return (iter->second);
     }
 
-    FairMCStage* GetMCStageType(TString branch) {
-      FairRootManager* ioman = FairRootManager::Instance();
-      if (ioman->GetBranchId(branch) > 0) {
-        return fList[ioman->GetBranchId(branch)];
-      } else {
-        return 0;
-      }
+    FairMCStage* GetMCStageType(TString branch)
+    {
+        FairRootManager* ioman = FairRootManager::Instance();
+        if (ioman->GetBranchId(branch) > 0) {
+            return fList[ioman->GetBranchId(branch)];
+        } else {
+            return 0;
+        }
     }
 
-    FairMCStage* GetMCStageType(Int_t type) {
-      return fList[type];
-    }
+    FairMCStage* GetMCStageType(Int_t type) { return fList[type]; }
 
     void CreateArtificialStage(const TString& branchName, const std::string& fileName = "");
     void CreateArtificialStage(Int_t stage, const std::string& fileName = "", const std::string& branchName = "");
@@ -101,21 +100,21 @@ class FairMCMatch: public TNamed
 
     bool IsTypeInList(Int_t type);
 
-    void PrintInfo(std::ostream& out = std::cout) {out << *this;}
+    void PrintInfo(std::ostream& out = std::cout) { out << *this; }
 
-    friend std::ostream& operator<< (std::ostream& out, const FairMCMatch& match) {
-      for (int i = 0; i < match.GetNMCStages(); i++) {
-        if (match.GetMCStage(i)->GetLoaded() == kTRUE) {
-          match.GetMCStage(i)->PrintInfo(out);
-          out << std::endl;
+    friend std::ostream& operator<<(std::ostream& out, const FairMCMatch& match)
+    {
+        for (int i = 0; i < match.GetNMCStages(); i++) {
+            if (match.GetMCStage(i)->GetLoaded() == kTRUE) {
+                match.GetMCStage(i)->PrintInfo(out);
+                out << std::endl;
+            }
         }
-      }
-      return out;
+        return out;
     }
 
   private:
-
-    Int_t fUltimateStage; ///< last stage in link chain. Here all recursive operations must stop.
+    Int_t fUltimateStage;   ///< last stage in link chain. Here all recursive operations must stop.
     std::map<Int_t, FairMCStage*> fList;
     FairMultiLinkedData fFinalStageML;
     Int_t fVerbose;

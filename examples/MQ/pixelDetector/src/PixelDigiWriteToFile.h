@@ -19,7 +19,6 @@
 
 #include <Rtypes.h>
 #include <TString.h>
-
 #include <fstream>
 
 class TClonesArray;
@@ -44,14 +43,14 @@ class PixelDigiWriteToFile : public FairTask
 
     void SetOutputFileName(const TString& tstr) { fOutputFileName = tstr; }
 
-    void SetDivideLevel(Int_t idiv) { fDivideLevel = idiv; } // 0 - event, 1 - station, 2 - sensor
+    void SetDivideLevel(Int_t idiv) { fDivideLevel = idiv; }   // 0 - event, 1 - station, 2 - sensor
 
   private:
-    TClonesArray*     fDigis;        /** Input array of PixelDigi **/
+    TClonesArray* fDigis; /** Input array of PixelDigi **/
 
-    TString  fOutputFileName;
+    TString fOutputFileName;
     Int_t fNofOutputFiles;
-    std::ofstream fOutputFiles[12]; // no more than 12 output files....
+    std::ofstream fOutputFiles[12];   // no more than 12 output files....
 
     /** Get parameter containers **/
     virtual void SetParContainers() {}
@@ -77,7 +76,7 @@ class PixelDigiWriteToFile : public FairTask
     PixelDigiWriteToFile(const PixelDigiWriteToFile&);
     PixelDigiWriteToFile& operator=(const PixelDigiWriteToFile&);
 
-    ClassDef(PixelDigiWriteToFile,1);
+    ClassDef(PixelDigiWriteToFile, 1);
 };
 
 #endif

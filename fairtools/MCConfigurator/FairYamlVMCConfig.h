@@ -41,5 +41,3 @@ class FairYamlVMCConfig : public FairGenericVMCConfig
 };
 
 #endif
-
-

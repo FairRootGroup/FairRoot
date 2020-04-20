@@ -11,24 +11,22 @@
 // -----                  M. Al-Turany   June 2014                     -----
 // -------------------------------------------------------------------------
 
-
-
 /** MyProjMCTrack.h
  ** Data class for storing Monte Carlo tracks processed by the MyProjStack.
  ** A MyProjMCTrack can be a primary track put into the simulation or a
  ** secondary one produced by the transport through decay or interaction.
  **/
 
-
 #ifndef MyProjMCTrack_H
 #define MyProjMCTrack_H 1
 
-#include <TObject.h>                    // for TObject
-#include "MyProjDetectorList.h"         // for DetectorId
-#include <Rtypes.h>                     // for Double_t, Int_t, Double32_t, etc
-#include <TLorentzVector.h>             // for TLorentzVector
-#include <TMath.h>                      // for Sqrt
-#include <TVector3.h>                   // for TVector3
+#include "MyProjDetectorList.h"   // for DetectorId
+
+#include <Rtypes.h>           // for Double_t, Int_t, Double32_t, etc
+#include <TLorentzVector.h>   // for TLorentzVector
+#include <TMath.h>            // for Sqrt
+#include <TObject.h>          // for TObject
+#include <TVector3.h>         // for TVector3
 
 class TParticle;
 
@@ -36,70 +34,65 @@ class MyProjMCTrack : public TObject
 {
 
   public:
-
-
     /**  Default constructor  **/
     MyProjMCTrack();
 
-
     /**  Standard constructor  **/
-    MyProjMCTrack(Int_t pdgCode, Int_t motherID, Double_t px, Double_t py,
-                Double_t pz, Double_t x, Double_t y, Double_t z,
-                Double_t t, Int_t nPoints);
+    MyProjMCTrack(Int_t pdgCode,
+                  Int_t motherID,
+                  Double_t px,
+                  Double_t py,
+                  Double_t pz,
+                  Double_t x,
+                  Double_t y,
+                  Double_t z,
+                  Double_t t,
+                  Int_t nPoints);
 
     /**  Copy constructor  **/
     MyProjMCTrack(const MyProjMCTrack& track);
 
-
     /**  Constructor from TParticle  **/
     MyProjMCTrack(TParticle* particle);
-
 
     /**  Destructor  **/
     virtual ~MyProjMCTrack();
 
-
     /**  Output to screen  **/
-    void Print(Int_t iTrack=0) const;
-
+    void Print(Int_t iTrack = 0) const;
 
     /**  Accessors  **/
-    Int_t    GetPdgCode()  const { return fPdgCode; }
-    Int_t    GetMotherId() const { return fMotherId; }
-    Double_t GetPx()       const { return fPx; }
-    Double_t GetPy()       const { return fPy; }
-    Double_t GetPz()       const { return fPz; }
-    Double_t GetStartX()   const { return fStartX; }
-    Double_t GetStartY()   const { return fStartY; }
-    Double_t GetStartZ()   const { return fStartZ; }
-    Double_t GetStartT()   const { return fStartT; }
-    Double_t GetMass()     const;
-    Double_t GetEnergy()   const;
-    Double_t GetPt()       const { return TMath::Sqrt(fPx*fPx+fPy*fPy); }
-    Double_t GetP() const { return TMath::Sqrt(fPx*fPx+fPy*fPy+fPz*fPz); }
+    Int_t GetPdgCode() const { return fPdgCode; }
+    Int_t GetMotherId() const { return fMotherId; }
+    Double_t GetPx() const { return fPx; }
+    Double_t GetPy() const { return fPy; }
+    Double_t GetPz() const { return fPz; }
+    Double_t GetStartX() const { return fStartX; }
+    Double_t GetStartY() const { return fStartY; }
+    Double_t GetStartZ() const { return fStartZ; }
+    Double_t GetStartT() const { return fStartT; }
+    Double_t GetMass() const;
+    Double_t GetEnergy() const;
+    Double_t GetPt() const { return TMath::Sqrt(fPx * fPx + fPy * fPy); }
+    Double_t GetP() const { return TMath::Sqrt(fPx * fPx + fPy * fPy + fPz * fPz); }
     Double_t GetRapidity() const;
     void GetMomentum(TVector3& momentum);
     void Get4Momentum(TLorentzVector& momentum);
     void GetStartVertex(TVector3& vertex);
 
-
     /** Accessors to the number of MCPoints in the detectors **/
-    Int_t GetNPoints(DetectorId detId)  const;
-
+    Int_t GetNPoints(DetectorId detId) const;
 
     /**  Modifiers  **/
     void SetMotherId(Int_t id) { fMotherId = id; }
     void SetNPoints(Int_t iDet, Int_t np);
 
-
-
   private:
-
     /**  PDG particle code  **/
-    Int_t  fPdgCode;
+    Int_t fPdgCode;
 
     /**  Index of mother track. -1 for primary particles.  **/
-    Int_t  fMotherId;
+    Int_t fMotherId;
 
     /** Momentum components at start vertex [GeV]  **/
     Double32_t fPx, fPy, fPz;
@@ -124,41 +117,21 @@ class MyProjMCTrack : public TObject
      **/
     Int_t fNPoints;
 
-
-    ClassDef(MyProjMCTrack,1);
-
+    ClassDef(MyProjMCTrack, 1);
 };
-
-
 
 // ==========   Inline functions   ========================================
 
 inline Double_t MyProjMCTrack::GetEnergy() const
 {
-  Double_t mass = GetMass();
-  return TMath::Sqrt(mass*mass + fPx*fPx + fPy*fPy + fPz*fPz );
+    Double_t mass = GetMass();
+    return TMath::Sqrt(mass * mass + fPx * fPx + fPy * fPy + fPz * fPz);
 }
 
+inline void MyProjMCTrack::GetMomentum(TVector3& momentum) { momentum.SetXYZ(fPx, fPy, fPz); }
 
-inline void MyProjMCTrack::GetMomentum(TVector3& momentum)
-{
-  momentum.SetXYZ(fPx,fPy,fPz);
-}
+inline void MyProjMCTrack::Get4Momentum(TLorentzVector& momentum) { momentum.SetXYZT(fPx, fPy, fPz, GetEnergy()); }
 
-
-inline void MyProjMCTrack::Get4Momentum(TLorentzVector& momentum)
-{
-  momentum.SetXYZT(fPx,fPy,fPz,GetEnergy());
-}
-
-
-inline void MyProjMCTrack::GetStartVertex(TVector3& vertex)
-{
-  vertex.SetXYZ(fStartX,fStartY,fStartZ);
-}
-
-
-
-
+inline void MyProjMCTrack::GetStartVertex(TVector3& vertex) { vertex.SetXYZ(fStartX, fStartY, fStartZ); }
 
 #endif

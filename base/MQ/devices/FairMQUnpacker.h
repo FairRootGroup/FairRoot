@@ -5,7 +5,7 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
- /*
+/*
  * File:   FairMQUnpacker.h
  * Author: winckler
  *
@@ -15,13 +15,13 @@
 #ifndef FAIRMQUNPACKER_H
 #define FAIRMQUNPACKER_H
 
-#include <FairMQDevice.h>
 #include "RootSerializer.h"
 
+#include <FairMQDevice.h>
+#include <map>
 #include <stdexcept>
 #include <string>
 #include <tuple>
-#include <map>
 
 template<typename UnpackerType, typename SerializationType = RootSerializer>
 class FairMQUnpacker : public FairMQDevice
@@ -43,26 +43,24 @@ class FairMQUnpacker : public FairMQDevice
     FairMQUnpacker(const FairMQUnpacker&) = delete;
     FairMQUnpacker operator=(const FairMQUnpacker&) = delete;
 
-    virtual ~FairMQUnpacker()
-    {
-        delete fUnpacker;
-    }
+    virtual ~FairMQUnpacker() { delete fUnpacker; }
 
-    void AddSubEvtKey(short type, short subType, short procid, short subCrate, short control, const std::string& channelName)
+    void AddSubEvtKey(short type,
+                      short subType,
+                      short procid,
+                      short subCrate,
+                      short control,
+                      const std::string& channelName)
     {
-        if (fSubEventChanMap.size() > 0)
-        {
+        if (fSubEventChanMap.size() > 0) {
             LOG(error) << "Only one input channel allowed for this device";
-        }
-        else
-        {
-             SubEvtKey key(type, subType, procid, subCrate, control);
-             fInputChannelName = channelName;
+        } else {
+            SubEvtKey key(type, subType, procid, subCrate, control);
+            fInputChannelName = channelName;
 
-            if (fSubEventChanMap.count(fInputChannelName))
-            {
-                LOG(warn) << "FairMQLmdSampler : subevent header key '("
-                          << type << "," << subType << "," << procid << "," << subCrate << "," << control << ")' has already been defined. "
+            if (fSubEventChanMap.count(fInputChannelName)) {
+                LOG(warn) << "FairMQLmdSampler : subevent header key '(" << type << "," << subType << "," << procid
+                          << "," << subCrate << "," << control << ")' has already been defined. "
                           << "It will be overwritten with new channel name = " << fInputChannelName;
             }
             fSubEventChanMap[fInputChannelName] = key;
@@ -85,15 +83,14 @@ class FairMQUnpacker : public FairMQDevice
         AddSubEvtKey(fType, fSubType, fProcId, fSubCrate, fControl, fInputChanName);
 
         // check if subevt map is configured
-        if (fInputChannelName.empty() || fSubEventChanMap.size() == 0)
-        {
+        if (fInputChannelName.empty() || fSubEventChanMap.size() == 0) {
             throw std::runtime_error(std::string("Sub-event map not configured."));
         }
 
         // check if given channel exist
-        if (!fChannels.count(fInputChannelName))
-        {
-            throw std::runtime_error(std::string("MQ-channel name '") + fInputChannelName + "' does not exist. Check the MQ-channel configuration");
+        if (!fChannels.count(fInputChannelName)) {
+            throw std::runtime_error(std::string("MQ-channel name '") + fInputChannelName
+                                     + "' does not exist. Check the MQ-channel configuration");
         }
 
         short setype;
@@ -110,15 +107,12 @@ class FairMQUnpacker : public FairMQDevice
     {
         FairMQChannel& inputChannel = fChannels.at(fInputChannelName).at(0);
 
-        while (!NewStatePending())
-        {
+        while (!NewStatePending()) {
             FairMQMessagePtr msgSize(NewMessage());
             FairMQMessagePtr msg(NewMessage());
 
-            if (inputChannel.Receive(msgSize) >= 0)
-            {
-                if (inputChannel.Receive(msg) >= 0)
-                {
+            if (inputChannel.Receive(msgSize) >= 0) {
+                if (inputChannel.Receive(msg) >= 0) {
                     int dataSize = *(static_cast<int*>(msgSize->GetData()));
                     int* subEvtPtr = static_cast<int*>(msg->GetData());
 
