@@ -17,10 +17,9 @@
 #define FAIRMQPRIMARYGENERATORDEVICE_H_
 
 #include <FairMQDevice.h>
-
+#include <cstdint>
 #include <string>
 #include <thread>
-#include <cstdint>
 
 class FairMCEventHeader;
 class FairPrimaryGenerator;
@@ -35,18 +34,18 @@ class FairMQPrimaryGeneratorDevice : public FairMQDevice
 
     virtual void SendPrimaries();
 
-    void SetNofEvents (int64_t nofev) { fNofEvents = nofev;};
-    void SetGenerator (FairPrimaryGenerator* primGen) { fPrimaryGenerator = primGen;};
+    void SetNofEvents(int64_t nofev) { fNofEvents = nofev; };
+    void SetGenerator(FairPrimaryGenerator* primGen) { fPrimaryGenerator = primGen; };
 
-    void SetChunkSize(int64_t ti) { fChunkSize = ti;};
+    void SetChunkSize(int64_t ti) { fChunkSize = ti; };
 
-    void RunInPushMode(bool tb=true) { fRunConditional = tb; };
-    void RunInRepMode (bool tb=true) { fRunConditional = !tb; };
+    void RunInPushMode(bool tb = true) { fRunConditional = tb; };
+    void RunInRepMode(bool tb = true) { fRunConditional = !tb; };
 
     void ListenForAcks();
 
-    void SetGeneratorChannelName(std::string tstr) {fGeneratorChannelName = tstr;}
-    void SetAckChannelName(std::string tstr) {fAckChannelName = tstr;}
+    void SetGeneratorChannelName(std::string tstr) { fGeneratorChannelName = tstr; }
+    void SetAckChannelName(std::string tstr) { fAckChannelName = tstr; }
 
   protected:
     bool Reply(FairMQMessagePtr&, int);
@@ -59,16 +58,16 @@ class FairMQPrimaryGeneratorDevice : public FairMQDevice
     std::string fGeneratorChannelName;
     std::string fAckChannelName;
 
-    bool                     fRunConditional; // if true run ConditionalRun, if false run Reply
+    bool fRunConditional;   // if true run ConditionalRun, if false run Reply
 
-    FairPrimaryGenerator*    fPrimaryGenerator;
-    FairMCEventHeader*       fMCEventHeader;
-    FairStack*               fStack;
-    int64_t                  fNofEvents;
-    int64_t                  fEventCounter;
+    FairPrimaryGenerator* fPrimaryGenerator;
+    FairMCEventHeader* fMCEventHeader;
+    FairStack* fStack;
+    int64_t fNofEvents;
+    int64_t fEventCounter;
 
-    int64_t                  fChunkSize;    // to set the maximal number of primaries sent in one bunch
-    int64_t                  fChunkPointer; // to set the first primary to be sent
+    int64_t fChunkSize;      // to set the maximal number of primaries sent in one bunch
+    int64_t fChunkPointer;   // to set the first primary to be sent
 
     bool GenerateAndSendData();
     void SendObject(TObject* obj, std::string chan);

@@ -14,14 +14,14 @@
 extern "C"
 {
 #include "f_evt.h"
-#include "s_filhe_swap.h"
 #include "s_bufhe_swap.h"
+#include "s_filhe_swap.h"
 }
 
-#include <TString.h>
-#include <Rtypes.h>
-
 #include "FairMbsSource.h"
+
+#include <Rtypes.h>
+#include <TString.h>
 
 class FairMbsStreamSource : public FairMbsSource
 {
@@ -31,10 +31,10 @@ class FairMbsStreamSource : public FairMbsSource
     virtual ~FairMbsStreamSource();
 
     virtual Bool_t Init();
-    virtual Int_t ReadEvent(UInt_t=0);
+    virtual Int_t ReadEvent(UInt_t = 0);
     virtual void Close();
 
-    const char* GetServerName() const {return fServerName.Data();};
+    const char* GetServerName() const { return fServerName.Data(); };
 
   private:
     Bool_t ConnectToServer();

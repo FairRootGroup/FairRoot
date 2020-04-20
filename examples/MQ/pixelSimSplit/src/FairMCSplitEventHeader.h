@@ -7,7 +7,6 @@
  ********************************************************************************/
 /** FairMCSplitEventHeader.h **/
 
-
 #ifndef FAIRMCSPLITEVENTHEADER_H
 #define FAIRMCSPLITEVENTHEADER_H 1
 
@@ -23,20 +22,26 @@ class FairMCSplitEventHeader : public FairMCEventHeader
 
     virtual ~FairMCSplitEventHeader();
 
-    void SetRECC(UInt_t i1, UInt_t i2, UInt_t i3, UInt_t i4) { SetRunID(i1); SetEventID(i2); SetNofChunks(i3); SetChunkStart(i4); }
-    void SetNofChunks (UInt_t ti) { fNofChunks  = ti; }
+    void SetRECC(UInt_t i1, UInt_t i2, UInt_t i3, UInt_t i4)
+    {
+        SetRunID(i1);
+        SetEventID(i2);
+        SetNofChunks(i3);
+        SetChunkStart(i4);
+    }
+    void SetNofChunks(UInt_t ti) { fNofChunks = ti; }
     void SetChunkStart(UInt_t ti) { fChunkStart = ti; }
 
-    UInt_t GetNofChunks () { return fNofChunks;  }
+    UInt_t GetNofChunks() { return fNofChunks; }
     UInt_t GetChunkStart() { return fChunkStart; }
 
     virtual void Register();
 
   protected:
-    UInt_t     fNofChunks;
-    UInt_t     fChunkStart;
+    UInt_t fNofChunks;
+    UInt_t fChunkStart;
 
-    ClassDef(FairMCSplitEventHeader,1);
+    ClassDef(FairMCSplitEventHeader, 1);
 };
 
 #endif /* FAIRMCSPLITEVENTHEADER_H_ */

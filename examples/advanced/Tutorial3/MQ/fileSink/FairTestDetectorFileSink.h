@@ -15,22 +15,20 @@
 #ifndef FAIRTESTDETECTORFILESINK_H_
 #define FAIRTESTDETECTORFILESINK_H_
 
+#include "FairTestDetectorHit.h"
+#include "FairTestDetectorPayload.h"
+
 #include <FairMQDevice.h>
 #include <FairMQLogger.h>
-
 #include <Rtypes.h>
-#include <TFile.h>
-#include <TTree.h>
 #include <TClonesArray.h>
+#include <TFile.h>
 #include <TSystem.h>
-
-#include "FairTestDetectorPayload.h"
-#include "FairTestDetectorHit.h"
-
-#include <iostream>
+#include <TTree.h>
 #include <array>
-#include <string>
+#include <iostream>
 #include <memory>
+#include <string>
 
 template<typename TIn, typename TPayloadIn>
 class FairTestDetectorFileSink : public FairMQDevice
@@ -73,10 +71,7 @@ class FairTestDetectorFileSink : public FairMQDevice
         InitOutputFile(fConfig->GetValue<std::string>("data-format"));
     }
 
-    virtual void PostRun()
-    {
-        LOG(info) << "Received " << fReceivedMsgs << " messages!";
-    }
+    virtual void PostRun() { LOG(info) << "Received " << fReceivedMsgs << " messages!"; }
 
     virtual void InitTask();
 

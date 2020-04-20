@@ -1,48 +1,42 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairTestDetectorDigiTask.h"
 
-#include "FairLink.h"              // for FairLink
-#include "FairRootManager.h"       // for FairRootManager
-#include "FairTestDetectorDigi.h"  // for FairTestDetectorDigi
-#include "FairTestDetectorPoint.h" // for FairTestDetectorPoint
+#include "FairLink.h"                // for FairLink
+#include "FairRootManager.h"         // for FairRootManager
+#include "FairTestDetectorDigi.h"    // for FairTestDetectorDigi
+#include "FairTestDetectorPoint.h"   // for FairTestDetectorPoint
 
-#include <TClonesArray.h> // for TClonesArray
-#include <TMath.h>        // for Sqrt
-#include <TRandom.h>      // for TRandom, gRandom
-
-#include <iostream> // for operator<<, basic_ostream, etc
+#include <TClonesArray.h>   // for TClonesArray
+#include <TMath.h>          // for Sqrt
+#include <TRandom.h>        // for TRandom, gRandom
+#include <iostream>         // for operator<<, basic_ostream, etc
 
 FairTestDetectorDigiTask::FairTestDetectorDigiTask()
     : FairTask("TestDetectorDigTask")
     , fTimeResolution(0.)
     , fPointArray(nullptr)
     , fDigiArray(nullptr)
-{
-}
+{}
 
-FairTestDetectorDigiTask::~FairTestDetectorDigiTask()
-{
-}
+FairTestDetectorDigiTask::~FairTestDetectorDigiTask() {}
 
 InitStatus FairTestDetectorDigiTask::Init()
 {
     FairRootManager* ioman = FairRootManager::Instance();
-    if (!ioman)
-    {
-        std::cout << "-E- FairTestDetectorDigiTask::Init: " /// todo replace with logger!
+    if (!ioman) {
+        std::cout << "-E- FairTestDetectorDigiTask::Init: "   /// todo replace with logger!
                   << "RootManager not instantiated!" << std::endl;
         return kFATAL;
     }
 
     fPointArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorPoint"));
-    if (!fPointArray)
-    {
+    if (!fPointArray) {
         std::cout << "-W- FairTestDetectorDigiTask::Init: "
                   << "No Point array!" << std::endl;
         return kERROR;
@@ -62,11 +56,9 @@ void FairTestDetectorDigiTask::Exec(Option_t* /*opt*/)
 
     // fill the map
 
-    for (int ipnt = 0; ipnt < fPointArray->GetEntries(); ipnt++)
-    {
+    for (int ipnt = 0; ipnt < fPointArray->GetEntries(); ipnt++) {
         FairTestDetectorPoint* point = static_cast<FairTestDetectorPoint*>(fPointArray->At(ipnt));
-        if (!point)
-        {
+        if (!point) {
             continue;
         }
 
@@ -77,12 +69,9 @@ void FairTestDetectorDigiTask::Exec(Option_t* /*opt*/)
         Double_t timestamp = CalcTimeStamp(point->GetTime());
 
         FairTestDetectorDigi* digi = new ((*fDigiArray)[ipnt]) FairTestDetectorDigi(xPad, yPad, zPad, timestamp);
-        if (fTimeResolution > 0)
-        {
+        if (fTimeResolution > 0) {
             digi->SetTimeStampError(fTimeResolution / TMath::Sqrt(fTimeResolution));
-        }
-        else
-        {
+        } else {
             digi->SetTimeStampError(0);
         }
 
@@ -103,14 +92,11 @@ Double_t FairTestDetectorDigiTask::CalcTimeStamp(Double_t timeOfFlight)
 
     Double_t result = eventTime + timeOfFlight + detectionTime;
 
-    if (result < 0)
-    {
+    if (result < 0) {
         return 0;
-    }
-    else
-    {
+    } else {
         return result;
     }
 }
 
-ClassImp(FairTestDetectorDigiTask)
+ClassImp(FairTestDetectorDigiTask);

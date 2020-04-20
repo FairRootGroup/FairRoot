@@ -5,7 +5,7 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT=false)
+int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = false)
 {
     UInt_t randomSeed = 123456;
     gRandom->SetSeed(randomSeed);
@@ -13,28 +13,26 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT=false)
     TString dir = getenv("VMCWORKDIR");
 
     TString tut_geomdir = dir + "/common/geometry";
-    gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
+    gSystem->Setenv("GEOMPATH", tut_geomdir.Data());
 
     TString tut_configdir = dir + "/common/gconfig";
-    gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
+    gSystem->Setenv("CONFIG_DIR", tut_configdir.Data());
 
     //  TString partName[] = {"pions","eplus","proton"};
-    Int_t       partPdgC[] = {    211,     11,    2212};
-    Int_t chosenPart  = 0;
+    Int_t partPdgC[] = {211, 11, 2212};
+    Int_t chosenPart = 0;
 
     Double_t momentum = 2.;
 
-    Double_t theta    = 10.;
+    Double_t theta = 10.;
 
     TString outDir = "./";
 
     // Output file name
-    TString outFile = Form("%s/prop.mc.root",
-                           outDir.Data());
+    TString outFile = Form("%s/prop.mc.root", outDir.Data());
 
     // Parameter file name
-    TString parFile = Form("%s/prop.par.root",
-                           outDir.Data());
+    TString parFile = Form("%s/prop.par.root", outDir.Data());
 
     TString geoFile = "geofile_" + mcEngine + "_full.root";
 
@@ -52,24 +50,24 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT=false)
 
     // -----   Create simulation run   ----------------------------------------
     FairRunSim* run = new FairRunSim();
-    run->SetName(mcEngine);              // Transport engine
+    run->SetName(mcEngine);   // Transport engine
     //  run->SetSimulationConfig(new FairVMCConfig());
-    run->SetIsMT(isMT);                  // Multi-threading mode (Geant4 only)
-    run->SetSink(new FairRootFileSink(outFile));          // Output file
+    run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
+    run->SetSink(new FairRootFileSink(outFile));   // Output file
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------
 
     // -----   Create media   -------------------------------------------------
-    run->SetMaterials("media.geo");       // Materials
+    run->SetMaterials("media.geo");   // Materials
     // ------------------------------------------------------------------------
 
     // -----   Create geometry   ----------------------------------------------
 
-    FairModule* cave= new FairCave("CAVE");
+    FairModule* cave = new FairCave("CAVE");
     cave->SetGeometryFileName("cave_vacuum.geo");
     run->AddModule(cave);
 
-    FairTutPropDet*  det = new FairTutPropDet("TutPropDetector", kTRUE);
+    FairTutPropDet* det = new FairTutPropDet("TutPropDetector", kTRUE);
     det->SetGeometryFileName("pixel.geo");
     run->AddModule(det);
     // ------------------------------------------------------------------------
@@ -78,16 +76,16 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT=false)
     FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
     FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[chosenPart], 1);
 
-    boxGen->SetThetaRange (   theta,   theta+0.01);
-    boxGen->SetPRange     (momentum,momentum+0.01);
-    boxGen->SetPhiRange   (0.,360.);  // 10.,10. when looking for PCA
+    boxGen->SetThetaRange(theta, theta + 0.01);
+    boxGen->SetPRange(momentum, momentum + 0.01);
+    boxGen->SetPhiRange(0., 360.);   // 10.,10. when looking for PCA
     boxGen->SetDebug(kTRUE);
 
     primGen->AddGenerator(boxGen);
 
-    FairConstField *fMagField=new FairConstField();
-    fMagField->SetField(0.,0.,20.); // values are in kG
-    fMagField->SetFieldRegion(-150, 150, -150, 150, -250, 250);// values are in cm (xmin,xmax,ymin,ymax,zmin,zmax)
+    FairConstField* fMagField = new FairConstField();
+    fMagField->SetField(0., 0., 20.);                             // values are in kG
+    fMagField->SetFieldRegion(-150, 150, -150, 150, -250, 250);   // values are in cm (xmin,xmax,ymin,ymax,zmin,zmax)
     run->SetField(fMagField);
 
     run->SetGenerator(primGen);
@@ -119,7 +117,7 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT=false)
     // Extract the maximal used memory an add is as Dart measurement
     // This line is filtered by CTest and the value send to CDash
     FairSystemInfo sysInfo;
-    Float_t maxMemory=sysInfo.GetMaxMemory();
+    Float_t maxMemory = sysInfo.GetMaxMemory();
     cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
     cout << maxMemory;
     cout << "</DartMeasurement>" << endl;
@@ -128,16 +126,15 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT=false)
     Double_t rtime = timer.RealTime();
     Double_t ctime = timer.CpuTime();
 
-    Float_t cpuUsage=ctime/rtime;
+    Float_t cpuUsage = ctime / rtime;
     cout << "<DartMeasurement name=\"CpuLoad\" type=\"numeric/double\">";
     cout << cpuUsage;
     cout << "</DartMeasurement>" << endl;
 
     cout << endl << endl;
-    cout << "Output file is "    << outFile << endl;
+    cout << "Output file is " << outFile << endl;
     cout << "Parameter file is " << parFile << endl;
-    cout << "Real time " << rtime << " s, CPU time " << ctime
-         << "s" << endl << endl;
+    cout << "Real time " << rtime << " s, CPU time " << ctime << "s" << endl << endl;
     cout << "Macro finished successfully." << endl;
 
     // ------------------------------------------------------------------------

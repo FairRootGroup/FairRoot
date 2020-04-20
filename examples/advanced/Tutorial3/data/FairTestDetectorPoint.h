@@ -1,17 +1,17 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRTESTDETECTORPOINT_H_
 #define FAIRTESTDETECTORPOINT_H_
 
-#include "FairMCPoint.h" // for FairMCPoint
+#include "FairMCPoint.h"   // for FairMCPoint
 
-#include <Rtypes.h>   // for Double_t, Double32_t, etc
-#include <TVector3.h> // for TVector3
+#include <Rtypes.h>     // for Double_t, Double32_t, etc
+#include <TVector3.h>   // for TVector3
 
 class FairTestDetectorPoint : public FairMCPoint
 {
@@ -45,63 +45,21 @@ class FairTestDetectorPoint : public FairMCPoint
     virtual void Print(const Option_t* opt) const;
 
     /** Accessors **/
-    Double_t GetXIn() const
-    {
-        return fX;
-    }
-    Double_t GetYIn() const
-    {
-        return fY;
-    }
-    Double_t GetZIn() const
-    {
-        return fZ;
-    }
-    Double_t GetXOut() const
-    {
-        return fX_out;
-    }
-    Double_t GetYOut() const
-    {
-        return fY_out;
-    }
-    Double_t GetZOut() const
-    {
-        return fZ_out;
-    }
-    Double_t GetPxOut() const
-    {
-        return fPx_out;
-    }
-    Double_t GetPyOut() const
-    {
-        return fPy_out;
-    }
-    Double_t GetPzOut() const
-    {
-        return fPz_out;
-    }
-    Double_t GetPxIn() const
-    {
-        return fPx;
-    }
-    Double_t GetPyIn() const
-    {
-        return fPy;
-    }
-    Double_t GetPzIn() const
-    {
-        return fPz;
-    }
+    Double_t GetXIn() const { return fX; }
+    Double_t GetYIn() const { return fY; }
+    Double_t GetZIn() const { return fZ; }
+    Double_t GetXOut() const { return fX_out; }
+    Double_t GetYOut() const { return fY_out; }
+    Double_t GetZOut() const { return fZ_out; }
+    Double_t GetPxOut() const { return fPx_out; }
+    Double_t GetPyOut() const { return fPy_out; }
+    Double_t GetPzOut() const { return fPz_out; }
+    Double_t GetPxIn() const { return fPx; }
+    Double_t GetPyIn() const { return fPy; }
+    Double_t GetPzIn() const { return fPz; }
 
-    void PositionOut(TVector3& pos) const
-    {
-        pos.SetXYZ(fX_out, fY_out, fZ_out);
-    }
-    void MomentumOut(TVector3& mom) const
-    {
-        mom.SetXYZ(fPx_out, fPy_out, fPz_out);
-    }
+    void PositionOut(TVector3& pos) const { pos.SetXYZ(fX_out, fY_out, fZ_out); }
+    void MomentumOut(TVector3& mom) const { mom.SetXYZ(fPx_out, fPy_out, fPz_out); }
 
   private:
     Double32_t fX_out;

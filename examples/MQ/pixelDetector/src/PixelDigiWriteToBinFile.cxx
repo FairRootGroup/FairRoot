@@ -15,158 +15,153 @@
 #include "PixelDigiWriteToBinFile.h"
 
 // Includes from base
-#include "FairRootManager.h"
 #include "FairLogger.h"
+#include "FairRootManager.h"
 
 // Includes from ROOT
+#include "PixelDigi.h"
+
 #include <TClonesArray.h>
 #include <TString.h>
 
-#include "PixelDigi.h"
-
 PixelDigiWriteToBinFile::PixelDigiWriteToBinFile()
-  : PixelDigiWriteToBinFile("Pixel DigiWriter", 0)
-{
-}
+    : PixelDigiWriteToBinFile("Pixel DigiWriter", 0)
+{}
 
 PixelDigiWriteToBinFile::PixelDigiWriteToBinFile(Int_t iVerbose)
-  : PixelDigiWriteToBinFile("Pixel DigiWriter", iVerbose)
-{
-}
+    : PixelDigiWriteToBinFile("Pixel DigiWriter", iVerbose)
+{}
 
 PixelDigiWriteToBinFile::PixelDigiWriteToBinFile(const char* name, Int_t iVerbose)
-  : FairTask(name, iVerbose)
-  , fDigis(nullptr)
-  , fOutputFileName("test.dat")
-  , fNofOutputFiles(0)
-  , fOutputFiles()
-  , fDivideLevel(0)
-  , fRunId(0)
-  , fMCEntryNo(0)
-  , fPartNo(0)
+    : FairTask(name, iVerbose)
+    , fDigis(nullptr)
+    , fOutputFileName("test.dat")
+    , fNofOutputFiles(0)
+    , fOutputFiles()
+    , fDivideLevel(0)
+    , fRunId(0)
+    , fMCEntryNo(0)
+    , fPartNo(0)
 
 {
-  Reset();
+    Reset();
 }
 
-PixelDigiWriteToBinFile::~PixelDigiWriteToBinFile()
-{
-  Reset();
-}
+PixelDigiWriteToBinFile::~PixelDigiWriteToBinFile() { Reset(); }
 
 void PixelDigiWriteToBinFile::Exec(Option_t* /*opt*/)
 {
-  Reset();
+    Reset();
 
-  Int_t nofDigis = fDigis->GetEntriesFast();
+    Int_t nofDigis = fDigis->GetEntriesFast();
 
-  Int_t digisPerFile[12] = {0,0,0,0,0,0,0,0,0,0,0,0};
+    Int_t digisPerFile[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-  for (Int_t iDigi = 0; iDigi < nofDigis; iDigi++) {
-    PixelDigi* currentDigi = static_cast<PixelDigi*>(fDigis->At(iDigi));
+    for (Int_t iDigi = 0; iDigi < nofDigis; iDigi++) {
+        PixelDigi* currentDigi = static_cast<PixelDigi*>(fDigis->At(iDigi));
 
-    short int detId     = (short int)currentDigi->GetDetectorID();
+        short int detId = (short int)currentDigi->GetDetectorID();
 
-    Int_t fileToSave = 0;
-    if (fDivideLevel == 1) {
-      fileToSave = detId/256 - 1;
+        Int_t fileToSave = 0;
+        if (fDivideLevel == 1) {
+            fileToSave = detId / 256 - 1;
+        } else if (fDivideLevel == 2) {
+            fileToSave = (detId / 256 - 1) * 4 + (detId % 256 - 1);
+        }
+        digisPerFile[fileToSave] += 1;
     }
-    else if (fDivideLevel == 2) {
-      fileToSave = (detId/256 - 1)*4 + (detId%256 -1);
+
+    for (Int_t ifile = 0; ifile < fNofOutputFiles; ifile++) {
+        fOutputFiles[ifile].write((char*)&fRunId, sizeof(fRunId));
+        fOutputFiles[ifile].write((char*)&fMCEntryNo, sizeof(fMCEntryNo));
+        fOutputFiles[ifile].write((char*)&ifile, sizeof(ifile));
+        fOutputFiles[ifile].write((char*)&digisPerFile[ifile], sizeof(digisPerFile[ifile]));
     }
-    digisPerFile[fileToSave] += 1;
-  }
 
-  for (Int_t ifile = 0; ifile < fNofOutputFiles; ifile++) {
-    fOutputFiles[ifile].write((char*)&fRunId             , sizeof(fRunId));
-    fOutputFiles[ifile].write((char*)&fMCEntryNo         , sizeof(fMCEntryNo));
-    fOutputFiles[ifile].write((char*)&ifile              , sizeof(ifile));
-    fOutputFiles[ifile].write((char*)&digisPerFile[ifile], sizeof(digisPerFile[ifile]));
-  }
+    for (Int_t iDigi = 0; iDigi < nofDigis; iDigi++) {
+        PixelDigi* currentDigi = static_cast<PixelDigi*>(fDigis->At(iDigi));
 
-  for (Int_t iDigi = 0; iDigi < nofDigis; iDigi++) {
-    PixelDigi* currentDigi = static_cast<PixelDigi*>(fDigis->At(iDigi));
+        short int detId = (short int)currentDigi->GetDetectorID();
+        short int feId = (short int)currentDigi->GetFeID();
+        short int col = (short int)currentDigi->GetCol();
+        short int row = (short int)currentDigi->GetRow();
 
-    short int detId = (short int)currentDigi->GetDetectorID();
-    short int feId  = (short int)currentDigi->GetFeID();
-    short int col   = (short int)currentDigi->GetCol();
-    short int row   = (short int)currentDigi->GetRow();
-
-    Int_t fileToSave = 0;
-    if (fDivideLevel == 1) {
-      fileToSave = detId/256 - 1;
+        Int_t fileToSave = 0;
+        if (fDivideLevel == 1) {
+            fileToSave = detId / 256 - 1;
+        } else if (fDivideLevel == 2) {
+            fileToSave = (detId / 256 - 1) * 4 + (detId % 256 - 1);
+        }
+        fOutputFiles[fileToSave].write((char*)&detId, sizeof(detId));
+        fOutputFiles[fileToSave].write((char*)&feId, sizeof(feId));
+        fOutputFiles[fileToSave].write((char*)&col, sizeof(col));
+        fOutputFiles[fileToSave].write((char*)&row, sizeof(row));
     }
-    else if (fDivideLevel == 2) {
-      fileToSave = (detId/256 - 1)*4 + (detId%256 -1);
-    }
-    fOutputFiles[fileToSave].write((char*)&detId, sizeof(detId));
-    fOutputFiles[fileToSave].write((char*)&feId , sizeof(feId));
-    fOutputFiles[fileToSave].write((char*)&col  , sizeof(col ));
-    fOutputFiles[fileToSave].write((char*)&row  , sizeof(row ));
-  }
 
-  fMCEntryNo ++;
+    fMCEntryNo++;
 }
 
-InitStatus PixelDigiWriteToBinFile::Init() {
+InitStatus PixelDigiWriteToBinFile::Init()
+{
 
-  // Get input array
-  FairRootManager* ioman = FairRootManager::Instance();
+    // Get input array
+    FairRootManager* ioman = FairRootManager::Instance();
 
-  if (! ioman) LOG(fatal) << "No FairRootManager";
-  fDigis = static_cast<TClonesArray*>(ioman->GetObject("PixelDigis"));
+    if (!ioman)
+        LOG(fatal) << "No FairRootManager";
+    fDigis = static_cast<TClonesArray*>(ioman->GetObject("PixelDigis"));
 
-  if (!fDigis)
-    LOG(warn) << "PixelDigiWriteToBinFile::Init() No input PixelDigis array!";
+    if (!fDigis)
+        LOG(warn) << "PixelDigiWriteToBinFile::Init() No input PixelDigis array!";
 
-  LOG(info) << "-I- " << fName.Data() << "::Init(). Initialization succesfull.";
+    LOG(info) << "-I- " << fName.Data() << "::Init(). Initialization succesfull.";
 
-  fRunId = ioman->GetRunId();
+    fRunId = ioman->GetRunId();
 
-  if (fDivideLevel == 0) {
-    fNofOutputFiles =  1;
-    fOutputFiles[0].open(fOutputFileName.Data(),std::fstream::out|std::fstream::binary);
-  } else {
-    if (fDivideLevel == 1) {
-      fNofOutputFiles =  3; // 1 file per station (3 stations)
+    if (fDivideLevel == 0) {
+        fNofOutputFiles = 1;
+        fOutputFiles[0].open(fOutputFileName.Data(), std::fstream::out | std::fstream::binary);
+    } else {
+        if (fDivideLevel == 1) {
+            fNofOutputFiles = 3;   // 1 file per station (3 stations)
+        } else if (fDivideLevel == 2) {
+            fNofOutputFiles = 12;   // 1 file per sensor  (3 stations times 4 sensors)
+        } else {
+            LOG(fatal) << "PixelDigiWriteToBinFile::Init(), fDivideLevel = " << fDivideLevel
+                       << " unknown, it has to be in the range <0,2>";
+            return kFATAL;
+        }
+        for (Int_t ifile = 0; ifile < fNofOutputFiles; ifile++) {
+            TString fileName = fOutputFileName;
+            TString uniqFile = Form(".p%d.", ifile);
+            fileName.Replace(fileName.Last('.'), 1, uniqFile.Data());
+            fOutputFiles[ifile].open(fileName.Data(), std::fstream::out);
+        }
     }
-    else if (fDivideLevel == 2) {
-      fNofOutputFiles = 12; // 1 file per sensor  (3 stations times 4 sensors)
-    }
-    else {
-      LOG(fatal) << "PixelDigiWriteToBinFile::Init(), fDivideLevel = " << fDivideLevel << " unknown, it has to be in the range <0,2>";
-      return kFATAL;
-    }
-    for (Int_t ifile = 0; ifile < fNofOutputFiles; ifile++) {
-      TString fileName = fOutputFileName;
-      TString uniqFile = Form(".p%d.",ifile);
-      fileName.Replace(fileName.Last('.'),1,uniqFile.Data());
-      fOutputFiles[ifile].open(fileName.Data(),std::fstream::out);
-    }
-  }
 
-  return kSUCCESS;
+    return kSUCCESS;
 }
 
 InitStatus PixelDigiWriteToBinFile::ReInit()
 {
-  FairRootManager* ioman = FairRootManager::Instance();
+    FairRootManager* ioman = FairRootManager::Instance();
 
-  InitStatus Status = kFATAL;
-  if (!ioman) {
-    LOG(fatal) << "No FairRootManager found.";
-  } else {
-    fRunId = ioman->GetRunId();
-    fMCEntryNo = 0;
-    Status = kSUCCESS;
-  }
-  return Status;
+    InitStatus Status = kFATAL;
+    if (!ioman) {
+        LOG(fatal) << "No FairRootManager found.";
+    } else {
+        fRunId = ioman->GetRunId();
+        fMCEntryNo = 0;
+        Status = kSUCCESS;
+    }
+    return Status;
 }
 
-void PixelDigiWriteToBinFile::Finish() {
-  for (Int_t ifile = 0; ifile < fNofOutputFiles; ifile++) {
-    fOutputFiles[ifile].close();
-  }
+void PixelDigiWriteToBinFile::Finish()
+{
+    for (Int_t ifile = 0; ifile < fNofOutputFiles; ifile++) {
+        fOutputFiles[ifile].close();
+    }
 }
 
-ClassImp(PixelDigiWriteToBinFile)
+ClassImp(PixelDigiWriteToBinFile);

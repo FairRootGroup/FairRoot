@@ -17,10 +17,10 @@
 #define FAIRONLINESOURCE_H
 
 #include "FairSource.h"
-#include <TObjArray.h>
-#include <Rtypes.h>
-
 #include "FairUnpack.h"
+
+#include <Rtypes.h>
+#include <TObjArray.h>
 
 class FairOnlineSource : public FairSource
 {
@@ -33,7 +33,7 @@ class FairOnlineSource : public FairSource
     inline const TObjArray* GetUnpackers() const { return fUnpackers; }
 
     virtual Bool_t Init() = 0;
-    virtual Int_t ReadEvent(UInt_t=0) = 0;
+    virtual Int_t ReadEvent(UInt_t = 0) = 0;
     virtual void Close() = 0;
 
     virtual void SetParUnpackers();

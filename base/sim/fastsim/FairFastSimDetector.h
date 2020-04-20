@@ -51,4 +51,4 @@ class FairFastSimDetector : public FairDetector
     ClassDef(FairFastSimDetector, 1)
 };
 
-#endif //! FAIRFASTSIMDETECTOR_H
+#endif   //! FAIRFASTSIMDETECTOR_H

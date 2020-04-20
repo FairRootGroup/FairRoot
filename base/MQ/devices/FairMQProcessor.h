@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -15,11 +15,12 @@
 #ifndef FAIRMQPROCESSOR_H_
 #define FAIRMQPROCESSOR_H_
 
-#include <FairMQDevice.h>
 #include "FairMQProcessorTask.h"
+
+#include <FairMQDevice.h>
 #include <FairMQLogger.h>
 
-template <typename Task>
+template<typename Task>
 class FairMQProcessor : public FairMQDevice
 {
   public:
@@ -43,18 +44,15 @@ class FairMQProcessor : public FairMQDevice
         std::string inChannelName = fConfig->GetValue<std::string>("in-channel");
         std::string outChannelName = fConfig->GetValue<std::string>("out-channel");
         // check if the returned value actually exists, for the compatibility with old devices.
-        if (inChannelName != "")
-        {
+        if (inChannelName != "") {
             fInChannelName = inChannelName;
         }
-        if (outChannelName != "")
-        {
+        if (outChannelName != "") {
             fOutChannelName = outChannelName;
         }
 
         fProcessorTask->InitTask();
-        OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/)
-        {
+        OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/) {
             ++fReceivedMsgs;
             fProcessorTask->SetPayload(msg);
             fProcessorTask->Exec();
@@ -67,10 +65,7 @@ class FairMQProcessor : public FairMQDevice
         });
     }
 
-    virtual void PostRun()
-    {
-        LOG(info) << "Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!";
-    }
+    virtual void PostRun() { LOG(info) << "Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!"; }
 
   private:
     std::unique_ptr<FairMQProcessorTask> fProcessorTask;

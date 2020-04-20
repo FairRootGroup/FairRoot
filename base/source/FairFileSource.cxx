@@ -13,75 +13,74 @@
 //  Created by Mohammad Al-Turany on 08/02/14.
 //
 //
-#include "FairEventHeader.h"
 #include "FairFileSource.h"
+
+#include "FairEventHeader.h"
 #include "FairLogger.h"
 #include "FairMCEventHeader.h"
 #include "FairRootManager.h"
-#include "FairRuntimeDb.h" // for FairRuntimeDb
+#include "FairRuntimeDb.h"   // for FairRuntimeDb
 
+#include <TChain.h>
 #include <TChainElement.h>
 #include <TClass.h>
-#include <TCollection.h> // for TIter
+#include <TCollection.h>   // for TIter
 #include <TF1.h>
 #include <TFolder.h>
 #include <TList.h>
 #include <TObjArray.h>
-#include <TObject.h>
 #include <TObjString.h>
-#include <TRandom.h> // for TRandom, gRandom
+#include <TObject.h>
 #include <TROOT.h>
+#include <TRandom.h>   // for TRandom, gRandom
 #include <TString.h>
 #include <TTree.h>
-#include <TChain.h>
-#include <TF1.h>
-
-#include <algorithm> // for find
-#include <cmath> // fmod
-#include <cstdlib> // exit
-#include <list> // for _List_iterator, list, etc
-#include <map> // multimap
+#include <algorithm>   // for find
+#include <cmath>       // fmod
+#include <cstdlib>     // exit
+#include <list>        // for _List_iterator, list, etc
+#include <map>         // multimap
 #include <set>
 #include <typeinfo>
 #include <vector>
 
 using std::set;
 
-FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t)
-  : FairSource()
-  , fInputTitle(Title)
-  , fRootFile(f)
-  , fCurrentEntryNr(0)
-  , fFriendFileList()
-  , fInputChainList()
-  , fFriendTypeList()
-  , fCheckInputBranches()
-  , fInputLevel()
-  , fRunIdInfoAll()
-  , fInChain(0)
-  , fInTree(0)
-  , fListFolder(new TObjArray(16))
-  , fRtdb(FairRuntimeDb::instance())
-  , fCbmout(0)
-  , fCbmroot(0)
-  , fSourceIdentifier(0)
-  , fNoOfEntries(-1)
-  , IsInitialized(kFALSE)
-  , fMCHeader(0)
-  , fEvtHeader(0)
-  , fFileHeader(0)
-  , fEventTimeInMCHeader(kTRUE)
-  , fEvtHeaderIsNew(kFALSE)
-  , fCurrentEntryNo(0)
-  , fTimeforEntryNo(-1)
-  , fEventTimeMin(0.)
-  , fEventTimeMax(0.)
-  , fEventTime(0.)
-  , fBeamTime(-1.)
-  , fGapTime(-1.)
-  , fEventMeanTime(0.)
-  , fTimeProb(0)
-  , fCheckFileLayout(kTRUE)
+FairFileSource::FairFileSource(TFile* f, const char* Title, UInt_t)
+    : FairSource()
+    , fInputTitle(Title)
+    , fRootFile(f)
+    , fCurrentEntryNr(0)
+    , fFriendFileList()
+    , fInputChainList()
+    , fFriendTypeList()
+    , fCheckInputBranches()
+    , fInputLevel()
+    , fRunIdInfoAll()
+    , fInChain(0)
+    , fInTree(0)
+    , fListFolder(new TObjArray(16))
+    , fRtdb(FairRuntimeDb::instance())
+    , fCbmout(0)
+    , fCbmroot(0)
+    , fSourceIdentifier(0)
+    , fNoOfEntries(-1)
+    , IsInitialized(kFALSE)
+    , fMCHeader(0)
+    , fEvtHeader(0)
+    , fFileHeader(0)
+    , fEventTimeInMCHeader(kTRUE)
+    , fEvtHeaderIsNew(kFALSE)
+    , fCurrentEntryNo(0)
+    , fTimeforEntryNo(-1)
+    , fEventTimeMin(0.)
+    , fEventTimeMax(0.)
+    , fEventTime(0.)
+    , fBeamTime(-1.)
+    , fGapTime(-1.)
+    , fEventMeanTime(0.)
+    , fTimeProb(0)
+    , fCheckFileLayout(kTRUE)
 {
     if (fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
@@ -90,40 +89,40 @@ FairFileSource::FairFileSource(TFile *f, const char* Title, UInt_t)
 }
 
 FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, UInt_t)
-  : FairSource()
-  , fInputTitle(Title)
-  , fRootFile(0)
-  , fCurrentEntryNr(0)
-  , fFriendFileList()
-  , fInputChainList()
-  , fFriendTypeList()
-  , fCheckInputBranches()
-  , fInputLevel()
-  , fRunIdInfoAll()
-  , fInChain(0)
-  , fInTree(0)
-  , fListFolder(new TObjArray(16))
-  , fRtdb(FairRuntimeDb::instance())
-  , fCbmout(0)
-  , fCbmroot(0)
-  , fSourceIdentifier(0)
-  , fNoOfEntries(-1)
-  , IsInitialized(kFALSE)
-  , fMCHeader(0)
-  , fEvtHeader(0)
-  , fFileHeader(0)
-  , fEventTimeInMCHeader(kTRUE)
-  , fEvtHeaderIsNew(kFALSE)
-  , fCurrentEntryNo(0)
-  , fTimeforEntryNo(-1)
-  , fEventTimeMin(0.)
-  , fEventTimeMax(0.)
-  , fEventTime(0.)
-  , fBeamTime(-1.)
-  , fGapTime(-1.)
-  , fEventMeanTime(0.)
-  , fTimeProb(0)
-  , fCheckFileLayout(kTRUE)
+    : FairSource()
+    , fInputTitle(Title)
+    , fRootFile(0)
+    , fCurrentEntryNr(0)
+    , fFriendFileList()
+    , fInputChainList()
+    , fFriendTypeList()
+    , fCheckInputBranches()
+    , fInputLevel()
+    , fRunIdInfoAll()
+    , fInChain(0)
+    , fInTree(0)
+    , fListFolder(new TObjArray(16))
+    , fRtdb(FairRuntimeDb::instance())
+    , fCbmout(0)
+    , fCbmroot(0)
+    , fSourceIdentifier(0)
+    , fNoOfEntries(-1)
+    , IsInitialized(kFALSE)
+    , fMCHeader(0)
+    , fEvtHeader(0)
+    , fFileHeader(0)
+    , fEventTimeInMCHeader(kTRUE)
+    , fEvtHeaderIsNew(kFALSE)
+    , fCurrentEntryNo(0)
+    , fTimeforEntryNo(-1)
+    , fEventTimeMin(0.)
+    , fEventTimeMax(0.)
+    , fEventTime(0.)
+    , fBeamTime(-1.)
+    , fGapTime(-1.)
+    , fEventMeanTime(0.)
+    , fTimeProb(0)
+    , fCheckFileLayout(kTRUE)
 {
     fRootFile = TFile::Open(RootFileName->Data());
     if (fRootFile->IsZombie()) {
@@ -133,40 +132,40 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
 }
 
 FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UInt_t)
-  : FairSource()
-  , fInputTitle(Title)
-  , fRootFile(0)
-  , fCurrentEntryNr(0)
-  , fFriendFileList()
-  , fInputChainList()
-  , fFriendTypeList()
-  , fCheckInputBranches()
-  , fInputLevel()
-  , fRunIdInfoAll()
-  , fInChain(0)
-  , fInTree(0)
-  , fListFolder(new TObjArray(16))
-  , fRtdb(FairRuntimeDb::instance())
-  , fCbmout(0)
-  , fCbmroot(0)
-  , fSourceIdentifier(0)
-  , fNoOfEntries(-1)
-  , IsInitialized(kFALSE)
-  , fMCHeader(0)
-  , fEvtHeader(0)
-  , fFileHeader(0)
-  , fEventTimeInMCHeader(kTRUE)
-  , fEvtHeaderIsNew(kFALSE)
-  , fCurrentEntryNo(0)
-  , fTimeforEntryNo(-1)
-  , fEventTimeMin(0.)
-  , fEventTimeMax(0.)
-  , fEventTime(0.)
-  , fBeamTime(-1.)
-  , fGapTime(-1.)
-  , fEventMeanTime(0.)
-  , fTimeProb(0)
-  , fCheckFileLayout(kTRUE)
+    : FairSource()
+    , fInputTitle(Title)
+    , fRootFile(0)
+    , fCurrentEntryNr(0)
+    , fFriendFileList()
+    , fInputChainList()
+    , fFriendTypeList()
+    , fCheckInputBranches()
+    , fInputLevel()
+    , fRunIdInfoAll()
+    , fInChain(0)
+    , fInTree(0)
+    , fListFolder(new TObjArray(16))
+    , fRtdb(FairRuntimeDb::instance())
+    , fCbmout(0)
+    , fCbmroot(0)
+    , fSourceIdentifier(0)
+    , fNoOfEntries(-1)
+    , IsInitialized(kFALSE)
+    , fMCHeader(0)
+    , fEvtHeader(0)
+    , fFileHeader(0)
+    , fEventTimeInMCHeader(kTRUE)
+    , fEvtHeaderIsNew(kFALSE)
+    , fCurrentEntryNo(0)
+    , fTimeforEntryNo(-1)
+    , fEventTimeMin(0.)
+    , fEventTimeMax(0.)
+    , fEventTime(0.)
+    , fBeamTime(-1.)
+    , fGapTime(-1.)
+    , fEventMeanTime(0.)
+    , fTimeProb(0)
+    , fCheckFileLayout(kTRUE)
 {
     fRootFile = TFile::Open(RootFileName.Data());
     if (fRootFile->IsZombie()) {
@@ -175,9 +174,7 @@ FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UI
     LOG(debug) << "FairFileSource created------------";
 }
 
-FairFileSource::~FairFileSource()
-{
-}
+FairFileSource::~FairFileSource() {}
 
 Bool_t FairFileSource::Init()
 {
@@ -186,7 +183,7 @@ Bool_t FairFileSource::Init()
         return kTRUE;
     }
     if (!fInChain) {
-        fInChain = new TChain(FairRootManager::GetTreeName(), Form("/%s",FairRootManager::GetFolderName()));
+        fInChain = new TChain(FairRootManager::GetTreeName(), Form("/%s", FairRootManager::GetFolderName()));
         LOG(debug) << "FairFileSource::Init() chain created";
         FairRootManager::Instance()->SetInChain(fInChain);
     }
@@ -219,7 +216,7 @@ Bool_t FairFileSource::Init()
     // branch structure. Without this check it is possible to add trees
     // with a different branch structure but the same tree name. ROOT
     // probably only checks if the name of the tree is the same.
-    TList* list= dynamic_cast<TList*>(fRootFile->Get("BranchList"));
+    TList* list = dynamic_cast<TList*>(fRootFile->Get("BranchList"));
     if (list == 0) {
         LOG(fatal) << "No Branch list in input file";
     }
@@ -233,7 +230,7 @@ Bool_t FairFileSource::Init()
         for (Int_t i = 0; i < list->GetEntries(); i++) {
             Obj = dynamic_cast<TObjString*>(list->At(i));
             if (Obj != 0) {
-                ObjName=Obj->GetString();
+                ObjName = Obj->GetString();
                 LOG(debug) << "Branch name " << ObjName.Data();
                 fCheckInputBranches[chainName]->push_back(ObjName.Data());
 
@@ -263,50 +260,51 @@ Bool_t FairFileSource::Init()
         // is needed to bring the friend trees in the correct order
         TFile* inputFile = TFile::Open(fileName);
         if (inputFile->IsZombie()) {
-          LOG(fatal) << "Error opening the file " << fileName.Data() << " which should be added to the input chain or as friend chain";
+            LOG(fatal) << "Error opening the file " << fileName.Data()
+                       << " which should be added to the input chain or as friend chain";
         }
 
         if (fCheckFileLayout) {
-          // Check if the branchlist is the same as for the first input file.
-          Bool_t isOk = CompareBranchList(inputFile, chainName);
-          if (!isOk) {
-            LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName() << " and the file to be added " << fileName.Data() << " are different.";
-            return kFALSE;
-          }
+            // Check if the branchlist is the same as for the first input file.
+            Bool_t isOk = CompareBranchList(inputFile, chainName);
+            if (!isOk) {
+                LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName()
+                           << " and the file to be added " << fileName.Data() << " are different.";
+                return kFALSE;
+            }
         }
 
         // Add the runid information for all files in the chain.
-        //GetRunIdInfo(inputFile->GetName(), chainName);
+        // GetRunIdInfo(inputFile->GetName(), chainName);
         // Add the file to the input chain
         fInChain->Add(fileName);
 
         // Close the temporarly file and restore the gFile pointer.
         inputFile->Close();
         gFile = temp;
-
     }
     fNoOfEntries = fInChain->GetEntries();
 
     LOG(debug) << "Entries in this Source " << fNoOfEntries;
 
-    for (Int_t i=0; i<fListFolder->GetEntriesFast(); i++) {
-       TFolder* fold = static_cast<TFolder*>(fListFolder->At(i));
-       fEvtHeader = static_cast<FairEventHeader*>(fold->FindObjectAny("EventHeader."));
-       fMCHeader  = static_cast<FairMCEventHeader*>(fold->FindObjectAny("MCEventHeader."));
-       if (fEvtHeader) {
-            ActivateObject(reinterpret_cast<TObject**>(&fEvtHeader),"EventHeader.");
-       }
-       if (fMCHeader) {
-            ActivateObject(reinterpret_cast<TObject**>(&fMCHeader),"MCEventHeader.");
-       }
+    for (Int_t i = 0; i < fListFolder->GetEntriesFast(); i++) {
+        TFolder* fold = static_cast<TFolder*>(fListFolder->At(i));
+        fEvtHeader = static_cast<FairEventHeader*>(fold->FindObjectAny("EventHeader."));
+        fMCHeader = static_cast<FairMCEventHeader*>(fold->FindObjectAny("MCEventHeader."));
+        if (fEvtHeader) {
+            ActivateObject(reinterpret_cast<TObject**>(&fEvtHeader), "EventHeader.");
+        }
+        if (fMCHeader) {
+            ActivateObject(reinterpret_cast<TObject**>(&fMCHeader), "MCEventHeader.");
+        }
     }
 
     FairRootManager::Instance()->SetListOfFolders(fListFolder);
 
     AddFriendsToChain();
 
-    TList* timebasedlist= dynamic_cast<TList*>(fRootFile->Get("TimeBasedBranchList"));
-    if (timebasedlist==0) {
+    TList* timebasedlist = dynamic_cast<TList*>(fRootFile->Get("TimeBasedBranchList"));
+    if (timebasedlist == 0) {
         LOG(warn) << "No time based branch list in input file";
     } else {
         FairRootManager::Instance()->SetTimeBasedBranchNameList(timebasedlist);
@@ -315,13 +313,13 @@ Bool_t FairFileSource::Init()
     return kTRUE;
 }
 
-void FairFileSource::SetInTree(TTree*  tempTree)
+void FairFileSource::SetInTree(TTree* tempTree)
 {
     fInTree = nullptr;
-    fInTree  = tempTree;
-    fRootFile=static_cast<TFile*>(tempTree->GetCurrentFile());
+    fInTree = tempTree;
+    fRootFile = static_cast<TFile*>(tempTree->GetCurrentFile());
     fInChain->Reset();
-    IsInitialized=kFALSE;
+    IsInitialized = kFALSE;
     Init();
 }
 
@@ -329,29 +327,19 @@ Int_t FairFileSource::ReadEvent(UInt_t i)
 {
     fCurrentEntryNo = i;
     fEventTime = GetEventTime();
-    if (fInChain->GetEntry(i)) return 0;
+    if (fInChain->GetEntry(i))
+        return 0;
 
     return 1;
 }
 
-void FairFileSource::Close()
-{
-    CloseInFile();
-}
+void FairFileSource::Close() { CloseInFile(); }
 
-void FairFileSource::Reset()
-{
-}
+void FairFileSource::Reset() {}
 
-void FairFileSource::AddFriend(TString fName)
-{
-    fFriendFileList.push_back(fName);
-}
+void FairFileSource::AddFriend(TString fName) { fFriendFileList.push_back(fName); }
 
-void FairFileSource::AddFile(TString FileName)
-{
-    fInputChainList.push_back(FileName);
-}
+void FairFileSource::AddFile(TString FileName) { fInputChainList.push_back(FileName); }
 
 void FairFileSource::AddFriendsToChain()
 {
@@ -396,7 +384,8 @@ void FairFileSource::AddFriendsToChain()
 
             inputFile = TFile::Open(fileName);
             if (inputFile->IsZombie()) {
-                LOG(fatal) << "Error opening the file " << level.Data() << " which should be added to the input chain or as friend chain";
+                LOG(fatal) << "Error opening the file " << level.Data()
+                           << " which should be added to the input chain or as friend chain";
             }
 
             // Check if the branchlist is already stored in the map. If it is
@@ -410,7 +399,7 @@ void FairFileSource::AddFriendsToChain()
             inputFile->Close();
         }
         if (!inputLevelFound) {
-            inputLevel = Form("FriendTree_%i",friendType);
+            inputLevel = Form("FriendTree_%i", friendType);
             CreateNewFriendChain(fileName, inputLevel);
             friendType++;
         }
@@ -455,7 +444,7 @@ void FairFileSource::PrintFriendList()
         fileElements = chain->GetListOfFiles();
         TIter next1(fileElements);
         chEl = 0;
-        while ((chEl=static_cast<TChainElement*>(next1()))) {
+        while ((chEl = static_cast<TChainElement*>(next1()))) {
             LOG(info) << "    - " << chEl->GetTitle();
         }
     }
@@ -463,7 +452,7 @@ void FairFileSource::PrintFriendList()
 
 void FairFileSource::CheckFriendChains()
 {
-    std::multimap<TString, std::multimap<TString,TArrayI>>::iterator it1;
+    std::multimap<TString, std::multimap<TString, TArrayI>>::iterator it1;
     std::multimap<TString, TArrayI> map1;
 
     // Get the structure from the input chain
@@ -502,7 +491,7 @@ void FairFileSource::CheckFriendChains()
                 }
                 counter++;
             }
-            if (errorFlag>0) {
+            if (errorFlag > 0) {
                 break;
             }
         }
@@ -514,7 +503,7 @@ void FairFileSource::CheckFriendChains()
         LOG(error) << "The input chain and the friend chain " << inputLevel.Data() << " have a different structure:";
         if (errorFlag == 1) {
             LOG(error) << "The input chain has the following runids and event numbers:";
-            for (UInt_t i=0; i<runid.size(); i++) {
+            for (UInt_t i = 0; i < runid.size(); i++) {
                 LOG(error) << " - Runid " << runid[i] << " with " << events[i] << " events";
             }
             LOG(error) << "The " << inputLevel.Data() << " chain has the following runids and event numbers:";
@@ -527,8 +516,10 @@ void FairFileSource::CheckFriendChains()
             Int_t counter = 0;
             for (auto& mmi : map1) {
                 TArrayI bla = mmi.second;
-                LOG(error) << "Runid Input Chain, " << inputLevel.Data() << " chain: " << bla[0] << ", " << runid[counter];
-                LOG(error) << "Event number Input Chain, " << inputLevel.Data() << " chain: " << bla[1] << ", " << events[counter];
+                LOG(error) << "Runid Input Chain, " << inputLevel.Data() << " chain: " << bla[0] << ", "
+                           << runid[counter];
+                LOG(error) << "Event number Input Chain, " << inputLevel.Data() << " chain: " << bla[1] << ", "
+                           << events[counter];
                 counter++;
             }
         }
@@ -569,15 +560,15 @@ void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
     fInputLevel.push_back(chainName);
     fCheckInputBranches[chainName] = new std::list<TString>;
     if (list) {
-        TObjString* Obj=0;
-        for (Int_t i =0; i< list->GetEntries(); i++) {
-            Obj=dynamic_cast<TObjString*>(list->At(i));
+        TObjString* Obj = 0;
+        for (Int_t i = 0; i < list->GetEntries(); i++) {
+            Obj = dynamic_cast<TObjString*>(list->At(i));
             fCheckInputBranches[chainName]->push_back(Obj->GetString().Data());
             FairRootManager::Instance()->AddBranchToList(Obj->GetString().Data());
         }
     }
 
-    TChain* chain = new TChain(inputLevel,folderName);
+    TChain* chain = new TChain(inputLevel, folderName);
     fFriendTypeList[inputLevel] = chain;
 
     f->Close();
@@ -604,14 +595,14 @@ Bool_t FairFileSource::CompareBranchList(TFile* fileHandle, TString inputLevel)
     // the list. If in the end no branch is left in the list everything is
     // fine.
     set<TString>::iterator iter1;
-    TList* list= dynamic_cast<TList*>(fileHandle->Get("BranchList"));
+    TList* list = dynamic_cast<TList*>(fileHandle->Get("BranchList"));
     if (list) {
         TObjString* Obj = 0;
-        for (Int_t i = 0; i< list->GetEntries(); i++) {
+        for (Int_t i = 0; i < list->GetEntries(); i++) {
             Obj = dynamic_cast<TObjString*>(list->At(i));
-            iter1=branches.find(Obj->GetString().Data());
+            iter1 = branches.find(Obj->GetString().Data());
             if (iter1 != branches.end()) {
-                branches.erase (iter1);
+                branches.erase(iter1);
             } else {
                 // Not found is an error because branch structure is
                 // different. It is impossible to add to tree with a
@@ -636,12 +627,12 @@ Bool_t FairFileSource::CompareBranchList(TFile* fileHandle, TString inputLevel)
 Bool_t FairFileSource::ActivateObject(TObject** obj, const char* BrName)
 {
     if (fInTree) {
-        fInTree->SetBranchStatus(BrName,1);
-        fInTree->SetBranchAddress(BrName,obj);
+        fInTree->SetBranchStatus(BrName, 1);
+        fInTree->SetBranchAddress(BrName, obj);
     }
     if (fInChain) {
-        fInChain->SetBranchStatus(BrName,1);
-        fInChain->SetBranchAddress(BrName,obj);
+        fInChain->SetBranchStatus(BrName, 1);
+        fInChain->SetBranchAddress(BrName, obj);
     }
 
     return kTRUE;
@@ -650,7 +641,8 @@ Bool_t FairFileSource::ActivateObject(TObject** obj, const char* BrName)
 namespace {
 
 template<typename S>
-bool ActivateObjectAnyImpl(S* source, void **obj, const std::type_info& info, const char* brname) {
+bool ActivateObjectAnyImpl(S* source, void** obj, const std::type_info& info, const char* brname)
+{
     // we check if the types match at all
     auto br = source->GetBranch(brname);
     if (!br) {
@@ -669,7 +661,8 @@ bool ActivateObjectAnyImpl(S* source, void **obj, const std::type_info& info, co
 
     // check consistency of types
     if (info.hash_code() != storedtype->hash_code()) {
-        LOG(info) << "Trying to read from branch " << brname << " with wrong type " << info.name() << " (expected: " << storedtype->name() << ")\n";
+        LOG(info) << "Trying to read from branch " << brname << " with wrong type " << info.name()
+                  << " (expected: " << storedtype->name() << ")\n";
         return false;
     }
     source->SetBranchStatus(brname, 1);
@@ -678,7 +671,7 @@ bool ActivateObjectAnyImpl(S* source, void **obj, const std::type_info& info, co
     return true;
 }
 
-}
+}   // namespace
 
 Bool_t FairFileSource::ActivateObjectAny(void** obj, const std::type_info& info, const char* BrName)
 {
@@ -723,10 +716,10 @@ void FairFileSource::SetEventMeanTime(Double_t mean)
     form+=")";
     fTimeProb= new TF1("TimeProb.", form.Data(), 0., mean*10);
     */
-    fTimeProb = new TF1("TimeProb","(1/[0])*exp(-x/[0])", 0., mean*10);
-    fTimeProb->SetParameter(0,mean);
+    fTimeProb = new TF1("TimeProb", "(1/[0])*exp(-x/[0])", 0., mean * 10);
+    fTimeProb->SetParameter(0, mean);
     fTimeProb->GetRandom();
-    fEventTimeInMCHeader=kFALSE;
+    fEventTimeInMCHeader = kFALSE;
 }
 
 void FairFileSource::SetEventTimeInterval(Double_t min, Double_t max)
@@ -746,11 +739,10 @@ void FairFileSource::SetBeamTime(Double_t beamTime, Double_t gapTime)
 void FairFileSource::SetEventTime()
 {
     // Check if the time for the current entry is already set
-    if (fTimeforEntryNo==fCurrentEntryNo) return;
-    LOG(debug) << "Set event time for Entry = "
-         << fTimeforEntryNo << " , where the current entry is "
-         << fCurrentEntryNo << " and eventTime is "
-         << fEventTime;
+    if (fTimeforEntryNo == fCurrentEntryNo)
+        return;
+    LOG(debug) << "Set event time for Entry = " << fTimeforEntryNo << " , where the current entry is "
+               << fCurrentEntryNo << " and eventTime is " << fEventTime;
     if (fBeamTime < 0) {
         fEventTime += GetDeltaEventTime();
     } else {
@@ -759,67 +751,66 @@ void FairFileSource::SetEventTime()
         } while (fmod(fEventTime, fBeamTime + fGapTime) > fBeamTime);
     }
     LOG(debug) << "New time = " << fEventTime;
-    fTimeforEntryNo=fCurrentEntryNo;
+    fTimeforEntryNo = fCurrentEntryNo;
 }
 
 Double_t FairFileSource::GetDeltaEventTime()
 {
-  Double_t deltaTime = 0;
-  if (fTimeProb != 0) {
-    deltaTime = fTimeProb->GetRandom();
-    LOG(debug) << "Time set via sampling method : " <<  deltaTime;
-  } else {
-    deltaTime = gRandom->Uniform(fEventTimeMin, fEventTimeMax);
-    LOG(debug) << "Time set via Uniform Random : "
-	       << deltaTime;
-  }
-  return deltaTime;
+    Double_t deltaTime = 0;
+    if (fTimeProb != 0) {
+        deltaTime = fTimeProb->GetRandom();
+        LOG(debug) << "Time set via sampling method : " << deltaTime;
+    } else {
+        deltaTime = gRandom->Uniform(fEventTimeMin, fEventTimeMax);
+        LOG(debug) << "Time set via Uniform Random : " << deltaTime;
+    }
+    return deltaTime;
 }
 
 Double_t FairFileSource::GetEventTime()
 {
- LOG(debug) << "-- Get Event Time --";
-  if (!fEvtHeaderIsNew && fEvtHeader!=0) {
-    Double_t EvtTime=fEvtHeader->GetEventTime();
-    if (!(EvtTime<0)) {
-      return   EvtTime;
+    LOG(debug) << "-- Get Event Time --";
+    if (!fEvtHeaderIsNew && fEvtHeader != 0) {
+        Double_t EvtTime = fEvtHeader->GetEventTime();
+        if (!(EvtTime < 0)) {
+            return EvtTime;
+        }
     }
-  }
 
-  if (fEventTimeInMCHeader && !fMCHeader) {
-    LOG(debug) << "No MCEventHeader, time is set to 0";
-    return 0;
-  } else if (fEventTimeInMCHeader && fMCHeader) {
-    fEventTime=fMCHeader->GetT();
-    LOG(debug) << "Get event time from MCEventHeader : "
-	       << fEventTime << " ns";
-    return fEventTime;
-  } else {
+    if (fEventTimeInMCHeader && !fMCHeader) {
+        LOG(debug) << "No MCEventHeader, time is set to 0";
+        return 0;
+    } else if (fEventTimeInMCHeader && fMCHeader) {
+        fEventTime = fMCHeader->GetT();
+        LOG(debug) << "Get event time from MCEventHeader : " << fEventTime << " ns";
+        return fEventTime;
+    } else {
 
-    if (fTimeforEntryNo!=fCurrentEntryNo) {
-      SetEventTime();
+        if (fTimeforEntryNo != fCurrentEntryNo) {
+            SetEventTime();
+        }
+        LOG(debug) << "Calculate event time from user input : " << fEventTime << " ns";
+        return fEventTime;
     }
-    LOG(debug) << "Calculate event time from user input : "
-	       << fEventTime << " ns";
-    return fEventTime;
-  }
 }
 
 void FairFileSource::ReadBranchEvent(const char* BrName)
 {
-  /**fill the object with content if the other branches in this tree entry were already read**/
-  if (fEvtHeader == 0) { return; } //No event header, Reading will start later
-  if (fInTree) {
-    fInTree->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
-    fEventTime = GetEventTime();
+    /**fill the object with content if the other branches in this tree entry were already read**/
+    if (fEvtHeader == 0) {
+        return;
+    }   // No event header, Reading will start later
+    if (fInTree) {
+        fInTree->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
+        fEventTime = GetEventTime();
+        return;
+    }
+    if (fInChain) {
+        fInChain->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
+        fEventTime = GetEventTime();
+        return;
+    }
     return;
-  }
-  if (fInChain) {
-    fInChain->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
-    fEventTime = GetEventTime();
-    return;
-  }
-  return;
 }
 void FairFileSource::ReadBranchEvent(const char* BrName, Int_t Entry)
 {
@@ -839,17 +830,17 @@ void FairFileSource::ReadBranchEvent(const char* BrName, Int_t Entry)
 
 void FairFileSource::FillEventHeader(FairEventHeader* feh)
 {
-  feh->SetEventTime(fEventTime);
-  if (fEvtHeader) {
-    feh->SetRunId(fEvtHeader->GetRunId());
-    feh->SetMCEntryNumber(fEvtHeader->GetMCEntryNumber());
-  }
-  if (fMCHeader) {
-    feh->SetRunId(fMCHeader->GetRunID());
-    feh->SetMCEntryNumber(fMCHeader->GetEventID());
-  }
-  feh->SetInputFileId(0);
-  return;
+    feh->SetEventTime(fEventTime);
+    if (fEvtHeader) {
+        feh->SetRunId(fEvtHeader->GetRunId());
+        feh->SetMCEntryNumber(fEvtHeader->GetMCEntryNumber());
+    }
+    if (fMCHeader) {
+        feh->SetRunId(fMCHeader->GetRunID());
+        feh->SetMCEntryNumber(fMCHeader->GetEventID());
+    }
+    feh->SetInputFileId(0);
+    return;
 }
 
-ClassImp(FairFileSource)
+ClassImp(FairFileSource);

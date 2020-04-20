@@ -5,17 +5,14 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include <memory>
-
+#include "FairMQExHistoServer.h"
 #include "runFairMQDevice.h"
 
-#include "FairMQExHistoServer.h"
+#include <memory>
 
 namespace bpo = boost::program_options;
 
-void addCustomOptions(bpo::options_description& /*options*/)
-{
-}
+void addCustomOptions(bpo::options_description& /*options*/) {}
 
 std::unique_ptr<FairMQExHistoCanvasDrawer> getCanvasDrawer();
 

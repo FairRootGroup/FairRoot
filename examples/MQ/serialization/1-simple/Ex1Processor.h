@@ -3,14 +3,11 @@
 
 #include "MyDigi.h"
 #include "MyHit.h"
-
 #include "RootSerializer.h"
 
 #include <FairMQDevice.h>
-
 #include <TClonesArray.h>
 #include <TMath.h>
-
 #include <memory>
 
 class Ex1Processor : public FairMQDevice
@@ -23,27 +20,20 @@ class Ex1Processor : public FairMQDevice
     Ex1Processor(const Ex1Processor&);
     Ex1Processor& operator=(const Ex1Processor&);
 
-    virtual ~Ex1Processor()
-    {
-    }
+    virtual ~Ex1Processor() {}
 
   protected:
-    virtual void Init()
-    {
-        fNumMsgs = fConfig->GetValue<int>("num-msgs");
-    }
+    virtual void Init() { fNumMsgs = fConfig->GetValue<int>("num-msgs"); }
 
     virtual void Run()
     {
         int receivedMsgs = 0;
         int sentMsgs = 0;
 
-        while (!NewStatePending())
-        {
+        while (!NewStatePending()) {
             /// RECEIVE ///
             FairMQMessagePtr msgIn(NewMessageFor("data1", 0));
-            if (Receive(msgIn, "data1") > 0)
-            {
+            if (Receive(msgIn, "data1") > 0) {
                 receivedMsgs++;
 
                 /// DESERIALIZE ///
@@ -61,10 +51,8 @@ class Ex1Processor : public FairMQDevice
                 Send(msgOut, "data2");
                 sentMsgs++;
 
-                if (fNumMsgs != 0)
-                {
-                    if (receivedMsgs == fNumMsgs)
-                    {
+                if (fNumMsgs != 0) {
+                    if (receivedMsgs == fNumMsgs) {
                         break;
                     }
                 }
@@ -78,8 +66,7 @@ class Ex1Processor : public FairMQDevice
     {
         TClonesArray hits("MyHit");
 
-        for (int i = 0; i < digis.GetEntriesFast(); i++)
-        {
+        for (int i = 0; i < digis.GetEntriesFast(); i++) {
             TVector3 pos;
             TVector3 dpos;
             // Double_t timestamp = 0;
@@ -101,4 +88,4 @@ class Ex1Processor : public FairMQDevice
     int fNumMsgs;
 };
 
-#endif // EX1PROCESSOR_H
+#endif   // EX1PROCESSOR_H

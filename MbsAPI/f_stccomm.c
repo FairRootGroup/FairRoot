@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "f_stccomm.h"
@@ -120,36 +120,35 @@ CHARS c_msg[80];
 /*1- PLI Main ****************+****************************************/
 /* %%-HEAD:  */
 
-INTS4 f_stc_read( p_buffer , i_buflen , i_channel , i_timeout )
-INTS1* p_buffer;
-INTS4  i_buflen;
-INTS4  i_channel;
-INTS4  i_timeout;
+INTS4 f_stc_read(p_buffer, i_buflen, i_channel, i_timeout) INTS1* p_buffer;
+INTS4 i_buflen;
+INTS4 i_channel;
+INTS4 i_timeout;
 {
-  INTS4                retval ,  buflen_tmp;
-  INTS1*               p_buffer_tmp;
-//   INTS4                rmask , wmask , emask;
-  INTS4                i_retry=0;
-  struct timeval       read_timeout;
-  fd_set               xrmask,xwmask,xemask;
-  INTS4                num_of_bytes_read = 0;
+    INTS4 retval, buflen_tmp;
+    INTS1* p_buffer_tmp;
+    //   INTS4                rmask , wmask , emask;
+    INTS4 i_retry = 0;
+    struct timeval read_timeout;
+    fd_set xrmask, xwmask, xemask;
+    INTS4 num_of_bytes_read = 0;
 
-  buflen_tmp        = i_buflen;
-  p_buffer_tmp      = p_buffer;            /* actual pointer to buffer      */
+    buflen_tmp = i_buflen;
+    p_buffer_tmp = p_buffer; /* actual pointer to buffer      */
 
-  FD_ZERO(&xrmask);
-  FD_ZERO(&xemask);
-  FD_ZERO(&xwmask);
-  FD_SET(i_channel,&xrmask);
-  read_timeout.tv_sec  = i_timeout;
-  read_timeout.tv_usec = 0;
+    FD_ZERO(&xrmask);
+    FD_ZERO(&xemask);
+    FD_ZERO(&xwmask);
+    FD_SET(i_channel, &xrmask);
+    read_timeout.tv_sec = i_timeout;
+    read_timeout.tv_usec = 0;
 #ifdef DEBUG
-  printf("STC: read %6d bytes channel %d ",i_buflen,i_channel);
-  fflush(stdout);
+    printf("STC: read %6d bytes channel %d ", i_buflen, i_channel);
+    fflush(stdout);
 #endif
-  while( num_of_bytes_read < i_buflen &&  buflen_tmp > 0 ) {
-    if( i_timeout >= 0 ) {
-      /*
+    while (num_of_bytes_read < i_buflen && buflen_tmp > 0) {
+        if (i_timeout >= 0) {
+            /*
       #ifdef GSI__AIX
            retval = select(32,&xrmask,&xwmask,&xemask,&read_timeout);
       #else
@@ -157,89 +156,90 @@ INTS4  i_timeout;
       #endif
       */
 
-      /* Changed by S.Linev, 18.09.2007 */
-//        retval = select(32,(fd_set*) &rmask, (fd_set*) &wmask, (fd_set*) &emask,&read_timeout);
-      retval = select(i_channel+1, &xrmask, &xwmask, &xemask, &read_timeout);
+            /* Changed by S.Linev, 18.09.2007 */
+            //        retval = select(32,(fd_set*) &rmask, (fd_set*) &wmask, (fd_set*) &emask,&read_timeout);
+            retval = select(i_channel + 1, &xrmask, &xwmask, &xemask, &read_timeout);
 
-      switch( retval ) {
-      case -1:
-        switch( errno ) {
-        case EBADF      :
-          return STC__INVSOCK;
-        case EINVAL     :
-          return STC__INVTIME;
-        case EINTR      :
-          continue;
-        case ECONNRESET :
-          return STC__ECONNRES;
-        default         :
-          sprintf(c_msg,"STC select error channel %d",i_channel);
-          perror(c_msg);
-          return STC__FAILURE;
+            switch (retval) {
+                case -1:
+                    switch (errno) {
+                        case EBADF:
+                            return STC__INVSOCK;
+                        case EINVAL:
+                            return STC__INVTIME;
+                        case EINTR:
+                            continue;
+                        case ECONNRESET:
+                            return STC__ECONNRES;
+                        default:
+                            sprintf(c_msg, "STC select error channel %d", i_channel);
+                            perror(c_msg);
+                            return STC__FAILURE;
+                    }
+                case 0:
+                    return STC__TIMEOUT;
+            }
         }
-      case 0:
-        return STC__TIMEOUT;
-      }
-    }
-    /* ------------------------------------------------------- */
-    /*   read data from the connect socket.                    */
-    /* ------------------------------------------------------- */
+        /* ------------------------------------------------------- */
+        /*   read data from the connect socket.                    */
+        /* ------------------------------------------------------- */
 #ifdef DEBUG
-    printf("read ");
-    fflush(stdout);
+        printf("read ");
+        fflush(stdout);
 #endif
 #ifdef GSI__WINNT
-    retval = recv(i_channel ,p_buffer_tmp, buflen_tmp,0);  /* Mohammad Al-Turany 31.07.00 */
+        retval = recv(i_channel, p_buffer_tmp, buflen_tmp, 0); /* Mohammad Al-Turany 31.07.00 */
 #else
-    retval = read(i_channel , p_buffer_tmp,buflen_tmp);
+        retval = read(i_channel, p_buffer_tmp, buflen_tmp);
 #endif
-    if( retval == -1 ) {
-      switch( errno ) {
-      case EBADF      :
-        return STC__INVSOCK;
-      case EFAULT     :
-        return STC__INVBUF;
-      case EINVAL     :
-        return STC__NGBUFSIZE;
-      case EINTR      :
-        return STC__EINTR;
-      case ECONNRESET :
-        return STC__ECONNRES;
-      default         :
-        sprintf(c_msg,"STC read error channel %d",i_channel);
-        perror(c_msg);
-        return STC__FAILURE;
-      }  /* switch( errno )  */
+        if (retval == -1) {
+            switch (errno) {
+                case EBADF:
+                    return STC__INVSOCK;
+                case EFAULT:
+                    return STC__INVBUF;
+                case EINVAL:
+                    return STC__NGBUFSIZE;
+                case EINTR:
+                    return STC__EINTR;
+                case ECONNRESET:
+                    return STC__ECONNRES;
+                default:
+                    sprintf(c_msg, "STC read error channel %d", i_channel);
+                    perror(c_msg);
+                    return STC__FAILURE;
+            } /* switch( errno )  */
 
-    } /* if( retval == -1 )  */
+        } /* if( retval == -1 )  */
 
-    /* ------------------------------------------------------- */
-    /*       set the num of bytes to read in the next          */
-    /*       read statement.                                   */
-    /* ------------------------------------------------------- */
+        /* ------------------------------------------------------- */
+        /*       set the num of bytes to read in the next          */
+        /*       read statement.                                   */
+        /* ------------------------------------------------------- */
 
-    num_of_bytes_read += retval;
-    buflen_tmp        -= retval;
-    p_buffer_tmp += retval;                 /* calc actual pointer   */
-    if( i_retry == 100000 ) {
-      printf("Request %d bytes, read %d, timeout after 100000 retries\n",i_buflen,num_of_bytes_read);
-      return STC__NODATA;
-    }
-    ++i_retry;
+        num_of_bytes_read += retval;
+        buflen_tmp -= retval;
+        p_buffer_tmp += retval; /* calc actual pointer   */
+        if (i_retry == 100000) {
+            printf("Request %d bytes, read %d, timeout after 100000 retries\n", i_buflen, num_of_bytes_read);
+            return STC__NODATA;
+        }
+        ++i_retry;
 
-    read_timeout.tv_sec  = 100;
-    read_timeout.tv_usec = 0;
+        read_timeout.tv_sec = 100;
+        read_timeout.tv_usec = 0;
 
-  } /* end while */
-
+    } /* end while */
 
 #ifdef DEBUG
-  printf("done\n");
-  fflush(stdout);
+    printf("done\n");
+    fflush(stdout);
 #endif
-  if( num_of_bytes_read == i_buflen ) { return STC__SUCCESS; }
+    if (num_of_bytes_read == i_buflen) {
+        return STC__SUCCESS;
+    }
 
-  return STC__FAILURE;
+    return STC__FAILURE;
 } /* f_stc_read()  */
 
 /* ------------------------------------------------------------------------- */
@@ -321,53 +321,53 @@ INTS4  i_timeout;
 /*1- PLI Main ****************+****************************************/
 /* %%-HEAD: */
 
-INTS4 f_stc_write( p_buffer , i_buflen , i_channel)
-INTS1* p_buffer;
-INTS4  i_buflen;
-INTS4  i_channel;
+INTS4 f_stc_write(p_buffer, i_buflen, i_channel) INTS1* p_buffer;
+INTS4 i_buflen;
+INTS4 i_channel;
 {
-  INTS4   l_retval;
+    INTS4 l_retval;
 
-  /* ---------------------------------------------------------- */
-  /*   send data to server.                                     */
-  /* ---------------------------------------------------------- */
-
-#ifdef DEBUG
-  printf("STC: write %5d bytes channel %d ",i_buflen,i_channel);
-  fflush(stdout);
-#endif
-  l_retval = send(i_channel , p_buffer , i_buflen , 0);
-
-  switch( l_retval ) {
-  case -1:
-    switch( errno ) {
-    case EBADF    :
-      return STC__INVSOCK;
-    case ENOTSOCK :
-      return STC__NOTSOCK;
-    case EFAULT   :
-      return STC__INVADDR;
-    default       :
-      sprintf(c_msg,"STC write error channel %d",i_channel);
-      perror(c_msg);
-      return STC__FAILURE;
-    } /*  switch( errno )  */
-
-  }  /* switch( l_retval )  */
-
-  /* ---------------------------------------------------------- */
-  /*   send() returns the number of bytes sent.                 */
-  /* ---------------------------------------------------------- */
+    /* ---------------------------------------------------------- */
+    /*   send data to server.                                     */
+    /* ---------------------------------------------------------- */
 
 #ifdef DEBUG
-  printf("done\n");
-  fflush(stdout);
+    printf("STC: write %5d bytes channel %d ", i_buflen, i_channel);
+    fflush(stdout);
 #endif
-  if(l_retval == i_buflen) { return STC__SUCCESS; }
+    l_retval = send(i_channel, p_buffer, i_buflen, 0);
 
-  return STC__FAILURE;
-}  /* end f_stc_write()  */
+    switch (l_retval) {
+        case -1:
+            switch (errno) {
+                case EBADF:
+                    return STC__INVSOCK;
+                case ENOTSOCK:
+                    return STC__NOTSOCK;
+                case EFAULT:
+                    return STC__INVADDR;
+                default:
+                    sprintf(c_msg, "STC write error channel %d", i_channel);
+                    perror(c_msg);
+                    return STC__FAILURE;
+            } /*  switch( errno )  */
 
+    } /* switch( l_retval )  */
+
+        /* ---------------------------------------------------------- */
+        /*   send() returns the number of bytes sent.                 */
+        /* ---------------------------------------------------------- */
+
+#ifdef DEBUG
+    printf("done\n");
+    fflush(stdout);
+#endif
+    if (l_retval == i_buflen) {
+        return STC__SUCCESS;
+    }
+
+    return STC__FAILURE;
+} /* end f_stc_write()  */
 
 /* %%+HEAD: */
 /*****************+***********+****************************************/
@@ -483,126 +483,114 @@ INTS4  i_channel;
 /*1- PLI Main ****************+****************************************/
 /* %%-HEAD: */
 
-INTS4 f_stc_connectserver( c_node , l_port , pi_channel , ps_client )
-CHARS* c_node;
-INTS4  l_port;
-INTS4*  pi_channel;
+INTS4 f_stc_connectserver(c_node, l_port, pi_channel, ps_client) CHARS* c_node;
+INTS4 l_port;
+INTS4* pi_channel;
 struct s_tcpcomm* ps_client;
 {
 
+    INTS4 /*shut,*/ retval;
+    //  INTS4 thirty = 30;
+    struct s_tcpcomm s_client;
+    memset(&s_client, 0, sizeof(s_client));
 
-  INTS4 /*shut,*/ retval ;
-//  INTS4 thirty = 30;
-  struct s_tcpcomm s_client;
-  memset(&s_client, 0, sizeof(s_client));
-
-  /* ----------------------------------------------------------------------- */
-  /*           init communication socket.              */
-  /* ----------------------------------------------------------------------- */
-
+    /* ----------------------------------------------------------------------- */
+    /*           init communication socket.              */
+    /* ----------------------------------------------------------------------- */
 
 #ifdef GSI__WINNT
-  WORD wVersionRequested;
-  WSADATA wsaData;
-  char message1[512];
-  wVersionRequested = MAKEWORD( 2, 2 );
-//err = WSAStartup( wVersionRequested, &wsaData );
-  if (WSAStartup( wVersionRequested, &wsaData)!=0) {
-    printf("WinSock NOT found");
-    /* Tell the user that we could not find a usable */
-    /* WinSock DLL.                                  */
-  }
+    WORD wVersionRequested;
+    WSADATA wsaData;
+    char message1[512];
+    wVersionRequested = MAKEWORD(2, 2);
+    // err = WSAStartup( wVersionRequested, &wsaData );
+    if (WSAStartup(wVersionRequested, &wsaData) != 0) {
+        printf("WinSock NOT found");
+        /* Tell the user that we could not find a usable */
+        /* WinSock DLL.                                  */
+    }
 
-  if ( LOBYTE( wsaData.wVersion ) != 2 ||
-       HIBYTE( wsaData.wVersion ) != 2 ) {
-    /* Tell the user that we could not find a usable */
-    /* WinSock DLL.
-    */
-    printf("WinSock %d.%d",LOBYTE( wsaData.wVersion ),HIBYTE( wsaData.wVersion ));
-    WSACleanup( );
-  }
+    if (LOBYTE(wsaData.wVersion) != 2 || HIBYTE(wsaData.wVersion) != 2) {
+        /* Tell the user that we could not find a usable */
+        /* WinSock DLL.
+         */
+        printf("WinSock %d.%d", LOBYTE(wsaData.wVersion), HIBYTE(wsaData.wVersion));
+        WSACleanup();
+    }
 
 #endif
 
+    s_client.socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
+    *ps_client = s_client;
+    *pi_channel = s_client.socket; /* save channel also in case of error */
+    /* 17.7.95, H.G. */
+    switch (s_client.socket) {
+        case -1:
+            switch (errno) {
+                case EAFNOSUPPORT:
+                    return STC__INVADDRF;
+                case ESOCKTNOSUPPORT:
+                    return STC__SOCKNSUP;
+                case EPROTONOSUPPORT:
+                    return STC__INVPROTO;
+                case EMFILE:
+                    return STC__SOCKTABF;
+                case ENOBUFS:
+                    return STC__SOCKSPAF;
+                default:
+                    return STC__FAILURE;
+            } /* switch( errno )  */
+    }         /* switch( s_client.socket)  */
 
-
-  s_client.socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-  *ps_client = s_client;
-  *pi_channel = s_client.socket; /* save channel also in case of error */
-  /* 17.7.95, H.G. */
-  switch( s_client.socket ) {
-  case -1:
-    switch( errno ) {
-    case EAFNOSUPPORT    :
-      return STC__INVADDRF;
-    case ESOCKTNOSUPPORT :
-      return STC__SOCKNSUP;
-    case EPROTONOSUPPORT :
-      return STC__INVPROTO;
-    case EMFILE          :
-      return STC__SOCKTABF;
-    case ENOBUFS         :
-      return STC__SOCKSPAF;
-    default              :
-      return STC__FAILURE;
-    } /* switch( errno )  */
-  } /* switch( s_client.socket)  */
-
-
-  if(( s_client.hostentptr = gethostbyname(c_node)) == NULL) {
+    if ((s_client.hostentptr = gethostbyname(c_node)) == NULL) {
 
 #ifdef GSI__WINNT
-    closesocket(s_client.socket);  /* Mohammad Al-Turany 31.07.00*/
+        closesocket(s_client.socket); /* Mohammad Al-Turany 31.07.00*/
 #else
-    close(s_client.socket);     /* close socket here and in any case! */
-    /* H.G., 17.7.95      */
+        close(s_client.socket); /* close socket here and in any case! */
+        /* H.G., 17.7.95      */
 #endif
-    /* printf("--E--f_stc_connectserver(): error gethostbyname: >%s<\n",c_node);*/
-    return STC__FAILURE;
-  }
+        /* printf("--E--f_stc_connectserver(): error gethostbyname: >%s<\n",c_node);*/
+        return STC__FAILURE;
+    }
 
+    s_client.hostentstruct = *s_client.hostentptr;
+    s_client.sock.sin_family = s_client.hostentstruct.h_addrtype;
+    s_client.sock.sin_port = htons(l_port);
+    s_client.sock.sin_addr = *((struct in_addr*)s_client.hostentstruct.h_addr);
 
-  s_client.hostentstruct   =   *s_client.hostentptr;
-  s_client.sock.sin_family =   s_client.hostentstruct.h_addrtype;
-  s_client.sock.sin_port   =   htons(l_port);
-  s_client.sock.sin_addr   =
-    * ((struct in_addr*) s_client.hostentstruct.h_addr);
-
-  retval = connect( s_client.socket,
-                    ( struct sockaddr*) &s_client.sock,
-                    sizeof(s_client.sock));
-  if( retval == -1) {
+    retval = connect(s_client.socket, (struct sockaddr*)&s_client.sock, sizeof(s_client.sock));
+    if (retval == -1) {
 #ifdef GSI__WINNT
-    closesocket(s_client.socket);  /* Mohammad Al-Turany 31.07.00*/
+        closesocket(s_client.socket); /* Mohammad Al-Turany 31.07.00*/
 #else
-    close(s_client.socket);     /* close socket here and in any case! */
-    /* H.G., 17.7.95      */
+        close(s_client.socket); /* close socket here and in any case! */
+                                /* H.G., 17.7.95      */
 #endif
-    switch( errno ) {
-    case EBADF       :
-      return STC__INVSOCK;
-    case ENOTSOCK    :
-      return STC__NOTSOCK;
-    case EISCONN     :
-      return STC__SOCKISC;
-    case ETIMEDOUT   :
-      return STC__CONNTOUT;
-    case ENETUNREACH :
-      return STC__NETUNREA;
-    case EADDRINUSE  :
-      return STC__PORTINUS;
-    case ECONNREFUSED :
-      return STC__ECONNREF;
-    default          :
-      return STC__FAILURE;
-    }  /* switch( errno )  */
-  }
+        switch (errno) {
+            case EBADF:
+                return STC__INVSOCK;
+            case ENOTSOCK:
+                return STC__NOTSOCK;
+            case EISCONN:
+                return STC__SOCKISC;
+            case ETIMEDOUT:
+                return STC__CONNTOUT;
+            case ENETUNREACH:
+                return STC__NETUNREA;
+            case EADDRINUSE:
+                return STC__PORTINUS;
+            case ECONNREFUSED:
+                return STC__ECONNREF;
+            default:
+                return STC__FAILURE;
+        } /* switch( errno )  */
+    }
 
-  *ps_client = s_client;
+    *ps_client = s_client;
 
-  return STC__SUCCESS;
+    return STC__SUCCESS;
 
 } /* f_stc_connectserver()  */
 
@@ -694,34 +682,30 @@ struct s_tcpcomm* ps_client;
 /*1- PLI Main ****************+****************************************/
 /* %%-HEAD: */
 
-INTS4 f_stc_acceptclient( ps_server , pi_channel)
-struct s_tcpcomm* ps_server;
+INTS4 f_stc_acceptclient(ps_server, pi_channel) struct s_tcpcomm* ps_server;
 INTS4* pi_channel;
 {
-//  INTS4 i_socket;
-//  struct hostent*  he;
+    //  INTS4 i_socket;
+    //  struct hostent*  he;
 
 #ifdef GSI__AIX
-  *pi_channel = accept( ps_server->sock_rw,
-                        ( struct sockaddr*) &ps_server->sock_name,
-                        (socklen_t*) &ps_server->namelength);
+    *pi_channel =
+        accept(ps_server->sock_rw, (struct sockaddr*)&ps_server->sock_name, (socklen_t*)&ps_server->namelength);
 #else
-  *pi_channel = accept( ps_server->sock_rw,
-                        ( struct sockaddr*) &ps_server->sock_name,
-                        (uint*)&ps_server->namelength);
+    *pi_channel = accept(ps_server->sock_rw, (struct sockaddr*)&ps_server->sock_name, (uint*)&ps_server->namelength);
 #endif
-  if( *pi_channel == -1) {
-    switch( errno ) {
-    case EBADF    :
-      return STC__INVSOCK;
-    case ENOTSOCK :
-      return STC__NOTSOCK;
-    default       :
-      return STC__FAILURE;
-    } /* switch( errno )  */
-  }
+    if (*pi_channel == -1) {
+        switch (errno) {
+            case EBADF:
+                return STC__INVSOCK;
+            case ENOTSOCK:
+                return STC__NOTSOCK;
+            default:
+                return STC__FAILURE;
+        } /* switch( errno )  */
+    }
 
-  /*
+    /*
      hostname of remote node.
      he = gethostbyaddr( ps_server->sock_name.sin_addr.s_addr,
                sizeof(ps_server->sock_name.sin_addr.s_addr),
@@ -731,7 +715,7 @@ INTS4* pi_channel;
             printf("name of client: %s\n",he->h_name);
   */
 
-  return STC__SUCCESS;
+    return STC__SUCCESS;
 
 } /* end f_stc_acceptclient()  */
 
@@ -859,206 +843,193 @@ INTS4* pi_channel;
 /*1- PLI Main ****************+****************************************/
 /* %%-HEAD: */
 
-INTS4 f_stc_createserver( pl_port , ps_server)
-INTS4* pl_port;
+INTS4 f_stc_createserver(pl_port, ps_server) INTS4* pl_port;
 struct s_tcpcomm* ps_server;
 
 {
 
-  INTS4 retval, /*i,*/ retry, on ;
-//  struct protoent* p;
-  struct s_tcpcomm s_server;
-  memset(&s_server, 0, sizeof(s_server));
-
+    INTS4 retval, /*i,*/ retry, on;
+    //  struct protoent* p;
+    struct s_tcpcomm s_server;
+    memset(&s_server, 0, sizeof(s_server));
 
 #ifdef GSI__WINNT
-  WORD wVersionRequested;
-  WSADATA wsaData;
-  char message1[512];
-  wVersionRequested = MAKEWORD( 2, 2 );
-//err = WSAStartup( wVersionRequested, &wsaData );
-  if (WSAStartup( wVersionRequested, &wsaData)!=0) {
-    printf("WinSock NOT found");
-    /* Tell the user that we could not find a usable */
-    /* WinSock DLL.                                  */
-  }
+    WORD wVersionRequested;
+    WSADATA wsaData;
+    char message1[512];
+    wVersionRequested = MAKEWORD(2, 2);
+    // err = WSAStartup( wVersionRequested, &wsaData );
+    if (WSAStartup(wVersionRequested, &wsaData) != 0) {
+        printf("WinSock NOT found");
+        /* Tell the user that we could not find a usable */
+        /* WinSock DLL.                                  */
+    }
 
-  if ( LOBYTE( wsaData.wVersion ) != 2 ||
-       HIBYTE( wsaData.wVersion ) != 2 ) {
-    /* Tell the user that we could not find a usable */
-    /* WinSock DLL.
-    */
-    printf("WinSock %d.%d",LOBYTE( wsaData.wVersion ),HIBYTE( wsaData.wVersion ));
-    WSACleanup( );
-  }
+    if (LOBYTE(wsaData.wVersion) != 2 || HIBYTE(wsaData.wVersion) != 2) {
+        /* Tell the user that we could not find a usable */
+        /* WinSock DLL.
+         */
+        printf("WinSock %d.%d", LOBYTE(wsaData.wVersion), HIBYTE(wsaData.wVersion));
+        WSACleanup();
+    }
 
 #endif
 
+    on = 1;
 
-
-  on = 1;
-
-  if( *pl_port == 0 ) {
-    retry = 1 ;
-    *pl_port = 1024;
-  } else {
-    retry = 0;
-  }
-
-  s_server.sock_rw = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-  switch( s_server.sock_rw ) {
-  case -1:
-    switch( errno ) {
-    case EAFNOSUPPORT    :
-      return STC__INVADDRF;
-    case ESOCKTNOSUPPORT :
-      return STC__SOCKNSUP;
-    case EPROTONOSUPPORT :
-      return STC__INVPROTO;
-    case EMFILE          :
-      return STC__SOCKTABF;
-    case ENOBUFS         :
-      return STC__SOCKSPAF;
-    default              :
-      return STC__FAILURE;
-    } /* switch( errno )  */
-  } /* switch( s_server.sock_rw)  */
-
-
-  retval = gethostname(s_server.hostname,sizeof(s_server.hostname));
-  if(retval) {
-    printf("--E--f_stc_createserver() error get local hostname\n");
-    return STC__FAILURE;
-  }
-
-  if((s_server.hostentptr = gethostbyname (s_server.hostname)) == NULL) {
-    printf("--E--f_stc_createserver() error get local Internet address\n");
-    return STC__FAILURE;
-  }
-
-  bzero( (CHARS*) &s_server.sock_name , sizeof( s_server.sock_name ) );
-  s_server.sock_name.sin_family        = AF_INET;
-  s_server.sock_name.sin_addr.s_addr   = htonl(INADDR_ANY);
-  s_server.sock_name.sin_port          = htons(*pl_port);
-
-  retval = bind(  s_server.sock_rw,
-                  (struct sockaddr*) &s_server.sock_name,
-                  sizeof(s_server.sock_name));
-
-  if( retval == -1 && retry == 0 ) {
-
-    close( s_server.sock_rw );
-
-    switch( errno ) {
-    case EBADF       :
-      return STC__INVSOCK;
-    case ENOTSOCK    :
-      return STC__NOTSOCK;
-    case EADDRINUSE  :
-      return STC__PORTINUS;
-    case EINVAL      :
-      return STC__SOCKISC;
-    case EACCES      :
-      return STC__SOCKISP;
-    default          :
-      return STC__FAILURE;
+    if (*pl_port == 0) {
+        retry = 1;
+        *pl_port = 1024;
+    } else {
+        retry = 0;
     }
-  }
 
-  retval = -1;
+    s_server.sock_rw = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-  while ( retval == -1 && retry == 1 ) {
+    switch (s_server.sock_rw) {
+        case -1:
+            switch (errno) {
+                case EAFNOSUPPORT:
+                    return STC__INVADDRF;
+                case ESOCKTNOSUPPORT:
+                    return STC__SOCKNSUP;
+                case EPROTONOSUPPORT:
+                    return STC__INVPROTO;
+                case EMFILE:
+                    return STC__SOCKTABF;
+                case ENOBUFS:
+                    return STC__SOCKSPAF;
+                default:
+                    return STC__FAILURE;
+            } /* switch( errno )  */
+    }         /* switch( s_server.sock_rw)  */
 
-    s_server.sock_rw = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-    switch( s_server.sock_rw ) {
-    case -1:
-      switch( errno ) {
-      case EAFNOSUPPORT    :
-        return STC__INVADDRF;
-      case ESOCKTNOSUPPORT :
-        return STC__SOCKNSUP;
-      case EPROTONOSUPPORT :
-        return STC__INVPROTO;
-      case EMFILE          :
-        return STC__SOCKTABF;
-      case ENOBUFS         :
-        return STC__SOCKSPAF;
-      default              :
+    retval = gethostname(s_server.hostname, sizeof(s_server.hostname));
+    if (retval) {
+        printf("--E--f_stc_createserver() error get local hostname\n");
         return STC__FAILURE;
-      }
     }
 
-    retval = gethostname(s_server.hostname,sizeof(s_server.hostname));
-    if(retval) {
-      printf("--E--f_stc_createserver() error get local hostname\n");
-      return STC__FAILURE;
+    if ((s_server.hostentptr = gethostbyname(s_server.hostname)) == NULL) {
+        printf("--E--f_stc_createserver() error get local Internet address\n");
+        return STC__FAILURE;
     }
 
+    bzero((CHARS*)&s_server.sock_name, sizeof(s_server.sock_name));
+    s_server.sock_name.sin_family = AF_INET;
+    s_server.sock_name.sin_addr.s_addr = htonl(INADDR_ANY);
+    s_server.sock_name.sin_port = htons(*pl_port);
 
-    if((s_server.hostentptr = gethostbyname (s_server.hostname)) == NULL) {
-      printf("--E--f_stc_createserver() error get local Internet address\n");
-      return STC__FAILURE;
+    retval = bind(s_server.sock_rw, (struct sockaddr*)&s_server.sock_name, sizeof(s_server.sock_name));
+
+    if (retval == -1 && retry == 0) {
+
+        close(s_server.sock_rw);
+
+        switch (errno) {
+            case EBADF:
+                return STC__INVSOCK;
+            case ENOTSOCK:
+                return STC__NOTSOCK;
+            case EADDRINUSE:
+                return STC__PORTINUS;
+            case EINVAL:
+                return STC__SOCKISC;
+            case EACCES:
+                return STC__SOCKISP;
+            default:
+                return STC__FAILURE;
+        }
     }
 
     retval = -1;
 
-    bzero( (CHARS*) &s_server.sock_name , sizeof( s_server.sock_name ) );
-    s_server.sock_name.sin_family        = AF_INET;
-    s_server.sock_name.sin_addr.s_addr   = htonl(INADDR_ANY);
-    s_server.sock_name.sin_port          = htons(*pl_port);
+    while (retval == -1 && retry == 1) {
 
-    retval = bind(  s_server.sock_rw,
-                    (struct sockaddr*) &s_server.sock_name,
-                    sizeof(s_server.sock_name));
-    if( retval == -1 ) {
-      close( s_server.sock_rw );
+        s_server.sock_rw = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
-      *pl_port += 1;
+        switch (s_server.sock_rw) {
+            case -1:
+                switch (errno) {
+                    case EAFNOSUPPORT:
+                        return STC__INVADDRF;
+                    case ESOCKTNOSUPPORT:
+                        return STC__SOCKNSUP;
+                    case EPROTONOSUPPORT:
+                        return STC__INVPROTO;
+                    case EMFILE:
+                        return STC__SOCKTABF;
+                    case ENOBUFS:
+                        return STC__SOCKSPAF;
+                    default:
+                        return STC__FAILURE;
+                }
+        }
 
-      if( *pl_port > 65535 ) {
-        printf("--E--f_stc_createserver() portnumber exceeded > 655535\n");
+        retval = gethostname(s_server.hostname, sizeof(s_server.hostname));
+        if (retval) {
+            printf("--E--f_stc_createserver() error get local hostname\n");
+            return STC__FAILURE;
+        }
 
-        switch( errno ) {
-        case EBADF       :
-          return STC__INVSOCK;
-        case ENOTSOCK    :
-          return STC__NOTSOCK;
-        case EADDRINUSE  :
-          return STC__PORTINUS;
-        case EINVAL      :
-          return STC__SOCKISC;
-        case EACCES      :
-          return STC__SOCKISP;
-        default          :
-          return STC__FAILURE;
-        }  /* end switch( errno )   */
+        if ((s_server.hostentptr = gethostbyname(s_server.hostname)) == NULL) {
+            printf("--E--f_stc_createserver() error get local Internet address\n");
+            return STC__FAILURE;
+        }
 
-      }  /* end if *pl_port > ... )   */
+        retval = -1;
 
-    } /* end if (retval == -1 )  */
+        bzero((CHARS*)&s_server.sock_name, sizeof(s_server.sock_name));
+        s_server.sock_name.sin_family = AF_INET;
+        s_server.sock_name.sin_addr.s_addr = htonl(INADDR_ANY);
+        s_server.sock_name.sin_port = htons(*pl_port);
 
+        retval = bind(s_server.sock_rw, (struct sockaddr*)&s_server.sock_name, sizeof(s_server.sock_name));
+        if (retval == -1) {
+            close(s_server.sock_rw);
 
-  }
+            *pl_port += 1;
 
-  retval = listen(s_server.sock_rw,5);
-  if( retval == -1 ) {
-    switch( errno ) {
-    case EBADF       :
-      return STC__INVSOCK;
-    case ENOTSOCK    :
-      return STC__NOTSOCK;
-    default          :
-      return STC__FAILURE;
+            if (*pl_port > 65535) {
+                printf("--E--f_stc_createserver() portnumber exceeded > 655535\n");
+
+                switch (errno) {
+                    case EBADF:
+                        return STC__INVSOCK;
+                    case ENOTSOCK:
+                        return STC__NOTSOCK;
+                    case EADDRINUSE:
+                        return STC__PORTINUS;
+                    case EINVAL:
+                        return STC__SOCKISC;
+                    case EACCES:
+                        return STC__SOCKISP;
+                    default:
+                        return STC__FAILURE;
+                } /* end switch( errno )   */
+
+            } /* end if *pl_port > ... )   */
+
+        } /* end if (retval == -1 )  */
     }
-  }
 
-  s_server.namelength = sizeof( s_server.sock_name);
+    retval = listen(s_server.sock_rw, 5);
+    if (retval == -1) {
+        switch (errno) {
+            case EBADF:
+                return STC__INVSOCK;
+            case ENOTSOCK:
+                return STC__NOTSOCK;
+            default:
+                return STC__FAILURE;
+        }
+    }
 
-  *ps_server = s_server;
+    s_server.namelength = sizeof(s_server.sock_name);
 
-  return STC__SUCCESS;
+    *ps_server = s_server;
+
+    return STC__SUCCESS;
 } /* end f_stc_createserver()  */
 
 /* %%+HEAD: */
@@ -1121,25 +1092,24 @@ struct s_tcpcomm* ps_server;
 /*1- PLI Main ****************+****************************************/
 /* %%-HEAD: */
 
-INTS4 f_stc_close( ps_tcp)
-struct s_tcpcomm* ps_tcp;
+INTS4 f_stc_close(ps_tcp) struct s_tcpcomm* ps_tcp;
 {
-  INTS4 retval;
+    INTS4 retval;
 
-  if( ps_tcp->socket ) {
-    retval = shutdown( ps_tcp->socket,2);
-    if(retval == -1) {
-      return STC__FAILURE;
+    if (ps_tcp->socket) {
+        retval = shutdown(ps_tcp->socket, 2);
+        if (retval == -1) {
+            return STC__FAILURE;
+        }
+        retval = close(ps_tcp->socket);
+        if (retval == -1) {
+            return STC__FAILURE;
+        }
+
+        return STC__SUCCESS;
     }
-    retval = close(ps_tcp->socket);
-    if(retval == -1) {
-      return STC__FAILURE;
-    }
 
-    return STC__SUCCESS;
-  }
-
-  return STC__FAILURE;
+    return STC__FAILURE;
 } /* f_stc_close()  */
 
 /* %%+HEAD: */
@@ -1202,18 +1172,17 @@ struct s_tcpcomm* ps_tcp;
 /*1- PLI Main ****************+****************************************/
 /* %%-HEAD: */
 
-INTS4 f_stc_discclient( i_channel )
-INTS4 i_channel;
+INTS4 f_stc_discclient(i_channel) INTS4 i_channel;
 {
-  INTS4 retval;
+    INTS4 retval;
 
-  /* call of shutdown removed 17.7.95, H.G. */
-  retval = close( i_channel );
-  if(retval == -1) {
-    return STC__FAILURE;
-  } else {
-    return STC__SUCCESS;
-  }
+    /* call of shutdown removed 17.7.95, H.G. */
+    retval = close(i_channel);
+    if (retval == -1) {
+        return STC__FAILURE;
+    } else {
+        return STC__SUCCESS;
+    }
 } /* f_stc_discclient()  */
 
 /* %%+HEAD: */
@@ -1285,62 +1254,57 @@ INTS4 i_channel;
 /*1- PLI Main ****************+****************************************/
 /* %%-HEAD: */
 
-INTS4 f_stc_listenserver( ps_server)
-struct s_tcpcomm* ps_server;
+INTS4 f_stc_listenserver(ps_server) struct s_tcpcomm* ps_server;
 {
-  struct timeval  read_timeout;
-  fd_set rset , allset , wset , eset;
-  INTS4 listenfd , maxfd , sts;
+    struct timeval read_timeout;
+    fd_set rset, allset, wset, eset;
+    INTS4 listenfd, maxfd, sts;
 
+    read_timeout.tv_sec = 0;
+    read_timeout.tv_usec = 0;
 
-  read_timeout.tv_sec  = 0;
-  read_timeout.tv_usec = 0;
+    listenfd = ps_server->sock_rw;
 
-  listenfd = ps_server->sock_rw;
+    FD_ZERO(&rset);
+    FD_ZERO(&wset);
+    FD_ZERO(&eset);
+    FD_ZERO(&allset);
+    FD_SET(listenfd, &rset);
+    FD_SET(listenfd, &wset);
+    FD_SET(listenfd, &eset);
+    maxfd = listenfd;
 
-  FD_ZERO(&rset);
-  FD_ZERO(&wset);
-  FD_ZERO(&eset);
-  FD_ZERO(&allset);
-  FD_SET(listenfd,&rset);
-  FD_SET(listenfd,&wset);
-  FD_SET(listenfd,&eset);
-  maxfd = listenfd;
+    sts = select(maxfd + 1, &rset, &wset, &eset, &read_timeout);
+    switch (sts) {
+        case -1:
+            switch (errno) {
+                case EBADF:
+                    return STC__INVSOCK;
+                case EINVAL:
+                    return STC__INVTIME;
+                default:
+                    return STC__FAILURE;
+            } /* switch( errno )  */
 
-  sts = select( maxfd + 1 , &rset ,
-                &wset ,
-                &eset , &read_timeout);
-  switch( sts ) {
-  case -1:
-    switch( errno ) {
-    case EBADF  :
-      return STC__INVSOCK;
-    case EINVAL :
-      return STC__INVTIME;
-    default     :
-      return STC__FAILURE;
-    } /* switch( errno )  */
+        case 0:
+            return STC__TIMEOUT;
 
-  case 0:
-    return STC__TIMEOUT;
+    } /* end switch( sts )  */
 
-  }  /* end switch( sts )  */
+    if (FD_ISSET(listenfd, &eset)) {
+        return STC__SUCCESS;
+    }
 
-  if( FD_ISSET(listenfd,&eset)) {
-    return STC__SUCCESS;
-  }
+    if (FD_ISSET(listenfd, &rset)) {
+        return STC__SUCCESS;
+    }
 
-  if( FD_ISSET(listenfd,&rset)) {
-    return STC__SUCCESS;
-  }
+    if (FD_ISSET(listenfd, &wset)) {
+        return STC__SUCCESS;
+    }
 
-  if( FD_ISSET(listenfd,&wset)) {
-    return STC__SUCCESS;
-  }
-
-  return STC__FAILURE;
+    return STC__FAILURE;
 }
-
 
 /* %%+HEAD: */
 /*****************+***********+****************************************/
@@ -1435,103 +1399,105 @@ struct s_tcpcomm* ps_server;
 /*1- PLI Main ****************+****************************************/
 /* %%-HEAD: */
 
-INTS4 f_stc_disperror( i_error , c_dest , i_out )
-INTS4  i_error;
+INTS4 f_stc_disperror(i_error, c_dest, i_out) INTS4 i_error;
 CHARS* c_dest;
 INTS4 i_out;
 {
-  CHARS c_line[80];
+    CHARS c_line[80];
 
-  switch( i_error ) {
-  case STC__FAILURE   :
-    sprintf(c_line,"-I- f_stc failure");
-    break;
-  case STC__SUCCESS   :
-    sprintf(c_line,"-I- f_stc failure");
-    break;
-  case STC__INVSOCK   :
-    sprintf(c_line,"-I- f_stc invalid socket number");
-    break;
-  case STC__INVBUF    :
-    sprintf(c_line,"-I- f_stc buffer points outside allocated address space");
-    break;
-  case STC__NGBUFSIZE :
-    sprintf(c_line,"-I- f_stc buffer length is negative");
-    break;
-  case STC__INVTIME   :
-    sprintf(c_line,"-I- f_stc time limit is negativ or to long");
-    break;
-  case STC__TIMEOUT   :
-    sprintf(c_line,"-I- f_stc timeout read data from socket");
-    break;
-  case STC__NOTSOCK   :
-    sprintf(c_line,"-I- f_stc socket number points to a file not a socket");
-    break;
-  case STC__INVADDR   :
-    sprintf(c_line,"-I- f_stc invalid address specified in parameter");
-    break;
-  case STC__INVADDRF  :
-    sprintf(c_line,"-I- f_stc the specified address family is not supported");
-    break;
-  case STC__SOCKNSUP  :
-    sprintf(c_line,"-I- f_stc The specified socket type is not supported.");
-    break;
-  case STC__INVPROTO  :
-    sprintf(c_line,"-I- f_stc The specified protocol is not supported.");
-    break;
-  case STC__SOCKTABF  :
-    sprintf(c_line,"-I- f_stc The per-process descriptor table is full.");
-    break;
-  case STC__SOCKSPAF  :
-    sprintf(c_line,"-I- f_stc No buffer space is available. The socket can't be created");
-    break;
-  case STC__SOCKISC   :
-    sprintf(c_line,"-I- f_stc socket is already connected.");
-    break;
-  case STC__CONNTOUT  :
-    sprintf(c_line,"-I- f_stc connection timed out without establishing a connection.");
-    break;
-  case STC__NETUNREA  :
-    sprintf(c_line,"-I- f_stc The network is not reachable from this host.");
-    break;
-  case STC__PORTINUS  :
-    sprintf(c_line,"-I- f_stc The specified Internet Address and port is already in use.");
-    break;
-  case STC__SOCKISP   :
-    sprintf(c_line,"-I- f_stc socket address is protected.");
-    break;
-  case STC__ECONNREF  :                                 /* added 17.7.95, H.G. */
-    sprintf(c_line,"-I- f_stc connection refused.");
-    break;
-  case TPS__ECPORTS   :
-    sprintf(c_line,"-I- f_stc error connect portserver");
-    break;
-  case TPS__EREGSERV   :
-    sprintf(c_line,"-I- f_stc error register service at portserver");
-    break;
-  case TPS__EWTOPORTS   :
-    sprintf(c_line,"-I- f_stc error write buffer to portserver");
-    break;
-  case TPS__ERMFRPORTS   :
-    sprintf(c_line,"-I- f_stc error read status message from portserver");
-    break;
-  case TPS__EGSERVICE   :
-    sprintf(c_line,"-I- f_stc error get spec. info from  portserver");
-    break;
-  default:
-    sprintf(c_line,"-I- f_stc unknown message id %d",i_error);
-    if(i_out==0) { printf("%s\n",c_line); }
-    if(i_out==1) { strcpy(c_dest,c_line); }
-    return STC__FAILURE;
-  }  /* end switch( i_error )   */
+    switch (i_error) {
+        case STC__FAILURE:
+            sprintf(c_line, "-I- f_stc failure");
+            break;
+        case STC__SUCCESS:
+            sprintf(c_line, "-I- f_stc failure");
+            break;
+        case STC__INVSOCK:
+            sprintf(c_line, "-I- f_stc invalid socket number");
+            break;
+        case STC__INVBUF:
+            sprintf(c_line, "-I- f_stc buffer points outside allocated address space");
+            break;
+        case STC__NGBUFSIZE:
+            sprintf(c_line, "-I- f_stc buffer length is negative");
+            break;
+        case STC__INVTIME:
+            sprintf(c_line, "-I- f_stc time limit is negativ or to long");
+            break;
+        case STC__TIMEOUT:
+            sprintf(c_line, "-I- f_stc timeout read data from socket");
+            break;
+        case STC__NOTSOCK:
+            sprintf(c_line, "-I- f_stc socket number points to a file not a socket");
+            break;
+        case STC__INVADDR:
+            sprintf(c_line, "-I- f_stc invalid address specified in parameter");
+            break;
+        case STC__INVADDRF:
+            sprintf(c_line, "-I- f_stc the specified address family is not supported");
+            break;
+        case STC__SOCKNSUP:
+            sprintf(c_line, "-I- f_stc The specified socket type is not supported.");
+            break;
+        case STC__INVPROTO:
+            sprintf(c_line, "-I- f_stc The specified protocol is not supported.");
+            break;
+        case STC__SOCKTABF:
+            sprintf(c_line, "-I- f_stc The per-process descriptor table is full.");
+            break;
+        case STC__SOCKSPAF:
+            sprintf(c_line, "-I- f_stc No buffer space is available. The socket can't be created");
+            break;
+        case STC__SOCKISC:
+            sprintf(c_line, "-I- f_stc socket is already connected.");
+            break;
+        case STC__CONNTOUT:
+            sprintf(c_line, "-I- f_stc connection timed out without establishing a connection.");
+            break;
+        case STC__NETUNREA:
+            sprintf(c_line, "-I- f_stc The network is not reachable from this host.");
+            break;
+        case STC__PORTINUS:
+            sprintf(c_line, "-I- f_stc The specified Internet Address and port is already in use.");
+            break;
+        case STC__SOCKISP:
+            sprintf(c_line, "-I- f_stc socket address is protected.");
+            break;
+        case STC__ECONNREF: /* added 17.7.95, H.G. */
+            sprintf(c_line, "-I- f_stc connection refused.");
+            break;
+        case TPS__ECPORTS:
+            sprintf(c_line, "-I- f_stc error connect portserver");
+            break;
+        case TPS__EREGSERV:
+            sprintf(c_line, "-I- f_stc error register service at portserver");
+            break;
+        case TPS__EWTOPORTS:
+            sprintf(c_line, "-I- f_stc error write buffer to portserver");
+            break;
+        case TPS__ERMFRPORTS:
+            sprintf(c_line, "-I- f_stc error read status message from portserver");
+            break;
+        case TPS__EGSERVICE:
+            sprintf(c_line, "-I- f_stc error get spec. info from  portserver");
+            break;
+        default:
+            sprintf(c_line, "-I- f_stc unknown message id %d", i_error);
+            if (i_out == 0) {
+                printf("%s\n", c_line);
+            }
+            if (i_out == 1) {
+                strcpy(c_dest, c_line);
+            }
+            return STC__FAILURE;
+    } /* end switch( i_error )   */
 
-  if(i_out==0) { printf("%s\n",c_line); }
-  if(i_out==1) { strcpy(c_dest,c_line); }
+    if (i_out == 0) {
+        printf("%s\n", c_line);
+    }
+    if (i_out == 1) {
+        strcpy(c_dest, c_line);
+    }
 
-  return STC__SUCCESS;
-}  /* f_stc_disperror()  */
-
-
-
-
-
+    return STC__SUCCESS;
+} /* f_stc_disperror()  */

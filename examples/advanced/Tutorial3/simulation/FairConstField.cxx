@@ -11,17 +11,16 @@
 // -------------------------------------------------------------------------
 #include "FairConstField.h"
 
-#include "FairConstPar.h"  // for FairConstPar
-#include "FairRun.h"       // for FairRun
-#include "FairRuntimeDb.h" // for FairRuntimeDb
-#include "FairLogger.h"    // for logging
+#include "FairConstPar.h"    // for FairConstPar
+#include "FairLogger.h"      // for logging
+#include "FairRun.h"         // for FairRun
+#include "FairRuntimeDb.h"   // for FairRuntimeDb
 
-#include <TString.h> // for operator<<, TString
+#include <TString.h>   // for operator<<, TString
+#include <iomanip>     // for operator<<, setw
 
-#include <iomanip>  // for operator<<, setw
-
-using std::setw;
 using std::setprecision;
+using std::setw;
 
 FairConstField::FairConstField()
     : fXmin(0)
@@ -74,13 +73,10 @@ FairConstField::FairConstField(FairConstPar* fieldPar)
     , fBy(0)
     , fBz(0)
 {
-    if (!fieldPar)
-    {
+    if (!fieldPar) {
         LOG(warn) << "empty parameter container!";
         fType = -1;
-    }
-    else
-    {
+    } else {
         fXmin = fieldPar->GetXmin();
         fXmax = fieldPar->GetXmax();
         fYmin = fieldPar->GetYmin();
@@ -94,11 +90,14 @@ FairConstField::FairConstField(FairConstPar* fieldPar)
     }
 }
 
-FairConstField::~FairConstField()
-{
-}
+FairConstField::~FairConstField() {}
 
-void FairConstField::SetFieldRegion(Double_t xMin, Double_t xMax, Double_t yMin, Double_t yMax, Double_t zMin, Double_t zMax)
+void FairConstField::SetFieldRegion(Double_t xMin,
+                                    Double_t xMax,
+                                    Double_t yMin,
+                                    Double_t yMax,
+                                    Double_t zMin,
+                                    Double_t zMax)
 {
     fXmin = xMin;
     fXmax = xMax;
@@ -117,8 +116,7 @@ void FairConstField::SetField(Double_t bX, Double_t bY, Double_t bZ)
 
 Double_t FairConstField::GetBx(Double_t x, Double_t y, Double_t z)
 {
-    if (x < fXmin || x > fXmax || y < fYmin || y > fYmax || z < fZmin || z > fZmax)
-    {
+    if (x < fXmin || x > fXmax || y < fYmin || y > fYmax || z < fZmin || z > fZmax) {
         return 0.;
     }
     return fBx;
@@ -126,8 +124,7 @@ Double_t FairConstField::GetBx(Double_t x, Double_t y, Double_t z)
 
 Double_t FairConstField::GetBy(Double_t x, Double_t y, Double_t z)
 {
-    if (x < fXmin || x > fXmax || y < fYmin || y > fYmax || z < fZmin || z > fZmax)
-    {
+    if (x < fXmin || x > fXmax || y < fYmin || y > fYmax || z < fZmin || z > fZmax) {
         return 0.;
     }
     return fBy;
@@ -135,8 +132,7 @@ Double_t FairConstField::GetBy(Double_t x, Double_t y, Double_t z)
 
 Double_t FairConstField::GetBz(Double_t x, Double_t y, Double_t z)
 {
-    if (x < fXmin || x > fXmax || y < fYmin || y > fYmax || z < fZmin || z > fZmax)
-    {
+    if (x < fXmin || x > fXmax || y < fYmin || y > fYmax || z < fZmin || z > fZmax) {
         return 0.;
     }
     return fBz;
@@ -144,7 +140,7 @@ Double_t FairConstField::GetBz(Double_t x, Double_t y, Double_t z)
 
 void FairConstField::Print(Option_t*) const
 {
-    LOG(info) << "======================================================" ;
+    LOG(info) << "======================================================";
     LOG(info) << "----  " << fTitle << " : " << fName;
     LOG(info) << "----";
     LOG(info) << "----  Field type    : constant";
@@ -163,11 +159,11 @@ void FairConstField::FillParContainer()
     //  LOG(info) << "FairConstField::FillParContainer() ";
     FairRun* fRun = FairRun::Instance();
     FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
-    //Bool_t kParameterMerged = kTRUE;
+    // Bool_t kParameterMerged = kTRUE;
     FairConstPar* Par = static_cast<FairConstPar*>(rtdb->getContainer("FairConstPar"));
     Par->SetParameters(this);
     Par->setInputVersion(fRun->GetRunId(), 1);
     Par->setChanged();
 }
 
-ClassImp(FairConstField)
+ClassImp(FairConstField);

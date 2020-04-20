@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FairGeoParSet_H
@@ -14,9 +14,10 @@
  * @version 1
  * @since 12.10.04
  */
-#include "FairParGenericSet.h"          // for FairParGenericSet
-#include <Rtypes.h>                     // for Double_t, etc
-#include <TGeoManager.h>                // IWYU pragma: keep needed by cint
+#include "FairParGenericSet.h"   // for FairParGenericSet
+
+#include <Rtypes.h>        // for Double_t, etc
+#include <TGeoManager.h>   // IWYU pragma: keep needed by cint
 
 class FairParamList;
 class TObjArray;
@@ -27,13 +28,13 @@ class FairGeoParSet : public FairParGenericSet
     /**
      * constructor
      * @param name :  Parameter set name
-    * @param title:  Parameter set title
-    * @param context:  Parameter set context
-    */
+     * @param title:  Parameter set title
+     * @param context:  Parameter set context
+     */
 
-    FairGeoParSet(const char* name="FairGeoParSet",
-                  const char* title="Class for base parameter io",
-                  const char* context="BaseDefaultContext");
+    FairGeoParSet(const char* name = "FairGeoParSet",
+                  const char* title = "Class for base parameter io",
+                  const char* context = "BaseDefaultContext");
     /** dtor*/
     ~FairGeoParSet(void);
     /** clear*/
@@ -41,7 +42,7 @@ class FairGeoParSet : public FairParGenericSet
     /**
      * Fills all persistent data members into the list for write.
      * @param FairParamList : Parameter list to be filled
-    */
+     */
     void putParams(FairParamList*);
     /**
      * Fills all persistent data members from the list after reading. The function
@@ -54,31 +55,30 @@ class FairGeoParSet : public FairParGenericSet
      * Set the Geometry node list used in the simulation
      * @param array: TObjArray of Geometry nodes
      */
-    void SetGeoNodes(TObjArray* array) {fGeoNodes=array;}
+    void SetGeoNodes(TObjArray* array) { fGeoNodes = array; }
     /**
      * Set the Geometry (TGeoManager) used in the simulation
      * @param Geom: TGeoManager of the full geometry
      */
-    void SetGeometry(TGeoManager* Geom) {fGeom=Geom;}
+    void SetGeometry(TGeoManager* Geom) { fGeom = Geom; }
     /**
-    *  Get the Geometry Nodes list used in the simulation
-    */
-    TObjArray*             GetGeoNodes() {return fGeoNodes;}
+     *  Get the Geometry Nodes list used in the simulation
+     */
+    TObjArray* GetGeoNodes() { return fGeoNodes; }
     /**
      *  Get the geometry (TGeoManager) used in the simulation
      */
-    TGeoManager*           GetGeometry() {return fGeom;}
+    TGeoManager* GetGeometry() { return fGeom; }
 
   protected:
     /// List of FairGeoNodes for sensitive volumes
-    TObjArray*              fGeoNodes; //!
+    TObjArray* fGeoNodes;   //!
     /// Full Geometry
-    TGeoManager*            fGeom;
-    ClassDef(FairGeoParSet,1)
+    TGeoManager* fGeom;
+    ClassDef(FairGeoParSet, 1)
 
-  private:
-    FairGeoParSet(const FairGeoParSet& L);
-    FairGeoParSet& operator= (const FairGeoParSet&) {return *this;}
+        private : FairGeoParSet(const FairGeoParSet& L);
+    FairGeoParSet& operator=(const FairGeoParSet&) { return *this; }
 };
 
 #endif /* !FairGeoParSet_H */

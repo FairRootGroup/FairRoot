@@ -1,16 +1,14 @@
 #ifndef EX2PROCESSOR_H
 #define EX2PROCESSOR_H
 
-#include "SerializerExample2.h"
+#include "BoostSerializer.h"
 #include "MyDigi.h"
 #include "MyHit.h"
-
 #include "RootSerializer.h"
-#include "BoostSerializer.h"
+#include "SerializerExample2.h"
 
 #include <FairMQDevice.h>
 #include <FairMQParts.h>
-
 #include <TMath.h>
 
 class Ex2Processor : public FairMQDevice
@@ -39,12 +37,10 @@ class Ex2Processor : public FairMQDevice
         int receivedMsgs = 0;
         int sentMsgs = 0;
 
-        while (!NewStatePending())
-        {
+        while (!NewStatePending()) {
             FairMQParts partsIn;
 
-            if (Receive(partsIn, "data1") > 0)
-            {
+            if (Receive(partsIn, "data1") > 0) {
                 Ex2Header* header = nullptr;
                 Deserialize<SerializerEx2>(*(partsIn.At(0)), header);
                 Deserialize<RootSerializer>(*(partsIn.At(1)), fInput);
@@ -62,10 +58,8 @@ class Ex2Processor : public FairMQDevice
                 Send(partsOut, "data2");
                 sentMsgs++;
 
-                if (fNumMsgs != 0)
-                {
-                    if (receivedMsgs == fNumMsgs)
-                    {
+                if (fNumMsgs != 0) {
+                    if (receivedMsgs == fNumMsgs) {
                         break;
                     }
                 }
@@ -78,8 +72,7 @@ class Ex2Processor : public FairMQDevice
     void Exec(TClonesArray* digis, TClonesArray* hits)
     {
         hits->Delete();
-        for (int idigi(0); idigi<digis->GetEntriesFast(); idigi++)
-        {
+        for (int idigi(0); idigi < digis->GetEntriesFast(); idigi++) {
             TVector3 pos;
             TVector3 dpos;
             // Double_t timestamp = 0;

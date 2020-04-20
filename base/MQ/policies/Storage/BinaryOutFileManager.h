@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   BinaryOutFileManager.h
  * Author: winckler
  *
@@ -6,46 +6,53 @@
  */
 
 #ifndef BINARYOUTFILEMANAGER_H
-#define	BINARYOUTFILEMANAGER_H
+#define BINARYOUTFILEMANAGER_H
 
 // std
-#include <vector>
-#include <string>
 #include <fstream>
+#include <string>
 #include <type_traits>
+#include <vector>
 
 // boost
-namespace boost { namespace serialization { class access; } }
+namespace boost {
+namespace serialization {
+class access;
+}
+}   // namespace boost
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
 
 // FairRoot
+#include "BoostDataSaver.h"
+#include "TriviallyCopyableDataSaver.h"
+#include "baseMQtools.h"
+
 #include <FairMQLogger.h>
 #include <FairMQMessage.h>
-#include "TriviallyCopyableDataSaver.h"
-#include "BoostDataSaver.h"
-#include "baseMQtools.h"
 
 #define GET_POLICY_ID(Policy) #Policy
 
 using BinArchive = boost::archive::binary_oarchive;
 
-template <typename T, typename BoostArchive>
+template<typename T, typename BoostArchive>
 using BoostSerializable = baseMQ::tools::resolve::has_BoostSerialization<T, void(BoostArchive&, const unsigned int)>;
 
-template <typename TPayload, typename TStoragePolicy = TriviallyCopyableDataSaver<TPayload>>
+template<typename TPayload, typename TStoragePolicy = TriviallyCopyableDataSaver<TPayload>>
 class BinaryOutFileManager : public TStoragePolicy
 {
   public:
-    using TStoragePolicy::Write;
     using TStoragePolicy::Read;
+    using TStoragePolicy::Write;
 
-    BinaryOutFileManager() : TStoragePolicy(), fFileName("test.dat") {;}
-    virtual ~BinaryOutFileManager()
+    BinaryOutFileManager()
+        : TStoragePolicy()
+        , fFileName("test.dat")
     {
-        fOutfile.close();
+        ;
     }
+    virtual ~BinaryOutFileManager() { fOutfile.close(); }
 
     std::string GetPolicyID()
     {
@@ -53,20 +60,11 @@ class BinaryOutFileManager : public TStoragePolicy
         return str;
     }
 
-    void SetFileProperties(const std::string &filename)
-    {
-        fFileName = filename;
-    }
+    void SetFileProperties(const std::string& filename) { fFileName = filename; }
 
-    void AddToFile(FairMQMessage* msg)
-    {
-        TStoragePolicy::Write(fOutfile, msg);
-    }
+    void AddToFile(FairMQMessage* msg) { TStoragePolicy::Write(fOutfile, msg); }
 
-    void AddToFile(TPayload* objArr, long size)
-    {
-        AppendObjArray<TPayload>(fOutfile, objArr, size);
-    }
+    void AddToFile(TPayload* objArr, long size) { AppendObjArray<TPayload>(fOutfile, objArr, size); }
 
     template<typename T>
     void AppendObjArray(std::ofstream& outfile, T* objArr, long size)
@@ -74,7 +72,7 @@ class BinaryOutFileManager : public TStoragePolicy
         TStoragePolicy::Write(outfile, objArr, size);
     }
 
-    std::vector<std::vector<TPayload> > GetAllObj(const std::string &filename)
+    std::vector<std::vector<TPayload>> GetAllObj(const std::string& filename)
     {
         std::ifstream infile;
         infile = std::ifstream(filename);

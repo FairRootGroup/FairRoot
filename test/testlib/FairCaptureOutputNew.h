@@ -25,7 +25,7 @@ class FairCaptureOutputNew
     int GetNumberOfLines();
 
   private:
-    std::vector <std::string> fLineVector;
+    std::vector<std::string> fLineVector;
 
     bool fCaptureStdOut;
     bool fCaptureStdErr;

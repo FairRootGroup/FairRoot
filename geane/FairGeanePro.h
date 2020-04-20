@@ -12,13 +12,11 @@
 #ifndef FAIRGEANEPRO_H
 #define FAIRGEANEPRO_H 1
 
-#include "FairPropagator.h"                     // for TNamed
-
 #include "FairLogger.h"
-
-#include "TGeant3.h"                    // for Ertrio_t, etc
-#include "TString.h"                    // for TString
-#include "TVector3.h"                   // for TVector3
+#include "FairPropagator.h"   // for TNamed
+#include "TGeant3.h"          // for Ertrio_t, etc
+#include "TString.h"          // for TString
+#include "TVector3.h"         // for TVector3
 
 class FairTrackPar;
 class FairTrackParP;
@@ -67,13 +65,13 @@ class FairGeanePro : public FairPropagator
     virtual bool SetDestinationLength(float length);
 
     /**New method to set to propagate only parameters
-    */
+     */
     virtual bool SetPropagateOnlyParameters();
 
     /* ====== Depracated functions ====== */
     bool PropagateToPlane(const TVector3& v0, const TVector3& v1, const TVector3& v2);
     bool PropagateFromPlane(const TVector3& v1, const TVector3& v2);
-    bool PropagateToVolume(TString VolName, int CopyNo ,int option);
+    bool PropagateToVolume(TString VolName, int CopyNo, int option);
     bool PropagateToLength(float length);
     bool PropagateOnlyParameters();
     /* ====== ====== ====== ====== ====== */
@@ -82,14 +80,56 @@ class FairGeanePro : public FairPropagator
     bool Propagate(int PDG);
 
   private:
-    void Track2ToLine(TVector3 x1, TVector3 x2, TVector3 w1, TVector3 w2, TVector3& Pfinal, TVector3& Pwire, int& Iflag, double& Dist, double& Length);
-    void Track2ToPoint(TVector3 x1, TVector3 x2, TVector3 w1, TVector3& Pfinal, double& Dist, double& Length, int& quitFlag);
-    void Track3ToLine(TVector3 x1, TVector3 x2, TVector3 x3, TVector3 w1, TVector3 w2, TVector3& Pfinal, TVector3& Wire, int& Iflag, double& Dist, double& Length, double& Radius);
-    void Track3ToPoint(TVector3 x1, TVector3 x2, TVector3 x3, TVector3 w1, TVector3& Pfinal, int& Iflag, double& Dist, double& Length, double& Radius);
+    void Track2ToLine(TVector3 x1,
+                      TVector3 x2,
+                      TVector3 w1,
+                      TVector3 w2,
+                      TVector3& Pfinal,
+                      TVector3& Pwire,
+                      int& Iflag,
+                      double& Dist,
+                      double& Length);
+    void Track2ToPoint(TVector3 x1,
+                       TVector3 x2,
+                       TVector3 w1,
+                       TVector3& Pfinal,
+                       double& Dist,
+                       double& Length,
+                       int& quitFlag);
+    void Track3ToLine(TVector3 x1,
+                      TVector3 x2,
+                      TVector3 x3,
+                      TVector3 w1,
+                      TVector3 w2,
+                      TVector3& Pfinal,
+                      TVector3& Wire,
+                      int& Iflag,
+                      double& Dist,
+                      double& Length,
+                      double& Radius);
+    void Track3ToPoint(TVector3 x1,
+                       TVector3 x2,
+                       TVector3 x3,
+                       TVector3 w1,
+                       TVector3& Pfinal,
+                       int& Iflag,
+                       double& Dist,
+                       double& Length,
+                       double& Radius);
 
   public:
     /* ====== Depracated functions ====== */
-    int FindPCA(int pca, int PDGCode, TVector3 point, TVector3 wire1, TVector3 wire2, double maxdistance, double& Rad, TVector3& vpf, TVector3& vwi, double& Di, float& trklength);
+    int FindPCA(int pca,
+                int PDGCode,
+                TVector3 point,
+                TVector3 wire1,
+                TVector3 wire2,
+                double maxdistance,
+                double& Rad,
+                TVector3& vpf,
+                TVector3& vwi,
+                double& Di,
+                float& trklength);
 
     bool SetWire(TVector3 extremity1, TVector3 extremity2);
     bool SetPoint(TVector3 pnt);
@@ -99,19 +139,23 @@ class FairGeanePro : public FairPropagator
     // the PCA.
     bool ActualFindPCA(int pca, FairTrackParP* par, int dir);
 
-    TVector3 GetPCAOnWire() {
+    TVector3 GetPCAOnWire()
+    {
         LOG(warning) << "Function GetPCAOnWire obsolete, contact FairRoot group if you need it.";
         return fvwi;
     }
-    TVector3 GetPCAOnTrack() {
+    TVector3 GetPCAOnTrack()
+    {
         LOG(warning) << "Function GetPCAOnTrack obsolete, contact FairRoot group if you need it.";
         return fvpf;
     }
-    float GetLengthAtPCA() {
+    float GetLengthAtPCA()
+    {
         LOG(warning) << "Function GetLengthAtPCA obsolete, contact FairRoot group if you need it.";
         return ftrklength;
     }
-    float GetTimeAtPCA() {
+    float GetTimeAtPCA()
+    {
         LOG(warning) << "Function GetTimeAtPCA obsolete, contact FairRoot group if you need it.";
         return ftrktime;
     }
@@ -121,13 +165,16 @@ class FairGeanePro : public FairPropagator
     bool BackTrackToVirtualPlaneAtPCA(int pca);
     /* ====== ====== ====== ====== ====== */
 
-    void setBackProp() {
-        fPropOption="BPE";
-    }
+    void setBackProp() { fPropOption = "BPE"; }
 
     virtual bool SetPCAPropagation(int pca, int dir = 1, FairTrackParP* par = nullptr);
 
-    virtual PCAOutputStruct FindPCA(int PCA, int PDGCode, TVector3 Point, TVector3 Wire1, TVector3 Wire2, double MaxDistance);
+    virtual PCAOutputStruct FindPCA(int PCA,
+                                    int PDGCode,
+                                    TVector3 Point,
+                                    TVector3 Wire1,
+                                    TVector3 Wire2,
+                                    double MaxDistance);
 
     // transport matrix
     void GetTransportMatrix(double trm[5][5]);
@@ -178,7 +225,7 @@ class FairGeanePro : public FairPropagator
     FairGeanePro(const FairGeanePro&);
     FairGeanePro& operator=(const FairGeanePro&);
 
-    ClassDef(FairGeanePro,2);
+    ClassDef(FairGeanePro, 2);
 };
 
 #endif

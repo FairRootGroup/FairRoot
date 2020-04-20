@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -15,11 +15,15 @@
 #ifndef PIXELEVENTHEADER_H_
 #define PIXELEVENTHEADER_H_
 
-#include "FairEventHeader.h"     // for FairEventHeader
+#include "FairEventHeader.h"   // for FairEventHeader
 
 #include <Rtypes.h>
 
-namespace boost { namespace serialization { class access; } }
+namespace boost {
+namespace serialization {
+class access;
+}
+}   // namespace boost
 #include <boost/serialization/base_object.hpp>
 
 class PixelEventHeader : public FairEventHeader
@@ -31,10 +35,10 @@ class PixelEventHeader : public FairEventHeader
     /** Destructor **/
     virtual ~PixelEventHeader();
 
-    void  SetPartNo(Int_t ipart) { fPartNo = ipart;}
-    Int_t GetPartNo()            { return fPartNo; }
+    void SetPartNo(Int_t ipart) { fPartNo = ipart; }
+    Int_t GetPartNo() { return fPartNo; }
 
-    template <class Archive>
+    template<class Archive>
     void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar& boost::serialization::base_object<FairEventHeader>(*this);

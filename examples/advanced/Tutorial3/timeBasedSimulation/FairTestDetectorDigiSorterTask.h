@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -15,10 +15,9 @@
 #ifndef FairTestDetectorDigiSorterTask_H_
 #define FairTestDetectorDigiSorterTask_H_
 
-#include <FairRingSorterTask.h> // for FairRingSorterTask
-
-#include <Rtypes.h>  // for Double_t, etc
-#include <TString.h> // for TString
+#include <FairRingSorterTask.h>   // for FairRingSorterTask
+#include <Rtypes.h>               // for Double_t, etc
+#include <TString.h>              // for TString
 
 class FairRingSorter;
 class FairTimeStamp;
@@ -28,9 +27,13 @@ class FairTestDetectorDigiSorterTask : public FairRingSorterTask
   public:
     FairTestDetectorDigiSorterTask();
     FairTestDetectorDigiSorterTask(const char* name)
-        : FairRingSorterTask(name) {};
-    FairTestDetectorDigiSorterTask(Int_t numberOfCells, Double_t widthOfCells, TString inputBranch, TString outputBranch, TString folderName)
-        : FairRingSorterTask(numberOfCells, widthOfCells, inputBranch, outputBranch, folderName) {};
+        : FairRingSorterTask(name){};
+    FairTestDetectorDigiSorterTask(Int_t numberOfCells,
+                                   Double_t widthOfCells,
+                                   TString inputBranch,
+                                   TString outputBranch,
+                                   TString folderName)
+        : FairRingSorterTask(numberOfCells, widthOfCells, inputBranch, outputBranch, folderName){};
 
     virtual ~FairTestDetectorDigiSorterTask();
 

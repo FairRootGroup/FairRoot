@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -11,32 +11,28 @@
 // -------------------------------------------------------------------------
 #include "FairMCMatchLoaderTask.h"
 
-#include "FairMCMatch.h"                // for FairMCMatch
-#include "FairRootManager.h"            // for FairRootManager
+#include "FairMCMatch.h"       // for FairMCMatch
+#include "FairRootManager.h"   // for FairRootManager
 
-#include <TClonesArray.h>               // for TClonesArray
-
-#include <iostream>                     // for operator<<, basic_ostream, etc
+#include <TClonesArray.h>   // for TClonesArray
+#include <iostream>         // for operator<<, basic_ostream, etc
 
 FairMCMatchLoaderTask::FairMCMatchLoaderTask()
-  : FairTask("Creates FairMCMatch"),
-    fMCMatch(nullptr),
-    fMCLink(nullptr),
-    fEventNr(0)
-{
-}
+    : FairTask("Creates FairMCMatch")
+    , fMCMatch(nullptr)
+    , fMCLink(nullptr)
+    , fEventNr(0)
+{}
 
-FairMCMatchLoaderTask::~FairMCMatchLoaderTask()
-{
-}
+FairMCMatchLoaderTask::~FairMCMatchLoaderTask() {}
 
 InitStatus FairMCMatchLoaderTask::Init()
 {
-  fMCMatch = new FairMCMatch("FairMCMatch", "FairMCMatch");
+    fMCMatch = new FairMCMatch("FairMCMatch", "FairMCMatch");
 
-  InitDataStages();
+    InitDataStages();
 
-  /*
+    /*
   fMCMatch->InitStage("MVDPoint");
   fMCMatch->InitStage("MVDStripDigis");
   fMCMatch->InitStage("MVDPixelDigis");
@@ -92,38 +88,36 @@ InitStatus FairMCMatchLoaderTask::Init()
   fMCMatch->InitStage("PidNeutralCand");
   */
 
-  FairRootManager* ioman = FairRootManager::Instance();
-  if (!ioman) {
-    std::cout << "-E- FairMCMatchLoaderTask::Init: "
-              << "RootManager not instantiated!" << std::endl;
-    return kFATAL;
-  }
+    FairRootManager* ioman = FairRootManager::Instance();
+    if (!ioman) {
+        std::cout << "-E- FairMCMatchLoaderTask::Init: "
+                  << "RootManager not instantiated!" << std::endl;
+        return kFATAL;
+    }
 
-  fMCLink = static_cast<TClonesArray*>(ioman->GetObject("MCLink"));
-  ioman->Register("MCMatch", "MCInfo", fMCMatch, kFALSE);
+    fMCLink = static_cast<TClonesArray*>(ioman->GetObject("MCLink"));
+    ioman->Register("MCMatch", "MCInfo", fMCMatch, kFALSE);
 
-  return kSUCCESS;
+    return kSUCCESS;
 }
 
-void FairMCMatchLoaderTask::SetParContainers()
-{
-}
+void FairMCMatchLoaderTask::SetParContainers() {}
 
 void FairMCMatchLoaderTask::Exec(Option_t* /*opt*/)
 {
 
-  if (!fMCLink) { Fatal("Exec", "No fMCLink"); }
-  fMCMatch->ClearMCList();
+    if (!fMCLink) {
+        Fatal("Exec", "No fMCLink");
+    }
+    fMCMatch->ClearMCList();
 
-  fMCMatch->LoadInMCLists(fMCLink);
-  fMCMatch->CreateArtificialStage("MCTrack");
+    fMCMatch->LoadInMCLists(fMCLink);
+    fMCMatch->CreateArtificialStage("MCTrack");
 
-  fMCMatch->Print();
-  std::cout << std::endl;
+    fMCMatch->Print();
+    std::cout << std::endl;
 }
 
-void FairMCMatchLoaderTask::Finish()
-{
-}
+void FairMCMatchLoaderTask::Finish() {}
 
 ClassImp(FairMCMatchLoaderTask);

@@ -3,19 +3,21 @@
 
 #include <memory>
 
-namespace fair
-{
-namespace mq
-{
-namespace policy
-{
+namespace fair {
+namespace mq {
+namespace policy {
 
 // PassTypes
-struct PointerType {};
-struct ReferenceType {};
-struct ValueType {};
-struct UniquePtrType {};
-struct SharedPtrType {};
+struct PointerType
+{};
+struct ReferenceType
+{};
+struct ValueType
+{};
+struct UniquePtrType
+{};
+struct SharedPtrType
+{};
 
 // PassType
 template<typename flag, typename T>
@@ -55,7 +57,6 @@ struct SelectPassType<SharedPtrType, T>
 {
     using Type = std::shared_ptr<T>;
 };
-
 
 // AllocatorType
 struct OpNewCreator
@@ -102,7 +103,6 @@ struct SmartPtrCreator
     }
 };
 
-
 // InitializerType
 struct NullptrInitializer
 {
@@ -131,7 +131,6 @@ struct EmptyInitializer
     {}
 };
 
-
 // DeleterType
 struct EmptyDeleter
 {
@@ -152,7 +151,12 @@ struct RawPtrDeleter
 };
 
 // Input Policy
-template<typename Deserializer, typename Data, typename PassType, typename AllocatorType, typename InitializerType, typename DeleterType>
+template<typename Deserializer,
+         typename Data,
+         typename PassType,
+         typename AllocatorType,
+         typename InitializerType,
+         typename DeleterType>
 class InputPolicy : public Deserializer
 {
   public:
@@ -176,17 +180,18 @@ class InputPolicy : public Deserializer
     }
 
   protected:
-    virtual ~InputPolicy() 
-    {
-        DeleterType::DestroyImpl(fInput);
-    }
+    virtual ~InputPolicy() { DeleterType::DestroyImpl(fInput); }
 
     DataType fInput;
 };
 
-
 // Output Policy
-template<typename Serializer, typename Data, typename PassType, typename AllocatorType, typename InitializerType, typename DeleterType>
+template<typename Serializer,
+         typename Data,
+         typename PassType,
+         typename AllocatorType,
+         typename InitializerType,
+         typename DeleterType>
 class OutputPolicy : public Serializer
 {
   public:
@@ -206,16 +211,13 @@ class OutputPolicy : public Serializer
     }
 
   protected:
-    ~OutputPolicy()
-    {
-        DeleterType::DestroyImpl(fOutput);
-    }
+    ~OutputPolicy() { DeleterType::DestroyImpl(fOutput); }
 
     DataType fOutput;
 };
 
-} // namespace policy
-} // namespace mq
-} // namespace fair
+}   // namespace policy
+}   // namespace mq
+}   // namespace fair
 
-#endif // IOPOLICY_H
+#endif   // IOPOLICY_H

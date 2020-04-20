@@ -9,11 +9,10 @@
 
 #include "RootSerializer.h"
 
-template <>
+template<>
 void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::InitTask()
 {
-    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/)
-    {
+    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
 
         RootSerializer().Deserialize(*msg, fOutput);

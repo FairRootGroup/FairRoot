@@ -20,10 +20,9 @@
 #ifndef FAIRTUTORIALDET4GEOHANDLER_H
 #define FAIRTUTORIALDET4GEOHANDLER_H 1
 
-#include <TObject.h>                    // for TObject
-
-#include <Rtypes.h>                     // for Int_t, Double_t, Bool_t, etc
-#include <TString.h>                    // for TString
+#include <Rtypes.h>    // for Int_t, Double_t, Bool_t, etc
+#include <TObject.h>   // for TObject
+#include <TString.h>   // for TString
 
 class TGeoBBox;
 class TGeoVolume;
@@ -43,7 +42,7 @@ class FairTutorialDet4GeoHandler : public TObject
 
     // Int_t GetDetectorId(Int_t uniqueId);
 
-    Int_t Init(Bool_t isSimulation=kFALSE);
+    Int_t Init(Bool_t isSimulation = kFALSE);
 
     void FillDetectorInfoArray(Int_t uniqueId);
     void NavigateTo(TString volName);
@@ -62,22 +61,22 @@ class FairTutorialDet4GeoHandler : public TObject
     // Int_t CheckGeometryVersion();
 
   private:
-    Bool_t fIsSimulation; //!
+    Bool_t fIsSimulation;   //!
 
-    Int_t fLastUsedDetectorID;  //!
+    Int_t fLastUsedDetectorID;   //!
 
-    UInt_t fGeoPathHash;        //!
-    TGeoVolume* fCurrentVolume; //!
-    TGeoBBox* fVolumeShape;     //!
-    Double_t fGlobal[3];        //! Global centre of volume
-    TGeoHMatrix* fGlobalMatrix; //!
+    UInt_t fGeoPathHash;          //!
+    TGeoVolume* fCurrentVolume;   //!
+    TGeoBBox* fVolumeShape;       //!
+    Double_t fGlobal[3];          //! Global centre of volume
+    TGeoHMatrix* fGlobalMatrix;   //!
 
     TString ConstructFullPathFromDetID(Int_t detID);
 
     FairTutorialDet4GeoHandler(const FairTutorialDet4GeoHandler&);
     FairTutorialDet4GeoHandler operator=(const FairTutorialDet4GeoHandler&);
 
-    ClassDef(FairTutorialDet4GeoHandler,1)
+    ClassDef(FairTutorialDet4GeoHandler, 1)
 };
 
-#endif //FAIRTUTORIALDETGEOHANDLER_H
+#endif   // FAIRTUTORIALDETGEOHANDLER_H

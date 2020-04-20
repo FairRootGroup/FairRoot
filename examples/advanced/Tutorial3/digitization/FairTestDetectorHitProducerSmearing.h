@@ -1,16 +1,16 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRTESTDETECTORHITPRODUCERSMEARING_H_
 #define FAIRTESTDETECTORHITPRODUCERSMEARING_H_
 
-#include "FairTask.h" // for InitStatus, FairTask
+#include "FairTask.h"   // for InitStatus, FairTask
 
-#include <Rtypes.h> // for ClassDef
+#include <Rtypes.h>   // for ClassDef
 
 class TClonesArray;
 

@@ -1,147 +1,145 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine="TGeant3",  Bool_t isMT=false)
+void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT = false)
 {
-  
-  TString dir = getenv("VMCWORKDIR");
 
-  TString tut_configdir = dir + "/simulation/Tutorial4/gconfig";
-  gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
+    TString dir = getenv("VMCWORKDIR");
 
-  TString tut_geomdir = dir + "/common/geometry";
-  gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
-  
-  Double_t momentum = 2.;
+    TString tut_configdir = dir + "/simulation/Tutorial4/gconfig";
+    gSystem->Setenv("CONFIG_DIR", tut_configdir.Data());
 
-  Double_t theta    = 2.;
+    TString tut_geomdir = dir + "/common/geometry";
+    gSystem->Setenv("GEOMPATH", tut_geomdir.Data());
 
-  TString outDir = "./";
+    Double_t momentum = 2.;
 
-  // Output file name
-  TString  outFile     ="testrun_";
-  outFile = outFile + mcEngine + ".root";
+    Double_t theta = 2.;
 
-  TString geoFile ="data/geoFile_" + mcEngine + "_full.root";
-  TString geoFileMisaligned ="data/geoFile_" + mcEngine + "_full_misaligned.root";
+    TString outDir = "./";
 
-  TString  parFile     ="testparams_";
-  parFile = parFile + mcEngine + ".root";
-  
-  TList *parFileList = new TList();
+    // Output file name
+    TString outFile = "testrun_";
+    outFile = outFile + mcEngine + ".root";
 
-  TString paramDir = dir + "/simulation/Tutorial4/parameters/";
-  TString paramFile = paramDir + "example.par";
+    TString geoFile = "data/geoFile_" + mcEngine + "_full.root";
+    TString geoFileMisaligned = "data/geoFile_" + mcEngine + "_full_misaligned.root";
 
-  TObjString* tutDetDigiFile = new TObjString(paramFile);
-  parFileList->Add(tutDetDigiFile);
+    TString parFile = "testparams_";
+    parFile = parFile + mcEngine + ".root";
 
+    TList* parFileList = new TList();
 
-  // In general, the following parts need not be touched
-  // ========================================================================
+    TString paramDir = dir + "/simulation/Tutorial4/parameters/";
+    TString paramFile = paramDir + "example.par";
 
-  // ----    Debug option   -------------------------------------------------
-  gDebug = 0;
-  // ------------------------------------------------------------------------
+    TObjString* tutDetDigiFile = new TObjString(paramFile);
+    parFileList->Add(tutDetDigiFile);
 
-  // -----   Timer   --------------------------------------------------------
-  TStopwatch timer;
-  timer.Start();
-  // ------------------------------------------------------------------------
+    // In general, the following parts need not be touched
+    // ========================================================================
 
-  //Does not work with automatic loading pf libraries. The info is not in the rootmap file
-//  gLogger->SetLogScreenLevel("INFO");   
- 
-  // -----   Create simulation run   ----------------------------------------
-  FairRunSim* run = new FairRunSim();
-  run->SetName(mcEngine);              // Transport engine
-  run->SetIsMT(isMT);                  // Multi-threading mode (Geant4 only)
-  run->SetSink(new FairRootFileSink(outFile));          // Output file
-  FairRuntimeDb* rtdb = run->GetRuntimeDb();
-  // ------------------------------------------------------------------------
-  
-  // -----   Create media   -------------------------------------------------
-  run->SetMaterials("media.geo");       // Materials
-  // ------------------------------------------------------------------------
-  
-  // -----   Create geometry   ----------------------------------------------
-  FairModule* cave= new FairCave("CAVE");
-  cave->SetGeometryFileName("cave_vacuum.geo"); 
-  run->AddModule(cave);
+    // ----    Debug option   -------------------------------------------------
+    gDebug = 0;
+    // ------------------------------------------------------------------------
 
-  FairTutorialDet4* tutdet = new FairTutorialDet4("TUTDET", kTRUE);
-  tutdet->SetGeometryFileName("tutorial4.root"); 
-   
-  run->AddModule(tutdet);
-  // ------------------------------------------------------------------------
+    // -----   Timer   --------------------------------------------------------
+    TStopwatch timer;
+    timer.Start();
+    // ------------------------------------------------------------------------
 
-  // -----   Create PrimaryGenerator   --------------------------------------
-  FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
-  FairBoxGenerator* boxGen = new FairBoxGenerator(2212, 1);
+    // Does not work with automatic loading pf libraries. The info is not in the rootmap file
+    //  gLogger->SetLogScreenLevel("INFO");
 
-  boxGen->SetThetaRange (   theta,   theta+0.1);
-//  boxGen->SetThetaRange (  0.,  0.);
-  boxGen->SetPRange     (momentum,momentum+0.01);
-  boxGen->SetPhiRange   (0.,360.);
-  boxGen->SetBoxXYZ (-20.,-20.,20.,20., 0.);
-//  boxGen->SetBoxXYZ (0.,0.,0.,0., 0.);
+    // -----   Create simulation run   ----------------------------------------
+    FairRunSim* run = new FairRunSim();
+    run->SetName(mcEngine);                        // Transport engine
+    run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
+    run->SetSink(new FairRootFileSink(outFile));   // Output file
+    FairRuntimeDb* rtdb = run->GetRuntimeDb();
+    // ------------------------------------------------------------------------
 
-//  boxGen->SetDebug(kTRUE);
+    // -----   Create media   -------------------------------------------------
+    run->SetMaterials("media.geo");   // Materials
+    // ------------------------------------------------------------------------
 
-  primGen->AddGenerator(boxGen);
+    // -----   Create geometry   ----------------------------------------------
+    FairModule* cave = new FairCave("CAVE");
+    cave->SetGeometryFileName("cave_vacuum.geo");
+    run->AddModule(cave);
 
-  
-  run->SetGenerator(primGen);
-  // ------------------------------------------------------------------------
+    FairTutorialDet4* tutdet = new FairTutorialDet4("TUTDET", kTRUE);
+    tutdet->SetGeometryFileName("tutorial4.root");
 
-  // -----   Initialize simulation run   ------------------------------------
-  run->SetStoreTraj(kTRUE);
+    run->AddModule(tutdet);
+    // ------------------------------------------------------------------------
 
-  // -----   Runtime database   ---------------------------------------------
+    // -----   Create PrimaryGenerator   --------------------------------------
+    FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
+    FairBoxGenerator* boxGen = new FairBoxGenerator(2212, 1);
 
-  Bool_t kParameterMerged = kTRUE;
-  FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
-  FairParAsciiFileIo* parIn = new FairParAsciiFileIo();
-  parOut->open(parFile.Data());
-  parIn->open(parFileList, "in");
-  rtdb->setFirstInput(parIn);
-  rtdb->setOutput(parOut);
-  // ------------------------------------------------------------------------
+    boxGen->SetThetaRange(theta, theta + 0.1);
+    //  boxGen->SetThetaRange (  0.,  0.);
+    boxGen->SetPRange(momentum, momentum + 0.01);
+    boxGen->SetPhiRange(0., 360.);
+    boxGen->SetBoxXYZ(-20., -20., 20., 20., 0.);
+    //  boxGen->SetBoxXYZ (0.,0.,0.,0., 0.);
 
-  run->Init();
+    //  boxGen->SetDebug(kTRUE);
 
-  //sadly, the align parameters are only available AFTER we called fRun->Init()
+    primGen->AddGenerator(boxGen);
 
-  // We fill a std::map<std::string, TGeoHMatrix> map with all misalignment matrices
-  // how you get those in your geometry is up to you
+    run->SetGenerator(primGen);
+    // ------------------------------------------------------------------------
 
-  auto matrices = tutdet->getMisalignmentMatrices();
+    // -----   Initialize simulation run   ------------------------------------
+    run->SetStoreTraj(kTRUE);
 
-  ofstream myfile;
-  myfile.open ("misalignmentMatrices.txt");
+    // -----   Runtime database   ---------------------------------------------
 
-  double *rot;
-  double *trans;
+    Bool_t kParameterMerged = kTRUE;
+    FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
+    FairParAsciiFileIo* parIn = new FairParAsciiFileIo();
+    parOut->open(parFile.Data());
+    parIn->open(parFileList, "in");
+    rtdb->setFirstInput(parIn);
+    rtdb->setOutput(parOut);
+    // ------------------------------------------------------------------------
 
-  // this can probably be done more elegantly
-  for(auto &mat : matrices){
-    myfile << mat.first << "\n";
-    rot = mat.second.GetRotationMatrix();
-    trans = mat.second.GetTranslation();
-    for(int i=0; i<9; i++)  myfile << rot[i] << "\n";
-    for(int i=0; i<3; i++)  myfile << trans[i] << "\n";
-  }
-  myfile.close();
+    run->Init();
 
-  LOG(info) << "AlignHandler: all matrices added!";
+    // sadly, the align parameters are only available AFTER we called fRun->Init()
 
-  LOG(info) << "SUCCESS! All matrices created and saved!";
+    // We fill a std::map<std::string, TGeoHMatrix> map with all misalignment matrices
+    // how you get those in your geometry is up to you
 
-  return;
+    auto matrices = tutdet->getMisalignmentMatrices();
+
+    ofstream myfile;
+    myfile.open("misalignmentMatrices.txt");
+
+    double* rot;
+    double* trans;
+
+    // this can probably be done more elegantly
+    for (auto& mat : matrices) {
+        myfile << mat.first << "\n";
+        rot = mat.second.GetRotationMatrix();
+        trans = mat.second.GetTranslation();
+        for (int i = 0; i < 9; i++)
+            myfile << rot[i] << "\n";
+        for (int i = 0; i < 3; i++)
+            myfile << trans[i] << "\n";
+    }
+    myfile.close();
+
+    LOG(info) << "AlignHandler: all matrices added!";
+
+    LOG(info) << "SUCCESS! All matrices created and saved!";
+
+    return;
 }
-
-

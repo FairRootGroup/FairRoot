@@ -17,28 +17,25 @@
 ClassImp(FairMCEntry);
 
 FairMCEntry::FairMCEntry()
-  : FairMultiLinkedData(),
-    fSource(-1),
-    fPos(-1)
+    : FairMultiLinkedData()
+    , fSource(-1)
+    , fPos(-1)
 {
-  SetPersistanceCheck(kFALSE);
+    SetPersistanceCheck(kFALSE);
 }
 
-FairMCEntry::~FairMCEntry()
-{
-}
+FairMCEntry::~FairMCEntry() {}
 
 void FairMCEntry::RemoveType(Int_t type)
 {
- // std::set<FairLink>::iterator endIter = fLinks.end();
-  std::set<FairLink>::iterator it = fLinks.begin();
-  for (; it!=fLinks.end();) {
-    if (it->GetType() == type) {
-      fLinks.erase(it);
-      it = fLinks.begin();
-    } else {
-      ++it;
+    // std::set<FairLink>::iterator endIter = fLinks.end();
+    std::set<FairLink>::iterator it = fLinks.begin();
+    for (; it != fLinks.end();) {
+        if (it->GetType() == type) {
+            fLinks.erase(it);
+            it = fLinks.begin();
+        } else {
+            ++it;
+        }
     }
-  }
 }
-

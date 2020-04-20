@@ -7,28 +7,27 @@
  ********************************************************************************/
 #include "NewDetector.h"
 
-#include "NewDetectorPoint.h"
-#include "NewDetectorGeo.h"
-#include "NewDetectorGeoPar.h"
-
-#include "FairVolume.h"
-#include "FairGeoVolume.h"
-#include "FairGeoNode.h"
-#include "FairRootManager.h"
-#include "FairGeoLoader.h"
 #include "FairGeoInterface.h"
+#include "FairGeoLoader.h"
+#include "FairGeoNode.h"
+#include "FairGeoVolume.h"
+#include "FairRootManager.h"
 #include "FairRun.h"
 #include "FairRuntimeDb.h"
+#include "FairVolume.h"
 #include "MyProjDetectorList.h"
 #include "MyProjStack.h"
+#include "NewDetectorGeo.h"
+#include "NewDetectorGeoPar.h"
+#include "NewDetectorPoint.h"
 
-#include <TVirtualMC.h>
-#include <TGeoManager.h>
 #include <TGeoBBox.h>
 #include <TGeoCompositeShape.h>
-#include <TGeoTube.h>
+#include <TGeoManager.h>
 #include <TGeoMaterial.h>
 #include <TGeoMedium.h>
+#include <TGeoTube.h>
+#include <TVirtualMC.h>
 
 NewDetector::NewDetector()
     : FairDetector("NewDetector", kTRUE, kNewDetector)
@@ -40,8 +39,7 @@ NewDetector::NewDetector()
     , fLength(-1.)
     , fELoss(-1)
     , fVectorPoints(new std::vector<NewDetectorPoint*>)
-{
-}
+{}
 
 NewDetector::NewDetector(const char* name, Bool_t active)
     : FairDetector(name, active, kNewDetector)
@@ -53,8 +51,7 @@ NewDetector::NewDetector(const char* name, Bool_t active)
     , fLength(-1.)
     , fELoss(-1)
     , fVectorPoints(new std::vector<NewDetectorPoint*>)
-{
-}
+{}
 
 NewDetector::NewDetector(const NewDetector& right)
     : FairDetector(right)
@@ -66,15 +63,12 @@ NewDetector::NewDetector(const NewDetector& right)
     , fLength(-1.)
     , fELoss(-1)
     , fVectorPoints(new std::vector<NewDetectorPoint*>)
-{
-}
+{}
 
 NewDetector::~NewDetector()
 {
-    if (fVectorPoints->size())
-    {
-        for(auto const& x : (*fVectorPoints))
-        {
+    if (fVectorPoints->size()) {
+        for (auto const& x : (*fVectorPoints)) {
             delete x;
         }
         fVectorPoints->clear();
@@ -101,8 +95,7 @@ Bool_t NewDetector::ProcessHits(FairVolume* vol)
     /** This method is called from the MC stepping */
 
     // Set parameters at entrance of volume. Reset ELoss.
-    if (TVirtualMC::GetMC()->IsTrackEntering())
-    {
+    if (TVirtualMC::GetMC()->IsTrackEntering()) {
         fELoss = 0.;
         fTime = TVirtualMC::GetMC()->TrackTime() * 1.0e09;
         fLength = TVirtualMC::GetMC()->TrackLength();
@@ -114,13 +107,11 @@ Bool_t NewDetector::ProcessHits(FairVolume* vol)
     fELoss += TVirtualMC::GetMC()->Edep();
 
     // Create NewDetectorPoint at exit of active volume
-    if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop() ||
-        TVirtualMC::GetMC()->IsTrackDisappeared())
-    {
+    if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
+        || TVirtualMC::GetMC()->IsTrackDisappeared()) {
         fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
         fVolumeID = vol->getMCid();
-        if (fELoss == 0.)
-        {
+        if (fELoss == 0.) {
             return kFALSE;
         }
         AddHit(fTrackID,
@@ -141,11 +132,9 @@ Bool_t NewDetector::ProcessHits(FairVolume* vol)
 
 void NewDetector::EndOfEvent()
 {
-    LOG(info) << "NewDetector: " << fVectorPoints->size()
-              << " points registered in this event";
+    LOG(info) << "NewDetector: " << fVectorPoints->size() << " points registered in this event";
 
-    for(auto const& x : (*fVectorPoints))
-    {
+    for (auto const& x : (*fVectorPoints)) {
         delete x;
     }
     fVectorPoints->clear();
@@ -163,8 +152,7 @@ void NewDetector::Register()
 
 void NewDetector::Reset()
 {
-    for(auto const& x : (*fVectorPoints))
-    {
+    for (auto const& x : (*fVectorPoints)) {
         delete x;
     }
     fVectorPoints->clear();
@@ -176,13 +164,11 @@ void NewDetector::ConstructGeometry()
     TGeoMedium* Si = gGeoManager->GetMedium("Si");
     TGeoMedium* Carbon = gGeoManager->GetMedium("C");
 
-    if (Si == 0)
-    {
+    if (Si == 0) {
         TGeoMaterial* matSi = new TGeoMaterial("Si", 28.0855, 14, 2.33);
         Si = new TGeoMedium("Si", 2, matSi);
     }
-    if (Carbon == 0)
-    {
+    if (Carbon == 0) {
         TGeoMaterial* matCarbon = new TGeoMaterial("C", 12.011, 6.0, 2.265);
         Carbon = new TGeoMedium("C", 3, matCarbon);
     }
@@ -228,12 +214,12 @@ void NewDetector::ConstructGeometry()
 }
 
 NewDetectorPoint* NewDetector::AddHit(Int_t trackID,
-                                            Int_t detID,
-                                            TVector3 pos,
-                                            TVector3 mom,
-                                            Double_t time,
-                                            Double_t length,
-                                            Double_t eLoss)
+                                      Int_t detID,
+                                      TVector3 pos,
+                                      TVector3 mom,
+                                      Double_t time,
+                                      Double_t length,
+                                      Double_t eLoss)
 {
     NewDetectorPoint* point = new NewDetectorPoint(trackID, detID, pos, mom, time, length, eLoss);
     fVectorPoints->push_back(point);
@@ -247,10 +233,8 @@ void NewDetector::DefineSensitiveVolumes()
     TObjArray* volumes = gGeoManager->GetListOfVolumes();
     TIter next(volumes);
     TGeoVolume* volume;
-    while ((volume = static_cast<TGeoVolume*>(next())))
-    {
-        if (IsSensitive(volume->GetName()))
-        {
+    while ((volume = static_cast<TGeoVolume*>(next()))) {
+        if (IsSensitive(volume->GetName())) {
             LOG(debug2) << "Sensitive Volume " << volume->GetName();
             AddSensitiveVolume(volume);
         }
@@ -259,10 +243,10 @@ void NewDetector::DefineSensitiveVolumes()
 
 Bool_t NewDetector::IsSensitive(const std::string& name)
 {
-    if ( name.find("Det") != std::string::npos ) {
+    if (name.find("Det") != std::string::npos) {
         return kTRUE;
     }
     return kFALSE;
 }
 
-ClassImp(NewDetector)
+ClassImp(NewDetector);

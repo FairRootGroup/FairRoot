@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // --------------------------------------------------------------------------
@@ -16,7 +16,6 @@
 #include "FairTask.h"
 
 #include <Rtypes.h>
-
 #include <vector>
 
 class TClonesArray;
@@ -30,7 +29,7 @@ class FairTutorialDet2Digitizer : public FairTask
     FairTutorialDet2Digitizer();
 
     /** Standard constructor **/
-    FairTutorialDet2Digitizer(const char* name, const char* title="FAIR Task");
+    FairTutorialDet2Digitizer(const char* name, const char* title = "FAIR Task");
 
     /** Destructor **/
     virtual ~FairTutorialDet2Digitizer();
@@ -54,23 +53,23 @@ class FairTutorialDet2Digitizer : public FairTask
     void Register();
 
   private:
-    TClonesArray* fTutorialDetPoints; //! Tutorial Det MC points
-    std::vector<CustomClass> const* fCustomData = nullptr; //!
-    std::vector<CustomClass>* fCustomData2 = nullptr; //!
+    TClonesArray* fTutorialDetPoints;                        //! Tutorial Det MC points
+    std::vector<CustomClass> const* fCustomData = nullptr;   //!
+    std::vector<CustomClass>* fCustomData2 = nullptr;        //!
 
     //    TClonesArray *fDigiCollection; //! TRD hits
-    //TClonesArray *fListStack;         //Tracks
+    // TClonesArray *fListStack;         //Tracks
 
     FairTutorialDet2DigiPar* fDigiPar;
 
     //    Double_t fDx;               //!
-    //Double_t fDy;               //!
-    //Int_t fNHits;
+    // Double_t fDy;               //!
+    // Int_t fNHits;
 
     FairTutorialDet2Digitizer(const FairTutorialDet2Digitizer&);
     FairTutorialDet2Digitizer& operator=(const FairTutorialDet2Digitizer&);
 
-    ClassDef(FairTutorialDet2Digitizer,1)
+    ClassDef(FairTutorialDet2Digitizer, 1)
 };
 
-#endif //FAIRTUTORIALDETDIGITIZER_H
+#endif   // FAIRTUTORIALDETDIGITIZER_H

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -12,8 +12,7 @@
 #ifndef FAIR_FASTSIM_RUN_CONFIGURATION_H
 #define FAIR_FASTSIM_RUN_CONFIGURATION_H
 #include <TG4RunConfiguration.h>
-
-#include <TString.h>              // for TString
+#include <TString.h>   // for TString
 class TG4VUserFastSimulation;
 
 class FairFastSimRunConfiguration : public TG4RunConfiguration
@@ -22,13 +21,12 @@ class FairFastSimRunConfiguration : public TG4RunConfiguration
     FairFastSimRunConfiguration(const TString& geometry,
                                 const TString& physicsList = "FTFP_BERT",
                                 const TString& specialProcess = "stepLimiter",
-                                const bool     specialStacking = false,
-                                const bool     isMT = false);
+                                const bool specialStacking = false,
+                                const bool isMT = false);
     virtual ~FairFastSimRunConfiguration();
 
     // methods
-    virtual TG4VUserFastSimulation*  CreateUserFastSimulation();
+    virtual TG4VUserFastSimulation* CreateUserFastSimulation();
 };
 
-#endif //FAIR_FASTSIM_RUN_CONFIGURATION_H
-
+#endif   // FAIR_FASTSIM_RUN_CONFIGURATION_H

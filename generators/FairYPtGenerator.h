@@ -11,25 +11,28 @@
 #ifndef FAIRYPTGENERATOR_H_
 #define FAIRYPTGENERATOR_H_
 
-#include "TH2D.h"
 #include "FairBaseMCGenerator.h"
+#include "TH2D.h"
 
-class FairYPtGenerator : public FairBaseMCGenerator{
+class FairYPtGenerator : public FairBaseMCGenerator
+{
   public:
     FairYPtGenerator();
-    void SetYPt(const TH2D &yPt);
+    void SetYPt(const TH2D& yPt);
     virtual Bool_t Init();
     virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
     virtual FairGenerator* CloneGenerator() const;
     virtual ~FairYPtGenerator();
+
   protected:
     FairYPtGenerator(const FairYPtGenerator& base);
-    FairYPtGenerator& operator=(const FairYPtGenerator&rhs);
-    Double_t GetMass2()const{return GetPDGMass()*GetPDGMass();};
-    void GetYPt(Double_t &y, Double_t &pt);
+    FairYPtGenerator& operator=(const FairYPtGenerator& rhs);
+    Double_t GetMass2() const { return GetPDGMass() * GetPDGMass(); };
+    void GetYPt(Double_t& y, Double_t& pt);
+
   private:
-    TH2D fYPt;// Y-Pt distribution
-    ClassDef(FairYPtGenerator,1)
+    TH2D fYPt;   // Y-Pt distribution
+    ClassDef(FairYPtGenerator, 1)
 };
 
 #endif /* CBM_NOV_ANALYSIS_CBMFEMTO_HELPERS_FAIRYPTGENERATOR_H_ */

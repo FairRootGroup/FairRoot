@@ -15,13 +15,11 @@
 #ifndef BASE_FAIRLOGGER_H_
 #define BASE_FAIRLOGGER_H_
 
+#include <Rtypes.h>   // for bool, FairLogger::Class, etc
 #include <fairlogger/Logger.h>
-
-#include <Rtypes.h> // for bool, FairLogger::Class, etc
-
-#include <stdarg.h> // for va_list
-#include <string>   // for operator<<
-#include <vector>   // for vector
+#include <stdarg.h>   // for va_list
+#include <string>     // for operator<<
+#include <vector>     // for vector
 
 #define MESSAGE_ORIGIN __FILE__, CONVERTTOSTRING(__LINE__), __FUNCTION__
 
@@ -40,17 +38,8 @@ enum FairLogLevel
 };
 
 // backwards-compatibility with older FairLogger calls, TODO: delete me as soon as possible
-static const char* const LogLevelString[] = {
-    "FATAL",
-    "ERROR",
-    "WARNING",
-    "INFO",
-    "DEBUG",
-    "DEBUG1",
-    "DEBUG2",
-    "DEBUG3",
-    "DEBUG4"
-};
+static const char* const LogLevelString[] =
+    {"FATAL", "ERROR", "WARNING", "INFO", "DEBUG", "DEBUG1", "DEBUG2", "DEBUG3", "DEBUG4"};
 
 class FairLogger
 {
@@ -59,12 +48,9 @@ class FairLogger
 
     void SetLogToScreen(bool enabled)
     {
-        if (enabled)
-        {
+        if (enabled) {
             fair::Logger::SetConsoleSeverity(fConsoleSeverity);
-        }
-        else
-        {
+        } else {
             fair::Logger::SetConsoleSeverity(fair::Severity::fatal);
         }
     }
@@ -77,12 +63,9 @@ class FairLogger
 
     void SetLogToFile(bool enabled)
     {
-        if (enabled)
-        {
+        if (enabled) {
             fair::Logger::SetFileSeverity(fLogFileSeverity);
-        }
-        else
-        {
+        } else {
             fair::Logger::SetFileSeverity(fair::Severity::fatal);
         }
     }
@@ -99,35 +82,40 @@ class FairLogger
         OpenLogFile();
     }
 
-    void SetColoredLog(bool enabled)
-    {
-        fair::Logger::SetConsoleColor(enabled);
-    }
+    void SetColoredLog(bool enabled) { fair::Logger::SetConsoleColor(enabled); }
 
-    void SetLogVerbosityLevel(const char* verbosity)
-    {
-        fair::Logger::SetVerbosity(verbosity);
-    }
+    void SetLogVerbosityLevel(const char* verbosity) { fair::Logger::SetVerbosity(verbosity); }
 
     bool IsLogNeeded(fair::Severity severity);
-    bool IsLogNeeded(FairLogLevel level) __attribute__((deprecated("Use 'IsLogNeeded(fair::Severity severity)' or 'fair::Logger::Logging(const fair::Severity severity)' or 'fair::Logger::Logging(const std::string& severityStr)'")));
+    bool IsLogNeeded(FairLogLevel level) __attribute__((
+        deprecated("Use 'IsLogNeeded(fair::Severity severity)' or 'fair::Logger::Logging(const fair::Severity "
+                   "severity)' or 'fair::Logger::Logging(const std::string& severityStr)'")));
 
-    void Fatal  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(fatal) << content;' macro interface instead.")));
-    void Error  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(error) << content;' macro interface instead.")));
-    void Warning(const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(warn) << content;' macro interface instead.")));
-    void Info   (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(info) << content;' macro interface instead.")));
-    void Debug  (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(debug) << content;' macro interface instead.")));
-    void Debug1 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(debug1) << content;' macro interface instead.")));
-    void Debug2 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(debug2) << content;' macro interface instead.")));
-    void Debug3 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(debug3) << content;' macro interface instead.")));
-    void Debug4 (const char* file, const char* line, const char* func, const char* format, ...)  __attribute__((deprecated("Use 'LOG(debug4) << content;' macro interface instead.")));
+    void Fatal(const char* file, const char* line, const char* func, const char* format, ...)
+        __attribute__((deprecated("Use 'LOG(fatal) << content;' macro interface instead.")));
+    void Error(const char* file, const char* line, const char* func, const char* format, ...)
+        __attribute__((deprecated("Use 'LOG(error) << content;' macro interface instead.")));
+    void Warning(const char* file, const char* line, const char* func, const char* format, ...)
+        __attribute__((deprecated("Use 'LOG(warn) << content;' macro interface instead.")));
+    void Info(const char* file, const char* line, const char* func, const char* format, ...)
+        __attribute__((deprecated("Use 'LOG(info) << content;' macro interface instead.")));
+    void Debug(const char* file, const char* line, const char* func, const char* format, ...)
+        __attribute__((deprecated("Use 'LOG(debug) << content;' macro interface instead.")));
+    void Debug1(const char* file, const char* line, const char* func, const char* format, ...)
+        __attribute__((deprecated("Use 'LOG(debug1) << content;' macro interface instead.")));
+    void Debug2(const char* file, const char* line, const char* func, const char* format, ...)
+        __attribute__((deprecated("Use 'LOG(debug2) << content;' macro interface instead.")));
+    void Debug3(const char* file, const char* line, const char* func, const char* format, ...)
+        __attribute__((deprecated("Use 'LOG(debug3) << content;' macro interface instead.")));
+    void Debug4(const char* file, const char* line, const char* func, const char* format, ...)
+        __attribute__((deprecated("Use 'LOG(debug4) << content;' macro interface instead.")));
 
-    static char const endl __attribute__((deprecated("Line break is now added automatically by the LOG macro, this variable only adds empty space.")));
-    static char const flush __attribute__((deprecated("Data is now flushed automatically by the LOG macro, this variable only adds empty space.")));
+    static char const endl __attribute__((
+        deprecated("Line break is now added automatically by the LOG macro, this variable only adds empty space.")));
+    static char const flush __attribute__((
+        deprecated("Data is now flushed automatically by the LOG macro, this variable only adds empty space.")));
 
-    void SetScreenStreamToCerr(bool /* useCerr */)
-    {
-    }
+    void SetScreenStreamToCerr(bool /* useCerr */) {}
 
   private:
     static FairLogger* instance;
@@ -138,21 +126,20 @@ class FairLogger
 
     ~FairLogger() {}
 
-    void Log(fair::Severity level, const char* file, const char* line, const char*, const char* format, va_list arglist);
+    void Log(fair::Severity level,
+             const char* file,
+             const char* line,
+             const char*,
+             const char* format,
+             va_list arglist);
 
     const char* ConvertLogLevelToString(FairLogLevel level) const { return LogLevelString[level]; }
 
     static void LogFatalMessage();
 
-    void OpenLogFile()
-    {
-        fair::Logger::InitFileSink(fLogFileSeverity, fLogFileName, false);
-    }
+    void OpenLogFile() { fair::Logger::InitFileSink(fLogFileSeverity, fLogFileName, false); }
 
-    void CloseLogFile()
-    {
-        fair::Logger::RemoveFileSink();
-    }
+    void CloseLogFile() { fair::Logger::RemoveFileSink(); }
 
     std::string fLogFileName;
     std::string fLogFileSeverity;
@@ -168,4 +155,4 @@ class FairLogger
 
 #define gLogger (FairLogger::GetLogger())
 
-#endif  // BASE_FAIRLOGGER_H_
+#endif   // BASE_FAIRLOGGER_H_

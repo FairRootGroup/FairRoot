@@ -12,24 +12,23 @@
  * Created on January 15, 2015, 1:57 PM
  */
 
-#include "runFairMQDevice.h"
 #include "FairMQLmdSampler.h"
+#include "runFairMQDevice.h"
 
 namespace bpo = boost::program_options;
 
 void addCustomOptions(bpo::options_description& options)
 {
+    // clang-format off
     options.add_options()
-        ("input-file-name", bpo::value<std::string>(),  "Path to the input file")
-        ("lmd-type",        bpo::value<short>(),        "sub-event type")
-        ("lmd-sub-type",    bpo::value<short>(),        "sub-event subType")
-        ("lmd-proc-id",     bpo::value<short>(),        "sub-event procId")
-        ("lmd-sub-crate",   bpo::value<short>(),        "sub-event subCrate")
-        ("lmd-control",     bpo::value<short>(),        "sub-event control")
-        ("lmd-chan-name",   bpo::value<std::string>(),  "LMD output channel name");
+        ("input-file-name", bpo::value<std::string>(), "Path to the input file")
+        ("lmd-type",        bpo::value<short>(),       "sub-event type")
+        ("lmd-sub-type",    bpo::value<short>(),       "sub-event subType")
+        ("lmd-proc-id",     bpo::value<short>(),       "sub-event procId")
+        ("lmd-sub-crate",   bpo::value<short>(),       "sub-event subCrate")
+        ("lmd-control",     bpo::value<short>(),       "sub-event control")
+        ("lmd-chan-name",   bpo::value<std::string>(), "LMD output channel name");
+    // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)
-{
-    return new FairMQLmdSampler();
-}
+FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/) { return new FairMQLmdSampler(); }

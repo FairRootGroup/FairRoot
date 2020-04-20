@@ -28,8 +28,7 @@ TEST_F(FairToolsTest, ManipToFile)
 
     int minLines = std::min(expectedNumberOfLines, noLines);
 
-    for (int i = 0; i < minLines; ++i)
-    {
+    for (int i = 0; i < minLines; ++i) {
         EXPECT_EQ(expectedResult[i], outputHandler.GetCaptureLine(i));
     }
 }

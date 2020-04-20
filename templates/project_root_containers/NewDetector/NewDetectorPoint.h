@@ -1,13 +1,12 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef NEWDETECTORPOINT_H
 #define NEWDETECTORPOINT_H 1
-
 
 #include "FairMCPoint.h"
 
@@ -18,10 +17,8 @@ class NewDetectorPoint : public FairMCPoint
 {
 
   public:
-
     /** Default constructor **/
     NewDetectorPoint();
-
 
     /** Constructor with arguments
      *@param trackID  Index of MCTrack
@@ -32,11 +29,13 @@ class NewDetectorPoint : public FairMCPoint
      *@param length   Track length since creation [cm]
      *@param eLoss    Energy deposit [GeV]
      **/
-    NewDetectorPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                     Double_t tof, Double_t length, Double_t eLoss);
-
-
-
+    NewDetectorPoint(Int_t trackID,
+                     Int_t detID,
+                     TVector3 pos,
+                     TVector3 mom,
+                     Double_t tof,
+                     Double_t length,
+                     Double_t eLoss);
 
     /** Destructor **/
     virtual ~NewDetectorPoint();
@@ -49,8 +48,7 @@ class NewDetectorPoint : public FairMCPoint
     NewDetectorPoint(const NewDetectorPoint& point);
     NewDetectorPoint operator=(const NewDetectorPoint& point);
 
-    ClassDef(NewDetectorPoint,1)
-
+    ClassDef(NewDetectorPoint, 1)
 };
 
 #endif

@@ -5,20 +5,19 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include <chrono>
-#include <thread>
-
 #include "FairMQExHistoDevice.h"
+
 #include "RootSerializer.h"
 
 #include <TMath.h>
+#include <chrono>
+#include <thread>
 
 FairMQExHistoDevice::FairMQExHistoDevice()
     : FairMQDevice()
     , fRandom(0)
     , fArrayHisto()
-{
-}
+{}
 
 FairMQExHistoDevice::~FairMQExHistoDevice() {}
 
@@ -55,8 +54,7 @@ bool FairMQExHistoDevice::ConditionalRun()
     FairMQMessagePtr message(NewMessage());
     Serialize<RootSerializer>(*message, &fArrayHisto);
 
-    for (auto& channel : fChannels)
-    {
+    for (auto& channel : fChannels) {
         Send(message, channel.first.data());
     }
 

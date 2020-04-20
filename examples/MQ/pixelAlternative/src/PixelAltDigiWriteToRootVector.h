@@ -16,12 +16,10 @@
 #define PIXELALTDIGIWRITETOROOTVECTOR_H 1
 
 #include "FairTask.h"
-
 #include "PixelPayload.h"
 
 #include <Rtypes.h>
 #include <TString.h>
-
 #include <vector>
 
 class TClonesArray;
@@ -46,9 +44,9 @@ class PixelAltDigiWriteToRootVector : public FairTask
     /** Execution **/
     virtual void Exec(Option_t* opt);
 
-    void SetOutputFileName(TString tstr) {fOutputFileName = tstr;};
+    void SetOutputFileName(TString tstr) { fOutputFileName = tstr; };
 
-    void SetDivideLevel(Int_t idiv) { fDivideLevel = idiv; } // 0 - event, 1 - station, 2 - sensor
+    void SetDivideLevel(Int_t idiv) { fDivideLevel = idiv; }   // 0 - event, 1 - station, 2 - sensor
 
   private:
     TClonesArray* fDigis; /** Input array of PixelDigi **/
@@ -85,7 +83,7 @@ class PixelAltDigiWriteToRootVector : public FairTask
     PixelAltDigiWriteToRootVector(const PixelAltDigiWriteToRootVector&);
     PixelAltDigiWriteToRootVector& operator=(const PixelAltDigiWriteToRootVector&);
 
-    ClassDef(PixelAltDigiWriteToRootVector,1);
+    ClassDef(PixelAltDigiWriteToRootVector, 1);
 };
 
 #endif

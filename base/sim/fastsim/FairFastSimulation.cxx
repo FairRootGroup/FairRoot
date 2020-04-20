@@ -11,14 +11,14 @@
 // -------------------------------------------------------------------------
 
 #include "FairFastSimulation.h"
+
 #include "FairFastSimModel.h"
-
-#include <TG4VUserFastSimulation.h>  // for TG4VUserFastSimulation
-
 #include "FairLogger.h"
 
+#include <TG4VUserFastSimulation.h>   // for TG4VUserFastSimulation
+
 FairFastSimulation::FairFastSimulation()
-  : TG4VUserFastSimulation()
+    : TG4VUserFastSimulation()
 {
     SetModel("fairFastSimModel");
     LOG(info) << "FairFastSimulation::FairFastSimulation() model set";
@@ -29,18 +29,16 @@ FairFastSimulation::FairFastSimulation()
     LOG(info) << "FairFastSimulation::FairFastSimulation() finished";
 }
 
-FairFastSimulation::~FairFastSimulation()
-{
-}
+FairFastSimulation::~FairFastSimulation() {}
 
 //
 // protected methods
 //
 
-void  FairFastSimulation::Construct()
+void FairFastSimulation::Construct()
 {
-/// This function must be overriden in user class and users should create
-/// the simulation models and register them to VMC framework
+    /// This function must be overriden in user class and users should create
+    /// the simulation models and register them to VMC framework
 
     LOG(info) << "Construct FairFastSimulation model.";
 
@@ -51,6 +49,6 @@ void  FairFastSimulation::Construct()
     Register(fairFastSimModel);
 
     LOG(info) << "end construct FairFastSimulation model.";
-  //
-  // end Initializing shower model
+    //
+    // end Initializing shower model
 }

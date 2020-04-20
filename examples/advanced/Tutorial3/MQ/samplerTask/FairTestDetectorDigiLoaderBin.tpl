@@ -6,7 +6,7 @@
  */
 
 // Implementation of FairTestDetectorDigiLoader::Exec() with pure binary transport data format
-template <>
+template<>
 void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>::Exec(Option_t* /*opt*/)
 {
     int numEntries = fInput->GetEntriesFast();
@@ -16,11 +16,9 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>
 
     TestDetectorPayload::Digi* digiPayload = static_cast<TestDetectorPayload::Digi*>(fPayload->GetData());
 
-    for (int i = 0; i < numEntries; ++i)
-    {
+    for (int i = 0; i < numEntries; ++i) {
         FairTestDetectorDigi* digi = static_cast<FairTestDetectorDigi*>(fInput->At(i));
-        if (!digi)
-        {
+        if (!digi) {
             continue;
         }
         new (&digiPayload[i]) TestDetectorPayload::Digi();

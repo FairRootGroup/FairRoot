@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -----------------------------------------------------------------------------
@@ -14,7 +14,7 @@
 #ifndef FAIRUNPACK_H
 #define FAIRUNPACK_H
 
-#include <Rtypes.h>                     // for Int_t, Bool_t, etc
+#include <Rtypes.h>   // for Int_t, Bool_t, etc
 #include <TObject.h>
 
 class FairUnpack : public TObject
@@ -26,8 +26,8 @@ class FairUnpack : public TObject
     virtual Bool_t Init() = 0;
     virtual Bool_t ReInit() { return kTRUE; }
     virtual Bool_t DoUnpack(Int_t* data, Int_t size) = 0;
-    virtual void   Reset() = 0;
-    virtual void   SetParContainers() { };
+    virtual void Reset() = 0;
+    virtual void SetParContainers(){};
 
     inline Short_t GetType() const { return fType; }
     inline Short_t GetSubType() const { return fSubType; }

@@ -1,18 +1,17 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRCONTFACT_H
 #define FAIRCONTFACT_H
 
-#include <TNamed.h>                     // for TNamed
-
-#include <Rtypes.h>                     // for Bool_t, ClassDef, etc
-#include <TList.h>                      // for TList
-#include <TString.h>                    // for TString
+#include <Rtypes.h>    // for Bool_t, ClassDef, etc
+#include <TList.h>     // for TList
+#include <TNamed.h>    // for TNamed
+#include <TString.h>   // for TString
 
 class FairLogger;
 class FairParIo;
@@ -31,10 +30,10 @@ class FairContainer : public TNamed
     /** actual context set by the user */
     TString actualContext;
     /** Fair Logger */
-    FairLogger*  fLogger;//!
+    FairLogger* fLogger;   //!
 
   public:
-    FairContainer( const char*, const char*, const char*);
+    FairContainer(const char*, const char*, const char*);
     ~FairContainer();
     void addContext(const char*);
     Bool_t setActualContext(const char* c);
@@ -43,7 +42,7 @@ class FairContainer : public TNamed
     void print();
     TString getConcatName();
     const char* getContext();
-    ClassDef(FairContainer,0) // class for list elements in class FairContFact
+    ClassDef(FairContainer, 0)   // class for list elements in class FairContFact
 };
 
 class FairContFact : public TNamed
@@ -54,21 +53,21 @@ class FairContFact : public TNamed
     Bool_t addContext(const char* name);
     void print();
     FairParSet* getContainer(const char*);
-    virtual FairParSet* createContainer(FairContainer*) {return 0;}
+    virtual FairParSet* createContainer(FairContainer*) { return 0; }
     virtual void activateParIo(FairParIo*) {}
 
   protected:
     TList* containers;   // all parameter containers managed by this factory
-    const char* getActualContext(const char* name) {
-      return (static_cast<FairContainer*>(containers->FindObject(name)))->getActualContext();
+    const char* getActualContext(const char* name)
+    {
+        return (static_cast<FairContainer*>(containers->FindObject(name)))->getActualContext();
     }
     /** Fair Logger */
-    FairLogger*  fLogger;//!
-    ClassDef(FairContFact,0) // base class of all factories for parameter containers
+    FairLogger* fLogger;        //!
+    ClassDef(FairContFact, 0)   // base class of all factories for parameter containers
 
-  private:
-    FairContFact(const FairContFact&);
+        private : FairContFact(const FairContFact&);
     FairContFact& operator=(const FairContFact&);
 };
 
-#endif  /* !FAIRCONTFACT_H */
+#endif /* !FAIRCONTFACT_H */

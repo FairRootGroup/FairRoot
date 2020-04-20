@@ -3,7 +3,11 @@
 
 #include <FairMQMessage.h>
 
-namespace boost { namespace serialization { class access; } }
+namespace boost {
+namespace serialization {
+class access;
+}
+}   // namespace boost
 
 struct Ex2Header
 {
@@ -21,23 +25,17 @@ void serialize(Archive& ar, Ex2Header& header, const unsigned int /*version*/)
     ar& header.DetectorId;
 }
 
-} // namespace serialization
-} // namespace boost
+}   // namespace serialization
+}   // namespace boost
 
 struct SerializerEx2
 {
     void Serialize(FairMQMessage& msg, Ex2Header* header)
     {
-        msg.Rebuild(header,
-                    sizeof(header),
-                    [](void* ptr, void* /*hint*/) { delete static_cast<Ex2Header*>(ptr); }
-                    );
+        msg.Rebuild(header, sizeof(header), [](void* ptr, void* /*hint*/) { delete static_cast<Ex2Header*>(ptr); });
     }
 
-    void Deserialize(FairMQMessage& msg, Ex2Header*& header)
-    {
-        header = static_cast<Ex2Header*>(msg.GetData());
-    }
+    void Deserialize(FairMQMessage& msg, Ex2Header*& header) { header = static_cast<Ex2Header*>(msg.GetData()); }
 };
 
 #endif

@@ -6,19 +6,18 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "runFairMQDevice.h"
 #include "Ex2Sink.h"
+#include "runFairMQDevice.h"
 
 namespace bpo = boost::program_options;
 
 void addCustomOptions(bpo::options_description& options)
 {
+    // clang-format off
     options.add_options()
-        ("output-file", bpo::value<std::string>(), "Path to the output file")
-        ("num-msgs", bpo::value<int>()->default_value(0), "Stop after <n> msgs (0 - no limit).");
+        ("output-file", bpo::value<std::string>(),           "Path to the output file")
+        ("num-msgs",    bpo::value<int>()->default_value(0), "Stop after <n> msgs (0 - no limit).");
+    // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)
-{
-    return new Ex2Sink();
-}
+FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/) { return new Ex2Sink(); }

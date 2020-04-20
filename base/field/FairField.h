@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -28,10 +28,10 @@
 #ifndef FAIRFIELD_H
 #define FAIRFIELD_H 1
 
-#include <Rtypes.h>                     // for Double_t, Bool_t, etc
-#include <TVirtualMagField.h>
-
 #include "FairLogger.h"
+
+#include <Rtypes.h>   // for Double_t, Bool_t, etc
+#include <TVirtualMagField.h>
 
 class FairField : public TVirtualMagField
 {
@@ -42,7 +42,7 @@ class FairField : public TVirtualMagField
     /** Constructor with name and title **/
     FairField(const char* name, const char* title = "FAIR Magnetic Field");
 
-    FairField& operator=(const FairField&) {return *this;}
+    FairField& operator=(const FairField&) { return *this; }
 
     /** Destructor **/
     virtual ~FairField();
@@ -50,7 +50,7 @@ class FairField : public TVirtualMagField
     /** Intialisation. E.g. read in the field map. If needed, to be
      ** implemented in the concrete class.
      **/
-    virtual void Init() { };
+    virtual void Init(){};
 
     /** Test whether field type is Constant **/
     Bool_t IsConst();
@@ -64,17 +64,29 @@ class FairField : public TVirtualMagField
     /** Get x component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBx(Double_t, Double_t, Double_t) { LOG(warn) << "FairField::GetBx Should be implemented in User class"; return 0; }
+    virtual Double_t GetBx(Double_t, Double_t, Double_t)
+    {
+        LOG(warn) << "FairField::GetBx Should be implemented in User class";
+        return 0;
+    }
 
     /** Get y component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBy(Double_t, Double_t, Double_t) { LOG(warn) << "FairField::GetBy Should be implemented in User class"; return 0; }
+    virtual Double_t GetBy(Double_t, Double_t, Double_t)
+    {
+        LOG(warn) << "FairField::GetBy Should be implemented in User class";
+        return 0;
+    }
 
     /** Get z component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBz(Double_t, Double_t, Double_t) { LOG(warn) << "FairField::GetBz Should be implemented in User class"; return 0; }
+    virtual Double_t GetBz(Double_t, Double_t, Double_t)
+    {
+        LOG(warn) << "FairField::GetBz Should be implemented in User class";
+        return 0;
+    }
 
     /** Get magnetic field. For use of Geant3
      ** @param point            Coordinates [cm]
@@ -82,11 +94,14 @@ class FairField : public TVirtualMagField
      **/
     virtual void GetFieldValue(const Double_t point[3], Double_t* bField);
 
-    void Field(const Double_t point[3], Double_t* B) {GetFieldValue(point,B);}
+    void Field(const Double_t point[3], Double_t* B) { GetFieldValue(point, B); }
 
     /** Screen output. To be implemented in the concrete class. **/
-    virtual void  Print(Option_t*) const {;}
-    virtual void GetBxyz(const Double_t[3], Double_t*) { LOG(warn) << "FairField::GetBxyz Should be implemented in User class"; }
+    virtual void Print(Option_t*) const { ; }
+    virtual void GetBxyz(const Double_t[3], Double_t*)
+    {
+        LOG(warn) << "FairField::GetBxyz Should be implemented in User class";
+    }
 
     /**Fill Paramater*/
     virtual void FillParContainer() { LOG(warn) << "FairField::FillParContainer Should be implemented in User class"; }
@@ -98,9 +113,9 @@ class FairField : public TVirtualMagField
   private:
     FairField(const FairField&);
     //    FairField& operator=(const FairField&);
-    //TODO: Check why the htrack needs this
+    // TODO: Check why the htrack needs this
 
-    ClassDef(FairField,4);
+    ClassDef(FairField, 4);
 };
 
 #endif

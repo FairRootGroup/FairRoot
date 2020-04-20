@@ -12,15 +12,14 @@
  * @author R. Karabowicz
  */
 
+#include "FairMQPixelFileSink.h"
+
 #include "RootSerializer.h"
 
-#include "FairMQPixelFileSink.h"
 #include <FairMQLogger.h>
-
 #include <TFile.h>
 #include <TObject.h>
 #include <TTree.h>
-
 #include <cstdlib>
 #include <memory>
 #include <vector>
@@ -28,42 +27,41 @@
 using namespace std;
 
 FairMQPixelFileSink::FairMQPixelFileSink()
-  : FairMQDevice()
-  , fInputChannelName("data-in")
-  , fAckChannelName("")
-  , fFileName()
-  , fTreeName()
-  , fFileOption()
-  , fFlowMode(false)
-  , fWrite(false)
-  , fOutFile(nullptr)
-  , fTree(nullptr)
-  , fNObjects(0)
-  , fOutputObjects(new TObject*[1000])
-{
-}
+    : FairMQDevice()
+    , fInputChannelName("data-in")
+    , fAckChannelName("")
+    , fFileName()
+    , fTreeName()
+    , fFileOption()
+    , fFlowMode(false)
+    , fWrite(false)
+    , fOutFile(nullptr)
+    , fTree(nullptr)
+    , fNObjects(0)
+    , fOutputObjects(new TObject*[1000])
+{}
 
 void FairMQPixelFileSink::Init()
 {
-  fFileName         = fConfig->GetValue<std::string>("file-name");
-  fInputChannelName = fConfig->GetValue<std::string>("in-channel");
-  fAckChannelName   = fConfig->GetValue<std::string>("ack-channel");
+    fFileName = fConfig->GetValue<std::string>("file-name");
+    fInputChannelName = fConfig->GetValue<std::string>("in-channel");
+    fAckChannelName = fConfig->GetValue<std::string>("ack-channel");
 
-  LOG(info) << "SHOULD CREATE THE FILE AND TREE";
-  fFileOption = "RECREATE";
-  fTreeName = "cbmsim";
+    LOG(info) << "SHOULD CREATE THE FILE AND TREE";
+    fFileOption = "RECREATE";
+    fTreeName = "cbmsim";
 
-  if (::getenv("DDS_SESSION_ID")) {
-    std::string DDS_SESSION_ID = ::getenv("DDS_SESSION_ID");
-    if (fFileName.length() > 5) {
-      DDS_SESSION_ID = "." + DDS_SESSION_ID + ".root";
-      fFileName.replace(fFileName.length()-5,5,DDS_SESSION_ID.c_str());
+    if (::getenv("DDS_SESSION_ID")) {
+        std::string DDS_SESSION_ID = ::getenv("DDS_SESSION_ID");
+        if (fFileName.length() > 5) {
+            DDS_SESSION_ID = "." + DDS_SESSION_ID + ".root";
+            fFileName.replace(fFileName.length() - 5, 5, DDS_SESSION_ID.c_str());
+        }
     }
-  }
 
-  fOutFile = TFile::Open(fFileName.c_str(),fFileOption.c_str());
+    fOutFile = TFile::Open(fFileName.c_str(), fFileOption.c_str());
 
-  OnData(fInputChannelName, &FairMQPixelFileSink::StoreData);
+    OnData(fInputChannelName, &FairMQPixelFileSink::StoreData);
 }
 
 bool FairMQPixelFileSink::StoreData(FairMQParts& parts, int /*index*/)
@@ -77,11 +75,11 @@ bool FairMQPixelFileSink::StoreData(FairMQParts& parts, int /*index*/)
 
     for (int ipart = 0; ipart < parts.Size(); ipart++) {
         fOutputObjects[ipart] = nullptr;
-        Deserialize<RootSerializer> (*parts.At(ipart),fOutputObjects[ipart]);
+        Deserialize<RootSerializer>(*parts.At(ipart), fOutputObjects[ipart]);
         tempObjects.push_back(fOutputObjects[ipart]);
         if (creatingTree)
-            fTree->Branch(tempObjects.back()->GetName(),tempObjects.back()->ClassName(),&fOutputObjects[ipart]);
-        fTree->SetBranchAddress(tempObjects.back()->GetName(),&fOutputObjects[ipart]);
+            fTree->Branch(tempObjects.back()->GetName(), tempObjects.back()->ClassName(), &fOutputObjects[ipart]);
+        fTree->SetBranchAddress(tempObjects.back()->GetName(), &fOutputObjects[ipart]);
     }
     //   LOG(INFO) << "Finished branches";
     fTree->Fill();

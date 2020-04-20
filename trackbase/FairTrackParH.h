@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // Class for the representation of a track as helix (SC system)
@@ -17,10 +17,10 @@
 #ifndef FAIRSTSTRACKPARH
 #define FAIRSTSTRACKPARH 1
 
-#include "FairTrackPar.h"               // for FairTrackPar
+#include "FairTrackPar.h"   // for FairTrackPar
 
-#include <Rtypes.h>                     // for Double_t, Int_t, etc
-#include <TVector3.h>                   // for TVector3
+#include <Rtypes.h>     // for Double_t, Int_t, etc
+#include <TVector3.h>   // for TVector3
 
 class FairTrackParP;
 
@@ -31,8 +31,12 @@ class FairTrackParH : public FairTrackPar
     FairTrackParH();
 
     /** Constructor with track variables  (in SC) **/
-    FairTrackParH(Double_t x,  Double_t y,  Double_t z,
-                  Double_t lambda, Double_t phi, Double_t qp,
+    FairTrackParH(Double_t x,
+                  Double_t y,
+                  Double_t z,
+                  Double_t lambda,
+                  Double_t phi,
+                  Double_t qp,
                   Double_t CovMatrix[15]);
 
     /** Constructor track parameters with position and momentum (in LAB)**/
@@ -42,7 +46,7 @@ class FairTrackParH : public FairTrackPar
     /** copy Constructor **/
     FairTrackParH(FairTrackPar& Trkbase);
 
-    //FairTrackParH(FairTrackParH &Trk);
+    // FairTrackParH(FairTrackParH &Trk);
 
     FairTrackParH(FairTrackParP* parab, Int_t& ierr);
 
@@ -50,52 +54,73 @@ class FairTrackParH : public FairTrackPar
     virtual ~FairTrackParH();
 
     /** Output to screen **/
-//   void Print();
-    virtual void  Print(Option_t* option = "") const;
+    //   void Print();
+    virtual void Print(Option_t* option = "") const;
 
     /** Accessors **/
     Double_t GetLambda() { return fLm; };
     Double_t GetPhi() { return fPhi; };
-    Double_t GetDLambda() ; /**Get Error in Lambda*/
-    Double_t GetDPhi()  ;   /**Get Error in Phi*/
+    Double_t GetDLambda(); /**Get Error in Lambda*/
+    Double_t GetDPhi();    /**Get Error in Phi*/
     /**Get the coveriant matrix*/
-    void GetCov(Double_t* Cov) {for(Int_t i=0; i<15; i++) { Cov[i]=fCovMatrix[i]; }}
+    void GetCov(Double_t* Cov)
+    {
+        for (Int_t i = 0; i < 15; i++) {
+            Cov[i] = fCovMatrix[i];
+        }
+    }
     void GetCovQ(Double_t* CovQ);
     // MARS
-    void GetMARSCov(Double_t Cov66[6][6]) {for(Int_t i=0; i<6; i++) for(Int_t j=0; j<6; j++) { Cov66[i][j] = fCovMatrix66[i][j]; }  }
-    Double_t GetDX_sc();  /**Get dx in SC*/
-    Double_t GetDY_sc();  /**Get dy in SC*/
-    Double_t GetDZ_sc();  /**Get dz in SC*/
-    Double_t GetX_sc() {return fX_sc;} /**Get x in SC*/
-    Double_t GetY_sc() {return fY_sc;} /**Get y in SC*/
-    Double_t GetZ_sc() {return fZ_sc;} /**Get z in SC*/
-// Double_t GetDPx() ;   /**Get error in Px (in SC frame)*/
-// Double_t GetDPy() ;   /**Get error in Py (in SC frame)*/
-// Double_t GetDPz() ;   /**Get error in Pz (in SC frame)*/
-//  Double_t GetDQp() ;   /**Get error in Q/P*/
-    Double_t GetX();  /**Get X in Lab*/
-    Double_t GetY();  /**Get Y in Lab*/
-    Double_t GetZ();  /**Get Z in Lab*/
+    void GetMARSCov(Double_t Cov66[6][6])
+    {
+        for (Int_t i = 0; i < 6; i++)
+            for (Int_t j = 0; j < 6; j++) {
+                Cov66[i][j] = fCovMatrix66[i][j];
+            }
+    }
+    Double_t GetDX_sc();                 /**Get dx in SC*/
+    Double_t GetDY_sc();                 /**Get dy in SC*/
+    Double_t GetDZ_sc();                 /**Get dz in SC*/
+    Double_t GetX_sc() { return fX_sc; } /**Get x in SC*/
+    Double_t GetY_sc() { return fY_sc; } /**Get y in SC*/
+    Double_t GetZ_sc() { return fZ_sc; } /**Get z in SC*/
+                                         // Double_t GetDPx() ;   /**Get error in Px (in SC frame)*/
+                                         // Double_t GetDPy() ;   /**Get error in Py (in SC frame)*/
+                                         // Double_t GetDPz() ;   /**Get error in Pz (in SC frame)*/
+                                         //  Double_t GetDQp() ;   /**Get error in Q/P*/
+    Double_t GetX();                     /**Get X in Lab*/
+    Double_t GetY();                     /**Get Y in Lab*/
+    Double_t GetZ();                     /**Get Z in Lab*/
 
     /** Modifiers **/
-    void SetLambda(Double_t Lm ) { fLm = Lm; };
+    void SetLambda(Double_t Lm) { fLm = Lm; };
     void SetPhi(Double_t Phi) { fPhi = Phi; };
 
-    void SetDLambda(Double_t DLm ) { fDLm = DLm; };
+    void SetDLambda(Double_t DLm) { fDLm = DLm; };
     void SetDPhi(Double_t DPhi) { fDPhi = DPhi; };
 
-    void  SetX_sc(Double_t x) {fX_sc =x;} /**Set x in SC*/
-    void  SetY_sc(Double_t y) {fY_sc =y;} /**Set y in SC*/
-    void  SetZ_sc(Double_t z) {fZ_sc =z;} /**Set z in SC*/
-    void  SetCov(Double_t* Cov) {for(Int_t i=0; i<15; i++) { fCovMatrix[i]=Cov[i]; }}
-    void  SetTrackPar(Double_t x,  Double_t y,  Double_t z,
-                      Double_t Px, Double_t Py, Double_t Pz, Int_t Q,
-                      Double_t CovMatrix[15]);
+    void SetX_sc(Double_t x) { fX_sc = x; } /**Set x in SC*/
+    void SetY_sc(Double_t y) { fY_sc = y; } /**Set y in SC*/
+    void SetZ_sc(Double_t z) { fZ_sc = z; } /**Set z in SC*/
+    void SetCov(Double_t* Cov)
+    {
+        for (Int_t i = 0; i < 15; i++) {
+            fCovMatrix[i] = Cov[i];
+        }
+    }
+    void SetTrackPar(Double_t x,
+                     Double_t y,
+                     Double_t z,
+                     Double_t Px,
+                     Double_t Py,
+                     Double_t Pz,
+                     Int_t Q,
+                     Double_t CovMatrix[15]);
 
-    void  SetTrackPar(Double_t x,  Double_t y,  Double_t z,
-                      Double_t pq, Double_t lm, Double_t phi,  Double_t CovMatrix[15]);
+    void
+        SetTrackPar(Double_t x, Double_t y, Double_t z, Double_t pq, Double_t lm, Double_t phi, Double_t CovMatrix[15]);
     void Reset();
-    ClassDef(FairTrackParH,1);
+    ClassDef(FairTrackParH, 1);
 
   private:
     /** fLm = Dip angle **/
@@ -125,7 +150,7 @@ class FairTrackParH : public FairTrackPar
        sphi = Sin(Phi)
        //! do not streame this to the file
     */
-    Double_t cLm,sLm, cphi ,sphi; //!
+    Double_t cLm, sLm, cphi, sphi;   //!
 };
 
 #endif

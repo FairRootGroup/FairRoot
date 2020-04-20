@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /** FairConstField.h
@@ -15,9 +15,9 @@
 #ifndef FairConstFIELD_H
 #define FairConstFIELD_H 1
 
-#include "FairField.h" // for FairField
+#include "FairField.h"   // for FairField
 
-#include <Rtypes.h> // for Double_t, etc
+#include <Rtypes.h>   // for Double_t, etc
 
 class FairConstPar;
 
@@ -73,44 +73,17 @@ class FairConstField : public FairField
     virtual Double_t GetBz(Double_t x, Double_t y, Double_t z);
 
     /** Accessors to field region **/
-    Double_t GetXmin() const
-    {
-        return fXmin;
-    }
-    Double_t GetXmax() const
-    {
-        return fXmax;
-    }
-    Double_t GetYmin() const
-    {
-        return fYmin;
-    }
-    Double_t GetYmax() const
-    {
-        return fYmax;
-    }
-    Double_t GetZmin() const
-    {
-        return fZmin;
-    }
-    Double_t GetZmax() const
-    {
-        return fZmax;
-    }
+    Double_t GetXmin() const { return fXmin; }
+    Double_t GetXmax() const { return fXmax; }
+    Double_t GetYmin() const { return fYmin; }
+    Double_t GetYmax() const { return fYmax; }
+    Double_t GetZmin() const { return fZmin; }
+    Double_t GetZmax() const { return fZmax; }
 
     /** Accessors to field values **/
-    Double_t GetBx() const
-    {
-        return fBx;
-    }
-    Double_t GetBy() const
-    {
-        return fBy;
-    }
-    Double_t GetBz() const
-    {
-        return fBz;
-    }
+    Double_t GetBx() const { return fBx; }
+    Double_t GetBy() const { return fBy; }
+    Double_t GetBz() const { return fBz; }
 
     /** Screen output **/
     virtual void Print(Option_t*) const;

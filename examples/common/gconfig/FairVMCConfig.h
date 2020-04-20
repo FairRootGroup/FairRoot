@@ -21,7 +21,7 @@ class FairVMCConfig : public FairYamlVMCConfig
     FairVMCConfig();
     virtual ~FairVMCConfig();
 
- private:
+  private:
     virtual void SetupStack();
 };
 

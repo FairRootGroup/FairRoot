@@ -8,17 +8,16 @@
 #ifndef FAIRTESTDETECTORMQRECOTASK_H
 #define FAIRTESTDETECTORMQRECOTASK_H
 
-#include <TClonesArray.h>
-
-#include "FairRootManager.h"
-#include <FairMQLogger.h>
 #include "FairMQProcessorTask.h"
-#include <FairMQMessage.h>
-
-#include "FairTestDetectorRecoTask.h"
-#include "FairTestDetectorPayload.h"
-#include "FairTestDetectorHit.h"
+#include "FairRootManager.h"
 #include "FairTestDetectorDigi.h"
+#include "FairTestDetectorHit.h"
+#include "FairTestDetectorPayload.h"
+#include "FairTestDetectorRecoTask.h"
+
+#include <FairMQLogger.h>
+#include <FairMQMessage.h>
+#include <TClonesArray.h>
 
 template<typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
 class FairTestDetectorMQRecoTask : public FairMQProcessorTask

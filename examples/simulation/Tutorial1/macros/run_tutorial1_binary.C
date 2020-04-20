@@ -9,16 +9,18 @@
 #if !defined(__CLING__) || defined(__ROOTCLING__)
 #include <iostream>
 using namespace std;
-#include <TStopwatch.h>
-#include <TRandom3.h>
-#include "FairRunSim.h"
-#include "FairRootFileSink.h"
-#include "FairTutorialDet1.h"
-#include "FairCave.h"
 #include "FairBoxGenerator.h"
-#include "FairPrimaryGenerator.h"
+#include "FairCave.h"
 #include "FairParRootFileIo.h"
+#include "FairPrimaryGenerator.h"
+#include "FairRootFileSink.h"
+#include "FairRunSim.h"
+#include "FairSimConfig.h"
 #include "FairSystemInfo.h"
+#include "FairTutorialDet1.h"
+
+#include <TRandom3.h>
+#include <TStopwatch.h>
 #endif
 
 void run_tutorial1_main(const FairSimConfig& config);
@@ -43,8 +45,8 @@ void run_tutorial1_main(const FairSimConfig& config)
     TString tut_configdir = dir + "/common/gconfig";
     gSystem->Setenv("CONFIG_DIR", tut_configdir.Data());
 
-    TString partName[] = { "pions", "eplus", "proton" };
-    Int_t partPdgC[] = { 211, 11, 2212 };
+    TString partName[] = {"pions", "eplus", "proton"};
+    Int_t partPdgC[] = {211, 11, 2212};
     Int_t chosenPart = 0;
 
     Double_t momentum = 2.;
@@ -73,14 +75,14 @@ void run_tutorial1_main(const FairSimConfig& config)
 
     // -----   Create simulation run   ----------------------------------------
     FairRunSim run;
-    run.SetName(config.GetEngine());            // Transport engine
-    run.SetIsMT(config.IsMultiThreaded());      // Multi-threading mode (Geant4 only)
-    run.SetSink(new FairRootFileSink(outFile)); // Output file
+    run.SetName(config.GetEngine());              // Transport engine
+    run.SetIsMT(config.IsMultiThreaded());        // Multi-threading mode (Geant4 only)
+    run.SetSink(new FairRootFileSink(outFile));   // Output file
     FairRuntimeDb* rtdb = run.GetRuntimeDb();
     // ------------------------------------------------------------------------
 
     // -----   Create media   -------------------------------------------------
-    run.SetMaterials("media.geo"); // Materials
+    run.SetMaterials("media.geo");   // Materials
     // ------------------------------------------------------------------------
 
     // -----   Create geometry   ----------------------------------------------

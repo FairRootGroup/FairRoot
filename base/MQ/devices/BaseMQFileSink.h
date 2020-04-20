@@ -19,8 +19,11 @@
 #include <FairMQDevice.h>
 #include <FairMQLogger.h>
 
-template <typename InputPolicy, typename OutputPolicy>
-class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPolicy
+template<typename InputPolicy, typename OutputPolicy>
+class BaseMQFileSink
+    : public FairMQDevice
+    , public InputPolicy
+    , public OutputPolicy
 {
   public:
     BaseMQFileSink()
@@ -29,8 +32,7 @@ class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPol
         , fInputChanName()
     {}
 
-    virtual ~BaseMQFileSink()
-    {}
+    virtual ~BaseMQFileSink() {}
 
     template<typename... Args>
     void InitInputData(Args&&... args)
@@ -49,13 +51,12 @@ class BaseMQFileSink : public FairMQDevice, public InputPolicy, public OutputPol
     virtual void Run()
     {
         int receivedMsg = 0;
-        while (!NewStatePending())
-        {
+        while (!NewStatePending()) {
             std::unique_ptr<FairMQMessage> msg(NewMessage());
-            if (Receive(msg, fInputChanName) > 0)
-            {
-                FairMQDevice::Deserialize<typename InputPolicy::DeserializerType>(*msg, InputPolicy::fInput); // get data from message.
-                OutputPolicy::Serialize(InputPolicy::fInput); // put data into output.
+            if (Receive(msg, fInputChanName) > 0) {
+                FairMQDevice::Deserialize<typename InputPolicy::DeserializerType>(
+                    *msg, InputPolicy::fInput);                 // get data from message.
+                OutputPolicy::Serialize(InputPolicy::fInput);   // put data into output.
                 receivedMsg++;
             }
         }

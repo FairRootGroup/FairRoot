@@ -1,62 +1,61 @@
 /*
-* File: BoostSerializer.h
-* Author: winckler
-*
-* Created on October 7, 2014, 8:07 PM
-*/
+ * File: BoostSerializer.h
+ * Author: winckler
+ *
+ * Created on October 7, 2014, 8:07 PM
+ */
 
 #ifndef BOOSTSERIALIZER_H
 #define BOOSTSERIALIZER_H
 
 #include <FairMQLogger.h>
 #include <FairMQMessage.h>
-
 #include <TClonesArray.h>
 
-namespace boost { namespace serialization { class access; } }
+namespace boost {
+namespace serialization {
+class access;
+}
+}   // namespace boost
+#include <boost/archive/binary_iarchive.hpp>   // input: a non-portable native binary archive
+#include <boost/archive/binary_oarchive.hpp>   // output: a non-portable native binary archive
 #include <boost/serialization/vector.hpp>
-#include <boost/archive/binary_iarchive.hpp> // input: a non-portable native binary archive
-#include <boost/archive/binary_oarchive.hpp> // output: a non-portable native binary archive
-
-#include <vector>
-#include <string>
-#include <sstream>
 #include <memory>
+#include <sstream>
+#include <string>
 #include <type_traits>
+#include <vector>
 
-namespace fair
-{
-namespace base
-{
-namespace serialization
-{
+namespace fair {
+namespace base {
+namespace serialization {
 
-template <typename, typename T>
+template<typename, typename T>
 struct has_BoostSerialization
 {
     static_assert(std::integral_constant<T, false>::value, "Second template parameter needs to be of function type.");
 };
 
-template <typename C, typename Ret, typename... Args>
+template<typename C, typename Ret, typename... Args>
 struct has_BoostSerialization<C, Ret(Args...)>
 {
   private:
-    template <typename T>
-    static constexpr auto check(T*) // attempt to call it and see if the return type is correct
+    template<typename T>
+    static constexpr auto check(T*)   // attempt to call it and see if the return type is correct
         -> std::is_same<decltype(std::declval<T>().serialize(std::declval<Args>()...)), Ret>;
 
-    template <typename>
+    template<typename>
     static constexpr std::false_type check(...);
 
   public:
     static constexpr bool value = decltype(check<C>(0))::value;
 };
 
-} // namespace serialization
-} // namespace base
-} // namespace fair
+}   // namespace serialization
+}   // namespace base
+}   // namespace fair
 
-template <typename DataType>
+template<typename DataType>
 class BoostSerializer
 {
   public:
@@ -103,10 +102,7 @@ class BoostSerializer
         Serialize(msg, dataVec);
     }
 
-    void Serialize(FairMQMessage& msg, std::unique_ptr<TClonesArray> input)
-    {
-        Serialize(msg, input.get());
-    }
+    void Serialize(FairMQMessage& msg, std::unique_ptr<TClonesArray> input) { Serialize(msg, input.get()); }
 
     void Deserialize(FairMQMessage& msg, DataType& input)
     {
@@ -145,10 +141,7 @@ class BoostSerializer
         }
     }
 
-    void Deserialize(FairMQMessage& msg, std::unique_ptr<TClonesArray>& input)
-    {
-        Deserialize(msg, input.get());
-    }
+    void Deserialize(FairMQMessage& msg, std::unique_ptr<TClonesArray>& input) { Deserialize(msg, input.get()); }
 };
 
 #endif /* BOOSTSERIALIZER_H */

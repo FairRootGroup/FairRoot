@@ -19,8 +19,7 @@ TEST_P(VerbosityLevelTest, testAllVerbosityLevelsToScreenAndFile)
         SCOPED_TRACE(fLogLevelSettingToTest);
         int lines = expected.size();
 
-        for (int i = 0; i < lines; ++i)
-        {
+        for (int i = 0; i < lines; ++i) {
             EXPECT_TRUE(CheckVerboseOutput(expected[i], fOutputString, fVerbosityLevel, fHandler.GetCaptureLine(i)));
         }
     }
@@ -31,8 +30,7 @@ TEST_P(VerbosityLevelTest, testAllVerbosityLevelsToScreenAndFile)
         SCOPED_TRACE(fLogLevelSettingToTest);
         int lines = expected.size();
 
-        for (int i = 0; i < lines; ++i)
-        {
+        for (int i = 0; i < lines; ++i) {
             EXPECT_TRUE(CheckVerboseOutput(expected[i], fOutputString, fVerbosityLevel, fileInfo[i]));
         }
     }

@@ -10,8 +10,11 @@
 #ifdef PROTOBUF
 #include "FairTestDetectorPayload.pb.h"
 
-template <>
-void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestDetectorProto::DigiPayload, TestDetectorProto::HitPayload>::Exec(Option_t* opt)
+template<>
+void FairTestDetectorMQRecoTask<FairTestDetectorDigi,
+                                FairTestDetectorHit,
+                                TestDetectorProto::DigiPayload,
+                                TestDetectorProto::HitPayload>::Exec(Option_t* opt)
 {
     fRecoTask.fDigiArray->Clear();
 
@@ -20,15 +23,13 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 
     int numEntries = dp.digi_size();
 
-    for (int i = 0; i < numEntries; ++i)
-    {
+    for (int i = 0; i < numEntries; ++i) {
         const TestDetectorProto::Digi& digi = dp.digi(i);
         new ((*fRecoTask.fDigiArray)[i]) FairTestDetectorDigi(digi.fx(), digi.fy(), digi.fz(), digi.ftimestamp());
         static_cast<FairTestDetectorDigi*>(((*fRecoTask.fDigiArray)[i]))->SetTimeStampError(digi.ftimestamperror());
     }
 
-    if (!fRecoTask.fDigiArray)
-    {
+    if (!fRecoTask.fDigiArray) {
         LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
     }
 
@@ -36,11 +37,9 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
 
     TestDetectorProto::HitPayload hp;
 
-    for (int i = 0; i < numEntries; ++i)
-    {
+    for (int i = 0; i < numEntries; ++i) {
         FairTestDetectorHit* hit = static_cast<FairTestDetectorHit*>(fRecoTask.fHitArray->At(i));
-        if (!hit)
-        {
+        if (!hit) {
             continue;
         }
         TestDetectorProto::Hit* h = hp.add_hit();
@@ -57,10 +56,11 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TestD
     std::string* str = new std::string();
     hp.SerializeToString(str);
 
-    fPayload->Rebuild(const_cast<char*>(str->c_str()),
-                                        str->length(),
-                                        [](void* /* data */, void* obj) { delete static_cast<std::string*>(obj); },
-                                        str);
+    fPayload->Rebuild(
+        const_cast<char*>(str->c_str()),
+        str->length(),
+        [](void* /* data */, void* obj) { delete static_cast<std::string*>(obj); },
+        str);
 }
 
 #endif /* PROTOBUF */

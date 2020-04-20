@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**  FairMCPoint.h
@@ -13,12 +13,16 @@
 #ifndef FAIRMCPOINT_H
 #define FAIRMCPOINT_H
 
-#include "FairMultiLinkedData_Interface.h"        // for FairMultiLinkedData
+#include "FairMultiLinkedData_Interface.h"   // for FairMultiLinkedData
 
-#include <Rtypes.h>                     // for Double_t, Double32_t, Int_t, etc
-#include <TVector3.h>                   // for TVector3
+#include <Rtypes.h>     // for Double_t, Double32_t, Int_t, etc
+#include <TVector3.h>   // for TVector3
 
-namespace boost { namespace serialization { class access; } }
+namespace boost {
+namespace serialization {
+class access;
+}
+}   // namespace boost
 #include <boost/serialization/base_object.hpp>
 
 class FairMCPoint : public FairMultiLinkedData_Interface
@@ -37,14 +41,20 @@ class FairMCPoint : public FairMultiLinkedData_Interface
      *@param eLoss    Energy deposit [GeV]
      *@param EventId  MC event id
      **/
-    FairMCPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                Double_t tof, Double_t length, Double_t eLoss, UInt_t EventId=0);
+    FairMCPoint(Int_t trackID,
+                Int_t detID,
+                TVector3 pos,
+                TVector3 mom,
+                Double_t tof,
+                Double_t length,
+                Double_t eLoss,
+                UInt_t EventId = 0);
 
     /** Destructor **/
     virtual ~FairMCPoint();
 
     /** Accessors */
-    UInt_t GetEventID() const { return fEventId; } /// event identifier
+    UInt_t GetEventID() const { return fEventId; }   /// event identifier
     Int_t GetTrackID() const { return fTrackID; }
     Double_t GetPx() const { return fPx; }
     Double_t GetPy() const { return fPy; }
@@ -61,7 +71,7 @@ class FairMCPoint : public FairMultiLinkedData_Interface
 
     /** Modifiers **/
     void SetEventID(UInt_t eventId) { fEventId = eventId; }
-    virtual void SetTrackID(Int_t id) { fTrackID = id;}
+    virtual void SetTrackID(Int_t id) { fTrackID = id; }
     void SetTime(Double_t time) { fTime = time; }
     void SetLength(Double_t length) { fLength = length; }
     void SetEnergyLoss(Double_t eLoss) { fELoss = eLoss; }
@@ -77,57 +87,57 @@ class FairMCPoint : public FairMultiLinkedData_Interface
     virtual void Print(const Option_t* opt = 0) const;
 
     template<class Archive>
-    void serialize(Archive & ar, const unsigned int)
+    void serialize(Archive& ar, const unsigned int)
     {
-        //ar & boost::serialization::base_object<FairMultiLinkedData>(*this);
-        ar & fTrackID;
-        ar & fEventId;
-        ar & fDetectorID;
-        ar & fX;
-        ar & fY;
-        ar & fZ;
-        ar & fPx;
-        ar & fPy;
-        ar & fPz;
-        ar & fTime;
-        ar & fLength;
-        ar & fELoss;
+        // ar & boost::serialization::base_object<FairMultiLinkedData>(*this);
+        ar& fTrackID;
+        ar& fEventId;
+        ar& fDetectorID;
+        ar& fX;
+        ar& fY;
+        ar& fZ;
+        ar& fPx;
+        ar& fPy;
+        ar& fPz;
+        ar& fTime;
+        ar& fLength;
+        ar& fELoss;
     }
 
   protected:
     friend class boost::serialization::access;
 
-    Int_t fTrackID;               ///< Track index
-    UInt_t fEventId;              ///< MC Event id
-    Double32_t fPx, fPy, fPz;     ///< Momentum components [GeV]
-    Double32_t fTime;             ///< Time since event start [ns]
-    Double32_t fLength;           ///< Track length since creation [cm]
-    Double32_t fELoss;            ///< Energy loss at this point [GeV]
-    Int_t      fDetectorID;       ///< Detector unique identifier
-    Double32_t fX, fY, fZ;        ///< Position of hit [cm]
+    Int_t fTrackID;             ///< Track index
+    UInt_t fEventId;            ///< MC Event id
+    Double32_t fPx, fPy, fPz;   ///< Momentum components [GeV]
+    Double32_t fTime;           ///< Time since event start [ns]
+    Double32_t fLength;         ///< Track length since creation [cm]
+    Double32_t fELoss;          ///< Energy loss at this point [GeV]
+    Int_t fDetectorID;          ///< Detector unique identifier
+    Double32_t fX, fY, fZ;      ///< Position of hit [cm]
 
-    ClassDef(FairMCPoint,5)
+    ClassDef(FairMCPoint, 5)
 };
 
 inline void FairMCPoint::SetMomentum(const TVector3& mom)
 {
-  fPx = mom.Px();
-  fPy = mom.Py();
-  fPz = mom.Pz();
+    fPx = mom.Px();
+    fPy = mom.Py();
+    fPz = mom.Pz();
 }
 
 inline void FairMCPoint::SetXYZ(Double_t x, Double_t y, Double_t z)
 {
-  fX = x;
-  fY = y;
-  fZ = z;
+    fX = x;
+    fY = y;
+    fZ = z;
 }
 
 inline void FairMCPoint::SetPosition(const TVector3& pos)
 {
-  fX = pos.X();
-  fY = pos.Y();
-  fZ = pos.Z();
+    fX = pos.X();
+    fY = pos.Y();
+    fZ = pos.Z();
 }
 
 #endif

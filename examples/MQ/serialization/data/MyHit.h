@@ -14,13 +14,17 @@
  */
 
 #ifndef MYHITDATA_H
-#define	MYHITDATA_H
+#define MYHITDATA_H
 
-#include "FairHit.h" // for FairHit
+#include "FairHit.h"   // for FairHit
 
-#include <Rtypes.h> // for MyHit::Class, etc
+#include <Rtypes.h>   // for MyHit::Class, etc
 
-namespace boost { namespace serialization { class access; } }
+namespace boost {
+namespace serialization {
+class access;
+}
+}   // namespace boost
 #include <boost/serialization/base_object.hpp>
 
 class TVector3;
@@ -33,12 +37,17 @@ class MyHit : public FairHit
 
     /** Constructor **/
     MyHit(Int_t detID, Int_t mcindex, const TVector3& pos, const TVector3& dpos);
-    MyHit(Int_t detID, Int_t mcindex, const TVector3& pos, const TVector3& dpos, Double_t timeStamp, Double_t timeStampError);
+    MyHit(Int_t detID,
+          Int_t mcindex,
+          const TVector3& pos,
+          const TVector3& dpos,
+          Double_t timeStamp,
+          Double_t timeStampError);
 
     /** Destructor **/
     virtual ~MyHit();
 
-    template <class Archive>
+    template<class Archive>
     void serialize(Archive& ar, const unsigned int /*version*/)
     {
         ar& boost::serialization::base_object<FairHit>(*this);
@@ -50,6 +59,4 @@ class MyHit : public FairHit
     ClassDef(MyHit, 1);
 };
 
-
-#endif	/* MYHITDATA_H */
-
+#endif /* MYHITDATA_H */

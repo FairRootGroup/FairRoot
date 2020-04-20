@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -15,18 +15,13 @@
 FairFieldFactory* FairFieldFactory::fgRinstance = 0;
 
 FairFieldFactory::FairFieldFactory()
-  :fCreator(0)
+    : fCreator(0)
 {
-  fgRinstance = this;
+    fgRinstance = this;
 }
 
-FairFieldFactory::~FairFieldFactory()
-{
-}
+FairFieldFactory::~FairFieldFactory() {}
 
-FairFieldFactory* FairFieldFactory::Instance()
-{
-  return fgRinstance;
-}
+FairFieldFactory* FairFieldFactory::Instance() { return fgRinstance; }
 
-ClassImp(FairFieldFactory)
+ClassImp(FairFieldFactory);

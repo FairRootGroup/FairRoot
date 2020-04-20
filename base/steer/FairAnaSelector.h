@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -14,13 +14,13 @@
 #ifndef FAIRANASELECTOR_H
 #define FAIRANASELECTOR_H
 
-#include "FairLogger.h"                 // for FairLogger, MESSAGE_ORIGIN
+#include "FairLogger.h"   // for FairLogger, MESSAGE_ORIGIN
 
-#include <TSelector.h>                  // for TSelector
-#include <Rtypes.h>                     // for Int_t, Bool_t, etc
-#include <TSelectorList.h>              // for TSelectorList
-#include <TString.h>                    // for TString
-#include <TTree.h>                      // for TTree
+#include <Rtypes.h>          // for Int_t, Bool_t, etc
+#include <TSelector.h>       // for TSelector
+#include <TSelectorList.h>   // for TSelectorList
+#include <TString.h>         // for TString
+#include <TTree.h>           // for TTree
 
 class FairFileSource;
 class FairRunAnaProof;
@@ -33,43 +33,39 @@ class TProofOutputFile;
 class FairAnaSelector : public TSelector
 {
   public:
-    TProofOutputFile*     fProofFile;
-    TFile*                fFile;
-    TTree*                fChain;   //!pointer to the analyzed TTree or TChain
-    FairRunAnaProof*      fRunAna;
+    TProofOutputFile* fProofFile;
+    TFile* fFile;
+    TTree* fChain;   //! pointer to the analyzed TTree or TChain
+    FairRunAnaProof* fRunAna;
 
-    FairAnaSelector(TTree* /*tree*/ =0) : fProofFile(0), fFile(0), fChain(0), fRunAna(nullptr), fProofSource(0), fCurrentDirectory("") { }
+    FairAnaSelector(TTree* /*tree*/ = 0)
+        : fProofFile(0)
+        , fFile(0)
+        , fChain(0)
+        , fRunAna(nullptr)
+        , fProofSource(0)
+        , fCurrentDirectory("")
+    {}
 
-    virtual ~FairAnaSelector() { }
-    virtual Int_t   Version() const {
-      return 1;
+    virtual ~FairAnaSelector() {}
+    virtual Int_t Version() const { return 1; }
+    virtual void Begin(TTree* tree);
+    virtual void SlaveBegin(TTree* tree);
+    virtual void Init(TTree* tree);
+    virtual Bool_t Notify();
+    virtual Bool_t Process(Long64_t entry);
+    virtual Int_t GetEntry(Long64_t entry, Int_t getall = 0)
+    {
+        return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0;
     }
-    virtual void    Begin(TTree* tree);
-    virtual void    SlaveBegin(TTree* tree);
-    virtual void    Init(TTree* tree);
-    virtual Bool_t  Notify();
-    virtual Bool_t  Process(Long64_t entry);
-    virtual Int_t   GetEntry(Long64_t entry, Int_t getall = 0) {
-      return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0;
-    }
-    virtual void    SetOption(const char* option) {
-      fOption = option;
-    }
-    virtual void    SetObject(TObject* obj) {
-      fObject = obj;
-    }
-    virtual void    SetInputList(TList* input) {
-      fInput = input;
-    }
-    virtual TList*  GetOutputList() const {
-      return fOutput;
-    }
-    virtual void    SlaveTerminate();
-    virtual void    Terminate();
+    virtual void SetOption(const char* option) { fOption = option; }
+    virtual void SetObject(TObject* obj) { fObject = obj; }
+    virtual void SetInputList(TList* input) { fInput = input; }
+    virtual TList* GetOutputList() const { return fOutput; }
+    virtual void SlaveTerminate();
+    virtual void Terminate();
 
-    void SetFairRunAnaProof(FairRunAnaProof* runAna) {
-      fRunAna = runAna;
-    }
+    void SetFairRunAnaProof(FairRunAnaProof* runAna) { fRunAna = runAna; }
 
   private:
     FairAnaSelector(const FairAnaSelector&);
@@ -79,7 +75,7 @@ class FairAnaSelector : public TSelector
 
     TString fCurrentDirectory;
 
-    ClassDef(FairAnaSelector,0);
+    ClassDef(FairAnaSelector, 0);
 };
 
-#endif //FAIRANASELECTOR_H
+#endif   // FAIRANASELECTOR_H

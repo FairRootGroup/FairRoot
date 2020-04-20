@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -15,9 +15,8 @@
 #ifndef PARAMETERMQSERVER_H_
 #define PARAMETERMQSERVER_H_
 
-#include <string>
-
 #include <FairMQDevice.h>
+#include <string>
 
 class FairRuntimeDb;
 
@@ -33,8 +32,8 @@ class ParameterMQServer : public FairMQDevice
 
     virtual void InitTask();
     virtual void Init();
-    bool         ProcessRequest(FairMQMessagePtr&, int);
-    bool         ProcessUpdate (FairMQMessagePtr&, int);
+    bool ProcessRequest(FairMQMessagePtr&, int);
+    bool ProcessUpdate(FairMQMessagePtr&, int);
 
     void SetFirstInputName(const std::string& firstInputName) { fFirstInputName = firstInputName; }
     std::string GetFirstInputName() { return fFirstInputName; }
@@ -57,8 +56,8 @@ class ParameterMQServer : public FairMQDevice
 
   private:
     FairRuntimeDb* fRtdb;
-    int            fRunId;
-    int            fNofSimDevices;
+    int fRunId;
+    int fNofSimDevices;
 
     std::string fFirstInputName;
     std::string fFirstInputType;

@@ -5,28 +5,29 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include "runFairMQDevice.h"
 #include "BaseMQFileSink.h"
+#include "FairMBSRawItem.h"       // data type for the OutputPolicy
+#include "IOPolicy.h"             // fair::mq::policy::
+#include "RootOutFileManager.h"   // OutputPolicy
+#include "RootSerializer.h"       // RootSerializer
+#include "runFairMQDevice.h"
 
-#include "IOPolicy.h" // fair::mq::policy::
-#include "RootSerializer.h" // RootSerializer
-#include "RootOutFileManager.h" // OutputPolicy
-#include "FairMBSRawItem.h" // data type for the OutputPolicy
-
-#include <TClonesArray.h> // data type for the InputPolicy
+#include <TClonesArray.h>   // data type for the InputPolicy
 
 // InputPolicy - initialize input and deserialize message into it
-using RootDefaultInputPolicy = fair::mq::policy::InputPolicy<RootSerializer, // deserializer from msg to input
-                                                             TClonesArray, // input data type
-                                                             fair::mq::policy::PointerType, // input pointer type (automatically selected)
-                                                             fair::mq::policy::OpNewCreator, // input allocation
-                                                             fair::mq::policy::NullptrInitializer, // input initialization
-                                                             fair::mq::policy::RawPtrDeleter>; // input deleter
+using RootDefaultInputPolicy =
+    fair::mq::policy::InputPolicy<RootSerializer,                         // deserializer from msg to input
+                                  TClonesArray,                           // input data type
+                                  fair::mq::policy::PointerType,          // input pointer type (automatically selected)
+                                  fair::mq::policy::OpNewCreator,         // input allocation
+                                  fair::mq::policy::NullptrInitializer,   // input initialization
+                                  fair::mq::policy::RawPtrDeleter>;       // input deleter
 
 namespace bpo = boost::program_options;
 
 void addCustomOptions(bpo::options_description& options)
 {
+    // clang-format off
     options.add_options()
         ("output-file-name",   bpo::value<std::string>(),                                  "Path to the input file")
         ("output-file-tree",   bpo::value<std::string>()->default_value("mbstree"),        "Name of the output tree")
@@ -36,11 +37,13 @@ void addCustomOptions(bpo::options_description& options)
         ("use-clones-array",   bpo::value<bool>()->default_value(true),                    "Use TClonesArray")
         ("flow-mode",          bpo::value<bool>()->default_value(true),                    "Flow mode")
         ("in-chan-name",       bpo::value<std::string>()->default_value("data"),           "input channel name");
+    // clang-format on
 }
 
 FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 {
-    BaseMQFileSink<RootDefaultInputPolicy, RootOutFileManager<FairMBSRawItem>>* sink = new BaseMQFileSink<RootDefaultInputPolicy, RootOutFileManager<FairMBSRawItem>>();
+    BaseMQFileSink<RootDefaultInputPolicy, RootOutFileManager<FairMBSRawItem>>* sink =
+        new BaseMQFileSink<RootDefaultInputPolicy, RootOutFileManager<FairMBSRawItem>>();
 
     // call function member from deserialization policy
     sink->InitInputData(config.GetValue<std::string>("hit-classname").c_str());

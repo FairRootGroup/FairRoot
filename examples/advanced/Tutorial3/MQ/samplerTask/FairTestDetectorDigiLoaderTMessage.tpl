@@ -9,7 +9,7 @@
 
 #include "RootSerializer.h"
 
-template <>
+template<>
 void FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* /*opt*/)
 {
     fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage());

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef NEWTASK_H
@@ -15,24 +15,20 @@ class TClonesArray;
 class NewTask : public FairTask
 {
   public:
-
     /** Default constructor **/
     NewTask();
 
     /** Constructor with parameters (Optional) **/
     //  NewTask(Int_t verbose);
 
-
     /** Destructor **/
     ~NewTask();
-
 
     /** Initiliazation of task at the beginning of a run **/
     virtual InitStatus Init();
 
     /** ReInitiliazation of task when the runID changes **/
     virtual InitStatus ReInit();
-
 
     /** Executed for each event. **/
     virtual void Exec(Option_t* opt);
@@ -44,7 +40,6 @@ class NewTask : public FairTask
     virtual void Finish();
 
   private:
-
     /** Input array from previous already existing data level **/
     //  TClonesArray* <InputDataLevel>;
 
@@ -54,7 +49,7 @@ class NewTask : public FairTask
     NewTask(const NewTask&);
     NewTask operator=(const NewTask&);
 
-    ClassDef(NewTask,1);
+    ClassDef(NewTask, 1);
 };
 
 #endif

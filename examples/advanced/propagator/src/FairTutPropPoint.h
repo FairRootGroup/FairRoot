@@ -16,7 +16,6 @@ class FairTutPropPoint : public FairMCPoint
 {
 
   public:
-
     /** Default constructor **/
     FairTutPropPoint();
 
@@ -29,8 +28,13 @@ class FairTutPropPoint : public FairMCPoint
      *@param length   Track length since creation [cm]
      *@param eLoss    Energy deposit [GeV]
      **/
-    FairTutPropPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                     Double_t tof, Double_t length, Double_t eLoss);
+    FairTutPropPoint(Int_t trackID,
+                     Int_t detID,
+                     TVector3 pos,
+                     TVector3 mom,
+                     Double_t tof,
+                     Double_t length,
+                     Double_t eLoss);
 
     /** Destructor **/
     virtual ~FairTutPropPoint();
@@ -43,7 +47,7 @@ class FairTutPropPoint : public FairMCPoint
     FairTutPropPoint(const FairTutPropPoint& point);
     FairTutPropPoint operator=(const FairTutPropPoint& point);
 
-    ClassDef(FairTutPropPoint,1)
+    ClassDef(FairTutPropPoint, 1)
 };
 
-#endif //FAIRTUTPROPPOINT_H
+#endif   // FAIRTUTPROPPOINT_H

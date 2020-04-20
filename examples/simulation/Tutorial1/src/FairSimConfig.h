@@ -9,10 +9,10 @@
 #define FAIRSIMCONFIG
 
 #include "boost/program_options.hpp"
-#include <string>
 
 #include <Rtypes.h>
 #include <TString.h>
+#include <string>
 
 namespace po = boost::program_options;
 
@@ -35,8 +35,8 @@ class FairSimConfig
     int GetRandomSeed() const { return fRandomSeed; }
 
   private:
-    po::options_description fDescription; //!
-    po::variables_map fMap;               //!
+    po::options_description fDescription;   //!
+    po::variables_map fMap;                 //!
 
     bool fHelp;
     int fnEvents;

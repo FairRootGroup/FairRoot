@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -43,24 +43,24 @@ class PixelFindTracks : public FairTask
     virtual void Exec(Option_t* opt);
 
     virtual void GetParList(TList* tempList);
-    virtual void InitMQ    (TList* tempList);
-    virtual void ExecMQ    (TList* inputList,TList* outputList);
+    virtual void InitMQ(TList* tempList);
+    virtual void ExecMQ(TList* inputList, TList* outputList);
 
   private:
     PixelDigiPar* fDigiPar;
 
-    TClonesArray* fHits;         /** Input array of PixelHit **/
-    TClonesArray* fTracks;       /** Output array of PixelTrack **/
+    TClonesArray* fHits;   /** Input array of PixelHit **/
+    TClonesArray* fTracks; /** Output array of PixelTrack **/
 
-    Int_t         fTNofEvents;
+    Int_t fTNofEvents;
 
-    Int_t         fNHits;
-    Int_t         fTNofHits;
+    Int_t fNHits;
+    Int_t fTNofHits;
 
-    Int_t         fNTracks;
-    Int_t         fTNofTracks;
+    Int_t fNTracks;
+    Int_t fTNofTracks;
 
-    TH2F*         fhDist2D;
+    TH2F* fhDist2D;
 
     /** Get parameter containers **/
     virtual void SetParContainers();
@@ -80,7 +80,7 @@ class PixelFindTracks : public FairTask
     PixelFindTracks(const PixelFindTracks&);
     PixelFindTracks& operator=(const PixelFindTracks&);
 
-    ClassDef(PixelFindTracks,1);
+    ClassDef(PixelFindTracks, 1);
 };
 
 #endif
