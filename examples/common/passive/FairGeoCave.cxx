@@ -36,7 +36,6 @@ FairGeoCave::FairGeoCave()
     , name("cave")
 {
     fName = "cave";
-    name = "cave";
     maxModules = 1;
 }
 

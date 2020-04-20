@@ -39,7 +39,6 @@ MyGeoCave::MyGeoCave()
 {
     // Constructor
     fName = "cave";
-    name = "cave";
     maxModules = 1;
 }
 

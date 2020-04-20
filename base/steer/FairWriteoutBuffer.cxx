@@ -125,7 +125,7 @@ std::vector<FairTimeStamp*> FairWriteoutBuffer::GetRemoveOldData(double time)
 {
     typedef std::multimap<double, FairTimeStamp*>::iterator DTMapIter;
     std::vector<FairTimeStamp*> result;
-    for (DTMapIter it = fDeadTime_map.begin(); it != fDeadTime_map.lower_bound(time); it++) {
+    for (DTMapIter it = fDeadTime_map.begin(); it != fDeadTime_map.lower_bound(time); ++it) {
         if (fVerbose > 1) {
             std::cout << "-I- GetRemoveOldData: DeadTime: " << it->first << " Data: " << it->second << std::endl;
         }
@@ -181,7 +181,7 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
             // PrintDeadTimeMap();
             for (DTMapIter it = fDeadTime_map.lower_bound(currentdeadtime);
                  it != fDeadTime_map.upper_bound(currentdeadtime);
-                 it++) {
+                 ++it) {
                 oldData = it->second;
                 if (fVerbose > 1) {
                     std::cout << "Check Data: " << it->first << " : " << oldData << std::endl;
@@ -248,7 +248,7 @@ void FairWriteoutBuffer::MoveDataFromStartTimeMapToDeadTimeMap(double time)
     typedef std::multimap<double, std::pair<double, FairTimeStamp*>>::iterator startTimeMapIter;
 
     startTimeMapIter stopTime = fStartTime_map.lower_bound(time);
-    for (startTimeMapIter iter = fStartTime_map.begin(); iter != stopTime; iter++) {
+    for (startTimeMapIter iter = fStartTime_map.begin(); iter != stopTime; ++iter) {
         std::pair<double, FairTimeStamp*> data = iter->second;
         double startTime = iter->first;
         FillDataToDeadTimeMap(data.second, data.first, startTime);
@@ -260,7 +260,7 @@ void FairWriteoutBuffer::PrintStartTimeMap()
 {
     typedef std::multimap<double, std::pair<double, FairTimeStamp*>>::iterator startTimeMapIter;
     std::cout << "StartTimeMap: " << std::endl;
-    for (startTimeMapIter iter = fStartTime_map.begin(); iter != fStartTime_map.end(); iter++) {
+    for (startTimeMapIter iter = fStartTime_map.begin(); iter != fStartTime_map.end(); ++iter) {
         FairTimeStamp* data = iter->second.second;
         std::cout << " | " << iter->first << "/" << data->GetTimeStamp();
     }
@@ -271,7 +271,7 @@ void FairWriteoutBuffer::PrintDeadTimeMap()
 {
     typedef std::multimap<double, FairTimeStamp*>::iterator DTMapIter;
     std::cout << "DeadTimeMap: " << std::endl;
-    for (DTMapIter it = fDeadTime_map.begin(); it != fDeadTime_map.end(); it++) {
+    for (DTMapIter it = fDeadTime_map.begin(); it != fDeadTime_map.end(); ++it) {
         std::cout << it->first << " / ";
         PrintData(it->second);
         std::cout << std::endl;

@@ -98,12 +98,12 @@ bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
         // LOG(debug) << "+" << fEventHeader->GetName() << "[" << fEvRIPartTrio.first.second << "][" <<
         // fEvRIPartTrio.first.first << "][" << fEvRIPartTrio.second << "]";
         fObjectMap.insert(
-            std::pair<std::pair<std::pair<int, int>, int>, TObject*>(fEvRIPartTrio, (TObject*)fEventHeader));
+            pair<pair<pair<int, int>, int>, TObject*>(fEvRIPartTrio, static_cast<TObject*>(fEventHeader)));
         for (int iarray = 0; iarray < nofArrays; iarray++) {
             // LOG(debug) << "+" << tempArrays[iarray]->GetName() << "[" << fEvRIPartTrio.first.second << "][" <<
             // fEvRIPartTrio.first.first << "][" << fEvRIPartTrio.second << "]";
             fObjectMap.insert(
-                std::pair<std::pair<std::pair<int, int>, int>, TObject*>(fEvRIPartTrio, (TObject*)tempArrays[iarray]));
+                pair<pair<pair<int, int>, int>, TObject*>(fEvRIPartTrio, static_cast<TObject*>(tempArrays[iarray])));
         }
         // LOG(debug) << "                 now we have fObjectMap (size = " << fObjectMap.size() << ")";
         if (printInfo)
