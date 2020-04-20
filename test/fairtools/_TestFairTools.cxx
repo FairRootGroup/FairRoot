@@ -110,7 +110,7 @@ class _TestFairLoggerBase : public T
         }
 
         std::vector<std::string>::iterator iter;
-        for (iter = levelNames.begin(); iter < levelNames.end(); iter++) {
+        for (iter = levelNames.begin(); iter < levelNames.end(); ++iter) {
             fullOutputString = "[" + *iter + "] " + outString + " ";
             retVal.push_back(fullOutputString);
         }
@@ -153,10 +153,10 @@ class _TestFairLoggerBase : public T
         }
     }
 
-    bool CheckVerboseOutput(std::string logLevel,
-                            std::string outputString,
-                            std::string verboseLevel,
-                            std::string resultString)
+    bool CheckVerboseOutput(const std::string& logLevel,
+                            const std::string& outputString,
+                            const std::string& verboseLevel,
+                            const std::string& resultString)
     {
         // Example Output for logging level INFO and different verbosity levels
         // verbosity Level:Output
