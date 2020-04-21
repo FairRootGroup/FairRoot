@@ -97,23 +97,6 @@ include(CheckCompiler)
 #Check the compiler and set the compile and link flags
 Check_Compiler()
 
-# Check also if FairSoft has been compiled with C++11 or C++14 support
-# If FairSoft is used the compiler flags provided by fairsoft-config
-# are added to the variable CMAKE_CXX_FLAGS.
-# If alibuild is used the compiler flags are passed on the command line
-# and are also added to CMAKE_CXX_FLAGS.
-# So check if CMAKE_CXX_FLAGS has the compiler flags -std=c++11 or -std=c++14
-String(FIND "${CMAKE_CXX_FLAGS}" "-std=c++11" POS_C++11)
-If(${POS_C++11} EQUAL -1)
-  String(FIND "${CMAKE_CXX_FLAGS}" "-std=c++14" POS_C++11)
-  If(${POS_C++11} EQUAL -1)
-    String(FIND "${CMAKE_CXX_FLAGS}" "-std=c++17" POS_C++11)
-    If(${POS_C++11} EQUAL -1)
-      Message(FATAL_ERROR "FairSoft wasn't compiled with c++11, c++14 or c++17 support. Please recompile FairSoft with a compiler which supports at least c++11.")
-    EndIf()
-  EndIf()
-EndIf()
-
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 
 Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are used." OFF)
@@ -150,6 +133,10 @@ If(FAIRSOFT_CONFIG)
   ENDIF(NOT DEFINED ENV{SIMPATH})
   STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
   SET(SIMPATH $ENV{SIMPATH})
+endif()
+
+if(NOT DEFINED SIMPATH AND DEFINED ENV{SIMPATH})
+  set(SIMPATH $ENV{SIMPATH})
 endif()
 
 # Check if the external packages are installed into a separate install
@@ -195,6 +182,13 @@ find_package2(PUBLIC Pythia8)
 find_package2(PUBLIC Protobuf)
 find_package2(PUBLIC msgpack)
 find_package2(PUBLIC Flatbuffers)
+if(Flatbuffers_FOUND)
+  if(TARGET flatbuffers::flatbuffers_shared)
+    set(flatbuffers_lib flatbuffers::flatbuffers_shared)
+  else()
+    set(flatbuffers_lib flatbuffers::flatbuffers)
+  endif()
+endif()
 
 find_package2(PUBLIC Geant3)
 find_package2(PUBLIC Geant4)
@@ -521,9 +515,9 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
       get_filename_component(prefix ${fmt_include}/.. ABSOLUTE)
     elseif(${dep} STREQUAL VMC)
       get_target_property(vmc_include VMCLibrary INTERFACE_INCLUDE_DIRECTORIES)
-      get_filename_component(prefix ${vmc_include}/.. ABSOLUTE)
+      get_filename_component(prefix ${vmc_include}/../.. ABSOLUTE)
     elseif(${dep} STREQUAL Flatbuffers)
-      get_target_property(flatbuffers_include flatbuffers::flatbuffers INTERFACE_INCLUDE_DIRECTORIES)
+      get_target_property(flatbuffers_include ${flatbuffers_lib} INTERFACE_INCLUDE_DIRECTORIES)
       get_filename_component(prefix ${flatbuffers_include}/.. ABSOLUTE)
     endif()
 

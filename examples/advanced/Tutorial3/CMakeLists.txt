@@ -124,7 +124,7 @@ target_link_libraries(${target} PUBLIC
 
   Boost::serialization
   $<$<BOOL:${Protobuf_FOUND}>:protobuf::libprotobuf>
-  $<$<BOOL:${Flatbuffers_FOUND}>:flatbuffers::flatbuffers>
+  $<$<BOOL:${Flatbuffers_FOUND}>:${flatbuffers_lib}>
   $<$<BOOL:${msgpack_FOUND}>:msgpackc>
 
   Core # Rtypes
