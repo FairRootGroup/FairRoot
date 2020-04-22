@@ -4,55 +4,79 @@ def specToLabel(Map spec) {
   return "${spec.os}-${spec.arch}-${spec.compiler}-FairSoft_${spec.fairsoft}"
 }
 
-def jobMatrix(String prefix, List specs, Closure callback) {
+def jobMatrix(String prefix, String type, List specs, Closure callback) {
   def nodes = [:]
   for (spec in specs) {
     def label = specToLabel(spec)
     def os = spec.os
     def compiler = spec.compiler
     def fairsoft = spec.fairsoft
-    nodes["${prefix}/${label}"] = {
+    def job = label
+    if (spec.containsKey('check')) {
+      job = spec.check
+    }
+    nodes["${type}/${job}"] = {
       node(label) {
-        githubNotify(context: "${prefix}/${label}", description: 'Building ...', status: 'PENDING')
+        githubNotify(context: "${prefix}/${type}/${job}", description: 'Building ...', status: 'PENDING')
         try {
           deleteDir()
           checkout scm
 
-          sh """\
-            echo "export SIMPATH=\${SIMPATH_PREFIX}${fairsoft}" >> Dart.cfg
-            echo "export FAIRSOFT_VERSION=${fairsoft}" >> Dart.cfg
-          """
-
-          if (os =~ /Debian8/ && compiler =~ /gcc9/) {
-            sh '''\
-              echo "source /etc/profile.d/modules.sh" >> Dart.cfg
-              echo "module use /cvmfs/it.gsi.de/modulefiles" >> Dart.cfg
-              echo "module load compiler/gcc/9.1.0" >> Dart.cfg
-            '''
-          }
-
-          if (os =~ /MacOS/) {
-            sh "echo \"export EXTRA_FLAGS=\\\"-DCMAKE_CXX_COMPILER=clang++;-DCMAKE_C_COMPILER=clang\\\"\" >> Dart.cfg"
+          def env = ''
+          if (spec.containsKey('check')) {
+            env = 'env.sh'
+            if (os =~ /Debian8/) {
+              sh """\
+                echo "#!/bin/bash" >> ${env}
+                echo ". /etc/profile.d/modules.sh" >> ${env}
+                echo "module use /cvmfs/it.gsi.de/modulefiles" >> ${env}
+                echo "module load cmake" >> ${env}
+                echo "module load compiler/gcc/9.1.0" >> ${env}
+              """
+            }
+            sh """\
+              echo "export SIMPATH=\${SIMPATH_PREFIX}${fairsoft}" >> ${env}
+              echo "export LABEL='\${JOB_BASE_NAME} ${spec.check}'" >> ${env}
+              echo "export PATH=\${CHECKS_PREFIX}${spec.check}/bin:\\\$PATH" >> ${env}
+            """
           } else {
-            sh "echo \"export EXTRA_FLAGS=\\\"-DCMAKE_CXX_COMPILER=g++;-DCMAKE_C_COMPILER=gcc\\\"\" >> Dart.cfg"
+            env = 'Dart.cfg'
+            sh """\
+              echo "export SIMPATH=\${SIMPATH_PREFIX}${fairsoft}" >> ${env}
+              echo "export FAIRSOFT_VERSION=${fairsoft}" >> ${env}
+            """
+
+            if (os =~ /Debian8/ && compiler =~ /gcc9/) {
+              sh """\
+                echo ". /etc/profile.d/modules.sh" >> ${env}
+                echo "module use /cvmfs/it.gsi.de/modulefiles" >> ${env}
+                echo "module load compiler/gcc/9.1.0" >> ${env}
+              """
+            }
+
+            if (os =~ /MacOS/) {
+              sh "echo \"export EXTRA_FLAGS=\\\"-DCMAKE_CXX_COMPILER=clang++;-DCMAKE_C_COMPILER=clang\\\"\" >> ${env}"
+            } else {
+              sh "echo \"export EXTRA_FLAGS=\\\"-DCMAKE_CXX_COMPILER=g++;-DCMAKE_C_COMPILER=gcc\\\"\" >> ${env}"
+            }
+
+            sh """\
+              echo "export BUILDDIR=\${PWD}/build" >> ${env}
+              echo "export SOURCEDIR=\${PWD}" >> ${env}
+              echo "export PATH=\\\$SIMPATH/bin:\\\$PATH" >> ${env}
+              echo "export GIT_BRANCH=\${JOB_BASE_NAME}" >> ${env}
+              echo "echo \\\$PATH" >> ${env}
+            """
           }
+          sh "cat ${env}"
 
-          sh '''\
-            echo "export BUILDDIR=$PWD/build" >> Dart.cfg
-            echo "export SOURCEDIR=$PWD" >> Dart.cfg
-            echo "export PATH=\\\$SIMPATH/bin:\\\$PATH" >> Dart.cfg
-            echo "export GIT_BRANCH=$JOB_BASE_NAME" >> Dart.cfg
-            echo "echo \\\$PATH" >> Dart.cfg
-          '''
-          sh 'cat Dart.cfg'
-
-          callback.call(spec, label)
+          callback.call(spec, job, env)
 
           deleteDir()
-          githubNotify(context: "${prefix}/${label}", description: 'Success', status: 'SUCCESS')
+          githubNotify(context: "${prefix}/${type}/${job}", description: 'Success', status: 'SUCCESS')
         } catch (e) {
           deleteDir()
-          githubNotify(context: "${prefix}/${label}", description: 'Error', status: 'ERROR')
+          githubNotify(context: "${prefix}/${type}/${job}", description: 'Error', status: 'ERROR')
           throw e
         }
       }
@@ -67,7 +91,7 @@ pipeline{
     stage("Run CI Matrix") {
       steps{
         script {
-          def build_jobs = jobMatrix('alfa-ci/build', [
+          def builds = jobMatrix('alfa-ci', 'build', [
             [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc9',            fairsoft: 'dev'],
             [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc9',            fairsoft: 'dev_mt'],
             [os: 'MacOS10.13', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'dev'],
@@ -76,11 +100,17 @@ pipeline{
             [os: 'MacOS10.13', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'jun19_patches_mt'],
             [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'dev'],
             [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'dev_mt'],
-          ]) { spec, label ->
-            sh './Dart.sh alfa_ci Dart.cfg'
+          ]) { spec, label, config ->
+            sh "./Dart.sh alfa_ci ${config}"
           }
 
-          parallel(build_jobs)
+          def checks = jobMatrix('alfa-ci', 'check', [
+            [os: 'Debian8', arch: 'x86_64', compiler: 'gcc9', fairsoft: 'dev', check: 'format'],
+          ]) { spec, check, env ->
+            sh ". ./${env} && ctest -S FairRoot_${check}_test.cmake -VV"
+          }
+
+          parallel(checks + builds)
         }
       }
     }
