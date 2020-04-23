@@ -37,8 +37,10 @@ def jobMatrix(String prefix, String type, List specs, Closure callback) {
             sh """\
               echo "export SIMPATH=\${SIMPATH_PREFIX}${fairsoft}" >> ${env}
               echo "export LABEL='\${JOB_BASE_NAME} ${spec.check}'" >> ${env}
+              echo "export FAIRROOT_FORMAT_BASE=origin/\${CHANGE_TARGET}" >> ${env}
               echo "export PATH=\${CHECKS_PREFIX}${spec.check}/bin:\\\$PATH" >> ${env}
             """
+            sh 'env'
           } else {
             env = 'Dart.cfg'
             sh """\
