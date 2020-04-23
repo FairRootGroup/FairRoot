@@ -44,11 +44,13 @@ FairGeoBrik::FairGeoBrik()
 FairGeoBrik::~FairGeoBrik()
 {
     // destructor
-    if (param) {
+    if (param)
+    {
         delete param;
         param = 0;
     }
-    if (center) {
+    if (center)
+    {
         delete center;
         center = 0;
     }

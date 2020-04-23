@@ -26,8 +26,7 @@
 // backwards-compatibility with older FairLogger calls, TODO: delete me as soon as possible
 enum FairLogLevel
 {
-    FATAL,
-    ERROR,
+    FATAL, ERROR,
     WARNING,
     INFO,
     DEBUG,
