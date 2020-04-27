@@ -106,7 +106,7 @@ fi
 ###########################
 
 echo "*********************************************************************"
-echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b $INPUTFILE | tail -1
+echo "cout<<cbmsim->GetEntries()<<endl;" | @ROOT_EXECUTABLE@ -l -b $INPUTFILE | tail -1
 echo "*********************************************************************"
 
 
@@ -284,8 +284,8 @@ if [ "$COMMAND" == "static" ]; then
 
     wait $FILESINK_PID
 
-    INPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b $INPUTFILE | tail -1)"
-    OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b $OUTPUTFILE | tail -1)"
+    INPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | @ROOT_EXECUTABLE@ -l -b $INPUTFILE | tail -1)"
+    OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | @ROOT_EXECUTABLE@ -l -b $OUTPUTFILE | tail -1)"
     echo "There are $INPUT_EVENTS events in the input file."
     echo "There are $OUTPUT_EVENTS events in the output file."
 

@@ -150,7 +150,7 @@ If(ROOT_FOUND)
   #######################################
   #
   #       Check the executables of ROOT
-  #          ( rootcint )
+  #          ( root, rootcint, etc. )
   #
   #######################################
 
@@ -165,6 +165,12 @@ If(ROOT_FOUND)
     PATHS ${ROOT_BINARY_DIR}
     NO_DEFAULT_PATH
     )
+
+  find_program(ROOT_EXECUTABLE
+    NAMES root root.exe
+    HINTS ${ROOT_BINARY_DIR}
+    NO_DEFAULT_PATH
+  )
 
     Include(ROOTMacros)
 
