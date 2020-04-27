@@ -693,7 +693,7 @@ void FairMCApplication::Stepping()
                 InMap = kTRUE;
                 break;
             }
-            fVolIter++;
+            ++fVolIter;
         } while (fVolIter != fVolMap.upper_bound(id));
 
         //    if (fDisVol && !InMap) { // fDisVolume is set previously, no check needed

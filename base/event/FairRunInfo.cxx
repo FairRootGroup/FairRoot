@@ -120,7 +120,7 @@ void FairRunInfo::CreateAndFillHistograms(TList* histoList)
     Int_t counter = 0;
     std::vector<Long_t>::iterator lit;
     Double_t timeOffset = fTime.front() + 1.;
-    for (lit = fResidentMemory.begin(); lit < fResidentMemory.end(); lit++) {
+    for (lit = fResidentMemory.begin(); lit < fResidentMemory.end(); ++lit) {
         ResidentMemoryVsEvent->Fill(counter, *lit);
         ResidentMemoryVsTime->Fill(fTime.at(counter) - timeOffset, *lit);
         counter++;
@@ -129,7 +129,7 @@ void FairRunInfo::CreateAndFillHistograms(TList* histoList)
     histoList->AddLast(ResidentMemoryVsTime);
 
     counter = 0;
-    for (lit = fVirtualMemory.begin(); lit < fVirtualMemory.end(); lit++) {
+    for (lit = fVirtualMemory.begin(); lit < fVirtualMemory.end(); ++lit) {
         VirtualMemoryVsEvent->Fill(counter, *lit);
         VirtualMemoryVsTime->Fill(fTime.at(counter) - timeOffset, *lit);
         counter++;
@@ -138,7 +138,7 @@ void FairRunInfo::CreateAndFillHistograms(TList* histoList)
     histoList->AddLast(VirtualMemoryVsTime);
 
     counter = 1;
-    for (it = fTimeDiff.begin(); it < fTimeDiff.end(); it++) {
+    for (it = fTimeDiff.begin(); it < fTimeDiff.end(); ++it) {
         TimePerEvent->Fill(*it);
         EventtimeVsEvent->Fill(counter, *it);
         counter++;

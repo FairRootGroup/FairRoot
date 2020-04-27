@@ -47,7 +47,7 @@ void FairPrintFairLinks::InitBranchList(TList* branches)
 {
     FairRootManager* ioman = FairRootManager::Instance();
     for (int i = 0; i < branches->GetEntries();
-         i++) {   // removes branches which do not contain objects derived from FairMultiLinkedData_Interface
+         ++i) {   // removes branches which do not contain objects derived from FairMultiLinkedData_Interface
         TObjString* branchName = (TObjString*)branches->At(i);
         if (branchName->String().Contains("_link"))
             continue;
@@ -81,7 +81,7 @@ void FairPrintFairLinks::PrintBranchNameList(TList* branches)
 {
     LOG(info) << "-I- FairPrintFairLinks Branches:";
 
-    for (int i = 0; i < branches->GetEntries(); i++) {
+    for (int i = 0; i < branches->GetEntries(); ++i) {
         TObjString* branchName = (TObjString*)branches->At(i);
         LOG(info) << i << " : " << branchName->String().Data() << "\n";
     }
@@ -99,11 +99,11 @@ void FairPrintFairLinks::Exec(Option_t*)
 {
     LOG(info) << "\n--------------------- Event " << FairRootManager::Instance()->GetEntryNr() << " at "
               << FairRootManager::Instance()->GetEventTime() << " ns ----------------------";
-    for (std::map<Int_t, TClonesArray*>::iterator iter = fBranches.begin(); iter != fBranches.end(); iter++) {
+    for (std::map<Int_t, TClonesArray*>::iterator iter = fBranches.begin(); iter != fBranches.end(); ++iter) {
         LOG(info) << "\n"
                   << iter->first << " : " << FairRootManager::Instance()->GetBranchName(iter->first)
                   << " Entries: " << iter->second->GetEntriesFast();
-        for (int i = 0; i < iter->second->GetEntriesFast(); i++) {
+        for (int i = 0; i < iter->second->GetEntriesFast(); ++i) {
             FairMultiLinkedData_Interface* myLinks = (FairMultiLinkedData_Interface*)iter->second->At(i);
             if (myLinks->GetPointerToLinks() != 0) {
                 LOG(info) << i << " : " << *myLinks << "\n";

@@ -154,7 +154,7 @@ void FairMonitor::RecordInfo(const TTask* tTask, const char* identStr, Double_t 
 
     Int_t nofHists = fHistList->GetEntries();
     Int_t ihist = 0;
-    for (ihist = 0; ihist < nofHists; ihist++) {
+    for (ihist = 0; ihist < nofHists; ++ihist) {
         if (!tempString.CompareTo(fHistList->At(ihist)->GetName())) {
             break;
         }
@@ -367,7 +367,7 @@ void FairMonitor::Draw(Option_t*)
 
     GetTaskMap(mainFairTask);
 
-    for (auto itb = fTaskRequired.begin(); itb != fTaskRequired.end(); itb++) {
+    for (auto itb = fTaskRequired.begin(); itb != fTaskRequired.end(); ++itb) {
         iti = fTaskMap.find(itb->first);
         if (iti == fTaskMap.end())
             fTaskMap.insert(std::pair<TString, Int_t>(itb->first, 0));
@@ -375,7 +375,7 @@ void FairMonitor::Draw(Option_t*)
         if (iti == fObjectMap.end())
             fObjectMap.insert(std::pair<TString, Int_t>(itb->second, 0));
     }
-    for (auto itb = fTaskCreated.begin(); itb != fTaskCreated.end(); itb++) {
+    for (auto itb = fTaskCreated.begin(); itb != fTaskCreated.end(); ++itb) {
         iti = fTaskMap.find(itb->first);
         if (iti == fTaskMap.end())
             fTaskMap.insert(std::pair<TString, Int_t>(itb->first, 0));
@@ -383,7 +383,7 @@ void FairMonitor::Draw(Option_t*)
         if (iti == fObjectMap.end())
             fObjectMap.insert(std::pair<TString, Int_t>(itb->second, 0));
     }
-    for (auto itb = fTaskCreatedTemp.begin(); itb != fTaskCreatedTemp.end(); itb++) {
+    for (auto itb = fTaskCreatedTemp.begin(); itb != fTaskCreatedTemp.end(); ++itb) {
         iti = fTaskMap.find(itb->first);
         if (iti == fTaskMap.end())
             fTaskMap.insert(std::pair<TString, Int_t>(itb->first, 0));
@@ -395,7 +395,7 @@ void FairMonitor::Draw(Option_t*)
     AnalyzeObjectMap(mainFairTask);
 
     Int_t maxHierarchyNumber = 0;
-    for (iti = fObjectMap.begin(); iti != fObjectMap.end(); iti++) {
+    for (iti = fObjectMap.begin(); iti != fObjectMap.end(); ++iti) {
         if (maxHierarchyNumber < iti->second)
             maxHierarchyNumber = iti->second;
     }
@@ -412,9 +412,9 @@ void FairMonitor::Draw(Option_t*)
     fCanvas->SetBorderMode(0);
     fCanvas->SetFrameFillColor(0);
 
-    for (Int_t ihier = 0; ihier < maxHierarchyNumber + 1; ihier++) {
+    for (Int_t ihier = 0; ihier < maxHierarchyNumber + 1; ++ihier) {
         Int_t nofHier = 0;
-        for (iti = fTaskMap.begin(); iti != fTaskMap.end(); iti++) {
+        for (iti = fTaskMap.begin(); iti != fTaskMap.end(); ++iti) {
             if (iti->second == ihier) {
                 nofHier++;
             }
@@ -423,7 +423,7 @@ void FairMonitor::Draw(Option_t*)
 
         if (ihier == 0) {
             Double_t iObj = 0.;
-            for (iti = fTaskMap.begin(); iti != fTaskMap.end(); iti++) {
+            for (iti = fTaskMap.begin(); iti != fTaskMap.end(); ++iti) {
                 if (iti->second == ihier) {
                     std::pair<Double_t, Double_t> tempPos(50, 600 - iObj * 40);
                     fTaskPos.insert(std::pair<TString, std::pair<Double_t, Double_t>>(iti->first, tempPos));
@@ -447,7 +447,7 @@ void FairMonitor::Draw(Option_t*)
                 + secLine * 15;
             LOG(debug) << "for level " << ihier << " will put top edge at " << topEdge << ". "
                        << (secLineEven ? "Two lines" : "One line") << (secLineEven ? " with offset" : "");
-            for (iti = fTaskMap.begin(); iti != fTaskMap.end(); iti++) {
+            for (iti = fTaskMap.begin(); iti != fTaskMap.end(); ++iti) {
                 if (iti->second == ihier) {
                     std::pair<Double_t, Double_t> tempPos(startingPosition + iObj * 90 / (1 + secLine)
                                                               - secLineEven * (iObj % 2) * 45,
@@ -459,7 +459,7 @@ void FairMonitor::Draw(Option_t*)
         }
 
         nofHier = 0;
-        for (iti = fObjectMap.begin(); iti != fObjectMap.end(); iti++) {
+        for (iti = fObjectMap.begin(); iti != fObjectMap.end(); ++iti) {
             if (TMath::Abs(iti->second) == ihier) {
                 nofHier++;
             }
@@ -482,7 +482,7 @@ void FairMonitor::Draw(Option_t*)
             + secLine * 15;
         LOG(debug) << "for level " << ihier << " will put top edge at " << topEdge << ". "
                    << (secLineEven ? "Two lines" : "One line") << (secLineEven ? " with offset" : "");
-        for (iti = fObjectMap.begin(); iti != fObjectMap.end(); iti++) {
+        for (iti = fObjectMap.begin(); iti != fObjectMap.end(); ++iti) {
             if (TMath::Abs(iti->second) == ihier) {
                 std::pair<Double_t, Double_t> tempPos(startingPosition + iObj * 90 / (1 + secLine)
                                                           - secLineEven * (iObj % 2) * 45,
@@ -497,7 +497,7 @@ void FairMonitor::Draw(Option_t*)
     tddMapIter itt;
     tddMapIter ito;
 
-    for (auto itb = fTaskRequired.begin(); itb != fTaskRequired.end(); itb++) {
+    for (auto itb = fTaskRequired.begin(); itb != fTaskRequired.end(); ++itb) {
         itt = fTaskPos.find(itb->first);
         ito = fObjectPos.find(itb->second);
         if (itt != fTaskPos.end() && ito != fObjectPos.end()) {
@@ -508,7 +508,7 @@ void FairMonitor::Draw(Option_t*)
             tempArrow->Draw();
         }
     }
-    for (auto itb = fTaskCreated.begin(); itb != fTaskCreated.end(); itb++) {
+    for (auto itb = fTaskCreated.begin(); itb != fTaskCreated.end(); ++itb) {
         itt = fTaskPos.find(itb->first);
         ito = fObjectPos.find(itb->second);
         if (itt != fTaskPos.end() && ito != fObjectPos.end()) {
@@ -519,7 +519,7 @@ void FairMonitor::Draw(Option_t*)
             tempArrow->Draw();
         }
     }
-    for (auto itb = fTaskCreatedTemp.begin(); itb != fTaskCreatedTemp.end(); itb++) {
+    for (auto itb = fTaskCreatedTemp.begin(); itb != fTaskCreatedTemp.end(); ++itb) {
         itt = fTaskPos.find(itb->first);
         ito = fObjectPos.find(itb->second);
         if (itt != fTaskPos.end() && ito != fObjectPos.end()) {
@@ -531,7 +531,7 @@ void FairMonitor::Draw(Option_t*)
         }
     }
 
-    for (itt = fTaskPos.begin(); itt != fTaskPos.end(); itt++) {
+    for (itt = fTaskPos.begin(); itt != fTaskPos.end(); ++itt) {
         std::pair<Double_t, Double_t> taskPos = itt->second;
         TBox* bkgBox = new TBox(taskPos.first - 40, taskPos.second - 15, taskPos.first + 40, taskPos.second + 15);
         bkgBox->SetFillColor(kGreen - 9);
@@ -539,7 +539,7 @@ void FairMonitor::Draw(Option_t*)
 
         TString tempString = Form("hist_%s_%s", itt->first.Data(), "EXEC_TIM");
         Int_t nofHists = fHistList->GetEntries();
-        for (Int_t ihist = 0; ihist < nofHists; ihist++) {
+        for (Int_t ihist = 0; ihist < nofHists; ++ihist) {
             if (!tempString.CompareTo(fHistList->At(ihist)->GetName())) {
                 Double_t timeInt = (static_cast<TH1F*>(fHistList->At(ihist))->Integral());
                 Double_t timeFrac = 80. * timeInt / fRunTime;
@@ -560,7 +560,7 @@ void FairMonitor::Draw(Option_t*)
         taskText->Draw();
     }
 
-    for (ito = fObjectPos.begin(); ito != fObjectPos.end(); ito++) {
+    for (ito = fObjectPos.begin(); ito != fObjectPos.end(); ++ito) {
         std::pair<Double_t, Double_t> objectPos = ito->second;
         iti = fObjectMap.find(ito->first);
         TPaveText* paveText = new TPaveText(
@@ -689,7 +689,7 @@ void FairMonitor::AnalyzeObjectMap(TTask* tempTask)
     tiMapIter iti;
 
     LOG(debug) << "TASK \"" << tempTask->GetName() << "\" NEEDS:";
-    for (auto itb = fTaskRequired.begin(); itb != fTaskRequired.end(); itb++) {
+    for (auto itb = fTaskRequired.begin(); itb != fTaskRequired.end(); ++itb) {
         if (itb->first != tempString)
             continue;
         LOG(debug) << "   \"" << itb->second.Data() << "\"";
@@ -709,7 +709,7 @@ void FairMonitor::AnalyzeObjectMap(TTask* tempTask)
         iti->second = hierarchyNumber;
 
     LOG(debug) << "     \"" << tempTask->GetName() << "\" CREATES:";
-    for (auto itb = fTaskCreated.begin(); itb != fTaskCreated.end(); itb++) {
+    for (auto itb = fTaskCreated.begin(); itb != fTaskCreated.end(); ++itb) {
         if (itb->first != tempString)
             continue;
         LOG(debug) << " + \"" << itb->second.Data() << "\"";
@@ -719,7 +719,7 @@ void FairMonitor::AnalyzeObjectMap(TTask* tempTask)
         iti->second = hierarchyNumber;
     }
 
-    for (auto itb = fTaskCreatedTemp.begin(); itb != fTaskCreatedTemp.end(); itb++) {
+    for (auto itb = fTaskCreatedTemp.begin(); itb != fTaskCreatedTemp.end(); ++itb) {
         if (itb->first != tempString)
             continue;
         LOG(debug) << " - \"" << itb->second.Data() << "\"";

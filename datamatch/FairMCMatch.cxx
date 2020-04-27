@@ -34,7 +34,7 @@ FairMCMatch::FairMCMatch()
 
 FairMCMatch::~FairMCMatch()
 {
-    for (TListIterator iter = fList.begin(); iter != fList.end(); iter++) {
+    for (TListIterator iter = fList.begin(); iter != fList.end(); ++iter) {
         delete (iter->second);
     }
     fList.clear();
@@ -85,7 +85,7 @@ void FairMCMatch::RemoveStage(Int_t type) { fList.erase(type); }
 
 void FairMCMatch::SetCommonWeightStages(Float_t weight)
 {
-    for (int i = 0; i < GetNMCStages(); i++) {
+    for (int i = 0; i < GetNMCStages(); ++i) {
         if (GetMCStage(i)) {
             GetMCStage(i)->SetWeight(weight);
         }
@@ -138,7 +138,7 @@ FairMCResult FairMCMatch::GetMCInfoForward(Int_t start, Int_t stop)
 {
     FairMCResult result(start, stop);
     FairMCStage startVec = *(fList[start]);
-    for (int i = 0; i < startVec.GetNEntries(); i++) {
+    for (int i = 0; i < startVec.GetNEntries(); ++i) {
         FairLink tempLink(startVec.GetStageId(), i);
 
         FairMCEntry tempEntry(GetMCInfoForwardSingle(tempLink, stop));
@@ -170,7 +170,7 @@ FairMCResult FairMCMatch::GetMCInfoBackward(Int_t start, Int_t stop)
 {
     FairMCResult result(start, stop);
     FairMCStage startVec = *(fList[start]);
-    for (int i = 0; i < startVec.GetNEntries(); i++) {
+    for (int i = 0; i < startVec.GetNEntries(); ++i) {
         FairLink tempLink(start, i);
         GetMCInfoBackwardSingle(tempLink, stop, startVec.GetWeight());
         result.SetEntry(&fFinalStageML, result.GetNEntries());
@@ -195,14 +195,14 @@ void FairMCMatch::FindStagesPointingToLinks(FairMultiLinkedData links, Int_t sto
 {
     FairMultiLinkedData tempLinks;
     tempLinks.SetPersistanceCheck(kFALSE);
-    for (int i = 0; i < links.GetNLinks(); i++) {
+    for (int i = 0; i < links.GetNLinks(); ++i) {
         FairLink myLink = links.GetLink(i);
         FairMultiLinkedData myNewLinks = FindStagesPointingToLink(myLink);
         myNewLinks.SetPersistanceCheck(kFALSE);
         if (myNewLinks.GetNLinks() == 0) {
             fFinalStageML.AddLink(myLink, true);
         } else {
-            for (int j = 0; j < myNewLinks.GetNLinks(); j++) {
+            for (int j = 0; j < myNewLinks.GetNLinks(); ++j) {
                 if (myNewLinks.GetLink(j).GetType() == static_cast<Int_t>(stop)) {
                     fFinalStageML.AddLink(myNewLinks.GetLink(j), true);
                 } else if (myNewLinks.GetLink(j).GetType() > static_cast<Int_t>(stop)) {
@@ -223,7 +223,7 @@ FairMultiLinkedData FairMCMatch::FindStagesPointingToLink(FairLink link)
     FairMultiLinkedData result;
     result.SetPersistanceCheck(kFALSE);
     TListIteratorConst iter = fList.find(static_cast<Int_t>(link.GetType()));
-    for (; iter != fList.end(); iter++) {
+    for (; iter != fList.end(); ++iter) {
         if (iter->second->PosInList(link).GetNLinks() > 0) {
             result.AddLinks(iter->second->PosInList(link), true);
         }
@@ -235,7 +235,7 @@ FairMultiLinkedData FairMCMatch::FindLinksToStage(Int_t stage)
 {
     FairMultiLinkedData result;
     result.SetPersistanceCheck(kFALSE);
-    for (int i = 0; i < GetNMCStages(); i++) {
+    for (int i = 0; i < GetNMCStages(); ++i) {
         result.AddLinks(GetMCStage(i)->GetLinksWithType(stage), true);
     }
     return result;
@@ -261,7 +261,7 @@ void FairMCMatch::CreateArtificialStage(Int_t stage, const std::string& fileName
         InitStage(stage, fileName, branchName);
         FairMultiLinkedData artData;
         artData.SetLink(FairLink(static_cast<Int_t>(-1), -1));
-        for (int i = 0; i < stageLinks.GetNLinks(); i++) {
+        for (int i = 0; i < stageLinks.GetNLinks(); ++i) {
             if (stageLinks.GetLink(i).GetIndex() > -1) {
                 fList[stage]->SetEntry(&artData, stageLinks.GetLink(i).GetIndex());
             }
@@ -275,7 +275,7 @@ void FairMCMatch::GetNextStage(FairMultiLinkedData& startStage, Int_t stopStage)
 
     FairMCEntry tempStage;
 
-    for (int i = 0; i < startStage.GetNLinks(); i++) {
+    for (int i = 0; i < startStage.GetNLinks(); ++i) {
         if (startStage.GetLink(i).GetType() == stopStage) {
             AddToFinalStage(startStage.GetLink(i), 1);
             if (fVerbose > 0) {
@@ -356,7 +356,7 @@ void FairMCMatch::ClearFinalStage() { fFinalStageML.Reset(); }
 
 void FairMCMatch::ClearMCList()
 {
-    for (TListIterator iter = fList.begin(); iter != fList.end(); iter++) {
+    for (TListIterator iter = fList.begin(); iter != fList.end(); ++iter) {
         if (iter->second != 0) {
             iter->second->ClearEntries();
         }
@@ -366,7 +366,7 @@ void FairMCMatch::ClearMCList()
 
 bool FairMCMatch::IsTypeInList(Int_t type)
 {
-    for (TListIterator iter = fList.begin(); iter != fList.end(); iter++) {
+    for (TListIterator iter = fList.begin(); iter != fList.end(); ++iter) {
         if (iter->first == type) {
             return true;
         }
@@ -376,7 +376,7 @@ bool FairMCMatch::IsTypeInList(Int_t type)
 
 void FairMCMatch::LoadInMCLists(TClonesArray* myLinkArray)
 {
-    for (int i = 0; i < myLinkArray->GetEntriesFast(); i++) {
+    for (int i = 0; i < myLinkArray->GetEntriesFast(); ++i) {
         FairMCEntry* myLink = static_cast<FairMCEntry*>(myLinkArray->At(i));
         if (IsTypeInList(static_cast<Int_t>(myLink->GetSource()))) {
             fList[static_cast<Int_t>(myLink->GetSource())]->SetEntry(*myLink);
