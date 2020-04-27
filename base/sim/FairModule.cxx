@@ -80,9 +80,9 @@ FairModule::FairModule(const char* Name, const char* title, Bool_t Active)
     , fActive(Active)
     , fNbOfSensitiveVol(0)
     , fVerboseLevel(0)
-    , flGeoPar(0)
+    , flGeoPar(nullptr)
     , fGeoSaved(kFALSE)
-    , fMC(0)
+    , fMC(nullptr)
 {
     if (!svList) {
         svList = new TRefArray();
@@ -101,9 +101,9 @@ FairModule::FairModule(const FairModule& rhs)
     , fActive(rhs.fActive)
     , fNbOfSensitiveVol(rhs.fNbOfSensitiveVol)
     , fVerboseLevel(rhs.fVerboseLevel)
-    , flGeoPar(0)
+    , flGeoPar(nullptr)
     , fGeoSaved(rhs.fGeoSaved)
-    , fMC(0)
+    , fMC(nullptr)
 {
     if (!svList) {
         svList = new TRefArray();
@@ -141,8 +141,9 @@ FairModule::FairModule()
     , fActive(kFALSE)
     , fNbOfSensitiveVol(0)
     , fVerboseLevel(0)
-    , flGeoPar(0)
+    , flGeoPar(nullptr)
     , fGeoSaved(kFALSE)
+    , fMC(nullptr)
 {}
 
 FairModule& FairModule::operator=(const FairModule& rhs)
@@ -162,8 +163,9 @@ FairModule& FairModule::operator=(const FairModule& rhs)
     fActive = rhs.fActive;
     fNbOfSensitiveVol = rhs.fNbOfSensitiveVol;
     fVerboseLevel = rhs.fVerboseLevel;
-    flGeoPar = 0;
+    flGeoPar = nullptr;
     fGeoSaved = rhs.fGeoSaved;
+    fMC = TVirtualMC::GetMC();
 
     // TO DO - add when we know what type is the elements of flGeoPar
     // flGeoPar=new TObjArray();
