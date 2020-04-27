@@ -21,23 +21,16 @@
 using namespace Pythia8;
 
 // -----   Default constructor   -------------------------------------------
-Pythia8Generator::Pythia8Generator()
-  , FairGenerator()
-  , fPythia()
-  , fRandomEngine(nullptr)
-  , fMom(400.)
-  , fHNL(0)
-  , fId(2212)
-  , fUseRandom1(kFALSE)
-  , fUseRandom3(kTRUE)
+Pythia8Generator::Pythia8Generator(), FairGenerator(), fPythia(), fRandomEngine(nullptr), fMom(400.), fHNL(0),
+    fId(2212), fUseRandom1(kFALSE), fUseRandom3(kTRUE)
 {
-/*
-    fUseRandom1 = kFALSE;
-    fUseRandom3 = kTRUE;
-    fId = 2212;   // proton
-    fMom = 400;   // proton
-    fHNL = 0;     // HNL  if set to !=0, for example 9900014, only track
-*/
+    /*
+        fUseRandom1 = kFALSE;
+        fUseRandom3 = kTRUE;
+        fId = 2212;   // proton
+        fMom = 400;   // proton
+        fHNL = 0;     // HNL  if set to !=0, for example 9900014, only track
+    */
 }
 // -------------------------------------------------------------------------
 
