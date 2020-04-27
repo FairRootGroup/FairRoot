@@ -15,13 +15,14 @@
 #include <TObject.h>   // for TObject
 #include <TString.h>   // for TString
 #include <iostream>    // for operator<<, ostream, cout
+#include <memory>      // for std::unique_ptr
 #include <set>         // for set
 #include <vector>      // for vector
 
 class FairMultiLinkedData_Interface : public TObject
 {
   public:
-    FairMultiLinkedData_Interface();   ///< Default constructor
+    FairMultiLinkedData_Interface() = default;   ///< Default constructor
     FairMultiLinkedData_Interface(FairMultiLinkedData& links, Bool_t persistanceCheck = kTRUE);   ///< Constructor
     FairMultiLinkedData_Interface(TString dataType,
                                   std::vector<Int_t> links,
@@ -39,7 +40,7 @@ class FairMultiLinkedData_Interface : public TObject
                                   Float_t mult = 1.0);   ///< Constructor
     FairMultiLinkedData_Interface(const FairMultiLinkedData_Interface& toCopy);
 
-    ~FairMultiLinkedData_Interface() { delete (fLink); };
+    ~FairMultiLinkedData_Interface() = default;
 
     FairMultiLinkedData_Interface& operator=(const FairMultiLinkedData_Interface& rhs);
 
@@ -48,7 +49,7 @@ class FairMultiLinkedData_Interface : public TObject
     FairLink GetLink(Int_t pos) const;                        ///< returns the FairLink at the given position
     FairMultiLinkedData GetLinksWithType(Int_t type) const;   ///< returns all FairLinks with the corresponding type
     FairLink GetEntryNr() const;
-    FairMultiLinkedData* GetPointerToLinks() const { return fLink; }
+    FairMultiLinkedData* GetPointerToLinks() const { return fLink.get(); }   ///< returns non-owning pointer
 
     std::vector<FairLink> GetSortedMCTracks();
 
@@ -56,7 +57,9 @@ class FairMultiLinkedData_Interface : public TObject
     void SetLink(FairLink link);                ///< Sets the Links with a single FairLink
     void SetInsertHistory(Bool_t val);
     void SetEntryNr(FairLink val);
-    void SetPointerToLinks(FairMultiLinkedData* links) { fLink = links; }
+    ///< @param[in] links transfers ownership
+    void SetPointerToLinks(FairMultiLinkedData* links) { fLink.reset(links); }
+    void SetPointerToLinks(std::unique_ptr<FairMultiLinkedData> links) { fLink = std::move(links); }
 
     void AddLinks(FairMultiLinkedData links,
                   Float_t mult = 1.0);   ///< Adds a List of FairLinks (FairMultiLinkedData_Interface) to fLinks
@@ -80,16 +83,11 @@ class FairMultiLinkedData_Interface : public TObject
     }   ///< Output
 
   protected:
-    FairMultiLinkedData* fLink;
-    FairMultiLinkedData* CreateFairMultiLinkedData();
+    std::unique_ptr<FairMultiLinkedData> fLink;
+    FairMultiLinkedData* CreateFairMultiLinkedData();   ///< returns non-owning pointer
 
-    ClassDef(FairMultiLinkedData_Interface, 5);
+    ClassDef(FairMultiLinkedData_Interface, 6);
 };
-
-inline FairMultiLinkedData_Interface::FairMultiLinkedData_Interface()
-    : TObject()
-    , fLink(nullptr)
-{}
 
 /**\fn virtual void FairMultiLinkedData_Interface::SetLinks(Int_t type, std::vector<Int_t> links)
  * \param type as Int_t gives one type of source data for all indices

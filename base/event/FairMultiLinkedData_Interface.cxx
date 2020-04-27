@@ -12,8 +12,6 @@
 ClassImp(FairMultiLinkedData_Interface);
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(FairMultiLinkedData& links, Bool_t)
-    : TObject()
-    , fLink(nullptr)
 {
     SetLinks(links);
 }
@@ -25,8 +23,6 @@ FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(TString dataType,
                                                              Bool_t persistanceCheck,
                                                              Bool_t bypass,
                                                              Float_t mult)
-    : TObject()
-    , fLink(nullptr)
 {
     FairMultiLinkedData data(dataType, links, fileId, evtId, persistanceCheck, bypass, mult);
     SetLinks(data);
@@ -39,8 +35,6 @@ FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(Int_t dataType,
                                                              Bool_t persistanceCheck,
                                                              Bool_t bypass,
                                                              Float_t mult)
-    : TObject()
-    , fLink(nullptr)
 {
     FairMultiLinkedData data(dataType, links, fileId, evtId, persistanceCheck, bypass, mult);
     SetLinks(data);
@@ -48,7 +42,6 @@ FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(Int_t dataType,
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(const FairMultiLinkedData_Interface& toCopy)
     : TObject(toCopy)
-    , fLink(nullptr)
 {
     if (toCopy.GetPointerToLinks() != 0) {
         SetInsertHistory(kFALSE);
@@ -72,12 +65,12 @@ FairMultiLinkedData_Interface& FairMultiLinkedData_Interface::operator=(const Fa
 
 FairMultiLinkedData* FairMultiLinkedData_Interface::CreateFairMultiLinkedData()
 {
-    if (FairRootManager::Instance() != 0) {
+    if (FairRootManager::Instance() != nullptr) {
         if (FairRootManager::Instance()->GetUseFairLinks()) {
-            if (fLink == 0) {
-                fLink = new FairMultiLinkedData();
+            if (fLink == nullptr) {
+                fLink.reset(new FairMultiLinkedData());
             }
-            return fLink;
+            return fLink.get();
         }
     }
     return 0;
