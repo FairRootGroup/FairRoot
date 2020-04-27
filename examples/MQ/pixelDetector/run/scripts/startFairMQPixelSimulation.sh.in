@@ -323,7 +323,7 @@ if [ "$COMMAND" == "static" ]; then
 
     wait $FILESINK_PID
 
-    OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b $OUTPUTFILE | tail -1)"
+    OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | @ROOT_EXECUTABLE@ -l -b $OUTPUTFILE | tail -1)"
     echo "There are $OUTPUT_EVENTS events in the output file."
 
     if (( $OUTPUT_EVENTS == $NOFSIMULS*$NOFEVENTS ));
