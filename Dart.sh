@@ -72,7 +72,6 @@ chip=$(uname -m | tr '[A-Z]' '[a-z]')
 
 # extract information about the system and the machine and set
 # environment variables used by ctest
-SYSTEM=$arch-$chip
 if test -z $CXX ; then
   if [ "$arch" == "darwin" ]; then
     COMPILER=$(clang --version | head -n 1 | cut -d' ' -f1,2,4 | tr -d ' ')
