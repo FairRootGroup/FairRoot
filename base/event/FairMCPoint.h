@@ -116,7 +116,7 @@ class FairMCPoint : public FairMultiLinkedData_Interface
     Int_t fDetectorID;          ///< Detector unique identifier
     Double32_t fX, fY, fZ;      ///< Position of hit [cm]
 
-    ClassDef(FairMCPoint, 5)
+    ClassDef(FairMCPoint, 5);
 };
 
 inline void FairMCPoint::SetMomentum(const TVector3& mom)

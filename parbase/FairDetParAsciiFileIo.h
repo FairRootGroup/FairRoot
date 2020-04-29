@@ -48,7 +48,7 @@ class FairDetParAsciiFileIo : public FairDetParIo
     FairDetParAsciiFileIo& operator=(const FairDetParAsciiFileIo&);
     FairDetParAsciiFileIo(const FairDetParAsciiFileIo&);
 
-    ClassDef(FairDetParAsciiFileIo, 0)   // Class for detector parameter I/O from ascii file
+    ClassDef(FairDetParAsciiFileIo, 0);   // Class for detector parameter I/O from ascii file
 };
 
 #endif /* !FAIRDETPARASCIIFILEIO_H */

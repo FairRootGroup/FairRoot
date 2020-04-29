@@ -75,7 +75,7 @@ class FairGeoParSet : public FairParGenericSet
     TObjArray* fGeoNodes;   //!
     /// Full Geometry
     TGeoManager* fGeom;
-    ClassDef(FairGeoParSet, 1)
+    ClassDef(FairGeoParSet, 1);
 
         private : FairGeoParSet(const FairGeoParSet& L);
     FairGeoParSet& operator=(const FairGeoParSet&) { return *this; }

@@ -22,7 +22,9 @@ class FairTutPropContFact : public FairContFact
     FairTutPropContFact();
     ~FairTutPropContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef(FairTutPropContFact, 0)   // Factory for all FairTutProp parameter containers
+
+    // Factory for all FairTutProp parameter containers
+    ClassDef(FairTutPropContFact, 0);
 };
 
 #endif /* FAIRTUTPROPCONTFACT_H_ */

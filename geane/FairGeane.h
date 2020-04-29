@@ -38,7 +38,7 @@ class FairGeane : public FairTask
 
     void SetField(FairField* field);
 
-    ClassDef(FairGeane, 1)
+    ClassDef(FairGeane, 1);
 
         protected : FairGeaneApplication* fApp;   //!
     const char* fName;                            //!

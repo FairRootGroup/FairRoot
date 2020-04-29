@@ -60,7 +60,7 @@ class REvent : public TObject
     Short_t subEvtControl[100];
     Int_t* pSubEvt[100];
 
-    ClassDef(REvent, 0)   // prototype for event
+    ClassDef(REvent, 0);
 };
 
 class MRevBuffer : public TObject
@@ -132,7 +132,7 @@ class MRevBuffer : public TObject
 
     void RevClose(TSocket* pSocket);   // input Socket ptr
 
-    ClassDef(MRevBuffer, 0)   // prototype for remote event buffer
+    ClassDef(MRevBuffer, 0);
 };
 
 #endif   // !MRevBuffer_H

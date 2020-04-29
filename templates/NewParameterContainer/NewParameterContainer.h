@@ -27,7 +27,7 @@ class NewParameterContainer : public FairParGenericSet
     NewParameterContainer(const NewParameterContainer&);
     NewParameterContainer& operator=(const NewParameterContainer&);
 
-    ClassDef(NewParameterContainer, 1)
+    ClassDef(NewParameterContainer, 1);
 };
 
 #endif

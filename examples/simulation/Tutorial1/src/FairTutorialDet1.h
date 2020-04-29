@@ -102,7 +102,7 @@ class FairTutorialDet1 : public FairDetector
     FairTutorialDet1(const FairTutorialDet1&);
     FairTutorialDet1& operator=(const FairTutorialDet1&);
 
-    ClassDef(FairTutorialDet1, 1)
+    ClassDef(FairTutorialDet1, 1);
 };
 
 #endif   // FAIRTUTORIALDET_H

@@ -37,7 +37,7 @@ class FairGeoShapes : public TObject
     Int_t readPoints(std::fstream*, FairGeoVolume*);
     Bool_t writePoints(std::fstream*, FairGeoVolume*);
     void printPoints(FairGeoVolume* volu);
-    ClassDef(FairGeoShapes, 0)   //
+    ClassDef(FairGeoShapes, 0);   //
 };
 
 #endif /* !FAIRGEOSHAPES_H */

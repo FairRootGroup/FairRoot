@@ -63,6 +63,6 @@ class FairDoubleHit : public FairMultiLinkedData
     virtual Double_t dy_out() = 0;
     virtual Double_t dz_out() = 0;
 
-    ClassDef(FairDoubleHit, 1)   // FAIRDoubleHit
+    ClassDef(FairDoubleHit, 1);
 };
 #endif   // FAIRDOUBLEHIT_H

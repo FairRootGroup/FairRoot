@@ -50,7 +50,7 @@ class FairMbsStreamSource : public FairMbsSource
     FairMbsStreamSource& operator=(const FairMbsStreamSource&);
 
   public:
-    ClassDef(FairMbsStreamSource, 0)
+    ClassDef(FairMbsStreamSource, 0);
 };
 
 #endif

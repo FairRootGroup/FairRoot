@@ -42,7 +42,7 @@ class FairFieldFactory
     FairFieldFactory* fCreator;
     static FairFieldFactory* fgRinstance;
 
-    ClassDef(FairFieldFactory, 1)
+    ClassDef(FairFieldFactory, 1);
 
         private : FairFieldFactory(const FairFieldFactory& M);
     FairFieldFactory& operator=(const FairFieldFactory&) { return *this; }

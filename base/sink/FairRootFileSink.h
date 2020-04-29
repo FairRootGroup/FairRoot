@@ -93,7 +93,7 @@ class FairRootFileSink : public FairSink
     /**File Header*/
     FairFileHeader* fFileHeader;   //!
 
-    ClassDef(FairRootFileSink, 1)
+    ClassDef(FairRootFileSink, 1);
 };
 
 #endif /* defined(__FAIRROOT__FairRootFileSink__) */

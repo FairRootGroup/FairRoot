@@ -302,7 +302,7 @@ class FairMCApplication : public TVirtualMCApplication
     /** Current state */
     FairMCApplicationState fState;   //!
 
-    ClassDef(FairMCApplication, 4)   // Interface to MonteCarlo application
+    ClassDef(FairMCApplication, 4);
 
         private
         :

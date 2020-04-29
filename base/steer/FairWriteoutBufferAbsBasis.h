@@ -25,7 +25,7 @@ class FairWriteoutBufferAbsBasis : public TObject
     virtual void WriteOutData(double time) = 0;
     virtual void WriteOutAllData() = 0;
 
-    ClassDef(FairWriteoutBufferAbsBasis, 1)
+    ClassDef(FairWriteoutBufferAbsBasis, 1);
 };
 
 #endif /* FAIRWRITEOUTBUFFERABSBASIS_H_ */

@@ -108,7 +108,7 @@ class FairRunOnline : public FairRun
 
     virtual void Fill();
 
-    ClassDef(FairRunOnline, 0)
+    ClassDef(FairRunOnline, 0);
 };
 
 #endif   // FAIRRUNONLINE_H

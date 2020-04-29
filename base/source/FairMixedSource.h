@@ -228,7 +228,7 @@ class FairMixedSource : public FairSource
     FairMixedSource& operator=(const FairMixedSource&);
 
   public:
-    ClassDef(FairMixedSource, 0)
+    ClassDef(FairMixedSource, 0);
 };
 
 #endif /* defined(__FAIRROOT__FairMixedSource__) */

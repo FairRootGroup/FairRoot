@@ -28,7 +28,7 @@ class FairGeoAssembly : public FairGeoBasicShape
     Bool_t writePoints(std::fstream*, FairGeoVolume*);
     void printPoints(FairGeoVolume* volu);
 
-    ClassDef(FairGeoAssembly, 0)   // class for geometry shape ASSEMBLY
+    ClassDef(FairGeoAssembly, 0); // class for geometry shape ASSEMBLY
 };
 
 #endif /* !FAIRGEOASSEMBLY_H */

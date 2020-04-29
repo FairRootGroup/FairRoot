@@ -38,7 +38,7 @@ class FairTestDetectorGeoPar : public FairParGenericSet
     FairTestDetectorGeoPar(const FairTestDetectorGeoPar&);
     FairTestDetectorGeoPar& operator=(const FairTestDetectorGeoPar&);
 
-    ClassDef(FairTestDetectorGeoPar, 1)
+    ClassDef(FairTestDetectorGeoPar, 1);
 };
 
 #endif /* FAIRTESTDETECTORGEOPAR_H_ */

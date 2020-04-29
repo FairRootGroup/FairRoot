@@ -34,7 +34,7 @@ class FairGeoBuilder : public TNamed
     virtual void finalize() {}
     inline const Int_t& GetNMedia() const { return nMed; }
     inline void SetNMedia(const Int_t& nmed) { nMed = nmed; }
-    ClassDef(FairGeoBuilder, 0)
+    ClassDef(FairGeoBuilder, 0);
 };
 
 #endif /* !FAIRGEOBUILDER_H */

@@ -110,6 +110,6 @@ class FairDetector : public FairModule
     Int_t fDetId;          // Detector Id has to be set from ctr.
     FairLogger* fLogger;   //! /// FairLogger
 
-    ClassDef(FairDetector, 1)
+    ClassDef(FairDetector, 1);
 };
 #endif   // FAIRDETECTOR_H

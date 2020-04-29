@@ -23,7 +23,9 @@ class FairTestDetectorContFact : public FairContFact
     FairTestDetectorContFact();
     ~FairTestDetectorContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef(FairTestDetectorContFact, 0)   // Factory for all FairTestDetector parameter containers
+  
+    // Factory for all FairTestDetector parameter containers
+    ClassDef(FairTestDetectorContFact, 0);
 };
 
 #endif /* FAIRTESTDETECTORCONTFACT_H_ */

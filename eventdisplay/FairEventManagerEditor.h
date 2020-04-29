@@ -53,7 +53,8 @@ class FairEventManagerEditor : public TGedFrame
     virtual void MinEnergy();
     virtual void Init();
 
-    ClassDef(FairEventManagerEditor, 0);   // Specialization of TGedEditor for proper update propagation to TEveManager.
+    // Specialization of TGedEditor for proper update propagation to TEveManager.
+    ClassDef(FairEventManagerEditor, 0);
 };
 
 #endif

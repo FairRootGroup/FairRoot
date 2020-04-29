@@ -188,7 +188,7 @@ class FairRunAna : public FairRun
     /** Flag for Event Header Persistency */
     Bool_t fStoreEventHeader;   //!
 
-    ClassDef(FairRunAna, 6)
+    ClassDef(FairRunAna, 6);
 };
 
 #endif   // FAIRRUNANA_H

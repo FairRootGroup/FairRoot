@@ -74,7 +74,7 @@ class FairBaseMCGenerator : public FairGenerator
     Double_t fPDGMass;
     Double_t fVx, fVy, fVz;
     Double_t fVex, fVey, fVez;
-    ClassDef(FairBaseMCGenerator, 1)
+    ClassDef(FairBaseMCGenerator, 1);
 };
 
 #endif /* FAIR_BASEMCGENERATOR_H_ */

@@ -29,7 +29,7 @@ class MyPassiveContFact : public FairContFact
     MyPassiveContFact();
     ~MyPassiveContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef(MyPassiveContFact, 0)   // Factory for all Passive parameter containers
+    ClassDef(MyPassiveContFact, 0);   // Factory for all Passive parameter containers
 };
 
 #endif /* !PNDPASSIVECONTFACT_H */

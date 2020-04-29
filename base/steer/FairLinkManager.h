@@ -42,7 +42,7 @@ class FairLinkManager : public TObject
 
     FairLogger* fLogger;   //!
 
-    ClassDef(FairLinkManager, 1)   // Root IO manager
+    ClassDef(FairLinkManager, 1);
 };
 
 #endif   // FAIR_ROOT_MANAGER_H

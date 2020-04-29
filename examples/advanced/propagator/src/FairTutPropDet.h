@@ -92,7 +92,7 @@ class FairTutPropDet : public FairDetector
     FairTutPropDet(const FairTutPropDet&);
     FairTutPropDet& operator=(const FairTutPropDet&);
 
-    ClassDef(FairTutPropDet, 1)
+    ClassDef(FairTutPropDet, 1);
 };
 
 #endif   // FAIRTUTPROPDET_H

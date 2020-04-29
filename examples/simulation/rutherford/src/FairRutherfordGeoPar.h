@@ -38,7 +38,7 @@ class FairRutherfordGeoPar : public FairParGenericSet
     FairRutherfordGeoPar(const FairRutherfordGeoPar&);
     FairRutherfordGeoPar& operator=(const FairRutherfordGeoPar&);
 
-    ClassDef(FairRutherfordGeoPar, 1)
+    ClassDef(FairRutherfordGeoPar, 1);
 };
 
 #endif

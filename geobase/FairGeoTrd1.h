@@ -28,7 +28,7 @@ class FairGeoTrd1 : public FairGeoBasicShape
     TArrayD* calcVoluParam(FairGeoVolume*);
     void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&);
 
-    ClassDef(FairGeoTrd1, 0)   // class for geometry shape TRD1
+    ClassDef(FairGeoTrd1, 0);   // class for geometry shape TRD1
 };
 
 #endif /* !FAIRGEOTRD1_H */

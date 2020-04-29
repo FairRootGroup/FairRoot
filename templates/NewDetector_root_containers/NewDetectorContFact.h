@@ -21,7 +21,7 @@ class NewDetectorContFact : public FairContFact
     NewDetectorContFact();
     ~NewDetectorContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef(NewDetectorContFact, 0)   // Factory for all NewDetector parameter containers
+    ClassDef(NewDetectorContFact, 0);   // Factory for all NewDetector parameter containers
 };
 
 #endif

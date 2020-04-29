@@ -48,7 +48,7 @@ class FairGeoMedia : public TNamed
     FairGeoMedia(const FairGeoMedia&);
     FairGeoMedia& operator=(const FairGeoMedia&);
 
-    ClassDef(FairGeoMedia, 0)   //
+    ClassDef(FairGeoMedia, 0);
 };
 
 #endif /* !FAIRGEOMEDIA_H */

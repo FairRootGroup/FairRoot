@@ -185,7 +185,7 @@ class FairGenericStack : public TVirtualMCStack
     Int_t fFSFirstSecondary;                         //!
     Int_t fFSNofSecondaries;                         //!
 
-    ClassDef(FairGenericStack, 1)
+    ClassDef(FairGenericStack, 1);
 };
 
 template<typename T>

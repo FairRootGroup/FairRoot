@@ -76,7 +76,7 @@ class FairTutorialDet4GeoHandler : public TObject
     FairTutorialDet4GeoHandler(const FairTutorialDet4GeoHandler&);
     FairTutorialDet4GeoHandler operator=(const FairTutorialDet4GeoHandler&);
 
-    ClassDef(FairTutorialDet4GeoHandler, 1)
+    ClassDef(FairTutorialDet4GeoHandler, 1);
 };
 
 #endif   // FAIRTUTORIALDETGEOHANDLER_H

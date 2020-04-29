@@ -40,7 +40,7 @@ class FairMbsSource : public FairOnlineSource
                   Short_t subCrate,
                   Short_t control);
 
-    ClassDef(FairMbsSource, 0)
+    ClassDef(FairMbsSource, 0);
 };
 
 #endif

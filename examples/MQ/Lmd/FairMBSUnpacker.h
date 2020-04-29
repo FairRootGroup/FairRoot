@@ -60,7 +60,7 @@ class FairMBSUnpacker : public FairUnpack
 
   public:
     // Class definition
-    ClassDef(FairMBSUnpacker, 1)
+    ClassDef(FairMBSUnpacker, 1);
 };
 
 #endif

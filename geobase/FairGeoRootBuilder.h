@@ -38,7 +38,7 @@ class FairGeoRootBuilder : public FairGeoBuilder
     Int_t createMedium(FairGeoMedium*);
     void finalize();
     void checkOverlaps(Double_t ovlp = 0.0001);
-    ClassDef(FairGeoRootBuilder, 0)   //
+    ClassDef(FairGeoRootBuilder, 0);   //
 };
 
 #endif /* !FAIRGEOROOTBUILDER_H */

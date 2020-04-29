@@ -223,7 +223,7 @@ class FairRunSim : public FairRun
     bool fUseSimSetupFunction = false;
     FairGenericVMCConfig* fSimulationConfig;   //!                 /** Simulation configuration */
 
-    ClassDef(FairRunSim, 2)
+    ClassDef(FairRunSim, 2);
 };
 
 #endif   // FAIRRUNSIM_H
