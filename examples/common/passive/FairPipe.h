@@ -25,7 +25,7 @@ class FairPipe : public FairModule
 
   private:
     FairPipe(const FairPipe& rhs);
-    ClassDef(FairPipe, 1); // PNDPIPE
+    ClassDef(FairPipe, 1);   // PNDPIPE
 };
 
 #endif   // PIPE_H

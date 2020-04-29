@@ -40,10 +40,11 @@ class FairGeane : public FairTask
 
     ClassDef(FairGeane, 1);
 
-        protected : FairGeaneApplication* fApp;   //!
-    const char* fName;                            //!
-    TString fUserConfig;                          //!
-    TString fUserCuts;                            //!
+  protected:
+    FairGeaneApplication* fApp;   //!
+    const char* fName;            //!
+    TString fUserConfig;          //!
+    TString fUserCuts;            //!
 
   private:
     FairGeane(const FairGeane&);

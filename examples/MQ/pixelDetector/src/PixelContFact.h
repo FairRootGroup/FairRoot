@@ -24,7 +24,7 @@ class PixelContFact : public FairContFact
     PixelContFact();
     ~PixelContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef(PixelContFact, 0); // Factory for all Pixel parameter containers
+    ClassDef(PixelContFact, 0);   // Factory for all Pixel parameter containers
 };
 
 #endif

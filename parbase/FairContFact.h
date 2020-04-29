@@ -63,10 +63,11 @@ class FairContFact : public TNamed
         return (static_cast<FairContainer*>(containers->FindObject(name)))->getActualContext();
     }
     /** Fair Logger */
-    FairLogger* fLogger;        //!
+    FairLogger* fLogger;         //!
     ClassDef(FairContFact, 0);   // base class of all factories for parameter containers
 
-        private : FairContFact(const FairContFact&);
+  private:
+    FairContFact(const FairContFact&);
     FairContFact& operator=(const FairContFact&);
 };
 

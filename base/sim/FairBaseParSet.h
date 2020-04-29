@@ -112,7 +112,8 @@ class FairBaseParSet : public FairParGenericSet
 
     ClassDef(FairBaseParSet, 6);
 
-        private : FairBaseParSet(const FairBaseParSet& L);
+  private:
+    FairBaseParSet(const FairBaseParSet& L);
     FairBaseParSet& operator=(const FairBaseParSet&) { return *this; }
 };
 

@@ -77,7 +77,8 @@ class FairGeoParSet : public FairParGenericSet
     TGeoManager* fGeom;
     ClassDef(FairGeoParSet, 1);
 
-        private : FairGeoParSet(const FairGeoParSet& L);
+  private:
+    FairGeoParSet(const FairGeoParSet& L);
     FairGeoParSet& operator=(const FairGeoParSet&) { return *this; }
 };
 
