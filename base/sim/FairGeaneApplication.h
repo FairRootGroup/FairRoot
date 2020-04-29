@@ -77,7 +77,9 @@ class FairGeaneApplication : public TVirtualMCApplication
 
     // Interface to MonteCarlo application
     ClassDef(FairGeaneApplication, 1);
-        private : FairGeaneApplication(const FairGeaneApplication&);
+
+  private:
+    FairGeaneApplication(const FairGeaneApplication&);
     FairGeaneApplication& operator=(const FairGeaneApplication&);
 };
 

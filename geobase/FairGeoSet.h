@@ -101,7 +101,8 @@ class FairGeoSet : public TNamed
     void compare(FairGeoSet&);
     ClassDef(FairGeoSet, 0);   //
 
-        private : FairGeoSet(const FairGeoSet&);
+  private:
+    FairGeoSet(const FairGeoSet&);
     FairGeoSet& operator=(const FairGeoSet&);
 };
 

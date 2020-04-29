@@ -24,7 +24,7 @@ class FairPassiveContFact : public FairContFact
     ~FairPassiveContFact() {}
     FairParSet* createContainer(FairContainer*);
 
-    ClassDef(FairPassiveContFact, 0); // Factory for all Passive parameter containers
+    ClassDef(FairPassiveContFact, 0);   // Factory for all Passive parameter containers
 };
 
 #endif /* !PNDPASSIVECONTFACT_H */

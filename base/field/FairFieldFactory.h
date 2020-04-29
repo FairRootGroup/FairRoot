@@ -44,7 +44,8 @@ class FairFieldFactory
 
     ClassDef(FairFieldFactory, 1);
 
-        private : FairFieldFactory(const FairFieldFactory& M);
+  private:
+    FairFieldFactory(const FairFieldFactory& M);
     FairFieldFactory& operator=(const FairFieldFactory&) { return *this; }
 };
 
