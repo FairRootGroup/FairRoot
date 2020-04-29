@@ -7,22 +7,6 @@ if [ -f @splitmc_file_location@/MQ.simulation_TGeant3.data.root ]; then
     rm -rf @splitmc_file_location@/MQ.simulation_TGeant3.data.root
 fi
 
-FORCEKILL=true
-CHECK_BEFORE="$(ps -fea | grep "\-\-id pixSplit" | grep -v grep)"
-if [ -n "$CHECK_BEFORE" ];
-then
-    echo "some example/MQ/pixelSimSplit programs are still running:"
-    echo $CHECK_BEFORE
-    echo "quit them before proceeding."
-    if [ "$FORCEKILL" == "true" ];
-    then
-        echo "trying to kill..."
-        ps -fea | grep "\-\-id pixSplit" | grep -v grep | awk '{print $2}' | xargs kill -9
-    else
-        exit
-    fi
-fi
-
 INPUT_EVENTS="100"
 
 GENERATOR="@splitmc_bin_location@/pixel-sim-gen --id pixSplit-gen --channel-config name=primariesChannel,type=push,method=bind,rateLogging=1,address=tcp://*:5901 --running-mode pp --severity DEBUG --nof-events $INPUT_EVENTS --chunk-size 10 --ack-channel ack --channel-config name=ack,type=pull,method=bind,rateLogging=1,address=tcp://*:5905 --control static --color false"
@@ -53,31 +37,12 @@ FILESINK_PID=$!
 $PARMQSERVER &> par_log.dat &
 PARMQSERVER_PID=$!
 
+# ps -p $$ --ppid $$ --forest
+
 echo "Wait for generator to finish"
-RUN_STRING="Running"
-MAXRUNNINGTIME=60
+wait $GENERATOR_PID
 
-for ((isec = 0 ; isec < MAXRUNNINGTIME ; isec++ ));
-do
-    sleep 1
-#    echo "$isec"
-    CHECK_SAMPLER="$(kill -0 $GENERATOR_PID &> /dev/null && echo $RUN_STRING)";
-    if [ "$CHECK_SAMPLER" != "$RUN_STRING" ];
-    then
-	echo "Generator finished after $isec seconds."
-	break;
-    fi
-done
-
-echo "Sleep 1 second"
 sleep 1
-
-CHECK_SAMPLER="$(kill -0 $GENERATOR_PID &> /dev/null && echo $RUN_STRING)";
-if [ "$CHECK_SAMPLER" == "$RUN_STRING" ];
-then
-    echo "Killing running generator"
-    kill $GENERATOR_PID
-fi
 
 echo "Kill other devices"
 kill $TRANSPORTER_PID
