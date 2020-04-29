@@ -5,8 +5,8 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#ifndef PNDPASSIVECONTFACT_H
-#define PNDPASSIVECONTFACT_H
+#ifndef FAIRPASSIVECONTFACT_H
+#define FAIRPASSIVECONTFACT_H
 
 #include "FairContFact.h"   // for FairContFact, etc
 
@@ -27,4 +27,4 @@ class FairPassiveContFact : public FairContFact
     ClassDef(FairPassiveContFact, 0);   // Factory for all Passive parameter containers
 };
 
-#endif /* !PNDPASSIVECONTFACT_H */
+#endif /* !FAIRPASSIVECONTFACT_H */

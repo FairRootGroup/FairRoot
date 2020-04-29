@@ -5,8 +5,8 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#ifndef PNDGEOPIPE_H
-#define PNDGEOPIPE_H
+#ifndef FAIRGEOPIPE_H
+#define FAIRGEOPIPE_H
 
 #include "FairGeoSet.h"   // for FairGeoSet
 
@@ -29,4 +29,4 @@ class FairGeoPipe : public FairGeoSet
     ClassDef(FairGeoPipe, 0);   // Class for geometry of beam pipe
 };
 
-#endif /* !PNDGEOPIPE_H */
+#endif /* !FAIRGEOPIPE_H */

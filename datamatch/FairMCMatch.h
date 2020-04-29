@@ -134,4 +134,4 @@ class FairMCMatch : public TNamed
     ClassDef(FairMCMatch, 1);
 };
 
-#endif /* PNDMCMATCH_H_ */
+#endif /* FAIRMCMATCH_H_ */
