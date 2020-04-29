@@ -75,7 +75,8 @@ class FairGeaneApplication : public TVirtualMCApplication
     Bool_t fDebug;            //!
     TLorentzVector fTrkPos;   //!
 
-    ClassDef(FairGeaneApplication, 1)   // Interface to MonteCarlo application
+    // Interface to MonteCarlo application
+    ClassDef(FairGeaneApplication, 1);
         private : FairGeaneApplication(const FairGeaneApplication&);
     FairGeaneApplication& operator=(const FairGeaneApplication&);
 };

@@ -22,7 +22,7 @@ class NewDetectorGeo : public FairGeoSet
     const char* getModuleName(Int_t);
     const char* getEleName(Int_t);
     inline Int_t getModNumInMod(const TString&);
-    ClassDef(NewDetectorGeo, 1)
+    ClassDef(NewDetectorGeo, 1);
 };
 
 inline Int_t NewDetectorGeo::getModNumInMod(const TString& name)

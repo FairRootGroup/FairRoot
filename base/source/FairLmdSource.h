@@ -60,7 +60,7 @@ class FairLmdSource : public FairMbsSource
 
     FairLmdSource& operator=(const FairLmdSource&);
 
-    ClassDef(FairLmdSource, 0)
+    ClassDef(FairLmdSource, 0);
 };
 
 #endif

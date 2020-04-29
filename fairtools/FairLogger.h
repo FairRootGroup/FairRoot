@@ -150,7 +150,7 @@ class FairLogger
     std::vector<char> fDynamicBuffer;
     char* fBufferPointer;
 
-    ClassDef(FairLogger, 4)
+    ClassDef(FairLogger, 4);
 };
 
 #define gLogger (FairLogger::GetLogger())

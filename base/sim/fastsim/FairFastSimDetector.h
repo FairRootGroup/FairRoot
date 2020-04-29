@@ -48,7 +48,7 @@ class FairFastSimDetector : public FairDetector
 
     FairFastSimDetector& operator=(const FairFastSimDetector&);
 
-    ClassDef(FairFastSimDetector, 1)
+    ClassDef(FairFastSimDetector, 1);
 };
 
 #endif   //! FAIRFASTSIMDETECTOR_H

@@ -52,7 +52,7 @@ class FairMBSTask : public FairTask
     FairMBSTask& operator=(const FairMBSTask&);
 
   public:
-    ClassDef(FairMBSTask, 1)
+    ClassDef(FairMBSTask, 1);
 };
 
 #endif

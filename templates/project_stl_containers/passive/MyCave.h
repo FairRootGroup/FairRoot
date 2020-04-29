@@ -34,7 +34,7 @@ class MyCave : public FairModule
     MyCave(const MyCave&);
     MyCave& operator=(const MyCave&);
 
-    ClassDef(MyCave, 1)   // PNDCaveSD
+    ClassDef(MyCave, 1);   // PNDCaveSD
 };
 
 #endif   // Cave_H

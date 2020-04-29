@@ -44,7 +44,7 @@ class FairVolumeList : public TObject
     Int_t getEntries() { return fData->GetEntries(); }
     FairVolume* At(Int_t pos) { return (dynamic_cast<FairVolume*>(fData->At(pos))); }
 
-    ClassDef(FairVolumeList, 1)   // Volume List
+    ClassDef(FairVolumeList, 1);
 };
 
 #endif   // FAIR_VOLUMELIST_H

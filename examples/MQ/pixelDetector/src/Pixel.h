@@ -96,7 +96,7 @@ class Pixel : public FairDetector
     Pixel(const Pixel&);
     Pixel& operator=(const Pixel&);
 
-    ClassDef(Pixel, 1)
+    ClassDef(Pixel, 1);
 };
 
 #endif   // PIXEL_H

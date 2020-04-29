@@ -33,7 +33,7 @@ class MyMagnet : public FairModule
     MyMagnet(const MyMagnet&);
     MyMagnet& operator=(const MyMagnet&);
 
-    ClassDef(MyMagnet, 1)
+    ClassDef(MyMagnet, 1);
 };
 
 #endif   // MAGNET_H

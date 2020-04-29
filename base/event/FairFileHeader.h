@@ -68,7 +68,7 @@ class FairFileHeader : public TNamed
     FairFileHeader(const FairFileHeader&);
     FairFileHeader& operator=(const FairFileHeader&);
 
-    ClassDef(FairFileHeader, 2)
+    ClassDef(FairFileHeader, 2);
 };
 
 #endif

@@ -45,7 +45,7 @@ class FairTutorialDet2Point : public FairMCPoint
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
 
-    ClassDef(FairTutorialDet2Point, 1)
+    ClassDef(FairTutorialDet2Point, 1);
 };
 
 // a custom class holding some data

@@ -36,7 +36,7 @@ class FairTutPropGeoPar : public FairParGenericSet
     FairTutPropGeoPar(const FairTutPropGeoPar&);
     FairTutPropGeoPar& operator=(const FairTutPropGeoPar&);
 
-    ClassDef(FairTutPropGeoPar, 1)
+    ClassDef(FairTutPropGeoPar, 1);
 };
 
 #endif   // FAIRTUTPROPGEOPAR_H

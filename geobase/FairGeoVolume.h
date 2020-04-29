@@ -64,7 +64,7 @@ class FairGeoVolume : public TNamed
     Int_t getMCid() { return fgMCid; }
     void setMCid(Int_t MCid) { fgMCid = MCid; }
 
-    ClassDef(FairGeoVolume, 1)   //
+    ClassDef(FairGeoVolume, 1);   //
 };
 
 // -------------------- inlines --------------------------

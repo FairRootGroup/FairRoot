@@ -99,7 +99,7 @@ class FairGeoSet : public TNamed
     virtual void print();
     virtual Bool_t create(FairGeoBuilder*);
     void compare(FairGeoSet&);
-    ClassDef(FairGeoSet, 0)   //
+    ClassDef(FairGeoSet, 0);   //
 
         private : FairGeoSet(const FairGeoSet&);
     FairGeoSet& operator=(const FairGeoSet&);

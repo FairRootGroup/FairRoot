@@ -26,7 +26,7 @@ class PixelGeo : public FairGeoSet
     const char* getEleName(Int_t);
     inline Int_t getModNumInMod(const TString&);
 
-    ClassDef(PixelGeo, 1)
+    ClassDef(PixelGeo, 1);
 };
 
 inline Int_t PixelGeo::getModNumInMod(const TString& name)

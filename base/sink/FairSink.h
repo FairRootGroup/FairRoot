@@ -89,7 +89,7 @@ class FairSink
     std::map<std::string, std::unique_ptr<TypeAddressPair const>> fPersistentBranchesMap;   //!
 
   public:
-    ClassDef(FairSink, 1)
+    ClassDef(FairSink, 1);
 };
 
 #endif

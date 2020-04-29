@@ -36,7 +36,8 @@ class FairMCTracksEditor : public TGedFrame
 
     virtual void SetModel(TObject* obj);
 
-    ClassDef(FairMCTracksEditor, 0);   // Specialization of TGedEditor for proper update propagation to TEveManager.
+    // Specialization of TGedEditor for proper update propagation to TEveManager.
+    ClassDef(FairMCTracksEditor, 0);
 };
 
 #endif

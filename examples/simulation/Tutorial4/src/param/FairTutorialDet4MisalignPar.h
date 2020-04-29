@@ -47,7 +47,7 @@ class FairTutorialDet4MisalignPar : public FairParGenericSet
     FairTutorialDet4MisalignPar(const FairTutorialDet4MisalignPar&);
     FairTutorialDet4MisalignPar& operator=(const FairTutorialDet4MisalignPar&);
 
-    ClassDef(FairTutorialDet4MisalignPar, 1)
+    ClassDef(FairTutorialDet4MisalignPar, 1);
 };
 
 #endif

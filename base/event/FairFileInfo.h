@@ -50,7 +50,7 @@ class FairFileInfo : public TNamed
     FairFileInfo(const FairFileInfo&);
     FairFileInfo& operator=(const FairFileInfo&);
 
-    ClassDef(FairFileInfo, 1)
+    ClassDef(FairFileInfo, 1);
 };
 
 #endif   // FAIRFILEINFO_H

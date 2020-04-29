@@ -418,7 +418,7 @@ class FairRootManager : public TObject
     // data members
     Int_t fId;   // This manager ID
 
-    ClassDef(FairRootManager, 12)   // Root IO manager
+    ClassDef(FairRootManager, 12);
 };
 
 // FIXME: move to source since we can make it non-template dependent

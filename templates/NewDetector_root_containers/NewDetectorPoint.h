@@ -48,7 +48,7 @@ class NewDetectorPoint : public FairMCPoint
     NewDetectorPoint(const NewDetectorPoint& point);
     NewDetectorPoint operator=(const NewDetectorPoint& point);
 
-    ClassDef(NewDetectorPoint, 1)
+    ClassDef(NewDetectorPoint, 1);
 };
 
 #endif

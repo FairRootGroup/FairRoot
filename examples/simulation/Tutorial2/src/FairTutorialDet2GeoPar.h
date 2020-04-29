@@ -38,7 +38,7 @@ class FairTutorialDet2GeoPar : public FairParGenericSet
     FairTutorialDet2GeoPar(const FairTutorialDet2GeoPar&);
     FairTutorialDet2GeoPar& operator=(const FairTutorialDet2GeoPar&);
 
-    ClassDef(FairTutorialDet2GeoPar, 1)
+    ClassDef(FairTutorialDet2GeoPar, 1);
 };
 
 #endif /* FAIRTUTORIALDETGEOPAR_H */

@@ -52,7 +52,7 @@ class FairGeoAsciiIo : public FairGeoIo
   private:
     FairGeoAsciiIo(const FairGeoAsciiIo&);
     FairGeoAsciiIo& operator=(const FairGeoAsciiIo&);
-    ClassDef(FairGeoAsciiIo, 0)   // Class for geometry I/O from ASCII file
+    ClassDef(FairGeoAsciiIo, 0); // Class for geometry I/O from ASCII file
 };
 
 #endif /* !FAIRGEOASCIIIO_H */

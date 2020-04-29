@@ -36,7 +36,7 @@ class NewDetectorGeoPar : public FairParGenericSet
     NewDetectorGeoPar(const NewDetectorGeoPar&);
     NewDetectorGeoPar& operator=(const NewDetectorGeoPar&);
 
-    ClassDef(NewDetectorGeoPar, 1)
+    ClassDef(NewDetectorGeoPar, 1);
 };
 
 #endif

@@ -31,7 +31,7 @@ class FairGeoEltu : public FairGeoBasicShape
     Int_t readPoints(std::fstream*, FairGeoVolume*);
     Bool_t writePoints(std::fstream*, FairGeoVolume*);
     void printPoints(FairGeoVolume* volu);
-    ClassDef(FairGeoEltu, 0)   //
+    ClassDef(FairGeoEltu, 0);
 };
 
 #endif /* !FAIRGEOELTU_H */

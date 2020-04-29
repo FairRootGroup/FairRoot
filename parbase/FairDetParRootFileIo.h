@@ -37,7 +37,7 @@ class FairDetParRootFileIo : public FairDetParIo
     FairDetParRootFileIo(const FairDetParRootFileIo&);
     FairDetParRootFileIo& operator=(const FairDetParRootFileIo&);
 
-    ClassDef(FairDetParRootFileIo, 0)   // detector base class for parameter I/O from ROOT file
+    ClassDef(FairDetParRootFileIo, 0);   // detector base class for parameter I/O from ROOT file
 };
 
 #endif /* !FAIRDETPARROOTFILEIO_H */

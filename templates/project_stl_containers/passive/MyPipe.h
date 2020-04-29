@@ -31,7 +31,7 @@ class MyPipe : public FairModule
     MyPipe(const MyPipe&);
     MyPipe& operator=(const MyPipe&);
 
-    ClassDef(MyPipe, 1)   // MyPIPE
+    ClassDef(MyPipe, 1);   // MyPIPE
 };
 
 #endif   // PIPE_H

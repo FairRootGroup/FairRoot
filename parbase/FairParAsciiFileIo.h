@@ -59,7 +59,7 @@ class FairParAsciiFileIo : public FairParIo
     FairParAsciiFileIo(const FairParAsciiFileIo&);
     FairParAsciiFileIo& operator=(const FairParAsciiFileIo&);
 
-    ClassDef(FairParAsciiFileIo, 0)   // Parameter I/O from ASCII files
+    ClassDef(FairParAsciiFileIo, 0);   // Parameter I/O from ASCII files
 };
 
 #endif /* !FAIRPARASCIIFILEIO_H */

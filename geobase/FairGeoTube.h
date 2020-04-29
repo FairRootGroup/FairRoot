@@ -27,7 +27,7 @@ class FairGeoTube : public FairGeoBasicShape
     Int_t readPoints(std::fstream*, FairGeoVolume*);
     Bool_t writePoints(std::fstream*, FairGeoVolume*);
     void printPoints(FairGeoVolume* volu);
-    ClassDef(FairGeoTube, 0)   // class for geometry shape TUBE
+    ClassDef(FairGeoTube, 0);   // class for geometry shape TUBE
 };
 
 #endif /* !FAIRGEOTUBE_H */

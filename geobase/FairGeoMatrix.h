@@ -28,7 +28,7 @@ class FairGeoMatrix : public TObject
     Double_t det(void);
     FairGeoVector operator*(FairGeoVector& v);
     FairGeoMatrix& operator/=(Double_t d);
-    ClassDef(FairGeoMatrix, 0)
+    ClassDef(FairGeoMatrix, 0);
 };
 
 #endif

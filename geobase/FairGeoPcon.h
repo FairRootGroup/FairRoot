@@ -31,7 +31,7 @@ class FairGeoPcon : public FairGeoBasicShape
     Int_t readPoints(std::fstream*, FairGeoVolume*);
     Bool_t writePoints(std::fstream*, FairGeoVolume*);
     void printPoints(FairGeoVolume* volu);
-    ClassDef(FairGeoPcon, 0)   //
+    ClassDef(FairGeoPcon, 0);   //
 };
 
 #endif /* !FAIRGEOPCON_H */
