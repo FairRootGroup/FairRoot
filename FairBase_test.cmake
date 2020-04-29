@@ -1,8 +1,8 @@
  ################################################################################
  #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 Set(CTEST_SOURCE_DIRECTORY $ENV{SOURCEDIR})
@@ -30,7 +30,7 @@ EndIf()
 
 Set(EXTRA_FLAGS $ENV{EXTRA_FLAGS})
 If(EXTRA_FLAGS)
-  Set(configure_options "${configure_options};${EXTRA_FLAGS}") 
+  Set(configure_options "${configure_options};${EXTRA_FLAGS}")
 EndIf()
 
 Set(configure_options "${configure_options};-DCMAKE_INSTALL_PREFIX=${CTEST_BINARY_DIRECTORY}/install")
@@ -80,8 +80,9 @@ Ctest_Build(BUILD "${CTEST_BINARY_DIRECTORY}")
 
 execute_process(COMMAND ${BUILD_COMMAND} install -j$ENV{number_of_processors} WORKING_DIRECTORY ${CTEST_BINARY_DIRECTORY})
 
-Ctest_Test(BUILD "${CTEST_BINARY_DIRECTORY}" 
-           PARALLEL_LEVEL $ENV{number_of_processors}
+Ctest_Test(BUILD "${CTEST_BINARY_DIRECTORY}"
+           PARALLEL_LEVEL 1
+           SCHEDULE_RANDOM ON
            RETURN_VALUE _ctest_test_ret_val
           )
 
@@ -90,7 +91,7 @@ If(GCOV_COMMAND)
 EndIf()
 
 Ctest_Submit()
- 
+
 if (_ctest_test_ret_val)
   Message(FATAL_ERROR "Some tests failed.")
 endif()
