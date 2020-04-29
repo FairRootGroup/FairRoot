@@ -24,18 +24,6 @@ SAMPLER+=" --verbosity veryhigh"
 @CMAKE_CURRENT_BINARY_DIR@/$SAMPLER &
 SAMPLER_PID=$!
 
-########################## start PROCESSOR
-PROCESSOR1="ex-serialization1-processor"
-PROCESSOR1+=" --id processor1"
-PROCESSOR1+=" --channel-config name=data1,type=pull,method=connect,address=tcp://localhost:1565"
-PROCESSOR1+="                  name=data2,type=push,method=connect,address=tcp://localhost:1566"
-PROCESSOR1+=" --color false"
-PROCESSOR1+=" --control static"
-PROCESSOR1+=" --num-msgs 100"
-PROCESSOR1+=" --verbosity veryhigh"
-@CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR1 &
-PROCESSOR1_PID=$!
-
 ########################## start FILESINK
 FILESINK="ex-serialization1-sink"
 FILESINK+=" --id sink1"
@@ -47,6 +35,20 @@ FILESINK+=" --output-file $OUTPUTFILE"
 FILESINK+=" --verbosity veryhigh"
 @CMAKE_CURRENT_BINARY_DIR@/$FILESINK &
 FILESINK_PID=$!
+
+sleep 2
+
+########################## start PROCESSOR
+PROCESSOR1="ex-serialization1-processor"
+PROCESSOR1+=" --id processor1"
+PROCESSOR1+=" --channel-config name=data1,type=pull,method=connect,address=tcp://localhost:1565"
+PROCESSOR1+="                  name=data2,type=push,method=connect,address=tcp://localhost:1566"
+PROCESSOR1+=" --color false"
+PROCESSOR1+=" --control static"
+PROCESSOR1+=" --num-msgs 100"
+PROCESSOR1+=" --verbosity veryhigh"
+@CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR1 &
+PROCESSOR1_PID=$!
 
 wait $SAMPLER_PID
 wait $PROCESSOR1_PID
