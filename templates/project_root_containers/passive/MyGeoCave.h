@@ -40,4 +40,4 @@ class MyGeoCave : public FairGeoSet
     ClassDef(MyGeoCave, 0);   // Class for the geometry of CAVE
 };
 
-#endif /* !PNDGEOCAVE_H */
+#endif /* !MyGEOCAVE_H */

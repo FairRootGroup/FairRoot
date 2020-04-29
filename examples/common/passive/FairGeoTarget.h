@@ -5,8 +5,8 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#ifndef PNDGEOTARGET_H
-#define PNDGEOTARGET_H
+#ifndef FAIRGEOTARGET_H
+#define FAIRGEOTARGET_H
 
 #include "FairGeoSet.h"   // for FairGeoSet
 
@@ -25,4 +25,4 @@ class FairGeoTarget : public FairGeoSet
     ClassDef(FairGeoTarget, 0);   // Class for geometry of Target
 };
 
-#endif /* !PNDGEOTARGET_H */
+#endif /* !FAIRGEOTARGET_H */

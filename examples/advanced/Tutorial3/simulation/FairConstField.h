@@ -45,7 +45,7 @@ class FairConstField : public FairField
                    Double_t bY,
                    Double_t bZ);
 
-    /** Constructor from PndFieldPar **/
+    /** Constructor from FairConstPar **/
     FairConstField(FairConstPar* fieldPar);
 
     /** Destructor **/

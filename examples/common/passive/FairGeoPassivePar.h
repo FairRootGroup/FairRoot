@@ -5,8 +5,8 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#ifndef PNDGEOPASSIVEPAR_H
-#define PNDGEOPASSIVEPAR_H
+#ifndef FAIRGEOPASSIVEPAR_H
+#define FAIRGEOPASSIVEPAR_H
 
 #include "FairParGenericSet.h"   // for FairParGenericSet
 
@@ -38,4 +38,4 @@ class FairGeoPassivePar : public FairParGenericSet
     ClassDef(FairGeoPassivePar, 1);
 };
 
-#endif /* !PNDGEOPASSIVEPAR_H */
+#endif /* !FAIRGEOPASSIVEPAR_H */

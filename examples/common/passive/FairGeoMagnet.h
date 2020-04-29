@@ -5,8 +5,8 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#ifndef PNDGEOMAGNET_H
-#define PNDGEOMAGNET_H
+#ifndef FAIRGEOMAGNET_H
+#define FAIRGEOMAGNET_H
 
 #include "FairGeoSet.h"   // for FairGeoSet
 
