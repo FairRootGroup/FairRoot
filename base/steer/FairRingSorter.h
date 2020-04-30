@@ -70,7 +70,7 @@ class FairRingSorter : public TObject
     double fCellWidth;
     int fVerbose;
 
-    ClassDef(FairRingSorter, 1)
+    ClassDef(FairRingSorter, 1);
 };
 
 #endif /* FairRingSorter_H_ */

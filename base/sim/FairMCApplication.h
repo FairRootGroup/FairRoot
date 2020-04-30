@@ -302,12 +302,11 @@ class FairMCApplication : public TVirtualMCApplication
     /** Current state */
     FairMCApplicationState fState;   //!
 
-    ClassDef(FairMCApplication, 4)   // Interface to MonteCarlo application
+    ClassDef(FairMCApplication, 4);
 
-        private
-        :
-        /** Protected copy constructor */
-        FairMCApplication(const FairMCApplication&);
+  private:
+    /** Protected copy constructor */
+    FairMCApplication(const FairMCApplication&);
     /** Protected assignment operator */
     FairMCApplication& operator=(const FairMCApplication&);
 

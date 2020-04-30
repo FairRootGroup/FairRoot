@@ -5,8 +5,8 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#ifndef PNDGEOMAGNET_H
-#define PNDGEOMAGNET_H
+#ifndef FAIRGEOMAGNET_H
+#define FAIRGEOMAGNET_H
 
 #include "FairGeoSet.h"   // for FairGeoSet
 
@@ -23,7 +23,7 @@ class FairGeoMagnet : public FairGeoSet
     ~FairGeoMagnet() {}
     const char* getModuleName(Int_t) { return modName; }
     const char* getEleName(Int_t) { return eleName; }
-    ClassDef(FairGeoMagnet, 0)   // Class for the geometry of Magnet
+    ClassDef(FairGeoMagnet, 0);   // Class for the geometry of Magnet
 };
 
 #endif /* !FAIRGEOMAGNET_H */

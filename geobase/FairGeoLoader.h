@@ -43,7 +43,7 @@ class FairGeoLoader : public TNamed
     FairGeoInterface* fInterface;       //!  /** Hades Geometry Interface*/
     FairGeoBuilder* fGeoBuilder;        //!   /**Geometry builder*/
 
-    ClassDef(FairGeoLoader, 1)
+    ClassDef(FairGeoLoader, 1);
 };
 
 #endif

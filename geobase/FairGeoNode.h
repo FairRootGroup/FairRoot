@@ -112,7 +112,7 @@ class FairGeoNode : public FairGeoVolume
         }
     }
 
-    ClassDef(FairGeoNode, 1)   //
+    ClassDef(FairGeoNode, 1);   //
 };
 
 // -------------------- inlines --------------------------

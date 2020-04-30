@@ -124,7 +124,7 @@ class FairPropagator : public TNamed
         return PCAOutputStruct();
     }
 
-    ClassDef(FairPropagator, 1)
+    ClassDef(FairPropagator, 1);
 };
 
 #endif

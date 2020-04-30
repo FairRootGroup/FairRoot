@@ -77,7 +77,7 @@ class FairVolume : public TNamed
     FairModule* fModule;     /**The Module in which the volume is */
     FairGeoNode* fNode;      /**Node corresponding to this volume*/
 
-    ClassDef(FairVolume, 2)   // Volume Definition
+    ClassDef(FairVolume, 2);
 };
 
 #endif

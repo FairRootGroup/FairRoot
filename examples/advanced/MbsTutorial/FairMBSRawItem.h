@@ -64,7 +64,7 @@ class FairMBSRawItem : public TObject
     UShort_t fQdcData; /**< QDC data. */
 
   public:
-    ClassDef(FairMBSRawItem, 1)
+    ClassDef(FairMBSRawItem, 1);
 };
 
 #endif

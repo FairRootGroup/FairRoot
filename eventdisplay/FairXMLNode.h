@@ -52,7 +52,7 @@ class FairXMLAttrib : public TNamed
      */
     void SetValue(TString val) { SetTitle(val); };
     virtual ~FairXMLAttrib(){};
-    ClassDef(FairXMLAttrib, 1)
+    ClassDef(FairXMLAttrib, 1);
 };
 /**
  * class for representing XML node
@@ -148,7 +148,7 @@ class FairXMLNode : public TNamed
      */
     FairXMLNode *GetChild(Int_t index) const;
     virtual ~FairXMLNode();
-    ClassDef(FairXMLNode, 1)
+    ClassDef(FairXMLNode, 1);
 };
 
 /**
@@ -191,7 +191,7 @@ class FairXMLFile : public TObject
      * destroy object (and save xml file if needed and Close was not called)
      */
     virtual ~FairXMLFile();
-    ClassDef(FairXMLFile, 1)
+    ClassDef(FairXMLFile, 1);
 };
 
 #endif /* FAIRXLMNODE_H_ */

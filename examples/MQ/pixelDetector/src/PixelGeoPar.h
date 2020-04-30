@@ -38,7 +38,7 @@ class PixelGeoPar : public FairParGenericSet
     PixelGeoPar(const PixelGeoPar&);
     PixelGeoPar& operator=(const PixelGeoPar&);
 
-    ClassDef(PixelGeoPar, 1)
+    ClassDef(PixelGeoPar, 1);
 };
 
 #endif

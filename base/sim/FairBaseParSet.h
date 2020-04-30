@@ -110,9 +110,10 @@ class FairBaseParSet : public FairParGenericSet
     /// Random Seed from gRandom
     UInt_t fRandomSeed;
 
-    ClassDef(FairBaseParSet, 6)
+    ClassDef(FairBaseParSet, 6);
 
-        private : FairBaseParSet(const FairBaseParSet& L);
+  private:
+    FairBaseParSet(const FairBaseParSet& L);
     FairBaseParSet& operator=(const FairBaseParSet&) { return *this; }
 };
 

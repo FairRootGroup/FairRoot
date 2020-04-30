@@ -113,7 +113,7 @@ class FairMonitor : public TNamed
     void GetTaskMap(TTask* tempTask);
     void AnalyzeObjectMap(TTask* tempTask);
 
-    ClassDef(FairMonitor, 0)
+    ClassDef(FairMonitor, 0);
 };
 
 extern FairMonitor* gMonitor;

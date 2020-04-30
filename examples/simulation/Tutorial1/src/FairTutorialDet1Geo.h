@@ -25,7 +25,7 @@ class FairTutorialDet1Geo : public FairGeoSet
     const char* getModuleName(Int_t);
     const char* getEleName(Int_t);
     inline Int_t getModNumInMod(const TString&);
-    ClassDef(FairTutorialDet1Geo, 1)
+    ClassDef(FairTutorialDet1Geo, 1);
 };
 
 inline Int_t FairTutorialDet1Geo::getModNumInMod(const TString& name)

@@ -76,7 +76,7 @@ class PixelDigiSource : public FairSource
     PixelDigiSource(const PixelDigiSource&);
     PixelDigiSource& operator=(const PixelDigiSource&);
 
-    ClassDef(PixelDigiSource, 1)
+    ClassDef(PixelDigiSource, 1);
 };
 
 #endif /* defined(PIXELDIGISOURCE_H_) */

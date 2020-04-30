@@ -86,7 +86,7 @@ class FairGeoMedium : public TNamed
     // TODO: correct copy constructor for FairGeoMedium
     //    FairGeoMedium& operator=(const FairGeoMedium&);
 
-    ClassDef(FairGeoMedium, 1)   //
+    ClassDef(FairGeoMedium, 1);   //
 };
 
 inline Bool_t FairGeoMedium::isSensitive()

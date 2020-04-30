@@ -23,7 +23,7 @@ class FairTutorialDet1ContFact : public FairContFact
     FairTutorialDet1ContFact();
     ~FairTutorialDet1ContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef(FairTutorialDet1ContFact, 0)   // Factory for all MyDet parameter containers
+    ClassDef(FairTutorialDet1ContFact, 0);   // Factory for all MyDet parameter containers
 };
 
 #endif /* !FAIRTUTORIALDETCONTFACT_H */

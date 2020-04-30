@@ -9,8 +9,8 @@
 // -----                  M. Al-Turany   June 2014                     -----
 // -------------------------------------------------------------------------
 
-#ifndef PNDP8GENERATOR_H
-#define PNDP8GENERATOR_H 1
+#ifndef My_PYTHIA8GENERATOR_H
+#define My_PYTHIA8GENERATOR_H 1
 
 #include "FairGenerator.h"    // for FairGenerator
 #include "Pythia8/Basics.h"   // for RndmEngine
@@ -94,4 +94,4 @@ class Pythia8Generator : public FairGenerator
     ClassDef(Pythia8Generator, 1);
 };
 
-#endif /* !PNDP8GENERATOR_H */
+#endif /* !My_PYTHIA8GENERATOR_H */

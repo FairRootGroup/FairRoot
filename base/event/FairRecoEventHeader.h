@@ -102,7 +102,7 @@ class FairRecoEventHeader : public TNamed
     /** Event Time Error **/
     Double_t fEventTimeError;
 
-    ClassDef(FairRecoEventHeader, 1)
+    ClassDef(FairRecoEventHeader, 1);
 };
 
 #endif

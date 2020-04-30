@@ -36,7 +36,7 @@ class FairGeoIo : public TObject
     virtual Bool_t setHistoryDate(const char*) = 0;
 
   private:
-    ClassDef(FairGeoIo, 0)   //
+    ClassDef(FairGeoIo, 0);
 };
 
 #endif /* !FAIRGEOIO_H */

@@ -46,7 +46,7 @@ class FairSimConfig
     std::string fParameterFile;
     int fRandomSeed;
 
-    ClassDef(FairSimConfig, 1)
+    ClassDef(FairSimConfig, 1);
 };
 
 #endif

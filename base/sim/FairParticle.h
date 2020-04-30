@@ -113,7 +113,7 @@ class FairParticle : public TObject
     Int_t fbaryon;
     Bool_t fstable;
 
-    ClassDef(FairParticle, 3)   // Extended TParticle
+    ClassDef(FairParticle, 3);
 };
 
 #endif   // FAIR_PARTICLE_H

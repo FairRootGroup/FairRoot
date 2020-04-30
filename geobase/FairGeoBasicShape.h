@@ -45,8 +45,9 @@ class FairGeoBasicShape : public TNamed
 
   protected:
     void posInMother(const FairGeoTransform&, const FairGeoTransform&);
-    ClassDef(FairGeoBasicShape, 0)   // base class for all shapes
-        private : FairGeoBasicShape(const FairGeoBasicShape&);
+    ClassDef(FairGeoBasicShape, 0);   // base class for all shapes
+  private:
+    FairGeoBasicShape(const FairGeoBasicShape&);
     FairGeoBasicShape& operator=(const FairGeoBasicShape&);
 };
 

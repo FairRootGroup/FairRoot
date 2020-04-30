@@ -28,7 +28,7 @@ class FairGeoTorus : public FairGeoBasicShape
     Bool_t writePoints(std::fstream*, FairGeoVolume*);
     void printPoints(FairGeoVolume* volu);
 
-    ClassDef(FairGeoTorus, 0)   // class for geometry shape TORUS
+    ClassDef(FairGeoTorus, 0);   // class for geometry shape TORUS
 };
 
 #endif /* !FAIRGEOTORUS_H */

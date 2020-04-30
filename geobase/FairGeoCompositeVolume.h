@@ -31,9 +31,10 @@ class FairGeoCompositeVolume : public FairGeoVolume
     void setComponent(FairGeoVolume*, const Int_t);
     void clear();
     void print();
-    ClassDef(FairGeoCompositeVolume, 1)
+    ClassDef(FairGeoCompositeVolume, 1);
 
-        private : FairGeoCompositeVolume(const FairGeoCompositeVolume&);
+  private:
+    FairGeoCompositeVolume(const FairGeoCompositeVolume&);
     FairGeoCompositeVolume& operator=(const FairGeoCompositeVolume&);
 };
 

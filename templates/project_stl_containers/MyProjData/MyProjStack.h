@@ -242,7 +242,7 @@ class MyProjStack : public FairGenericStack
     MyProjStack(const MyProjStack&);
     MyProjStack& operator=(const MyProjStack&);
 
-    ClassDef(MyProjStack, 1)
+    ClassDef(MyProjStack, 1);
 };
 
 #endif

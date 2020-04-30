@@ -138,7 +138,7 @@ class FairTutorialDet4 : public FairDetector
     FairTutorialDet4(const FairTutorialDet4&);
     FairTutorialDet4& operator=(const FairTutorialDet4&);
 
-    ClassDef(FairTutorialDet4, 3)
+    ClassDef(FairTutorialDet4, 3);
 };
 
 #endif   // FAIRTUTORIALDET_H

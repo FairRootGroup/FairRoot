@@ -73,7 +73,7 @@ class FairTestDetectorPoint : public FairMCPoint
     FairTestDetectorPoint(const FairTestDetectorPoint&);
     FairTestDetectorPoint operator=(const FairTestDetectorPoint&);
 
-    ClassDef(FairTestDetectorPoint, 2)
+    ClassDef(FairTestDetectorPoint, 2);
 };
 
 #endif /* FAIRTESTDETECTORPOINT_H_ */

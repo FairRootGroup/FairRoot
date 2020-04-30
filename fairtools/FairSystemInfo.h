@@ -28,7 +28,7 @@ class FairSystemInfo
     Float_t GetMaxMemory();
     size_t GetCurrentMemory();
 
-    ClassDef(FairSystemInfo, 1)
+    ClassDef(FairSystemInfo, 1);
 };
 
 #endif   // BASE_FAIRSYSTEMINFO_H_

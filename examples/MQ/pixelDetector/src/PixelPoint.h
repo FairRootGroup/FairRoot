@@ -41,7 +41,7 @@ class PixelPoint : public FairMCPoint
     PixelPoint(const PixelPoint& point);
     PixelPoint operator=(const PixelPoint& point);
 
-    ClassDef(PixelPoint, 1)
+    ClassDef(PixelPoint, 1);
 };
 
 #endif

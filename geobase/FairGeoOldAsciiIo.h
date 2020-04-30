@@ -55,7 +55,7 @@ class FairGeoOldAsciiIo : public FairGeoIo
     FairGeoOldAsciiIo(const FairGeoOldAsciiIo&);
     FairGeoOldAsciiIo& operator=(const FairGeoOldAsciiIo&);
 
-    ClassDef(FairGeoOldAsciiIo, 0)   //
+    ClassDef(FairGeoOldAsciiIo, 0);   //
 };
 
 #endif /* !FAIRGEOOLDASCIIIO_H */

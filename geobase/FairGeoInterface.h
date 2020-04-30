@@ -84,7 +84,7 @@ class FairGeoInterface : public TObject
     void addSetupFile(const char* f) { setupFile = f; }
     Bool_t readSetupFile();
     void print();
-    void SetNoOfSets(Int_t n) { nSets = n; }   //
+    void SetNoOfSets(Int_t n) { nSets = n; }
 
   private:
     FairGeoInterface(const FairGeoInterface&);
@@ -93,7 +93,7 @@ class FairGeoInterface : public TObject
     FairGeoIo* connectInput(const char*);
     Bool_t connectOutput(const char*);
 
-    ClassDef(FairGeoInterface, 0)   //
+    ClassDef(FairGeoInterface, 0);
 };
 
 #endif /* !FAIRGEOINTERFACE_H */

@@ -52,7 +52,7 @@ class FairOnlineSource : public FairSource
   private:
     FairOnlineSource& operator=(const FairOnlineSource&);
 
-    ClassDef(FairOnlineSource, 0)
+    ClassDef(FairOnlineSource, 0);
 };
 
 #endif

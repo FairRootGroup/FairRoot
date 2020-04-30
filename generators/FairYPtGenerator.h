@@ -32,7 +32,7 @@ class FairYPtGenerator : public FairBaseMCGenerator
 
   private:
     TH2D fYPt;   // Y-Pt distribution
-    ClassDef(FairYPtGenerator, 1)
+    ClassDef(FairYPtGenerator, 1);
 };
 
 #endif /* CBM_NOV_ANALYSIS_CBMFEMTO_HELPERS_FAIRYPTGENERATOR_H_ */

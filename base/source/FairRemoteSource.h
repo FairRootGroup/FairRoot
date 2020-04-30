@@ -43,7 +43,7 @@ class FairRemoteSource : public FairMbsSource
     FairRemoteSource& operator=(const FairRemoteSource&);
 
   public:
-    ClassDef(FairRemoteSource, 0)
+    ClassDef(FairRemoteSource, 0);
 };
 
 #endif

@@ -43,6 +43,6 @@ class FairTutorialDet2CustomTask : public FairTask
     // note that we are forced to put const on data that we are consuming
     std::vector<CustomClass> const* fCustomData = nullptr;    //!
     std::vector<CustomClass> const* fCustomData2 = nullptr;   //!
-    ClassDef(FairTutorialDet2CustomTask, 1)
+    ClassDef(FairTutorialDet2CustomTask, 1);
 };
 #endif   // FAIRTUTORIALDETCUSTOMTASK_H

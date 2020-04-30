@@ -275,7 +275,7 @@ class FairStack : public FairGenericStack
     FairStack(const FairStack&);
     FairStack& operator=(const FairStack&);
 
-    ClassDef(FairStack, 1)
+    ClassDef(FairStack, 1);
 };
 
 #endif

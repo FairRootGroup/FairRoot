@@ -59,4 +59,4 @@ class FairMCList : public TObject
     ClassDef(FairMCList, 1);
 };
 
-#endif /* PNDMCLIST_H_ */
+#endif /* FAIRMCLIST_H_ */

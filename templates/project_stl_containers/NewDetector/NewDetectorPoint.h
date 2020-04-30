@@ -85,7 +85,7 @@ class NewDetectorPoint
     NewDetectorPoint(const NewDetectorPoint& point);
     NewDetectorPoint operator=(const NewDetectorPoint& point);
 
-    ClassDef(NewDetectorPoint, 1)
+    ClassDef(NewDetectorPoint, 1);
 };
 
 inline void NewDetectorPoint::SetMomentum(const TVector3& mom)

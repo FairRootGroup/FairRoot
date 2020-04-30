@@ -27,7 +27,7 @@ class FairMagnet : public FairModule
 
   private:
     FairMagnet(const FairMagnet& rhs);
-    ClassDef(FairMagnet, 1)
+    ClassDef(FairMagnet, 1);
 };
 
 #endif   // MAGNET_H

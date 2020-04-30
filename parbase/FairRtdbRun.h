@@ -52,7 +52,7 @@ class FairParVersion : public TNamed
     }
     void setRootVersion(Int_t v) { rootVersion = v; }
     Int_t getRootVersion() { return rootVersion; }
-    ClassDef(FairParVersion, 1)   // Class for parameter versions
+    ClassDef(FairParVersion, 1);   // Class for parameter versions
 };
 
 class FairRtdbRun : public TNamed
@@ -82,7 +82,7 @@ class FairRtdbRun : public TNamed
   private:
     FairRtdbRun& operator=(const FairRtdbRun&);
 
-    ClassDef(FairRtdbRun, 1)   // Class for parameter version management of a run
+    ClassDef(FairRtdbRun, 1);   // Class for parameter version management of a run
 };
 
 // -------------------- inlines ---------------------------

@@ -53,7 +53,7 @@ class FairRutherfordPoint : public FairMCPoint
     FairRutherfordPoint(const FairRutherfordPoint& point);
     FairRutherfordPoint operator=(const FairRutherfordPoint& point);
 
-    ClassDef(FairRutherfordPoint, 1)
+    ClassDef(FairRutherfordPoint, 1);
 };
 
 #endif

@@ -99,7 +99,7 @@ class FairRutherford : public FairDetector
     FairRutherford(const FairRutherford&);
     FairRutherford& operator=(const FairRutherford&);
 
-    ClassDef(FairRutherford, 1)
+    ClassDef(FairRutherford, 1);
 };
 
 #endif   // CBMRUTHERFORD_H

@@ -45,7 +45,7 @@ class FairParRootFile : public TNamed
     FairParRootFile(const FairParRootFile&);
     FairParRootFile& operator=(const FairParRootFile&);
 
-    ClassDef(FairParRootFile, 0)   // ROOT file for Parameter I/O
+    ClassDef(FairParRootFile, 0);   // ROOT file for Parameter I/O
 };
 
 class FairParRootFileIo : public FairParIo
@@ -91,7 +91,7 @@ class FairParRootFileIo : public FairParIo
     FairParRootFileIo(const FairParRootFileIo&);
     FairParRootFileIo& operator=(const FairParRootFileIo&);
 
-    ClassDef(FairParRootFileIo, 0)   // Parameter I/O from ROOT files
+    ClassDef(FairParRootFileIo, 0);   // Parameter I/O from ROOT files
 };
 
 #endif /* !FAIRPARROOTFILEIO_H */

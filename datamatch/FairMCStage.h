@@ -93,4 +93,4 @@ class FairMCStage : public FairMCObject
     ClassDef(FairMCStage, 1);
 };
 
-#endif /* PNDMCSTAGE_H_ */
+#endif /* FAIRMCSTAGE_H_ */

@@ -69,7 +69,7 @@ class FairTutorialDet2Digitizer : public FairTask
     FairTutorialDet2Digitizer(const FairTutorialDet2Digitizer&);
     FairTutorialDet2Digitizer& operator=(const FairTutorialDet2Digitizer&);
 
-    ClassDef(FairTutorialDet2Digitizer, 1)
+    ClassDef(FairTutorialDet2Digitizer, 1);
 };
 
 #endif   // FAIRTUTORIALDETDIGITIZER_H

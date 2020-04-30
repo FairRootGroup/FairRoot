@@ -95,7 +95,7 @@ class FairRadMapPoint : public FairMCPoint
     Double_t fXOut, fYOut, fZOut;
     Double_t fPxOut, fPyOut, fPzOut;
 
-    ClassDef(FairRadMapPoint, 3)
+    ClassDef(FairRadMapPoint, 3);
 };
 
 #endif

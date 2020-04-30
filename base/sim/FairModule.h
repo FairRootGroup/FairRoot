@@ -159,7 +159,7 @@ class FairModule : public TNamed
     Bool_t fGeoSaved;   //! flag for initialisation
     TVirtualMC* fMC;    //! cahed pointer to MC (available only after initialization)
 
-    ClassDef(FairModule, 4)
+    ClassDef(FairModule, 4);
 };
 
 template<class T, class U>

@@ -99,7 +99,7 @@ class FairGeoVector : public TObject
     inline void round(Int_t n);
     inline friend std::ostream& operator<<(std::ostream& put, const FairGeoVector& v);
     inline friend std::istream& operator>>(std::istream& get, FairGeoVector& v);
-    ClassDef(FairGeoVector, 1)   // vector with 3 components
+    ClassDef(FairGeoVector, 1);   // vector with 3 components
 };
 
 // -------------------- inlines ---------------------------

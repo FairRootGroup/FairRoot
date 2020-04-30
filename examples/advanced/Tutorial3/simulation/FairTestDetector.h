@@ -107,7 +107,7 @@ class FairTestDetector : public FairDetector
     FairTestDetector(const FairTestDetector&);
     FairTestDetector& operator=(const FairTestDetector&);
 
-    ClassDef(FairTestDetector, 1)
+    ClassDef(FairTestDetector, 1);
 };
 
 #endif /* FAIRTESTDETECTOR_H_ */

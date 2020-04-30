@@ -10,7 +10,7 @@
 // -----                  Created 20/03/07  by R.Kliemt               -----
 // -------------------------------------------------------------------------
 
-/** PNDMCMATCHCREATORTASK.h
+/** FairMCMatchLoaderTask.h
  *@author T.Stockmanns <t.stockmanns@fz-juelich.de>
  **
  ** Displays all available informations for a given event

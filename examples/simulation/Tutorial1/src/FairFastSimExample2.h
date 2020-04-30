@@ -81,7 +81,7 @@ class FairFastSimExample2 : public FairFastSimDetector
     FairFastSimExample2(const FairFastSimExample2&);
     FairFastSimExample2& operator=(const FairFastSimExample2&);
 
-    ClassDef(FairFastSimExample2, 2)
+    ClassDef(FairFastSimExample2, 2);
 };
 
 #endif   // FAIRTUTORIALDET_H

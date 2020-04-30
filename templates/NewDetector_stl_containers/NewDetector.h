@@ -95,7 +95,7 @@ class NewDetector : public FairDetector
 
     void DefineSensitiveVolumes();
 
-    ClassDef(NewDetector, 2)
+    ClassDef(NewDetector, 2);
 };
 
 #endif   // NEWDETECTOR_H

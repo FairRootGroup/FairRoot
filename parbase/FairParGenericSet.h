@@ -37,7 +37,7 @@ class FairParGenericSet : public FairParSet
     FairParGenericSet()
         : FairParSet()
     {}
-    ClassDef(FairParGenericSet, 1)   // Base class for generic-style parameter containers
+    ClassDef(FairParGenericSet, 1);   // Base class for generic-style parameter containers
 };
 
 #endif /* !FAIRPARGENERICSET_H */

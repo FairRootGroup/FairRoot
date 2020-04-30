@@ -127,4 +127,4 @@ class FairMCObject : public TObject
     ClassDef(FairMCObject, 0);
 };
 
-#endif /* PNDMCOBJECT_H_ */
+#endif /* FAIRMCOBJECT_H_ */

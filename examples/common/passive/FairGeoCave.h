@@ -5,8 +5,8 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#ifndef PNDGEOCAVE_H
-#define PNDGEOCAVE_H
+#ifndef FAIRGEOCAVE_H
+#define FAIRGEOCAVE_H
 
 #include "FairGeoSet.h"   // for FairGeoSet
 
@@ -29,7 +29,8 @@ class FairGeoCave : public FairGeoSet
     void addRefNodes();
     void write(std::fstream&);
     void print();
-    ClassDef(FairGeoCave, 0)   // Class for the geometry of CAVE
+
+    ClassDef(FairGeoCave, 0);   // Class for the geometry of CAVE
 };
 
-#endif /* !PNDGEOCAVE_H */
+#endif /* !FAIRGEOCAVE_H */

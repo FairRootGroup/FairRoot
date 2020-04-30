@@ -198,7 +198,7 @@ class FairFileSource : public FairSource
                                 */
     Bool_t fCheckFileLayout;   //!
 
-    ClassDef(FairFileSource, 3)
+    ClassDef(FairFileSource, 3);
 };
 
 #endif /* defined(__FAIRROOT__FairFileSource__) */

@@ -24,7 +24,7 @@ class FairTarget : public FairModule
 
   private:
     FairTarget(const FairTarget& rhs);
-    ClassDef(FairTarget, 1)
+    ClassDef(FairTarget, 1);
 };
 
 #endif   // Target_H

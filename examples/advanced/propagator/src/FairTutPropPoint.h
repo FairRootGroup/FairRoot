@@ -47,7 +47,7 @@ class FairTutPropPoint : public FairMCPoint
     FairTutPropPoint(const FairTutPropPoint& point);
     FairTutPropPoint operator=(const FairTutPropPoint& point);
 
-    ClassDef(FairTutPropPoint, 1)
+    ClassDef(FairTutPropPoint, 1);
 };
 
 #endif   // FAIRTUTPROPPOINT_H

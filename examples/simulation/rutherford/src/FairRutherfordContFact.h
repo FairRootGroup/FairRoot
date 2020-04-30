@@ -23,7 +23,7 @@ class FairRutherfordContFact : public FairContFact
     FairRutherfordContFact();
     ~FairRutherfordContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef(FairRutherfordContFact, 0)   // Factory for all FairRutherford parameter containers
+    ClassDef(FairRutherfordContFact, 0);   // Factory for all FairRutherford parameter containers
 };
 
 #endif

@@ -91,7 +91,7 @@ class FairRunAnaProof : public FairRunAna
 
     FairFileSource* fProofFileSource;
 
-    ClassDef(FairRunAnaProof, 1)
+    ClassDef(FairRunAnaProof, 1);
 };
 
 #endif   // FAIRRUNANAPROOF_H

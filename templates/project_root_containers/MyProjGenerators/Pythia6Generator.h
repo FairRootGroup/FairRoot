@@ -70,8 +70,8 @@
  Derived from FairGenerator.
 **/
 
-#ifndef PND_PYTHIAGENERATOR_H
-#define PND_PYTHIAGENERATOR_H
+#ifndef My_PYTHIA6GENERATOR_H
+#define My_PYTHIA6GENERATOR_H
 
 #include "FairGenerator.h"   // for FairGenerator
 

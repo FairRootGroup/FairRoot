@@ -97,7 +97,7 @@ class FairIonGenerator : public FairBaseMCGenerator
     FairIonGenerator(const FairIonGenerator&);
     FairIonGenerator& operator=(const FairIonGenerator&);
 
-    ClassDef(FairIonGenerator, 2)
+    ClassDef(FairIonGenerator, 2);
 };
 
 #endif

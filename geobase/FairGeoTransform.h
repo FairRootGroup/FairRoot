@@ -54,7 +54,7 @@ class FairGeoTransform : public TObject
     const FairGeoRotation& getRotation() const { return rot; }
 
     inline void setTransform(const FairGeoTransform& t);
-    ClassDef(FairGeoTransform, 1)   //
+    ClassDef(FairGeoTransform, 1);   //
 };
 
 inline FairGeoTransform::FairGeoTransform(const FairGeoTransform& t)

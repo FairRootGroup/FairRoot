@@ -45,7 +45,7 @@ class FairRunInfo : public TObject
     FairRunInfo(const FairRunInfo&);
     FairRunInfo& operator=(const FairRunInfo&);
 
-    ClassDef(FairRunInfo, 2)
+    ClassDef(FairRunInfo, 2);
 };
 
 #endif

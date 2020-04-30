@@ -29,7 +29,7 @@ class FairBaseContFact : public FairContFact
      * For an actual context, which is not an empty string and not the default context
      * of this container, the name is concatinated with the context. */
     FairParSet* createContainer(FairContainer*);
-    ClassDef(FairBaseContFact, 0)
+    ClassDef(FairBaseContFact, 0);
 };
 
 #endif /* !FAIRBASECONTFACT_H */

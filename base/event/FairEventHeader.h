@@ -71,7 +71,7 @@ class FairEventHeader : public TNamed
     /**MC entry number from input chain*/
     Int_t fMCEntryNo;
 
-    ClassDef(FairEventHeader, 3)
+    ClassDef(FairEventHeader, 3);
 };
 
 #endif

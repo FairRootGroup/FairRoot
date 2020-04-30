@@ -54,7 +54,7 @@ class FairGeoRotation : public TObject
     inline void print() const;
     TRotMatrix* createTRotMatrix(const Text_t* name = "", const Text_t* title = "");
 
-    ClassDef(FairGeoRotation, 1)   //
+    ClassDef(FairGeoRotation, 1);   //
 };
 
 // -------------------- inlines ---------------------------

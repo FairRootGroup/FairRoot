@@ -46,7 +46,7 @@ class FairUnpack : public TObject
     virtual void Register() = 0;
 
   public:
-    ClassDef(FairUnpack, 0)
+    ClassDef(FairUnpack, 0);
 };
 
 #endif

@@ -11,8 +11,8 @@
 // -----                Created 26/03/14  by M. Al-Turany              -----
 // -------------------------------------------------------------------------
 
-#ifndef PNDPASSIVECONTFACT_H
-#define PNDPASSIVECONTFACT_H
+#ifndef My_PASSIVECONTFACT_H
+#define My_PASSIVECONTFACT_H
 
 #include "FairContFact.h"   // for FairContFact, etc
 
@@ -29,7 +29,7 @@ class MyPassiveContFact : public FairContFact
     MyPassiveContFact();
     ~MyPassiveContFact() {}
     FairParSet* createContainer(FairContainer*);
-    ClassDef(MyPassiveContFact, 0)   // Factory for all Passive parameter containers
+    ClassDef(MyPassiveContFact, 0);   // Factory for all Passive parameter containers
 };
 
-#endif /* !PNDPASSIVECONTFACT_H */
+#endif /* !My_PASSIVECONTFACT_H */
