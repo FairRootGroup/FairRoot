@@ -184,8 +184,13 @@ bool FairGeanePro::Propagate(FairTrackParH* TParam, FairTrackParH* TEnd, int PDG
                 maxdistance *= 2.;
 
                 // output
-                int findpca =
-                    FindPCA(fPCA, PDG, fpoint, fwire1, fwire2, maxdistance, fRad, fvpf, fvwi, fDi, ftrklength);
+                PCAOutputStruct pcaoutput = FindPCA(fPCA, PDG, fpoint, fwire1, fwire2, maxdistance);
+                fRad = pcaoutput.Radius;
+                fvpf = pcaoutput.OnTrackPCA;
+                fvwi = pcaoutput.OnWirePCA;
+                fDi = pcaoutput.Distance;
+                ftrklength = pcaoutput.TrackLength;
+                int findpca = pcaoutput.PCAStatusFlag;
                 if (findpca != 0) {
                     return kFALSE;
                 }
@@ -279,8 +284,13 @@ bool FairGeanePro::Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, int PDG
                 maxdistance *= 2.;
 
                 // output
-                int findpca =
-                    FindPCA(fPCA, PDG, fpoint, fwire1, fwire2, maxdistance, fRad, fvpf, fvwi, fDi, ftrklength);
+                PCAOutputStruct pcaoutput = FindPCA(fPCA, PDG, fpoint, fwire1, fwire2, maxdistance);
+                fRad = pcaoutput.Radius;
+                fvpf = pcaoutput.OnTrackPCA;
+                fvwi = pcaoutput.OnWirePCA;
+                fDi = pcaoutput.Distance;
+                ftrklength = pcaoutput.TrackLength;
+                int findpca = pcaoutput.PCAStatusFlag;
                 // LOG(info)<<" FairGeanePro::ftrklength="<<ftrklength;
                 if (findpca != 0) {
                     return kFALSE;
@@ -521,37 +531,31 @@ bool FairGeanePro::SetPropagateOnlyParameters()
 
 bool FairGeanePro::PropagateFromPlane(const TVector3& v1, const TVector3& v2)
 {
-    LOG(warning) << "Function PropagateFromPlane depracated, use SetOriginPlane.";
     return SetOriginPlane(v1, v2);
 }
 
 bool FairGeanePro::PropagateToPlane(const TVector3& v0, const TVector3& v1, const TVector3& v2)
 {
-    LOG(warning) << "Function PropagateToPlane depracated, use SetDestinationPlane.";
     return SetDestinationPlane(v0, v1, v2);
 }
 
 bool FairGeanePro::PropagateToVolume(TString VolName, int CopyNo, int option)
 {
-    LOG(warning) << "Function PropagateToVolume depracated, use SetDestinationVolume.";
     return SetDestinationVolume(VolName.Data(), CopyNo, option);
 }
 
 bool FairGeanePro::PropagateToLength(float length)
 {
-    LOG(warning) << "Function PropagateToLength depracated, use SetDestinationLength.";
     return SetDestinationLength(length);
 }
 
 bool FairGeanePro::PropagateOnlyParameters()
 {
-    LOG(warning) << "Function PropagateOnlyParameters depracated, use SetPropagateOnlyParameters.";
     return SetPropagateOnlyParameters();
 }
 
 bool FairGeanePro::SetWire(TVector3 extremity1, TVector3 extremity2)
 {
-    LOG(warning) << "Function SetWire depracated, contact FairRoot group if you need it.";
     fwire1 = extremity1;
     fwire2 = extremity2;
     return true;
@@ -559,7 +563,6 @@ bool FairGeanePro::SetWire(TVector3 extremity1, TVector3 extremity2)
 
 bool FairGeanePro::SetPoint(TVector3 pnt)
 {
-    LOG(warning) << "Function SetPoint depracated, contact FairRoot group if you need it.";
     fpoint = pnt;
     return true;
 }
@@ -594,25 +597,21 @@ bool FairGeanePro::SetPCAPropagation(int pca, int dir, FairTrackParP* par)
 
 bool FairGeanePro::PropagateToPCA(int pca)
 {
-    LOG(warning) << "Function PropagateToPCA depracated, use SetPCAPropagation.";
     return SetPCAPropagation(pca);
 }
 
 bool FairGeanePro::PropagateToPCA(int pca, int dir)
 {
-    LOG(warning) << "Function PropagateToPCA depracated, use SetPCAPropagation.";
     return SetPCAPropagation(pca, dir);
 }
 
 bool FairGeanePro::ActualFindPCA(int pca, FairTrackParP* par, int dir)
 {
-    LOG(warning) << "Function ActualFindPCA depracated, use SetPCAPropagation.";
     return SetPCAPropagation(pca, dir, par);
 }
 
 bool FairGeanePro::BackTrackToVertex()
 {
-    LOG(warning) << "Function BackTrackToVertex questionable, contact FairRoot if you need it.";
     // through track length
     fPropOption = "BLE";
     ProMode = 1;   // need errors in representation 1 (SC)(see Geane doc)
@@ -629,7 +628,6 @@ bool FairGeanePro::BackTrackToVertex()
 
 bool FairGeanePro::PropagateToVirtualPlaneAtPCA(int pca)
 {
-    LOG(warning) << "Function PropagateToVirtualPlaneAtPCA questionable, contact FairRoot if you need it.";
     // through track length
     fPropOption = "LE";
     ProMode = 3;   // need errors in representation 3 (SD)(see Geane doc)
@@ -646,7 +644,6 @@ bool FairGeanePro::PropagateToVirtualPlaneAtPCA(int pca)
 
 bool FairGeanePro::BackTrackToVirtualPlaneAtPCA(int pca)
 {
-    LOG(warning) << "Function BackTrackToVirtualPlaneAtPCA questionable, contact FairRoot if you need it.";
     // through track length
     fPropOption = "BLE";
     ProMode = 3;   // need errors in representation 3 (SD)(see Geane doc)
@@ -675,8 +672,6 @@ int FairGeanePro::FindPCA(int pca,
                           double& Di,
                           float& trklength)
 {
-    LOG(warning) << "Function FindPCA(many parameters) depracated, it is replaced by PCAOutputStruct FindPCA(pca, "
-                    "PDGCode, point, wire1, wire2, maxdistance).";
     PCAOutputStruct pcaoutput = FindPCA(pca, PDGCode, point, wire1, wire2, maxdistance);
     Rad = pcaoutput.Radius;
     vpf = pcaoutput.OnTrackPCA;
