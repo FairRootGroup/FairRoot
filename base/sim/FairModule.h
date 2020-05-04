@@ -96,7 +96,11 @@ class FairModule : public TNamed
      * detectors which use ConstructASCIIRootGeometry() to build the geometry */
     virtual Bool_t IsSensitive(const std::string& name);
     /**The function below is depracated, please change to the new method above */
-    virtual Bool_t CheckIfSensitive(std::string name);
+    virtual Bool_t CheckIfSensitive(std::string name) __attribute__((
+        deprecated("The method CheckIfSensitive is deprecated. Implement IsSensitive in the detector classes.")))
+    {
+        return kFALSE;
+    }
     /**called from ConstructRootGeometry()*/
     virtual void ExpandNode(TGeoNode* Node);
     /**called from ConstructGDMLGeometry()*/
