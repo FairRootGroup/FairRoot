@@ -96,12 +96,8 @@ pipeline{
           def builds = jobMatrix('alfa-ci', 'build', [
             [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc9',            fairsoft: 'dev'],
             [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc9',            fairsoft: 'dev_mt'],
-            [os: 'MacOS10.13', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'dev'],
-            [os: 'MacOS10.13', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'dev_mt'],
-            [os: 'MacOS10.13', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'jun19_patches'],
-            [os: 'MacOS10.13', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'jun19_patches_mt'],
-            [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'dev'],
-            [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleLLVM10.0.0', fairsoft: 'dev_mt'],
+            [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleLLVM10.0.1', fairsoft: 'dev'],
+            [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleLLVM10.0.1', fairsoft: 'dev_mt'],
           ]) { spec, label, config ->
             sh "./Dart.sh alfa_ci ${config}"
           }
