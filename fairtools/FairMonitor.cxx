@@ -648,7 +648,9 @@ void FairMonitor::StoreHistograms(TFile* sinkFile)
         thist->SetBins(thist->GetEntries(), 0, thist->GetEntries());
         thist->Write();
     }
-    fCanvas->Write();
+    if (fCanvas) {
+        fCanvas->Write();
+    }
 
     if (histoFile != sinkFile) {
         histoFile->Close();
