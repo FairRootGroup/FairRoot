@@ -66,6 +66,12 @@ if(Flatbuffers_FOUND)
     COMMAND $<TARGET_FILE:flatbuffers::flatc> -c -o ${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayloadHit.fbs
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/MQ/data
   )
+
+  if(TARGET flatbuffers::flatbuffers_shared)
+    set(flatbuffers_lib flatbuffers::flatbuffers_shared)
+  else()
+    set(flatbuffers_lib flatbuffers::flatbuffers)
+  endif()
 else()
   set(FLATBUFFERS_USED false)
 endif()
@@ -124,7 +130,7 @@ target_link_libraries(${target} PUBLIC
 
   Boost::serialization
   $<$<BOOL:${Protobuf_FOUND}>:protobuf::libprotobuf>
-  $<$<BOOL:${Flatbuffers_FOUND}>:flatbuffers::flatbuffers>
+  $<$<BOOL:${Flatbuffers_FOUND}>:${flatbuffers_lib}>
   $<$<BOOL:${msgpack_FOUND}>:msgpackc>
 
   Core # Rtypes
