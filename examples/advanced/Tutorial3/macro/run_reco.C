@@ -8,7 +8,6 @@
 void run_reco(TString mcEngine = "TGeant3")
 {
 
-    gSystem->Load("libFairTestDetector");
     FairLogger* logger = FairLogger::GetLogger();
     logger->SetLogFileName("MyLog.log");
     logger->SetLogToScreen(kTRUE);
