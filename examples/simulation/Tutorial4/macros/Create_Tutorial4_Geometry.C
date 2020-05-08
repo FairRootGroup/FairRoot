@@ -52,13 +52,6 @@ void add_alignable_volumes();
 
 void Create_Tutorial4_Geometry()
 {
-    // Load the necessary FairRoot libraries
-    //  gROOT->LoadMacro("$VMCWORKDIR/gconfig/basiclibs.C");
-    //  basiclibs();
-    //  gSystem->Load("libGeoBase");
-    //  gSystem->Load("libParBase");
-    //  gSystem->Load("libBase");
-
     // Load needed material definition from media.geo file
     create_materials_from_media_file();
 

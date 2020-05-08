@@ -11,33 +11,4 @@
 
 void basiclibs()
 {
-    /* gSystem->Load("libGeom");
-  gSystem->Load("libGeomPainter");
-
-
-  gSystem->Load("libPhysics");
-  gSystem->Load("libEG");
-  gSystem->Load("libVMC");
-  gSystem->Load("libEGPythia6");
-  gSystem->Load("libPythia6");
-  gSystem->Load("libMinuit");
-  gSystem->Load("libTree");
-  */
-    gSystem->Load("libRIO");
-    gSystem->Load("libGeom");
-    gSystem->Load("libGeomPainter");
-    gSystem->Load("libVMC");
-    gSystem->Load("libEG");
-    gSystem->Load("libEGPythia6");
-    gSystem->Load("libPythia6");
-    gSystem->Load("libPhysics");
-    gSystem->Load("libNet");
-    gSystem->Load("libTree");
-    gSystem->Load("libMinuit");
-    gSystem->Load("libMathMore");
-
-    gSystem->Load("libProof");
-    gSystem->Load("libProofPlayer");
-    gSystem->Load("libGX11TTF");
-    gSystem->Load("libGX11");
 }
