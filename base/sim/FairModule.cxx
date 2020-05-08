@@ -560,7 +560,10 @@ Bool_t FairModule::IsSensitive(const std::string& name)
 {
     //    LOG(warn) << "Implement IsSensitive in the detector class which inherits from FairModule";
     //    LOG(warn) << "For now calling the obsolete function CheckIfSensitive";
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     return CheckIfSensitive(name);
+#pragma GCC diagnostic pop
 }
 
 void FairModule::ExpandNode(TGeoNode* fN)
