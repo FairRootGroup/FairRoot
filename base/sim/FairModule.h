@@ -77,7 +77,7 @@ class FairModule : public TNamed
     virtual void RegisterAlignmentMatrices() { ; }
 
     /**construct geometry from GDML files*/
-    virtual void ConstructGDMLGeometry(__attribute__((unused))TGeoMatrix* posrot);
+    virtual void ConstructGDMLGeometry(__attribute__((unused)) TGeoMatrix* posrot);
     /** custom settings of processes and cuts for media to be forwarded to the
      ** detector simulation */
     virtual void SetSpecialPhysicsCuts() { ; }

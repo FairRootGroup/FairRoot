@@ -463,7 +463,7 @@ void FairModule::ConstructRootGeometry(TGeoMatrix* shiftM)
 
 #ifdef ROOT_HAS_GDML
 
-void FairModule::ConstructGDMLGeometry(__attribute__((unused))TGeoMatrix* posrot)
+void FairModule::ConstructGDMLGeometry(__attribute__((unused)) TGeoMatrix* posrot)
 {
     // Parse the GDML file
     TFile* old = gFile;
@@ -505,7 +505,7 @@ void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
 
 #else
 
-void FairModule::ConstructGDMLGeometry(__attribute__((unused))TGeoMatrix* posrot)
+void FairModule::ConstructGDMLGeometry(__attribute__((unused)) TGeoMatrix* posrot)
 {
     LOG(error) << "Could not construct magnet geometry from gdml file.";
     LOG(error) << "The used ROOT version does not support gdml.";
@@ -513,7 +513,7 @@ void FairModule::ConstructGDMLGeometry(__attribute__((unused))TGeoMatrix* posrot
     LOG(fatal) << "Stop execution at this point.";
 }
 
-void FairModule::ExpandNodeForGDML(__attribute__((unused))TGeoNode* curNode) {}
+void FairModule::ExpandNodeForGDML(__attribute__((unused)) TGeoNode* curNode) {}
 
 #endif
 

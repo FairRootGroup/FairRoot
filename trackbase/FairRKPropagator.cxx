@@ -199,7 +199,9 @@ bool FairRKPropagator::SetOriginPlane(__attribute__((unused)) TVector3& v0, __at
     return false;
 }
 
-bool FairRKPropagator::SetDestinationVolume(__attribute__((unused)) std::string volName, __attribute__((unused)) int copyNo, __attribute__((unused)) int option)
+bool FairRKPropagator::SetDestinationVolume(__attribute__((unused)) std::string volName,
+                                            __attribute__((unused)) int copyNo,
+                                            __attribute__((unused)) int option)
 {
     LOG(warning) << "FairRKPropagator::SetDestinationVolume not implemented yet";
     return false;
