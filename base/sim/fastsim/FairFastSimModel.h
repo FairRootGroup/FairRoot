@@ -30,8 +30,8 @@ class FairFastSimModel : public G4VFastSimulationModel
     FairFastSimModel(G4String);
     ~FairFastSimModel();
 
-    virtual G4bool IsApplicable([[maybe_unused]] const G4ParticleDefinition &);
-    virtual G4bool ModelTrigger([[maybe_unused]] const G4FastTrack &);
+    virtual G4bool IsApplicable([[gnu::unused]] const G4ParticleDefinition &);
+    virtual G4bool ModelTrigger([[gnu::unused]] const G4FastTrack &);
     virtual void DoIt(const G4FastTrack &, G4FastStep &);
 };
 
