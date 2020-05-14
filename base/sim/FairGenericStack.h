@@ -99,7 +99,10 @@ class FairGenericStack : public TVirtualMCStack
 
     virtual TClonesArray* GetListOfParticles() { return 0; }
     virtual void SetParticleArray(__attribute__((unused)) TClonesArray* partArray) {}
-    virtual void SetParticleArray(__attribute__((unused)) TClonesArray* partArray, __attribute__((unused)) Int_t partFrom, __attribute__((unused)) Int_t partTo) {}
+    virtual void SetParticleArray(__attribute__((unused)) TClonesArray* partArray,
+                                  __attribute__((unused)) Int_t partFrom,
+                                  __attribute__((unused)) Int_t partTo)
+    {}
 
     /** Clone this object (used in MT mode only) */
     virtual FairGenericStack* CloneStack() const;
