@@ -193,21 +193,21 @@ bool FairRKPropagator::SetDestinationPlane(TVector3& v0, TVector3& v1, TVector3&
     return true;
 }
 
-bool FairRKPropagator::SetOriginPlane(__attribute__((unused)) TVector3& v0, __attribute__((unused)) TVector3& v1)
+bool FairRKPropagator::SetOriginPlane([[maybe_unused]] TVector3& v0, [[maybe_unused]] TVector3& v1)
 {
     LOG(warning) << "FairRKPropagator::SetLengthToPropagateTo not implemented yet";
     return false;
 }
 
-bool FairRKPropagator::SetDestinationVolume(__attribute__((unused)) std::string volName,
-                                            __attribute__((unused)) int copyNo,
-                                            __attribute__((unused)) int option)
+bool FairRKPropagator::SetDestinationVolume([[maybe_unused]] std::string volName,
+                                            [[maybe_unused]] int copyNo,
+                                            [[maybe_unused]] int option)
 {
     LOG(warning) << "FairRKPropagator::SetDestinationVolume not implemented yet";
     return false;
 }
 
-bool FairRKPropagator::SetDestinationLength(__attribute__((unused)) float length)
+bool FairRKPropagator::SetDestinationLength([[maybe_unused]] float length)
 {
     LOG(warning) << "FairRKPropagator::SetDestinationLength not implemented yet";
     return false;
@@ -232,7 +232,7 @@ PCAOutputStruct FairRKPropagator::FindPCA(int PCA,
                                           TVector3 Point,
                                           TVector3 Wire1,
                                           TVector3 Wire2,
-                                          __attribute__((unused)) double MaxDistance)
+                                          [[maybe_unused]] double MaxDistance)
 {
     PCAOutputStruct pcastruct = PCAOutputStruct();
 

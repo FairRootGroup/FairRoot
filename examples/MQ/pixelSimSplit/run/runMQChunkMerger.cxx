@@ -14,4 +14,4 @@ void addCustomOptions(bpo::options_description& options)
     // clang-format on
 }
 
-FairMQDevicePtr getDevice(__attribute__((unused)) const FairMQProgOptions& config) { return new FairMQChunkMerger(); }
+FairMQDevicePtr getDevice([[maybe_unused]] const FairMQProgOptions& config) { return new FairMQChunkMerger(); }

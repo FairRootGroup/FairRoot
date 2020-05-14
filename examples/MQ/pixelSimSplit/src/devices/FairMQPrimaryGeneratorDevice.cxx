@@ -71,8 +71,8 @@ bool FairMQPrimaryGeneratorDevice::ConditionalRun()
     return GenerateAndSendData();
 }
 
-bool FairMQPrimaryGeneratorDevice::Reply(__attribute__((unused)) FairMQMessagePtr& mPtr,
-                                         __attribute__((unused)) int /*index*/)
+bool FairMQPrimaryGeneratorDevice::Reply([[maybe_unused]] FairMQMessagePtr& mPtr,
+                                         [[maybe_unused]] int /*index*/)
 {
     return GenerateAndSendData();
 }
