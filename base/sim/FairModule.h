@@ -77,7 +77,7 @@ class FairModule : public TNamed
     virtual void RegisterAlignmentMatrices() { ; }
 
     /**construct geometry from GDML files*/
-    virtual void ConstructGDMLGeometry(TGeoMatrix*);
+    virtual void ConstructGDMLGeometry(__attribute__((unused))TGeoMatrix* posrot);
     /** custom settings of processes and cuts for media to be forwarded to the
      ** detector simulation */
     virtual void SetSpecialPhysicsCuts() { ; }
@@ -96,7 +96,7 @@ class FairModule : public TNamed
      * detectors which use ConstructASCIIRootGeometry() to build the geometry */
     virtual Bool_t IsSensitive(const std::string& name);
     /**The function below is depracated, please change to the new method above */
-    virtual Bool_t CheckIfSensitive(std::string name) __attribute__((
+    virtual Bool_t CheckIfSensitive(__attribute__((unused)) std::string name) __attribute__((
         deprecated("The method CheckIfSensitive is deprecated. Implement IsSensitive in the detector classes.")))
     {
         return kFALSE;
@@ -104,7 +104,7 @@ class FairModule : public TNamed
     /**called from ConstructRootGeometry()*/
     virtual void ExpandNode(TGeoNode* Node);
     /**called from ConstructGDMLGeometry()*/
-    virtual void ExpandNodeForGDML(TGeoNode*);
+    virtual void ExpandNodeForGDML(__attribute__((unused)) TGeoNode* curNode);
     /**return the MC id of a volume named vname*/
     virtual Int_t getVolId(const TString&) const { return 0; }
     /**return the detector/Module id (which was set in the sim macro for the detector)*/
