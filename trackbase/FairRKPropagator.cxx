@@ -193,21 +193,21 @@ bool FairRKPropagator::SetDestinationPlane(TVector3& v0, TVector3& v1, TVector3&
     return true;
 }
 
-bool FairRKPropagator::SetOriginPlane([[maybe_unused]] TVector3& v0, [[maybe_unused]] TVector3& v1)
+bool FairRKPropagator::SetOriginPlane([[gnu::unused]] TVector3& v0, [[gnu::unused]] TVector3& v1)
 {
     LOG(warning) << "FairRKPropagator::SetLengthToPropagateTo not implemented yet";
     return false;
 }
 
-bool FairRKPropagator::SetDestinationVolume([[maybe_unused]] std::string volName,
-                                            [[maybe_unused]] int copyNo,
-                                            [[maybe_unused]] int option)
+bool FairRKPropagator::SetDestinationVolume([[gnu::unused]] std::string volName,
+                                            [[gnu::unused]] int copyNo,
+                                            [[gnu::unused]] int option)
 {
     LOG(warning) << "FairRKPropagator::SetDestinationVolume not implemented yet";
     return false;
 }
 
-bool FairRKPropagator::SetDestinationLength([[maybe_unused]] float length)
+bool FairRKPropagator::SetDestinationLength([[gnu::unused]] float length)
 {
     LOG(warning) << "FairRKPropagator::SetDestinationLength not implemented yet";
     return false;
@@ -232,7 +232,7 @@ PCAOutputStruct FairRKPropagator::FindPCA(int PCA,
                                           TVector3 Point,
                                           TVector3 Wire1,
                                           TVector3 Wire2,
-                                          [[maybe_unused]] double MaxDistance)
+                                          [[gnu::unused]] double MaxDistance)
 {
     PCAOutputStruct pcastruct = PCAOutputStruct();
 

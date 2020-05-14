@@ -62,9 +62,9 @@ class FairPropagator : public TNamed
     /**New method to set the plane to propagate particles to
      @v0 v1 v2  Plane defining vectors
     */
-    virtual bool SetDestinationPlane([[maybe_unused]] TVector3& /* v0 */,
-                                     [[maybe_unused]] TVector3& /* v1 */,
-                                     [[maybe_unused]] TVector3& /* v2 */)
+    virtual bool SetDestinationPlane([[gnu::unused]] TVector3& /* v0 */,
+                                     [[gnu::unused]] TVector3& /* v1 */,
+                                     [[gnu::unused]] TVector3& /* v2 */)
     {
         return false;
     }
@@ -72,7 +72,7 @@ class FairPropagator : public TNamed
     /**New method to set the plane to propagate particles from
      @v0 v1     Plane defining vectors
     */
-    virtual bool SetOriginPlane([[maybe_unused]] TVector3& /* v0 */, [[maybe_unused]] TVector3& /* v1 */)
+    virtual bool SetOriginPlane([[gnu::unused]] TVector3& /* v0 */, [[gnu::unused]] TVector3& /* v1 */)
     {
         return false;
     }
@@ -82,9 +82,9 @@ class FairPropagator : public TNamed
        @copyNo  Copy number
        @option  Option
     */
-    virtual bool SetDestinationVolume([[maybe_unused]] std::string /* volName */,
-                                      [[maybe_unused]] int /* copyNo */,
-                                      [[maybe_unused]] int /* option */)
+    virtual bool SetDestinationVolume([[gnu::unused]] std::string /* volName */,
+                                      [[gnu::unused]] int /* copyNo */,
+                                      [[gnu::unused]] int /* option */)
     {
         return false;
     }
@@ -92,41 +92,41 @@ class FairPropagator : public TNamed
     /**New method to set the length to propagate particles to
        @length  Track length
     */
-    virtual bool SetDestinationLength([[maybe_unused]] float length) { return false; }
+    virtual bool SetDestinationLength([[gnu::unused]] float length) { return false; }
 
     /**New method to set to propagate only parameters
      */
     virtual bool SetPropagateOnlyParameters() { return false; }
 
-    virtual bool Propagate([[maybe_unused]] FairTrackParH* /* TStart */,
-                           [[maybe_unused]] FairTrackParH* /* TEnd */,
-                           [[maybe_unused]] int /* PDG */)
+    virtual bool Propagate([[gnu::unused]] FairTrackParH* /* TStart */,
+                           [[gnu::unused]] FairTrackParH* /* TEnd */,
+                           [[gnu::unused]] int /* PDG */)
     {
         return false;
     }
-    virtual bool Propagate([[maybe_unused]] FairTrackParP* /* TStart */,
-                           [[maybe_unused]] FairTrackParH* /* TEnd */,
-                           [[maybe_unused]] int /* PDG */)
+    virtual bool Propagate([[gnu::unused]] FairTrackParP* /* TStart */,
+                           [[gnu::unused]] FairTrackParH* /* TEnd */,
+                           [[gnu::unused]] int /* PDG */)
     {
         return false;
     }
-    virtual bool Propagate([[maybe_unused]] FairTrackParP* /* TStart */,
-                           [[maybe_unused]] FairTrackParP* /* TEnd */,
-                           [[maybe_unused]] int /* PDG */)
+    virtual bool Propagate([[gnu::unused]] FairTrackParP* /* TStart */,
+                           [[gnu::unused]] FairTrackParP* /* TEnd */,
+                           [[gnu::unused]] int /* PDG */)
     {
         return false;
     }
-    virtual bool Propagate([[maybe_unused]] FairTrackParH* /* TStart */,
-                           [[maybe_unused]] FairTrackParP* /* TEnd */,
-                           [[maybe_unused]] int /* PDG */)
+    virtual bool Propagate([[gnu::unused]] FairTrackParH* /* TStart */,
+                           [[gnu::unused]] FairTrackParP* /* TEnd */,
+                           [[gnu::unused]] int /* PDG */)
     {
         return false;
     }
-    virtual bool Propagate([[maybe_unused]] float* /* x1 */,
-                           [[maybe_unused]] float* /* p1 */,
-                           [[maybe_unused]] float* /* x2 */,
-                           [[maybe_unused]] float* /* p2 */,
-                           [[maybe_unused]] int /* PDG */)
+    virtual bool Propagate([[gnu::unused]] float* /* x1 */,
+                           [[gnu::unused]] float* /* p1 */,
+                           [[gnu::unused]] float* /* x2 */,
+                           [[gnu::unused]] float* /* p2 */,
+                           [[gnu::unused]] int /* PDG */)
     {
         return false;
     }
@@ -141,9 +141,9 @@ class FairPropagator : public TNamed
     // .. dir = +1 move forward
     //        = -1 move backward
     // .. par = initial track parameters
-    virtual bool SetPCAPropagation([[maybe_unused]] int pca,
-                                   [[maybe_unused]] int dir = 1,
-                                   [[maybe_unused]] FairTrackParP* par = nullptr)
+    virtual bool SetPCAPropagation([[gnu::unused]] int pca,
+                                   [[gnu::unused]] int dir = 1,
+                                   [[gnu::unused]] FairTrackParP* par = nullptr)
     {
         return kTRUE;
     }
@@ -156,12 +156,12 @@ class FairPropagator : public TNamed
     // .. point point with respect to which calculate the closest approach
     // .. wire, wire2 line with respect to which calculate the closest approach
     // .. maxdistance = geometrical distance[start - point/wire extr] * 2
-    virtual PCAOutputStruct FindPCA([[maybe_unused]] int PCA,
-                                    [[maybe_unused]] int PDGCode,
-                                    [[maybe_unused]] TVector3 Point,
-                                    [[maybe_unused]] TVector3 Wire1,
-                                    [[maybe_unused]] TVector3 Wire2,
-                                    [[maybe_unused]] double MaxDistance)
+    virtual PCAOutputStruct FindPCA([[gnu::unused]] int PCA,
+                                    [[gnu::unused]] int PDGCode,
+                                    [[gnu::unused]] TVector3 Point,
+                                    [[gnu::unused]] TVector3 Wire1,
+                                    [[gnu::unused]] TVector3 Wire2,
+                                    [[gnu::unused]] double MaxDistance)
     {
         return PCAOutputStruct();
     }

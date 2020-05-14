@@ -97,14 +97,11 @@ Int_t FairTutorialDet4GeoHandler::VolId(const Text_t* name) const
         //
         // Return the unique numeric identifier for volume name
         //
-        char sname[20];
-        Int_t len = strlen(name) - 1;
-        if (name[len] != ' ') {
-            return VolIdGeo(name);
+        std::string volname(name);
+        while (!volname.empty() && volname.back() == ' ') {
+            volname.pop_back();
         }
-        memcpy(sname, name, len);
-        sname[len] = 0;
-        return VolIdGeo(sname);
+        return VolIdGeo(volname.c_str());
     }
 }
 

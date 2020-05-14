@@ -72,7 +72,7 @@ struct OpNewCreator
 struct NullptrCreator
 {
     template<typename T, typename... Args>
-    static void CreateImpl(T*& input,[[maybe_unused]] Args&&... args)
+    static void CreateImpl(T*& input, [[gnu::unused]] Args&&... args)
     {
         input = nullptr;
     }
@@ -82,7 +82,7 @@ struct NullptrCreator
 struct EmptyCreator
 {
     template<typename... Args>
-    static void CreateImpl([[maybe_unused]] Args&&... args)
+    static void CreateImpl([[gnu::unused]] Args&&... args)
     {}
 };
 
@@ -107,17 +107,17 @@ struct SmartPtrCreator
 struct NullptrInitializer
 {
     template<typename T, typename... Args>
-    static void InitializeImpl(T*& input,[[maybe_unused]] Args&&... args)
+    static void InitializeImpl(T*& input, [[gnu::unused]] Args&&... args)
     {
         input = nullptr;
     }
     template<typename T, typename... Args>
-    static void InitializeImpl(std::unique_ptr<T>& input, [[maybe_unused]] Args&&... args)
+    static void InitializeImpl(std::unique_ptr<T>& input, [[gnu::unused]] Args&&... args)
     {
         input = nullptr;
     }
     template<typename T, typename... Args>
-    static void InitializeImpl(std::shared_ptr<T>& input, [[maybe_unused]] Args&&... args)
+    static void InitializeImpl(std::shared_ptr<T>& input, [[gnu::unused]] Args&&... args)
     {
         input = nullptr;
     }
@@ -127,7 +127,7 @@ struct NullptrInitializer
 struct EmptyInitializer
 {
     template<typename... Args>
-    static void InitializeImpl([[maybe_unused]] Args&&... args)
+    static void InitializeImpl([[gnu::unused]] Args&&... args)
     {}
 };
 
@@ -135,7 +135,7 @@ struct EmptyInitializer
 struct EmptyDeleter
 {
     template<typename... Args>
-    static void DestroyImpl([[maybe_unused]] Args&&... args)
+    static void DestroyImpl([[gnu::unused]] Args&&... args)
     {}
 };
 
