@@ -102,7 +102,7 @@ Int_t FairTutorialDet4GeoHandler::VolId(const Text_t* name) const
         if (name[len] != ' ') {
             return VolIdGeo(name);
         }
-        strncpy(sname, name, len);
+        memcpy(sname, name, len);
         sname[len] = 0;
         return VolIdGeo(sname);
     }

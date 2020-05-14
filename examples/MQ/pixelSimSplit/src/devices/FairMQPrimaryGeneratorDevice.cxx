@@ -29,14 +29,14 @@
 using namespace std;
 
 FairMQPrimaryGeneratorDevice::FairMQPrimaryGeneratorDevice()
-    : fRunConditional(true)
+    : fGeneratorChannelName("primariesChannel")
     , fAckChannelName("")
-    , fGeneratorChannelName("primariesChannel")
-    , fEventCounter(0)
-    , fNofEvents(10)
+    , fRunConditional(true)
     , fPrimaryGenerator(nullptr)
     , fMCEventHeader(nullptr)
     , fStack(nullptr)
+    , fNofEvents(10)
+    , fEventCounter(0)
     , fChunkSize(0)
     , fChunkPointer(0)
     , fAckListener()
@@ -71,7 +71,7 @@ bool FairMQPrimaryGeneratorDevice::ConditionalRun()
     return GenerateAndSendData();
 }
 
-bool FairMQPrimaryGeneratorDevice::Reply(FairMQMessagePtr& mPtr, int /*index*/) { return GenerateAndSendData(); }
+bool FairMQPrimaryGeneratorDevice::Reply(__attribute__((unused))FairMQMessagePtr& mPtr, __attribute__((unused)) int /*index*/) { return GenerateAndSendData(); }
 
 bool FairMQPrimaryGeneratorDevice::GenerateAndSendData()
 {
