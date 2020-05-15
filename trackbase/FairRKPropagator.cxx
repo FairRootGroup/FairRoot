@@ -184,7 +184,7 @@ bool FairRKPropagator::Propagate(float* x1, float* p1, float* x2, float* p2, int
     return true;
 }
 
-bool FairRKPropagator::SetDestinationPlane(TVector3& v0, TVector3& v1, TVector3& v2)
+bool FairRKPropagator::SetDestinationPlane(const TVector3& v0, const TVector3& v1, const TVector3& v2)
 {
     fDefPlaneV0 = v0;
     fDefPlaneV1 = v1;
@@ -193,7 +193,7 @@ bool FairRKPropagator::SetDestinationPlane(TVector3& v0, TVector3& v1, TVector3&
     return true;
 }
 
-bool FairRKPropagator::SetOriginPlane([[gnu::unused]] TVector3& v0, [[gnu::unused]] TVector3& v1)
+bool FairRKPropagator::SetOriginPlane([[gnu::unused]] const TVector3& v0, [[gnu::unused]] const TVector3& v1)
 {
     LOG(warning) << "FairRKPropagator::SetLengthToPropagateTo not implemented yet";
     return false;

@@ -93,7 +93,6 @@ Double_t FairEventBuilderManager::FillEventVectors()
             cout << "  event buffer " << fEventBuilders[ieb]->GetName() << " found " << tempBuilder.size() << " events"
                  << endl;
         }
-        std::pair<double, FairRecoEventHeader*> tempPair;
         for (UInt_t ipair = 0; ipair < tempBuilder.size(); ipair++) {
             fPossibleEvents[ieb].push_back(tempBuilder[ipair]);
             if (fVerbose)

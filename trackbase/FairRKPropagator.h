@@ -78,12 +78,12 @@ class FairRKPropagator : public FairPropagator
     /**New method to set the plane to propagate particles to
      @v0 v1 v2  Plane defining vectors
     */
-    virtual bool SetDestinationPlane(TVector3& v0, TVector3& v1, TVector3& v2);
+    virtual bool SetDestinationPlane(const TVector3& v0, const TVector3& v1, const TVector3& v2);
 
     /**New method to set the plane to propagate particles from
      @v0 v1     Plane defining vectors
     */
-    virtual bool SetOriginPlane(TVector3& v0, TVector3& v1);
+    virtual bool SetOriginPlane(const TVector3& v0, const TVector3& v1);
 
     /**New method to set the volume to propagate particles to
        @volName Volume name

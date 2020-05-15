@@ -113,7 +113,7 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
                       << " // Buffered: " << fObjectMap.size() << " // Sent: " << fNofSentMessages << " <<";
     } else {
         // got all the parts of the event, have to combine and send message, consisting of objects from fObjectMap
-        int currentEventPart = fMCSplitEventHeader->GetChunkStart();
+        [[gnu::unused]] int currentEventPart = fMCSplitEventHeader->GetChunkStart();
         fRet = fObjectMap.equal_range(fEvRIPair);
         std::vector<int> trackShift;
         LOG(debug) << "- [" << fEvRIPair.second << "][" << fEvRIPair.first << "][ALL]";

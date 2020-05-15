@@ -70,11 +70,12 @@ FairRunSim::FairRunSim(Bool_t isMaster)
     , fRadMap(kFALSE)
     , fRadGrid(kFALSE)
     , fMeshList(new TObjArray())
-    , fSimulationConfig(nullptr)
     , fUserConfig("")
     , fUserCuts("SetCuts.C")
     , fIsMT(kFALSE)
     , fImportTGeoToVMC(kTRUE)
+    , fSimulationConfig(nullptr)
+
 {
     if (fginstance) {
         Fatal("FairRun", "Singleton instance already exists.");
