@@ -16,6 +16,9 @@
 
 FairBaseMCGenerator::FairBaseMCGenerator()
     : FairGenerator()
+    , fX(0)
+    , fY(0)
+    , fZ(0)
     , fPDGType(0)
     , fMult(0)
     , fVertexSmear(kBox)
@@ -26,9 +29,6 @@ FairBaseMCGenerator::FairBaseMCGenerator()
     , fVex(0.0)
     , fVey(0.0)
     , fVez(0.0)
-    , fX(0)
-    , fY(0)
-    , fZ(0)
 {}
 
 void FairBaseMCGenerator::SetVertex(Double_t vx,

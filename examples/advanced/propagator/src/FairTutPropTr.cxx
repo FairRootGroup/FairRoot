@@ -173,14 +173,14 @@ void FairTutPropTr::Exec(Option_t*)
 
         TClonesArray& clref2 = *fTrackParFinal;
         Int_t size2 = clref2.GetEntriesFast();
-        FairTrackParP* fFinal = new (clref2[size2]) FairTrackParP(EndPos,
-                                                                  EndMom,
-                                                                  EndPosErr,
-                                                                  EndMomErr,
-                                                                  fCharge,
-                                                                  TVector3(0., 0., 20.),
-                                                                  TVector3(1., 0., 0.),
-                                                                  TVector3(0., 1., 0.));
+        [[gnu::unused]] FairTrackParP* fFinal = new (clref2[size2]) FairTrackParP(EndPos,
+                                                                                  EndMom,
+                                                                                  EndPosErr,
+                                                                                  EndMomErr,
+                                                                                  fCharge,
+                                                                                  TVector3(0., 0., 20.),
+                                                                                  TVector3(1., 0., 0.),
+                                                                                  TVector3(0., 1., 0.));
 
         fPro->Propagate(fStart, fRes, PDGCode);
 

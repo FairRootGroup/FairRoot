@@ -62,9 +62,9 @@ class FairPropagator : public TNamed
     /**New method to set the plane to propagate particles to
      @v0 v1 v2  Plane defining vectors
     */
-    virtual bool SetDestinationPlane([[gnu::unused]] TVector3& /* v0 */,
-                                     [[gnu::unused]] TVector3& /* v1 */,
-                                     [[gnu::unused]] TVector3& /* v2 */)
+    virtual bool SetDestinationPlane([[gnu::unused]] const TVector3& v0,
+                                     [[gnu::unused]] const TVector3& v1,
+                                     [[gnu::unused]] const TVector3& v2)
     {
         return false;
     }
@@ -72,7 +72,7 @@ class FairPropagator : public TNamed
     /**New method to set the plane to propagate particles from
      @v0 v1     Plane defining vectors
     */
-    virtual bool SetOriginPlane([[gnu::unused]] TVector3& /* v0 */, [[gnu::unused]] TVector3& /* v1 */)
+    virtual bool SetOriginPlane([[gnu::unused]] const TVector3& v0, [[gnu::unused]] const TVector3& v1)
     {
         return false;
     }
@@ -82,9 +82,9 @@ class FairPropagator : public TNamed
        @copyNo  Copy number
        @option  Option
     */
-    virtual bool SetDestinationVolume([[gnu::unused]] std::string /* volName */,
-                                      [[gnu::unused]] int /* copyNo */,
-                                      [[gnu::unused]] int /* option */)
+    virtual bool SetDestinationVolume([[gnu::unused]] std::string volName,
+                                      [[gnu::unused]] int copyNo,
+                                      [[gnu::unused]] int option)
     {
         return false;
     }
@@ -98,35 +98,35 @@ class FairPropagator : public TNamed
      */
     virtual bool SetPropagateOnlyParameters() { return false; }
 
-    virtual bool Propagate([[gnu::unused]] FairTrackParH* /* TStart */,
-                           [[gnu::unused]] FairTrackParH* /* TEnd */,
-                           [[gnu::unused]] int /* PDG */)
+    virtual bool Propagate([[gnu::unused]] FairTrackParH* TStart,
+                           [[gnu::unused]] FairTrackParH* TEnd,
+                           [[gnu::unused]] int PDG)
     {
         return false;
     }
-    virtual bool Propagate([[gnu::unused]] FairTrackParP* /* TStart */,
-                           [[gnu::unused]] FairTrackParH* /* TEnd */,
-                           [[gnu::unused]] int /* PDG */)
+    virtual bool Propagate([[gnu::unused]] FairTrackParP* TStart,
+                           [[gnu::unused]] FairTrackParH* TEnd,
+                           [[gnu::unused]] int PDG)
     {
         return false;
     }
-    virtual bool Propagate([[gnu::unused]] FairTrackParP* /* TStart */,
-                           [[gnu::unused]] FairTrackParP* /* TEnd */,
-                           [[gnu::unused]] int /* PDG */)
+    virtual bool Propagate([[gnu::unused]] FairTrackParP* TStart,
+                           [[gnu::unused]] FairTrackParP* TEnd,
+                           [[gnu::unused]] int PDG)
     {
         return false;
     }
-    virtual bool Propagate([[gnu::unused]] FairTrackParH* /* TStart */,
-                           [[gnu::unused]] FairTrackParP* /* TEnd */,
-                           [[gnu::unused]] int /* PDG */)
+    virtual bool Propagate([[gnu::unused]] FairTrackParH* TStart,
+                           [[gnu::unused]] FairTrackParP* TEnd,
+                           [[gnu::unused]] int PDG)
     {
         return false;
     }
-    virtual bool Propagate([[gnu::unused]] float* /* x1 */,
-                           [[gnu::unused]] float* /* p1 */,
-                           [[gnu::unused]] float* /* x2 */,
-                           [[gnu::unused]] float* /* p2 */,
-                           [[gnu::unused]] int /* PDG */)
+    virtual bool Propagate([[gnu::unused]] float* x1,
+                           [[gnu::unused]] float* p1,
+                           [[gnu::unused]] float* x2,
+                           [[gnu::unused]] float* p2,
+                           [[gnu::unused]] int PDG)
     {
         return false;
     }

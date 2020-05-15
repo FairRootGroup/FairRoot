@@ -53,9 +53,9 @@ FairFastSimModel::~FairFastSimModel() {}
 // 	delete parser;
 // }
 
-G4bool FairFastSimModel::IsApplicable(const G4ParticleDefinition& particleType) { return true; }
+G4bool FairFastSimModel::IsApplicable([[gnu::unused]] const G4ParticleDefinition& particleType) { return true; }
 
-G4bool FairFastSimModel::ModelTrigger(const G4FastTrack& fastTrack) { return true; }
+G4bool FairFastSimModel::ModelTrigger([[gnu::unused]] const G4FastTrack& fastTrack) { return true; }
 
 void FairFastSimModel::DoIt(const G4FastTrack& fastTrack, G4FastStep& fastStep)
 {
@@ -97,7 +97,6 @@ void FairFastSimModel::DoIt(const G4FastTrack& fastTrack, G4FastStep& fastStep)
             particle->GetPolarisation(polVect);
             G4ThreeVector pol(polVect.X(), polVect.Y(), polVect.Z());   // get polarisation
             G4double tim = particle->T() * 10.e9;                       // change from ns to s
-                                                                        //   G4double len = 0.;
             G4double ek = particle->Ek() * 1000.;
             G4DynamicParticle dynParticle(particleDefinition, mom.unit(), ek);
             G4Track* tempTrack = fastStep.CreateSecondaryTrack(dynParticle, pos, tim, false);
