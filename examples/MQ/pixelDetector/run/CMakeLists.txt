@@ -95,7 +95,7 @@ target_link_libraries(pixel-sim PRIVATE
   FairRoot::Base # FairModule, FairPrimaryGenerator
   FairRoot::Gen # FairBoxGenerator
   FairRoot::ParBase # FairParAsciiFileIo
-  FairRoot::Passive # FairCave
+  FairRoot::ExamplesPassive # FairCave
   Core # TSystem
   MathCore # TRandom
 )
