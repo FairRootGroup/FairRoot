@@ -43,7 +43,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::MCStack
   FairRoot::FairFastSim
   FairRoot::ParBase
-  FairRoot::Passive
+  FairRoot::ExamplesPassive
   FairRoot::Gen
 
   Boost::program_options

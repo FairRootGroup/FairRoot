@@ -49,7 +49,7 @@ target_link_libraries(pixel-sim-transport PRIVATE
   FairRoot::Base # FairModule, FairPrimaryGenerator
   FairRoot::Pixel
   FairRoot::ParBase # FairParAsciiFileIo
-  FairRoot::Passive # FairCave
+  FairRoot::ExamplesPassive # FairCave
   Core # TSystem
   MathCore # TRandom
 )

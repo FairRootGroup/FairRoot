@@ -79,7 +79,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::GeoBase
   FairRoot::MCStack
   FairRoot::ParBase # FairParGenericSet
-  FairRoot::Passive # FairCave
+  FairRoot::ExamplesPassive # FairCave
 
   Boost::serialization
 
