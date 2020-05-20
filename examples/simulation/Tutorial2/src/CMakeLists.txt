@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target Tutorial2)
+set(target ExSimulation2)
 
 set(sources
   FairTutorialDet2.cxx
@@ -41,7 +41,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::FairTools # FairLogger
   FairRoot::GeoBase # FairContFact
-  FairRoot::MCStack
+  FairRoot::ExMCStack
   FairRoot::ParBase # FairContFact
 
   Core

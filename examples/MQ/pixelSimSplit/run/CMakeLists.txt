@@ -25,7 +25,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMC.sh.in   ${CMAKE_
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMQ.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh)
 
 set(exe_dependencies
-  FairRoot::SimMQ
+  FairRoot::ExSimMQ
   FairMQ::FairMQ
   Boost::program_options
 )
@@ -47,9 +47,9 @@ add_executable(pixel-sim-transport runMQTrans.cxx)
 target_link_libraries(pixel-sim-transport PRIVATE
   ${exe_dependencies}
   FairRoot::Base # FairModule, FairPrimaryGenerator
-  FairRoot::Pixel
   FairRoot::ParBase # FairParAsciiFileIo
-  FairRoot::ExamplesPassive # FairCave
+  FairRoot::ExPassive # FairCave
+  FairRoot::ExPixel
   Core # TSystem
   MathCore # TRandom
 )

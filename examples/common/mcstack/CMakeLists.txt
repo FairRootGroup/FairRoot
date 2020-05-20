@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target MCStack)
+set(target ExMCStack)
 
 set(sources
   FairMCTrack.cxx

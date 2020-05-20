@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target ExamplesPassive)
+set(target ExPassive)
 
 set(sources
   FairCave.cxx

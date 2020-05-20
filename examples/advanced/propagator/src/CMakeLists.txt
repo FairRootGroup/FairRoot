@@ -6,7 +6,7 @@
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 
-set(target PropagatorExample)
+set(target ExPropagator)
 
 set(sources
   FairTutPropContFact.cxx
@@ -43,7 +43,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::BaseMQ # Serialization policies
   FairRoot::FairTools # FairLogger
   FairRoot::GeoBase # FairGeoSet
-  FairRoot::MCStack
+  FairRoot::ExMCStack
   FairRoot::ParBase # FairRuntimeDb, FairContFact, FairParamList
   FairRoot::TrkBase # FairPropagator
 

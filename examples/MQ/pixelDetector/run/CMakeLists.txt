@@ -63,7 +63,7 @@ if(DDS_FOUND)
 endif()
 
 set(exe_dependencies
-  FairRoot::Pixel
+  FairRoot::ExPixel
   FairMQ::FairMQ
   Boost::program_options
 )
@@ -95,7 +95,7 @@ target_link_libraries(pixel-sim PRIVATE
   FairRoot::Base # FairModule, FairPrimaryGenerator
   FairRoot::Gen # FairBoxGenerator
   FairRoot::ParBase # FairParAsciiFileIo
-  FairRoot::ExamplesPassive # FairCave
+  FairRoot::ExPassive # FairCave
   Core # TSystem
   MathCore # TRandom
 )
