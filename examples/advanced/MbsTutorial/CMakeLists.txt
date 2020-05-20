@@ -8,7 +8,7 @@
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/sample_data_2.lmd  ${CMAKE_CURRENT_BINARY_DIR}/sample_data_2.lmd COPYONLY)
 
-set(target MbsTutorial)
+set(target ExMbs)
 
 set(sources
   FairMBSUnpack.cxx

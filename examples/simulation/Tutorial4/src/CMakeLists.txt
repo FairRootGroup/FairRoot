@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target Tutorial4)
+set(target ExSimulation4)
 
 set(sources
   data/FairTutorialDet4Point.cxx
@@ -59,7 +59,7 @@ target_link_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::FairTools # FairLogger
-  FairRoot::MCStack
+  FairRoot::ExMCStack
   FairRoot::GeoBase
   FairRoot::ParBase
   FairRoot::Gen

@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target Pixel)
+set(target ExPixel)
 
 set(no_dict_sources
   devices/FairMQPixelFileSink.cxx
@@ -77,9 +77,9 @@ target_link_libraries(${target} PUBLIC
   FairRoot::FairTools # FairLogger
   FairRoot::Gen # FairBoxGenerator
   FairRoot::GeoBase
-  FairRoot::MCStack
   FairRoot::ParBase # FairParGenericSet
-  FairRoot::ExamplesPassive # FairCave
+  FairRoot::ExMCStack
+  FairRoot::ExPassive # FairCave
 
   Boost::serialization
 

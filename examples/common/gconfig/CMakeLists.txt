@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target GConfig)
+set(target ExGConfig)
 
 set(sources
   FairVMCConfig.cxx
@@ -35,7 +35,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::FairTools # FairLogger
   FairRoot::MCConfigurator # FairYamlVMCConfig
-  FairRoot::MCStack # FairStack
+  FairRoot::ExMCStack # FairStack
 
   ${VMCLIB} # TVirtualMC
 )
