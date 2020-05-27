@@ -68,8 +68,13 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = fals
     run->AddModule(cave);
 
     FairTutPropDet* det = new FairTutPropDet("TutPropDetector", kTRUE);
-    det->SetGeometryFileName("pixel.geo");
+    det->SetGeometryFileName("tutProp.geo");
     run->AddModule(det);
+
+    FairTutPropDet* det2 = new FairTutPropDet("TutPropDetector", kTRUE);
+    det2->SetGeometryFileName("tutProp2.geo");
+    det2->SetPointsArrayName("FairTutPropPoint2");
+    run->AddModule(det2);
     // ------------------------------------------------------------------------
 
     // -----   Create PrimaryGenerator   --------------------------------------
