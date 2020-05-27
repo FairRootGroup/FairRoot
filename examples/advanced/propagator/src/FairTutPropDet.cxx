@@ -43,6 +43,7 @@ FairTutPropDet::FairTutPropDet()
 
 FairTutPropDet::FairTutPropDet(const char* name, Bool_t active)
     : FairDetector(name, active, kTutProp)
+    , fPointsArrayName("FairTutPropPoint")
     , fTrackID(-1)
     , fVolumeID(-1)
     , fPos()
@@ -89,18 +90,13 @@ Bool_t FairTutPropDet::ProcessHits(FairVolume* vol)
             return kFALSE;
         }
 
-        // Taking stationNr and sectorNr from string is almost effortless.
-        // Simulation of 100k events with 5 pions without magnetic field takes:
-        // - Real time 142.366 s, CPU time 140.32s WITH USING VolPath TO GET fVolumeID
-        // - Real time 142.407 s, CPU time 140.64s WITHOUT THE FOLLOWING TString OPERATIONS
+        // Taking stationNr from string is almost effortless.
         {
             TString detPath = TVirtualMC::GetMC()->CurrentVolPath();
             detPath.Remove(0, detPath.Last('/') + 1);
             detPath.Remove(0, detPath.First("Pixel") + 5);
             Int_t stationNr = detPath.Atoi();
-            detPath.Remove(0, detPath.First("_") + 1);
-            Int_t sectorNr = detPath.Atoi();
-            fVolumeID = stationNr * 256 + sectorNr;
+            fVolumeID = stationNr;
         }
 
         AddHit(fTrackID,
@@ -130,7 +126,7 @@ void FairTutPropDet::Register()
         only during the simulation.
     */
 
-    FairRootManager::Instance()->Register("FairTutPropPoint", "FairTutPropDet", fFairTutPropPointCollection, kTRUE);
+    FairRootManager::Instance()->Register(fPointsArrayName.data(), "FairTutPropDet", fFairTutPropPointCollection, kTRUE);
 }
 
 TClonesArray* FairTutPropDet::GetCollection(Int_t iColl) const

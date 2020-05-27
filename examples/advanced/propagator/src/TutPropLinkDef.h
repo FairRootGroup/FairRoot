@@ -17,5 +17,9 @@
 #pragma link C++ class FairTutPropGeoPar+;
 #pragma link C++ class FairTutPropPoint+;
 #pragma link C++ class FairTutPropTr+;
+#pragma link C++ class FairTutPropHit+;
+#pragma link C++ class FairTutPropHitProducer+;
+#pragma link C++ class FairTutPropTrack+;
+#pragma link C++ class FairTutPropTrackFinder+;
 
 #endif
