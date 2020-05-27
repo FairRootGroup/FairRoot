@@ -90,7 +90,7 @@ InitStatus FairTutPropTr::Init()
 // -----   Private method InitPropagator   ---------------------------------
 void FairTutPropTr::InitPropagator()
 {
-    TVector3 planePoint(0., 0., 20.);
+    TVector3 planePoint(0., 0., 40.);
     TVector3 planeVectJ(1., 0., 0.);
     TVector3 planeVectK(0., 1., 0.);
 
@@ -116,14 +116,14 @@ void FairTutPropTr::Exec(Option_t*)
     LOG(debug) << "fPointArray has " << NoOfEntries << " entries";
     for (Int_t i = 0; i < NoOfEntries; i++) {
         FairTutPropPoint* point1 = static_cast<FairTutPropPoint*>(fPointArray->At(i));
-        if (point1->GetZ() > 6.)
+        if (point1->GetZ() > 15.)
             continue;
         LOG(debug) << "first loop for " << i << "from " << NoOfEntries << " entries ";
         Int_t trId = point1->GetTrackID();
         FairTutPropPoint* point2 = 0;
         for (Int_t k = 0; k < NoOfEntries; k++) {
             point2 = static_cast<FairTutPropPoint*>(fPointArray->At(k));
-            if (point2->GetZ() < 15.)
+            if (point2->GetZ() < 35.)
                 continue;
             LOG(debug) << "second loop for " << k;
             if (point2->GetTrackID() == trId)
@@ -156,7 +156,7 @@ void FairTutPropTr::Exec(Option_t*)
                                                                   StartPosErr,
                                                                   StartMomErr,
                                                                   fCharge,
-                                                                  TVector3(0., 0., 5.),
+                                                                  TVector3(0., 0., 10.),
                                                                   TVector3(1., 0., 0.),
                                                                   TVector3(0., 1., 0.));
         //  fStart->Print();
@@ -178,7 +178,7 @@ void FairTutPropTr::Exec(Option_t*)
                                                                                   EndPosErr,
                                                                                   EndMomErr,
                                                                                   fCharge,
-                                                                                  TVector3(0., 0., 20.),
+                                                                                  TVector3(0., 0., 40.),
                                                                                   TVector3(1., 0., 0.),
                                                                                   TVector3(0., 1., 0.));
 

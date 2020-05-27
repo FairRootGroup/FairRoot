@@ -73,7 +73,11 @@ class FairTutPropDet : public FairDetector
     virtual void PreTrack() { ; }
     virtual void BeginEvent() { ; }
 
+    void SetPointsArrayName(const std::string& tempName) { fPointsArrayName = tempName; };
+
   private:
+    std::string fPointsArrayName;
+
     /** Track information to be stored until the track leaves the
     active volume.
     */

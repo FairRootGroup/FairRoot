@@ -15,6 +15,10 @@ set(sources
   FairTutPropGeoPar.cxx
   FairTutPropPoint.cxx
   FairTutPropTr.cxx
+  FairTutPropHit.cxx
+  FairTutPropHitProducer.cxx
+  FairTutPropTrack.cxx
+  FairTutPropTrackFinder.cxx
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
