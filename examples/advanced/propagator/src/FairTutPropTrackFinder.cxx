@@ -122,6 +122,17 @@ void FairTutPropTrackFinder::Exec(Option_t* /*option*/)
             FairTutPropHit* hit1 = static_cast<FairTutPropHit*>(fHitsArray1->At(ihit1));
             auto trackFromMap = trackNofHitsMap.find(hit1->GetTrackID());
             if ( trackFromMap != trackNofHitsMap.end() ) {
+                std::vector<std::pair<int,int>> trackHits;
+                for ( int jhit1 = 0 ; jhit1 < nofHits1 ; jhit1++ ) {
+                    FairTutPropHit* hit1Ind = static_cast<FairTutPropHit*>(fHitsArray1->At(jhit1));
+                    if ( hit1Ind->GetTrackID() == hit1->GetTrackID() )
+                        trackHits.push_back(std::make_pair(1,jhit1));
+                }
+                for ( int jhit2 = 0 ; jhit2 < nofHits2 ; jhit2++ ) {
+                    FairTutPropHit* hit2Ind = static_cast<FairTutPropHit*>(fHitsArray2->At(jhit2));
+                    if ( hit2Ind->GetTrackID() == hit1->GetTrackID() )
+                        trackHits.push_back(std::make_pair(2,jhit2));
+                }
                 FairTrackParP firstTrackPar (TVector3(hit1->GetX()  ,hit1->GetY()  ,hit1->GetZ()  ),
                                              TVector3(hit1->GetPx() ,hit1->GetPy() ,hit1->GetPz() ),
                                              TVector3(hit1->GetDx() ,hit1->GetDy() ,hit1->GetDz() ),
@@ -130,7 +141,7 @@ void FairTutPropTrackFinder::Exec(Option_t* /*option*/)
                                              TVector3(0., 0., hit1->GetZ()),
                                              TVector3(1., 0., 0.),
                                              TVector3(0., 1., 0.));
-                new ((*fTracksArray)[fTracksArray->GetEntries()]) FairTutPropTrack(hit1->GetPdgCode(),firstTrackPar);
+                new ((*fTracksArray)[fTracksArray->GetEntries()]) FairTutPropTrack(hit1->GetPdgCode(),firstTrackPar,trackHits);
                 trackCreated = true;
                 break;
             }
@@ -140,6 +151,17 @@ void FairTutPropTrackFinder::Exec(Option_t* /*option*/)
             FairTutPropHit* hit2 = static_cast<FairTutPropHit*>(fHitsArray2->At(ihit2));
             auto trackFromMap = trackNofHitsMap.find(hit2->GetTrackID());
             if ( trackFromMap != trackNofHitsMap.end() ) {
+                std::vector<std::pair<int,int>> trackHits;
+                for ( int jhit1 = 0 ; jhit1 < nofHits1 ; jhit1++ ) {
+                    FairTutPropHit* hit1Ind = static_cast<FairTutPropHit*>(fHitsArray1->At(jhit1));
+                    if ( hit1Ind->GetTrackID() == hit2->GetTrackID() )
+                        trackHits.push_back(std::make_pair(1,jhit1));
+                }
+                for ( int jhit2 = 0 ; jhit2 < nofHits2 ; jhit2++ ) {
+                    FairTutPropHit* hit2Ind = static_cast<FairTutPropHit*>(fHitsArray2->At(jhit2));
+                    if ( hit2Ind->GetTrackID() == hit2->GetTrackID() )
+                        trackHits.push_back(std::make_pair(2,jhit2));
+                }
                 FairTrackParP firstTrackPar (TVector3(hit2->GetX()  ,hit2->GetY()  ,hit2->GetZ()  ),
                                              TVector3(hit2->GetPx() ,hit2->GetPy() ,hit2->GetPz() ),
                                              TVector3(hit2->GetDx() ,hit2->GetDy() ,hit2->GetDz() ),
@@ -148,7 +170,7 @@ void FairTutPropTrackFinder::Exec(Option_t* /*option*/)
                                              TVector3(0., 0., hit2->GetZ()),
                                              TVector3(1., 0., 0.),
                                              TVector3(0., 1., 0.));
-                new ((*fTracksArray)[fTracksArray->GetEntries()]) FairTutPropTrack(hit2->GetPdgCode(),firstTrackPar);
+                new ((*fTracksArray)[fTracksArray->GetEntries()]) FairTutPropTrack(hit2->GetPdgCode(),firstTrackPar,trackHits);
                 trackCreated = true;
                 break;
             }
