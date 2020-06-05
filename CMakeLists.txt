@@ -19,8 +19,8 @@ cmake_policy(VERSION 3.11...3.17)
 set(CMAKE_INSTALL_MESSAGE LAZY)
 # Set project version
 SET(FAIRROOT_MAJOR_VERSION 18)
-SET(FAIRROOT_MINOR_VERSION 2)
-SET(FAIRROOT_PATCH_VERSION 2)
+SET(FAIRROOT_MINOR_VERSION 4)
+SET(FAIRROOT_PATCH_VERSION 0)
 
 # Set name of our project to "FAIRROOT".
 # Has to be done after check of cmake version
