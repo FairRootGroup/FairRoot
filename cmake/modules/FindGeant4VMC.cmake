@@ -19,7 +19,8 @@ if(Geant4VMC_FOUND AND Geant4VMC_INCLUDE_DIRS AND TARGET geant4vmc)
 endif()
 
 if(Geant4VMC_FOUND)
-  set(Geant4VMC_LIBRARY_DIR "${Geant4VMC_DIR}/${Geant4VMC_CMAKE_INSTALL_LIBDIR}")
+  set(Geant4VMC_LIBRARY_DIR "${Geant4VMC_DIR}/../../${Geant4VMC_CMAKE_INSTALL_LIBDIR}")
+  get_filename_component(Geant4VMC_LIBRARY_DIR ${Geant4VMC_LIBRARY_DIR} ABSOLUTE)
   set(Geant4VMC_SHARE_DIR "${Geant4VMC_DIR}/share")
   find_path(Geant4VMC_MACRO_DIR NAMES g4libs.C PATHS
     ${Geant4VMC_SHARE_DIR}/Geant4VMC-${Geant4VMC_VERSION}/examples/macro

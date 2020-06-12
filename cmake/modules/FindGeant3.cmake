@@ -19,7 +19,8 @@ if(Geant3_FOUND AND Geant3_INCLUDE_DIRS AND TARGET geant321)
 endif()
 
 if(Geant3_FOUND)
-  Set(Geant3_LIBRARY_DIR ${Geant3_DIR}/${Geant3_CMAKE_INSTALL_LIBDIR})
+  set(Geant3_LIBRARY_DIR ${Geant3_DIR}/../../${Geant3_CMAKE_INSTALL_LIBDIR})
+  get_filename_component(Geant3_LIBRARY_DIR ${Geant3_LIBRARY_DIR} ABSOLUTE)
   find_path(Geant3_SYSTEM_DIR NAMES data PATHS
            ${Geant3_DIR}/../../share/geant3
            NO_DEFAULT_PATH)
