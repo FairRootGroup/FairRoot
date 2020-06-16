@@ -118,57 +118,56 @@ $(document).ready(function(){initNavTree('db/d0f/FairTutPropTr_8h_source.html','
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#ifndef FAIRTUTGEANETR_H</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define FAIRTUTGEANETR_H 1</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d1/d29/FairPropagator_8h.html">FairPropagator.h</a>&quot;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d8/d44/FairTask_8h.html">FairTask.h</a>&quot;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d1/d29/FairPropagator_8h.html">FairPropagator.h</a>&quot;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">class </span>TClonesArray;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">class </span><a class="code" href="../../de/d7f/classFairTutPropPoint.html">FairTutPropPoint</a>;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="../../db/d50/classFairTutPropTr.html">   25</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../db/d50/classFairTutPropTr.html">FairTutPropTr</a> : <span class="keyword">public</span> <a class="code" href="../../d2/d9e/classFairTask.html">FairTask</a></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <a class="code" href="../../db/d50/classFairTutPropTr.html#a9ff985fbeb84699d8c9c3c512216fc58">FairTutPropTr</a>();</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <a class="code" href="../../db/d50/classFairTutPropTr.html#a1201b0682a41d82d327b676d9603b360">~FairTutPropTr</a>();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="../../d8/d44/FairTask_8h.html#ac29def3095b23bd5d68cec73adacbf4c">InitStatus</a> <a class="code" href="../../db/d50/classFairTutPropTr.html#abb30564e87ce742a7435c6023004eede">Init</a>();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../db/d50/classFairTutPropTr.html#ad8e9709228da5b1ebea69a1bae1de13e">Exec</a>(Option_t* opt);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="../../db/d50/classFairTutPropTr.html#a4d8668205ca05620c389e2316b6c427f">   40</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="../../db/d50/classFairTutPropTr.html#a4d8668205ca05620c389e2316b6c427f">SetPropagator</a>(<a class="code" href="../../dc/da9/classFairPropagator.html">FairPropagator</a>* prop) { fPro = prop; }</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  <span class="keywordtype">void</span> Reset();</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keyword">virtual</span> <span class="keywordtype">void</span> Finish();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keywordtype">void</span> InitPropagator();</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keywordtype">bool</span> fPropagatorSet;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  TClonesArray* fPointArray;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  TClonesArray* fTrackParIni;   <span class="comment">// initial MC track parameters</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  TClonesArray* fTrackParFinal; <span class="comment">// final MC track parameters</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  TClonesArray* fTrackParProp; <span class="comment">// calculated track parameters</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  TClonesArray* fTrackParWrong; <span class="comment">// demonstrate effect of wrong charge</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="../../dc/da9/classFairPropagator.html">FairPropagator</a> *fPro;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  ClassDef(<a class="code" href="../../db/d50/classFairTutPropTr.html">FairTutPropTr</a>,1);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif //FAIRTUTGEANETR_H</span></div>
-<div class="ttc" id="classFairTask_html"><div class="ttname"><a href="../../d2/d9e/classFairTask.html">FairTask</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d44/FairTask_8h_source.html#l00036">FairTask.h:36</a></div></div>
-<div class="ttc" id="FairTask_8h_html_ac29def3095b23bd5d68cec73adacbf4c"><div class="ttname"><a href="../../d8/d44/FairTask_8h.html#ac29def3095b23bd5d68cec73adacbf4c">InitStatus</a></div><div class="ttdeci">InitStatus</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d44/FairTask_8h_source.html#l00034">FairTask.h:34</a></div></div>
-<div class="ttc" id="classFairTutPropTr_html_a1201b0682a41d82d327b676d9603b360"><div class="ttname"><a href="../../db/d50/classFairTutPropTr.html#a1201b0682a41d82d327b676d9603b360">FairTutPropTr::~FairTutPropTr</a></div><div class="ttdeci">~FairTutPropTr()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d37/FairTutPropTr_8cxx_source.html#l00040">FairTutPropTr.cxx:40</a></div></div>
-<div class="ttc" id="classFairTutPropTr_html"><div class="ttname"><a href="../../db/d50/classFairTutPropTr.html">FairTutPropTr</a></div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0f/FairTutPropTr_8h_source.html#l00025">FairTutPropTr.h:25</a></div></div>
-<div class="ttc" id="classFairPropagator_html"><div class="ttname"><a href="../../dc/da9/classFairPropagator.html">FairPropagator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d29/FairPropagator_8h_source.html#l00044">FairPropagator.h:44</a></div></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">class </span>TClonesArray;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">class </span><a class="code" href="../../de/d7f/classFairTutPropPoint.html">FairTutPropPoint</a>;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="../../db/d50/classFairTutPropTr.html">   24</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../db/d50/classFairTutPropTr.html">FairTutPropTr</a> : <span class="keyword">public</span> <a class="code" href="../../d2/d9e/classFairTask.html">FairTask</a></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="../../db/d50/classFairTutPropTr.html#a9ff985fbeb84699d8c9c3c512216fc58">FairTutPropTr</a>();</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="../../db/d50/classFairTutPropTr.html#a1201b0682a41d82d327b676d9603b360">~FairTutPropTr</a>();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d8/d44/FairTask_8h.html#ac29def3095b23bd5d68cec73adacbf4c">InitStatus</a> <a class="code" href="../../db/d50/classFairTutPropTr.html#abb30564e87ce742a7435c6023004eede">Init</a>();</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../db/d50/classFairTutPropTr.html#ad8e9709228da5b1ebea69a1bae1de13e">Exec</a>(Option_t* opt);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="../../db/d50/classFairTutPropTr.html#a4d8668205ca05620c389e2316b6c427f">   39</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../db/d50/classFairTutPropTr.html#a4d8668205ca05620c389e2316b6c427f">SetPropagator</a>(<a class="code" href="../../dc/da9/classFairPropagator.html">FairPropagator</a>* prop) { fPro = prop; }</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">void</span> Reset();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> Finish();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">void</span> InitPropagator();</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">bool</span> fPropagatorSet;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    TClonesArray* fPointArray;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    TClonesArray* fTrackParIni;     <span class="comment">// initial MC track parameters</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    TClonesArray* fTrackParFinal;   <span class="comment">// final MC track parameters</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    TClonesArray* fTrackParProp;    <span class="comment">// calculated track parameters</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    TClonesArray* fTrackParWrong;   <span class="comment">// demonstrate effect of wrong charge</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="../../dc/da9/classFairPropagator.html">FairPropagator</a>* fPro;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    ClassDef(<a class="code" href="../../db/d50/classFairTutPropTr.html">FairTutPropTr</a>, 1);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#endif   // FAIRTUTGEANETR_H</span></div>
+<div class="ttc" id="classFairTask_html"><div class="ttname"><a href="../../d2/d9e/classFairTask.html">FairTask</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d44/FairTask_8h_source.html#l00040">FairTask.h:40</a></div></div>
+<div class="ttc" id="FairTask_8h_html_ac29def3095b23bd5d68cec73adacbf4c"><div class="ttname"><a href="../../d8/d44/FairTask_8h.html#ac29def3095b23bd5d68cec73adacbf4c">InitStatus</a></div><div class="ttdeci">InitStatus</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d44/FairTask_8h_source.html#l00033">FairTask.h:33</a></div></div>
+<div class="ttc" id="classFairTutPropTr_html_a1201b0682a41d82d327b676d9603b360"><div class="ttname"><a href="../../db/d50/classFairTutPropTr.html#a1201b0682a41d82d327b676d9603b360">FairTutPropTr::~FairTutPropTr</a></div><div class="ttdeci">~FairTutPropTr()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d37/FairTutPropTr_8cxx_source.html#l00038">FairTutPropTr.cxx:38</a></div></div>
+<div class="ttc" id="classFairTutPropTr_html"><div class="ttname"><a href="../../db/d50/classFairTutPropTr.html">FairTutPropTr</a></div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0f/FairTutPropTr_8h_source.html#l00024">FairTutPropTr.h:24</a></div></div>
+<div class="ttc" id="classFairPropagator_html"><div class="ttname"><a href="../../dc/da9/classFairPropagator.html">FairPropagator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d29/FairPropagator_8h_source.html#l00051">FairPropagator.h:51</a></div></div>
 <div class="ttc" id="classFairTutPropPoint_html"><div class="ttname"><a href="../../de/d7f/classFairTutPropPoint.html">FairTutPropPoint</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d7/dd2/FairTutPropPoint_8h_source.html#l00015">FairTutPropPoint.h:15</a></div></div>
-<div class="ttc" id="classFairTutPropTr_html_ad8e9709228da5b1ebea69a1bae1de13e"><div class="ttname"><a href="../../db/d50/classFairTutPropTr.html#ad8e9709228da5b1ebea69a1bae1de13e">FairTutPropTr::Exec</a></div><div class="ttdeci">virtual void Exec(Option_t *opt)</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d37/FairTutPropTr_8cxx_source.html#l00106">FairTutPropTr.cxx:106</a></div></div>
-<div class="ttc" id="classFairTutPropTr_html_a4d8668205ca05620c389e2316b6c427f"><div class="ttname"><a href="../../db/d50/classFairTutPropTr.html#a4d8668205ca05620c389e2316b6c427f">FairTutPropTr::SetPropagator</a></div><div class="ttdeci">void SetPropagator(FairPropagator *prop)</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0f/FairTutPropTr_8h_source.html#l00040">FairTutPropTr.h:40</a></div></div>
-<div class="ttc" id="classFairTutPropTr_html_a9ff985fbeb84699d8c9c3c512216fc58"><div class="ttname"><a href="../../db/d50/classFairTutPropTr.html#a9ff985fbeb84699d8c9c3c512216fc58">FairTutPropTr::FairTutPropTr</a></div><div class="ttdeci">FairTutPropTr()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d37/FairTutPropTr_8cxx_source.html#l00027">FairTutPropTr.cxx:27</a></div></div>
-<div class="ttc" id="classFairTutPropTr_html_abb30564e87ce742a7435c6023004eede"><div class="ttname"><a href="../../db/d50/classFairTutPropTr.html#abb30564e87ce742a7435c6023004eede">FairTutPropTr::Init</a></div><div class="ttdeci">virtual InitStatus Init()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d37/FairTutPropTr_8cxx_source.html#l00063">FairTutPropTr.cxx:63</a></div></div>
+<div class="ttc" id="classFairTutPropTr_html_ad8e9709228da5b1ebea69a1bae1de13e"><div class="ttname"><a href="../../db/d50/classFairTutPropTr.html#ad8e9709228da5b1ebea69a1bae1de13e">FairTutPropTr::Exec</a></div><div class="ttdeci">virtual void Exec(Option_t *opt)</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d37/FairTutPropTr_8cxx_source.html#l00105">FairTutPropTr.cxx:105</a></div></div>
+<div class="ttc" id="classFairTutPropTr_html_a4d8668205ca05620c389e2316b6c427f"><div class="ttname"><a href="../../db/d50/classFairTutPropTr.html#a4d8668205ca05620c389e2316b6c427f">FairTutPropTr::SetPropagator</a></div><div class="ttdeci">void SetPropagator(FairPropagator *prop)</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d0f/FairTutPropTr_8h_source.html#l00039">FairTutPropTr.h:39</a></div></div>
+<div class="ttc" id="classFairTutPropTr_html_a9ff985fbeb84699d8c9c3c512216fc58"><div class="ttname"><a href="../../db/d50/classFairTutPropTr.html#a9ff985fbeb84699d8c9c3c512216fc58">FairTutPropTr::FairTutPropTr</a></div><div class="ttdeci">FairTutPropTr()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d37/FairTutPropTr_8cxx_source.html#l00025">FairTutPropTr.cxx:25</a></div></div>
+<div class="ttc" id="classFairTutPropTr_html_abb30564e87ce742a7435c6023004eede"><div class="ttname"><a href="../../db/d50/classFairTutPropTr.html#abb30564e87ce742a7435c6023004eede">FairTutPropTr::Init</a></div><div class="ttdeci">virtual InitStatus Init()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d37/FairTutPropTr_8cxx_source.html#l00061">FairTutPropTr.cxx:61</a></div></div>
 <div class="ttc" id="FairTask_8h_html"><div class="ttname"><a href="../../d8/d44/FairTask_8h.html">FairTask.h</a></div></div>
 <div class="ttc" id="FairPropagator_8h_html"><div class="ttname"><a href="../../d1/d29/FairPropagator_8h.html">FairPropagator.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -177,7 +176,7 @@ $(document).ready(function(){initNavTree('db/d0f/FairTutPropTr_8h_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_3aac5a4fc4a3ed763ec34816d5c7d441.html">advanced</a></li><li class="navelem"><a class="el" href="../../dir_07ce6f13fdd8f141afbd0e8ab2aa6863.html">propagator</a></li><li class="navelem"><a class="el" href="../../dir_1326e265ef242435b4c51514168676a5.html">src</a></li><li class="navelem"><a class="el" href="../../db/d0f/FairTutPropTr_8h.html">FairTutPropTr.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:49 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:57 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

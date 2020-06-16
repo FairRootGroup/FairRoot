@@ -6,6 +6,7 @@ var classFairRunSim =
     [ "AddModule", "dd/dbc/classFairRunSim.html#a4c6c38e334bb4f44d9f1b9ed72c458da", null ],
     [ "AddNewIon", "dd/dbc/classFairRunSim.html#a8ba54d923648553d86be22d8c7e061da", null ],
     [ "AddNewParticle", "dd/dbc/classFairRunSim.html#acbfbb2bcde199854f170cb89bcdc35d6", null ],
+    [ "ClassDef", "dd/dbc/classFairRunSim.html#a9adddf79df884ec6873868d2dd1a5cfa", null ],
     [ "GetBeamMom", "dd/dbc/classFairRunSim.html#ad779f2a62da88a2e7a251500a560c122", null ],
     [ "GetField", "dd/dbc/classFairRunSim.html#a6bdd3494cd44b14b6175d0481669c684", null ],
     [ "GetGeoModel", "dd/dbc/classFairRunSim.html#a5ec15ff0cc249b3a195299b6d3acb2a8", null ],
@@ -74,7 +75,7 @@ var classFairRunSim =
     [ "fUserCuts", "dd/dbc/classFairRunSim.html#a8abfce2d0836ee550204053931ef330c", null ],
     [ "fUserDecay", "dd/dbc/classFairRunSim.html#aba7fd8646e7d7d71c2e655d5a9426e9d", null ],
     [ "fUserDecayConfig", "dd/dbc/classFairRunSim.html#aa22a04ea5861fd644385133dba00d57b", null ],
-    [ "fUseSimSetupFunction", "dd/dbc/classFairRunSim.html#a39fb462b81b4001c21a42310923bb017", null ],
+    [ "fUseSimSetupFunction", "dd/dbc/classFairRunSim.html#a019b2097c3744cf8f5d438be9d20acd3", null ],
     [ "ListOfModules", "dd/dbc/classFairRunSim.html#af3789994742d27faa0a809c3431fd023", null ],
     [ "MatFname", "dd/dbc/classFairRunSim.html#a1ce5635d69680f90256b5083042819a0", null ]
 ];

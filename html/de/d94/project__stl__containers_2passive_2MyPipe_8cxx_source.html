@@ -122,100 +122,86 @@ $(document).ready(function(){initNavTree('de/d94/project__stl__containers_2passi
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/da0/project__stl__containers_2passive_2MyPipe_8h.html">MyPipe.h</a>&quot;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;TList.h&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;TObjArray.h&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;TGeoPcon.h&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;TGeoTube.h&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;TGeoMaterial.h&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;TGeoMedium.h&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;TGeoManager.h&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;TGeoManager.h&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;TGeoMaterial.h&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;TGeoMedium.h&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;TGeoPcon.h&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;TGeoTube.h&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;TList.h&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;TObjArray.h&gt;</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<a class="code" href="../../d6/d9c/classMyPipe.html#aad6699542c9997eda7b8d80a1e5546b7">MyPipe::~MyPipe</a>()</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;}</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe::MyPipe</a>()</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  : <a class="code" href="../../d4/d06/classFairModule.html">FairModule</a>()</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;}</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<a class="code" href="../../d6/d9c/classMyPipe.html#aad6699542c9997eda7b8d80a1e5546b7">MyPipe::~MyPipe</a>() {}</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe::MyPipe</a>()</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    : <a class="code" href="../../d4/d06/classFairModule.html">FairModule</a>()</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{}</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe::MyPipe</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* title)</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    : <a class="code" href="../../d4/d06/classFairModule.html">FairModule</a>(name, title)</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{}</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe::MyPipe</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * name, <span class="keyword">const</span> <span class="keywordtype">char</span> * title)</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  : <a class="code" href="../../d4/d06/classFairModule.html">FairModule</a>(name ,title)</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe::MyPipe</a>(<span class="keyword">const</span> <a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a>&amp; right)</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  : <a class="code" href="../../d4/d06/classFairModule.html">FairModule</a>(right)</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;{</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;}</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">// -----  ConstructGeometry  --------------------------------------------------</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d6/d9c/classMyPipe.html#afd60af5b2e5ed3f67a00db58b18249fb">MyPipe::ConstructGeometry</a>()</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;{</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;     TGeoVolume *top=gGeoManager-&gt;GetTopVolume();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;     TGeoMedium *Carbon = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;C&quot;</span>);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;     <span class="keywordflow">if</span>(Carbon==0){</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        TGeoMaterial *matCarbon    = <span class="keyword">new</span> TGeoMaterial(<span class="stringliteral">&quot;C&quot;</span>, 12.011, 6.0, 2.265);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        Carbon     = <span class="keyword">new</span> TGeoMedium(<span class="stringliteral">&quot;C&quot;</span>, 3, matCarbon);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;     }</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;     TGeoMaterial *matVacuum    = <span class="keyword">new</span> TGeoMaterial(<span class="stringliteral">&quot;Vacuum&quot;</span>, 0, 0, 0);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;     TGeoMedium *Vacuum     = <span class="keyword">new</span> TGeoMedium(<span class="stringliteral">&quot;Vacuum&quot;</span>, 4, matVacuum);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;   </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    Int_t nSects=2;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    Double_t z[] = { -100, 300};    <span class="comment">// in cm</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    Double_t r[] = { 2.5, 2.5};    <span class="comment">// in cm</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    Double_t Thickness = 0.05;     <span class="comment">// thickness of beam pipe [cm]</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    TGeoPcon* shape = <span class="keyword">new</span> TGeoPcon(0., 360., nSects);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordflow">for</span> (Int_t iSect = 0; iSect &lt; nSects; iSect++) {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        shape-&gt;DefineSection(iSect, z[iSect], r[iSect], r[iSect]+Thickness);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">// ---&gt; Volume</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    TGeoVolume* pipe = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;MyPipe&quot;</span>, shape, Carbon);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">// --Now create the same but diameter less by Thikness and vacuum instead of Carbon</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    TGeoPcon* Vshape = <span class="keyword">new</span> TGeoPcon(0., 360., nSects);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">for</span> (Int_t iSect = 0; iSect &lt; nSects; iSect++) {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        Vshape-&gt;DefineSection(iSect, z[iSect], r[iSect], r[iSect]);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// ---&gt; Volume</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    TGeoVolume* Vpipe = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;MyPipe&quot;</span>, shape, Vacuum);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    top-&gt;AddNode(pipe, 1);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    top-&gt;AddNode(Vpipe, 1);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="comment">// ----------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<a class="code" href="../../d4/d06/classFairModule.html">FairModule</a>* <a class="code" href="../../d6/d9c/classMyPipe.html#a71adf5f43520de2851dc73bd42e4423a">MyPipe::CloneModule</a>()<span class="keyword"> const</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe</a>(*<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<a class="code" href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a>(<a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a>)</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="ttc" id="classMyPipe_html_afd60af5b2e5ed3f67a00db58b18249fb"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#afd60af5b2e5ed3f67a00db58b18249fb">MyPipe::ConstructGeometry</a></div><div class="ttdeci">virtual void ConstructGeometry()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00045">MyPipe.cxx:45</a></div></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe::MyPipe</a>(<span class="keyword">const</span> <a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a>&amp; right)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    : <a class="code" href="../../d4/d06/classFairModule.html">FairModule</a>(right)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{}</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// -----  ConstructGeometry  --------------------------------------------------</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d6/d9c/classMyPipe.html#afd60af5b2e5ed3f67a00db58b18249fb">MyPipe::ConstructGeometry</a>()</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    TGeoVolume* top = gGeoManager-&gt;GetTopVolume();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    TGeoMedium* Carbon = gGeoManager-&gt;GetMedium(<span class="stringliteral">&quot;C&quot;</span>);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">if</span> (Carbon == 0) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        TGeoMaterial* matCarbon = <span class="keyword">new</span> TGeoMaterial(<span class="stringliteral">&quot;C&quot;</span>, 12.011, 6.0, 2.265);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        Carbon = <span class="keyword">new</span> TGeoMedium(<span class="stringliteral">&quot;C&quot;</span>, 3, matCarbon);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    }</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    TGeoMaterial* matVacuum = <span class="keyword">new</span> TGeoMaterial(<span class="stringliteral">&quot;Vacuum&quot;</span>, 0, 0, 0);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    TGeoMedium* Vacuum = <span class="keyword">new</span> TGeoMedium(<span class="stringliteral">&quot;Vacuum&quot;</span>, 4, matVacuum);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    Int_t nSects = 2;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    Double_t z[] = {-100, 300};   <span class="comment">// in cm</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    Double_t r[] = {2.5, 2.5};    <span class="comment">// in cm</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    Double_t Thickness = 0.05;    <span class="comment">// thickness of beam pipe [cm]</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    TGeoPcon* shape = <span class="keyword">new</span> TGeoPcon(0., 360., nSects);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">for</span> (Int_t iSect = 0; iSect &lt; nSects; iSect++) {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        shape-&gt;DefineSection(iSect, z[iSect], r[iSect], r[iSect] + Thickness);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    }</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="comment">// ---&gt; Volume</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    TGeoVolume* pipe = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;MyPipe&quot;</span>, shape, Carbon);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="comment">// --Now create the same but diameter less by Thikness and vacuum instead of Carbon</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    TGeoPcon* Vshape = <span class="keyword">new</span> TGeoPcon(0., 360., nSects);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">for</span> (Int_t iSect = 0; iSect &lt; nSects; iSect++) {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        Vshape-&gt;DefineSection(iSect, z[iSect], r[iSect], r[iSect]);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="comment">// ---&gt; Volume</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    TGeoVolume* Vpipe = <span class="keyword">new</span> TGeoVolume(<span class="stringliteral">&quot;MyPipe&quot;</span>, shape, Vacuum);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    top-&gt;AddNode(pipe, 1);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    top-&gt;AddNode(Vpipe, 1);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;}</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">// ----------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<a class="code" href="../../d4/d06/classFairModule.html">FairModule</a>* <a class="code" href="../../d6/d9c/classMyPipe.html#a71adf5f43520de2851dc73bd42e4423a">MyPipe::CloneModule</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe</a>(*<span class="keyword">this</span>); }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<a class="code" href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx.html#a28237a5905af57471f70d23d49b9854b">ClassImp</a>(<a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a>);</div>
+<div class="ttc" id="classMyPipe_html_afd60af5b2e5ed3f67a00db58b18249fb"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#afd60af5b2e5ed3f67a00db58b18249fb">MyPipe::ConstructGeometry</a></div><div class="ttdeci">virtual void ConstructGeometry()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00038">MyPipe.cxx:38</a></div></div>
 <div class="ttc" id="project__stl__containers_2passive_2MyPipe_8h_html"><div class="ttname"><a href="../../d2/da0/project__stl__containers_2passive_2MyPipe_8h.html">MyPipe.h</a></div></div>
-<div class="ttc" id="classFairModule_html"><div class="ttname"><a href="../../d4/d06/classFairModule.html">FairModule</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/ddc/FairModule_8h_source.html#l00047">FairModule.h:47</a></div></div>
-<div class="ttc" id="classMyPipe_html_a71adf5f43520de2851dc73bd42e4423a"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#a71adf5f43520de2851dc73bd42e4423a">MyPipe::CloneModule</a></div><div class="ttdeci">virtual FairModule * CloneModule() const </div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00087">MyPipe.cxx:87</a></div></div>
+<div class="ttc" id="classFairModule_html"><div class="ttname"><a href="../../d4/d06/classFairModule.html">FairModule</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/ddc/FairModule_8h_source.html#l00046">FairModule.h:46</a></div></div>
+<div class="ttc" id="classMyPipe_html_a71adf5f43520de2851dc73bd42e4423a"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#a71adf5f43520de2851dc73bd42e4423a">MyPipe::CloneModule</a></div><div class="ttdeci">virtual FairModule * CloneModule() const </div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00077">MyPipe.cxx:77</a></div></div>
 <div class="ttc" id="classMyPipe_html"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html">MyPipe</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d06/project__root__containers_2passive_2MyPipe_8h_source.html#l00019">MyPipe.h:19</a></div></div>
-<div class="ttc" id="classMyPipe_html_aad6699542c9997eda7b8d80a1e5546b7"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#aad6699542c9997eda7b8d80a1e5546b7">MyPipe::~MyPipe</a></div><div class="ttdeci">virtual ~MyPipe()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00025">MyPipe.cxx:25</a></div></div>
-<div class="ttc" id="FairLink_8cxx_html_a1957c9f11f7f50fe9b58f3f0bedb38de"><div class="ttname"><a href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a></div><div class="ttdeci">ClassImp(FairLink)</div></div>
-<div class="ttc" id="classMyPipe_html_a6da1b0bebc882625413c7aefe48f6194"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe::MyPipe</a></div><div class="ttdeci">MyPipe()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00028">MyPipe.cxx:28</a></div></div>
+<div class="ttc" id="classMyPipe_html_aad6699542c9997eda7b8d80a1e5546b7"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#aad6699542c9997eda7b8d80a1e5546b7">MyPipe::~MyPipe</a></div><div class="ttdeci">virtual ~MyPipe()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00024">MyPipe.cxx:24</a></div></div>
+<div class="ttc" id="project__root__containers_2passive_2MyPipe_8cxx_html_a28237a5905af57471f70d23d49b9854b"><div class="ttname"><a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx.html#a28237a5905af57471f70d23d49b9854b">ClassImp</a></div><div class="ttdeci">ClassImp(MyPipe)</div></div>
+<div class="ttc" id="classMyPipe_html_a6da1b0bebc882625413c7aefe48f6194"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe::MyPipe</a></div><div class="ttdeci">MyPipe()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00025">MyPipe.cxx:25</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_096b0de097b3e98f91191e9d894d4363.html">templates</a></li><li class="navelem"><a class="el" href="../../dir_ff524cbdd78500b78132ce63ddb53ead.html">project_stl_containers</a></li><li class="navelem"><a class="el" href="../../dir_e9cf956283ed8e0bd922ff7050aaab93.html">passive</a></li><li class="navelem"><a class="el" href="../../de/d94/project__stl__containers_2passive_2MyPipe_8cxx.html">MyPipe.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:52 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:59:01 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

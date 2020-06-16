@@ -10,6 +10,7 @@ var classFairMixedSource =
     [ "BGWindowWidthNo", "d4/d52/classFairMixedSource.html#a67a8735bc13468a2e7a77c55a34753e3", null ],
     [ "BGWindowWidthTime", "d4/d52/classFairMixedSource.html#a6c799e67cc1fb622d494f0ca18d29735", null ],
     [ "CheckMaxEventNo", "d4/d52/classFairMixedSource.html#adcab7ebfbb94f7ef76a656b79e133228", null ],
+    [ "ClassDef", "d4/d52/classFairMixedSource.html#aa3a1e90028ba3c99b70126d4facb0862", null ],
     [ "Close", "d4/d52/classFairMixedSource.html#a8fdfa698b49d1626f4f851b96f09e193", null ],
     [ "CompareBranchList", "d4/d52/classFairMixedSource.html#a872d31ea05abb6e4124509ac662b1677", null ],
     [ "FillEventHeader", "d4/d52/classFairMixedSource.html#a192b95ebf0c8230958114dea303bc538", null ],

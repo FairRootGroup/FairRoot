@@ -116,24 +116,23 @@ $(document).ready(function(){initNavTree('d4/d5c/runExParamsClient_8cxx_source.h
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;runFairMQDevice.h&quot;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d1/de6/FairMQExParamsClient_8h.html">FairMQExParamsClient.h</a>&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d1/de6/FairMQExParamsClient_8h.html">FairMQExParamsClient.h</a>&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;runFairMQDevice.h&quot;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span>bpo = boost::program_options;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
 <div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="../../d4/d5c/runExParamsClient_8cxx.html#ad030be0df2c1fc9386f1b8ad1542d199">   14</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d4/d5c/runExParamsClient_8cxx.html#ad030be0df2c1fc9386f1b8ad1542d199">addCustomOptions</a>(bpo::options_description&amp; options)</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    options.add_options()</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        (<span class="stringliteral">&quot;parameter-name&quot;</span>, bpo::value&lt;std::string&gt;()-&gt;default_value(<span class="stringliteral">&quot;FairMQExParamsParOne&quot;</span>), <span class="stringliteral">&quot;Parameter Name&quot;</span>)</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        (<span class="stringliteral">&quot;max-iterations&quot;</span>, bpo::value&lt;uint64_t&gt;()-&gt;default_value(0), <span class="stringliteral">&quot;Maximum number of iterations of Run/ConditionalRun/OnData (0 - infinite)&quot;</span>);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;}</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="../../d4/d5c/runExParamsClient_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">   21</a></span>&#160;FairMQDevicePtr <a class="code" href="../../d4/d5c/runExParamsClient_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a>(<span class="keyword">const</span> FairMQProgOptions&amp; <span class="comment">/*config*/</span>)</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="../../dd/d75/classFairMQExParamsClient.html">FairMQExParamsClient</a>();</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;}</div>
-<div class="ttc" id="classFairMQExParamsClient_html"><div class="ttname"><a href="../../dd/d75/classFairMQExParamsClient.html">FairMQExParamsClient</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/de6/FairMQExParamsClient_8h_source.html#l00023">FairMQExParamsClient.h:23</a></div></div>
-<div class="ttc" id="runExParamsClient_8cxx_html_a9c6d7f8d628391c1bad26be1f1abc271"><div class="ttname"><a href="../../d4/d5c/runExParamsClient_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a></div><div class="ttdeci">FairMQDevicePtr getDevice(const FairMQProgOptions &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d5c/runExParamsClient_8cxx_source.html#l00021">runExParamsClient.cxx:21</a></div></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="comment">// clang-format off</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    options.add_options()</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        (<span class="stringliteral">&quot;parameter-name&quot;</span>, bpo::value&lt;std::string&gt;()-&gt;default_value(<span class="stringliteral">&quot;FairMQExParamsParOne&quot;</span>), <span class="stringliteral">&quot;Parameter Name&quot;</span>)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        (<span class="stringliteral">&quot;max-iterations&quot;</span>, bpo::value&lt;uint64_t&gt;()-&gt;default_value(0),                         <span class="stringliteral">&quot;Maximum number of iterations of Run/ConditionalRun/OnData (0 - infinite)&quot;</span>);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="comment">// clang-format on</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="../../d4/d5c/runExParamsClient_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">   23</a></span>&#160;FairMQDevicePtr <a class="code" href="../../d4/d5c/runExParamsClient_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a>(<span class="keyword">const</span> FairMQProgOptions&amp; <span class="comment">/*config*/</span>) { <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="../../dd/d75/classFairMQExParamsClient.html">FairMQExParamsClient</a>(); }</div>
+<div class="ttc" id="classFairMQExParamsClient_html"><div class="ttname"><a href="../../dd/d75/classFairMQExParamsClient.html">FairMQExParamsClient</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/de6/FairMQExParamsClient_8h_source.html#l00022">FairMQExParamsClient.h:22</a></div></div>
+<div class="ttc" id="runExParamsClient_8cxx_html_a9c6d7f8d628391c1bad26be1f1abc271"><div class="ttname"><a href="../../d4/d5c/runExParamsClient_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a></div><div class="ttdeci">FairMQDevicePtr getDevice(const FairMQProgOptions &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d5c/runExParamsClient_8cxx_source.html#l00023">runExParamsClient.cxx:23</a></div></div>
 <div class="ttc" id="runExParamsClient_8cxx_html_ad030be0df2c1fc9386f1b8ad1542d199"><div class="ttname"><a href="../../d4/d5c/runExParamsClient_8cxx.html#ad030be0df2c1fc9386f1b8ad1542d199">addCustomOptions</a></div><div class="ttdeci">void addCustomOptions(bpo::options_description &amp;options)</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d5c/runExParamsClient_8cxx_source.html#l00014">runExParamsClient.cxx:14</a></div></div>
 <div class="ttc" id="FairMQExParamsClient_8h_html"><div class="ttname"><a href="../../d1/de6/FairMQExParamsClient_8h.html">FairMQExParamsClient.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -142,7 +141,7 @@ $(document).ready(function(){initNavTree('d4/d5c/runExParamsClient_8cxx_source.h
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_caac58519ba4740e026a67a20b1aba91.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_3195caf14593480cc97ff06a4a270f8c.html">parameters</a></li><li class="navelem"><a class="el" href="../../d4/d5c/runExParamsClient_8cxx.html">runExParamsClient.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:49 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

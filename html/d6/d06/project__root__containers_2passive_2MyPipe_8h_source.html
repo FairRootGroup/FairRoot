@@ -126,40 +126,39 @@ $(document).ready(function(){initNavTree('d6/d06/project__root__containers_2pass
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/ddc/FairModule_8h.html">FairModule.h</a>&quot;</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="../../d6/d9c/classMyPipe.html">   19</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a> : <span class="keyword">public</span> <a class="code" href="../../d4/d06/classFairModule.html">FairModule</a> {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * name, <span class="keyword">const</span> <span class="keywordtype">char</span> *Title=<span class="stringliteral">&quot;My Pipe&quot;</span>);</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe</a>();</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d6/d9c/classMyPipe.html#aad6699542c9997eda7b8d80a1e5546b7">~MyPipe</a>();</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d6/d9c/classMyPipe.html#afd60af5b2e5ed3f67a00db58b18249fb">ConstructGeometry</a>();</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d4/d06/classFairModule.html">FairModule</a>* <a class="code" href="../../d6/d9c/classMyPipe.html#a71adf5f43520de2851dc73bd42e4423a">CloneModule</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe</a>(<span class="keyword">const</span> <a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a>&amp;);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a>&amp;);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;   </div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  ClassDef(<a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a>,1) <span class="comment">//MyPIPE</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="../../d6/d9c/classMyPipe.html">   19</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a> : <span class="keyword">public</span> <a class="code" href="../../d4/d06/classFairModule.html">FairModule</a></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* Title = <span class="stringliteral">&quot;My Pipe&quot;</span>);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe</a>();</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d6/d9c/classMyPipe.html#aad6699542c9997eda7b8d80a1e5546b7">~MyPipe</a>();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d6/d9c/classMyPipe.html#afd60af5b2e5ed3f67a00db58b18249fb">ConstructGeometry</a>();</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d4/d06/classFairModule.html">FairModule</a>* <a class="code" href="../../d6/d9c/classMyPipe.html#a71adf5f43520de2851dc73bd42e4423a">CloneModule</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe</a>(<span class="keyword">const</span> <a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a>&amp;);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a>&amp;);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    ClassDef(<a class="code" href="../../d6/d9c/classMyPipe.html">MyPipe</a>, 1);   <span class="comment">// MyPIPE</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;};</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#endif //PIPE_H</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="ttc" id="classMyPipe_html_afd60af5b2e5ed3f67a00db58b18249fb"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#afd60af5b2e5ed3f67a00db58b18249fb">MyPipe::ConstructGeometry</a></div><div class="ttdeci">virtual void ConstructGeometry()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00045">MyPipe.cxx:45</a></div></div>
-<div class="ttc" id="classFairModule_html"><div class="ttname"><a href="../../d4/d06/classFairModule.html">FairModule</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/ddc/FairModule_8h_source.html#l00047">FairModule.h:47</a></div></div>
-<div class="ttc" id="classMyPipe_html_a71adf5f43520de2851dc73bd42e4423a"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#a71adf5f43520de2851dc73bd42e4423a">MyPipe::CloneModule</a></div><div class="ttdeci">virtual FairModule * CloneModule() const </div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00087">MyPipe.cxx:87</a></div></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#endif   // PIPE_H</span></div>
+<div class="ttc" id="classMyPipe_html_afd60af5b2e5ed3f67a00db58b18249fb"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#afd60af5b2e5ed3f67a00db58b18249fb">MyPipe::ConstructGeometry</a></div><div class="ttdeci">virtual void ConstructGeometry()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00038">MyPipe.cxx:38</a></div></div>
+<div class="ttc" id="classFairModule_html"><div class="ttname"><a href="../../d4/d06/classFairModule.html">FairModule</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/ddc/FairModule_8h_source.html#l00046">FairModule.h:46</a></div></div>
+<div class="ttc" id="classMyPipe_html_a71adf5f43520de2851dc73bd42e4423a"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#a71adf5f43520de2851dc73bd42e4423a">MyPipe::CloneModule</a></div><div class="ttdeci">virtual FairModule * CloneModule() const </div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00077">MyPipe.cxx:77</a></div></div>
 <div class="ttc" id="classMyPipe_html"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html">MyPipe</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d06/project__root__containers_2passive_2MyPipe_8h_source.html#l00019">MyPipe.h:19</a></div></div>
-<div class="ttc" id="classMyPipe_html_aad6699542c9997eda7b8d80a1e5546b7"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#aad6699542c9997eda7b8d80a1e5546b7">MyPipe::~MyPipe</a></div><div class="ttdeci">virtual ~MyPipe()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00025">MyPipe.cxx:25</a></div></div>
+<div class="ttc" id="classMyPipe_html_aad6699542c9997eda7b8d80a1e5546b7"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#aad6699542c9997eda7b8d80a1e5546b7">MyPipe::~MyPipe</a></div><div class="ttdeci">virtual ~MyPipe()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00024">MyPipe.cxx:24</a></div></div>
 <div class="ttc" id="FairModule_8h_html"><div class="ttname"><a href="../../d2/ddc/FairModule_8h.html">FairModule.h</a></div></div>
-<div class="ttc" id="classMyPipe_html_a6da1b0bebc882625413c7aefe48f6194"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe::MyPipe</a></div><div class="ttdeci">MyPipe()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00028">MyPipe.cxx:28</a></div></div>
+<div class="ttc" id="classMyPipe_html_a6da1b0bebc882625413c7aefe48f6194"><div class="ttname"><a href="../../d6/d9c/classMyPipe.html#a6da1b0bebc882625413c7aefe48f6194">MyPipe::MyPipe</a></div><div class="ttdeci">MyPipe()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d15/project__root__containers_2passive_2MyPipe_8cxx_source.html#l00025">MyPipe.cxx:25</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_096b0de097b3e98f91191e9d894d4363.html">templates</a></li><li class="navelem"><a class="el" href="../../dir_71d5e6013ed9bb41b3280f92b17578bc.html">project_root_containers</a></li><li class="navelem"><a class="el" href="../../dir_b3408954d2b6d33ec8c6403f7e9b35d4.html">passive</a></li><li class="navelem"><a class="el" href="../../d6/d06/project__root__containers_2passive_2MyPipe_8h.html">MyPipe.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:52 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:59:01 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

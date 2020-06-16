@@ -13,9 +13,9 @@ var classFairRKPropagator =
     [ "Propagate", "de/da5/classFairRKPropagator.html#ae423e4384d302a80a0b61081e1205121", null ],
     [ "PropagateToPlane", "de/da5/classFairRKPropagator.html#a7ac413e2a58ec70885f57ebfe7e75990", null ],
     [ "SetDestinationLength", "de/da5/classFairRKPropagator.html#acd0b13592c14e225b974da2788f74580", null ],
-    [ "SetDestinationPlane", "de/da5/classFairRKPropagator.html#aebfb4647ba176b63227781aefb6b59cd", null ],
+    [ "SetDestinationPlane", "de/da5/classFairRKPropagator.html#a02273edbf4ec32d5b10a5627bc712156", null ],
     [ "SetDestinationVolume", "de/da5/classFairRKPropagator.html#a4bd215f64bd70da64018db420be5e2c7", null ],
-    [ "SetOriginPlane", "de/da5/classFairRKPropagator.html#a7bdd9ca88fe1c778b28eb4cfd40fd2d5", null ],
+    [ "SetOriginPlane", "de/da5/classFairRKPropagator.html#a3aeb4d529a2d35a8608ce43da72f8837", null ],
     [ "SetPCAPropagation", "de/da5/classFairRKPropagator.html#ab5d36fcfcca1372bcd7579036ccbb091", null ],
     [ "SetPropagateOnlyParameters", "de/da5/classFairRKPropagator.html#ab2c6a64def4f07e7cc3b8c2cc5fb4f47", null ],
     [ "Step", "de/da5/classFairRKPropagator.html#a2f2c0db4d75265a088b4891a6b1fb08c", null ]

@@ -121,18 +121,18 @@ $(document).ready(function(){initNavTree('dc/d9d/project__stl__containers_2passi
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// -----                Created 26/03/14  by M. Al-Turany              -----</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#ifndef MAGNET_H</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define MAGNET_H</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/ddc/FairModule_8h.html">FairModule.h</a>&quot;</span>                 <span class="comment">// for FairModule</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>                     <span class="comment">// for MyMagnet::Class, Bool_t, etc</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span>                       <span class="comment">// for string</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#ifndef MAGNET_H</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#define MAGNET_H</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/ddc/FairModule_8h.html">FairModule.h</a>&quot;</span>   <span class="comment">// for FairModule</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>   <span class="comment">// for MyMagnet::Class, Bool_t, etc</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span>     <span class="comment">// for string</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">class </span><a class="code" href="../../d1/d92/classMyMagnet.html">MyMagnet</a> : <span class="keyword">public</span> <a class="code" href="../../d4/d06/classFairModule.html">FairModule</a></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="../../d1/d92/classMyMagnet.html#a05766b96dd512ffdaef39e8dbf995336">MyMagnet</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* Title=<span class="stringliteral">&quot;MY Magnet&quot;</span>);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="../../d1/d92/classMyMagnet.html#a05766b96dd512ffdaef39e8dbf995336">MyMagnet</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* Title = <span class="stringliteral">&quot;MY Magnet&quot;</span>);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="../../d1/d92/classMyMagnet.html#a05766b96dd512ffdaef39e8dbf995336">MyMagnet</a>();</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d1/d92/classMyMagnet.html#a86f700312119eb61b792387fbc3fb289">~MyMagnet</a>();</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d1/d92/classMyMagnet.html#a0c2f97856a1d4bc270ed327a485b85e5">ConstructGeometry</a>();</div>
@@ -143,17 +143,16 @@ $(document).ready(function(){initNavTree('dc/d9d/project__stl__containers_2passi
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="../../d1/d92/classMyMagnet.html#a05766b96dd512ffdaef39e8dbf995336">MyMagnet</a>(<span class="keyword">const</span> <a class="code" href="../../d1/d92/classMyMagnet.html">MyMagnet</a>&amp;);</div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <a class="code" href="../../d1/d92/classMyMagnet.html">MyMagnet</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../d1/d92/classMyMagnet.html">MyMagnet</a>&amp;);</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    ClassDef(<a class="code" href="../../d1/d92/classMyMagnet.html">MyMagnet</a>,1)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    ClassDef(<a class="code" href="../../d1/d92/classMyMagnet.html">MyMagnet</a>, 1);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;};</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif //MAGNET_H</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="ttc" id="classMyMagnet_html_a0c2f97856a1d4bc270ed327a485b85e5"><div class="ttname"><a href="../../d1/d92/classMyMagnet.html#a0c2f97856a1d4bc270ed327a485b85e5">MyMagnet::ConstructGeometry</a></div><div class="ttdeci">void ConstructGeometry()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d06/project__root__containers_2passive_2MyMagnet_8cxx_source.html#l00052">MyMagnet.cxx:52</a></div></div>
-<div class="ttc" id="classMyMagnet_html_a2beffe89fa0cec7e9977b6d4f907f4a2"><div class="ttname"><a href="../../d1/d92/classMyMagnet.html#a2beffe89fa0cec7e9977b6d4f907f4a2">MyMagnet::CloneModule</a></div><div class="ttdeci">virtual FairModule * CloneModule() const </div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d06/project__root__containers_2passive_2MyMagnet_8cxx_source.html#l00103">MyMagnet.cxx:103</a></div></div>
-<div class="ttc" id="classMyMagnet_html_a86f700312119eb61b792387fbc3fb289"><div class="ttname"><a href="../../d1/d92/classMyMagnet.html#a86f700312119eb61b792387fbc3fb289">MyMagnet::~MyMagnet</a></div><div class="ttdeci">virtual ~MyMagnet()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d06/project__root__containers_2passive_2MyMagnet_8cxx_source.html#l00034">MyMagnet.cxx:34</a></div></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif   // MAGNET_H</span></div>
+<div class="ttc" id="classMyMagnet_html_a0c2f97856a1d4bc270ed327a485b85e5"><div class="ttname"><a href="../../d1/d92/classMyMagnet.html#a0c2f97856a1d4bc270ed327a485b85e5">MyMagnet::ConstructGeometry</a></div><div class="ttdeci">void ConstructGeometry()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d06/project__root__containers_2passive_2MyMagnet_8cxx_source.html#l00046">MyMagnet.cxx:46</a></div></div>
+<div class="ttc" id="classMyMagnet_html_a2beffe89fa0cec7e9977b6d4f907f4a2"><div class="ttname"><a href="../../d1/d92/classMyMagnet.html#a2beffe89fa0cec7e9977b6d4f907f4a2">MyMagnet::CloneModule</a></div><div class="ttdeci">virtual FairModule * CloneModule() const </div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d06/project__root__containers_2passive_2MyMagnet_8cxx_source.html#l00094">MyMagnet.cxx:94</a></div></div>
+<div class="ttc" id="classMyMagnet_html_a86f700312119eb61b792387fbc3fb289"><div class="ttname"><a href="../../d1/d92/classMyMagnet.html#a86f700312119eb61b792387fbc3fb289">MyMagnet::~MyMagnet</a></div><div class="ttdeci">virtual ~MyMagnet()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d06/project__root__containers_2passive_2MyMagnet_8cxx_source.html#l00033">MyMagnet.cxx:33</a></div></div>
 <div class="ttc" id="classMyMagnet_html"><div class="ttname"><a href="../../d1/d92/classMyMagnet.html">MyMagnet</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d92/project__root__containers_2passive_2MyMagnet_8h_source.html#l00022">MyMagnet.h:22</a></div></div>
-<div class="ttc" id="classFairModule_html"><div class="ttname"><a href="../../d4/d06/classFairModule.html">FairModule</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/ddc/FairModule_8h_source.html#l00047">FairModule.h:47</a></div></div>
-<div class="ttc" id="classMyMagnet_html_a05766b96dd512ffdaef39e8dbf995336"><div class="ttname"><a href="../../d1/d92/classMyMagnet.html#a05766b96dd512ffdaef39e8dbf995336">MyMagnet::MyMagnet</a></div><div class="ttdeci">MyMagnet()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d06/project__root__containers_2passive_2MyMagnet_8cxx_source.html#l00037">MyMagnet.cxx:37</a></div></div>
+<div class="ttc" id="classFairModule_html"><div class="ttname"><a href="../../d4/d06/classFairModule.html">FairModule</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/ddc/FairModule_8h_source.html#l00046">FairModule.h:46</a></div></div>
+<div class="ttc" id="classMyMagnet_html_a05766b96dd512ffdaef39e8dbf995336"><div class="ttname"><a href="../../d1/d92/classMyMagnet.html#a05766b96dd512ffdaef39e8dbf995336">MyMagnet::MyMagnet</a></div><div class="ttdeci">MyMagnet()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d06/project__root__containers_2passive_2MyMagnet_8cxx_source.html#l00034">MyMagnet.cxx:34</a></div></div>
 <div class="ttc" id="FairModule_8h_html"><div class="ttname"><a href="../../d2/ddc/FairModule_8h.html">FairModule.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -161,7 +160,7 @@ $(document).ready(function(){initNavTree('dc/d9d/project__stl__containers_2passi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_096b0de097b3e98f91191e9d894d4363.html">templates</a></li><li class="navelem"><a class="el" href="../../dir_ff524cbdd78500b78132ce63ddb53ead.html">project_stl_containers</a></li><li class="navelem"><a class="el" href="../../dir_e9cf956283ed8e0bd922ff7050aaab93.html">passive</a></li><li class="navelem"><a class="el" href="../../dc/d9d/project__stl__containers_2passive_2MyMagnet_8h.html">MyMagnet.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:52 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:59:01 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

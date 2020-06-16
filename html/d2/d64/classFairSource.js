@@ -6,6 +6,7 @@ var classFairSource =
     [ "ActivateObject", "d2/d64/classFairSource.html#ac6fdcda7d9aa98c519855f38e2559410", null ],
     [ "ActivateObjectAny", "d2/d64/classFairSource.html#aacb16c53192993dc7ccb0c3f7c7ee9ad", null ],
     [ "CheckMaxEventNo", "d2/d64/classFairSource.html#a0f6fea5da867fbdf6736069634e6c20b", null ],
+    [ "ClassDef", "d2/d64/classFairSource.html#ac2d1371358654dfd3a7987b2a3a95cae", null ],
     [ "Close", "d2/d64/classFairSource.html#a98226b7955b1213c6516941a84c97eac", null ],
     [ "FillEventHeader", "d2/d64/classFairSource.html#ac5586bbb14f10fb6f3c072e71ad1a5ac", null ],
     [ "GetRunId", "d2/d64/classFairSource.html#aaffa1b117348b10b67dfedbef8d97200", null ],

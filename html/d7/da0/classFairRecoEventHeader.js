@@ -2,6 +2,7 @@ var classFairRecoEventHeader =
 [
     [ "FairRecoEventHeader", "d7/da0/classFairRecoEventHeader.html#a2a87c89b2683b1f64ddbab76987fbc4b", null ],
     [ "~FairRecoEventHeader", "d7/da0/classFairRecoEventHeader.html#a30a777c65092751acab2f76f3e69bf7e", null ],
+    [ "ClassDef", "d7/da0/classFairRecoEventHeader.html#afc4cc2110d12e0a28240668de63f37ff", null ],
     [ "GetEventTime", "d7/da0/classFairRecoEventHeader.html#aa69f98cdc7e03b4a73799b2e8a061e23", null ],
     [ "GetEventTimeError", "d7/da0/classFairRecoEventHeader.html#abd424261cf6e6df1f1fe0ec6d03b3dac", null ],
     [ "GetIdentifier", "d7/da0/classFairRecoEventHeader.html#a56f97eb456844dafb9f9c244651748de", null ],

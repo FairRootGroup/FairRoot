@@ -4,6 +4,7 @@ var classFairSink =
     [ "FairSink", "df/db4/classFairSink.html#a8fc3cef7aa939defa3a8188edf5738a9", null ],
     [ "FairSink", "df/db4/classFairSink.html#a706cffd4c27c299b24369923689e8dbe", null ],
     [ "~FairSink", "df/db4/classFairSink.html#a479eca0d6daa61e7792282d977f49edd", null ],
+    [ "ClassDef", "df/db4/classFairSink.html#adab85e394a79d55465088b8f59dce70d", null ],
     [ "CloneSink", "df/db4/classFairSink.html#ad2f098a3945be7507a3b3dcff1affcef", null ],
     [ "Close", "df/db4/classFairSink.html#a2ab54342f0db54f52c457694683aa2f2", null ],
     [ "CreatePersistentBranchesAny", "df/db4/classFairSink.html#a7d31ac645d33414e3694a27ce44b1cd7", null ],

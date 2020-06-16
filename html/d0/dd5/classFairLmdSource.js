@@ -5,6 +5,7 @@ var classFairLmdSource =
     [ "~FairLmdSource", "d0/dd5/classFairLmdSource.html#a57e0937cd2685fd8d52547129d5f00d2", null ],
     [ "AddFile", "d0/dd5/classFairLmdSource.html#a41b093d8deee84df8286382ace1965bc", null ],
     [ "AddPath", "d0/dd5/classFairLmdSource.html#acf1b8acb0e4efff2a2401f0eb7277c78", null ],
+    [ "ClassDef", "d0/dd5/classFairLmdSource.html#a45b1fa830965c86b09fe5e0a2b0836e6", null ],
     [ "Close", "d0/dd5/classFairLmdSource.html#a055fb4e7badcf78b24f9f774ab5d4235", null ],
     [ "GetCurrentFile", "d0/dd5/classFairLmdSource.html#a3c02a4e1d814a32c0ad43432df3a7404", null ],
     [ "GetFileNames", "d0/dd5/classFairLmdSource.html#a64a76a1eb8fffc54708e6c4dbc885f5f", null ],

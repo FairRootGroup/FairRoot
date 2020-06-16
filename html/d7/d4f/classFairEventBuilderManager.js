@@ -9,5 +9,5 @@ var classFairEventBuilderManager =
     [ "Exec", "d7/d4f/classFairEventBuilderManager.html#aef038237b1a7e36a4095af799d6689e8", null ],
     [ "FillEventVectors", "d7/d4f/classFairEventBuilderManager.html#a3e278630cfafd45ffe416682daba92a3", null ],
     [ "fEventBuilders", "d7/d4f/classFairEventBuilderManager.html#a2a833a3dc46a0f49372b33a50c72fbc9", null ],
-    [ "fPossibleEvents", "d7/d4f/classFairEventBuilderManager.html#a3b6f2083fdcc21edd17e6e367ed6c3b7", null ]
+    [ "fPossibleEvents", "d7/d4f/classFairEventBuilderManager.html#af1ed0dc86e73684951d4af24cdaafa0f", null ]
 ];

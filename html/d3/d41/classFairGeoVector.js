@@ -4,6 +4,7 @@ var classFairGeoVector =
     [ "FairGeoVector", "d3/d41/classFairGeoVector.html#acacf3084b9eb9166aaf9d666b559887c", null ],
     [ "~FairGeoVector", "d3/d41/classFairGeoVector.html#a8ea8b52a93bfc8dc5f51a8f5d30bb45e", null ],
     [ "abs", "d3/d41/classFairGeoVector.html#a2bdaaa98284e70b81b51dc06a76db4cd", null ],
+    [ "ClassDef", "d3/d41/classFairGeoVector.html#a6a7a227e61cd0cecf80b174e8ba67653", null ],
     [ "clear", "d3/d41/classFairGeoVector.html#a6f18851c129dd31c2aa0ff84c2d17eec", null ],
     [ "getValues", "d3/d41/classFairGeoVector.html#aa81cce08a001bb3e9c6937c06fd079b0", null ],
     [ "getX", "d3/d41/classFairGeoVector.html#a5ab1addd17aa006f2b1f83051d34fb3d", null ],

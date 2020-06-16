@@ -117,26 +117,25 @@ $(document).ready(function(){initNavTree('d0/dbf/runMQChunkMerger_8cxx_source.ht
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
 <div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="../../d0/dbf/runMQChunkMerger_8cxx.html#ad030be0df2c1fc9386f1b8ad1542d199">    8</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d0/dbf/runMQChunkMerger_8cxx.html#ad030be0df2c1fc9386f1b8ad1542d199">addCustomOptions</a>(bpo::options_description&amp; options)</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    options.add_options()</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        (<span class="stringliteral">&quot;in-channel&quot;</span>,  bpo::value&lt;std::string&gt;()-&gt;default_value(<span class="stringliteral">&quot;data-in&quot;</span>) , <span class="stringliteral">&quot;input channel name&quot;</span>)</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        (<span class="stringliteral">&quot;out-channel&quot;</span>, bpo::value&lt;std::string&gt;()-&gt;default_value(<span class="stringliteral">&quot;data-out&quot;</span>), <span class="stringliteral">&quot;output channel name&quot;</span>);</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;}</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="../../d0/dbf/runMQChunkMerger_8cxx.html#a14cc85b01f68ba876ea1c1129b964cad">   15</a></span>&#160;FairMQDevicePtr <a class="code" href="../../d0/dbf/runMQChunkMerger_8cxx.html#a14cc85b01f68ba876ea1c1129b964cad">getDevice</a>(<span class="keyword">const</span> FairMQProgOptions&amp; config)</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a>();</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="comment">// clang-format off</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    options.add_options()</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        (<span class="stringliteral">&quot;in-channel&quot;</span>,  bpo::value&lt;std::string&gt;()-&gt;default_value(<span class="stringliteral">&quot;data-in&quot;</span>),  <span class="stringliteral">&quot;input channel name&quot;</span>)</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        (<span class="stringliteral">&quot;out-channel&quot;</span>, bpo::value&lt;std::string&gt;()-&gt;default_value(<span class="stringliteral">&quot;data-out&quot;</span>), <span class="stringliteral">&quot;output channel name&quot;</span>);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <span class="comment">// clang-format on</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;}</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="../../d0/dbf/runMQChunkMerger_8cxx.html#ab77ef4307aa65a4bf40f9268749b9e5e">   17</a></span>&#160;FairMQDevicePtr <a class="code" href="../../d0/dbf/runMQChunkMerger_8cxx.html#ab77ef4307aa65a4bf40f9268749b9e5e">getDevice</a>([[gnu::unused]] <span class="keyword">const</span> FairMQProgOptions&amp; config) { <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a>(); }</div>
 <div class="ttc" id="runMQChunkMerger_8cxx_html_ad030be0df2c1fc9386f1b8ad1542d199"><div class="ttname"><a href="../../d0/dbf/runMQChunkMerger_8cxx.html#ad030be0df2c1fc9386f1b8ad1542d199">addCustomOptions</a></div><div class="ttdeci">void addCustomOptions(bpo::options_description &amp;options)</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/dbf/runMQChunkMerger_8cxx_source.html#l00008">runMQChunkMerger.cxx:8</a></div></div>
-<div class="ttc" id="runMQChunkMerger_8cxx_html_a14cc85b01f68ba876ea1c1129b964cad"><div class="ttname"><a href="../../d0/dbf/runMQChunkMerger_8cxx.html#a14cc85b01f68ba876ea1c1129b964cad">getDevice</a></div><div class="ttdeci">FairMQDevicePtr getDevice(const FairMQProgOptions &amp;config)</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/dbf/runMQChunkMerger_8cxx_source.html#l00015">runMQChunkMerger.cxx:15</a></div></div>
 <div class="ttc" id="FairMQChunkMerger_8h_html"><div class="ttname"><a href="../../d0/d88/FairMQChunkMerger_8h.html">FairMQChunkMerger.h</a></div></div>
-<div class="ttc" id="classFairMQChunkMerger_html"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d88/FairMQChunkMerger_8h_source.html#l00029">FairMQChunkMerger.h:29</a></div></div>
+<div class="ttc" id="runMQChunkMerger_8cxx_html_ab77ef4307aa65a4bf40f9268749b9e5e"><div class="ttname"><a href="../../d0/dbf/runMQChunkMerger_8cxx.html#ab77ef4307aa65a4bf40f9268749b9e5e">getDevice</a></div><div class="ttdeci">FairMQDevicePtr getDevice([[gnu::unused]] const FairMQProgOptions &amp;config)</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/dbf/runMQChunkMerger_8cxx_source.html#l00017">runMQChunkMerger.cxx:17</a></div></div>
+<div class="ttc" id="classFairMQChunkMerger_html"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d88/FairMQChunkMerger_8h_source.html#l00028">FairMQChunkMerger.h:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_caac58519ba4740e026a67a20b1aba91.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_9dc1ab87cc20ea371a99256775d1aaa7.html">pixelSimSplit</a></li><li class="navelem"><a class="el" href="../../dir_6026bcb94076b7b11ccb513a41b684d0.html">run</a></li><li class="navelem"><a class="el" href="../../d0/dbf/runMQChunkMerger_8cxx.html">runMQChunkMerger.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:50 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -118,39 +118,38 @@ $(document).ready(function(){initNavTree('d4/db6/FairTestDetectorDigiLoader_8h_s
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#ifndef FAIRTESTDETECTORDIGILOADER_H</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#define FAIRTESTDETECTORDIGILOADER_H</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;array&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d8/d30/FairTestDetectorPayload_8h.html">FairTestDetectorPayload.h</a>&quot;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/d3b/FairTestDetectorDigi_8h.html">FairTestDetectorDigi.h</a>&quot;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d3/daa/FairMQSamplerTask_8h.html">FairMQSamplerTask.h</a>&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;FairMQLogger.h&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOut, <span class="keyword">typename</span> TPayloadOut&gt;</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="../../d3/d68/classFairTestDetectorDigiLoader.html">   27</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d3/d68/classFairTestDetectorDigiLoader.html">FairTestDetectorDigiLoader</a> : <span class="keyword">public</span> <a class="code" href="../../df/daa/classFairMQSamplerTask.html">FairMQSamplerTask</a></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="../../d3/d68/classFairTestDetectorDigiLoader.html#aa4b91dbe423308427739f8e49a03e570">   30</a></span>&#160;    <a class="code" href="../../d3/d68/classFairTestDetectorDigiLoader.html#aa4b91dbe423308427739f8e49a03e570">FairTestDetectorDigiLoader</a>()</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        : <a class="code" href="../../df/daa/classFairMQSamplerTask.html">FairMQSamplerTask</a>(<span class="stringliteral">&quot;Load class TOut&quot;</span>)</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {}</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d3/d68/classFairTestDetectorDigiLoader.html#a6c95b405578395981892732bdd9d95b9">Exec</a>(Option_t* opt);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;};</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// Template implementation is in FairTestDetectorDigiLoader.tpl :</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;FairTestDetectorDigiLoaderBin.tpl&quot;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;FairTestDetectorDigiLoaderBoost.tpl&quot;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;FairTestDetectorDigiLoaderFlatBuffers.tpl&quot;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &quot;FairTestDetectorDigiLoaderMsgpack.tpl&quot;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &quot;FairTestDetectorDigiLoaderProtobuf.tpl&quot;</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#include &quot;FairTestDetectorDigiLoaderTMessage.tpl&quot;</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* FAIRTESTDETECTORDIGILOADER_H */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="classFairMQSamplerTask_html"><div class="ttname"><a href="../../df/daa/classFairMQSamplerTask.html">FairMQSamplerTask</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/daa/FairMQSamplerTask_8h_source.html#l00028">FairMQSamplerTask.h:28</a></div></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d3/daa/FairMQSamplerTask_8h.html">FairMQSamplerTask.h</a>&quot;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/d3b/FairTestDetectorDigi_8h.html">FairTestDetectorDigi.h</a>&quot;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d8/d30/FairTestDetectorPayload_8h.html">FairTestDetectorPayload.h</a>&quot;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;FairMQLogger.h&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> TOut, <span class="keyword">typename</span> TPayloadOut&gt;</div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="../../d3/d68/classFairTestDetectorDigiLoader.html">   26</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d3/d68/classFairTestDetectorDigiLoader.html">FairTestDetectorDigiLoader</a> : <span class="keyword">public</span> <a class="code" href="../../df/daa/classFairMQSamplerTask.html">FairMQSamplerTask</a></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="../../d3/d68/classFairTestDetectorDigiLoader.html#aa4b91dbe423308427739f8e49a03e570">   29</a></span>&#160;    <a class="code" href="../../d3/d68/classFairTestDetectorDigiLoader.html#aa4b91dbe423308427739f8e49a03e570">FairTestDetectorDigiLoader</a>()</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        : <a class="code" href="../../df/daa/classFairMQSamplerTask.html">FairMQSamplerTask</a>(<span class="stringliteral">&quot;Load class TOut&quot;</span>)</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    {}</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d3/d68/classFairTestDetectorDigiLoader.html#a6c95b405578395981892732bdd9d95b9">Exec</a>(Option_t* opt);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;};</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">// Template implementation is in FairTestDetectorDigiLoader.tpl :</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;FairTestDetectorDigiLoaderBin.tpl&quot;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;FairTestDetectorDigiLoaderBoost.tpl&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;FairTestDetectorDigiLoaderFlatBuffers.tpl&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;FairTestDetectorDigiLoaderMsgpack.tpl&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &quot;FairTestDetectorDigiLoaderProtobuf.tpl&quot;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &quot;FairTestDetectorDigiLoaderTMessage.tpl&quot;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* FAIRTESTDETECTORDIGILOADER_H */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="classFairMQSamplerTask_html"><div class="ttname"><a href="../../df/daa/classFairMQSamplerTask.html">FairMQSamplerTask</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/daa/FairMQSamplerTask_8h_source.html#l00027">FairMQSamplerTask.h:27</a></div></div>
 <div class="ttc" id="classFairTestDetectorDigiLoader_html_a6c95b405578395981892732bdd9d95b9"><div class="ttname"><a href="../../d3/d68/classFairTestDetectorDigiLoader.html#a6c95b405578395981892732bdd9d95b9">FairTestDetectorDigiLoader::Exec</a></div><div class="ttdeci">virtual void Exec(Option_t *opt)</div></div>
-<div class="ttc" id="classFairTestDetectorDigiLoader_html"><div class="ttname"><a href="../../d3/d68/classFairTestDetectorDigiLoader.html">FairTestDetectorDigiLoader</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d4/db6/FairTestDetectorDigiLoader_8h_source.html#l00027">FairTestDetectorDigiLoader.h:27</a></div></div>
-<div class="ttc" id="classFairTestDetectorDigiLoader_html_aa4b91dbe423308427739f8e49a03e570"><div class="ttname"><a href="../../d3/d68/classFairTestDetectorDigiLoader.html#aa4b91dbe423308427739f8e49a03e570">FairTestDetectorDigiLoader::FairTestDetectorDigiLoader</a></div><div class="ttdeci">FairTestDetectorDigiLoader()</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/db6/FairTestDetectorDigiLoader_8h_source.html#l00030">FairTestDetectorDigiLoader.h:30</a></div></div>
+<div class="ttc" id="classFairTestDetectorDigiLoader_html"><div class="ttname"><a href="../../d3/d68/classFairTestDetectorDigiLoader.html">FairTestDetectorDigiLoader</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d4/db6/FairTestDetectorDigiLoader_8h_source.html#l00026">FairTestDetectorDigiLoader.h:26</a></div></div>
+<div class="ttc" id="classFairTestDetectorDigiLoader_html_aa4b91dbe423308427739f8e49a03e570"><div class="ttname"><a href="../../d3/d68/classFairTestDetectorDigiLoader.html#aa4b91dbe423308427739f8e49a03e570">FairTestDetectorDigiLoader::FairTestDetectorDigiLoader</a></div><div class="ttdeci">FairTestDetectorDigiLoader()</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/db6/FairTestDetectorDigiLoader_8h_source.html#l00029">FairTestDetectorDigiLoader.h:29</a></div></div>
 <div class="ttc" id="FairTestDetectorPayload_8h_html"><div class="ttname"><a href="../../d8/d30/FairTestDetectorPayload_8h.html">FairTestDetectorPayload.h</a></div></div>
 <div class="ttc" id="FairTestDetectorDigi_8h_html"><div class="ttname"><a href="../../d7/d3b/FairTestDetectorDigi_8h.html">FairTestDetectorDigi.h</a></div></div>
 <div class="ttc" id="FairMQSamplerTask_8h_html"><div class="ttname"><a href="../../d3/daa/FairMQSamplerTask_8h.html">FairMQSamplerTask.h</a></div></div>
@@ -160,7 +159,7 @@ $(document).ready(function(){initNavTree('d4/db6/FairTestDetectorDigiLoader_8h_s
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_3aac5a4fc4a3ed763ec34816d5c7d441.html">advanced</a></li><li class="navelem"><a class="el" href="../../dir_b2031227a58a3a72aeb7962966858ac0.html">Tutorial3</a></li><li class="navelem"><a class="el" href="../../dir_8395a1c9fb8f1b716af54c287702088a.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_82d925623b087209d04d73fb48d19e29.html">samplerTask</a></li><li class="navelem"><a class="el" href="../../d4/db6/FairTestDetectorDigiLoader_8h.html">FairTestDetectorDigiLoader.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:49 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:57 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

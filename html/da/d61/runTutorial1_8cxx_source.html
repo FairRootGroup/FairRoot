@@ -115,48 +115,45 @@ $(document).ready(function(){initNavTree('da/d61/runTutorial1_8cxx_source.html',
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/de4/FairLogger_8h.html">FairLogger.h</a>&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d4/da1/FairSimConfig_8h.html">FairSimConfig.h</a>&quot;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;../macros/run_tutorial1_binary.C&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="../../da/d61/runTutorial1_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">   13</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="../../da/d61/runTutorial1_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>* argv[])</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;{</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="../../d7/d15/classFairSimConfig.html">FairSimConfig</a> simConfig;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <span class="keywordtype">int</span> value = simConfig.<a class="code" href="../../d7/d15/classFairSimConfig.html#a1e2bc70cdf953258f68172263e176aad">ParseCommandLine</a>(argc, argv);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordflow">if</span> (value)</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    {</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    }</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordflow">if</span> (simConfig.<a class="code" href="../../d7/d15/classFairSimConfig.html#adfe9776c6de7931d673cd2caede59c62">IsHelp</a>())</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        simConfig.<a class="code" href="../../d7/d15/classFairSimConfig.html#aebe65305fb02315188a23597b10b712b">PrintHelpMessage</a>();</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    }</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    LOG(info) &lt;&lt; <span class="stringliteral">&quot;Executing runTutorial1&quot;</span>;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    run_tutorial1_main(simConfig);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
-<div class="ttc" id="classFairSimConfig_html_a1e2bc70cdf953258f68172263e176aad"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#a1e2bc70cdf953258f68172263e176aad">FairSimConfig::ParseCommandLine</a></div><div class="ttdeci">int ParseCommandLine(int argc, char *argv[])</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/FairSimConfig_8cxx_source.html#l00036">FairSimConfig.cxx:36</a></div></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../macros/run_tutorial1_binary.C&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/de4/FairLogger_8h.html">FairLogger.h</a>&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d4/da1/FairSimConfig_8h.html">FairSimConfig.h</a>&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="../../da/d61/runTutorial1_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">   12</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="../../da/d61/runTutorial1_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>* argv[])</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;{</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="../../d7/d15/classFairSimConfig.html">FairSimConfig</a> simConfig;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">int</span> value = simConfig.<a class="code" href="../../d7/d15/classFairSimConfig.html#a1e2bc70cdf953258f68172263e176aad">ParseCommandLine</a>(argc, argv);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordflow">if</span> (value) {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    }</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordflow">if</span> (simConfig.<a class="code" href="../../d7/d15/classFairSimConfig.html#adfe9776c6de7931d673cd2caede59c62">IsHelp</a>()) {</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        simConfig.<a class="code" href="../../d7/d15/classFairSimConfig.html#aebe65305fb02315188a23597b10b712b">PrintHelpMessage</a>();</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    }</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    LOG(info) &lt;&lt; <span class="stringliteral">&quot;Executing runTutorial1&quot;</span>;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    run_tutorial1_main(simConfig);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
+<div class="ttc" id="classFairSimConfig_html_a1e2bc70cdf953258f68172263e176aad"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#a1e2bc70cdf953258f68172263e176aad">FairSimConfig::ParseCommandLine</a></div><div class="ttdeci">int ParseCommandLine(int argc, char *argv[])</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/FairSimConfig_8cxx_source.html#l00041">FairSimConfig.cxx:41</a></div></div>
 <div class="ttc" id="FairSimConfig_8h_html"><div class="ttname"><a href="../../d4/da1/FairSimConfig_8h.html">FairSimConfig.h</a></div></div>
 <div class="ttc" id="classFairSimConfig_html"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html">FairSimConfig</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d4/da1/FairSimConfig_8h_source.html#l00019">FairSimConfig.h:19</a></div></div>
-<div class="ttc" id="runTutorial1_8cxx_html_a0ddf1224851353fc92bfbff6f499fa97"><div class="ttname"><a href="../../da/d61/runTutorial1_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">main</a></div><div class="ttdeci">int main(int argc, char *argv[])</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d61/runTutorial1_8cxx_source.html#l00013">runTutorial1.cxx:13</a></div></div>
+<div class="ttc" id="runTutorial1_8cxx_html_a0ddf1224851353fc92bfbff6f499fa97"><div class="ttname"><a href="../../da/d61/runTutorial1_8cxx.html#a0ddf1224851353fc92bfbff6f499fa97">main</a></div><div class="ttdeci">int main(int argc, char *argv[])</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d61/runTutorial1_8cxx_source.html#l00012">runTutorial1.cxx:12</a></div></div>
 <div class="ttc" id="classFairSimConfig_html_adfe9776c6de7931d673cd2caede59c62"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#adfe9776c6de7931d673cd2caede59c62">FairSimConfig::IsHelp</a></div><div class="ttdeci">bool IsHelp() const </div><div class="ttdef"><b>Definition:</b> <a href="../../d4/da1/FairSimConfig_8h_source.html#l00029">FairSimConfig.h:29</a></div></div>
 <div class="ttc" id="FairLogger_8h_html"><div class="ttname"><a href="../../d5/de4/FairLogger_8h.html">FairLogger.h</a></div></div>
-<div class="ttc" id="classFairSimConfig_html_aebe65305fb02315188a23597b10b712b"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#aebe65305fb02315188a23597b10b712b">FairSimConfig::PrintHelpMessage</a></div><div class="ttdeci">void PrintHelpMessage()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/FairSimConfig_8cxx_source.html#l00088">FairSimConfig.cxx:88</a></div></div>
+<div class="ttc" id="classFairSimConfig_html_aebe65305fb02315188a23597b10b712b"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#aebe65305fb02315188a23597b10b712b">FairSimConfig::PrintHelpMessage</a></div><div class="ttdeci">void PrintHelpMessage()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/FairSimConfig_8cxx_source.html#l00083">FairSimConfig.cxx:83</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_fc72895b8d6c4a9d0505e520110a0c1f.html">simulation</a></li><li class="navelem"><a class="el" href="../../dir_a4c842e3bf132f2fa91de995995e1f34.html">Tutorial1</a></li><li class="navelem"><a class="el" href="../../dir_f5ff6857b1c96a33e9bda10b9213e4ba.html">src</a></li><li class="navelem"><a class="el" href="../../da/d61/runTutorial1_8cxx.html">runTutorial1.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:50 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -2,6 +2,7 @@ var classMRevBuffer =
 [
     [ "MRevBuffer", "d0/dac/classMRevBuffer.html#ac61b0e941c87d47887afe6907b880e47", null ],
     [ "~MRevBuffer", "d0/dac/classMRevBuffer.html#a283017635de36efe83957f534849deb1", null ],
+    [ "ClassDef", "d0/dac/classMRevBuffer.html#ab19381f8ac698ab8f0575780ac0d1dd0", null ],
     [ "RevBufsize", "d0/dac/classMRevBuffer.html#a0f596aae8c176f73cf16bb10d204c033", null ],
     [ "RevBufWait", "d0/dac/classMRevBuffer.html#abf9ddf4bebfc59da1d1bd050d470d0c4", null ],
     [ "RevClose", "d0/dac/classMRevBuffer.html#a17b0ac0ca5ae57ddcc28a0e6a3589a8b", null ],

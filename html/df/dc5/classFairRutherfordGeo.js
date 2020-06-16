@@ -2,6 +2,7 @@ var classFairRutherfordGeo =
 [
     [ "FairRutherfordGeo", "df/dc5/classFairRutherfordGeo.html#aee84bc99f0234eaa0cbfe98b203bfc01", null ],
     [ "~FairRutherfordGeo", "df/dc5/classFairRutherfordGeo.html#aedf32fdf55c4bdb233278673ec9d4cb1", null ],
+    [ "ClassDef", "df/dc5/classFairRutherfordGeo.html#aa53e47a9107e32806d7699598d176a7b", null ],
     [ "getEleName", "df/dc5/classFairRutherfordGeo.html#a42a13a15d541ba6b9fd1bbf2a447c336", null ],
     [ "getModNumInMod", "df/dc5/classFairRutherfordGeo.html#a2cb7fe8e4cbd535f0abd0c1411a44cd3", null ],
     [ "getModuleName", "df/dc5/classFairRutherfordGeo.html#a30cda746d6f34baabd921e622895ccb8", null ],

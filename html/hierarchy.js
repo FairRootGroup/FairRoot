@@ -121,10 +121,14 @@ var hierarchy =
     [ "Message", null, [
       [ "TestDetectorProto::Digi", "dd/de2/classTestDetectorProto_1_1Digi.html", null ],
       [ "TestDetectorProto::Digi", "dd/de2/classTestDetectorProto_1_1Digi.html", null ],
+      [ "TestDetectorProto::Digi", "dd/de2/classTestDetectorProto_1_1Digi.html", null ],
+      [ "TestDetectorProto::DigiPayload", "da/d41/classTestDetectorProto_1_1DigiPayload.html", null ],
       [ "TestDetectorProto::DigiPayload", "da/d41/classTestDetectorProto_1_1DigiPayload.html", null ],
       [ "TestDetectorProto::DigiPayload", "da/d41/classTestDetectorProto_1_1DigiPayload.html", null ],
       [ "TestDetectorProto::Hit", "db/d78/classTestDetectorProto_1_1Hit.html", null ],
       [ "TestDetectorProto::Hit", "db/d78/classTestDetectorProto_1_1Hit.html", null ],
+      [ "TestDetectorProto::Hit", "db/d78/classTestDetectorProto_1_1Hit.html", null ],
+      [ "TestDetectorProto::HitPayload", "d6/de6/classTestDetectorProto_1_1HitPayload.html", null ],
       [ "TestDetectorProto::HitPayload", "d6/de6/classTestDetectorProto_1_1HitPayload.html", null ],
       [ "TestDetectorProto::HitPayload", "d6/de6/classTestDetectorProto_1_1HitPayload.html", null ]
     ] ],
@@ -195,6 +199,10 @@ var hierarchy =
     [ "protobuf_FairTestDetectorPayload_2eproto::StaticDescriptorInitializer", "d8/d5a/structprotobuf__FairTestDetectorPayload__2eproto_1_1StaticDescriptorInitializer.html", null ],
     [ "StepLogger", "de/d1b/classStepLogger.html", null ],
     [ "Table", null, [
+      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
+      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
+      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
+      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
       [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
       [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
       [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],

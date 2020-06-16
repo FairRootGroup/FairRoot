@@ -115,85 +115,83 @@ $(document).ready(function(){initNavTree('d8/de9/FairMQExHistoDevice_8cxx_source
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;chrono&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;thread&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/dec/FairMQExHistoDevice_8h.html">FairMQExHistoDevice.h</a>&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../da/d7c/RootSerializer_8h.html">RootSerializer.h</a>&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;TMath.h&gt;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/dec/FairMQExHistoDevice_8h.html">FairMQExHistoDevice.h</a>&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../da/d7c/RootSerializer_8h.html">RootSerializer.h</a>&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;TMath.h&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;chrono&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;thread&gt;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
 <div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="../../dd/d66/classFairMQExHistoDevice.html#ac60084fbca882e12bc8f7ea39c600209">   16</a></span>&#160;<a class="code" href="../../dd/d66/classFairMQExHistoDevice.html#ac60084fbca882e12bc8f7ea39c600209">FairMQExHistoDevice::FairMQExHistoDevice</a>()</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    : FairMQDevice()</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    , fRandom(0)</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    , fArrayHisto()</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;}</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="../../dd/d66/classFairMQExHistoDevice.html#a00a0dc8e1a04b89056897ae040be5a2b">   23</a></span>&#160;<a class="code" href="../../dd/d66/classFairMQExHistoDevice.html#a00a0dc8e1a04b89056897ae040be5a2b">FairMQExHistoDevice::~FairMQExHistoDevice</a>() {}</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="../../dd/d66/classFairMQExHistoDevice.html#ab91208e0291e2feaa56fce1d52b909bd">   25</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dd/d66/classFairMQExHistoDevice.html#ab91208e0291e2feaa56fce1d52b909bd">FairMQExHistoDevice::InitTask</a>()</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    fh_histo1 = TH1F(<span class="stringliteral">&quot;histo1&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, 200, -0.5, 1.5);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    fh_histo2 = TH1F(<span class="stringliteral">&quot;histo2&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, 1000, -5., 5.);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    fh_histo3 = TH2F(<span class="stringliteral">&quot;histo3&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, 40, -2., 2., 40, -2., 2.);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    fh_histo4 = TH2F(<span class="stringliteral">&quot;histo4&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, 40, -2., 2., 40, -2., 2.);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    fArrayHisto.Add(&amp;fh_histo1);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    fArrayHisto.Add(&amp;fh_histo2);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    fArrayHisto.Add(&amp;fh_histo3);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    fArrayHisto.Add(&amp;fh_histo4);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="../../dd/d66/classFairMQExHistoDevice.html#a96b5b76daeee5fa391bd3f2edf0d35df">   38</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dd/d66/classFairMQExHistoDevice.html#a96b5b76daeee5fa391bd3f2edf0d35df">FairMQExHistoDevice::PreRun</a>() {}</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="../../dd/d66/classFairMQExHistoDevice.html#a90c8fef9fc61b7dfc46c5d399e7e18a0">   40</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dd/d66/classFairMQExHistoDevice.html#a90c8fef9fc61b7dfc46c5d399e7e18a0">FairMQExHistoDevice::PostRun</a>() {}</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="../../dd/d66/classFairMQExHistoDevice.html#a7c367facd129a3ab1568cfa0c4c566f3">   42</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="../../dd/d66/classFairMQExHistoDevice.html#a7c367facd129a3ab1568cfa0c4c566f3">FairMQExHistoDevice::ConditionalRun</a>()</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    fh_histo1.Fill(fRandom.Uniform(0., 1.));</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    fh_histo2.Fill(fRandom.Gaus(0., 1.));</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">double</span> x = fRandom.Uniform(0., 1.);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">double</span> y = fRandom.Uniform(x, 1.);</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    fh_histo3.Fill(x, y);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">double</span> r = fRandom.Uniform(0., 1.);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">double</span> phi = TMath::DegToRad() * fRandom.Uniform(0., 360.);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    x = r * TMath::Cos(phi);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    y = r * TMath::Sin(phi);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    fh_histo4.Fill(x, y);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    FairMQMessagePtr message(NewMessage());</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    Serialize&lt;RootSerializer&gt;(*message, &amp;fArrayHisto);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; channel : fChannels)</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        Send(message, channel.first.data());</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    fh_histo1.Reset();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    fh_histo2.Reset();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    fh_histo3.Reset();</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    fh_histo4.Reset();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{}</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="../../dd/d66/classFairMQExHistoDevice.html#a00a0dc8e1a04b89056897ae040be5a2b">   22</a></span>&#160;<a class="code" href="../../dd/d66/classFairMQExHistoDevice.html#a00a0dc8e1a04b89056897ae040be5a2b">FairMQExHistoDevice::~FairMQExHistoDevice</a>() {}</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="../../dd/d66/classFairMQExHistoDevice.html#ab91208e0291e2feaa56fce1d52b909bd">   24</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dd/d66/classFairMQExHistoDevice.html#ab91208e0291e2feaa56fce1d52b909bd">FairMQExHistoDevice::InitTask</a>()</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    fh_histo1 = TH1F(<span class="stringliteral">&quot;histo1&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, 200, -0.5, 1.5);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    fh_histo2 = TH1F(<span class="stringliteral">&quot;histo2&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, 1000, -5., 5.);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    fh_histo3 = TH2F(<span class="stringliteral">&quot;histo3&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, 40, -2., 2., 40, -2., 2.);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    fh_histo4 = TH2F(<span class="stringliteral">&quot;histo4&quot;</span>, <span class="stringliteral">&quot;&quot;</span>, 40, -2., 2., 40, -2., 2.);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    fArrayHisto.Add(&amp;fh_histo1);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    fArrayHisto.Add(&amp;fh_histo2);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    fArrayHisto.Add(&amp;fh_histo3);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    fArrayHisto.Add(&amp;fh_histo4);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="../../dd/d66/classFairMQExHistoDevice.html#a96b5b76daeee5fa391bd3f2edf0d35df">   37</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dd/d66/classFairMQExHistoDevice.html#a96b5b76daeee5fa391bd3f2edf0d35df">FairMQExHistoDevice::PreRun</a>() {}</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="../../dd/d66/classFairMQExHistoDevice.html#a90c8fef9fc61b7dfc46c5d399e7e18a0">   39</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dd/d66/classFairMQExHistoDevice.html#a90c8fef9fc61b7dfc46c5d399e7e18a0">FairMQExHistoDevice::PostRun</a>() {}</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="../../dd/d66/classFairMQExHistoDevice.html#a7c367facd129a3ab1568cfa0c4c566f3">   41</a></span>&#160;<span class="keywordtype">bool</span> <a class="code" href="../../dd/d66/classFairMQExHistoDevice.html#a7c367facd129a3ab1568cfa0c4c566f3">FairMQExHistoDevice::ConditionalRun</a>()</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    fh_histo1.Fill(fRandom.Uniform(0., 1.));</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    fh_histo2.Fill(fRandom.Gaus(0., 1.));</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">double</span> x = fRandom.Uniform(0., 1.);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">double</span> y = fRandom.Uniform(x, 1.);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    fh_histo3.Fill(x, y);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">double</span> r = fRandom.Uniform(0., 1.);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">double</span> phi = TMath::DegToRad() * fRandom.Uniform(0., 360.);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    x = r * TMath::Cos(phi);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    y = r * TMath::Sin(phi);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    fh_histo4.Fill(x, y);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    FairMQMessagePtr message(NewMessage());</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    Serialize&lt;RootSerializer&gt;(*message, &amp;fArrayHisto);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; channel : fChannels) {</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        Send(message, channel.first.data());</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    fh_histo1.Reset();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    fh_histo2.Reset();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    fh_histo3.Reset();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    fh_histo4.Reset();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    std::this_thread::sleep_for(std::chrono::milliseconds(10));</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    std::this_thread::sleep_for(std::chrono::milliseconds(10));</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
-<div class="ttc" id="classFairMQExHistoDevice_html_a00a0dc8e1a04b89056897ae040be5a2b"><div class="ttname"><a href="../../dd/d66/classFairMQExHistoDevice.html#a00a0dc8e1a04b89056897ae040be5a2b">FairMQExHistoDevice::~FairMQExHistoDevice</a></div><div class="ttdeci">virtual ~FairMQExHistoDevice()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/de9/FairMQExHistoDevice_8cxx_source.html#l00023">FairMQExHistoDevice.cxx:23</a></div></div>
-<div class="ttc" id="classFairMQExHistoDevice_html_a7c367facd129a3ab1568cfa0c4c566f3"><div class="ttname"><a href="../../dd/d66/classFairMQExHistoDevice.html#a7c367facd129a3ab1568cfa0c4c566f3">FairMQExHistoDevice::ConditionalRun</a></div><div class="ttdeci">virtual bool ConditionalRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/de9/FairMQExHistoDevice_8cxx_source.html#l00042">FairMQExHistoDevice.cxx:42</a></div></div>
-<div class="ttc" id="classFairMQExHistoDevice_html_a90c8fef9fc61b7dfc46c5d399e7e18a0"><div class="ttname"><a href="../../dd/d66/classFairMQExHistoDevice.html#a90c8fef9fc61b7dfc46c5d399e7e18a0">FairMQExHistoDevice::PostRun</a></div><div class="ttdeci">virtual void PostRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/de9/FairMQExHistoDevice_8cxx_source.html#l00040">FairMQExHistoDevice.cxx:40</a></div></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;}</div>
+<div class="ttc" id="classFairMQExHistoDevice_html_a00a0dc8e1a04b89056897ae040be5a2b"><div class="ttname"><a href="../../dd/d66/classFairMQExHistoDevice.html#a00a0dc8e1a04b89056897ae040be5a2b">FairMQExHistoDevice::~FairMQExHistoDevice</a></div><div class="ttdeci">virtual ~FairMQExHistoDevice()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/de9/FairMQExHistoDevice_8cxx_source.html#l00022">FairMQExHistoDevice.cxx:22</a></div></div>
+<div class="ttc" id="classFairMQExHistoDevice_html_a7c367facd129a3ab1568cfa0c4c566f3"><div class="ttname"><a href="../../dd/d66/classFairMQExHistoDevice.html#a7c367facd129a3ab1568cfa0c4c566f3">FairMQExHistoDevice::ConditionalRun</a></div><div class="ttdeci">virtual bool ConditionalRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/de9/FairMQExHistoDevice_8cxx_source.html#l00041">FairMQExHistoDevice.cxx:41</a></div></div>
+<div class="ttc" id="classFairMQExHistoDevice_html_a90c8fef9fc61b7dfc46c5d399e7e18a0"><div class="ttname"><a href="../../dd/d66/classFairMQExHistoDevice.html#a90c8fef9fc61b7dfc46c5d399e7e18a0">FairMQExHistoDevice::PostRun</a></div><div class="ttdeci">virtual void PostRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/de9/FairMQExHistoDevice_8cxx_source.html#l00039">FairMQExHistoDevice.cxx:39</a></div></div>
 <div class="ttc" id="classFairMQExHistoDevice_html_ac60084fbca882e12bc8f7ea39c600209"><div class="ttname"><a href="../../dd/d66/classFairMQExHistoDevice.html#ac60084fbca882e12bc8f7ea39c600209">FairMQExHistoDevice::FairMQExHistoDevice</a></div><div class="ttdeci">FairMQExHistoDevice()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/de9/FairMQExHistoDevice_8cxx_source.html#l00016">FairMQExHistoDevice.cxx:16</a></div></div>
-<div class="ttc" id="classFairMQExHistoDevice_html_a96b5b76daeee5fa391bd3f2edf0d35df"><div class="ttname"><a href="../../dd/d66/classFairMQExHistoDevice.html#a96b5b76daeee5fa391bd3f2edf0d35df">FairMQExHistoDevice::PreRun</a></div><div class="ttdeci">virtual void PreRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/de9/FairMQExHistoDevice_8cxx_source.html#l00038">FairMQExHistoDevice.cxx:38</a></div></div>
+<div class="ttc" id="classFairMQExHistoDevice_html_a96b5b76daeee5fa391bd3f2edf0d35df"><div class="ttname"><a href="../../dd/d66/classFairMQExHistoDevice.html#a96b5b76daeee5fa391bd3f2edf0d35df">FairMQExHistoDevice::PreRun</a></div><div class="ttdeci">virtual void PreRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/de9/FairMQExHistoDevice_8cxx_source.html#l00037">FairMQExHistoDevice.cxx:37</a></div></div>
 <div class="ttc" id="FairMQExHistoDevice_8h_html"><div class="ttname"><a href="../../d5/dec/FairMQExHistoDevice_8h.html">FairMQExHistoDevice.h</a></div></div>
 <div class="ttc" id="RootSerializer_8h_html"><div class="ttname"><a href="../../da/d7c/RootSerializer_8h.html">RootSerializer.h</a></div></div>
-<div class="ttc" id="classFairMQExHistoDevice_html_ab91208e0291e2feaa56fce1d52b909bd"><div class="ttname"><a href="../../dd/d66/classFairMQExHistoDevice.html#ab91208e0291e2feaa56fce1d52b909bd">FairMQExHistoDevice::InitTask</a></div><div class="ttdeci">virtual void InitTask()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/de9/FairMQExHistoDevice_8cxx_source.html#l00025">FairMQExHistoDevice.cxx:25</a></div></div>
+<div class="ttc" id="classFairMQExHistoDevice_html_ab91208e0291e2feaa56fce1d52b909bd"><div class="ttname"><a href="../../dd/d66/classFairMQExHistoDevice.html#ab91208e0291e2feaa56fce1d52b909bd">FairMQExHistoDevice::InitTask</a></div><div class="ttdeci">virtual void InitTask()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/de9/FairMQExHistoDevice_8cxx_source.html#l00024">FairMQExHistoDevice.cxx:24</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_caac58519ba4740e026a67a20b1aba91.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_4fbd3b3a22246ae464b5425ba5bbca25.html">histogramServer</a></li><li class="navelem"><a class="el" href="../../d8/de9/FairMQExHistoDevice_8cxx.html">FairMQExHistoDevice.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:49 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

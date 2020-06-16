@@ -6,6 +6,7 @@ var classFairDetector =
     [ "FairDetector", "d6/d0c/classFairDetector.html#a15da7f7262894b425fd201c0e5eb4c14", null ],
     [ "BeginEvent", "d6/d0c/classFairDetector.html#a328661f3143214184d46a01c5a96aaeb", null ],
     [ "BeginPrimary", "d6/d0c/classFairDetector.html#a3e07b108ffc1f68eb8fae9ad5650040a", null ],
+    [ "ClassDef", "d6/d0c/classFairDetector.html#a347caed8a9ed2a21df228aa808ca5e08", null ],
     [ "CopyClones", "d6/d0c/classFairDetector.html#a1efc47c9401350367c82beed254b140b", null ],
     [ "DefineSensitiveVolumes", "d6/d0c/classFairDetector.html#a54667059f9a07eae16df4cd187215abf", null ],
     [ "EndOfEvent", "d6/d0c/classFairDetector.html#a69c691af162a38cededde3423d995009", null ],

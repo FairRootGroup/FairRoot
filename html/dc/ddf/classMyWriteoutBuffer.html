@@ -134,14 +134,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a18067ce350641e66ad50094dd2f55443"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/ddf/classMyWriteoutBuffer.html#a18067ce350641e66ad50094dd2f55443">MyWriteoutBuffer</a> (TString branchName, TString folderName, Bool_t persistance)</td></tr>
 <tr class="separator:a18067ce350641e66ad50094dd2f55443"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92a1d5fd6e9998e963af1eb65dcee275"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/ddf/classMyWriteoutBuffer.html#a92a1d5fd6e9998e963af1eb65dcee275">AddNewDataToTClonesArray</a> (<a class="el" href="../../d6/d15/classFairTimeStamp.html">FairTimeStamp</a> *)</td></tr>
-<tr class="memdesc:a92a1d5fd6e9998e963af1eb65dcee275"><td class="mdescLeft">&#160;</td><td class="mdescRight">store the data from the <a class="el" href="../../d6/d15/classFairTimeStamp.html">FairTimeStamp</a> pointer in a TClonesArray (you have to cast it to your type of data)  <a href="#a92a1d5fd6e9998e963af1eb65dcee275">More...</a><br /></td></tr>
 <tr class="separator:a92a1d5fd6e9998e963af1eb65dcee275"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cb1c1914406f977ff0d79463510403c"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/ddf/classMyWriteoutBuffer.html#a7cb1c1914406f977ff0d79463510403c">~MyWriteoutBuffer</a> ()</td></tr>
 <tr class="separator:a7cb1c1914406f977ff0d79463510403c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fa4d5fd2cd77ec59c3c94af885bb88c"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::pair&lt; double, MyDataClass * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/ddf/classMyWriteoutBuffer.html#a3fa4d5fd2cd77ec59c3c94af885bb88c">Modify</a> (std::pair&lt; double, MyDataClass * &gt; oldData, std::pair&lt; double, MyDataClass * &gt; newData)</td></tr>
 <tr class="separator:a3fa4d5fd2cd77ec59c3c94af885bb88c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61998c7c4e80596e726d8f5e690c2d42"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/ddf/classMyWriteoutBuffer.html#a61998c7c4e80596e726d8f5e690c2d42">FindTimeForData</a> (<a class="el" href="../../d6/d15/classFairTimeStamp.html">FairTimeStamp</a> *data)</td></tr>
-<tr class="memdesc:a61998c7c4e80596e726d8f5e690c2d42"><td class="mdescLeft">&#160;</td><td class="mdescRight">if the same data object (like a pad or a pixel) is already present in the buffer, the time of this object has to be returned otherwise -1  <a href="#a61998c7c4e80596e726d8f5e690c2d42">More...</a><br /></td></tr>
 <tr class="separator:a61998c7c4e80596e726d8f5e690c2d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa99cdf4b750c644afbecc9a953f82367"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/ddf/classMyWriteoutBuffer.html#aa99cdf4b750c644afbecc9a953f82367">FillDataMap</a> (<a class="el" href="../../d6/d15/classFairTimeStamp.html">FairTimeStamp</a> *data, double activeTime)</td></tr>
 <tr class="memdesc:aa99cdf4b750c644afbecc9a953f82367"><td class="mdescLeft">&#160;</td><td class="mdescRight">add a new element in the search buffer  <a href="#aa99cdf4b750c644afbecc9a953f82367">More...</a><br /></td></tr>
@@ -239,7 +237,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html#l00018">18</a> of file <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html">MyWriteoutBuffer.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html#l00019">19</a> of file <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html">MyWriteoutBuffer.cxx</a>.</p>
 
 </div>
 </div>
@@ -273,7 +271,7 @@ Protected Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html#l00025">25</a> of file <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html">MyWriteoutBuffer.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html#l00024">24</a> of file <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html">MyWriteoutBuffer.cxx</a>.</p>
 
 </div>
 </div>
@@ -298,7 +296,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html#l00031">31</a> of file <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html">MyWriteoutBuffer.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html#l00029">29</a> of file <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html">MyWriteoutBuffer.cxx</a>.</p>
 
 </div>
 </div>
@@ -324,12 +322,11 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
 <p>store the data from the <a class="el" href="../../d6/d15/classFairTimeStamp.html">FairTimeStamp</a> pointer in a TClonesArray (you have to cast it to your type of data) </p>
 
 <p>Implements <a class="el" href="../../d2/d88/classFairWriteoutBuffer.html#ac780bba3fdda9195f1b649aabf9212e7">FairWriteoutBuffer</a>.</p>
 
-<p>Definition at line <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html#l00054">54</a> of file <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html">MyWriteoutBuffer.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html#l00052">52</a> of file <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html">MyWriteoutBuffer.cxx</a>.</p>
 
 </div>
 </div>
@@ -458,7 +455,6 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
 <p>if the same data object (like a pad or a pixel) is already present in the buffer, the time of this object has to be returned otherwise -1 </p>
 
 <p>Implements <a class="el" href="../../d2/d88/classFairWriteoutBuffer.html#a09f8ed4e43b8e82df03180217202feff">FairWriteoutBuffer</a>.</p>
@@ -499,7 +495,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html#l00035">35</a> of file <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html">MyWriteoutBuffer.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html#l00031">31</a> of file <a class="el" href="../../df/d77/MyWriteoutBuffer_8cxx_source.html">MyWriteoutBuffer.cxx</a>.</p>
 
 </div>
 </div>
@@ -522,7 +518,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d6/d42/MyWriteoutBuffer_8h_source.html#l00039">39</a> of file <a class="el" href="../../d6/d42/MyWriteoutBuffer_8h_source.html">MyWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../d6/d42/MyWriteoutBuffer_8h_source.html#l00040">40</a> of file <a class="el" href="../../d6/d42/MyWriteoutBuffer_8h_source.html">MyWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -536,7 +532,7 @@ Protected Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dc/ddf/classMyWriteoutBuffer.html">MyWriteoutBuffer</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:57 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:59:05 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

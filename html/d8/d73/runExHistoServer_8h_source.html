@@ -115,41 +115,38 @@ $(document).ready(function(){initNavTree('d8/d73/runExHistoServer_8h_source.html
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;runFairMQDevice.h&quot;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/d48/FairMQExHistoServer_8h.html">FairMQExHistoServer.h</a>&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">namespace </span>bpo = boost::program_options;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="../../d8/d73/runExHistoServer_8h.html#aa91faf92fedfbef877f991b35196c390">   16</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d8/d73/runExHistoServer_8h.html#aa91faf92fedfbef877f991b35196c390">addCustomOptions</a>(bpo::options_description&amp; <span class="comment">/*options*/</span>)</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;std::unique_ptr&lt;FairMQExHistoCanvasDrawer&gt; <a class="code" href="../../d8/d73/runExHistoServer_8h.html#a7f6239a0ef01e52d71a99d8f8f603810">getCanvasDrawer</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="../../d8/d73/runExHistoServer_8h.html#a9c6d7f8d628391c1bad26be1f1abc271">   22</a></span>&#160;FairMQDevicePtr <a class="code" href="../../d8/d73/runExHistoServer_8h.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a>(<span class="keyword">const</span> FairMQProgOptions&amp; <span class="comment">/*config*/</span>)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="../../d5/d14/classFairMQExHistoServer.html">FairMQExHistoServer</a>* histoServer = <span class="keyword">new</span> <a class="code" href="../../d5/d14/classFairMQExHistoServer.html">FairMQExHistoServer</a>();</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    histoServer-&gt;<a class="code" href="../../d5/d14/classFairMQExHistoServer.html#a05d6a0c81e7abbb9bbd9f3fb89e9aa35">SetCanvasDrawer</a>(<a class="code" href="../../d8/d73/runExHistoServer_8h.html#a7f6239a0ef01e52d71a99d8f8f603810">getCanvasDrawer</a>());</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="keywordflow">return</span> histoServer;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div>
-<div class="ttc" id="runExHistoServer_8h_html_a9c6d7f8d628391c1bad26be1f1abc271"><div class="ttname"><a href="../../d8/d73/runExHistoServer_8h.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a></div><div class="ttdeci">FairMQDevicePtr getDevice(const FairMQProgOptions &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d73/runExHistoServer_8h_source.html#l00022">runExHistoServer.h:22</a></div></div>
-<div class="ttc" id="classFairMQExHistoServer_html"><div class="ttname"><a href="../../d5/d14/classFairMQExHistoServer.html">FairMQExHistoServer</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d48/FairMQExHistoServer_8h_source.html#l00022">FairMQExHistoServer.h:22</a></div></div>
-<div class="ttc" id="runExHistoServer_8h_html_aa91faf92fedfbef877f991b35196c390"><div class="ttname"><a href="../../d8/d73/runExHistoServer_8h.html#aa91faf92fedfbef877f991b35196c390">addCustomOptions</a></div><div class="ttdeci">void addCustomOptions(bpo::options_description &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d73/runExHistoServer_8h_source.html#l00016">runExHistoServer.h:16</a></div></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/d48/FairMQExHistoServer_8h.html">FairMQExHistoServer.h</a>&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;runFairMQDevice.h&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="keyword">namespace </span>bpo = boost::program_options;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="../../d8/d73/runExHistoServer_8h.html#aa91faf92fedfbef877f991b35196c390">   15</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d8/d73/runExHistoServer_8h.html#aa91faf92fedfbef877f991b35196c390">addCustomOptions</a>(bpo::options_description&amp; <span class="comment">/*options*/</span>) {}</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;std::unique_ptr&lt;FairMQExHistoCanvasDrawer&gt; <a class="code" href="../../d8/d73/runExHistoServer_8h.html#a7f6239a0ef01e52d71a99d8f8f603810">getCanvasDrawer</a>();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="../../d8/d73/runExHistoServer_8h.html#a9c6d7f8d628391c1bad26be1f1abc271">   19</a></span>&#160;FairMQDevicePtr <a class="code" href="../../d8/d73/runExHistoServer_8h.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a>(<span class="keyword">const</span> FairMQProgOptions&amp; <span class="comment">/*config*/</span>)</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="../../d5/d14/classFairMQExHistoServer.html">FairMQExHistoServer</a>* histoServer = <span class="keyword">new</span> <a class="code" href="../../d5/d14/classFairMQExHistoServer.html">FairMQExHistoServer</a>();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    histoServer-&gt;<a class="code" href="../../d5/d14/classFairMQExHistoServer.html#a05d6a0c81e7abbb9bbd9f3fb89e9aa35">SetCanvasDrawer</a>(<a class="code" href="../../d8/d73/runExHistoServer_8h.html#a7f6239a0ef01e52d71a99d8f8f603810">getCanvasDrawer</a>());</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordflow">return</span> histoServer;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;}</div>
+<div class="ttc" id="runExHistoServer_8h_html_a9c6d7f8d628391c1bad26be1f1abc271"><div class="ttname"><a href="../../d8/d73/runExHistoServer_8h.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a></div><div class="ttdeci">FairMQDevicePtr getDevice(const FairMQProgOptions &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d73/runExHistoServer_8h_source.html#l00019">runExHistoServer.h:19</a></div></div>
+<div class="ttc" id="classFairMQExHistoServer_html"><div class="ttname"><a href="../../d5/d14/classFairMQExHistoServer.html">FairMQExHistoServer</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d48/FairMQExHistoServer_8h_source.html#l00021">FairMQExHistoServer.h:21</a></div></div>
+<div class="ttc" id="runExHistoServer_8h_html_aa91faf92fedfbef877f991b35196c390"><div class="ttname"><a href="../../d8/d73/runExHistoServer_8h.html#aa91faf92fedfbef877f991b35196c390">addCustomOptions</a></div><div class="ttdeci">void addCustomOptions(bpo::options_description &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d73/runExHistoServer_8h_source.html#l00015">runExHistoServer.h:15</a></div></div>
 <div class="ttc" id="FairMQExHistoServer_8h_html"><div class="ttname"><a href="../../d5/d48/FairMQExHistoServer_8h.html">FairMQExHistoServer.h</a></div></div>
-<div class="ttc" id="classFairMQExHistoServer_html_a05d6a0c81e7abbb9bbd9f3fb89e9aa35"><div class="ttname"><a href="../../d5/d14/classFairMQExHistoServer.html#a05d6a0c81e7abbb9bbd9f3fb89e9aa35">FairMQExHistoServer::SetCanvasDrawer</a></div><div class="ttdeci">void SetCanvasDrawer(std::unique_ptr&lt; FairMQExHistoCanvasDrawer &gt; canvasDrawer)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d48/FairMQExHistoServer_8h_source.html#l00031">FairMQExHistoServer.h:31</a></div></div>
-<div class="ttc" id="runExHistoServer_8h_html_a7f6239a0ef01e52d71a99d8f8f603810"><div class="ttname"><a href="../../d8/d73/runExHistoServer_8h.html#a7f6239a0ef01e52d71a99d8f8f603810">getCanvasDrawer</a></div><div class="ttdeci">std::unique_ptr&lt; FairMQExHistoCanvasDrawer &gt; getCanvasDrawer()</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d6f/runExHistoCanvasDrawer_8cxx_source.html#l00012">runExHistoCanvasDrawer.cxx:12</a></div></div>
+<div class="ttc" id="classFairMQExHistoServer_html_a05d6a0c81e7abbb9bbd9f3fb89e9aa35"><div class="ttname"><a href="../../d5/d14/classFairMQExHistoServer.html#a05d6a0c81e7abbb9bbd9f3fb89e9aa35">FairMQExHistoServer::SetCanvasDrawer</a></div><div class="ttdeci">void SetCanvasDrawer(std::unique_ptr&lt; FairMQExHistoCanvasDrawer &gt; canvasDrawer)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d48/FairMQExHistoServer_8h_source.html#l00030">FairMQExHistoServer.h:30</a></div></div>
+<div class="ttc" id="runExHistoServer_8h_html_a7f6239a0ef01e52d71a99d8f8f603810"><div class="ttname"><a href="../../d8/d73/runExHistoServer_8h.html#a7f6239a0ef01e52d71a99d8f8f603810">getCanvasDrawer</a></div><div class="ttdeci">std::unique_ptr&lt; FairMQExHistoCanvasDrawer &gt; getCanvasDrawer()</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d6f/runExHistoCanvasDrawer_8cxx_source.html#l00011">runExHistoCanvasDrawer.cxx:11</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_caac58519ba4740e026a67a20b1aba91.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_4fbd3b3a22246ae464b5425ba5bbca25.html">histogramServer</a></li><li class="navelem"><a class="el" href="../../d8/d73/runExHistoServer_8h.html">runExHistoServer.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:49 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

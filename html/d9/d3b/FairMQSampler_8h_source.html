@@ -111,239 +111,223 @@ $(document).ready(function(){initNavTree('d9/d3b/FairMQSampler_8h_source.html','
 <a href="../../d9/d3b/FairMQSampler_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/********************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *                                                                              *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             * </span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *  </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#ifndef FAIRMQSAMPLER_H_</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define FAIRMQSAMPLER_H_</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;chrono&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;thread&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d6/d80/FairParRootFileIo_8h.html">FairParRootFileIo.h</a>&quot;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d9/dac/FairRuntimeDb_8h.html">FairRuntimeDb.h</a>&quot;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/d7c/FairRunAna_8h.html">FairRunAna.h</a>&quot;</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/dea/FairRootFileSink_8h.html">FairRootFileSink.h</a>&quot;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../da/db2/FairFileSource_8h.html">FairFileSource.h</a>&quot;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;FairMQDevice.h&gt;</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d3/daa/FairMQSamplerTask_8h.html">FairMQSamplerTask.h</a>&quot;</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;FairMQLogger.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Task&gt;</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html">   44</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d3/d91/classFairMQSampler.html">FairMQSampler</a> : <span class="keyword">public</span> FairMQDevice</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;{</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#af1d9fa8ceaf9107a55228a2194c6ca7f">   47</a></span>&#160;    <a class="code" href="../../d3/d91/classFairMQSampler.html#af1d9fa8ceaf9107a55228a2194c6ca7f">FairMQSampler</a>()</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        : fFairRunAna(nullptr)</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        , fSamplerTask(nullptr)</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        , fStart()</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        , fEnd()</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        , fInputFile()</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        , fParFile()</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        , fBranch()</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        , fOutChannelName(<span class="stringliteral">&quot;data1&quot;</span>)</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        , fAckChannelName(<span class="stringliteral">&quot;ack&quot;</span>)</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        , fNumEvents(0)</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        , fChainInput(0)</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        , fSentMsgs(0)</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        , fAckListener()</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    {}</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="../../d3/d91/classFairMQSampler.html#af1d9fa8ceaf9107a55228a2194c6ca7f">FairMQSampler</a>(<span class="keyword">const</span> <a class="code" href="../../d3/d91/classFairMQSampler.html">FairMQSampler</a>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="../../d3/d91/classFairMQSampler.html">FairMQSampler</a> <a class="code" href="../../d3/d91/classFairMQSampler.html#a69ba2444a7945431b9727c6cf161a32b">operator=</a>(<span class="keyword">const</span> <a class="code" href="../../d3/d91/classFairMQSampler.html">FairMQSampler</a>&amp;) = <span class="keyword">delete</span>;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#a416261d82b1ce380d13df14b1658d8a6">   66</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#a416261d82b1ce380d13df14b1658d8a6">~FairMQSampler</a>()</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    {}</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#a881f4ad853251e9011ef2fffbebd9865">   70</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#a881f4ad853251e9011ef2fffbebd9865">InitTask</a>()</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        LOG(info) &lt;&lt; <span class="stringliteral">&quot;Initializing Task...&quot;</span>;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        fFairRunAna = <span class="keyword">new</span> <a class="code" href="../../de/da9/classFairRunAna.html">FairRunAna</a>();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        fSamplerTask = <span class="keyword">new</span> Task();</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        fInputFile = fConfig-&gt;GetValue&lt;std::string&gt;(<span class="stringliteral">&quot;input-file&quot;</span>);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        fParFile = fConfig-&gt;GetValue&lt;std::string&gt;(<span class="stringliteral">&quot;parameter-file&quot;</span>);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        fBranch = fConfig-&gt;GetValue&lt;std::string&gt;(<span class="stringliteral">&quot;branch&quot;</span>);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        fChainInput = fConfig-&gt;GetValue&lt;<span class="keywordtype">int</span>&gt;(<span class="stringliteral">&quot;chain-input&quot;</span>);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        std::string outChannelName = fConfig-&gt;GetValue&lt;std::string&gt;(<span class="stringliteral">&quot;out-channel&quot;</span>);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        std::string ackChannelName = fConfig-&gt;GetValue&lt;std::string&gt;(<span class="stringliteral">&quot;ack-channel&quot;</span>);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="comment">// check if the returned value actually exists, for the compatibility with old devices.</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keywordflow">if</span> (outChannelName != <span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        {</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            fOutChannelName = outChannelName;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../da/db2/FairFileSource_8h.html">FairFileSource.h</a>&quot;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d3/daa/FairMQSamplerTask_8h.html">FairMQSamplerTask.h</a>&quot;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d6/d80/FairParRootFileIo_8h.html">FairParRootFileIo.h</a>&quot;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/dea/FairRootFileSink_8h.html">FairRootFileSink.h</a>&quot;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/d7c/FairRunAna_8h.html">FairRunAna.h</a>&quot;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d9/dac/FairRuntimeDb_8h.html">FairRuntimeDb.h</a>&quot;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;FairMQDevice.h&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;FairMQLogger.h&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;chrono&gt;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;thread&gt;</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> Task&gt;</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html">   43</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d3/d91/classFairMQSampler.html">FairMQSampler</a> : <span class="keyword">public</span> FairMQDevice</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#af1d9fa8ceaf9107a55228a2194c6ca7f">   46</a></span>&#160;    <a class="code" href="../../d3/d91/classFairMQSampler.html#af1d9fa8ceaf9107a55228a2194c6ca7f">FairMQSampler</a>()</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        : fFairRunAna(nullptr)</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        , fSamplerTask(nullptr)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        , fStart()</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        , fEnd()</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        , fInputFile()</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        , fParFile()</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        , fBranch()</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        , fOutChannelName(<span class="stringliteral">&quot;data1&quot;</span>)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        , fAckChannelName(<span class="stringliteral">&quot;ack&quot;</span>)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        , fNumEvents(0)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        , fChainInput(0)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        , fSentMsgs(0)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        , fAckListener()</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    {}</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="../../d3/d91/classFairMQSampler.html#af1d9fa8ceaf9107a55228a2194c6ca7f">FairMQSampler</a>(<span class="keyword">const</span> <a class="code" href="../../d3/d91/classFairMQSampler.html">FairMQSampler</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="../../d3/d91/classFairMQSampler.html">FairMQSampler</a> <a class="code" href="../../d3/d91/classFairMQSampler.html#a69ba2444a7945431b9727c6cf161a32b">operator=</a>(<span class="keyword">const</span> <a class="code" href="../../d3/d91/classFairMQSampler.html">FairMQSampler</a>&amp;) = <span class="keyword">delete</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#a416261d82b1ce380d13df14b1658d8a6">   65</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#a416261d82b1ce380d13df14b1658d8a6">~FairMQSampler</a>() {}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#a881f4ad853251e9011ef2fffbebd9865">   68</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#a881f4ad853251e9011ef2fffbebd9865">InitTask</a>()</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        LOG(info) &lt;&lt; <span class="stringliteral">&quot;Initializing Task...&quot;</span>;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        fFairRunAna = <span class="keyword">new</span> <a class="code" href="../../de/da9/classFairRunAna.html">FairRunAna</a>();</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        fSamplerTask = <span class="keyword">new</span> Task();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        fInputFile = fConfig-&gt;GetValue&lt;std::string&gt;(<span class="stringliteral">&quot;input-file&quot;</span>);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        fParFile = fConfig-&gt;GetValue&lt;std::string&gt;(<span class="stringliteral">&quot;parameter-file&quot;</span>);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        fBranch = fConfig-&gt;GetValue&lt;std::string&gt;(<span class="stringliteral">&quot;branch&quot;</span>);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        fChainInput = fConfig-&gt;GetValue&lt;<span class="keywordtype">int</span>&gt;(<span class="stringliteral">&quot;chain-input&quot;</span>);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        std::string outChannelName = fConfig-&gt;GetValue&lt;std::string&gt;(<span class="stringliteral">&quot;out-channel&quot;</span>);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        std::string ackChannelName = fConfig-&gt;GetValue&lt;std::string&gt;(<span class="stringliteral">&quot;ack-channel&quot;</span>);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="comment">// check if the returned value actually exists, for the compatibility with old devices.</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">if</span> (outChannelName != <span class="stringliteral">&quot;&quot;</span>) {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            fOutChannelName = outChannelName;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        }</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        <span class="keywordflow">if</span> (ackChannelName != <span class="stringliteral">&quot;&quot;</span>) {</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            fAckChannelName = ackChannelName;</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keywordflow">if</span> (ackChannelName != <span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        {</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            fAckChannelName = ackChannelName;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        }</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        fSamplerTask-&gt;<a class="code" href="../../df/daa/classFairMQSamplerTask.html#a9a635805e2827a0355f2140a90a12359">SetBranch</a>(fBranch);</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        fSamplerTask-&gt;<a class="code" href="../../df/daa/classFairMQSamplerTask.html#aa992f39fc41ced6b45bddd0c6ffb6d39">SetTransport</a>(fTransportFactory);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        <a class="code" href="../../d2/d60/classFairFileSource.html">FairFileSource</a>* source = <span class="keyword">new</span> <a class="code" href="../../d2/d60/classFairFileSource.html">FairFileSource</a>(TString(fInputFile));</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        <span class="comment">// Adds the same file to the input. The output will still be a single file.</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; fChainInput; ++i)</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        {</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;            source-&gt;<a class="code" href="../../d2/d60/classFairFileSource.html#ab8a95564faf41e9081441b9dcac8e373">AddFile</a>(fInputFile);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        fFairRunAna-&gt;<a class="code" href="../../de/da9/classFairRunAna.html#af17e5010f3b1e927124f5541d0716f22">SetSource</a>(source);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;        TString output = fInputFile;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        output.Append(<span class="stringliteral">&quot;.out.root&quot;</span>);</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        fFairRunAna-&gt;<a class="code" href="../../dd/dd2/classFairRun.html#ab3e4029db66603b62bcbb81310fbfb93">SetSink</a>(<span class="keyword">new</span> <a class="code" href="../../da/d6a/classFairRootFileSink.html">FairRootFileSink</a>(output.Data()));</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        fFairRunAna-&gt;<a class="code" href="../../dd/dd2/classFairRun.html#ae55b4cb59c1a84c17bf42e872f159304">AddTask</a>(fSamplerTask);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordflow">if</span> (fParFile != <span class="stringliteral">&quot;&quot;</span>)</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        {</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            <a class="code" href="../../d7/d6f/classFairRuntimeDb.html">FairRuntimeDb</a>* rtdb = fFairRunAna-&gt;<a class="code" href="../../dd/dd2/classFairRun.html#a769c748079f470c6fb88bdddd2635e78">GetRuntimeDb</a>();</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;            <a class="code" href="../../d5/d03/classFairParRootFileIo.html">FairParRootFileIo</a>* parInput = <span class="keyword">new</span> <a class="code" href="../../d5/d03/classFairParRootFileIo.html">FairParRootFileIo</a>();</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;            parInput-&gt;<a class="code" href="../../d5/d03/classFairParRootFileIo.html#addaef2e4c178592258c3b1b0324c1549">open</a>(TString(fParFile).Data());</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;            rtdb-&gt;<a class="code" href="../../d7/d6f/classFairRuntimeDb.html#a86e184ef37a0081c0b9f1f328789a66d">setFirstInput</a>(parInput);</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;            rtdb-&gt;<a class="code" href="../../d7/d6f/classFairRuntimeDb.html#ab6a04e9dccc3645ca8b00e3959b9ab6f">print</a>();</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        }</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="keywordflow">else</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        {</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;            LOG(warn) &lt;&lt; <span class="stringliteral">&quot;Parameter file not provided. Starting without RuntimeDB.&quot;</span>;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;        }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        fSamplerTask-&gt;<a class="code" href="../../df/daa/classFairMQSamplerTask.html#a9a635805e2827a0355f2140a90a12359">SetBranch</a>(fBranch);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        fSamplerTask-&gt;<a class="code" href="../../df/daa/classFairMQSamplerTask.html#aa992f39fc41ced6b45bddd0c6ffb6d39">SetTransport</a>(fTransportFactory);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <a class="code" href="../../d2/d60/classFairFileSource.html">FairFileSource</a>* source = <span class="keyword">new</span> <a class="code" href="../../d2/d60/classFairFileSource.html">FairFileSource</a>(TString(fInputFile));</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="comment">// Adds the same file to the input. The output will still be a single file.</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; fChainInput; ++i) {</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            source-&gt;<a class="code" href="../../d2/d60/classFairFileSource.html#ab8a95564faf41e9081441b9dcac8e373">AddFile</a>(fInputFile);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        fFairRunAna-&gt;<a class="code" href="../../de/da9/classFairRunAna.html#af17e5010f3b1e927124f5541d0716f22">SetSource</a>(source);</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        TString output = fInputFile;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        output.Append(<span class="stringliteral">&quot;.out.root&quot;</span>);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        fFairRunAna-&gt;<a class="code" href="../../dd/dd2/classFairRun.html#ab3e4029db66603b62bcbb81310fbfb93">SetSink</a>(<span class="keyword">new</span> <a class="code" href="../../da/d6a/classFairRootFileSink.html">FairRootFileSink</a>(output.Data()));</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        fFairRunAna-&gt;<a class="code" href="../../dd/dd2/classFairRun.html#ae55b4cb59c1a84c17bf42e872f159304">AddTask</a>(fSamplerTask);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;        <span class="keywordflow">if</span> (fParFile != <span class="stringliteral">&quot;&quot;</span>) {</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;            <a class="code" href="../../d7/d6f/classFairRuntimeDb.html">FairRuntimeDb</a>* rtdb = fFairRunAna-&gt;<a class="code" href="../../dd/dd2/classFairRun.html#a769c748079f470c6fb88bdddd2635e78">GetRuntimeDb</a>();</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;            <a class="code" href="../../d5/d03/classFairParRootFileIo.html">FairParRootFileIo</a>* parInput = <span class="keyword">new</span> <a class="code" href="../../d5/d03/classFairParRootFileIo.html">FairParRootFileIo</a>();</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;            parInput-&gt;<a class="code" href="../../d5/d03/classFairParRootFileIo.html#addaef2e4c178592258c3b1b0324c1549">open</a>(TString(fParFile).Data());</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;            rtdb-&gt;<a class="code" href="../../d7/d6f/classFairRuntimeDb.html#a86e184ef37a0081c0b9f1f328789a66d">setFirstInput</a>(parInput);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;            rtdb-&gt;<a class="code" href="../../d7/d6f/classFairRuntimeDb.html#ab6a04e9dccc3645ca8b00e3959b9ab6f">print</a>();</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;            LOG(warn) &lt;&lt; <span class="stringliteral">&quot;Parameter file not provided. Starting without RuntimeDB.&quot;</span>;</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        }</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        fFairRunAna-&gt;<a class="code" href="../../de/da9/classFairRunAna.html#a52f4d86d087d13855edc6bd567373144">Init</a>();</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        <span class="comment">// fFairRunAna-&gt;Run(0, 0);</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        fNumEvents = int((<a class="code" href="../../d0/d6c/classFairRootManager.html#a830b7803b29e7424a75f2dc374dcc96b">FairRootManager::Instance</a>()-&gt;GetInChain())-&gt;GetEntries());</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        LOG(info) &lt;&lt; <span class="stringliteral">&quot;Task initialized.&quot;</span>;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        LOG(info) &lt;&lt; <span class="stringliteral">&quot;Number of events to process: &quot;</span> &lt;&lt; fNumEvents;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    }</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        fFairRunAna-&gt;<a class="code" href="../../de/da9/classFairRunAna.html#a52f4d86d087d13855edc6bd567373144">Init</a>();</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;        <span class="comment">// fFairRunAna-&gt;Run(0, 0);</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        fNumEvents = int((<a class="code" href="../../d0/d6c/classFairRootManager.html#a830b7803b29e7424a75f2dc374dcc96b">FairRootManager::Instance</a>()-&gt;GetInChain())-&gt;GetEntries());</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;        LOG(info) &lt;&lt; <span class="stringliteral">&quot;Task initialized.&quot;</span>;</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        LOG(info) &lt;&lt; <span class="stringliteral">&quot;Number of events to process: &quot;</span> &lt;&lt; fNumEvents;</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    }</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;</div>
-<div class="line"><a name="l00133"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#a574044837b43daae0d6252d086cef3dd">  133</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#a574044837b43daae0d6252d086cef3dd">PreRun</a>()</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    {</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        fStart = std::chrono::high_resolution_clock::now();</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        fAckListener = std::thread(&amp;<a class="code" href="../../d3/d91/classFairMQSampler.html#a59c518088b965290b4fd3de9f4fd3a27">FairMQSampler::ListenForAcks</a>, <span class="keyword">this</span>);</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    }</div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#a574044837b43daae0d6252d086cef3dd">  125</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#a574044837b43daae0d6252d086cef3dd">PreRun</a>()</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    {</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;        fStart = std::chrono::high_resolution_clock::now();</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        fAckListener = std::thread(&amp;<a class="code" href="../../d3/d91/classFairMQSampler.html#a59c518088b965290b4fd3de9f4fd3a27">FairMQSampler::ListenForAcks</a>, <span class="keyword">this</span>);</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    }</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div>
+<div class="line"><a name="l00131"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#a2ea876b453b4adf02629b9602ad335dc">  131</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#a2ea876b453b4adf02629b9602ad335dc">ConditionalRun</a>()</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    {</div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;        FairMQMessagePtr msg;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;        fSamplerTask-&gt;<a class="code" href="../../df/daa/classFairMQSamplerTask.html#ab7c8c62d332df23a2d86eae850a3e897">SetEventIndex</a>(fSentMsgs);</div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;        fFairRunAna-&gt;<a class="code" href="../../de/da9/classFairRunAna.html#a741da0e27cad113bbead1cefcc457e10">RunMQ</a>(fSentMsgs);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        fSamplerTask-&gt;<a class="code" href="../../df/daa/classFairMQSamplerTask.html#acf10128bc16d97e82360c541b50c1c06">GetPayload</a>(msg);</div>
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;</div>
-<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#a2ea876b453b4adf02629b9602ad335dc">  139</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#a2ea876b453b4adf02629b9602ad335dc">ConditionalRun</a>()</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    {</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;        FairMQMessagePtr msg;</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        fSamplerTask-&gt;<a class="code" href="../../df/daa/classFairMQSamplerTask.html#ab7c8c62d332df23a2d86eae850a3e897">SetEventIndex</a>(fSentMsgs);</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        fFairRunAna-&gt;<a class="code" href="../../de/da9/classFairRunAna.html#a741da0e27cad113bbead1cefcc457e10">RunMQ</a>(fSentMsgs);</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        fSamplerTask-&gt;<a class="code" href="../../df/daa/classFairMQSamplerTask.html#acf10128bc16d97e82360c541b50c1c06">GetPayload</a>(msg);</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keywordflow">if</span> (Send(msg, fOutChannelName) &gt;= 0)</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        {</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;            ++fSentMsgs;</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;            <span class="keywordflow">if</span> (fSentMsgs == fNumEvents)</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;            {</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;            }</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        }</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        <span class="keywordflow">if</span> (Send(msg, fOutChannelName) &gt;= 0) {</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;            ++fSentMsgs;</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;            <span class="keywordflow">if</span> (fSentMsgs == fNumEvents) {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;            }</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        }</div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    }</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;</div>
+<div class="line"><a name="l00149"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#ab7df6516952e9e963f6e8f279f9525f8">  149</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#ab7df6516952e9e963f6e8f279f9525f8">PostRun</a>()</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <span class="keywordflow">try</span> {</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;            fAckListener.join();</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        } <span class="keywordflow">catch</span> (std::exception&amp; e) {</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;            LOG(error) &lt;&lt; <span class="stringliteral">&quot;Exception when ending AckListener thread: &quot;</span> &lt;&lt; e.what();</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;            exit(EXIT_FAILURE);</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;        }</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    }</div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;</div>
-<div class="line"><a name="l00159"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#ab7df6516952e9e963f6e8f279f9525f8">  159</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#ab7df6516952e9e963f6e8f279f9525f8">PostRun</a>()</div>
+<div class="line"><a name="l00159"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#ac5ca691021f7742ef61401df5a8bcd8d">  159</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#ac5ca691021f7742ef61401df5a8bcd8d">ResetTask</a>()</div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    {</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="keywordflow">try</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        {</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;            fAckListener.join();</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        }</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="keywordflow">catch</span> (std::exception&amp; e)</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        {</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;            LOG(error) &lt;&lt; <span class="stringliteral">&quot;Exception when ending AckListener thread: &quot;</span> &lt;&lt; e.what();</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;            exit(EXIT_FAILURE);</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        }</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    }</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;</div>
-<div class="line"><a name="l00172"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#ac5ca691021f7742ef61401df5a8bcd8d">  172</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#ac5ca691021f7742ef61401df5a8bcd8d">ResetTask</a>()</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    {</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;        <span class="keywordflow">if</span> (fFairRunAna)</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;        {</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            fFairRunAna-&gt;<a class="code" href="../../de/da9/classFairRunAna.html#a6bcf817af92dbfd2e0176f462a08b99d">TerminateRun</a>();</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        }</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;        <span class="keyword">delete</span> fSamplerTask;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    }</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        <span class="keywordflow">if</span> (fFairRunAna) {</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;            fFairRunAna-&gt;<a class="code" href="../../de/da9/classFairRunAna.html#a6bcf817af92dbfd2e0176f462a08b99d">TerminateRun</a>();</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;        }</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keyword">delete</span> fSamplerTask;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;</div>
+<div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#a59c518088b965290b4fd3de9f4fd3a27">  167</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#a59c518088b965290b4fd3de9f4fd3a27">ListenForAcks</a>()</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    {</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        uint64_t numAcks = 0;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;        <span class="keywordflow">for</span> (Long64_t eventNr = 0; eventNr &lt; fNumEvents; ++eventNr) {</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;            FairMQMessagePtr ack(NewMessage());</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;            <span class="keywordflow">if</span> (Receive(ack, fAckChannelName) &gt;= 0) {</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;                ++numAcks;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;            }</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;            <span class="keywordflow">if</span> (NewStatePending()) {</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;                <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;            }</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;        }</div>
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;</div>
-<div class="line"><a name="l00181"></a><span class="lineno"><a class="line" href="../../d3/d91/classFairMQSampler.html#a59c518088b965290b4fd3de9f4fd3a27">  181</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/d91/classFairMQSampler.html#a59c518088b965290b4fd3de9f4fd3a27">ListenForAcks</a>()</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    {</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        uint64_t numAcks = 0;</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        <span class="keywordflow">for</span> (Long64_t eventNr = 0; eventNr &lt; fNumEvents; ++eventNr)</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;        {</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;            FairMQMessagePtr ack(NewMessage());</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;            <span class="keywordflow">if</span> (Receive(ack, fAckChannelName) &gt;= 0)</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;            {</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;                ++numAcks;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            }</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;            <span class="keywordflow">if</span> (NewStatePending())</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;            {</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;                <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;            }</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;        }</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        fEnd = std::chrono::high_resolution_clock::now();</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;        LOG(info) &lt;&lt; <span class="stringliteral">&quot;Acknowledged &quot;</span> &lt;&lt; numAcks &lt;&lt; <span class="stringliteral">&quot; messages in: &quot;</span> &lt;&lt; std::chrono::duration&lt;double, std::milli&gt;(fEnd - fStart).count() &lt;&lt; <span class="stringliteral">&quot;ms.&quot;</span>;</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    }</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;        fEnd = std::chrono::high_resolution_clock::now();</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        LOG(info) &lt;&lt; <span class="stringliteral">&quot;Acknowledged &quot;</span> &lt;&lt; numAcks</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;                  &lt;&lt; <span class="stringliteral">&quot; messages in: &quot;</span> &lt;&lt; std::chrono::duration&lt;double, std::milli&gt;(fEnd - fStart).count() &lt;&lt; <span class="stringliteral">&quot;ms.&quot;</span>;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    }</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <a class="code" href="../../de/da9/classFairRunAna.html">FairRunAna</a>* fFairRunAna;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <a class="code" href="../../df/daa/classFairMQSamplerTask.html">FairMQSamplerTask</a>* fSamplerTask;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    std::chrono::high_resolution_clock::time_point fStart;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    std::chrono::high_resolution_clock::time_point fEnd;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    std::string fInputFile;   <span class="comment">// Filename of a root file containing the simulated digis.</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    std::string fParFile;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    std::string fBranch;   <span class="comment">// The name of the sub-detector branch to stream the digis from.</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    std::string fOutChannelName;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    std::string fAckChannelName;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    <span class="keywordtype">int</span> fNumEvents;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordtype">int</span> fChainInput;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keywordtype">int</span> fSentMsgs;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    std::thread fAckListener;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;};</div>
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <a class="code" href="../../de/da9/classFairRunAna.html">FairRunAna</a>* fFairRunAna;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <a class="code" href="../../df/daa/classFairMQSamplerTask.html">FairMQSamplerTask</a>* fSamplerTask;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    std::chrono::high_resolution_clock::time_point fStart;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    std::chrono::high_resolution_clock::time_point fEnd;</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    std::string fInputFile; <span class="comment">// Filename of a root file containing the simulated digis.</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    std::string fParFile;</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    std::string fBranch; <span class="comment">// The name of the sub-detector branch to stream the digis from.</span></div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    std::string fOutChannelName;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    std::string fAckChannelName;</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;    <span class="keywordtype">int</span> fNumEvents;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="keywordtype">int</span> fChainInput;</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keywordtype">int</span> fSentMsgs;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    std::thread fAckListener;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;};</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* FAIRMQSAMPLER_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="classFairMQSampler_html"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html">FairMQSampler</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00044">FairMQSampler.h:44</a></div></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* FAIRMQSAMPLER_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="classFairMQSampler_html"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html">FairMQSampler</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00043">FairMQSampler.h:43</a></div></div>
 <div class="ttc" id="FairRuntimeDb_8h_html"><div class="ttname"><a href="../../d9/dac/FairRuntimeDb_8h.html">FairRuntimeDb.h</a></div></div>
-<div class="ttc" id="classFairMQSamplerTask_html"><div class="ttname"><a href="../../df/daa/classFairMQSamplerTask.html">FairMQSamplerTask</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/daa/FairMQSamplerTask_8h_source.html#l00028">FairMQSamplerTask.h:28</a></div></div>
-<div class="ttc" id="classFairFileSource_html_ab8a95564faf41e9081441b9dcac8e373"><div class="ttname"><a href="../../d2/d60/classFairFileSource.html#ab8a95564faf41e9081441b9dcac8e373">FairFileSource::AddFile</a></div><div class="ttdeci">void AddFile(TString FileName)</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/da4/FairFileSource_8cxx_source.html#l00351">FairFileSource.cxx:351</a></div></div>
-<div class="ttc" id="classFairRuntimeDb_html"><div class="ttname"><a href="../../d7/d6f/classFairRuntimeDb.html">FairRuntimeDb</a></div><div class="ttdoc">list of container factories </div><div class="ttdef"><b>Definition:</b> <a href="../../d9/dac/FairRuntimeDb_8h_source.html#l00025">FairRuntimeDb.h:25</a></div></div>
-<div class="ttc" id="classFairRunAna_html_a6bcf817af92dbfd2e0176f462a08b99d"><div class="ttname"><a href="../../de/da9/classFairRunAna.html#a6bcf817af92dbfd2e0176f462a08b99d">FairRunAna::TerminateRun</a></div><div class="ttdeci">void TerminateRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dc8/FairRunAna_8cxx_source.html#l00617">FairRunAna.cxx:617</a></div></div>
-<div class="ttc" id="classFairMQSampler_html_a2ea876b453b4adf02629b9602ad335dc"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#a2ea876b453b4adf02629b9602ad335dc">FairMQSampler::ConditionalRun</a></div><div class="ttdeci">virtual bool ConditionalRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00139">FairMQSampler.h:139</a></div></div>
-<div class="ttc" id="classFairRunAna_html_a52f4d86d087d13855edc6bd567373144"><div class="ttname"><a href="../../de/da9/classFairRunAna.html#a52f4d86d087d13855edc6bd567373144">FairRunAna::Init</a></div><div class="ttdeci">void Init()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dc8/FairRunAna_8cxx_source.html#l00133">FairRunAna.cxx:133</a></div></div>
-<div class="ttc" id="classFairFileSource_html"><div class="ttname"><a href="../../d2/d60/classFairFileSource.html">FairFileSource</a></div><div class="ttdef"><b>Definition:</b> <a href="../../da/db2/FairFileSource_8h_source.html#l00038">FairFileSource.h:38</a></div></div>
-<div class="ttc" id="classFairMQSampler_html_a881f4ad853251e9011ef2fffbebd9865"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#a881f4ad853251e9011ef2fffbebd9865">FairMQSampler::InitTask</a></div><div class="ttdeci">virtual void InitTask()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00070">FairMQSampler.h:70</a></div></div>
-<div class="ttc" id="classFairParRootFileIo_html"><div class="ttname"><a href="../../d5/d03/classFairParRootFileIo.html">FairParRootFileIo</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d80/FairParRootFileIo_8h_source.html#l00053">FairParRootFileIo.h:53</a></div></div>
-<div class="ttc" id="classFairMQSampler_html_a416261d82b1ce380d13df14b1658d8a6"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#a416261d82b1ce380d13df14b1658d8a6">FairMQSampler::~FairMQSampler</a></div><div class="ttdeci">virtual ~FairMQSampler()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00066">FairMQSampler.h:66</a></div></div>
-<div class="ttc" id="classFairMQSampler_html_ac5ca691021f7742ef61401df5a8bcd8d"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#ac5ca691021f7742ef61401df5a8bcd8d">FairMQSampler::ResetTask</a></div><div class="ttdeci">virtual void ResetTask()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00172">FairMQSampler.h:172</a></div></div>
-<div class="ttc" id="classFairRootManager_html_a830b7803b29e7424a75f2dc374dcc96b"><div class="ttname"><a href="../../d0/d6c/classFairRootManager.html#a830b7803b29e7424a75f2dc374dcc96b">FairRootManager::Instance</a></div><div class="ttdeci">static FairRootManager * Instance()</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d51/FairRootManager_8cxx_source.html#l00069">FairRootManager.cxx:69</a></div></div>
-<div class="ttc" id="classFairRuntimeDb_html_ab6a04e9dccc3645ca8b00e3959b9ab6f"><div class="ttname"><a href="../../d7/d6f/classFairRuntimeDb.html#ab6a04e9dccc3645ca8b00e3959b9ab6f">FairRuntimeDb::print</a></div><div class="ttdeci">void print(void)</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d18/FairRuntimeDb_8cxx_source.html#l00603">FairRuntimeDb.cxx:603</a></div></div>
-<div class="ttc" id="classFairRunAna_html"><div class="ttname"><a href="../../de/da9/classFairRunAna.html">FairRunAna</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d7c/FairRunAna_8h_source.html#l00034">FairRunAna.h:34</a></div></div>
+<div class="ttc" id="classFairMQSamplerTask_html"><div class="ttname"><a href="../../df/daa/classFairMQSamplerTask.html">FairMQSamplerTask</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/daa/FairMQSamplerTask_8h_source.html#l00027">FairMQSamplerTask.h:27</a></div></div>
+<div class="ttc" id="classFairFileSource_html_ab8a95564faf41e9081441b9dcac8e373"><div class="ttname"><a href="../../d2/d60/classFairFileSource.html#ab8a95564faf41e9081441b9dcac8e373">FairFileSource::AddFile</a></div><div class="ttdeci">void AddFile(TString FileName)</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/da4/FairFileSource_8cxx_source.html#l00342">FairFileSource.cxx:342</a></div></div>
+<div class="ttc" id="classFairRuntimeDb_html"><div class="ttname"><a href="../../d7/d6f/classFairRuntimeDb.html">FairRuntimeDb</a></div><div class="ttdoc">list of container factories </div><div class="ttdef"><b>Definition:</b> <a href="../../d9/dac/FairRuntimeDb_8h_source.html#l00024">FairRuntimeDb.h:24</a></div></div>
+<div class="ttc" id="classFairRunAna_html_a6bcf817af92dbfd2e0176f462a08b99d"><div class="ttname"><a href="../../de/da9/classFairRunAna.html#a6bcf817af92dbfd2e0176f462a08b99d">FairRunAna::TerminateRun</a></div><div class="ttdeci">void TerminateRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dc8/FairRunAna_8cxx_source.html#l00602">FairRunAna.cxx:602</a></div></div>
+<div class="ttc" id="classFairMQSampler_html_a2ea876b453b4adf02629b9602ad335dc"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#a2ea876b453b4adf02629b9602ad335dc">FairMQSampler::ConditionalRun</a></div><div class="ttdeci">virtual bool ConditionalRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00131">FairMQSampler.h:131</a></div></div>
+<div class="ttc" id="classFairRunAna_html_a52f4d86d087d13855edc6bd567373144"><div class="ttname"><a href="../../de/da9/classFairRunAna.html#a52f4d86d087d13855edc6bd567373144">FairRunAna::Init</a></div><div class="ttdeci">void Init()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dc8/FairRunAna_8cxx_source.html#l00127">FairRunAna.cxx:127</a></div></div>
+<div class="ttc" id="classFairFileSource_html"><div class="ttname"><a href="../../d2/d60/classFairFileSource.html">FairFileSource</a></div><div class="ttdef"><b>Definition:</b> <a href="../../da/db2/FairFileSource_8h_source.html#l00036">FairFileSource.h:36</a></div></div>
+<div class="ttc" id="classFairMQSampler_html_a881f4ad853251e9011ef2fffbebd9865"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#a881f4ad853251e9011ef2fffbebd9865">FairMQSampler::InitTask</a></div><div class="ttdeci">virtual void InitTask()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00068">FairMQSampler.h:68</a></div></div>
+<div class="ttc" id="classFairParRootFileIo_html"><div class="ttname"><a href="../../d5/d03/classFairParRootFileIo.html">FairParRootFileIo</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d80/FairParRootFileIo_8h_source.html#l00051">FairParRootFileIo.h:51</a></div></div>
+<div class="ttc" id="classFairMQSampler_html_a416261d82b1ce380d13df14b1658d8a6"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#a416261d82b1ce380d13df14b1658d8a6">FairMQSampler::~FairMQSampler</a></div><div class="ttdeci">virtual ~FairMQSampler()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00065">FairMQSampler.h:65</a></div></div>
+<div class="ttc" id="classFairMQSampler_html_ac5ca691021f7742ef61401df5a8bcd8d"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#ac5ca691021f7742ef61401df5a8bcd8d">FairMQSampler::ResetTask</a></div><div class="ttdeci">virtual void ResetTask()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00159">FairMQSampler.h:159</a></div></div>
+<div class="ttc" id="classFairRootManager_html_a830b7803b29e7424a75f2dc374dcc96b"><div class="ttname"><a href="../../d0/d6c/classFairRootManager.html#a830b7803b29e7424a75f2dc374dcc96b">FairRootManager::Instance</a></div><div class="ttdeci">static FairRootManager * Instance()</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d51/FairRootManager_8cxx_source.html#l00068">FairRootManager.cxx:68</a></div></div>
+<div class="ttc" id="classFairRuntimeDb_html_ab6a04e9dccc3645ca8b00e3959b9ab6f"><div class="ttname"><a href="../../d7/d6f/classFairRuntimeDb.html#ab6a04e9dccc3645ca8b00e3959b9ab6f">FairRuntimeDb::print</a></div><div class="ttdeci">void print(void)</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d18/FairRuntimeDb_8cxx_source.html#l00648">FairRuntimeDb.cxx:648</a></div></div>
+<div class="ttc" id="classFairRunAna_html"><div class="ttname"><a href="../../de/da9/classFairRunAna.html">FairRunAna</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d7c/FairRunAna_8h_source.html#l00033">FairRunAna.h:33</a></div></div>
 <div class="ttc" id="FairParRootFileIo_8h_html"><div class="ttname"><a href="../../d6/d80/FairParRootFileIo_8h.html">FairParRootFileIo.h</a></div></div>
-<div class="ttc" id="classFairRun_html_ab3e4029db66603b62bcbb81310fbfb93"><div class="ttname"><a href="../../dd/dd2/classFairRun.html#ab3e4029db66603b62bcbb81310fbfb93">FairRun::SetSink</a></div><div class="ttdeci">void SetSink(FairSink *tempSink)</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d06/FairRun_8h_source.html#l00088">FairRun.h:88</a></div></div>
+<div class="ttc" id="classFairRun_html_ab3e4029db66603b62bcbb81310fbfb93"><div class="ttname"><a href="../../dd/dd2/classFairRun.html#ab3e4029db66603b62bcbb81310fbfb93">FairRun::SetSink</a></div><div class="ttdeci">void SetSink(FairSink *tempSink)</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d06/FairRun_8h_source.html#l00084">FairRun.h:84</a></div></div>
 <div class="ttc" id="FairRootFileSink_8h_html"><div class="ttname"><a href="../../d7/dea/FairRootFileSink_8h.html">FairRootFileSink.h</a></div></div>
-<div class="ttc" id="classFairRunAna_html_a741da0e27cad113bbead1cefcc457e10"><div class="ttname"><a href="../../de/da9/classFairRunAna.html#a741da0e27cad113bbead1cefcc457e10">FairRunAna::RunMQ</a></div><div class="ttdeci">void RunMQ(Long64_t entry)</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dc8/FairRunAna_8cxx_source.html#l00491">FairRunAna.cxx:491</a></div></div>
+<div class="ttc" id="classFairRunAna_html_a741da0e27cad113bbead1cefcc457e10"><div class="ttname"><a href="../../de/da9/classFairRunAna.html#a741da0e27cad113bbead1cefcc457e10">FairRunAna::RunMQ</a></div><div class="ttdeci">void RunMQ(Long64_t entry)</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dc8/FairRunAna_8cxx_source.html#l00478">FairRunAna.cxx:478</a></div></div>
 <div class="ttc" id="FairRunAna_8h_html"><div class="ttname"><a href="../../d2/d7c/FairRunAna_8h.html">FairRunAna.h</a></div></div>
-<div class="ttc" id="classFairMQSampler_html_af1d9fa8ceaf9107a55228a2194c6ca7f"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#af1d9fa8ceaf9107a55228a2194c6ca7f">FairMQSampler::FairMQSampler</a></div><div class="ttdeci">FairMQSampler()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00047">FairMQSampler.h:47</a></div></div>
+<div class="ttc" id="classFairMQSampler_html_af1d9fa8ceaf9107a55228a2194c6ca7f"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#af1d9fa8ceaf9107a55228a2194c6ca7f">FairMQSampler::FairMQSampler</a></div><div class="ttdeci">FairMQSampler()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00046">FairMQSampler.h:46</a></div></div>
 <div class="ttc" id="FairFileSource_8h_html"><div class="ttname"><a href="../../da/db2/FairFileSource_8h.html">FairFileSource.h</a></div></div>
-<div class="ttc" id="classFairMQSampler_html_ab7df6516952e9e963f6e8f279f9525f8"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#ab7df6516952e9e963f6e8f279f9525f8">FairMQSampler::PostRun</a></div><div class="ttdeci">virtual void PostRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00159">FairMQSampler.h:159</a></div></div>
-<div class="ttc" id="classFairRootFileSink_html"><div class="ttname"><a href="../../da/d6a/classFairRootFileSink.html">FairRootFileSink</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d7/dea/FairRootFileSink_8h_source.html#l00034">FairRootFileSink.h:34</a></div></div>
-<div class="ttc" id="classFairMQSamplerTask_html_ab7c8c62d332df23a2d86eae850a3e897"><div class="ttname"><a href="../../df/daa/classFairMQSamplerTask.html#ab7c8c62d332df23a2d86eae850a3e897">FairMQSamplerTask::SetEventIndex</a></div><div class="ttdeci">void SetEventIndex(Long64_t eventIndex)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d9e/FairMQSamplerTask_8cxx_source.html#l00064">FairMQSamplerTask.cxx:64</a></div></div>
-<div class="ttc" id="classFairRun_html_a769c748079f470c6fb88bdddd2635e78"><div class="ttname"><a href="../../dd/dd2/classFairRun.html#a769c748079f470c6fb88bdddd2635e78">FairRun::GetRuntimeDb</a></div><div class="ttdeci">FairRuntimeDb * GetRuntimeDb(void)</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d06/FairRun_8h_source.html#l00082">FairRun.h:82</a></div></div>
-<div class="ttc" id="classFairMQSamplerTask_html_aa992f39fc41ced6b45bddd0c6ffb6d39"><div class="ttname"><a href="../../df/daa/classFairMQSamplerTask.html#aa992f39fc41ced6b45bddd0c6ffb6d39">FairMQSamplerTask::SetTransport</a></div><div class="ttdeci">void SetTransport(std::shared_ptr&lt; FairMQTransportFactory &gt; factory)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d9e/FairMQSamplerTask_8cxx_source.html#l00074">FairMQSamplerTask.cxx:74</a></div></div>
-<div class="ttc" id="classFairRun_html_ae55b4cb59c1a84c17bf42e872f159304"><div class="ttname"><a href="../../dd/dd2/classFairRun.html#ae55b4cb59c1a84c17bf42e872f159304">FairRun::AddTask</a></div><div class="ttdeci">virtual void AddTask(FairTask *t)</div><div class="ttdef"><b>Definition:</b> <a href="../../db/de0/FairRun_8cxx_source.html#l00075">FairRun.cxx:75</a></div></div>
-<div class="ttc" id="classFairParRootFileIo_html_addaef2e4c178592258c3b1b0324c1549"><div class="ttname"><a href="../../d5/d03/classFairParRootFileIo.html#addaef2e4c178592258c3b1b0324c1549">FairParRootFileIo::open</a></div><div class="ttdeci">Bool_t open(const Text_t *fname, Option_t *option=&quot;READ&quot;, const Text_t *ftitle=&quot;&quot;, Int_t compress=1)</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d1b/FairParRootFileIo_8cxx_source.html#l00116">FairParRootFileIo.cxx:116</a></div></div>
-<div class="ttc" id="classFairMQSamplerTask_html_acf10128bc16d97e82360c541b50c1c06"><div class="ttname"><a href="../../df/daa/classFairMQSamplerTask.html#acf10128bc16d97e82360c541b50c1c06">FairMQSamplerTask::GetPayload</a></div><div class="ttdeci">void GetPayload(std::unique_ptr&lt; FairMQMessage &gt; &amp;msg)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d9e/FairMQSamplerTask_8cxx_source.html#l00069">FairMQSamplerTask.cxx:69</a></div></div>
-<div class="ttc" id="classFairMQSamplerTask_html_a9a635805e2827a0355f2140a90a12359"><div class="ttname"><a href="../../df/daa/classFairMQSamplerTask.html#a9a635805e2827a0355f2140a90a12359">FairMQSamplerTask::SetBranch</a></div><div class="ttdeci">void SetBranch(const std::string &amp;branch)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d9e/FairMQSamplerTask_8cxx_source.html#l00059">FairMQSamplerTask.cxx:59</a></div></div>
+<div class="ttc" id="classFairMQSampler_html_ab7df6516952e9e963f6e8f279f9525f8"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#ab7df6516952e9e963f6e8f279f9525f8">FairMQSampler::PostRun</a></div><div class="ttdeci">virtual void PostRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00149">FairMQSampler.h:149</a></div></div>
+<div class="ttc" id="classFairRootFileSink_html"><div class="ttname"><a href="../../da/d6a/classFairRootFileSink.html">FairRootFileSink</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d7/dea/FairRootFileSink_8h_source.html#l00033">FairRootFileSink.h:33</a></div></div>
+<div class="ttc" id="classFairMQSamplerTask_html_ab7c8c62d332df23a2d86eae850a3e897"><div class="ttname"><a href="../../df/daa/classFairMQSamplerTask.html#ab7c8c62d332df23a2d86eae850a3e897">FairMQSamplerTask::SetEventIndex</a></div><div class="ttdeci">void SetEventIndex(Long64_t eventIndex)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d9e/FairMQSamplerTask_8cxx_source.html#l00054">FairMQSamplerTask.cxx:54</a></div></div>
+<div class="ttc" id="classFairRun_html_a769c748079f470c6fb88bdddd2635e78"><div class="ttname"><a href="../../dd/dd2/classFairRun.html#a769c748079f470c6fb88bdddd2635e78">FairRun::GetRuntimeDb</a></div><div class="ttdeci">FairRuntimeDb * GetRuntimeDb(void)</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d06/FairRun_8h_source.html#l00080">FairRun.h:80</a></div></div>
+<div class="ttc" id="classFairMQSamplerTask_html_aa992f39fc41ced6b45bddd0c6ffb6d39"><div class="ttname"><a href="../../df/daa/classFairMQSamplerTask.html#aa992f39fc41ced6b45bddd0c6ffb6d39">FairMQSamplerTask::SetTransport</a></div><div class="ttdeci">void SetTransport(std::shared_ptr&lt; FairMQTransportFactory &gt; factory)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d9e/FairMQSamplerTask_8cxx_source.html#l00058">FairMQSamplerTask.cxx:58</a></div></div>
+<div class="ttc" id="classFairRun_html_ae55b4cb59c1a84c17bf42e872f159304"><div class="ttname"><a href="../../dd/dd2/classFairRun.html#ae55b4cb59c1a84c17bf42e872f159304">FairRun::AddTask</a></div><div class="ttdeci">virtual void AddTask(FairTask *t)</div><div class="ttdef"><b>Definition:</b> <a href="../../db/de0/FairRun_8cxx_source.html#l00070">FairRun.cxx:70</a></div></div>
+<div class="ttc" id="classFairParRootFileIo_html_addaef2e4c178592258c3b1b0324c1549"><div class="ttname"><a href="../../d5/d03/classFairParRootFileIo.html#addaef2e4c178592258c3b1b0324c1549">FairParRootFileIo::open</a></div><div class="ttdeci">Bool_t open(const Text_t *fname, Option_t *option=&quot;READ&quot;, const Text_t *ftitle=&quot;&quot;, Int_t compress=1)</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d1b/FairParRootFileIo_8cxx_source.html#l00114">FairParRootFileIo.cxx:114</a></div></div>
+<div class="ttc" id="classFairMQSamplerTask_html_acf10128bc16d97e82360c541b50c1c06"><div class="ttname"><a href="../../df/daa/classFairMQSamplerTask.html#acf10128bc16d97e82360c541b50c1c06">FairMQSamplerTask::GetPayload</a></div><div class="ttdeci">void GetPayload(std::unique_ptr&lt; FairMQMessage &gt; &amp;msg)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d9e/FairMQSamplerTask_8cxx_source.html#l00056">FairMQSamplerTask.cxx:56</a></div></div>
+<div class="ttc" id="classFairMQSamplerTask_html_a9a635805e2827a0355f2140a90a12359"><div class="ttname"><a href="../../df/daa/classFairMQSamplerTask.html#a9a635805e2827a0355f2140a90a12359">FairMQSamplerTask::SetBranch</a></div><div class="ttdeci">void SetBranch(const std::string &amp;branch)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d9e/FairMQSamplerTask_8cxx_source.html#l00052">FairMQSamplerTask.cxx:52</a></div></div>
 <div class="ttc" id="classFairMQSampler_html_a69ba2444a7945431b9727c6cf161a32b"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#a69ba2444a7945431b9727c6cf161a32b">FairMQSampler::operator=</a></div><div class="ttdeci">FairMQSampler operator=(const FairMQSampler &amp;)=delete</div></div>
-<div class="ttc" id="classFairRunAna_html_af17e5010f3b1e927124f5541d0716f22"><div class="ttname"><a href="../../de/da9/classFairRunAna.html#af17e5010f3b1e927124f5541d0716f22">FairRunAna::SetSource</a></div><div class="ttdeci">virtual void SetSource(FairSource *tempSource)</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d7c/FairRunAna_8h_source.html#l00072">FairRunAna.h:72</a></div></div>
-<div class="ttc" id="classFairMQSampler_html_a574044837b43daae0d6252d086cef3dd"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#a574044837b43daae0d6252d086cef3dd">FairMQSampler::PreRun</a></div><div class="ttdeci">virtual void PreRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00133">FairMQSampler.h:133</a></div></div>
-<div class="ttc" id="classFairMQSampler_html_a59c518088b965290b4fd3de9f4fd3a27"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#a59c518088b965290b4fd3de9f4fd3a27">FairMQSampler::ListenForAcks</a></div><div class="ttdeci">void ListenForAcks()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00181">FairMQSampler.h:181</a></div></div>
-<div class="ttc" id="classFairRuntimeDb_html_a86e184ef37a0081c0b9f1f328789a66d"><div class="ttname"><a href="../../d7/d6f/classFairRuntimeDb.html#a86e184ef37a0081c0b9f1f328789a66d">FairRuntimeDb::setFirstInput</a></div><div class="ttdeci">Bool_t setFirstInput(FairParIo *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d18/FairRuntimeDb_8cxx_source.html#l00678">FairRuntimeDb.cxx:678</a></div></div>
+<div class="ttc" id="classFairRunAna_html_af17e5010f3b1e927124f5541d0716f22"><div class="ttname"><a href="../../de/da9/classFairRunAna.html#af17e5010f3b1e927124f5541d0716f22">FairRunAna::SetSource</a></div><div class="ttdeci">virtual void SetSource(FairSource *tempSource)</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d7c/FairRunAna_8h_source.html#l00070">FairRunAna.h:70</a></div></div>
+<div class="ttc" id="classFairMQSampler_html_a574044837b43daae0d6252d086cef3dd"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#a574044837b43daae0d6252d086cef3dd">FairMQSampler::PreRun</a></div><div class="ttdeci">virtual void PreRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00125">FairMQSampler.h:125</a></div></div>
+<div class="ttc" id="classFairMQSampler_html_a59c518088b965290b4fd3de9f4fd3a27"><div class="ttname"><a href="../../d3/d91/classFairMQSampler.html#a59c518088b965290b4fd3de9f4fd3a27">FairMQSampler::ListenForAcks</a></div><div class="ttdeci">void ListenForAcks()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d3b/FairMQSampler_8h_source.html#l00167">FairMQSampler.h:167</a></div></div>
+<div class="ttc" id="classFairRuntimeDb_html_a86e184ef37a0081c0b9f1f328789a66d"><div class="ttname"><a href="../../d7/d6f/classFairRuntimeDb.html#a86e184ef37a0081c0b9f1f328789a66d">FairRuntimeDb::setFirstInput</a></div><div class="ttdeci">Bool_t setFirstInput(FairParIo *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d18/FairRuntimeDb_8cxx_source.html#l00729">FairRuntimeDb.cxx:729</a></div></div>
 <div class="ttc" id="FairMQSamplerTask_8h_html"><div class="ttname"><a href="../../d3/daa/FairMQSamplerTask_8h.html">FairMQSamplerTask.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -351,7 +335,7 @@ $(document).ready(function(){initNavTree('d9/d3b/FairMQSampler_8h_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_e914ee4d4a44400f1fdb170cb4ead18a.html">base</a></li><li class="navelem"><a class="el" href="../../dir_d920f5ac174c9ffab1632e31cff20df7.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_3b5e2c40aabfb66f4d81707045cd1d30.html">devices</a></li><li class="navelem"><a class="el" href="../../d9/d3b/FairMQSampler_8h.html">FairMQSampler.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:39 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:47 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

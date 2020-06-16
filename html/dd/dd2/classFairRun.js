@@ -5,6 +5,7 @@ var classFairRun =
     [ "AddAlignmentMatrices", "dd/dd2/classFairRun.html#a09011d8581d24b07308f6c4aa297cd59", null ],
     [ "AddTask", "dd/dd2/classFairRun.html#ae55b4cb59c1a84c17bf42e872f159304", null ],
     [ "AlignGeometry", "dd/dd2/classFairRun.html#a4d6707fc0fbb3b3f3d165ad6ffcb68eb", null ],
+    [ "ClassDef", "dd/dd2/classFairRun.html#a086b05dcf30a18e625806c60f3a583b2", null ],
     [ "CreateGeometryFile", "dd/dd2/classFairRun.html#a0f3b9014f217de1ed9830f5ab5fe7d3d", null ],
     [ "GetEventHeader", "dd/dd2/classFairRun.html#a566fb00c00c1a7d27d84629f398c7f9b", null ],
     [ "GetField", "dd/dd2/classFairRun.html#a433544fa323dd7571cc40320d826efad", null ],

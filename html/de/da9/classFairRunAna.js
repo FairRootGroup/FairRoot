@@ -8,6 +8,7 @@ var classFairRunAna =
     [ "AddSignalFile", "de/da9/classFairRunAna.html#a46965b99941d3ce0d9abcfa383403a6d", null ],
     [ "BGWindowWidthNo", "de/da9/classFairRunAna.html#a47ccd5ea142832bdc663e746f9826f00", null ],
     [ "BGWindowWidthTime", "de/da9/classFairRunAna.html#a8c49ff8603a21b85684438cbc2383940", null ],
+    [ "ClassDef", "de/da9/classFairRunAna.html#adaf432010c83be0fbecf9449526519ac", null ],
     [ "DummyRun", "de/da9/classFairRunAna.html#a5032f7536cd6d81c3602b6e6f3c1c5e1", null ],
     [ "Fill", "de/da9/classFairRunAna.html#a652a68e6da267f529834b420fd41d016", null ],
     [ "GetContainerStatic", "de/da9/classFairRunAna.html#aa31f67d88c1c64df4739eedef7bcd9da", null ],

@@ -110,60 +110,57 @@ $(document).ready(function(){initNavTree('dc/d2c/__FairLoggerNewTestAllVerbosity
 <div class="contents">
 <a href="../../dc/d2c/__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../dd/ddf/__TestFairLoggerNew_8h.html">_TestFairLoggerNew.h</a>&quot;</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;</div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
-<div class="line"><a name="l00004"></a><span class="lineno"><a class="line" href="../../dc/d2c/__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx.html#a992764599ccaa59840c938d57696da23">    4</a></span>&#160;<a class="code" href="../../dc/d2c/__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx.html#a992764599ccaa59840c938d57696da23">TEST_P</a>(<a class="code" href="../../df/d68/classVerbosityLevelTest.html">VerbosityLevelTest</a>, testAllVerbosityLevelsToScreenAndFile)</div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;{</div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;    <a class="code" href="../../d5/de4/FairLogger_8h.html#afb1d747e5968e3f4776add0452ca5e79">gLogger</a>-&gt;SetLogVerbosityLevel(fVerbosityLevel.c_str());</div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    fHandler.BeginCapture();</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="../../d5/de4/FairLogger_8h.html#afb1d747e5968e3f4776add0452ca5e79">gLogger</a>-&gt;SetLogFileName(fOutFileName.c_str());</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="../../d5/de4/FairLogger_8h.html#afb1d747e5968e3f4776add0452ca5e79">gLogger</a>-&gt;SetLogToScreen(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="../../d5/de4/FairLogger_8h.html#afb1d747e5968e3f4776add0452ca5e79">gLogger</a>-&gt;SetLogToFile(<span class="keyword">true</span>);</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    LogNoArguments();</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    fHandler.EndCapture();</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    std::vector&lt;std::string&gt; expected = CreateExpectedLogLevels(fLogLevelSettingToTest);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        SCOPED_TRACE(fLogLevelSettingToTest);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        <span class="keywordtype">int</span> lines = expected.size();</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; lines; ++i)</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        {</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;            EXPECT_TRUE(CheckVerboseOutput(expected[i], fOutputString, fVerbosityLevel, fHandler.GetCaptureLine(i)));</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;        }</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    }</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="../../d1/d88/classFairTestOutputHandler.html">FairTestOutputHandler</a> outputHandler(fOutFileName);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    {</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        SCOPED_TRACE(fLogLevelSettingToTest);</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        <span class="keywordtype">int</span> lines = expected.size();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; lines; ++i)</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;        {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;            EXPECT_TRUE(CheckVerboseOutput(expected[i], fOutputString, fVerbosityLevel, outputHandler.<a class="code" href="../../d1/d88/classFairTestOutputHandler.html#a8041655ce8e21ca0df33c6e91f12097b">GetCaptureLine</a>(i)));</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        }</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    }</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;}</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<a class="code" href="../../dc/d2c/__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx.html#a966d803d5d32789dd84a69ccfeb2ae8a">INSTANTIATE_TEST_CASE_P</a>(TestAllVerbosityLevels, <a class="code" href="../../df/d68/classVerbosityLevelTest.html">VerbosityLevelTest</a>, ::testing::ValuesIn(VerbosityLevelArray));</div>
+<div class="line"><a name="l00003"></a><span class="lineno"><a class="line" href="../../dc/d2c/__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx.html#a992764599ccaa59840c938d57696da23">    3</a></span>&#160;<a class="code" href="../../dc/d2c/__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx.html#a992764599ccaa59840c938d57696da23">TEST_P</a>(<a class="code" href="../../df/d68/classVerbosityLevelTest.html">VerbosityLevelTest</a>, testAllVerbosityLevelsToScreenAndFile)</div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;{</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;    <a class="code" href="../../d5/de4/FairLogger_8h.html#afb1d747e5968e3f4776add0452ca5e79">gLogger</a>-&gt;SetLogVerbosityLevel(fVerbosityLevel.c_str());</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;    fHandler.BeginCapture();</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <a class="code" href="../../d5/de4/FairLogger_8h.html#afb1d747e5968e3f4776add0452ca5e79">gLogger</a>-&gt;SetLogFileName(fOutFileName.c_str());</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="../../d5/de4/FairLogger_8h.html#afb1d747e5968e3f4776add0452ca5e79">gLogger</a>-&gt;SetLogToScreen(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="../../d5/de4/FairLogger_8h.html#afb1d747e5968e3f4776add0452ca5e79">gLogger</a>-&gt;SetLogToFile(<span class="keyword">true</span>);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    LogNoArguments();</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    fHandler.EndCapture();</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    std::vector&lt;std::string&gt; expected = CreateExpectedLogLevels(fLogLevelSettingToTest);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        SCOPED_TRACE(fLogLevelSettingToTest);</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        <span class="keywordtype">int</span> lines = expected.size();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; lines; ++i) {</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;            EXPECT_TRUE(CheckVerboseOutput(expected[i], fOutputString, fVerbosityLevel, fHandler.GetCaptureLine(i)));</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;        }</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    }</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="../../d1/d88/classFairTestOutputHandler.html">FairTestOutputHandler</a> outputHandler(fOutFileName);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    {</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        SCOPED_TRACE(fLogLevelSettingToTest);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="keywordtype">int</span> lines = expected.size();</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; lines; ++i) {</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;            EXPECT_TRUE(</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;                CheckVerboseOutput(expected[i], fOutputString, fVerbosityLevel, outputHandler.<a class="code" href="../../d1/d88/classFairTestOutputHandler.html#a8041655ce8e21ca0df33c6e91f12097b">GetCaptureLine</a>(i)));</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    }</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<a class="code" href="../../dc/d2c/__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx.html#a966d803d5d32789dd84a69ccfeb2ae8a">INSTANTIATE_TEST_CASE_P</a>(TestAllVerbosityLevels, <a class="code" href="../../df/d68/classVerbosityLevelTest.html">VerbosityLevelTest</a>, ::testing::ValuesIn(VerbosityLevelArray));</div>
 <div class="ttc" id="classFairTestOutputHandler_html"><div class="ttname"><a href="../../d1/d88/classFairTestOutputHandler.html">FairTestOutputHandler</a></div><div class="ttdef"><b>Definition:</b> <a href="../../da/d9e/FairTestOutputHandler_8h_source.html#l00015">FairTestOutputHandler.h:15</a></div></div>
-<div class="ttc" id="classVerbosityLevelTest_html"><div class="ttname"><a href="../../df/d68/classVerbosityLevelTest.html">VerbosityLevelTest</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d7e/__TestFairLogger_8h_source.html#l00234">_TestFairLogger.h:234</a></div></div>
+<div class="ttc" id="classVerbosityLevelTest_html"><div class="ttname"><a href="../../df/d68/classVerbosityLevelTest.html">VerbosityLevelTest</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d7e/__TestFairLogger_8h_source.html#l00217">_TestFairLogger.h:217</a></div></div>
 <div class="ttc" id="__TestFairLoggerNew_8h_html"><div class="ttname"><a href="../../dd/ddf/__TestFairLoggerNew_8h.html">_TestFairLoggerNew.h</a></div></div>
-<div class="ttc" id="classFairTestOutputHandler_html_a8041655ce8e21ca0df33c6e91f12097b"><div class="ttname"><a href="../../d1/d88/classFairTestOutputHandler.html#a8041655ce8e21ca0df33c6e91f12097b">FairTestOutputHandler::GetCaptureLine</a></div><div class="ttdeci">std::string GetCaptureLine(int line)</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d6f/FairTestOutputHandler_8cxx_source.html#l00066">FairTestOutputHandler.cxx:66</a></div></div>
-<div class="ttc" id="FairLogger_8h_html_afb1d747e5968e3f4776add0452ca5e79"><div class="ttname"><a href="../../d5/de4/FairLogger_8h.html#afb1d747e5968e3f4776add0452ca5e79">gLogger</a></div><div class="ttdeci">#define gLogger</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/de4/FairLogger_8h_source.html#l00169">FairLogger.h:169</a></div></div>
+<div class="ttc" id="classFairTestOutputHandler_html_a8041655ce8e21ca0df33c6e91f12097b"><div class="ttname"><a href="../../d1/d88/classFairTestOutputHandler.html#a8041655ce8e21ca0df33c6e91f12097b">FairTestOutputHandler::GetCaptureLine</a></div><div class="ttdeci">std::string GetCaptureLine(int line)</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d6f/FairTestOutputHandler_8cxx_source.html#l00061">FairTestOutputHandler.cxx:61</a></div></div>
+<div class="ttc" id="FairLogger_8h_html_afb1d747e5968e3f4776add0452ca5e79"><div class="ttname"><a href="../../d5/de4/FairLogger_8h.html#afb1d747e5968e3f4776add0452ca5e79">gLogger</a></div><div class="ttdeci">#define gLogger</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/de4/FairLogger_8h_source.html#l00156">FairLogger.h:156</a></div></div>
 <div class="ttc" id="__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx_html_a966d803d5d32789dd84a69ccfeb2ae8a"><div class="ttname"><a href="../../dc/d2c/__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx.html#a966d803d5d32789dd84a69ccfeb2ae8a">INSTANTIATE_TEST_CASE_P</a></div><div class="ttdeci">INSTANTIATE_TEST_CASE_P(TestAllVerbosityLevels, VerbosityLevelTest,::testing::ValuesIn(VerbosityLevelArray))</div></div>
-<div class="ttc" id="__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx_html_a992764599ccaa59840c938d57696da23"><div class="ttname"><a href="../../dc/d2c/__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx.html#a992764599ccaa59840c938d57696da23">TEST_P</a></div><div class="ttdeci">TEST_P(VerbosityLevelTest, testAllVerbosityLevelsToScreenAndFile)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d2c/__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx_source.html#l00004">_FairLoggerNewTestAllVerbosityLevelsToScreenAndFile.cxx:4</a></div></div>
+<div class="ttc" id="__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx_html_a992764599ccaa59840c938d57696da23"><div class="ttname"><a href="../../dc/d2c/__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx.html#a992764599ccaa59840c938d57696da23">TEST_P</a></div><div class="ttdeci">TEST_P(VerbosityLevelTest, testAllVerbosityLevelsToScreenAndFile)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d2c/__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx_source.html#l00003">_FairLoggerNewTestAllVerbosityLevelsToScreenAndFile.cxx:3</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_13e138d54eb8818da29c3992edef070a.html">test</a></li><li class="navelem"><a class="el" href="../../dir_ee78fc480702fc229326a04d216ab90f.html">fairtools</a></li><li class="navelem"><a class="el" href="../../dc/d2c/__FairLoggerNewTestAllVerbosityLevelsToScreenAndFile_8cxx.html">_FairLoggerNewTestAllVerbosityLevelsToScreenAndFile.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:52 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:59:01 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -115,106 +115,101 @@ $(document).ready(function(){initNavTree('d8/d90/FairSimConfig_8cxx_source.html'
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d4/da1/FairSimConfig_8h.html">FairSimConfig.h</a>&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/de4/FairLogger_8h.html">FairLogger.h</a>&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">using namespace </span><a class="code" href="../../d8/dcc/namespacestd.html">std</a>;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="../../d7/d15/classFairSimConfig.html#a65434e86e7394a5336d6b2c19b328ac4">   16</a></span>&#160;<a class="code" href="../../d7/d15/classFairSimConfig.html#a65434e86e7394a5336d6b2c19b328ac4">FairSimConfig::FairSimConfig</a>()</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    : fDescription(<span class="stringliteral">&quot;Options&quot;</span>)</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    , fHelp(false)</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    , fnEvents(1)</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    , fEngine(<span class="stringliteral">&quot;TGeant3&quot;</span>)</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    , fMultiThreaded(false)</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    , fOutputFile(<span class="stringliteral">&quot;sim.root&quot;</span>)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    , fParameterFile(<span class="stringliteral">&quot;par.root&quot;</span>)</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    , fRandomSeed(0)</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    fDescription.add_options()(<span class="stringliteral">&quot;help&quot;</span>, <span class="stringliteral">&quot;Print this message&quot;</span>)(</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;        <span class="stringliteral">&quot;nevents&quot;</span>, po::value&lt;int&gt;(), <span class="stringliteral">&quot;Number of events to simulate&quot;</span>)(</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;        <span class="stringliteral">&quot;engine&quot;</span>, po::value&lt;vector&lt;string&gt;&gt;(), <span class="stringliteral">&quot;Monte Carlo engine&quot;</span>)(<span class="stringliteral">&quot;multi-threaded&quot;</span>, <span class="stringliteral">&quot;Geant4 multi threaded&quot;</span>)(</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        <span class="stringliteral">&quot;output-file&quot;</span>, po::value&lt;vector&lt;string&gt;&gt;(), <span class="stringliteral">&quot;Output file&quot;</span>)(</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        <span class="stringliteral">&quot;parameter-file&quot;</span>, po::value&lt;vector&lt;string&gt;&gt;(), <span class="stringliteral">&quot;Parameter file&quot;</span>)(</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        <span class="stringliteral">&quot;random-seed&quot;</span>, po::value&lt;int&gt;(), <span class="stringliteral">&quot;Seed for the random number generator&quot;</span>);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="../../d7/d15/classFairSimConfig.html#a4ea40b7d5fdc0e7dc6258ff45e120504">   34</a></span>&#160;<a class="code" href="../../d7/d15/classFairSimConfig.html#a4ea40b7d5fdc0e7dc6258ff45e120504">FairSimConfig::~FairSimConfig</a>() {}</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="../../d7/d15/classFairSimConfig.html#a1e2bc70cdf953258f68172263e176aad">   36</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="../../d7/d15/classFairSimConfig.html#a1e2bc70cdf953258f68172263e176aad">FairSimConfig::ParseCommandLine</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>* argv[])</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordflow">try</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        po::store(po::parse_command_line(argc, argv, fDescription), fMap);</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        po::notify(fMap);</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    }</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">catch</span> (po::error&amp; e)</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    {</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        LOG(error) &lt;&lt; e.what();</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        fHelp = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordflow">if</span> (fMap.count(<span class="stringliteral">&quot;help&quot;</span>))</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    {</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        fHelp = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordflow">if</span> (fMap.count(<span class="stringliteral">&quot;nevents&quot;</span>))</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    {</div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d4/da1/FairSimConfig_8h.html">FairSimConfig.h</a>&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/de4/FairLogger_8h.html">FairLogger.h</a>&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keyword">using namespace </span><a class="code" href="../../d8/dcc/namespacestd.html">std</a>;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="../../d7/d15/classFairSimConfig.html#a65434e86e7394a5336d6b2c19b328ac4">   17</a></span>&#160;<a class="code" href="../../d7/d15/classFairSimConfig.html#a65434e86e7394a5336d6b2c19b328ac4">FairSimConfig::FairSimConfig</a>()</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    : fDescription(<span class="stringliteral">&quot;Options&quot;</span>)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    , fHelp(false)</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    , fnEvents(1)</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    , fEngine(<span class="stringliteral">&quot;TGeant3&quot;</span>)</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    , fMultiThreaded(false)</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    , fOutputFile(<span class="stringliteral">&quot;sim.root&quot;</span>)</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    , fParameterFile(<span class="stringliteral">&quot;par.root&quot;</span>)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    , fRandomSeed(0)</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="comment">// clang-format off</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    fDescription.add_options()</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;        (<span class="stringliteral">&quot;help&quot;</span>,                                        <span class="stringliteral">&quot;Print this message&quot;</span>)</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;        (<span class="stringliteral">&quot;nevents&quot;</span>,        po::value&lt;int&gt;(),            <span class="stringliteral">&quot;Number of events to simulate&quot;</span>)</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        (<span class="stringliteral">&quot;engine&quot;</span>,         po::value&lt;vector&lt;string&gt;&gt;(), <span class="stringliteral">&quot;Monte Carlo engine&quot;</span>)</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        (<span class="stringliteral">&quot;multi-threaded&quot;</span>,                              <span class="stringliteral">&quot;Geant4 multi threaded&quot;</span>)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        (<span class="stringliteral">&quot;output-file&quot;</span>,    po::value&lt;vector&lt;string&gt;&gt;(), <span class="stringliteral">&quot;Output file&quot;</span>)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        (<span class="stringliteral">&quot;parameter-file&quot;</span>, po::value&lt;vector&lt;string&gt;&gt;(), <span class="stringliteral">&quot;Parameter file&quot;</span>)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;        (<span class="stringliteral">&quot;random-seed&quot;</span>,    po::value&lt;int&gt;(),            <span class="stringliteral">&quot;Seed for the random number generator&quot;</span>);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="comment">// clang-format on</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;}</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="../../d7/d15/classFairSimConfig.html#a4ea40b7d5fdc0e7dc6258ff45e120504">   39</a></span>&#160;<a class="code" href="../../d7/d15/classFairSimConfig.html#a4ea40b7d5fdc0e7dc6258ff45e120504">FairSimConfig::~FairSimConfig</a>() {}</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="../../d7/d15/classFairSimConfig.html#a1e2bc70cdf953258f68172263e176aad">   41</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="../../d7/d15/classFairSimConfig.html#a1e2bc70cdf953258f68172263e176aad">FairSimConfig::ParseCommandLine</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>* argv[])</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordflow">try</span> {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        po::store(po::parse_command_line(argc, argv, fDescription), fMap);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        po::notify(fMap);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    } <span class="keywordflow">catch</span> (po::error&amp; e) {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;        LOG(error) &lt;&lt; e.what();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;        fHelp = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    }</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordflow">if</span> (fMap.count(<span class="stringliteral">&quot;help&quot;</span>)) {</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        fHelp = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordflow">if</span> (fMap.count(<span class="stringliteral">&quot;nevents&quot;</span>)) {</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        fnEvents = fMap[<span class="stringliteral">&quot;nevents&quot;</span>].as&lt;<span class="keywordtype">int</span>&gt;();</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    }</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">if</span> (fMap.count(<span class="stringliteral">&quot;engine&quot;</span>))</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    {</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        fEngine = fMap[<span class="stringliteral">&quot;engine&quot;</span>].as&lt;vector&lt;string&gt;&gt;().at(0);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="../../d7/d15/classFairSimConfig.html#a1611492aea6870bb26a9770cf478b4ca">GetEngine</a>().EqualTo(<span class="stringliteral">&quot;TGeant3&quot;</span>) &amp;&amp; !<a class="code" href="../../d7/d15/classFairSimConfig.html#a1611492aea6870bb26a9770cf478b4ca">GetEngine</a>().EqualTo(<span class="stringliteral">&quot;TGeant4&quot;</span>))</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;            LOG(error) &lt;&lt; <span class="stringliteral">&quot;Option engine can be either TGeant3 or TGeant4&quot;</span>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            <span class="keywordflow">return</span> 1;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordflow">if</span>(fMap.count(<span class="stringliteral">&quot;output-file&quot;</span>))</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    {</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        fOutputFile = fMap[<span class="stringliteral">&quot;output-file&quot;</span>].as&lt;vector&lt;string&gt;&gt;().at(0);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">if</span> (fMap.count(<span class="stringliteral">&quot;engine&quot;</span>)) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        fEngine = fMap[<span class="stringliteral">&quot;engine&quot;</span>].as&lt;vector&lt;string&gt;&gt;().at(0);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        <span class="keywordflow">if</span> (!<a class="code" href="../../d7/d15/classFairSimConfig.html#a1611492aea6870bb26a9770cf478b4ca">GetEngine</a>().EqualTo(<span class="stringliteral">&quot;TGeant3&quot;</span>) &amp;&amp; !<a class="code" href="../../d7/d15/classFairSimConfig.html#a1611492aea6870bb26a9770cf478b4ca">GetEngine</a>().EqualTo(<span class="stringliteral">&quot;TGeant4&quot;</span>)) {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            LOG(error) &lt;&lt; <span class="stringliteral">&quot;Option engine can be either TGeant3 or TGeant4&quot;</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">if</span> (fMap.count(<span class="stringliteral">&quot;output-file&quot;</span>)) {</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        fOutputFile = fMap[<span class="stringliteral">&quot;output-file&quot;</span>].as&lt;vector&lt;string&gt;&gt;().at(0);</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">if</span> (fMap.count(<span class="stringliteral">&quot;parameter-file&quot;</span>)) {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        fParameterFile = fMap[<span class="stringliteral">&quot;parameter-file&quot;</span>].as&lt;vector&lt;string&gt;&gt;().at(0);</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">if</span>(fMap.count(<span class="stringliteral">&quot;parameter-file&quot;</span>))</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        fParameterFile = fMap[<span class="stringliteral">&quot;parameter-file&quot;</span>].as&lt;vector&lt;string&gt;&gt;().at(0);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">if</span>(fMap.count(<span class="stringliteral">&quot;random-seed&quot;</span>))</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    {</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        fRandomSeed = fMap[<span class="stringliteral">&quot;random-seed&quot;</span>].as&lt;<span class="keywordtype">int</span>&gt;();</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">if</span>(fMap.count(<span class="stringliteral">&quot;multi-threaded&quot;</span>))</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        fMultiThreaded = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;}</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="../../d7/d15/classFairSimConfig.html#aebe65305fb02315188a23597b10b712b">   88</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d7/d15/classFairSimConfig.html#aebe65305fb02315188a23597b10b712b">FairSimConfig::PrintHelpMessage</a>() { cout &lt;&lt; fDescription &lt;&lt; endl; }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<a class="code" href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a>(<a class="code" href="../../d7/d15/classFairSimConfig.html">FairSimConfig</a>)</div>
-<div class="ttc" id="classFairSimConfig_html_a1e2bc70cdf953258f68172263e176aad"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#a1e2bc70cdf953258f68172263e176aad">FairSimConfig::ParseCommandLine</a></div><div class="ttdeci">int ParseCommandLine(int argc, char *argv[])</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/FairSimConfig_8cxx_source.html#l00036">FairSimConfig.cxx:36</a></div></div>
-<div class="ttc" id="namespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition:</b> <a href="../../da/dc9/build_2base_2G____Base_8cxx_source.html#l00037">G__Base.cxx:37</a></div></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">if</span> (fMap.count(<span class="stringliteral">&quot;random-seed&quot;</span>)) {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        fRandomSeed = fMap[<span class="stringliteral">&quot;random-seed&quot;</span>].as&lt;<span class="keywordtype">int</span>&gt;();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">if</span> (fMap.count(<span class="stringliteral">&quot;multi-threaded&quot;</span>)) {</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        LOG(info) &lt;&lt; <span class="stringliteral">&quot;YUPYUPYUP&quot;</span>;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        fMultiThreaded = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    }</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;}</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="../../d7/d15/classFairSimConfig.html#aebe65305fb02315188a23597b10b712b">   83</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d7/d15/classFairSimConfig.html#aebe65305fb02315188a23597b10b712b">FairSimConfig::PrintHelpMessage</a>() { cout &lt;&lt; fDescription &lt;&lt; endl; }</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<a class="code" href="../../d8/d90/FairSimConfig_8cxx.html#a9e60081dcb5a883cbfab3d5316bb0119">ClassImp</a>(<a class="code" href="../../d7/d15/classFairSimConfig.html">FairSimConfig</a>);</div>
+<div class="ttc" id="FairSimConfig_8cxx_html_a9e60081dcb5a883cbfab3d5316bb0119"><div class="ttname"><a href="../../d8/d90/FairSimConfig_8cxx.html#a9e60081dcb5a883cbfab3d5316bb0119">ClassImp</a></div><div class="ttdeci">ClassImp(FairSimConfig)</div></div>
+<div class="ttc" id="classFairSimConfig_html_a1e2bc70cdf953258f68172263e176aad"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#a1e2bc70cdf953258f68172263e176aad">FairSimConfig::ParseCommandLine</a></div><div class="ttdeci">int ParseCommandLine(int argc, char *argv[])</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/FairSimConfig_8cxx_source.html#l00041">FairSimConfig.cxx:41</a></div></div>
+<div class="ttc" id="namespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dff/buildx_2base_2G____Base_8cxx_source.html#l00037">G__Base.cxx:37</a></div></div>
 <div class="ttc" id="FairSimConfig_8h_html"><div class="ttname"><a href="../../d4/da1/FairSimConfig_8h.html">FairSimConfig.h</a></div></div>
 <div class="ttc" id="classFairSimConfig_html_a1611492aea6870bb26a9770cf478b4ca"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#a1611492aea6870bb26a9770cf478b4ca">FairSimConfig::GetEngine</a></div><div class="ttdeci">TString GetEngine() const </div><div class="ttdef"><b>Definition:</b> <a href="../../d4/da1/FairSimConfig_8h_source.html#l00031">FairSimConfig.h:31</a></div></div>
-<div class="ttc" id="classFairSimConfig_html_a65434e86e7394a5336d6b2c19b328ac4"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#a65434e86e7394a5336d6b2c19b328ac4">FairSimConfig::FairSimConfig</a></div><div class="ttdeci">FairSimConfig()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/FairSimConfig_8cxx_source.html#l00016">FairSimConfig.cxx:16</a></div></div>
+<div class="ttc" id="classFairSimConfig_html_a65434e86e7394a5336d6b2c19b328ac4"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#a65434e86e7394a5336d6b2c19b328ac4">FairSimConfig::FairSimConfig</a></div><div class="ttdeci">FairSimConfig()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/FairSimConfig_8cxx_source.html#l00017">FairSimConfig.cxx:17</a></div></div>
 <div class="ttc" id="classFairSimConfig_html"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html">FairSimConfig</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d4/da1/FairSimConfig_8h_source.html#l00019">FairSimConfig.h:19</a></div></div>
-<div class="ttc" id="classFairSimConfig_html_a4ea40b7d5fdc0e7dc6258ff45e120504"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#a4ea40b7d5fdc0e7dc6258ff45e120504">FairSimConfig::~FairSimConfig</a></div><div class="ttdeci">virtual ~FairSimConfig()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/FairSimConfig_8cxx_source.html#l00034">FairSimConfig.cxx:34</a></div></div>
-<div class="ttc" id="FairLink_8cxx_html_a1957c9f11f7f50fe9b58f3f0bedb38de"><div class="ttname"><a href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a></div><div class="ttdeci">ClassImp(FairLink)</div></div>
+<div class="ttc" id="classFairSimConfig_html_a4ea40b7d5fdc0e7dc6258ff45e120504"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#a4ea40b7d5fdc0e7dc6258ff45e120504">FairSimConfig::~FairSimConfig</a></div><div class="ttdeci">virtual ~FairSimConfig()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/FairSimConfig_8cxx_source.html#l00039">FairSimConfig.cxx:39</a></div></div>
 <div class="ttc" id="FairLogger_8h_html"><div class="ttname"><a href="../../d5/de4/FairLogger_8h.html">FairLogger.h</a></div></div>
-<div class="ttc" id="classFairSimConfig_html_aebe65305fb02315188a23597b10b712b"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#aebe65305fb02315188a23597b10b712b">FairSimConfig::PrintHelpMessage</a></div><div class="ttdeci">void PrintHelpMessage()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/FairSimConfig_8cxx_source.html#l00088">FairSimConfig.cxx:88</a></div></div>
+<div class="ttc" id="classFairSimConfig_html_aebe65305fb02315188a23597b10b712b"><div class="ttname"><a href="../../d7/d15/classFairSimConfig.html#aebe65305fb02315188a23597b10b712b">FairSimConfig::PrintHelpMessage</a></div><div class="ttdeci">void PrintHelpMessage()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d90/FairSimConfig_8cxx_source.html#l00083">FairSimConfig.cxx:83</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_fc72895b8d6c4a9d0505e520110a0c1f.html">simulation</a></li><li class="navelem"><a class="el" href="../../dir_a4c842e3bf132f2fa91de995995e1f34.html">Tutorial1</a></li><li class="navelem"><a class="el" href="../../dir_f5ff6857b1c96a33e9bda10b9213e4ba.html">src</a></li><li class="navelem"><a class="el" href="../../d8/d90/FairSimConfig_8cxx.html">FairSimConfig.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:50 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

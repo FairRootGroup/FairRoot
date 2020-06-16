@@ -1,7 +1,7 @@
 var classFairHit =
 [
     [ "FairHit", "df/dbd/classFairHit.html#aee9e1fe1d738bda090cf00703c6dc478", null ],
-    [ "FairHit", "df/dbd/classFairHit.html#a91dbd97865a6c8596e20c8ce97ad8f51", null ],
+    [ "FairHit", "df/dbd/classFairHit.html#a90e6cd0e00aa4e9b11b8561d29c0ef57", null ],
     [ "~FairHit", "df/dbd/classFairHit.html#aae5e90cad96e2f284408f7b6ca114da5", null ],
     [ "ClassDef", "df/dbd/classFairHit.html#a1e732a7d760f0e9ca5a830a9971790b3", null ],
     [ "GetDetectorID", "df/dbd/classFairHit.html#a9df1267b19922e334686c121b1ff5c3e", null ],

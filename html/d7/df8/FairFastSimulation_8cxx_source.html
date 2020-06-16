@@ -121,14 +121,14 @@ $(document).ready(function(){initNavTree('d7/df8/FairFastSimulation_8cxx_source.
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d8/dc2/FairFastSimulation_8h.html">FairFastSimulation.h</a>&quot;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/da5/FairFastSimModel_8h.html">FairFastSimModel.h</a>&quot;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;TG4VUserFastSimulation.h&gt;</span>  <span class="comment">// for TG4VUserFastSimulation</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/da5/FairFastSimModel_8h.html">FairFastSimModel.h</a>&quot;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/de4/FairLogger_8h.html">FairLogger.h</a>&quot;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/de4/FairLogger_8h.html">FairLogger.h</a>&quot;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;TG4VUserFastSimulation.h&gt;</span>   <span class="comment">// for TG4VUserFastSimulation</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
 <div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="../../de/dc5/classFairFastSimulation.html#af249984efefc455fe973170f2899a15d">   20</a></span>&#160;<a class="code" href="../../de/dc5/classFairFastSimulation.html#af249984efefc455fe973170f2899a15d">FairFastSimulation::FairFastSimulation</a>()</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  : TG4VUserFastSimulation()</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    : TG4VUserFastSimulation()</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    SetModel(<span class="stringliteral">&quot;fairFastSimModel&quot;</span>);</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    LOG(info) &lt;&lt; <span class="stringliteral">&quot;FairFastSimulation::FairFastSimulation() model set&quot;</span>;</div>
@@ -139,31 +139,29 @@ $(document).ready(function(){initNavTree('d7/df8/FairFastSimulation_8cxx_source.
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    LOG(info) &lt;&lt; <span class="stringliteral">&quot;FairFastSimulation::FairFastSimulation() finished&quot;</span>;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="../../de/dc5/classFairFastSimulation.html#a0e582ad74d7f20eecc8fc0020875eaad">   32</a></span>&#160;<a class="code" href="../../de/dc5/classFairFastSimulation.html#a0e582ad74d7f20eecc8fc0020875eaad">FairFastSimulation::~FairFastSimulation</a>()</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;{</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="../../de/dc5/classFairFastSimulation.html#a0e582ad74d7f20eecc8fc0020875eaad">   32</a></span>&#160;<a class="code" href="../../de/dc5/classFairFastSimulation.html#a0e582ad74d7f20eecc8fc0020875eaad">FairFastSimulation::~FairFastSimulation</a>() {}</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">//</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// protected methods</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="comment">// protected methods</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">//</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="../../de/dc5/classFairFastSimulation.html#a81254b34889cdf70cf8f3ec37a5bbdff">   40</a></span>&#160;<span class="keywordtype">void</span>  <a class="code" href="../../de/dc5/classFairFastSimulation.html#a81254b34889cdf70cf8f3ec37a5bbdff">FairFastSimulation::Construct</a>()</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="../../de/dc5/classFairFastSimulation.html#a81254b34889cdf70cf8f3ec37a5bbdff">   38</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../de/dc5/classFairFastSimulation.html#a81254b34889cdf70cf8f3ec37a5bbdff">FairFastSimulation::Construct</a>()</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    LOG(info) &lt;&lt; <span class="stringliteral">&quot;Construct FairFastSimulation model.&quot;</span>;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    LOG(info) &lt;&lt; <span class="stringliteral">&quot;Construct FairFastSimulation model.&quot;</span>;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="comment">// Create the fast simulation model</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="../../d0/dfc/classFairFastSimModel.html">FairFastSimModel</a>* fairFastSimModel = <span class="keyword">new</span> <a class="code" href="../../d0/dfc/classFairFastSimModel.html">FairFastSimModel</a>(<span class="stringliteral">&quot;fairFastSimModel&quot;</span>);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">// Register the model in the VMC framework</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    Register(fairFastSimModel);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    LOG(info) &lt;&lt; <span class="stringliteral">&quot;end construct FairFastSimulation model.&quot;</span>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="comment">//</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  <span class="comment">// end Initializing shower model</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;}</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">// Create the fast simulation model</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="../../d0/dfc/classFairFastSimModel.html">FairFastSimModel</a>* fairFastSimModel = <span class="keyword">new</span> <a class="code" href="../../d0/dfc/classFairFastSimModel.html">FairFastSimModel</a>(<span class="stringliteral">&quot;fairFastSimModel&quot;</span>);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="comment">// Register the model in the VMC framework</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    Register(fairFastSimModel);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    LOG(info) &lt;&lt; <span class="stringliteral">&quot;end construct FairFastSimulation model.&quot;</span>;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">//</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">// end Initializing shower model</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;}</div>
 <div class="ttc" id="classFairFastSimModel_html"><div class="ttname"><a href="../../d0/dfc/classFairFastSimModel.html">FairFastSimModel</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d7/da5/FairFastSimModel_8h_source.html#l00023">FairFastSimModel.h:23</a></div></div>
-<div class="ttc" id="classFairFastSimulation_html_a81254b34889cdf70cf8f3ec37a5bbdff"><div class="ttname"><a href="../../de/dc5/classFairFastSimulation.html#a81254b34889cdf70cf8f3ec37a5bbdff">FairFastSimulation::Construct</a></div><div class="ttdeci">virtual void Construct()</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/df8/FairFastSimulation_8cxx_source.html#l00040">FairFastSimulation.cxx:40</a></div></div>
+<div class="ttc" id="classFairFastSimulation_html_a81254b34889cdf70cf8f3ec37a5bbdff"><div class="ttname"><a href="../../de/dc5/classFairFastSimulation.html#a81254b34889cdf70cf8f3ec37a5bbdff">FairFastSimulation::Construct</a></div><div class="ttdeci">virtual void Construct()</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/df8/FairFastSimulation_8cxx_source.html#l00038">FairFastSimulation.cxx:38</a></div></div>
 <div class="ttc" id="FairFastSimModel_8h_html"><div class="ttname"><a href="../../d7/da5/FairFastSimModel_8h.html">FairFastSimModel.h</a></div></div>
 <div class="ttc" id="classFairFastSimulation_html_a0e582ad74d7f20eecc8fc0020875eaad"><div class="ttname"><a href="../../de/dc5/classFairFastSimulation.html#a0e582ad74d7f20eecc8fc0020875eaad">FairFastSimulation::~FairFastSimulation</a></div><div class="ttdeci">virtual ~FairFastSimulation()</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/df8/FairFastSimulation_8cxx_source.html#l00032">FairFastSimulation.cxx:32</a></div></div>
 <div class="ttc" id="classFairFastSimulation_html_af249984efefc455fe973170f2899a15d"><div class="ttname"><a href="../../de/dc5/classFairFastSimulation.html#af249984efefc455fe973170f2899a15d">FairFastSimulation::FairFastSimulation</a></div><div class="ttdeci">FairFastSimulation()</div><div class="ttdef"><b>Definition:</b> <a href="../../d7/df8/FairFastSimulation_8cxx_source.html#l00020">FairFastSimulation.cxx:20</a></div></div>
@@ -175,7 +173,7 @@ $(document).ready(function(){initNavTree('d7/df8/FairFastSimulation_8cxx_source.
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_e914ee4d4a44400f1fdb170cb4ead18a.html">base</a></li><li class="navelem"><a class="el" href="../../dir_939e218d2720f9464065ae23c74927ee.html">sim</a></li><li class="navelem"><a class="el" href="../../dir_3904f8952ac4d12206ba93506bdac608.html">fastsim</a></li><li class="navelem"><a class="el" href="../../d7/df8/FairFastSimulation_8cxx.html">FairFastSimulation.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:40 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:48 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

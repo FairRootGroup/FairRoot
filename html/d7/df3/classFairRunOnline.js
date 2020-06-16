@@ -5,6 +5,7 @@ var classFairRunOnline =
     [ "FairRunOnline", "d7/df3/classFairRunOnline.html#ad75ec8d99b29a841c0b9e761ad8bc710", null ],
     [ "ActivateHttpServer", "d7/df3/classFairRunOnline.html#ad8926250550631238f80b5d2146b457b", null ],
     [ "AddObject", "d7/df3/classFairRunOnline.html#ad0ecc7aeb23817b51f8d000f15d5ef7a", null ],
+    [ "ClassDef", "d7/df3/classFairRunOnline.html#ae4ec4fdf0794060160105cf984d8cae8", null ],
     [ "Fill", "d7/df3/classFairRunOnline.html#abaedca22e58f42b9cddccb355fe6397c", null ],
     [ "Finish", "d7/df3/classFairRunOnline.html#aa2931e42cdbfa8fe7f84752b6da4cb09", null ],
     [ "GetContainerStatic", "d7/df3/classFairRunOnline.html#a98df05dccfaf4703446dcab5e030b9a1", null ],

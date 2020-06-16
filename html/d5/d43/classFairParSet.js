@@ -3,6 +3,7 @@ var classFairParSet =
     [ "FairParSet", "d5/d43/classFairParSet.html#a2955a3011fe66ac56e47f7213d2bb299", null ],
     [ "~FairParSet", "d5/d43/classFairParSet.html#a978e8a281088ba7f8702d0f8ff8b31ba", null ],
     [ "FairParSet", "d5/d43/classFairParSet.html#af1beda3111026645bdb8803fef7e3f02", null ],
+    [ "ClassDef", "d5/d43/classFairParSet.html#a0fd62b062e716720a487876996c7352f", null ],
     [ "clear", "d5/d43/classFairParSet.html#ad991fefbd805f56bcc576c56cfc0d211", null ],
     [ "copyComment", "d5/d43/classFairParSet.html#a3cec16ec962aa91db23217dfb94f980d", null ],
     [ "fill", "d5/d43/classFairParSet.html#a228ba6e8e5443ccd23ec5a76fe1e2a28", null ],

@@ -6,6 +6,8 @@ var classMyGeoCave =
     [ "~MyGeoCave", "d3/d8f/classMyGeoCave.html#acacbb1c8e6f268f9c0f37c86fc4df9a2", null ],
     [ "addRefNodes", "d3/d8f/classMyGeoCave.html#a19995670876adcff53373d340130f68d", null ],
     [ "addRefNodes", "d3/d8f/classMyGeoCave.html#a19995670876adcff53373d340130f68d", null ],
+    [ "ClassDef", "d3/d8f/classMyGeoCave.html#a044d64397a36be6b17e29885a46a2bab", null ],
+    [ "ClassDef", "d3/d8f/classMyGeoCave.html#a044d64397a36be6b17e29885a46a2bab", null ],
     [ "getModuleName", "d3/d8f/classMyGeoCave.html#aaa6fc274777b3f5e7dad2bdd714d5f3e", null ],
     [ "getModuleName", "d3/d8f/classMyGeoCave.html#aaa6fc274777b3f5e7dad2bdd714d5f3e", null ],
     [ "print", "d3/d8f/classMyGeoCave.html#a6c63f19703448d4de1815c18d1ef8ff9", null ],

@@ -2,6 +2,7 @@ var classFairUnpack =
 [
     [ "FairUnpack", "d2/db4/classFairUnpack.html#ad3d367dfa145d32a04ea76c91cf5e073", null ],
     [ "~FairUnpack", "d2/db4/classFairUnpack.html#a489afbccb479deb381b14a6bd265ab3f", null ],
+    [ "ClassDef", "d2/db4/classFairUnpack.html#a8fb197080e3463cc0d33cd7ae10285ee", null ],
     [ "DoUnpack", "d2/db4/classFairUnpack.html#adaf0fab1f6e8588063560e152e555abf", null ],
     [ "GetControl", "d2/db4/classFairUnpack.html#af38f209c881deabf80d2ed6b3e590c5d", null ],
     [ "GetProcId", "d2/db4/classFairUnpack.html#a68aed3503492619ce329f667413fc227", null ],

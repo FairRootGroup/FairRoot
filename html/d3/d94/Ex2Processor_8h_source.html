@@ -111,128 +111,121 @@ $(document).ready(function(){initNavTree('d3/d94/Ex2Processor_8h_source.html','.
 <a href="../../d3/d94/Ex2Processor_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef EX2PROCESSOR_H</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define EX2PROCESSOR_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/d65/SerializerExample2_8h.html">SerializerExample2.h</a>&quot;</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/d91/BoostSerializer_8h.html">BoostSerializer.h</a>&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../dc/d9a/MyDigi_8h.html">MyDigi.h</a>&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/d61/MyHit_8h.html">MyHit.h</a>&quot;</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../da/d7c/RootSerializer_8h.html">RootSerializer.h</a>&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/d91/BoostSerializer_8h.html">BoostSerializer.h</a>&quot;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;FairMQDevice.h&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;FairMQParts.h&gt;</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../da/d7c/RootSerializer_8h.html">RootSerializer.h</a>&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d7/d65/SerializerExample2_8h.html">SerializerExample2.h</a>&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &lt;FairMQDevice.h&gt;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;FairMQParts.h&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;TMath.h&gt;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;TMath.h&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="../../d8/da4/classEx2Processor.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d8/da4/classEx2Processor.html">Ex2Processor</a> : <span class="keyword">public</span> FairMQDevice</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="../../d8/da4/classEx2Processor.html#a6bd48669864d3516219ff295cb9a8b9e">   19</a></span>&#160;    <a class="code" href="../../d8/da4/classEx2Processor.html#a6bd48669864d3516219ff295cb9a8b9e">Ex2Processor</a>()</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        : fInput(nullptr)</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;        , fOutput(nullptr)</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;        , fNumMsgs(0)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    {}</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="../../d8/da4/classEx2Processor.html#a6bd48669864d3516219ff295cb9a8b9e">Ex2Processor</a>(<span class="keyword">const</span> <a class="code" href="../../d8/da4/classEx2Processor.html">Ex2Processor</a>&amp;);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="../../d8/da4/classEx2Processor.html">Ex2Processor</a>&amp; <a class="code" href="../../d8/da4/classEx2Processor.html#a35fca45abf89f2bc669f8aa46b9354cd">operator=</a>(<span class="keyword">const</span> <a class="code" href="../../d8/da4/classEx2Processor.html">Ex2Processor</a>&amp;);</div>
+<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="../../d8/da4/classEx2Processor.html">   14</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d8/da4/classEx2Processor.html">Ex2Processor</a> : <span class="keyword">public</span> FairMQDevice</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="../../d8/da4/classEx2Processor.html#a6bd48669864d3516219ff295cb9a8b9e">   17</a></span>&#160;    <a class="code" href="../../d8/da4/classEx2Processor.html#a6bd48669864d3516219ff295cb9a8b9e">Ex2Processor</a>()</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        : fInput(nullptr)</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;        , fOutput(nullptr)</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;        , fNumMsgs(0)</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    {}</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="../../d8/da4/classEx2Processor.html#a6bd48669864d3516219ff295cb9a8b9e">Ex2Processor</a>(<span class="keyword">const</span> <a class="code" href="../../d8/da4/classEx2Processor.html">Ex2Processor</a>&amp;);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="../../d8/da4/classEx2Processor.html">Ex2Processor</a>&amp; <a class="code" href="../../d8/da4/classEx2Processor.html#a35fca45abf89f2bc669f8aa46b9354cd">operator=</a>(<span class="keyword">const</span> <a class="code" href="../../d8/da4/classEx2Processor.html">Ex2Processor</a>&amp;);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="../../d8/da4/classEx2Processor.html#ad2ef6a0d30d152e450cd22b5e00a52d8">   26</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d8/da4/classEx2Processor.html#ad2ef6a0d30d152e450cd22b5e00a52d8">~Ex2Processor</a>() {}</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="../../d8/da4/classEx2Processor.html#ad2ef6a0d30d152e450cd22b5e00a52d8">   28</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d8/da4/classEx2Processor.html#ad2ef6a0d30d152e450cd22b5e00a52d8">~Ex2Processor</a>() {}</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="../../d8/da4/classEx2Processor.html#a5ee63aa121c3ab13a6f9abe5b2633fb0">   31</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d8/da4/classEx2Processor.html#a5ee63aa121c3ab13a6f9abe5b2633fb0">Init</a>()</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    {</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;        fNumMsgs = fConfig-&gt;GetValue&lt;<span class="keywordtype">int</span>&gt;(<span class="stringliteral">&quot;num-msgs&quot;</span>);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        fOutput = <span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;MyHit&quot;</span>);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="../../d8/da4/classEx2Processor.html#a8207fc327ff92f9ff62ab0d40c57fb7a">   37</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d8/da4/classEx2Processor.html#a8207fc327ff92f9ff62ab0d40c57fb7a">Run</a>()</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    {</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        <span class="keywordtype">int</span> receivedMsgs = 0;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordtype">int</span> sentMsgs = 0;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;        <span class="keywordflow">while</span> (!NewStatePending())</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;        {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;            FairMQParts partsIn;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;            <span class="keywordflow">if</span> (Receive(partsIn, <span class="stringliteral">&quot;data1&quot;</span>) &gt; 0)</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;            {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                <a class="code" href="../../d2/d15/structEx2Header.html">Ex2Header</a>* header = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                Deserialize&lt;SerializerEx2&gt;(*(partsIn.At(0)), header);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                Deserialize&lt;RootSerializer&gt;(*(partsIn.At(1)), fInput);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="../../d8/da4/classEx2Processor.html#a5ee63aa121c3ab13a6f9abe5b2633fb0">   29</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d8/da4/classEx2Processor.html#a5ee63aa121c3ab13a6f9abe5b2633fb0">Init</a>()</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    {</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;        fNumMsgs = fConfig-&gt;GetValue&lt;<span class="keywordtype">int</span>&gt;(<span class="stringliteral">&quot;num-msgs&quot;</span>);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;        fOutput = <span class="keyword">new</span> TClonesArray(<span class="stringliteral">&quot;MyHit&quot;</span>);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    }</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="../../d8/da4/classEx2Processor.html#a8207fc327ff92f9ff62ab0d40c57fb7a">   35</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d8/da4/classEx2Processor.html#a8207fc327ff92f9ff62ab0d40c57fb7a">Run</a>()</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    {</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;        <span class="keywordtype">int</span> receivedMsgs = 0;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        <span class="keywordtype">int</span> sentMsgs = 0;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        <span class="keywordflow">while</span> (!NewStatePending()) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;            FairMQParts partsIn;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;            <span class="keywordflow">if</span> (Receive(partsIn, <span class="stringliteral">&quot;data1&quot;</span>) &gt; 0) {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;                <a class="code" href="../../d2/d15/structEx2Header.html">Ex2Header</a>* header = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                Deserialize&lt;SerializerEx2&gt;(*(partsIn.At(0)), header);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                Deserialize&lt;RootSerializer&gt;(*(partsIn.At(1)), fInput);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                receivedMsgs++;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                <a class="code" href="../../d8/da4/classEx2Processor.html#a93b07590e48fa07df1d11510527e7204">Exec</a>(fInput, fOutput);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                receivedMsgs++;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                <a class="code" href="../../d8/da4/classEx2Processor.html#a93b07590e48fa07df1d11510527e7204">Exec</a>(fInput, fOutput);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;                FairMQParts partsOut;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                partsOut.AddPart(std::move(partsIn.At(0)));</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                partsOut.AddPart(NewMessage());</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                FairMQParts partsOut;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                partsOut.AddPart(std::move(partsIn.At(0)));</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                partsOut.AddPart(NewMessage());</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                Serialize&lt;BoostSerializer&lt;Ex2Header&gt;&gt;(*(partsOut.At(0)), *header);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                Serialize&lt;BoostSerializer&lt;MyHit&gt;&gt;(*(partsOut.At(1)), fOutput);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                Send(partsOut, <span class="stringliteral">&quot;data2&quot;</span>);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                sentMsgs++;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                <span class="keywordflow">if</span> (fNumMsgs != 0)</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                {</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                    <span class="keywordflow">if</span> (receivedMsgs == fNumMsgs)</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                    {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                        <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                    }</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                }</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        }</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        LOG(info) &lt;&lt; <span class="stringliteral">&quot;Received &quot;</span> &lt;&lt; receivedMsgs &lt;&lt; <span class="stringliteral">&quot; and sent &quot;</span> &lt;&lt; sentMsgs &lt;&lt; <span class="stringliteral">&quot; messages!&quot;</span>;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">// do some random dummy task</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno"><a class="line" href="../../d8/da4/classEx2Processor.html#a93b07590e48fa07df1d11510527e7204">   78</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d8/da4/classEx2Processor.html#a93b07590e48fa07df1d11510527e7204">Exec</a>(TClonesArray* digis, TClonesArray* hits)</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        hits-&gt;Delete();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idigi(0); idigi&lt;digis-&gt;GetEntriesFast(); idigi++)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            TVector3 pos;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            TVector3 dpos;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <span class="comment">// Double_t timestamp = 0;</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            <span class="comment">// Double_t timestampErr = 0;</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            Int_t fDetID = 0;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;            Int_t fMCIndex = 0;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <a class="code" href="../../d6/dd4/classMyDigi.html">MyDigi</a>* digi = (<a class="code" href="../../d6/dd4/classMyDigi.html">MyDigi</a>*)digis-&gt;At(idigi);</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;            pos.<a class="code" href="../../d6/dd4/classMyDigi.html#a85cae33ea77bf7140d43c2f6000d6ba2">SetXYZ</a>(digi-&gt;<a class="code" href="../../d6/dd4/classMyDigi.html#a0fc0f982cb50224766177f3fcefcb793">GetX</a>() + 0.5, digi-&gt;<a class="code" href="../../d6/dd4/classMyDigi.html#ae048874322f7fc91b7e77703a2bf046c">GetY</a>() + 0.5, digi-&gt;<a class="code" href="../../d6/dd4/classMyDigi.html#ada499a8617d933ad97fee83dc3bf2ba0">GetZ</a>() + 0.5);</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            dpos.SetXYZ(1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12));</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;            <a class="code" href="../../d8/de0/classMyHit.html">MyHit</a>* hit = <span class="keyword">new</span> ((*hits)[idigi]) <a class="code" href="../../d8/de0/classMyHit.html">MyHit</a>(fDetID, fMCIndex, pos, dpos);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;            hit-&gt;<a class="code" href="../../d6/d15/classFairTimeStamp.html#a567289cc0c9c6f7b0a0ff1bd03b25367">SetTimeStamp</a>(digi-&gt;<a class="code" href="../../d6/d15/classFairTimeStamp.html#adfa26dc3049d88a9f4586a01211339d5">GetTimeStamp</a>());</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;            hit-&gt;<a class="code" href="../../d6/d15/classFairTimeStamp.html#a0465570e492b7f6c04e5d969cd68af24">SetTimeStampError</a>(digi-&gt;<a class="code" href="../../d6/d15/classFairTimeStamp.html#aa64d3f6bd59e6d1eb62fe48f72f75add">GetTimeStampError</a>());</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        }</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    TClonesArray* fInput;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    TClonesArray* fOutput;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordtype">int</span> fNumMsgs;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;};</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classMyDigi_html_a85cae33ea77bf7140d43c2f6000d6ba2"><div class="ttname"><a href="../../d6/dd4/classMyDigi.html#a85cae33ea77bf7140d43c2f6000d6ba2">MyDigi::SetXYZ</a></div><div class="ttdeci">void SetXYZ(Int_t x, Int_t y, Int_t z)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d9a/MyDigi_8h_source.html#l00036">MyDigi.h:36</a></div></div>
-<div class="ttc" id="classEx2Processor_html_ad2ef6a0d30d152e450cd22b5e00a52d8"><div class="ttname"><a href="../../d8/da4/classEx2Processor.html#ad2ef6a0d30d152e450cd22b5e00a52d8">Ex2Processor::~Ex2Processor</a></div><div class="ttdeci">virtual ~Ex2Processor()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d94/Ex2Processor_8h_source.html#l00028">Ex2Processor.h:28</a></div></div>
-<div class="ttc" id="classEx2Processor_html_a8207fc327ff92f9ff62ab0d40c57fb7a"><div class="ttname"><a href="../../d8/da4/classEx2Processor.html#a8207fc327ff92f9ff62ab0d40c57fb7a">Ex2Processor::Run</a></div><div class="ttdeci">virtual void Run()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d94/Ex2Processor_8h_source.html#l00037">Ex2Processor.h:37</a></div></div>
-<div class="ttc" id="classEx2Processor_html_a6bd48669864d3516219ff295cb9a8b9e"><div class="ttname"><a href="../../d8/da4/classEx2Processor.html#a6bd48669864d3516219ff295cb9a8b9e">Ex2Processor::Ex2Processor</a></div><div class="ttdeci">Ex2Processor()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d94/Ex2Processor_8h_source.html#l00019">Ex2Processor.h:19</a></div></div>
-<div class="ttc" id="classMyDigi_html_ada499a8617d933ad97fee83dc3bf2ba0"><div class="ttname"><a href="../../d6/dd4/classMyDigi.html#ada499a8617d933ad97fee83dc3bf2ba0">MyDigi::GetZ</a></div><div class="ttdeci">Int_t GetZ() const </div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d9a/MyDigi_8h_source.html#l00063">MyDigi.h:63</a></div></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                Serialize&lt;BoostSerializer&lt;Ex2Header&gt;&gt;(*(partsOut.At(0)), *header);</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                Serialize&lt;BoostSerializer&lt;MyHit&gt;&gt;(*(partsOut.At(1)), fOutput);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                Send(partsOut, <span class="stringliteral">&quot;data2&quot;</span>);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                sentMsgs++;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="keywordflow">if</span> (fNumMsgs != 0) {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    <span class="keywordflow">if</span> (receivedMsgs == fNumMsgs) {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                    }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;            }</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        LOG(info) &lt;&lt; <span class="stringliteral">&quot;Received &quot;</span> &lt;&lt; receivedMsgs &lt;&lt; <span class="stringliteral">&quot; and sent &quot;</span> &lt;&lt; sentMsgs &lt;&lt; <span class="stringliteral">&quot; messages!&quot;</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="comment">// do some random dummy task</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="../../d8/da4/classEx2Processor.html#a93b07590e48fa07df1d11510527e7204">   72</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d8/da4/classEx2Processor.html#a93b07590e48fa07df1d11510527e7204">Exec</a>(TClonesArray* digis, TClonesArray* hits)</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        hits-&gt;Delete();</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> idigi(0); idigi &lt; digis-&gt;GetEntriesFast(); idigi++) {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            TVector3 pos;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            TVector3 dpos;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;            <span class="comment">// Double_t timestamp = 0;</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;            <span class="comment">// Double_t timestampErr = 0;</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;            Int_t fDetID = 0;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;            Int_t fMCIndex = 0;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;            <a class="code" href="../../d6/dd4/classMyDigi.html">MyDigi</a>* digi = (<a class="code" href="../../d6/dd4/classMyDigi.html">MyDigi</a>*)digis-&gt;At(idigi);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;            pos.<a class="code" href="../../d6/dd4/classMyDigi.html#a85cae33ea77bf7140d43c2f6000d6ba2">SetXYZ</a>(digi-&gt;<a class="code" href="../../d6/dd4/classMyDigi.html#a0fc0f982cb50224766177f3fcefcb793">GetX</a>() + 0.5, digi-&gt;<a class="code" href="../../d6/dd4/classMyDigi.html#ae048874322f7fc91b7e77703a2bf046c">GetY</a>() + 0.5, digi-&gt;<a class="code" href="../../d6/dd4/classMyDigi.html#ada499a8617d933ad97fee83dc3bf2ba0">GetZ</a>() + 0.5);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            dpos.SetXYZ(1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12));</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;            <a class="code" href="../../d8/de0/classMyHit.html">MyHit</a>* hit = <span class="keyword">new</span> ((*hits)[idigi]) <a class="code" href="../../d8/de0/classMyHit.html">MyHit</a>(fDetID, fMCIndex, pos, dpos);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;            hit-&gt;<a class="code" href="../../d6/d15/classFairTimeStamp.html#a567289cc0c9c6f7b0a0ff1bd03b25367">SetTimeStamp</a>(digi-&gt;<a class="code" href="../../d6/d15/classFairTimeStamp.html#adfa26dc3049d88a9f4586a01211339d5">GetTimeStamp</a>());</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;            hit-&gt;<a class="code" href="../../d6/d15/classFairTimeStamp.html#a0465570e492b7f6c04e5d969cd68af24">SetTimeStampError</a>(digi-&gt;<a class="code" href="../../d6/d15/classFairTimeStamp.html#aa64d3f6bd59e6d1eb62fe48f72f75add">GetTimeStampError</a>());</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        }</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    }</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    TClonesArray* fInput;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    TClonesArray* fOutput;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">int</span> fNumMsgs;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;};</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classMyDigi_html_a85cae33ea77bf7140d43c2f6000d6ba2"><div class="ttname"><a href="../../d6/dd4/classMyDigi.html#a85cae33ea77bf7140d43c2f6000d6ba2">MyDigi::SetXYZ</a></div><div class="ttdeci">void SetXYZ(Int_t x, Int_t y, Int_t z)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d9a/MyDigi_8h_source.html#l00039">MyDigi.h:39</a></div></div>
+<div class="ttc" id="classEx2Processor_html_ad2ef6a0d30d152e450cd22b5e00a52d8"><div class="ttname"><a href="../../d8/da4/classEx2Processor.html#ad2ef6a0d30d152e450cd22b5e00a52d8">Ex2Processor::~Ex2Processor</a></div><div class="ttdeci">virtual ~Ex2Processor()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d94/Ex2Processor_8h_source.html#l00026">Ex2Processor.h:26</a></div></div>
+<div class="ttc" id="classEx2Processor_html_a8207fc327ff92f9ff62ab0d40c57fb7a"><div class="ttname"><a href="../../d8/da4/classEx2Processor.html#a8207fc327ff92f9ff62ab0d40c57fb7a">Ex2Processor::Run</a></div><div class="ttdeci">virtual void Run()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d94/Ex2Processor_8h_source.html#l00035">Ex2Processor.h:35</a></div></div>
+<div class="ttc" id="classEx2Processor_html_a6bd48669864d3516219ff295cb9a8b9e"><div class="ttname"><a href="../../d8/da4/classEx2Processor.html#a6bd48669864d3516219ff295cb9a8b9e">Ex2Processor::Ex2Processor</a></div><div class="ttdeci">Ex2Processor()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d94/Ex2Processor_8h_source.html#l00017">Ex2Processor.h:17</a></div></div>
+<div class="ttc" id="classMyDigi_html_ada499a8617d933ad97fee83dc3bf2ba0"><div class="ttname"><a href="../../d6/dd4/classMyDigi.html#ada499a8617d933ad97fee83dc3bf2ba0">MyDigi::GetZ</a></div><div class="ttdeci">Int_t GetZ() const </div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d9a/MyDigi_8h_source.html#l00051">MyDigi.h:51</a></div></div>
 <div class="ttc" id="SerializerExample2_8h_html"><div class="ttname"><a href="../../d7/d65/SerializerExample2_8h.html">SerializerExample2.h</a></div></div>
-<div class="ttc" id="classMyDigi_html_a0fc0f982cb50224766177f3fcefcb793"><div class="ttname"><a href="../../d6/dd4/classMyDigi.html#a0fc0f982cb50224766177f3fcefcb793">MyDigi::GetX</a></div><div class="ttdeci">Int_t GetX() const </div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d9a/MyDigi_8h_source.html#l00055">MyDigi.h:55</a></div></div>
-<div class="ttc" id="classEx2Processor_html_a5ee63aa121c3ab13a6f9abe5b2633fb0"><div class="ttname"><a href="../../d8/da4/classEx2Processor.html#a5ee63aa121c3ab13a6f9abe5b2633fb0">Ex2Processor::Init</a></div><div class="ttdeci">virtual void Init()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d94/Ex2Processor_8h_source.html#l00031">Ex2Processor.h:31</a></div></div>
-<div class="ttc" id="classMyDigi_html_ae048874322f7fc91b7e77703a2bf046c"><div class="ttname"><a href="../../d6/dd4/classMyDigi.html#ae048874322f7fc91b7e77703a2bf046c">MyDigi::GetY</a></div><div class="ttdeci">Int_t GetY() const </div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d9a/MyDigi_8h_source.html#l00059">MyDigi.h:59</a></div></div>
-<div class="ttc" id="classMyHit_html"><div class="ttname"><a href="../../d8/de0/classMyHit.html">MyHit</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d61/MyHit_8h_source.html#l00028">MyHit.h:28</a></div></div>
+<div class="ttc" id="classMyDigi_html_a0fc0f982cb50224766177f3fcefcb793"><div class="ttname"><a href="../../d6/dd4/classMyDigi.html#a0fc0f982cb50224766177f3fcefcb793">MyDigi::GetX</a></div><div class="ttdeci">Int_t GetX() const </div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d9a/MyDigi_8h_source.html#l00049">MyDigi.h:49</a></div></div>
+<div class="ttc" id="classEx2Processor_html_a5ee63aa121c3ab13a6f9abe5b2633fb0"><div class="ttname"><a href="../../d8/da4/classEx2Processor.html#a5ee63aa121c3ab13a6f9abe5b2633fb0">Ex2Processor::Init</a></div><div class="ttdeci">virtual void Init()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d94/Ex2Processor_8h_source.html#l00029">Ex2Processor.h:29</a></div></div>
+<div class="ttc" id="classMyDigi_html_ae048874322f7fc91b7e77703a2bf046c"><div class="ttname"><a href="../../d6/dd4/classMyDigi.html#ae048874322f7fc91b7e77703a2bf046c">MyDigi::GetY</a></div><div class="ttdeci">Int_t GetY() const </div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d9a/MyDigi_8h_source.html#l00050">MyDigi.h:50</a></div></div>
+<div class="ttc" id="classMyHit_html"><div class="ttname"><a href="../../d8/de0/classMyHit.html">MyHit</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d61/MyHit_8h_source.html#l00032">MyHit.h:32</a></div></div>
 <div class="ttc" id="MyDigi_8h_html"><div class="ttname"><a href="../../dc/d9a/MyDigi_8h.html">MyDigi.h</a></div></div>
 <div class="ttc" id="classEx2Processor_html_a35fca45abf89f2bc669f8aa46b9354cd"><div class="ttname"><a href="../../d8/da4/classEx2Processor.html#a35fca45abf89f2bc669f8aa46b9354cd">Ex2Processor::operator=</a></div><div class="ttdeci">Ex2Processor &amp; operator=(const Ex2Processor &amp;)</div></div>
-<div class="ttc" id="structEx2Header_html"><div class="ttname"><a href="../../d2/d15/structEx2Header.html">Ex2Header</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d7/d65/SerializerExample2_8h_source.html#l00008">SerializerExample2.h:8</a></div></div>
-<div class="ttc" id="classFairTimeStamp_html_aa64d3f6bd59e6d1eb62fe48f72f75add"><div class="ttname"><a href="../../d6/d15/classFairTimeStamp.html#aa64d3f6bd59e6d1eb62fe48f72f75add">FairTimeStamp::GetTimeStampError</a></div><div class="ttdeci">Double_t GetTimeStampError() const </div><div class="ttdef"><b>Definition:</b> <a href="../../d4/dd4/FairTimeStamp_8h_source.html#l00042">FairTimeStamp.h:42</a></div></div>
-<div class="ttc" id="classMyDigi_html"><div class="ttname"><a href="../../d6/dd4/classMyDigi.html">MyDigi</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d9a/MyDigi_8h_source.html#l00029">MyDigi.h:29</a></div></div>
-<div class="ttc" id="classFairTimeStamp_html_adfa26dc3049d88a9f4586a01211339d5"><div class="ttname"><a href="../../d6/d15/classFairTimeStamp.html#adfa26dc3049d88a9f4586a01211339d5">FairTimeStamp::GetTimeStamp</a></div><div class="ttdeci">Double_t GetTimeStamp() const </div><div class="ttdef"><b>Definition:</b> <a href="../../d4/dd4/FairTimeStamp_8h_source.html#l00041">FairTimeStamp.h:41</a></div></div>
-<div class="ttc" id="classEx2Processor_html_a93b07590e48fa07df1d11510527e7204"><div class="ttname"><a href="../../d8/da4/classEx2Processor.html#a93b07590e48fa07df1d11510527e7204">Ex2Processor::Exec</a></div><div class="ttdeci">void Exec(TClonesArray *digis, TClonesArray *hits)</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d94/Ex2Processor_8h_source.html#l00078">Ex2Processor.h:78</a></div></div>
-<div class="ttc" id="classFairTimeStamp_html_a567289cc0c9c6f7b0a0ff1bd03b25367"><div class="ttname"><a href="../../d6/d15/classFairTimeStamp.html#a567289cc0c9c6f7b0a0ff1bd03b25367">FairTimeStamp::SetTimeStamp</a></div><div class="ttdeci">void SetTimeStamp(Double_t t)</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/dd4/FairTimeStamp_8h_source.html#l00044">FairTimeStamp.h:44</a></div></div>
-<div class="ttc" id="classEx2Processor_html"><div class="ttname"><a href="../../d8/da4/classEx2Processor.html">Ex2Processor</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d94/Ex2Processor_8h_source.html#l00016">Ex2Processor.h:16</a></div></div>
+<div class="ttc" id="structEx2Header_html"><div class="ttname"><a href="../../d2/d15/structEx2Header.html">Ex2Header</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d7/d65/SerializerExample2_8h_source.html#l00012">SerializerExample2.h:12</a></div></div>
+<div class="ttc" id="classFairTimeStamp_html_aa64d3f6bd59e6d1eb62fe48f72f75add"><div class="ttname"><a href="../../d6/d15/classFairTimeStamp.html#aa64d3f6bd59e6d1eb62fe48f72f75add">FairTimeStamp::GetTimeStampError</a></div><div class="ttdeci">Double_t GetTimeStampError() const </div><div class="ttdef"><b>Definition:</b> <a href="../../d4/dd4/FairTimeStamp_8h_source.html#l00045">FairTimeStamp.h:45</a></div></div>
+<div class="ttc" id="classMyDigi_html"><div class="ttname"><a href="../../d6/dd4/classMyDigi.html">MyDigi</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d9a/MyDigi_8h_source.html#l00032">MyDigi.h:32</a></div></div>
+<div class="ttc" id="classFairTimeStamp_html_adfa26dc3049d88a9f4586a01211339d5"><div class="ttname"><a href="../../d6/d15/classFairTimeStamp.html#adfa26dc3049d88a9f4586a01211339d5">FairTimeStamp::GetTimeStamp</a></div><div class="ttdeci">Double_t GetTimeStamp() const </div><div class="ttdef"><b>Definition:</b> <a href="../../d4/dd4/FairTimeStamp_8h_source.html#l00044">FairTimeStamp.h:44</a></div></div>
+<div class="ttc" id="classEx2Processor_html_a93b07590e48fa07df1d11510527e7204"><div class="ttname"><a href="../../d8/da4/classEx2Processor.html#a93b07590e48fa07df1d11510527e7204">Ex2Processor::Exec</a></div><div class="ttdeci">void Exec(TClonesArray *digis, TClonesArray *hits)</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d94/Ex2Processor_8h_source.html#l00072">Ex2Processor.h:72</a></div></div>
+<div class="ttc" id="classFairTimeStamp_html_a567289cc0c9c6f7b0a0ff1bd03b25367"><div class="ttname"><a href="../../d6/d15/classFairTimeStamp.html#a567289cc0c9c6f7b0a0ff1bd03b25367">FairTimeStamp::SetTimeStamp</a></div><div class="ttdeci">void SetTimeStamp(Double_t t)</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/dd4/FairTimeStamp_8h_source.html#l00047">FairTimeStamp.h:47</a></div></div>
+<div class="ttc" id="classEx2Processor_html"><div class="ttname"><a href="../../d8/da4/classEx2Processor.html">Ex2Processor</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d94/Ex2Processor_8h_source.html#l00014">Ex2Processor.h:14</a></div></div>
 <div class="ttc" id="BoostSerializer_8h_html"><div class="ttname"><a href="../../d7/d91/BoostSerializer_8h.html">BoostSerializer.h</a></div></div>
-<div class="ttc" id="classFairTimeStamp_html_a0465570e492b7f6c04e5d969cd68af24"><div class="ttname"><a href="../../d6/d15/classFairTimeStamp.html#a0465570e492b7f6c04e5d969cd68af24">FairTimeStamp::SetTimeStampError</a></div><div class="ttdeci">void SetTimeStampError(Double_t t)</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/dd4/FairTimeStamp_8h_source.html#l00045">FairTimeStamp.h:45</a></div></div>
+<div class="ttc" id="classFairTimeStamp_html_a0465570e492b7f6c04e5d969cd68af24"><div class="ttname"><a href="../../d6/d15/classFairTimeStamp.html#a0465570e492b7f6c04e5d969cd68af24">FairTimeStamp::SetTimeStampError</a></div><div class="ttdeci">void SetTimeStampError(Double_t t)</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/dd4/FairTimeStamp_8h_source.html#l00048">FairTimeStamp.h:48</a></div></div>
 <div class="ttc" id="MyHit_8h_html"><div class="ttname"><a href="../../d5/d61/MyHit_8h.html">MyHit.h</a></div></div>
 <div class="ttc" id="RootSerializer_8h_html"><div class="ttname"><a href="../../da/d7c/RootSerializer_8h.html">RootSerializer.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -241,7 +234,7 @@ $(document).ready(function(){initNavTree('d3/d94/Ex2Processor_8h_source.html','.
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_caac58519ba4740e026a67a20b1aba91.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_6ef69edbf40ef37d23e504897c5455d8.html">serialization</a></li><li class="navelem"><a class="el" href="../../dir_f75ab93e8e7ec1a777187043339b493e.html">2-multipart</a></li><li class="navelem"><a class="el" href="../../d3/d94/Ex2Processor_8h.html">Ex2Processor.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:50 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

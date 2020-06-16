@@ -3,6 +3,7 @@ var classFairContainer =
     [ "FairContainer", "d7/d61/classFairContainer.html#a09a9981b822889c06fa220de92a5bd01", null ],
     [ "~FairContainer", "d7/d61/classFairContainer.html#a9b69aa56e9ae634a426a0d1163fd0183", null ],
     [ "addContext", "d7/d61/classFairContainer.html#a7e9f7fe737f051c57ecca3701929dfae", null ],
+    [ "ClassDef", "d7/d61/classFairContainer.html#a9a6b5aeb45eb548d66deae109fd0c5ce", null ],
     [ "getActualContext", "d7/d61/classFairContainer.html#a5e4da05f7865230de3a6b781c74bc587", null ],
     [ "getConcatName", "d7/d61/classFairContainer.html#ac56ce698c560bb4ff2ffb11692ca4c48", null ],
     [ "getContext", "d7/d61/classFairContainer.html#a42b455939a5608740040ccf59b8f9cde", null ],

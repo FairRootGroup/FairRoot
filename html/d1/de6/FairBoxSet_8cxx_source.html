@@ -111,8 +111,8 @@ $(document).ready(function(){initNavTree('d1/de6/FairBoxSet_8cxx_source.html','.
 <a href="../../d1/de6/FairBoxSet_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/********************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *                                                                              *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             * </span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *  </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
@@ -123,22 +123,23 @@ $(document).ready(function(){initNavTree('d1/de6/FairBoxSet_8cxx_source.html','.
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d9/dfd/FairBoxSet_8h.html">FairBoxSet.h</a>&quot;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="../../d2/d63/classFairBoxSet.html#a3479277711f5054b24a2b9f780e0ef37">   15</a></span>&#160;<a class="code" href="../../d2/d63/classFairBoxSet.html#a3479277711f5054b24a2b9f780e0ef37">FairBoxSet::FairBoxSet</a>(<a class="code" href="../../d2/d33/classFairBoxSetDraw.html">FairBoxSetDraw</a>* drawer, <span class="keyword">const</span> <span class="keywordtype">char</span>* name, <span class="keyword">const</span> <span class="keywordtype">char</span>* t)</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  : TEveBoxSet(name, t), fDraw(drawer)</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;{}</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<a class="code" href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a>(<a class="code" href="../../d2/d63/classFairBoxSet.html">FairBoxSet</a>)</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    : TEveBoxSet(name, t)</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    , fDraw(drawer)</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;{}</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<a class="code" href="../../d1/de6/FairBoxSet_8cxx.html#a1c88901e3896a721f7def84aec90710a">ClassImp</a>(<a class="code" href="../../d2/d63/classFairBoxSet.html">FairBoxSet</a>);</div>
 <div class="ttc" id="classFairBoxSet_html_a3479277711f5054b24a2b9f780e0ef37"><div class="ttname"><a href="../../d2/d63/classFairBoxSet.html#a3479277711f5054b24a2b9f780e0ef37">FairBoxSet::FairBoxSet</a></div><div class="ttdeci">FairBoxSet(FairBoxSetDraw *drawer, const char *name=&quot;FairBoxSet&quot;, const char *t=&quot;&quot;)</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/de6/FairBoxSet_8cxx_source.html#l00015">FairBoxSet.cxx:15</a></div></div>
 <div class="ttc" id="FairBoxSet_8h_html"><div class="ttname"><a href="../../d9/dfd/FairBoxSet_8h.html">FairBoxSet.h</a></div></div>
 <div class="ttc" id="classFairBoxSet_html"><div class="ttname"><a href="../../d2/d63/classFairBoxSet.html">FairBoxSet</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d9/dfd/FairBoxSet_8h_source.html#l00032">FairBoxSet.h:32</a></div></div>
-<div class="ttc" id="classFairBoxSetDraw_html"><div class="ttname"><a href="../../d2/d33/classFairBoxSetDraw.html">FairBoxSetDraw</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d0/df6/FairBoxSetDraw_8h_source.html#l00041">FairBoxSetDraw.h:41</a></div></div>
-<div class="ttc" id="FairLink_8cxx_html_a1957c9f11f7f50fe9b58f3f0bedb38de"><div class="ttname"><a href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a></div><div class="ttdeci">ClassImp(FairLink)</div></div>
+<div class="ttc" id="classFairBoxSetDraw_html"><div class="ttname"><a href="../../d2/d33/classFairBoxSetDraw.html">FairBoxSetDraw</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d0/df6/FairBoxSetDraw_8h_source.html#l00039">FairBoxSetDraw.h:39</a></div></div>
+<div class="ttc" id="FairBoxSet_8cxx_html_a1c88901e3896a721f7def84aec90710a"><div class="ttname"><a href="../../d1/de6/FairBoxSet_8cxx.html#a1c88901e3896a721f7def84aec90710a">ClassImp</a></div><div class="ttdeci">ClassImp(FairBoxSet)</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d3dbd4423481c1d19970e7e3bb8ff1a0.html">eventdisplay</a></li><li class="navelem"><a class="el" href="../../d1/de6/FairBoxSet_8cxx.html">FairBoxSet.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:49 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:57 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

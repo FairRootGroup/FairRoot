@@ -115,25 +115,22 @@ $(document).ready(function(){initNavTree('da/d79/runExHistoDevice_8cxx_source.ht
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;runFairMQDevice.h&quot;</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/dec/FairMQExHistoDevice_8h.html">FairMQExHistoDevice.h</a>&quot;</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span>bpo = boost::program_options;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="../../da/d79/runExHistoDevice_8cxx.html#aa91faf92fedfbef877f991b35196c390">   14</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../da/d79/runExHistoDevice_8cxx.html#aa91faf92fedfbef877f991b35196c390">addCustomOptions</a>(bpo::options_description&amp; <span class="comment">/*options*/</span>)</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;}</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="../../da/d79/runExHistoDevice_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">   18</a></span>&#160;FairMQDevicePtr <a class="code" href="../../da/d79/runExHistoDevice_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a>(<span class="keyword">const</span> FairMQProgOptions&amp; <span class="comment">/*config*/</span>)</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <a class="code" href="../../dd/d66/classFairMQExHistoDevice.html">FairMQExHistoDevice</a>* histoDevice = <span class="keyword">new</span> <a class="code" href="../../dd/d66/classFairMQExHistoDevice.html">FairMQExHistoDevice</a>();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordflow">return</span> histoDevice;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
-<div class="ttc" id="runExHistoDevice_8cxx_html_aa91faf92fedfbef877f991b35196c390"><div class="ttname"><a href="../../da/d79/runExHistoDevice_8cxx.html#aa91faf92fedfbef877f991b35196c390">addCustomOptions</a></div><div class="ttdeci">void addCustomOptions(bpo::options_description &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d79/runExHistoDevice_8cxx_source.html#l00014">runExHistoDevice.cxx:14</a></div></div>
-<div class="ttc" id="classFairMQExHistoDevice_html"><div class="ttname"><a href="../../dd/d66/classFairMQExHistoDevice.html">FairMQExHistoDevice</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/dec/FairMQExHistoDevice_8h_source.html#l00018">FairMQExHistoDevice.h:18</a></div></div>
-<div class="ttc" id="runExHistoDevice_8cxx_html_a9c6d7f8d628391c1bad26be1f1abc271"><div class="ttname"><a href="../../da/d79/runExHistoDevice_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a></div><div class="ttdeci">FairMQDevicePtr getDevice(const FairMQProgOptions &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d79/runExHistoDevice_8cxx_source.html#l00018">runExHistoDevice.cxx:18</a></div></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/dec/FairMQExHistoDevice_8h.html">FairMQExHistoDevice.h</a>&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;runFairMQDevice.h&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="keyword">namespace </span>bpo = boost::program_options;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="../../da/d79/runExHistoDevice_8cxx.html#aa91faf92fedfbef877f991b35196c390">   13</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../da/d79/runExHistoDevice_8cxx.html#aa91faf92fedfbef877f991b35196c390">addCustomOptions</a>(bpo::options_description&amp; <span class="comment">/*options*/</span>) {}</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="../../da/d79/runExHistoDevice_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">   15</a></span>&#160;FairMQDevicePtr <a class="code" href="../../da/d79/runExHistoDevice_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a>(<span class="keyword">const</span> FairMQProgOptions&amp; <span class="comment">/*config*/</span>)</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;{</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="../../dd/d66/classFairMQExHistoDevice.html">FairMQExHistoDevice</a>* histoDevice = <span class="keyword">new</span> <a class="code" href="../../dd/d66/classFairMQExHistoDevice.html">FairMQExHistoDevice</a>();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordflow">return</span> histoDevice;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
+<div class="ttc" id="runExHistoDevice_8cxx_html_aa91faf92fedfbef877f991b35196c390"><div class="ttname"><a href="../../da/d79/runExHistoDevice_8cxx.html#aa91faf92fedfbef877f991b35196c390">addCustomOptions</a></div><div class="ttdeci">void addCustomOptions(bpo::options_description &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d79/runExHistoDevice_8cxx_source.html#l00013">runExHistoDevice.cxx:13</a></div></div>
+<div class="ttc" id="classFairMQExHistoDevice_html"><div class="ttname"><a href="../../dd/d66/classFairMQExHistoDevice.html">FairMQExHistoDevice</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/dec/FairMQExHistoDevice_8h_source.html#l00017">FairMQExHistoDevice.h:17</a></div></div>
+<div class="ttc" id="runExHistoDevice_8cxx_html_a9c6d7f8d628391c1bad26be1f1abc271"><div class="ttname"><a href="../../da/d79/runExHistoDevice_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a></div><div class="ttdeci">FairMQDevicePtr getDevice(const FairMQProgOptions &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d79/runExHistoDevice_8cxx_source.html#l00015">runExHistoDevice.cxx:15</a></div></div>
 <div class="ttc" id="FairMQExHistoDevice_8h_html"><div class="ttname"><a href="../../d5/dec/FairMQExHistoDevice_8h.html">FairMQExHistoDevice.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -141,7 +138,7 @@ $(document).ready(function(){initNavTree('da/d79/runExHistoDevice_8cxx_source.ht
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_caac58519ba4740e026a67a20b1aba91.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_4fbd3b3a22246ae464b5425ba5bbca25.html">histogramServer</a></li><li class="navelem"><a class="el" href="../../da/d79/runExHistoDevice_8cxx.html">runExHistoDevice.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:49 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

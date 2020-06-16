@@ -1,6 +1,6 @@
 var dir_87daec3d37f7d9b1cbff1602e67d5eb9 =
 [
-    [ "NewDetector.cxx", "df/dd1/NewDetector__root__containers_2NewDetector_8cxx.html", null ],
+    [ "NewDetector.cxx", "df/dd1/NewDetector__root__containers_2NewDetector_8cxx.html", "df/dd1/NewDetector__root__containers_2NewDetector_8cxx" ],
     [ "NewDetector.h", "d6/d24/NewDetector__root__containers_2NewDetector_8h.html", [
       [ "NewDetector", "d9/d36/classNewDetector.html", "d9/d36/classNewDetector" ]
     ] ],
@@ -17,7 +17,7 @@ var dir_87daec3d37f7d9b1cbff1602e67d5eb9 =
       [ "NewDetectorGeoPar", "d4/d9a/classNewDetectorGeoPar.html", "d4/d9a/classNewDetectorGeoPar" ]
     ] ],
     [ "NewDetectorLinkDef.h", "d2/d90/NewDetector__root__containers_2NewDetectorLinkDef_8h.html", null ],
-    [ "NewDetectorPoint.cxx", "d6/da2/NewDetector__root__containers_2NewDetectorPoint_8cxx.html", null ],
+    [ "NewDetectorPoint.cxx", "d6/da2/NewDetector__root__containers_2NewDetectorPoint_8cxx.html", "d6/da2/NewDetector__root__containers_2NewDetectorPoint_8cxx" ],
     [ "NewDetectorPoint.h", "d3/d10/NewDetector__root__containers_2NewDetectorPoint_8h.html", [
       [ "NewDetectorPoint", "d2/d63/classNewDetectorPoint.html", "d2/d63/classNewDetectorPoint" ]
     ] ]

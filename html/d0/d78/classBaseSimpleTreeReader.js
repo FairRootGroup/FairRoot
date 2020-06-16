@@ -8,7 +8,7 @@ var classBaseSimpleTreeReader =
     [ "BindSendHeader", "d0/d78/classBaseSimpleTreeReader.html#a5dc28d3008ce13fc7d97a4c8cdcf411f", null ],
     [ "deserialize_impl", "d0/d78/classBaseSimpleTreeReader.html#a538bac30f61aef6e6400f4926eee3ea1", null ],
     [ "deserialize_impl", "d0/d78/classBaseSimpleTreeReader.html#a34b963e4f5bc89c2b48fe3ca8ac798c8", null ],
-    [ "GetDataVector", "d0/d78/classBaseSimpleTreeReader.html#a6f2fe2d8d4174ff20faff2b3f23ca816", null ],
+    [ "GetDataVector", "d0/d78/classBaseSimpleTreeReader.html#a17b6e586581d3ec8cdda6a3b4cf26361", null ],
     [ "GetNumberOfEvent", "d0/d78/classBaseSimpleTreeReader.html#ac7046377b548064f280c27c2facf1e0e", null ],
     [ "GetOutData", "d0/d78/classBaseSimpleTreeReader.html#a47005bbed4060b3c0e950fa90df33da5", null ],
     [ "GetOutData", "d0/d78/classBaseSimpleTreeReader.html#a931ec505d030083004e3719525045008", null ],

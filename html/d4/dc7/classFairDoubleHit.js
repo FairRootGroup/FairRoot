@@ -2,6 +2,7 @@ var classFairDoubleHit =
 [
     [ "FairDoubleHit", "d4/dc7/classFairDoubleHit.html#ac829c462ee82866d4ed7f935d25329be", null ],
     [ "~FairDoubleHit", "d4/dc7/classFairDoubleHit.html#ab740df72ab21c5642cfc637a951dca8d", null ],
+    [ "ClassDef", "d4/dc7/classFairDoubleHit.html#a718ddd434ed838afd60d50ad4d92d0bb", null ],
     [ "dx_in", "d4/dc7/classFairDoubleHit.html#a9611bb6773bce9de2f77b04f2d9aac09", null ],
     [ "dx_out", "d4/dc7/classFairDoubleHit.html#afd97d5890f07f64616b00b5c50f3d1a6", null ],
     [ "dy_in", "d4/dc7/classFairDoubleHit.html#a69a5f7db122448640ab7cc356207e656", null ],

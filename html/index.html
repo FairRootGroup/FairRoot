@@ -161,24 +161,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <p>cd .. mkdir build cd build cmake ../MyExperiment make . config.sh [or source config.csh] ```</p>
 <p>Now you can for example simulate some events and run the event display:</p>
 <p>```bash root -q ../MyExperiment/macro/run_sim.C root ../MyExperiment/macro/eventDisplay.C // Click on "FairEventManager" (in the top-left pane) // Click on the "Info" tab (on top of the bottom-left pane) // Increase the "Current Event" to &gt;0 to see the events root [1] .q ```</p>
-<h2>Modular (custom) installation of FairRoot:</h2>
-<p>(inrtoduced by Ivana Hrivnacova)</p>
-<p>Added option FAIRROOT_MODULAR_BUILD (default is off)</p><ul>
-<li>if the option is activated the environment variables SIMPATH and FAIRROOTPATH need not to be set;</li>
-</ul>
-<p>The external packages are searched in these paths:</p><ul>
-<li>on the system path (if their cmake configuration is available)</li>
-<li>in PackageXYZ_DIR</li>
-<li>in AlFa_DIR (cmake replacement for SIMPATH, introduced to be sure that we do not mix build via env and via CMake together)</li>
-</ul>
-<p>The PackageXYZ_DIR has precedence to AlFa_DIR, however one should be careful with this use and prefer not to have the same package installation also in AlFa_DIR</p>
-<h1>Building with FAIRROOT_MODULAR_BUILD</h1>
-<ul>
-<li>should be preceded by sourcing thisroot.sh, geant4.sh</li>
-<li>requires new versions of VMC packages built with CMake and installed either in AlFa_DIR or available on path</li>
-</ul>
-<p>```bash cmake \ -DCMAKE_INSTALL_PREFIX="Installation_directory_for_fairroot" \ -DFAIRROOT_MODULAR_BUILD=ON \ -DBOOST_ROOT="Path_to_boost_installation" \ -DAlFa_DIR="Path_to_fairsoft_or_alfa_installation" \ ../FairRoot ```</p>
-<h3>Generating Doxygen documentation</h3>
+<h2>Generating Doxygen documentation</h2>
 <p>If the flage -DBUILD_DOXYGEN=ON is set when calling cmake, the doxygen documentation will be generated when calling make. The generated html files can then be found in "build/doxygen/doc/html"</p>
 <p>Doxygen documantation is also available online <a href="http://Fairrootgroup.github.io/FairRoot/">here</a> </p>
 </div></div><!-- contents -->
@@ -186,7 +169,7 @@ $(document).ready(function(){initNavTree('index.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:58 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:59:06 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

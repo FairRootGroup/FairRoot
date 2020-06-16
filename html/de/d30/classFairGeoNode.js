@@ -7,6 +7,7 @@ var classFairGeoNode =
     [ "calcLabTransform", "de/d30/classFairGeoNode.html#ac325dfafe4894e215f9ef4d40a206c15", null ],
     [ "calcModuleTransform", "de/d30/classFairGeoNode.html#a967ed3bfbce7ccd264875ac39a40b937", null ],
     [ "calcRefPos", "de/d30/classFairGeoNode.html#ae3e35b9cdb6313729e65305229008538", null ],
+    [ "ClassDef", "de/d30/classFairGeoNode.html#af519db9f7fb2e922ed52077dac9b197b", null ],
     [ "clear", "de/d30/classFairGeoNode.html#ad5e7c3af7e086e235ca85452ad8efbad", null ],
     [ "compare", "de/d30/classFairGeoNode.html#a15783bf9f57447bba5beac3c12d8885d", null ],
     [ "getCenterPosition", "de/d30/classFairGeoNode.html#a17f53a80b27fdd0fa617a838af58918b", null ],

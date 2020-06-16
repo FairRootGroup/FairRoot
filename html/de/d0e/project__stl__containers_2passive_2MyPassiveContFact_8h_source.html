@@ -121,12 +121,12 @@ $(document).ready(function(){initNavTree('de/d0e/project__stl__containers_2passi
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// -----                Created 26/03/14  by M. Al-Turany              -----</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#ifndef PNDPASSIVECONTFACT_H</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define PNDPASSIVECONTFACT_H</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d3/d4a/FairContFact_8h.html">FairContFact.h</a>&quot;</span>               <span class="comment">// for FairContFact, etc</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>                     <span class="comment">// for MyPassiveContFact::Class, etc</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#ifndef My_PASSIVECONTFACT_H</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#define My_PASSIVECONTFACT_H</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d3/d4a/FairContFact_8h.html">FairContFact.h</a>&quot;</span>   <span class="comment">// for FairContFact, etc</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>   <span class="comment">// for MyPassiveContFact::Class, etc</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">class </span><a class="code" href="../../d5/d43/classFairParSet.html">FairParSet</a>;</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
@@ -134,21 +134,23 @@ $(document).ready(function(){initNavTree('de/d0e/project__stl__containers_2passi
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;{</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordtype">void</span> setAllContainers();</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="../../d8/d66/classMyPassiveContFact.html#a6a25473b61c115d4dce145394dce8bff">MyPassiveContFact</a>();</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="../../d8/d66/classMyPassiveContFact.html#ae4abcda518e73b29eb90aa0f90072767">   29</a></span>&#160;    <a class="code" href="../../d8/d66/classMyPassiveContFact.html#ae4abcda518e73b29eb90aa0f90072767">~MyPassiveContFact</a>() {}</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="../../d5/d43/classFairParSet.html">FairParSet</a>* <a class="code" href="../../d8/d66/classMyPassiveContFact.html#aa36d01799dcf7e187b5927772412a443">createContainer</a>(<a class="code" href="../../d7/d61/classFairContainer.html">FairContainer</a>*);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    ClassDef( <a class="code" href="../../d8/d66/classMyPassiveContFact.html">MyPassiveContFact</a>,0) <span class="comment">// Factory for all Passive parameter containers</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;};</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#endif  </span><span class="comment">/* !PNDPASSIVECONTFACT_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="../../d8/d66/classMyPassiveContFact.html#a6a25473b61c115d4dce145394dce8bff">MyPassiveContFact</a>();</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="../../d8/d66/classMyPassiveContFact.html#ae4abcda518e73b29eb90aa0f90072767">   30</a></span>&#160;    <a class="code" href="../../d8/d66/classMyPassiveContFact.html#ae4abcda518e73b29eb90aa0f90072767">~MyPassiveContFact</a>() {}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="../../d5/d43/classFairParSet.html">FairParSet</a>* <a class="code" href="../../d8/d66/classMyPassiveContFact.html#aa36d01799dcf7e187b5927772412a443">createContainer</a>(<a class="code" href="../../d7/d61/classFairContainer.html">FairContainer</a>*);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="../../d8/d66/classMyPassiveContFact.html#adfac86b1810000d990ddd029966916ec">ClassDef</a>(<a class="code" href="../../d8/d66/classMyPassiveContFact.html">MyPassiveContFact</a>, 0);   <span class="comment">// Factory for all Passive parameter containers</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;};</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* !My_PASSIVECONTFACT_H */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="classMyPassiveContFact_html"><div class="ttname"><a href="../../d8/d66/classMyPassiveContFact.html">MyPassiveContFact</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d94/project__root__containers_2passive_2MyPassiveContFact_8h_source.html#l00023">MyPassiveContFact.h:23</a></div></div>
-<div class="ttc" id="classFairContainer_html"><div class="ttname"><a href="../../d7/d61/classFairContainer.html">FairContainer</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d4a/FairContFact_8h_source.html#l00021">FairContFact.h:21</a></div></div>
+<div class="ttc" id="classFairContainer_html"><div class="ttname"><a href="../../d7/d61/classFairContainer.html">FairContainer</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d4a/FairContFact_8h_source.html#l00020">FairContFact.h:20</a></div></div>
+<div class="ttc" id="classMyPassiveContFact_html_adfac86b1810000d990ddd029966916ec"><div class="ttname"><a href="../../d8/d66/classMyPassiveContFact.html#adfac86b1810000d990ddd029966916ec">MyPassiveContFact::ClassDef</a></div><div class="ttdeci">ClassDef(MyPassiveContFact, 0)</div></div>
 <div class="ttc" id="classFairParSet_html"><div class="ttname"><a href="../../d5/d43/classFairParSet.html">FairParSet</a></div><div class="ttdef"><b>Definition:</b> <a href="../../df/dd2/FairParSet_8h_source.html#l00018">FairParSet.h:18</a></div></div>
-<div class="ttc" id="classMyPassiveContFact_html_aa36d01799dcf7e187b5927772412a443"><div class="ttname"><a href="../../d8/d66/classMyPassiveContFact.html#aa36d01799dcf7e187b5927772412a443">MyPassiveContFact::createContainer</a></div><div class="ttdeci">FairParSet * createContainer(FairContainer *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/da9/project__root__containers_2passive_2MyPassiveContFact_8cxx_source.html#l00065">MyPassiveContFact.cxx:65</a></div></div>
-<div class="ttc" id="classMyPassiveContFact_html_a6a25473b61c115d4dce145394dce8bff"><div class="ttname"><a href="../../d8/d66/classMyPassiveContFact.html#a6a25473b61c115d4dce145394dce8bff">MyPassiveContFact::MyPassiveContFact</a></div><div class="ttdeci">MyPassiveContFact()</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/da9/project__root__containers_2passive_2MyPassiveContFact_8cxx_source.html#l00042">MyPassiveContFact.cxx:42</a></div></div>
-<div class="ttc" id="classFairContFact_html"><div class="ttname"><a href="../../df/db3/classFairContFact.html">FairContFact</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d4a/FairContFact_8h_source.html#l00049">FairContFact.h:49</a></div></div>
-<div class="ttc" id="classMyPassiveContFact_html_ae4abcda518e73b29eb90aa0f90072767"><div class="ttname"><a href="../../d8/d66/classMyPassiveContFact.html#ae4abcda518e73b29eb90aa0f90072767">MyPassiveContFact::~MyPassiveContFact</a></div><div class="ttdeci">~MyPassiveContFact()</div><div class="ttdef"><b>Definition:</b> <a href="../../de/d0e/project__stl__containers_2passive_2MyPassiveContFact_8h_source.html#l00029">MyPassiveContFact.h:29</a></div></div>
+<div class="ttc" id="classMyPassiveContFact_html_aa36d01799dcf7e187b5927772412a443"><div class="ttname"><a href="../../d8/d66/classMyPassiveContFact.html#aa36d01799dcf7e187b5927772412a443">MyPassiveContFact::createContainer</a></div><div class="ttdeci">FairParSet * createContainer(FairContainer *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/da9/project__root__containers_2passive_2MyPassiveContFact_8cxx_source.html#l00061">MyPassiveContFact.cxx:61</a></div></div>
+<div class="ttc" id="classMyPassiveContFact_html_a6a25473b61c115d4dce145394dce8bff"><div class="ttname"><a href="../../d8/d66/classMyPassiveContFact.html#a6a25473b61c115d4dce145394dce8bff">MyPassiveContFact::MyPassiveContFact</a></div><div class="ttdeci">MyPassiveContFact()</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/da9/project__root__containers_2passive_2MyPassiveContFact_8cxx_source.html#l00040">MyPassiveContFact.cxx:40</a></div></div>
+<div class="ttc" id="classFairContFact_html"><div class="ttname"><a href="../../df/db3/classFairContFact.html">FairContFact</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d4a/FairContFact_8h_source.html#l00048">FairContFact.h:48</a></div></div>
+<div class="ttc" id="classMyPassiveContFact_html_ae4abcda518e73b29eb90aa0f90072767"><div class="ttname"><a href="../../d8/d66/classMyPassiveContFact.html#ae4abcda518e73b29eb90aa0f90072767">MyPassiveContFact::~MyPassiveContFact</a></div><div class="ttdeci">~MyPassiveContFact()</div><div class="ttdef"><b>Definition:</b> <a href="../../de/d0e/project__stl__containers_2passive_2MyPassiveContFact_8h_source.html#l00030">MyPassiveContFact.h:30</a></div></div>
 <div class="ttc" id="FairContFact_8h_html"><div class="ttname"><a href="../../d3/d4a/FairContFact_8h.html">FairContFact.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -156,7 +158,7 @@ $(document).ready(function(){initNavTree('de/d0e/project__stl__containers_2passi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_096b0de097b3e98f91191e9d894d4363.html">templates</a></li><li class="navelem"><a class="el" href="../../dir_ff524cbdd78500b78132ce63ddb53ead.html">project_stl_containers</a></li><li class="navelem"><a class="el" href="../../dir_e9cf956283ed8e0bd922ff7050aaab93.html">passive</a></li><li class="navelem"><a class="el" href="../../de/d0e/project__stl__containers_2passive_2MyPassiveContFact_8h.html">MyPassiveContFact.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:52 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:59:01 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

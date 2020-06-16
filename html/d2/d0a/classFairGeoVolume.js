@@ -3,6 +3,7 @@ var classFairGeoVolume =
     [ "FairGeoVolume", "d2/d0a/classFairGeoVolume.html#add632f91bad2e2881117f674994abaa1", null ],
     [ "FairGeoVolume", "d2/d0a/classFairGeoVolume.html#abf8a8039d490da81c1618cd825dd1292", null ],
     [ "~FairGeoVolume", "d2/d0a/classFairGeoVolume.html#abbe3e5cda893c3c9fb366387c4f21ac0", null ],
+    [ "ClassDef", "d2/d0a/classFairGeoVolume.html#a23523eef51d2d01c4ed168637b9b8379", null ],
     [ "clear", "d2/d0a/classFairGeoVolume.html#a93d9107207a55c3144d19821a655376d", null ],
     [ "createPoints", "d2/d0a/classFairGeoVolume.html#affb0b30d2605768bb9464aa4c7c2d1c9", null ],
     [ "getLabTransform", "d2/d0a/classFairGeoVolume.html#a34327e55a1a3f33a7fb896e975b8fe85", null ],

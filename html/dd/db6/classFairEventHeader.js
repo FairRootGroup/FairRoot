@@ -2,6 +2,7 @@ var classFairEventHeader =
 [
     [ "FairEventHeader", "dd/db6/classFairEventHeader.html#ae71d3c930e9bf3fd49d61683e22c384b", null ],
     [ "~FairEventHeader", "dd/db6/classFairEventHeader.html#a760f33aba1ae2e71376a3e1feedfab63", null ],
+    [ "ClassDef", "dd/db6/classFairEventHeader.html#ae7306caae63513888f4d96835f5b1a2b", null ],
     [ "GetEventTime", "dd/db6/classFairEventHeader.html#ab79ac7c0aff96d9c3fb204deac019ae3", null ],
     [ "GetInputFileId", "dd/db6/classFairEventHeader.html#a9fbec56b84108786f753c5176c59e79d", null ],
     [ "GetMCEntryNumber", "dd/db6/classFairEventHeader.html#a956ff8ed61e69a89046a6b18dbfc03e0", null ],

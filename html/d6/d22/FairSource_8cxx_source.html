@@ -111,8 +111,8 @@ $(document).ready(function(){initNavTree('d6/d22/FairSource_8cxx_source.html','.
 <a href="../../d6/d22/FairSource_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/********************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *                                                                              *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             * </span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *  </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// -----------------------------------------------------------------------------</span></div>
@@ -123,41 +123,38 @@ $(document).ready(function(){initNavTree('d6/d22/FairSource_8cxx_source.html','.
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// -----------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/d8e/FairSource_8h.html">FairSource.h</a>&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../da/d8b/FairEventHeader_8h.html">FairEventHeader.h</a>&quot;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="../../d2/d64/classFairSource.html#a49b97b869a2a4fca1c3cada7286c1a45">   18</a></span>&#160;<a class="code" href="../../d2/d64/classFairSource.html#a49b97b869a2a4fca1c3cada7286c1a45">FairSource::FairSource</a>()</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  : TObject()</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  , fRunId(0)</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;{</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;}</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../da/d8b/FairEventHeader_8h.html">FairEventHeader.h</a>&quot;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="../../d2/d64/classFairSource.html#a49b97b869a2a4fca1c3cada7286c1a45">   19</a></span>&#160;<a class="code" href="../../d2/d64/classFairSource.html#a49b97b869a2a4fca1c3cada7286c1a45">FairSource::FairSource</a>()</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    : TObject()</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    , fRunId(0)</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{}</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
 <div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="../../d2/d64/classFairSource.html#a88dc2b4588a17c74929824be6424fd54">   24</a></span>&#160;<a class="code" href="../../d2/d64/classFairSource.html#a49b97b869a2a4fca1c3cada7286c1a45">FairSource::FairSource</a>(<span class="keyword">const</span> <a class="code" href="../../d2/d64/classFairSource.html">FairSource</a>&amp; source)</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  : TObject(source)</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  , fRunId(source.fRunId)</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;}</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="../../d2/d64/classFairSource.html#a5681a04938bd5ef4c58e09ceed5e1bd1">   30</a></span>&#160;<a class="code" href="../../d2/d64/classFairSource.html#a5681a04938bd5ef4c58e09ceed5e1bd1">FairSource::~FairSource</a>()</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;{</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;}</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="../../d2/d64/classFairSource.html#ac5586bbb14f10fb6f3c072e71ad1a5ac">   34</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d2/d64/classFairSource.html#ac5586bbb14f10fb6f3c072e71ad1a5ac">FairSource::FillEventHeader</a>(<a class="code" href="../../dd/db6/classFairEventHeader.html">FairEventHeader</a>* eh)</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keywordflow">if</span> (eh) {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    eh-&gt;<a class="code" href="../../dd/db6/classFairEventHeader.html#a8e3f2495e25aa9ffb06c02b08eeab130">SetRunId</a>(<a class="code" href="../../d2/d64/classFairSource.html#a9753dba56ab84187bcc688869af13585">fRunId</a>);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  }</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<a class="code" href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a>(<a class="code" href="../../d2/d64/classFairSource.html">FairSource</a>)</div>
-<div class="ttc" id="classFairSource_html_ac5586bbb14f10fb6f3c072e71ad1a5ac"><div class="ttname"><a href="../../d2/d64/classFairSource.html#ac5586bbb14f10fb6f3c072e71ad1a5ac">FairSource::FillEventHeader</a></div><div class="ttdeci">virtual void FillEventHeader(FairEventHeader *feh)</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d22/FairSource_8cxx_source.html#l00034">FairSource.cxx:34</a></div></div>
-<div class="ttc" id="classFairSource_html_a9753dba56ab84187bcc688869af13585"><div class="ttname"><a href="../../d2/d64/classFairSource.html#a9753dba56ab84187bcc688869af13585">FairSource::fRunId</a></div><div class="ttdeci">Int_t fRunId</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d8e/FairSource_8h_source.html#l00060">FairSource.h:60</a></div></div>
-<div class="ttc" id="classFairSource_html"><div class="ttname"><a href="../../d2/d64/classFairSource.html">FairSource</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d8e/FairSource_8h_source.html#l00025">FairSource.h:25</a></div></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    : TObject(source)</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    , fRunId(source.fRunId)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{}</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="../../d2/d64/classFairSource.html#a5681a04938bd5ef4c58e09ceed5e1bd1">   29</a></span>&#160;<a class="code" href="../../d2/d64/classFairSource.html#a5681a04938bd5ef4c58e09ceed5e1bd1">FairSource::~FairSource</a>() {}</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="../../d2/d64/classFairSource.html#ac5586bbb14f10fb6f3c072e71ad1a5ac">   31</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d2/d64/classFairSource.html#ac5586bbb14f10fb6f3c072e71ad1a5ac">FairSource::FillEventHeader</a>(<a class="code" href="../../dd/db6/classFairEventHeader.html">FairEventHeader</a>* eh)</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordflow">if</span> (eh) {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;        eh-&gt;<a class="code" href="../../dd/db6/classFairEventHeader.html#a8e3f2495e25aa9ffb06c02b08eeab130">SetRunId</a>(<a class="code" href="../../d2/d64/classFairSource.html#a9753dba56ab84187bcc688869af13585">fRunId</a>);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    }</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;}</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<a class="code" href="../../d6/d22/FairSource_8cxx.html#a45e29d48ac7ba956312f3f19fe30afbf">ClassImp</a>(<a class="code" href="../../d2/d64/classFairSource.html">FairSource</a>);</div>
+<div class="ttc" id="classFairSource_html_ac5586bbb14f10fb6f3c072e71ad1a5ac"><div class="ttname"><a href="../../d2/d64/classFairSource.html#ac5586bbb14f10fb6f3c072e71ad1a5ac">FairSource::FillEventHeader</a></div><div class="ttdeci">virtual void FillEventHeader(FairEventHeader *feh)</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d22/FairSource_8cxx_source.html#l00031">FairSource.cxx:31</a></div></div>
+<div class="ttc" id="classFairSource_html_a9753dba56ab84187bcc688869af13585"><div class="ttname"><a href="../../d2/d64/classFairSource.html#a9753dba56ab84187bcc688869af13585">FairSource::fRunId</a></div><div class="ttdeci">Int_t fRunId</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d8e/FairSource_8h_source.html#l00064">FairSource.h:64</a></div></div>
+<div class="ttc" id="FairSource_8cxx_html_a45e29d48ac7ba956312f3f19fe30afbf"><div class="ttname"><a href="../../d6/d22/FairSource_8cxx.html#a45e29d48ac7ba956312f3f19fe30afbf">ClassImp</a></div><div class="ttdeci">ClassImp(FairSource)</div></div>
+<div class="ttc" id="classFairSource_html"><div class="ttname"><a href="../../d2/d64/classFairSource.html">FairSource</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d8e/FairSource_8h_source.html#l00029">FairSource.h:29</a></div></div>
 <div class="ttc" id="classFairEventHeader_html"><div class="ttname"><a href="../../dd/db6/classFairEventHeader.html">FairEventHeader</a></div><div class="ttdef"><b>Definition:</b> <a href="../../da/d8b/FairEventHeader_8h_source.html#l00024">FairEventHeader.h:24</a></div></div>
 <div class="ttc" id="FairEventHeader_8h_html"><div class="ttname"><a href="../../da/d8b/FairEventHeader_8h.html">FairEventHeader.h</a></div></div>
-<div class="ttc" id="classFairSource_html_a5681a04938bd5ef4c58e09ceed5e1bd1"><div class="ttname"><a href="../../d2/d64/classFairSource.html#a5681a04938bd5ef4c58e09ceed5e1bd1">FairSource::~FairSource</a></div><div class="ttdeci">virtual ~FairSource()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d22/FairSource_8cxx_source.html#l00030">FairSource.cxx:30</a></div></div>
-<div class="ttc" id="FairLink_8cxx_html_a1957c9f11f7f50fe9b58f3f0bedb38de"><div class="ttname"><a href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a></div><div class="ttdeci">ClassImp(FairLink)</div></div>
+<div class="ttc" id="classFairSource_html_a5681a04938bd5ef4c58e09ceed5e1bd1"><div class="ttname"><a href="../../d2/d64/classFairSource.html#a5681a04938bd5ef4c58e09ceed5e1bd1">FairSource::~FairSource</a></div><div class="ttdeci">virtual ~FairSource()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d22/FairSource_8cxx_source.html#l00029">FairSource.cxx:29</a></div></div>
 <div class="ttc" id="classFairEventHeader_html_a8e3f2495e25aa9ffb06c02b08eeab130"><div class="ttname"><a href="../../dd/db6/classFairEventHeader.html#a8e3f2495e25aa9ffb06c02b08eeab130">FairEventHeader::SetRunId</a></div><div class="ttdeci">void SetRunId(UInt_t runid)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d8b/FairEventHeader_8h_source.html#l00045">FairEventHeader.h:45</a></div></div>
-<div class="ttc" id="classFairSource_html_a49b97b869a2a4fca1c3cada7286c1a45"><div class="ttname"><a href="../../d2/d64/classFairSource.html#a49b97b869a2a4fca1c3cada7286c1a45">FairSource::FairSource</a></div><div class="ttdeci">FairSource()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d22/FairSource_8cxx_source.html#l00018">FairSource.cxx:18</a></div></div>
+<div class="ttc" id="classFairSource_html_a49b97b869a2a4fca1c3cada7286c1a45"><div class="ttname"><a href="../../d2/d64/classFairSource.html#a49b97b869a2a4fca1c3cada7286c1a45">FairSource::FairSource</a></div><div class="ttdeci">FairSource()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d22/FairSource_8cxx_source.html#l00019">FairSource.cxx:19</a></div></div>
 <div class="ttc" id="FairSource_8h_html"><div class="ttname"><a href="../../d2/d8e/FairSource_8h.html">FairSource.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -165,7 +162,7 @@ $(document).ready(function(){initNavTree('d6/d22/FairSource_8cxx_source.html','.
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_e914ee4d4a44400f1fdb170cb4ead18a.html">base</a></li><li class="navelem"><a class="el" href="../../dir_83799167c1376d980d4b19fd5c6a4400.html">source</a></li><li class="navelem"><a class="el" href="../../d6/d22/FairSource_8cxx.html">FairSource.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:40 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:48 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

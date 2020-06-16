@@ -119,66 +119,65 @@ $(document).ready(function(){initNavTree('d0/d88/FairMQChunkMerger_8h_source.htm
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define FAIRMQCHUNKMERGER_H_</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;FairMQDevice.h&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span> <span class="comment">// pair</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">class </span>TObject;</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="../../d0/d88/FairMQChunkMerger_8h.html#ae2599616e6b62dbdbf9893112a1a216f">   25</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d8/daf/classFairMCSplitEventHeader.html">FairMCSplitEventHeader</a>;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">typedef</span> std::multimap&lt;std::pair&lt;int,int&gt;,std::pair&lt;int,TObject*&gt;&gt; <a class="code" href="../../d0/d88/FairMQChunkMerger_8h.html#ae2599616e6b62dbdbf9893112a1a216f">MultiMapDef</a>;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="../../d7/dfd/classFairMQChunkMerger.html">   29</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a> : <span class="keyword">public</span> FairMQDevice</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html#a918b0b3b6175bf76f6a4898fc67de3d9">FairMQChunkMerger</a>();</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html#a417b497d4a7b30d7f7a692f4c693232e">~FairMQChunkMerger</a>();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="../../d7/dfd/classFairMQChunkMerger.html#ae40b551a9d71ce9b4a24712bb4656f76">   35</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html#ae40b551a9d71ce9b4a24712bb4656f76">SetNofParts</a>(<span class="keywordtype">int</span> iparts) { fNofParts = iparts; }</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html#a976a319b488ac85029ddaecd359f5226">MergeData</a>(FairMQParts&amp;, <span class="keywordtype">int</span>);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html#a34c350b9abb3674908495fbdcc7f38f6">Init</a>();</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    std::string fInputChannelName;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    std::string fOutputChannelName;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    std::map&lt;std::pair&lt;int, int&gt;, <span class="keywordtype">int</span>&gt; fNofPartsPerEventMap;  <span class="comment">// number of parts for pair&lt;event number,run id&gt;</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="../../dd/d57/FairMQPixelMerger_8h.html#ad6019144b04af4d65d0a2d0035e388c8">MultiMapDef</a> fObjectMap; <span class="comment">// TObjects for given pair&lt;pair&lt;event number, run,id&gt;part&gt;</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    std::pair&lt;int,int&gt; fEvRIPair;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    std::pair&lt;int,TObject*&gt; fEvCOPair;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    std::pair&lt;MultiMapDef::iterator, MultiMapDef::iterator&gt; fRet;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">int</span> fNofReceivedMessages;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">int</span> fNofSentMessages;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">int</span> fNofParts;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="../../d8/daf/classFairMCSplitEventHeader.html">FairMCSplitEventHeader</a>* fMCSplitEventHeader;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html#a918b0b3b6175bf76f6a4898fc67de3d9">FairMQChunkMerger</a>(<span class="keyword">const</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a>&amp;);</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a>&amp;);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;};</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* FAIRMQCHUNKMERGER_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="classFairMQChunkMerger_html_a34c350b9abb3674908495fbdcc7f38f6"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html#a34c350b9abb3674908495fbdcc7f38f6">FairMQChunkMerger::Init</a></div><div class="ttdeci">virtual void Init()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/da1/FairMQChunkMerger_8cxx_source.html#l00049">FairMQChunkMerger.cxx:49</a></div></div>
-<div class="ttc" id="classFairMQChunkMerger_html_a417b497d4a7b30d7f7a692f4c693232e"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html#a417b497d4a7b30d7f7a692f4c693232e">FairMQChunkMerger::~FairMQChunkMerger</a></div><div class="ttdeci">virtual ~FairMQChunkMerger()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/da1/FairMQChunkMerger_8cxx_source.html#l00189">FairMQChunkMerger.cxx:189</a></div></div>
-<div class="ttc" id="classFairMQChunkMerger_html_a918b0b3b6175bf76f6a4898fc67de3d9"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html#a918b0b3b6175bf76f6a4898fc67de3d9">FairMQChunkMerger::FairMQChunkMerger</a></div><div class="ttdeci">FairMQChunkMerger()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/da1/FairMQChunkMerger_8cxx_source.html#l00033">FairMQChunkMerger.cxx:33</a></div></div>
-<div class="ttc" id="classFairMQChunkMerger_html_a976a319b488ac85029ddaecd359f5226"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html#a976a319b488ac85029ddaecd359f5226">FairMQChunkMerger::MergeData</a></div><div class="ttdeci">bool MergeData(FairMQParts &amp;, int)</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/da1/FairMQChunkMerger_8cxx_source.html#l00057">FairMQChunkMerger.cxx:57</a></div></div>
-<div class="ttc" id="classFairMCSplitEventHeader_html"><div class="ttname"><a href="../../d8/daf/classFairMCSplitEventHeader.html">FairMCSplitEventHeader</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d5e/FairMCSplitEventHeader_8h_source.html#l00018">FairMCSplitEventHeader.h:18</a></div></div>
-<div class="ttc" id="FairMQPixelMerger_8h_html_ad6019144b04af4d65d0a2d0035e388c8"><div class="ttname"><a href="../../dd/d57/FairMQPixelMerger_8h.html#ad6019144b04af4d65d0a2d0035e388c8">MultiMapDef</a></div><div class="ttdeci">std::multimap&lt; std::pair&lt; std::pair&lt; int, int &gt;, int &gt;, TObject * &gt; MultiMapDef</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d57/FairMQPixelMerger_8h_source.html#l00025">FairMQPixelMerger.h:25</a></div></div>
-<div class="ttc" id="FairMQChunkMerger_8h_html_ae2599616e6b62dbdbf9893112a1a216f"><div class="ttname"><a href="../../d0/d88/FairMQChunkMerger_8h.html#ae2599616e6b62dbdbf9893112a1a216f">MultiMapDef</a></div><div class="ttdeci">std::multimap&lt; std::pair&lt; int, int &gt;, std::pair&lt; int, TObject * &gt; &gt; MultiMapDef</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d88/FairMQChunkMerger_8h_source.html#l00025">FairMQChunkMerger.h:25</a></div></div>
-<div class="ttc" id="classFairMQChunkMerger_html"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d88/FairMQChunkMerger_8h_source.html#l00029">FairMQChunkMerger.h:29</a></div></div>
-<div class="ttc" id="classFairMQChunkMerger_html_ae40b551a9d71ce9b4a24712bb4656f76"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html#ae40b551a9d71ce9b4a24712bb4656f76">FairMQChunkMerger::SetNofParts</a></div><div class="ttdeci">void SetNofParts(int iparts)</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d88/FairMQChunkMerger_8h_source.html#l00035">FairMQChunkMerger.h:35</a></div></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;utility&gt;</span>   <span class="comment">// pair</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">class </span>TObject;</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="../../d0/d88/FairMQChunkMerger_8h.html#a7cf885575f257ef67950a4655a5d704e">   24</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d8/daf/classFairMCSplitEventHeader.html">FairMCSplitEventHeader</a>;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">typedef</span> std::multimap&lt;std::pair&lt;int, int&gt;, std::pair&lt;int, TObject*&gt;&gt; <a class="code" href="../../d0/d88/FairMQChunkMerger_8h.html#a7cf885575f257ef67950a4655a5d704e">MultiMapDef</a>;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="../../d7/dfd/classFairMQChunkMerger.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a> : <span class="keyword">public</span> FairMQDevice</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html#a918b0b3b6175bf76f6a4898fc67de3d9">FairMQChunkMerger</a>();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html#a417b497d4a7b30d7f7a692f4c693232e">~FairMQChunkMerger</a>();</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="../../d7/dfd/classFairMQChunkMerger.html#ae40b551a9d71ce9b4a24712bb4656f76">   34</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html#ae40b551a9d71ce9b4a24712bb4656f76">SetNofParts</a>(<span class="keywordtype">int</span> iparts) { fNofParts = iparts; }</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html#a976a319b488ac85029ddaecd359f5226">MergeData</a>(FairMQParts&amp;, <span class="keywordtype">int</span>);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html#a34c350b9abb3674908495fbdcc7f38f6">Init</a>();</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    std::string fInputChannelName;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    std::string fOutputChannelName;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    std::map&lt;std::pair&lt;int, int&gt;, <span class="keywordtype">int</span>&gt; fNofPartsPerEventMap;   <span class="comment">// number of parts for pair&lt;event number,run id&gt;</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="../../dd/d57/FairMQPixelMerger_8h.html#ad6019144b04af4d65d0a2d0035e388c8">MultiMapDef</a> fObjectMap;   <span class="comment">// TObjects for given pair&lt;pair&lt;event number, run,id&gt;part&gt;</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    std::pair&lt;int, int&gt; fEvRIPair;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    std::pair&lt;int, TObject*&gt; fEvCOPair;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    std::pair&lt;MultiMapDef::iterator, MultiMapDef::iterator&gt; fRet;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">int</span> fNofReceivedMessages;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">int</span> fNofSentMessages;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">int</span> fNofParts;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="../../d8/daf/classFairMCSplitEventHeader.html">FairMCSplitEventHeader</a>* fMCSplitEventHeader;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html#a918b0b3b6175bf76f6a4898fc67de3d9">FairMQChunkMerger</a>(<span class="keyword">const</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a>&amp;);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a>&amp;);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;};</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* FAIRMQCHUNKMERGER_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="classFairMQChunkMerger_html_a34c350b9abb3674908495fbdcc7f38f6"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html#a34c350b9abb3674908495fbdcc7f38f6">FairMQChunkMerger::Init</a></div><div class="ttdeci">virtual void Init()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/da1/FairMQChunkMerger_8cxx_source.html#l00046">FairMQChunkMerger.cxx:46</a></div></div>
+<div class="ttc" id="classFairMQChunkMerger_html_a417b497d4a7b30d7f7a692f4c693232e"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html#a417b497d4a7b30d7f7a692f4c693232e">FairMQChunkMerger::~FairMQChunkMerger</a></div><div class="ttdeci">virtual ~FairMQChunkMerger()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/da1/FairMQChunkMerger_8cxx_source.html#l00202">FairMQChunkMerger.cxx:202</a></div></div>
+<div class="ttc" id="FairMQChunkMerger_8h_html_a7cf885575f257ef67950a4655a5d704e"><div class="ttname"><a href="../../d0/d88/FairMQChunkMerger_8h.html#a7cf885575f257ef67950a4655a5d704e">MultiMapDef</a></div><div class="ttdeci">std::multimap&lt; std::pair&lt; int, int &gt;, std::pair&lt; int, TObject * &gt; &gt; MultiMapDef</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d88/FairMQChunkMerger_8h_source.html#l00024">FairMQChunkMerger.h:24</a></div></div>
+<div class="ttc" id="classFairMQChunkMerger_html_a918b0b3b6175bf76f6a4898fc67de3d9"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html#a918b0b3b6175bf76f6a4898fc67de3d9">FairMQChunkMerger::FairMQChunkMerger</a></div><div class="ttdeci">FairMQChunkMerger()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/da1/FairMQChunkMerger_8cxx_source.html#l00031">FairMQChunkMerger.cxx:31</a></div></div>
+<div class="ttc" id="classFairMQChunkMerger_html_a976a319b488ac85029ddaecd359f5226"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html#a976a319b488ac85029ddaecd359f5226">FairMQChunkMerger::MergeData</a></div><div class="ttdeci">bool MergeData(FairMQParts &amp;, int)</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/da1/FairMQChunkMerger_8cxx_source.html#l00054">FairMQChunkMerger.cxx:54</a></div></div>
+<div class="ttc" id="classFairMCSplitEventHeader_html"><div class="ttname"><a href="../../d8/daf/classFairMCSplitEventHeader.html">FairMCSplitEventHeader</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d5e/FairMCSplitEventHeader_8h_source.html#l00017">FairMCSplitEventHeader.h:17</a></div></div>
+<div class="ttc" id="FairMQPixelMerger_8h_html_ad6019144b04af4d65d0a2d0035e388c8"><div class="ttname"><a href="../../dd/d57/FairMQPixelMerger_8h.html#ad6019144b04af4d65d0a2d0035e388c8">MultiMapDef</a></div><div class="ttdeci">std::multimap&lt; std::pair&lt; std::pair&lt; int, int &gt;, int &gt;, TObject * &gt; MultiMapDef</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d57/FairMQPixelMerger_8h_source.html#l00024">FairMQPixelMerger.h:24</a></div></div>
+<div class="ttc" id="classFairMQChunkMerger_html"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html">FairMQChunkMerger</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d88/FairMQChunkMerger_8h_source.html#l00028">FairMQChunkMerger.h:28</a></div></div>
+<div class="ttc" id="classFairMQChunkMerger_html_ae40b551a9d71ce9b4a24712bb4656f76"><div class="ttname"><a href="../../d7/dfd/classFairMQChunkMerger.html#ae40b551a9d71ce9b4a24712bb4656f76">FairMQChunkMerger::SetNofParts</a></div><div class="ttdeci">void SetNofParts(int iparts)</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d88/FairMQChunkMerger_8h_source.html#l00034">FairMQChunkMerger.h:34</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_caac58519ba4740e026a67a20b1aba91.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_9dc1ab87cc20ea371a99256775d1aaa7.html">pixelSimSplit</a></li><li class="navelem"><a class="el" href="../../dir_374046fb769dcf8bf28f10203cd65ead.html">src</a></li><li class="navelem"><a class="el" href="../../dir_dcc9cf3ccd08882805237bead71b76bf.html">devices</a></li><li class="navelem"><a class="el" href="../../d0/d88/FairMQChunkMerger_8h.html">FairMQChunkMerger.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:50 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

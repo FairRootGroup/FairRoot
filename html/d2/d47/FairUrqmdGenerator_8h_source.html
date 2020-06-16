@@ -123,56 +123,55 @@ $(document).ready(function(){initNavTree('d2/d47/FairUrqmdGenerator_8h_source.ht
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef FAIRURQMDGENERATOR_H</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define FAIRURQMDGENERATOR_H</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/d97/FairGenerator_8h.html">FairGenerator.h</a>&quot;</span>              <span class="comment">// for FairGenerator</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/d97/FairGenerator_8h.html">FairGenerator.h</a>&quot;</span>   <span class="comment">// for FairGenerator</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>                     <span class="comment">// for Int_t, Bool_t, etc</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>   <span class="comment">// for Int_t, Bool_t, etc</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;TString.h&gt;</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span>                      <span class="comment">// for FILE</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span>                          <span class="comment">// for map</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keyword">class </span><a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="../../d0/d46/classFairUrqmdGenerator.html">   36</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d0/d46/classFairUrqmdGenerator.html">FairUrqmdGenerator</a> : <span class="keyword">public</span> <a class="code" href="../../df/d40/classFairGenerator.html">FairGenerator</a></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;{</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a1b83425e6640693ec9a8f4004f243794">FairUrqmdGenerator</a>();</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a1b83425e6640693ec9a8f4004f243794">FairUrqmdGenerator</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fileName);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a1b83425e6640693ec9a8f4004f243794">FairUrqmdGenerator</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fileName,  <span class="keyword">const</span> <span class="keywordtype">char</span>* conversion_table);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a6e5d6361ff3e1d9f95c9942be993bada">~FairUrqmdGenerator</a>();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    Bool_t <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a10cad0d2e50f73c3fb03d55ae0b4fca3">ReadEvent</a>(<a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>* primGen);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    Bool_t <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a9397545a84b382c3bb2f0d147c4a2d8e">SkipEvents</a>(Int_t count);</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    FILE* fInputFile;                     </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    std::map&lt;Int_t,Int_t&gt; fParticleTable;      </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keyword">const</span> Char_t* fFileName;              </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">void</span> ReadConversionTable(TString conversion_table=<span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> CheckReturnValue(Int_t retval);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a1b83425e6640693ec9a8f4004f243794">FairUrqmdGenerator</a>(<span class="keyword">const</span> <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html">FairUrqmdGenerator</a>&amp;);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html">FairUrqmdGenerator</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html">FairUrqmdGenerator</a>&amp;);</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    ClassDef(<a class="code" href="../../d0/d46/classFairUrqmdGenerator.html">FairUrqmdGenerator</a>,1);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;};</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classFairGenerator_html"><div class="ttname"><a href="../../df/d40/classFairGenerator.html">FairGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d97/FairGenerator_8h_source.html#l00034">FairGenerator.h:34</a></div></div>
-<div class="ttc" id="classFairPrimaryGenerator_html"><div class="ttname"><a href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/dba/FairPrimaryGenerator_8h_source.html#l00041">FairPrimaryGenerator.h:41</a></div></div>
-<div class="ttc" id="classFairUrqmdGenerator_html_a9397545a84b382c3bb2f0d147c4a2d8e"><div class="ttname"><a href="../../d0/d46/classFairUrqmdGenerator.html#a9397545a84b382c3bb2f0d147c4a2d8e">FairUrqmdGenerator::SkipEvents</a></div><div class="ttdeci">Bool_t SkipEvents(Int_t count)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dee/FairUrqmdGenerator_8cxx_source.html#l00240">FairUrqmdGenerator.cxx:240</a></div></div>
-<div class="ttc" id="classFairUrqmdGenerator_html"><div class="ttname"><a href="../../d0/d46/classFairUrqmdGenerator.html">FairUrqmdGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d47/FairUrqmdGenerator_8h_source.html#l00036">FairUrqmdGenerator.h:36</a></div></div>
-<div class="ttc" id="classFairUrqmdGenerator_html_a6e5d6361ff3e1d9f95c9942be993bada"><div class="ttname"><a href="../../d0/d46/classFairUrqmdGenerator.html#a6e5d6361ff3e1d9f95c9942be993bada">FairUrqmdGenerator::~FairUrqmdGenerator</a></div><div class="ttdeci">~FairUrqmdGenerator()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dee/FairUrqmdGenerator_8cxx_source.html#l00068">FairUrqmdGenerator.cxx:68</a></div></div>
-<div class="ttc" id="classFairUrqmdGenerator_html_a1b83425e6640693ec9a8f4004f243794"><div class="ttname"><a href="../../d0/d46/classFairUrqmdGenerator.html#a1b83425e6640693ec9a8f4004f243794">FairUrqmdGenerator::FairUrqmdGenerator</a></div><div class="ttdeci">FairUrqmdGenerator()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dee/FairUrqmdGenerator_8cxx_source.html#l00030">FairUrqmdGenerator.cxx:30</a></div></div>
-<div class="ttc" id="classFairUrqmdGenerator_html_a10cad0d2e50f73c3fb03d55ae0b4fca3"><div class="ttname"><a href="../../d0/d46/classFairUrqmdGenerator.html#a10cad0d2e50f73c3fb03d55ae0b4fca3">FairUrqmdGenerator::ReadEvent</a></div><div class="ttdeci">Bool_t ReadEvent(FairPrimaryGenerator *primGen)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dee/FairUrqmdGenerator_8cxx_source.html#l00092">FairUrqmdGenerator.cxx:92</a></div></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span>       <span class="comment">// for map</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span>   <span class="comment">// for FILE</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="keyword">class </span><a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="../../d0/d46/classFairUrqmdGenerator.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d0/d46/classFairUrqmdGenerator.html">FairUrqmdGenerator</a> : <span class="keyword">public</span> <a class="code" href="../../df/d40/classFairGenerator.html">FairGenerator</a></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a1b83425e6640693ec9a8f4004f243794">FairUrqmdGenerator</a>();</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a1b83425e6640693ec9a8f4004f243794">FairUrqmdGenerator</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fileName);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a1b83425e6640693ec9a8f4004f243794">FairUrqmdGenerator</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fileName, <span class="keyword">const</span> <span class="keywordtype">char</span>* conversion_table);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a6e5d6361ff3e1d9f95c9942be993bada">~FairUrqmdGenerator</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    Bool_t <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a10cad0d2e50f73c3fb03d55ae0b4fca3">ReadEvent</a>(<a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>* primGen);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    Bool_t <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a9397545a84b382c3bb2f0d147c4a2d8e">SkipEvents</a>(Int_t count);</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    FILE* fInputFile;   </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    std::map&lt;Int_t, Int_t&gt; fParticleTable;   </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">const</span> Char_t* fFileName;   </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> ReadConversionTable(TString conversion_table = <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">void</span> CheckReturnValue(Int_t retval);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html#a1b83425e6640693ec9a8f4004f243794">FairUrqmdGenerator</a>(<span class="keyword">const</span> <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html">FairUrqmdGenerator</a>&amp;);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html">FairUrqmdGenerator</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../d0/d46/classFairUrqmdGenerator.html">FairUrqmdGenerator</a>&amp;);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    ClassDef(<a class="code" href="../../d0/d46/classFairUrqmdGenerator.html">FairUrqmdGenerator</a>, 1);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classFairGenerator_html"><div class="ttname"><a href="../../df/d40/classFairGenerator.html">FairGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d97/FairGenerator_8h_source.html#l00031">FairGenerator.h:31</a></div></div>
+<div class="ttc" id="classFairPrimaryGenerator_html"><div class="ttname"><a href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/dba/FairPrimaryGenerator_8h_source.html#l00039">FairPrimaryGenerator.h:39</a></div></div>
+<div class="ttc" id="classFairUrqmdGenerator_html_a9397545a84b382c3bb2f0d147c4a2d8e"><div class="ttname"><a href="../../d0/d46/classFairUrqmdGenerator.html#a9397545a84b382c3bb2f0d147c4a2d8e">FairUrqmdGenerator::SkipEvents</a></div><div class="ttdeci">Bool_t SkipEvents(Int_t count)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dee/FairUrqmdGenerator_8cxx_source.html#l00242">FairUrqmdGenerator.cxx:242</a></div></div>
+<div class="ttc" id="classFairUrqmdGenerator_html"><div class="ttname"><a href="../../d0/d46/classFairUrqmdGenerator.html">FairUrqmdGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d47/FairUrqmdGenerator_8h_source.html#l00035">FairUrqmdGenerator.h:35</a></div></div>
+<div class="ttc" id="classFairUrqmdGenerator_html_a6e5d6361ff3e1d9f95c9942be993bada"><div class="ttname"><a href="../../d0/d46/classFairUrqmdGenerator.html#a6e5d6361ff3e1d9f95c9942be993bada">FairUrqmdGenerator::~FairUrqmdGenerator</a></div><div class="ttdeci">~FairUrqmdGenerator()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dee/FairUrqmdGenerator_8cxx_source.html#l00066">FairUrqmdGenerator.cxx:66</a></div></div>
+<div class="ttc" id="classFairUrqmdGenerator_html_a1b83425e6640693ec9a8f4004f243794"><div class="ttname"><a href="../../d0/d46/classFairUrqmdGenerator.html#a1b83425e6640693ec9a8f4004f243794">FairUrqmdGenerator::FairUrqmdGenerator</a></div><div class="ttdeci">FairUrqmdGenerator()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dee/FairUrqmdGenerator_8cxx_source.html#l00029">FairUrqmdGenerator.cxx:29</a></div></div>
+<div class="ttc" id="classFairUrqmdGenerator_html_a10cad0d2e50f73c3fb03d55ae0b4fca3"><div class="ttname"><a href="../../d0/d46/classFairUrqmdGenerator.html#a10cad0d2e50f73c3fb03d55ae0b4fca3">FairUrqmdGenerator::ReadEvent</a></div><div class="ttdeci">Bool_t ReadEvent(FairPrimaryGenerator *primGen)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/dee/FairUrqmdGenerator_8cxx_source.html#l00089">FairUrqmdGenerator.cxx:89</a></div></div>
 <div class="ttc" id="FairGenerator_8h_html"><div class="ttname"><a href="../../d5/d97/FairGenerator_8h.html">FairGenerator.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -180,7 +179,7 @@ $(document).ready(function(){initNavTree('d2/d47/FairUrqmdGenerator_8h_source.ht
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_76ab5dc027795deb5b098ae38ba247cb.html">generators</a></li><li class="navelem"><a class="el" href="../../d2/d47/FairUrqmdGenerator_8h.html">FairUrqmdGenerator.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:51 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:59 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

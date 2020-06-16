@@ -32,8 +32,7 @@ var classFairParamList =
     [ "fill", "de/d25/classFairParamList.html#a792f911e7882d1870dbf0b8f61d06991", null ],
     [ "fillObject", "de/d25/classFairParamList.html#a8557e703c06f3b5e0d2ec0367ed587db", null ],
     [ "find", "de/d25/classFairParamList.html#adf03ceaa7cee0c17cb0c05e066601827", null ],
-    [ "getList", "de/d25/classFairParamList.html#a97818228bde8ba8d99b225bdeeda1161", null ],
+    [ "getList", "de/d25/classFairParamList.html#a80aee17654bcc44011d05b2dc5668e2f", null ],
     [ "print", "de/d25/classFairParamList.html#a11dc3a4001062dbea6ac7e9e330e7989", null ],
-    [ "fLogger", "de/d25/classFairParamList.html#a2e01a4c903a1b175029a78af254efbd5", null ],
-    [ "paramList", "de/d25/classFairParamList.html#a4acde3e815d7a6a97401f916645e4944", null ]
+    [ "paramList", "de/d25/classFairParamList.html#a95153ebe7b0c264072444ea219fcbf44", null ]
 ];

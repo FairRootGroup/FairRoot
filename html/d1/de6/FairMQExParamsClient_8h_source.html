@@ -118,41 +118,40 @@ $(document).ready(function(){initNavTree('d1/de6/FairMQExParamsClient_8h_source.
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#ifndef FAIRMQEXPARAMSCLIENT_H</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define FAIRMQEXPARAMSCLIENT_H</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;cstdint&gt;</span> <span class="comment">// uint64_t</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;FairMQDevice.h&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="../../dd/d75/classFairMQExParamsClient.html">   23</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../dd/d75/classFairMQExParamsClient.html">FairMQExParamsClient</a> : <span class="keyword">public</span> FairMQDevice</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;{</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="../../dd/d75/classFairMQExParamsClient.html#a98981ae8628ba93948f16e559ce522de">FairMQExParamsClient</a>();</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../dd/d75/classFairMQExParamsClient.html#ad6ef416fddf27e3cf4bec03d161f7275">~FairMQExParamsClient</a>();</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="../../dd/d75/classFairMQExParamsClient.html#aa3ad088887ce9b21c5279fcf0efbffcd">ConditionalRun</a>();</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../dd/d75/classFairMQExParamsClient.html#af27051b606ede32b356437d32fa8f609">InitTask</a>();</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="keywordtype">int</span> fRunId;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    std::string fParameterName;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    uint64_t fMaxIterations;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    uint64_t fNumIterations;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;};</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* FAIRMQEXPARAMSCLIENT_H */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="classFairMQExParamsClient_html"><div class="ttname"><a href="../../dd/d75/classFairMQExParamsClient.html">FairMQExParamsClient</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/de6/FairMQExParamsClient_8h_source.html#l00023">FairMQExParamsClient.h:23</a></div></div>
-<div class="ttc" id="classFairMQExParamsClient_html_ad6ef416fddf27e3cf4bec03d161f7275"><div class="ttname"><a href="../../dd/d75/classFairMQExParamsClient.html#ad6ef416fddf27e3cf4bec03d161f7275">FairMQExParamsClient::~FairMQExParamsClient</a></div><div class="ttdeci">virtual ~FairMQExParamsClient()</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d71/FairMQExParamsClient_8cxx_source.html#l00034">FairMQExParamsClient.cxx:34</a></div></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;FairMQDevice.h&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;cstdint&gt;</span>   <span class="comment">// uint64_t</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="../../dd/d75/classFairMQExParamsClient.html">   22</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../dd/d75/classFairMQExParamsClient.html">FairMQExParamsClient</a> : <span class="keyword">public</span> FairMQDevice</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="../../dd/d75/classFairMQExParamsClient.html#a98981ae8628ba93948f16e559ce522de">FairMQExParamsClient</a>();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../dd/d75/classFairMQExParamsClient.html#ad6ef416fddf27e3cf4bec03d161f7275">~FairMQExParamsClient</a>();</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="../../dd/d75/classFairMQExParamsClient.html#aa3ad088887ce9b21c5279fcf0efbffcd">ConditionalRun</a>();</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../dd/d75/classFairMQExParamsClient.html#af27051b606ede32b356437d32fa8f609">InitTask</a>();</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">int</span> fRunId;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    std::string fParameterName;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    uint64_t fMaxIterations;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    uint64_t fNumIterations;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;};</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* FAIRMQEXPARAMSCLIENT_H */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="classFairMQExParamsClient_html"><div class="ttname"><a href="../../dd/d75/classFairMQExParamsClient.html">FairMQExParamsClient</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/de6/FairMQExParamsClient_8h_source.html#l00022">FairMQExParamsClient.h:22</a></div></div>
+<div class="ttc" id="classFairMQExParamsClient_html_ad6ef416fddf27e3cf4bec03d161f7275"><div class="ttname"><a href="../../dd/d75/classFairMQExParamsClient.html#ad6ef416fddf27e3cf4bec03d161f7275">FairMQExParamsClient::~FairMQExParamsClient</a></div><div class="ttdeci">virtual ~FairMQExParamsClient()</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d71/FairMQExParamsClient_8cxx_source.html#l00033">FairMQExParamsClient.cxx:33</a></div></div>
 <div class="ttc" id="classFairMQExParamsClient_html_a98981ae8628ba93948f16e559ce522de"><div class="ttname"><a href="../../dd/d75/classFairMQExParamsClient.html#a98981ae8628ba93948f16e559ce522de">FairMQExParamsClient::FairMQExParamsClient</a></div><div class="ttdeci">FairMQExParamsClient()</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d71/FairMQExParamsClient_8cxx_source.html#l00026">FairMQExParamsClient.cxx:26</a></div></div>
-<div class="ttc" id="classFairMQExParamsClient_html_aa3ad088887ce9b21c5279fcf0efbffcd"><div class="ttname"><a href="../../dd/d75/classFairMQExParamsClient.html#aa3ad088887ce9b21c5279fcf0efbffcd">FairMQExParamsClient::ConditionalRun</a></div><div class="ttdeci">virtual bool ConditionalRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d71/FairMQExParamsClient_8cxx_source.html#l00045">FairMQExParamsClient.cxx:45</a></div></div>
-<div class="ttc" id="classFairMQExParamsClient_html_af27051b606ede32b356437d32fa8f609"><div class="ttname"><a href="../../dd/d75/classFairMQExParamsClient.html#af27051b606ede32b356437d32fa8f609">FairMQExParamsClient::InitTask</a></div><div class="ttdeci">virtual void InitTask()</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d71/FairMQExParamsClient_8cxx_source.html#l00038">FairMQExParamsClient.cxx:38</a></div></div>
+<div class="ttc" id="classFairMQExParamsClient_html_aa3ad088887ce9b21c5279fcf0efbffcd"><div class="ttname"><a href="../../dd/d75/classFairMQExParamsClient.html#aa3ad088887ce9b21c5279fcf0efbffcd">FairMQExParamsClient::ConditionalRun</a></div><div class="ttdeci">virtual bool ConditionalRun()</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d71/FairMQExParamsClient_8cxx_source.html#l00042">FairMQExParamsClient.cxx:42</a></div></div>
+<div class="ttc" id="classFairMQExParamsClient_html_af27051b606ede32b356437d32fa8f609"><div class="ttname"><a href="../../dd/d75/classFairMQExParamsClient.html#af27051b606ede32b356437d32fa8f609">FairMQExParamsClient::InitTask</a></div><div class="ttdeci">virtual void InitTask()</div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d71/FairMQExParamsClient_8cxx_source.html#l00035">FairMQExParamsClient.cxx:35</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_caac58519ba4740e026a67a20b1aba91.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_3195caf14593480cc97ff06a4a270f8c.html">parameters</a></li><li class="navelem"><a class="el" href="../../d1/de6/FairMQExParamsClient_8h.html">FairMQExParamsClient.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:49 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -116,24 +116,23 @@ $(document).ready(function(){initNavTree('db/d9b/runEx1Processor_8cxx_source.htm
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;runFairMQDevice.h&quot;</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d3/d84/Ex1Processor_8h.html">Ex1Processor.h</a>&quot;</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d3/d84/Ex1Processor_8h.html">Ex1Processor.h</a>&quot;</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;runFairMQDevice.h&quot;</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="keyword">namespace </span>bpo = boost::program_options;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
 <div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="../../db/d9b/runEx1Processor_8cxx.html#ad030be0df2c1fc9386f1b8ad1542d199">   14</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../db/d9b/runEx1Processor_8cxx.html#ad030be0df2c1fc9386f1b8ad1542d199">addCustomOptions</a>(bpo::options_description&amp; options)</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;{</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    options.add_options()</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;        (<span class="stringliteral">&quot;num-msgs&quot;</span>, bpo::value&lt;int&gt;()-&gt;default_value(0), <span class="stringliteral">&quot;Stop after &lt;n&gt; msgs (0 - no limit).&quot;</span>);</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;}</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="../../db/d9b/runEx1Processor_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">   20</a></span>&#160;FairMQDevicePtr <a class="code" href="../../db/d9b/runEx1Processor_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a>(<span class="keyword">const</span> FairMQProgOptions&amp; <span class="comment">/*config*/</span>)</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;{</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="../../d9/d34/classEx1Processor.html">Ex1Processor</a>();</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
-<div class="ttc" id="runEx1Processor_8cxx_html_a9c6d7f8d628391c1bad26be1f1abc271"><div class="ttname"><a href="../../db/d9b/runEx1Processor_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a></div><div class="ttdeci">FairMQDevicePtr getDevice(const FairMQProgOptions &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d9b/runEx1Processor_8cxx_source.html#l00020">runEx1Processor.cxx:20</a></div></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="comment">// clang-format off</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    options.add_options()</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;        (<span class="stringliteral">&quot;num-msgs&quot;</span>, bpo::value&lt;int&gt;()-&gt;default_value(0), <span class="stringliteral">&quot;Stop after &lt;n&gt; msgs (0 - no limit).&quot;</span>);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="comment">// clang-format on</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="../../db/d9b/runEx1Processor_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">   22</a></span>&#160;FairMQDevicePtr <a class="code" href="../../db/d9b/runEx1Processor_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a>(<span class="keyword">const</span> FairMQProgOptions&amp; <span class="comment">/*config*/</span>) { <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="../../d9/d34/classEx1Processor.html">Ex1Processor</a>(); }</div>
+<div class="ttc" id="runEx1Processor_8cxx_html_a9c6d7f8d628391c1bad26be1f1abc271"><div class="ttname"><a href="../../db/d9b/runEx1Processor_8cxx.html#a9c6d7f8d628391c1bad26be1f1abc271">getDevice</a></div><div class="ttdeci">FairMQDevicePtr getDevice(const FairMQProgOptions &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d9b/runEx1Processor_8cxx_source.html#l00022">runEx1Processor.cxx:22</a></div></div>
 <div class="ttc" id="Ex1Processor_8h_html"><div class="ttname"><a href="../../d3/d84/Ex1Processor_8h.html">Ex1Processor.h</a></div></div>
-<div class="ttc" id="classEx1Processor_html"><div class="ttname"><a href="../../d9/d34/classEx1Processor.html">Ex1Processor</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d84/Ex1Processor_8h_source.html#l00016">Ex1Processor.h:16</a></div></div>
+<div class="ttc" id="classEx1Processor_html"><div class="ttname"><a href="../../d9/d34/classEx1Processor.html">Ex1Processor</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d84/Ex1Processor_8h_source.html#l00013">Ex1Processor.h:13</a></div></div>
 <div class="ttc" id="runEx1Processor_8cxx_html_ad030be0df2c1fc9386f1b8ad1542d199"><div class="ttname"><a href="../../db/d9b/runEx1Processor_8cxx.html#ad030be0df2c1fc9386f1b8ad1542d199">addCustomOptions</a></div><div class="ttdeci">void addCustomOptions(bpo::options_description &amp;options)</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d9b/runEx1Processor_8cxx_source.html#l00014">runEx1Processor.cxx:14</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -141,7 +140,7 @@ $(document).ready(function(){initNavTree('db/d9b/runEx1Processor_8cxx_source.htm
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_caac58519ba4740e026a67a20b1aba91.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_6ef69edbf40ef37d23e504897c5455d8.html">serialization</a></li><li class="navelem"><a class="el" href="../../dir_66b326f92ba9afa5575feb557ea45f7c.html">1-simple</a></li><li class="navelem"><a class="el" href="../../db/d9b/runEx1Processor_8cxx.html">runEx1Processor.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:50 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -111,17 +111,17 @@ $(document).ready(function(){initNavTree('df/d8c/PixelContFact_8h_source.html','
 <a href="../../df/d8c/PixelContFact_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/********************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *                                                                              *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             * </span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *  </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef PIXELCONTFACT_H</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define PIXELCONTFACT_H</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d3/d4a/FairContFact_8h.html">FairContFact.h</a>&quot;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d3/d4a/FairContFact_8h.html">FairContFact.h</a>&quot;</span>  <span class="comment">// for FairContFact, FairContainer (ptr only)</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d3/d4a/FairContFact_8h.html">FairContFact.h</a>&quot;</span>   <span class="comment">// for FairContFact, FairContainer (ptr only)</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>        <span class="comment">// for PixelContFact::Class, ClassDef, PixelContF...</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>   <span class="comment">// for PixelContFact::Class, ClassDef, PixelContF...</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keyword">class </span><a class="code" href="../../d5/d43/classFairParSet.html">FairParSet</a>;</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
@@ -134,25 +134,26 @@ $(document).ready(function(){initNavTree('df/d8c/PixelContFact_8h_source.html','
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="../../d7/d8f/classPixelContFact.html#a82d37bbb39e6d29a901cd7ec41c22989">PixelContFact</a>();</div>
 <div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="../../d7/d8f/classPixelContFact.html#aa19214f7b993fd38560686b9c3472566">   25</a></span>&#160;    <a class="code" href="../../d7/d8f/classPixelContFact.html#aa19214f7b993fd38560686b9c3472566">~PixelContFact</a>() {}</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="../../d5/d43/classFairParSet.html">FairParSet</a>* <a class="code" href="../../d7/d8f/classPixelContFact.html#a39c954714a7afa69f424f5cb343a8038">createContainer</a>(<a class="code" href="../../d7/d61/classFairContainer.html">FairContainer</a>*);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    ClassDef( <a class="code" href="../../d7/d8f/classPixelContFact.html">PixelContFact</a>,0) <span class="comment">// Factory for all Pixel parameter containers</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="../../d7/d8f/classPixelContFact.html#a7d08b16a19bc75257f7118bcc8c5a7f8">ClassDef</a>(<a class="code" href="../../d7/d8f/classPixelContFact.html">PixelContFact</a>, 0);   <span class="comment">// Factory for all Pixel parameter containers</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classFairContainer_html"><div class="ttname"><a href="../../d7/d61/classFairContainer.html">FairContainer</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d4a/FairContFact_8h_source.html#l00021">FairContFact.h:21</a></div></div>
+<div class="ttc" id="classFairContainer_html"><div class="ttname"><a href="../../d7/d61/classFairContainer.html">FairContainer</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d4a/FairContFact_8h_source.html#l00020">FairContFact.h:20</a></div></div>
 <div class="ttc" id="classPixelContFact_html_a82d37bbb39e6d29a901cd7ec41c22989"><div class="ttname"><a href="../../d7/d8f/classPixelContFact.html#a82d37bbb39e6d29a901cd7ec41c22989">PixelContFact::PixelContFact</a></div><div class="ttdeci">PixelContFact()</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d43/PixelContFact_8cxx_source.html#l00025">PixelContFact.cxx:25</a></div></div>
 <div class="ttc" id="classFairParSet_html"><div class="ttname"><a href="../../d5/d43/classFairParSet.html">FairParSet</a></div><div class="ttdef"><b>Definition:</b> <a href="../../df/dd2/FairParSet_8h_source.html#l00018">FairParSet.h:18</a></div></div>
-<div class="ttc" id="classPixelContFact_html_a39c954714a7afa69f424f5cb343a8038"><div class="ttname"><a href="../../d7/d8f/classPixelContFact.html#a39c954714a7afa69f424f5cb343a8038">PixelContFact::createContainer</a></div><div class="ttdeci">FairParSet * createContainer(FairContainer *)</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d43/PixelContFact_8cxx_source.html#l00057">PixelContFact.cxx:57</a></div></div>
+<div class="ttc" id="classPixelContFact_html_a39c954714a7afa69f424f5cb343a8038"><div class="ttname"><a href="../../d7/d8f/classPixelContFact.html#a39c954714a7afa69f424f5cb343a8038">PixelContFact::createContainer</a></div><div class="ttdeci">FairParSet * createContainer(FairContainer *)</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d43/PixelContFact_8cxx_source.html#l00053">PixelContFact.cxx:53</a></div></div>
 <div class="ttc" id="classPixelContFact_html_aa19214f7b993fd38560686b9c3472566"><div class="ttname"><a href="../../d7/d8f/classPixelContFact.html#aa19214f7b993fd38560686b9c3472566">PixelContFact::~PixelContFact</a></div><div class="ttdeci">~PixelContFact()</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d8c/PixelContFact_8h_source.html#l00025">PixelContFact.h:25</a></div></div>
-<div class="ttc" id="classFairContFact_html"><div class="ttname"><a href="../../df/db3/classFairContFact.html">FairContFact</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d4a/FairContFact_8h_source.html#l00049">FairContFact.h:49</a></div></div>
+<div class="ttc" id="classFairContFact_html"><div class="ttname"><a href="../../df/db3/classFairContFact.html">FairContFact</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/d4a/FairContFact_8h_source.html#l00048">FairContFact.h:48</a></div></div>
 <div class="ttc" id="classPixelContFact_html"><div class="ttname"><a href="../../d7/d8f/classPixelContFact.html">PixelContFact</a></div><div class="ttdef"><b>Definition:</b> <a href="../../df/d8c/PixelContFact_8h_source.html#l00018">PixelContFact.h:18</a></div></div>
 <div class="ttc" id="FairContFact_8h_html"><div class="ttname"><a href="../../d3/d4a/FairContFact_8h.html">FairContFact.h</a></div></div>
+<div class="ttc" id="classPixelContFact_html_a7d08b16a19bc75257f7118bcc8c5a7f8"><div class="ttname"><a href="../../d7/d8f/classPixelContFact.html#a7d08b16a19bc75257f7118bcc8c5a7f8">PixelContFact::ClassDef</a></div><div class="ttdeci">ClassDef(PixelContFact, 0)</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_caac58519ba4740e026a67a20b1aba91.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_8917bad9a7e0befb570da6fb7e3e9ebe.html">pixelDetector</a></li><li class="navelem"><a class="el" href="../../dir_8ef6bf25b506698a59ec0dffcae11e97.html">src</a></li><li class="navelem"><a class="el" href="../../df/d8c/PixelContFact_8h.html">PixelContFact.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:50 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

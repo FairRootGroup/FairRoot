@@ -111,8 +111,8 @@ $(document).ready(function(){initNavTree('dc/de2/FairParticleGenerator_8h_source
 <a href="../../dc/de2/FairParticleGenerator_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/********************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *                                                                              *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             * </span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *  </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
@@ -120,11 +120,12 @@ $(document).ready(function(){initNavTree('dc/de2/FairParticleGenerator_8h_source
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// -----          Created 09/07/04  by V. Friese / D.Bertini           -----</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#ifndef FAIR_PARTICLEGENERATOR_H</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#define FAIR_PARTICLEGENERATOR_H</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>                     <span class="comment">// for Double32_t, Int_t, etc</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/d4c/FairBaseMCGenerator_8h.html">FairBaseMCGenerator.h</a>&quot;</span>              <span class="comment">// for FairGenerator</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#ifndef FAIR_PARTICLEGENERATOR_H</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#define FAIR_PARTICLEGENERATOR_H</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/d4c/FairBaseMCGenerator_8h.html">FairBaseMCGenerator.h</a>&quot;</span>   <span class="comment">// for FairGenerator</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>   <span class="comment">// for Double32_t, Int_t, etc</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">class </span><a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>;</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
@@ -133,38 +134,43 @@ $(document).ready(function(){initNavTree('dc/de2/FairParticleGenerator_8h_source
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="../../d5/dd5/classFairParticleGenerator.html#af40fae9656bcae33b2d22b9e0f55cf58">FairParticleGenerator</a>();</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="../../d5/dd5/classFairParticleGenerator.html#af40fae9656bcae33b2d22b9e0f55cf58">FairParticleGenerator</a>(Int_t pdgid, Int_t mult, Double32_t px,</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                          Double32_t py, Double32_t pz, Double32_t vx = 0.,</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                          Double32_t vy = 0., Double32_t vz = 0.);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="../../d5/dd5/classFairParticleGenerator.html#a217ee0edee8d4fcee3e7376269e79162">   49</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d5/dd5/classFairParticleGenerator.html#a217ee0edee8d4fcee3e7376269e79162">~FairParticleGenerator</a>() {};</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d5/dd5/classFairParticleGenerator.html#ac4c67c21a0310bd7d555c3dc8c156eeb">SetMomentum</a>(Double32_t px, Double32_t py, Double32_t pz);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">virtual</span> Bool_t <a class="code" href="../../d5/dd5/classFairParticleGenerator.html#af6920f2fad56c4fc97e4ae0e9d953df0">ReadEvent</a>(<a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>* primGen);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <a class="code" href="../../d5/dd5/classFairParticleGenerator.html#af40fae9656bcae33b2d22b9e0f55cf58">FairParticleGenerator</a>(Int_t pdgid,</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;                          Int_t mult,</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;                          Double32_t px,</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;                          Double32_t py,</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;                          Double32_t pz,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;                          Double32_t vx = 0.,</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;                          Double32_t vy = 0.,</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;                          Double32_t vz = 0.);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="../../d5/dd5/classFairParticleGenerator.html#a217ee0edee8d4fcee3e7376269e79162">   54</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d5/dd5/classFairParticleGenerator.html#a217ee0edee8d4fcee3e7376269e79162">~FairParticleGenerator</a>(){};</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d5/dd5/classFairParticleGenerator.html#ac4c67c21a0310bd7d555c3dc8c156eeb">SetMomentum</a>(Double32_t px, Double32_t py, Double32_t pz);</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    Double32_t fPx, fPy, fPz;  <span class="comment">// Momentum components [GeV]</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    ClassDef(<a class="code" href="../../d5/dd5/classFairParticleGenerator.html">FairParticleGenerator</a>,2);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classFairParticleGenerator_html_a217ee0edee8d4fcee3e7376269e79162"><div class="ttname"><a href="../../d5/dd5/classFairParticleGenerator.html#a217ee0edee8d4fcee3e7376269e79162">FairParticleGenerator::~FairParticleGenerator</a></div><div class="ttdeci">virtual ~FairParticleGenerator()</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/de2/FairParticleGenerator_8h_source.html#l00049">FairParticleGenerator.h:49</a></div></div>
-<div class="ttc" id="classFairParticleGenerator_html_af6920f2fad56c4fc97e4ae0e9d953df0"><div class="ttname"><a href="../../d5/dd5/classFairParticleGenerator.html#af6920f2fad56c4fc97e4ae0e9d953df0">FairParticleGenerator::ReadEvent</a></div><div class="ttdeci">virtual Bool_t ReadEvent(FairPrimaryGenerator *primGen)</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/dc5/FairParticleGenerator_8cxx_source.html#l00047">FairParticleGenerator.cxx:47</a></div></div>
-<div class="ttc" id="classFairPrimaryGenerator_html"><div class="ttname"><a href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/dba/FairPrimaryGenerator_8h_source.html#l00041">FairPrimaryGenerator.h:41</a></div></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">virtual</span> Bool_t <a class="code" href="../../d5/dd5/classFairParticleGenerator.html#af6920f2fad56c4fc97e4ae0e9d953df0">ReadEvent</a>(<a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>* primGen);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    Double32_t fPx, fPy, fPz;   <span class="comment">// Momentum components [GeV]</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    ClassDef(<a class="code" href="../../d5/dd5/classFairParticleGenerator.html">FairParticleGenerator</a>, 2);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classFairParticleGenerator_html_a217ee0edee8d4fcee3e7376269e79162"><div class="ttname"><a href="../../d5/dd5/classFairParticleGenerator.html#a217ee0edee8d4fcee3e7376269e79162">FairParticleGenerator::~FairParticleGenerator</a></div><div class="ttdeci">virtual ~FairParticleGenerator()</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/de2/FairParticleGenerator_8h_source.html#l00054">FairParticleGenerator.h:54</a></div></div>
+<div class="ttc" id="classFairParticleGenerator_html_af6920f2fad56c4fc97e4ae0e9d953df0"><div class="ttname"><a href="../../d5/dd5/classFairParticleGenerator.html#af6920f2fad56c4fc97e4ae0e9d953df0">FairParticleGenerator::ReadEvent</a></div><div class="ttdeci">virtual Bool_t ReadEvent(FairPrimaryGenerator *primGen)</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/dc5/FairParticleGenerator_8cxx_source.html#l00051">FairParticleGenerator.cxx:51</a></div></div>
+<div class="ttc" id="classFairPrimaryGenerator_html"><div class="ttname"><a href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/dba/FairPrimaryGenerator_8h_source.html#l00039">FairPrimaryGenerator.h:39</a></div></div>
 <div class="ttc" id="classFairParticleGenerator_html"><div class="ttname"><a href="../../d5/dd5/classFairParticleGenerator.html">FairParticleGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/de2/FairParticleGenerator_8h_source.html#l00031">FairParticleGenerator.h:31</a></div></div>
 <div class="ttc" id="FairBaseMCGenerator_8h_html"><div class="ttname"><a href="../../d2/d4c/FairBaseMCGenerator_8h.html">FairBaseMCGenerator.h</a></div></div>
 <div class="ttc" id="classFairParticleGenerator_html_af40fae9656bcae33b2d22b9e0f55cf58"><div class="ttname"><a href="../../d5/dd5/classFairParticleGenerator.html#af40fae9656bcae33b2d22b9e0f55cf58">FairParticleGenerator::FairParticleGenerator</a></div><div class="ttdeci">FairParticleGenerator()</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/dc5/FairParticleGenerator_8cxx_source.html#l00017">FairParticleGenerator.cxx:17</a></div></div>
 <div class="ttc" id="classFairBaseMCGenerator_html"><div class="ttname"><a href="../../d7/d12/classFairBaseMCGenerator.html">FairBaseMCGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d4c/FairBaseMCGenerator_8h_source.html#l00017">FairBaseMCGenerator.h:17</a></div></div>
-<div class="ttc" id="classFairParticleGenerator_html_ac4c67c21a0310bd7d555c3dc8c156eeb"><div class="ttname"><a href="../../d5/dd5/classFairParticleGenerator.html#ac4c67c21a0310bd7d555c3dc8c156eeb">FairParticleGenerator::SetMomentum</a></div><div class="ttdeci">void SetMomentum(Double32_t px, Double32_t py, Double32_t pz)</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/dc5/FairParticleGenerator_8cxx_source.html#l00040">FairParticleGenerator.cxx:40</a></div></div>
+<div class="ttc" id="classFairParticleGenerator_html_ac4c67c21a0310bd7d555c3dc8c156eeb"><div class="ttname"><a href="../../d5/dd5/classFairParticleGenerator.html#ac4c67c21a0310bd7d555c3dc8c156eeb">FairParticleGenerator::SetMomentum</a></div><div class="ttdeci">void SetMomentum(Double32_t px, Double32_t py, Double32_t pz)</div><div class="ttdef"><b>Definition:</b> <a href="../../d9/dc5/FairParticleGenerator_8cxx_source.html#l00044">FairParticleGenerator.cxx:44</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_76ab5dc027795deb5b098ae38ba247cb.html">generators</a></li><li class="navelem"><a class="el" href="../../dc/de2/FairParticleGenerator_8h.html">FairParticleGenerator.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:51 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:59 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

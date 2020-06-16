@@ -2,6 +2,7 @@ var classFairMBSUnpacker =
 [
     [ "FairMBSUnpacker", "d2/d87/classFairMBSUnpacker.html#a786995b23b4b1c136cd30de804aba177", null ],
     [ "~FairMBSUnpacker", "d2/d87/classFairMBSUnpacker.html#ae518ed2d3e920d72d5db74fc2d1f89d0", null ],
+    [ "ClassDef", "d2/d87/classFairMBSUnpacker.html#a6b32ff579446e8cba5f8c5d7a2d6d5b3", null ],
     [ "DoUnpack", "d2/d87/classFairMBSUnpacker.html#aee85a48b8f46e44b7f1656fc9c4b6d98", null ],
     [ "GetNHitsTotal", "d2/d87/classFairMBSUnpacker.html#aff658662ec747b1d622b6951864f7d8a", null ],
     [ "GetOutputData", "d2/d87/classFairMBSUnpacker.html#a9156a911b31a93534d1c800931150911", null ],

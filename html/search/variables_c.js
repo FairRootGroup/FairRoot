@@ -2,6 +2,7 @@ var searchData=
 [
   ['masternodes',['masterNodes',['../d0/d7b/classFairGeoSet.html#acdb7dbc36b3bdb813af347de548a9fa1',1,'FairGeoSet']]],
   ['matfname',['MatFname',['../dd/dbc/classFairRunSim.html#a1ce5635d69680f90256b5083042819a0',1,'FairRunSim']]],
+  ['maxdistance',['maxdistance',['../d1/dca/classFairGeanePro.html#a1f79f76c76fbbf39e26b643986467f28',1,'FairGeanePro']]],
   ['maxenergylimit',['MaxEnergyLimit',['../da/d7c/classFairMCTracks.html#ae68814995a2d2bc81e4291f7d5378a58',1,'FairMCTracks']]],
   ['maxkeepinvolumes',['maxKeepinVolumes',['../d0/d7b/classFairGeoSet.html#afa1e73d8b5053da306206353d8c0b71e',1,'FairGeoSet']]],
   ['maxmodules',['maxModules',['../d0/d7b/classFairGeoSet.html#a2f864438718e08900d1fc67ec2958050',1,'FairGeoSet']]],

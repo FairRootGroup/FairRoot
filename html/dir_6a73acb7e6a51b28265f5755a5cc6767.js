@@ -4,11 +4,11 @@ var dir_6a73acb7e6a51b28265f5755a5cc6767 =
     [ "FairTestDetectorDigi.h", "d7/d3b/FairTestDetectorDigi_8h.html", [
       [ "FairTestDetectorDigi", "da/d5b/classFairTestDetectorDigi.html", "da/d5b/classFairTestDetectorDigi" ]
     ] ],
-    [ "FairTestDetectorHit.cxx", "d4/d79/FairTestDetectorHit_8cxx.html", null ],
+    [ "FairTestDetectorHit.cxx", "d4/d79/FairTestDetectorHit_8cxx.html", "d4/d79/FairTestDetectorHit_8cxx" ],
     [ "FairTestDetectorHit.h", "df/def/FairTestDetectorHit_8h.html", [
       [ "FairTestDetectorHit", "d9/db6/classFairTestDetectorHit.html", "d9/db6/classFairTestDetectorHit" ]
     ] ],
-    [ "FairTestDetectorPoint.cxx", "db/d28/FairTestDetectorPoint_8cxx.html", null ],
+    [ "FairTestDetectorPoint.cxx", "db/d28/FairTestDetectorPoint_8cxx.html", "db/d28/FairTestDetectorPoint_8cxx" ],
     [ "FairTestDetectorPoint.h", "d9/d51/FairTestDetectorPoint_8h.html", [
       [ "FairTestDetectorPoint", "de/d9f/classFairTestDetectorPoint.html", "de/d9f/classFairTestDetectorPoint" ]
     ] ]

@@ -3,6 +3,7 @@ var classFairMCPoint =
     [ "FairMCPoint", "dc/d28/classFairMCPoint.html#a3ae1a84a98323a9be6ecef0cfaacdc0e", null ],
     [ "FairMCPoint", "dc/d28/classFairMCPoint.html#ab3131c0d67d5223c288e4ca54d012207", null ],
     [ "~FairMCPoint", "dc/d28/classFairMCPoint.html#a5d583aa501908d5834e9398f94396877", null ],
+    [ "ClassDef", "dc/d28/classFairMCPoint.html#a753d9aa0fa2290e8795b5f3343cfc27f", null ],
     [ "GetDetectorID", "dc/d28/classFairMCPoint.html#a744a96c970cac3049b090d3a3528d1d4", null ],
     [ "GetEnergyLoss", "dc/d28/classFairMCPoint.html#a83c8b2e11659b66d645e7245efbe6740", null ],
     [ "GetEventID", "dc/d28/classFairMCPoint.html#a97da6265123dfaa6e4ace8a4d638cbf8", null ],

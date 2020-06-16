@@ -154,13 +154,13 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">class </span>APP                                                                                  \</div>
-<div class="line">  {                                                                                          \</div>
-<div class="line">     public:                                                                                 \</div>
-<div class="line">       void Stepping();                                                                      \</div>
-<div class="line">       void FinishEvent();                                                                   \</div>
-<div class="line">       void FinishRun();                                                                     \</div>
-<div class="line">  };                                                                                         \</div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keyword">class </span>APP                                                                                                          \</div>
+<div class="line">    {                                                                                                                  \</div>
+<div class="line">      public:                                                                                                          \</div>
+<div class="line">        void Stepping();                                                                                               \</div>
+<div class="line">        void FinishEvent();                                                                                            \</div>
+<div class="line">        void FinishRun();                                                                                              \</div>
+<div class="line">    };</div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="../../d8/d4c/MCStepInterceptor_8cxx_source.html#l00032">32</a> of file <a class="el" href="../../d8/d4c/MCStepInterceptor_8cxx_source.html">MCStepInterceptor.cxx</a>.</p>
 
@@ -195,15 +195,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordtype">void</span> APP::FinishEvent()                                                                    \</div>
-<div class="line">  {                                                                                          \</div>
-<div class="line">     auto baseptr=<span class="keyword">reinterpret_cast&lt;</span><a class="code" href="../../d8/def/classFairMCApplication.html">FairMCApplication</a>*<span class="keyword">&gt;</span>(<span class="keyword">this</span>);                                <a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a789d394839626e6bbeea75ae27b890ff">\</a></div>
-<div class="line"><a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a789d394839626e6bbeea75ae27b890ff">     flushLog</a>();                                                                             <a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#ab52d2196ac0126e39e59909326418b91">\</a></div>
-<div class="line"><a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#ab52d2196ac0126e39e59909326418b91">     dispatchFinishEvent</a>(baseptr, LIB, SYMBOL);                                              \</div>
-<div class="line">  }                                                                                          \</div>
-<div class="ttc" id="classFairMCApplication_html"><div class="ttname"><a href="../../d8/def/classFairMCApplication.html">FairMCApplication</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d59/FairMCApplication_8h_source.html#l00057">FairMCApplication.h:57</a></div></div>
-<div class="ttc" id="MCStepInterceptor_8cxx_html_ab52d2196ac0126e39e59909326418b91"><div class="ttname"><a href="../../d8/d4c/MCStepInterceptor_8cxx.html#ab52d2196ac0126e39e59909326418b91">dispatchFinishEvent</a></div><div class="ttdeci">void dispatchFinishEvent(FairMCApplication *, char const *libname, char const *)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00160">MCStepLoggerImpl.cxx:160</a></div></div>
-<div class="ttc" id="MCStepInterceptor_8cxx_html_a789d394839626e6bbeea75ae27b890ff"><div class="ttname"><a href="../../d8/d4c/MCStepInterceptor_8cxx.html#a789d394839626e6bbeea75ae27b890ff">flushLog</a></div><div class="ttdeci">void flushLog()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00228">MCStepLoggerImpl.cxx:228</a></div></div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordtype">void</span> APP::FinishEvent()                                                                                            \</div>
+<div class="line">    {                                                                                                                  \</div>
+<div class="line">        auto baseptr = <span class="keyword">reinterpret_cast&lt;</span><a class="code" href="../../d8/def/classFairMCApplication.html">FairMCApplication</a> *<span class="keyword">&gt;</span>(<span class="keyword">this</span>);                                                    <a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a789d394839626e6bbeea75ae27b890ff">\</a></div>
+<div class="line"><a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a789d394839626e6bbeea75ae27b890ff">        flushLog</a>();                                                                                                    <a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#ab52d2196ac0126e39e59909326418b91">\</a></div>
+<div class="line"><a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#ab52d2196ac0126e39e59909326418b91">        dispatchFinishEvent</a>(baseptr, LIB, SYMBOL);                                                                     \</div>
+<div class="line">    }</div>
+<div class="ttc" id="classFairMCApplication_html"><div class="ttname"><a href="../../d8/def/classFairMCApplication.html">FairMCApplication</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d59/FairMCApplication_8h_source.html#l00060">FairMCApplication.h:60</a></div></div>
+<div class="ttc" id="MCStepInterceptor_8cxx_html_ab52d2196ac0126e39e59909326418b91"><div class="ttname"><a href="../../d8/d4c/MCStepInterceptor_8cxx.html#ab52d2196ac0126e39e59909326418b91">dispatchFinishEvent</a></div><div class="ttdeci">void dispatchFinishEvent(FairMCApplication *, char const *libname, char const *)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00165">MCStepLoggerImpl.cxx:165</a></div></div>
+<div class="ttc" id="MCStepInterceptor_8cxx_html_a789d394839626e6bbeea75ae27b890ff"><div class="ttname"><a href="../../d8/d4c/MCStepInterceptor_8cxx.html#a789d394839626e6bbeea75ae27b890ff">flushLog</a></div><div class="ttdeci">void flushLog()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00233">MCStepLoggerImpl.cxx:233</a></div></div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="../../d8/d4c/MCStepInterceptor_8cxx_source.html#l00058">58</a> of file <a class="el" href="../../d8/d4c/MCStepInterceptor_8cxx_source.html">MCStepInterceptor.cxx</a>.</p>
 
@@ -238,15 +238,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordtype">void</span> APP::FinishRun()                                                                      \</div>
-<div class="line">  {                                                                                          \</div>
-<div class="line">     auto baseptr=<span class="keyword">reinterpret_cast&lt;</span><a class="code" href="../../d8/def/classFairMCApplication.html">FairMCApplication</a>*<span class="keyword">&gt;</span>(<span class="keyword">this</span>);                                <a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a7a77ba137f5567225f100a7f1da5b58f">\</a></div>
-<div class="line"><a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a7a77ba137f5567225f100a7f1da5b58f">     flushFinalLog</a>();                                                                        <a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a118c67103170d5116252eff1907cd389">\</a></div>
-<div class="line"><a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a118c67103170d5116252eff1907cd389">     dispatchFinishRun</a>(baseptr, LIB, SYMBOL);                                                \</div>
-<div class="line">  }                                                                                          \</div>
-<div class="ttc" id="classFairMCApplication_html"><div class="ttname"><a href="../../d8/def/classFairMCApplication.html">FairMCApplication</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d59/FairMCApplication_8h_source.html#l00057">FairMCApplication.h:57</a></div></div>
-<div class="ttc" id="MCStepInterceptor_8cxx_html_a7a77ba137f5567225f100a7f1da5b58f"><div class="ttname"><a href="../../d8/d4c/MCStepInterceptor_8cxx.html#a7a77ba137f5567225f100a7f1da5b58f">flushFinalLog</a></div><div class="ttdeci">void flushFinalLog()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00232">MCStepLoggerImpl.cxx:232</a></div></div>
-<div class="ttc" id="MCStepInterceptor_8cxx_html_a118c67103170d5116252eff1907cd389"><div class="ttname"><a href="../../d8/d4c/MCStepInterceptor_8cxx.html#a118c67103170d5116252eff1907cd389">dispatchFinishRun</a></div><div class="ttdeci">void dispatchFinishRun(FairMCApplication *, char const *libname, char const *)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00193">MCStepLoggerImpl.cxx:193</a></div></div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordtype">void</span> APP::FinishRun()                                                                                              \</div>
+<div class="line">    {                                                                                                                  \</div>
+<div class="line">        auto baseptr = <span class="keyword">reinterpret_cast&lt;</span><a class="code" href="../../d8/def/classFairMCApplication.html">FairMCApplication</a> *<span class="keyword">&gt;</span>(<span class="keyword">this</span>);                                                    <a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a7a77ba137f5567225f100a7f1da5b58f">\</a></div>
+<div class="line"><a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a7a77ba137f5567225f100a7f1da5b58f">        flushFinalLog</a>();                                                                                               <a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a118c67103170d5116252eff1907cd389">\</a></div>
+<div class="line"><a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a118c67103170d5116252eff1907cd389">        dispatchFinishRun</a>(baseptr, LIB, SYMBOL);                                                                       \</div>
+<div class="line">    }</div>
+<div class="ttc" id="classFairMCApplication_html"><div class="ttname"><a href="../../d8/def/classFairMCApplication.html">FairMCApplication</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d59/FairMCApplication_8h_source.html#l00060">FairMCApplication.h:60</a></div></div>
+<div class="ttc" id="MCStepInterceptor_8cxx_html_a7a77ba137f5567225f100a7f1da5b58f"><div class="ttname"><a href="../../d8/d4c/MCStepInterceptor_8cxx.html#a7a77ba137f5567225f100a7f1da5b58f">flushFinalLog</a></div><div class="ttdeci">void flushFinalLog()</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00235">MCStepLoggerImpl.cxx:235</a></div></div>
+<div class="ttc" id="MCStepInterceptor_8cxx_html_a118c67103170d5116252eff1907cd389"><div class="ttname"><a href="../../d8/d4c/MCStepInterceptor_8cxx.html#a118c67103170d5116252eff1907cd389">dispatchFinishRun</a></div><div class="ttdeci">void dispatchFinishRun(FairMCApplication *, char const *libname, char const *)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00198">MCStepLoggerImpl.cxx:198</a></div></div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="../../d8/d4c/MCStepInterceptor_8cxx_source.html#l00066">66</a> of file <a class="el" href="../../d8/d4c/MCStepInterceptor_8cxx_source.html">MCStepInterceptor.cxx</a>.</p>
 
@@ -281,15 +281,15 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line"><span class="keywordtype">void</span> APP::Stepping()                                                                       \</div>
-<div class="line">  {                                                                                          \</div>
-<div class="line">     auto baseptr=<span class="keyword">reinterpret_cast&lt;</span><a class="code" href="../../d8/def/classFairMCApplication.html">FairMCApplication</a>*<span class="keyword">&gt;</span>(<span class="keyword">this</span>);                                <a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a372b40708b37bd8c621600f9e92d3940">\</a></div>
-<div class="line"><a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a372b40708b37bd8c621600f9e92d3940">     performLogging</a>(baseptr);                                                                <a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#af757d76379c00af58f3a3eafc769cc36">\</a></div>
-<div class="line"><a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#af757d76379c00af58f3a3eafc769cc36">     dispatchStepping</a>(baseptr, LIB, SYMBOL);                                                 \</div>
-<div class="line">  }                                                                                          \</div>
-<div class="ttc" id="classFairMCApplication_html"><div class="ttname"><a href="../../d8/def/classFairMCApplication.html">FairMCApplication</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d59/FairMCApplication_8h_source.html#l00057">FairMCApplication.h:57</a></div></div>
-<div class="ttc" id="MCStepInterceptor_8cxx_html_af757d76379c00af58f3a3eafc769cc36"><div class="ttname"><a href="../../d8/d4c/MCStepInterceptor_8cxx.html#af757d76379c00af58f3a3eafc769cc36">dispatchStepping</a></div><div class="ttdeci">void dispatchStepping(FairMCApplication *, char const *libname, char const *)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00127">MCStepLoggerImpl.cxx:127</a></div></div>
-<div class="ttc" id="MCStepInterceptor_8cxx_html_a372b40708b37bd8c621600f9e92d3940"><div class="ttname"><a href="../../d8/d4c/MCStepInterceptor_8cxx.html#a372b40708b37bd8c621600f9e92d3940">performLogging</a></div><div class="ttdeci">void performLogging(FairMCApplication *)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00222">MCStepLoggerImpl.cxx:222</a></div></div>
+<b>Value:</b><div class="fragment"><div class="line"><span class="keywordtype">void</span> APP::Stepping()                                                                                               \</div>
+<div class="line">    {                                                                                                                  \</div>
+<div class="line">        auto baseptr = <span class="keyword">reinterpret_cast&lt;</span><a class="code" href="../../d8/def/classFairMCApplication.html">FairMCApplication</a> *<span class="keyword">&gt;</span>(<span class="keyword">this</span>);                                                    <a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a372b40708b37bd8c621600f9e92d3940">\</a></div>
+<div class="line"><a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#a372b40708b37bd8c621600f9e92d3940">        performLogging</a>(baseptr);                                                                                       <a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#af757d76379c00af58f3a3eafc769cc36">\</a></div>
+<div class="line"><a class="code" href="../../d8/d4c/MCStepInterceptor_8cxx.html#af757d76379c00af58f3a3eafc769cc36">        dispatchStepping</a>(baseptr, LIB, SYMBOL);                                                                        \</div>
+<div class="line">    }</div>
+<div class="ttc" id="classFairMCApplication_html"><div class="ttname"><a href="../../d8/def/classFairMCApplication.html">FairMCApplication</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d59/FairMCApplication_8h_source.html#l00060">FairMCApplication.h:60</a></div></div>
+<div class="ttc" id="MCStepInterceptor_8cxx_html_af757d76379c00af58f3a3eafc769cc36"><div class="ttname"><a href="../../d8/d4c/MCStepInterceptor_8cxx.html#af757d76379c00af58f3a3eafc769cc36">dispatchStepping</a></div><div class="ttdeci">void dispatchStepping(FairMCApplication *, char const *libname, char const *)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00132">MCStepLoggerImpl.cxx:132</a></div></div>
+<div class="ttc" id="MCStepInterceptor_8cxx_html_a372b40708b37bd8c621600f9e92d3940"><div class="ttname"><a href="../../d8/d4c/MCStepInterceptor_8cxx.html#a372b40708b37bd8c621600f9e92d3940">performLogging</a></div><div class="ttdeci">void performLogging(FairMCApplication *)</div><div class="ttdef"><b>Definition:</b> <a href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00227">MCStepLoggerImpl.cxx:227</a></div></div>
 </div><!-- fragment -->
 <p>Definition at line <a class="el" href="../../d8/d4c/MCStepInterceptor_8cxx_source.html#l00050">50</a> of file <a class="el" href="../../d8/d4c/MCStepInterceptor_8cxx_source.html">MCStepInterceptor.cxx</a>.</p>
 
@@ -326,7 +326,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00160">160</a> of file <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html">MCStepLoggerImpl.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00165">165</a> of file <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html">MCStepLoggerImpl.cxx</a>.</p>
 
 </div>
 </div>
@@ -360,7 +360,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00193">193</a> of file <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html">MCStepLoggerImpl.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00198">198</a> of file <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html">MCStepLoggerImpl.cxx</a>.</p>
 
 </div>
 </div>
@@ -394,7 +394,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00127">127</a> of file <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html">MCStepLoggerImpl.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00132">132</a> of file <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html">MCStepLoggerImpl.cxx</a>.</p>
 
 </div>
 </div>
@@ -411,7 +411,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00232">232</a> of file <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html">MCStepLoggerImpl.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00235">235</a> of file <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html">MCStepLoggerImpl.cxx</a>.</p>
 
 </div>
 </div>
@@ -428,7 +428,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00228">228</a> of file <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html">MCStepLoggerImpl.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00233">233</a> of file <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html">MCStepLoggerImpl.cxx</a>.</p>
 
 </div>
 </div>
@@ -446,7 +446,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00222">222</a> of file <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html">MCStepLoggerImpl.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html#l00227">227</a> of file <a class="el" href="../../dd/d79/MCStepLoggerImpl_8cxx_source.html">MCStepLoggerImpl.cxx</a>.</p>
 
 </div>
 </div>
@@ -456,7 +456,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_de25c4cb714ca2c676b6c7c1aca22617.html">fairtools</a></li><li class="navelem"><a class="el" href="../../dir_446ecb081d16da936c4e9867bc94956c.html">MCStepLogger</a></li><li class="navelem"><a class="el" href="../../d8/d4c/MCStepInterceptor_8cxx.html">MCStepInterceptor.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:53 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:59:02 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

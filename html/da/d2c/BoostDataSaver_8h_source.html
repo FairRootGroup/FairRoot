@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('da/d2c/BoostDataSaver_8h_source.html',
 <div class="title">BoostDataSaver.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="../../da/d2c/BoostDataSaver_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/* </span></div>
+<a href="../../da/d2c/BoostDataSaver_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * File:   BoostDataSaver.h</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> * Author: winckler</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *</span></div>
@@ -119,92 +119,94 @@ $(document).ready(function(){initNavTree('da/d2c/BoostDataSaver_8h_source.html',
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define BOOSTDATASAVER_H</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// std</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;fstream&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;type_traits&gt;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;type_traits&gt;</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// boost</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">namespace </span><a class="code" href="../../d4/da9/namespaceboost.html">boost</a> { <span class="keyword">namespace </span>serialization { <span class="keyword">class </span>access; } }</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;boost/archive/binary_iarchive.hpp&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;boost/archive/binary_oarchive.hpp&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;boost/serialization/vector.hpp&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="comment">// FairRoot</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;FairMQMessage.h&gt;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> TPayload, <span class="keyword">typename</span> TArchiveIn = boost::archive::binary_iarchive, <span class="keyword">typename</span> TArchiveOut = TBoboost::archive::binary_oarchiveostOut&gt;</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html">   28</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d3/dc1/classBoostDataSaver.html">BoostDataSaver</a></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#abb47e96a210417b9e30239f3cb88f76a">   31</a></span>&#160;    <a class="code" href="../../d3/dc1/classBoostDataSaver.html#abb47e96a210417b9e30239f3cb88f76a">BoostDataSaver</a>() {}</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#a6776392a22327615ff68a6c02ab16476">   32</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d3/dc1/classBoostDataSaver.html#a6776392a22327615ff68a6c02ab16476">~BoostDataSaver</a>() {}</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#a2e9c5d497213d92ffb3e76bdfc691de8">   34</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d3/dc1/classBoostDataSaver.html#a2e9c5d497213d92ffb3e76bdfc691de8">InitOutputFile</a>() {}</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#a9205ddb789b2ce1a88deaff1abcf40e0">   36</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/dc1/classBoostDataSaver.html#a9205ddb789b2ce1a88deaff1abcf40e0">Write</a>(std::ofstream&amp; outfile, TPayload* objArr, <span class="keywordtype">long</span> sizeArr = 1)</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    {</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;        std::vector&lt;TPayload&gt; dataVector(objArr, objArr + sizeArr);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;        TArchiveOut outArchive(outfile);</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;        outArchive &lt;&lt; dataVector;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    }</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#af8e6e734cc422fba4ba1accee2900fa6">   43</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/dc1/classBoostDataSaver.html#af8e6e734cc422fba4ba1accee2900fa6">Write</a>(std::ofstream&amp; outfile, std::vector&lt;TPayload&gt; dataVector)</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    {</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">namespace </span><a class="code" href="../../d4/da9/namespaceboost.html">boost</a> {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">namespace </span>serialization {</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">class </span>access;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;}</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}   <span class="comment">// namespace boost</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;boost/archive/binary_iarchive.hpp&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;boost/archive/binary_oarchive.hpp&gt;</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;boost/serialization/vector.hpp&gt;</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="comment">// FairRoot</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &lt;FairMQMessage.h&gt;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">template</span>&lt;<span class="keyword">typename</span> TPayload,</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;         <span class="keyword">typename</span> TArchiveIn = boost::archive::binary_iarchive,</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;         <span class="keyword">typename</span> TArchiveOut = TBoboost::archive::binary_oarchiveostOut&gt;</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html">   34</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d3/dc1/classBoostDataSaver.html">BoostDataSaver</a></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;{</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#abb47e96a210417b9e30239f3cb88f76a">   37</a></span>&#160;    <a class="code" href="../../d3/dc1/classBoostDataSaver.html#abb47e96a210417b9e30239f3cb88f76a">BoostDataSaver</a>() {}</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#a6776392a22327615ff68a6c02ab16476">   38</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d3/dc1/classBoostDataSaver.html#a6776392a22327615ff68a6c02ab16476">~BoostDataSaver</a>() {}</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#a2e9c5d497213d92ffb3e76bdfc691de8">   40</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d3/dc1/classBoostDataSaver.html#a2e9c5d497213d92ffb3e76bdfc691de8">InitOutputFile</a>() {}</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#a9205ddb789b2ce1a88deaff1abcf40e0">   42</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/dc1/classBoostDataSaver.html#a9205ddb789b2ce1a88deaff1abcf40e0">Write</a>(std::ofstream&amp; outfile, TPayload* objArr, <span class="keywordtype">long</span> sizeArr = 1)</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    {</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;        std::vector&lt;TPayload&gt; dataVector(objArr, objArr + sizeArr);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;        TArchiveOut outArchive(outfile);</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;        outArchive &lt;&lt; dataVector;</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    }</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#a872b153c7ea7f03e0b479f73ce6a876b">   49</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/dc1/classBoostDataSaver.html#a872b153c7ea7f03e0b479f73ce6a876b">Write</a>(std::ofstream&amp; outfile, FairMQMessage* msg)</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#af8e6e734cc422fba4ba1accee2900fa6">   49</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/dc1/classBoostDataSaver.html#af8e6e734cc422fba4ba1accee2900fa6">Write</a>(std::ofstream&amp; outfile, std::vector&lt;TPayload&gt; dataVector)</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        std::vector&lt;TPayload&gt; objArr;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        std::string msgStr(static_cast&lt;char*&gt;(msg-&gt;GetData()), msg-&gt;GetSize());</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;        std::istringstream ibuffer(msgStr);</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;        TArchiveIn inputArchive(ibuffer);</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;        <span class="keywordflow">try</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        {</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;            inputArchive &gt;&gt; objArr;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        }</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        <span class="keywordflow">catch</span> (boost::archive::archive_exception&amp; e)</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;            LOG(error) &lt;&lt; e.what();</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;        }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        TArchiveOut outArchive(outfile);</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        outArchive &lt;&lt; objArr;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    }</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
-<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#afea1e703e5323c27cbfb97c844be6c8a">   67</a></span>&#160;    std::vector&lt;std::vector&lt;TPayload&gt;&gt; <a class="code" href="../../d3/dc1/classBoostDataSaver.html#afea1e703e5323c27cbfb97c844be6c8a">Read</a>(std::ifstream&amp; infile)</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    {</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        std::vector&lt;std::vector&lt;TPayload&gt;&gt; dataContainer;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">while</span> (infile.peek()!= EOF &amp;&amp; !infile.eof())</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;            TArchiveIn inArchive(infile);</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            std::vector&lt;TPayload&gt; temp;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            inArchive &gt;&gt; temp;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            dataContainer.push_back(temp);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        }</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        <span class="keywordflow">return</span> dataContainer;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* BOOSTDATASAVER_H */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        TArchiveOut outArchive(outfile);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;        outArchive &lt;&lt; dataVector;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    }</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#a872b153c7ea7f03e0b479f73ce6a876b">   55</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../d3/dc1/classBoostDataSaver.html#a872b153c7ea7f03e0b479f73ce6a876b">Write</a>(std::ofstream&amp; outfile, FairMQMessage* msg)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        std::vector&lt;TPayload&gt; objArr;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        std::string msgStr(static_cast&lt;char*&gt;(msg-&gt;GetData()), msg-&gt;GetSize());</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;        std::istringstream ibuffer(msgStr);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;        TArchiveIn inputArchive(ibuffer);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">try</span> {</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;            inputArchive &gt;&gt; objArr;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        } <span class="keywordflow">catch</span> (boost::archive::archive_exception&amp; e) {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;            LOG(error) &lt;&lt; e.what();</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        }</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        TArchiveOut outArchive(outfile);</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        outArchive &lt;&lt; objArr;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="../../d3/dc1/classBoostDataSaver.html#afea1e703e5323c27cbfb97c844be6c8a">   70</a></span>&#160;    std::vector&lt;std::vector&lt;TPayload&gt;&gt; <a class="code" href="../../d3/dc1/classBoostDataSaver.html#afea1e703e5323c27cbfb97c844be6c8a">Read</a>(std::ifstream&amp; infile)</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    {</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        std::vector&lt;std::vector&lt;TPayload&gt;&gt; dataContainer;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        <span class="keywordflow">while</span> (infile.peek() != EOF &amp;&amp; !infile.eof()) {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;            TArchiveIn inArchive(infile);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;            std::vector&lt;TPayload&gt; temp;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;            inArchive &gt;&gt; temp;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;            dataContainer.push_back(temp);</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        <span class="keywordflow">return</span> dataContainer;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    }</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;};</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* BOOSTDATASAVER_H */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="namespaceboost_html"><div class="ttname"><a href="../../d4/da9/namespaceboost.html">boost</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d88/FairHit_8h_source.html#l00016">FairHit.h:16</a></div></div>
-<div class="ttc" id="classBoostDataSaver_html_afea1e703e5323c27cbfb97c844be6c8a"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#afea1e703e5323c27cbfb97c844be6c8a">BoostDataSaver::Read</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; TPayload &gt; &gt; Read(std::ifstream &amp;infile)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00067">BoostDataSaver.h:67</a></div></div>
-<div class="ttc" id="classBoostDataSaver_html_a872b153c7ea7f03e0b479f73ce6a876b"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#a872b153c7ea7f03e0b479f73ce6a876b">BoostDataSaver::Write</a></div><div class="ttdeci">void Write(std::ofstream &amp;outfile, FairMQMessage *msg)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00049">BoostDataSaver.h:49</a></div></div>
-<div class="ttc" id="classBoostDataSaver_html_abb47e96a210417b9e30239f3cb88f76a"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#abb47e96a210417b9e30239f3cb88f76a">BoostDataSaver::BoostDataSaver</a></div><div class="ttdeci">BoostDataSaver()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00031">BoostDataSaver.h:31</a></div></div>
-<div class="ttc" id="classBoostDataSaver_html"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html">BoostDataSaver</a></div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00028">BoostDataSaver.h:28</a></div></div>
-<div class="ttc" id="classBoostDataSaver_html_a6776392a22327615ff68a6c02ab16476"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#a6776392a22327615ff68a6c02ab16476">BoostDataSaver::~BoostDataSaver</a></div><div class="ttdeci">virtual ~BoostDataSaver()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00032">BoostDataSaver.h:32</a></div></div>
-<div class="ttc" id="classBoostDataSaver_html_a2e9c5d497213d92ffb3e76bdfc691de8"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#a2e9c5d497213d92ffb3e76bdfc691de8">BoostDataSaver::InitOutputFile</a></div><div class="ttdeci">virtual void InitOutputFile()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00034">BoostDataSaver.h:34</a></div></div>
-<div class="ttc" id="classBoostDataSaver_html_a9205ddb789b2ce1a88deaff1abcf40e0"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#a9205ddb789b2ce1a88deaff1abcf40e0">BoostDataSaver::Write</a></div><div class="ttdeci">void Write(std::ofstream &amp;outfile, TPayload *objArr, long sizeArr=1)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00036">BoostDataSaver.h:36</a></div></div>
-<div class="ttc" id="classBoostDataSaver_html_af8e6e734cc422fba4ba1accee2900fa6"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#af8e6e734cc422fba4ba1accee2900fa6">BoostDataSaver::Write</a></div><div class="ttdeci">void Write(std::ofstream &amp;outfile, std::vector&lt; TPayload &gt; dataVector)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00043">BoostDataSaver.h:43</a></div></div>
+<div class="ttc" id="classBoostDataSaver_html_afea1e703e5323c27cbfb97c844be6c8a"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#afea1e703e5323c27cbfb97c844be6c8a">BoostDataSaver::Read</a></div><div class="ttdeci">std::vector&lt; std::vector&lt; TPayload &gt; &gt; Read(std::ifstream &amp;infile)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00070">BoostDataSaver.h:70</a></div></div>
+<div class="ttc" id="classBoostDataSaver_html_a872b153c7ea7f03e0b479f73ce6a876b"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#a872b153c7ea7f03e0b479f73ce6a876b">BoostDataSaver::Write</a></div><div class="ttdeci">void Write(std::ofstream &amp;outfile, FairMQMessage *msg)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00055">BoostDataSaver.h:55</a></div></div>
+<div class="ttc" id="classBoostDataSaver_html_abb47e96a210417b9e30239f3cb88f76a"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#abb47e96a210417b9e30239f3cb88f76a">BoostDataSaver::BoostDataSaver</a></div><div class="ttdeci">BoostDataSaver()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00037">BoostDataSaver.h:37</a></div></div>
+<div class="ttc" id="classBoostDataSaver_html"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html">BoostDataSaver</a></div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00034">BoostDataSaver.h:34</a></div></div>
+<div class="ttc" id="classBoostDataSaver_html_a6776392a22327615ff68a6c02ab16476"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#a6776392a22327615ff68a6c02ab16476">BoostDataSaver::~BoostDataSaver</a></div><div class="ttdeci">virtual ~BoostDataSaver()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00038">BoostDataSaver.h:38</a></div></div>
+<div class="ttc" id="classBoostDataSaver_html_a2e9c5d497213d92ffb3e76bdfc691de8"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#a2e9c5d497213d92ffb3e76bdfc691de8">BoostDataSaver::InitOutputFile</a></div><div class="ttdeci">virtual void InitOutputFile()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00040">BoostDataSaver.h:40</a></div></div>
+<div class="ttc" id="classBoostDataSaver_html_a9205ddb789b2ce1a88deaff1abcf40e0"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#a9205ddb789b2ce1a88deaff1abcf40e0">BoostDataSaver::Write</a></div><div class="ttdeci">void Write(std::ofstream &amp;outfile, TPayload *objArr, long sizeArr=1)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00042">BoostDataSaver.h:42</a></div></div>
+<div class="ttc" id="classBoostDataSaver_html_af8e6e734cc422fba4ba1accee2900fa6"><div class="ttname"><a href="../../d3/dc1/classBoostDataSaver.html#af8e6e734cc422fba4ba1accee2900fa6">BoostDataSaver::Write</a></div><div class="ttdeci">void Write(std::ofstream &amp;outfile, std::vector&lt; TPayload &gt; dataVector)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d2c/BoostDataSaver_8h_source.html#l00049">BoostDataSaver.h:49</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_e914ee4d4a44400f1fdb170cb4ead18a.html">base</a></li><li class="navelem"><a class="el" href="../../dir_d920f5ac174c9ffab1632e31cff20df7.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_33374cced1ff33f7253369ab33e30a5e.html">policies</a></li><li class="navelem"><a class="el" href="../../dir_7b021e0bbbd941c183edb381f5b5c97e.html">Storage</a></li><li class="navelem"><a class="el" href="../../da/d2c/BoostDataSaver_8h.html">BoostDataSaver.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:39 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:47 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

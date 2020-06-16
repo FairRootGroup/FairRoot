@@ -119,99 +119,101 @@ $(document).ready(function(){initNavTree('da/dd7/project__stl__containers_2MyPro
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// -----                  M. Al-Turany   June 2014                     -----</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#ifndef PNDP8GENERATOR_H</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#define PNDP8GENERATOR_H 1</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;Pythia8/Basics.h&quot;</span>  <span class="comment">// for RndmEngine</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/d97/FairGenerator_8h.html">FairGenerator.h</a>&quot;</span>   <span class="comment">// for FairGenerator</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;Pythia8/Pythia.h&quot;</span>  <span class="comment">// for Pythia</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>          <span class="comment">// for Double_t, Bool_t, Int_t, etc</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;TRandom.h&gt;</span>         <span class="comment">// for TRandom</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;TRandom1.h&gt;</span>        <span class="comment">// for TRandom1</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;TRandom3.h&gt;</span>        <span class="comment">// for TRandom3, gRandom</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">class </span><a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>;  <span class="comment">// lines 22-22</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#ifndef My_PYTHIA8GENERATOR_H</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#define My_PYTHIA8GENERATOR_H 1</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/d97/FairGenerator_8h.html">FairGenerator.h</a>&quot;</span>    <span class="comment">// for FairGenerator</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;Pythia8/Basics.h&quot;</span>   <span class="comment">// for RndmEngine</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;Pythia8/Pythia.h&quot;</span>   <span class="comment">// for Pythia</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>           <span class="comment">// for Double_t, Bool_t, Int_t, etc</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;TRandom.h&gt;</span>          <span class="comment">// for TRandom</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;TRandom1.h&gt;</span>         <span class="comment">// for TRandom1</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;TRandom3.h&gt;</span>         <span class="comment">// for TRandom3, gRandom</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">class </span><a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>;   <span class="comment">// lines 22-22</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">class </span><a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>;</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">using namespace </span><a class="code" href="../../d3/dee/namespacePythia8.html">Pythia8</a>;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">class </span><a class="code" href="../../d5/d4d/classPyTr1Rng.html">PyTr1Rng</a> : <span class="keyword">public</span> RndmEngine</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;{</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="../../d5/d4d/classPyTr1Rng.html#ae5b31b74b581da42c9d446268d8ed011">   31</a></span>&#160;  <a class="code" href="../../d5/d4d/classPyTr1Rng.html#ae5b31b74b581da42c9d446268d8ed011">PyTr1Rng</a>() {  rng = <span class="keyword">new</span> TRandom1(gRandom-&gt;GetSeed()); };</div>
-<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="../../d5/d4d/classPyTr1Rng.html#a5f86600df2ba2af5e47df7eba5ba1d9b">   32</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="../../d5/d4d/classPyTr1Rng.html#a5f86600df2ba2af5e47df7eba5ba1d9b">~PyTr1Rng</a>() {};</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="../../d5/d4d/classPyTr1Rng.html#ae5b31b74b581da42c9d446268d8ed011">   31</a></span>&#160;    <a class="code" href="../../d5/d4d/classPyTr1Rng.html#ae5b31b74b581da42c9d446268d8ed011">PyTr1Rng</a>() { rng = <span class="keyword">new</span> TRandom1(gRandom-&gt;GetSeed()); };</div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="../../d5/d4d/classPyTr1Rng.html#a5f86600df2ba2af5e47df7eba5ba1d9b">   32</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d5/d4d/classPyTr1Rng.html#a5f86600df2ba2af5e47df7eba5ba1d9b">~PyTr1Rng</a>(){};</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="../../d5/d4d/classPyTr1Rng.html#ad8db8819c40eb0932cfb12f0b8852b68">   34</a></span>&#160;  Double_t <a class="code" href="../../d5/d4d/classPyTr1Rng.html#ad8db8819c40eb0932cfb12f0b8852b68">flat</a>() { <span class="keywordflow">return</span> rng-&gt;Rndm(); };</div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="../../d5/d4d/classPyTr1Rng.html#ad8db8819c40eb0932cfb12f0b8852b68">   34</a></span>&#160;    Double_t <a class="code" href="../../d5/d4d/classPyTr1Rng.html#ad8db8819c40eb0932cfb12f0b8852b68">flat</a>() { <span class="keywordflow">return</span> rng-&gt;Rndm(); };</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;  TRandom1 *rng; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    TRandom1 *rng;   </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;};</div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">class </span><a class="code" href="../../dd/d80/classPyTr3Rng.html">PyTr3Rng</a> : <span class="keyword">public</span> RndmEngine</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;{</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="../../dd/d80/classPyTr3Rng.html#adb49a23253cf1b70b894e15173bf8349">   43</a></span>&#160;  <a class="code" href="../../dd/d80/classPyTr3Rng.html#adb49a23253cf1b70b894e15173bf8349">PyTr3Rng</a>() {  rng = <span class="keyword">new</span> TRandom3(gRandom-&gt;GetSeed()); };</div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="../../dd/d80/classPyTr3Rng.html#a1f30dab969858b8ed5d6195fac871302">   44</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="../../dd/d80/classPyTr3Rng.html#a1f30dab969858b8ed5d6195fac871302">~PyTr3Rng</a>() {};</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="../../dd/d80/classPyTr3Rng.html#adb49a23253cf1b70b894e15173bf8349">   43</a></span>&#160;    <a class="code" href="../../dd/d80/classPyTr3Rng.html#adb49a23253cf1b70b894e15173bf8349">PyTr3Rng</a>() { rng = <span class="keyword">new</span> TRandom3(gRandom-&gt;GetSeed()); };</div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="../../dd/d80/classPyTr3Rng.html#a1f30dab969858b8ed5d6195fac871302">   44</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../dd/d80/classPyTr3Rng.html#a1f30dab969858b8ed5d6195fac871302">~PyTr3Rng</a>(){};</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="../../dd/d80/classPyTr3Rng.html#a7180fe38e3c7311e4a742b045d8d21a5">   46</a></span>&#160;  Double_t <a class="code" href="../../dd/d80/classPyTr3Rng.html#a7180fe38e3c7311e4a742b045d8d21a5">flat</a>() { <span class="keywordflow">return</span> rng-&gt;Rndm(); };</div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="../../dd/d80/classPyTr3Rng.html#a7180fe38e3c7311e4a742b045d8d21a5">   46</a></span>&#160;    Double_t <a class="code" href="../../dd/d80/classPyTr3Rng.html#a7180fe38e3c7311e4a742b045d8d21a5">flat</a>() { <span class="keywordflow">return</span> rng-&gt;Rndm(); };</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  TRandom3 *rng; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    TRandom3 *rng;   </div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;};</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">class </span><a class="code" href="../../de/d55/classPythia8Generator.html">Pythia8Generator</a> : <span class="keyword">public</span> <a class="code" href="../../df/d40/classFairGenerator.html">FairGenerator</a></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;{</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="../../de/d55/classPythia8Generator.html">Pythia8Generator</a>();</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">virtual</span> ~<a class="code" href="../../de/d55/classPythia8Generator.html">Pythia8Generator</a>();</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  Bool_t ReadEvent(<a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>*);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keywordtype">void</span> SetParameters(<span class="keywordtype">char</span>*);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keywordtype">void</span> Print(); </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">virtual</span> Bool_t Init(); </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="../../de/d55/classPythia8Generator.html#a0ab8c1d670e1b28ebda9f24114f6b947">   72</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="../../de/d55/classPythia8Generator.html#a0ab8c1d670e1b28ebda9f24114f6b947">SetMom</a>(Double_t mom) { fMom = mom; };</div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="../../de/d55/classPythia8Generator.html#a4708306ada26d31dbb83e47d05f4d0eb">   73</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="../../de/d55/classPythia8Generator.html#a4708306ada26d31dbb83e47d05f4d0eb">SetId</a>(Double_t <span class="keywordtype">id</span>) { fId  = id; };</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="../../de/d55/classPythia8Generator.html#a497c7e6e6d433fdc8cb032fd472a8501">   74</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="../../de/d55/classPythia8Generator.html#a497c7e6e6d433fdc8cb032fd472a8501">SetHNLId</a>(Int_t <span class="keywordtype">id</span>) { fHNL = id; };</div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="../../de/d55/classPythia8Generator.html#aceb1443f87222964e0d7885b23d85549">   75</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="../../de/d55/classPythia8Generator.html#aceb1443f87222964e0d7885b23d85549">UseRandom1</a>() { fUseRandom1 = kTRUE; fUseRandom3 = kFALSE; };</div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="../../de/d55/classPythia8Generator.html#aa66765891a7fd1913ef0c20334847dc7">   76</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="../../de/d55/classPythia8Generator.html#aa66765891a7fd1913ef0c20334847dc7">UseRandom3</a>() { fUseRandom1 = kFALSE; fUseRandom3 = kTRUE; };</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordtype">void</span> GetPythiaInstance(<span class="keywordtype">int</span>);</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  Pythia fPythia;             </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  RndmEngine* fRandomEngine;  </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  Double_t fMom;       <span class="comment">// proton momentum</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  Int_t    fHNL;       <span class="comment">// HNL ID</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  Int_t    fId;       <span class="comment">// target type</span></div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  Bool_t fUseRandom1;  <span class="comment">// flag to use TRandom1</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  Bool_t fUseRandom3;  <span class="comment">// flag to use TRandom3 (default)</span></div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  ClassDef(<a class="code" href="../../de/d55/classPythia8Generator.html">Pythia8Generator</a>,1);</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;};</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* !PNDP8GENERATOR_H */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="classPythia8Generator_html_aceb1443f87222964e0d7885b23d85549"><div class="ttname"><a href="../../de/d55/classPythia8Generator.html#aceb1443f87222964e0d7885b23d85549">Pythia8Generator::UseRandom1</a></div><div class="ttdeci">void UseRandom1()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00075">Pythia8Generator.h:75</a></div></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">class </span><a class="code" href="../../de/d55/classPythia8Generator.html">Pythia8Generator</a> : <span class="keyword">public</span> <a class="code" href="../../df/d40/classFairGenerator.html">FairGenerator</a></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;{</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="../../de/d55/classPythia8Generator.html">Pythia8Generator</a>();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="../../de/d55/classPythia8Generator.html">Pythia8Generator</a>();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    Bool_t ReadEvent(<a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a> *);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> SetParameters(<span class="keywordtype">char</span> *);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span> Print();   </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">virtual</span> Bool_t Init();   </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="../../de/d55/classPythia8Generator.html#a0ab8c1d670e1b28ebda9f24114f6b947">   68</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../de/d55/classPythia8Generator.html#a0ab8c1d670e1b28ebda9f24114f6b947">SetMom</a>(Double_t mom) { fMom = mom; };</div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="../../de/d55/classPythia8Generator.html#a4708306ada26d31dbb83e47d05f4d0eb">   69</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../de/d55/classPythia8Generator.html#a4708306ada26d31dbb83e47d05f4d0eb">SetId</a>(Double_t <span class="keywordtype">id</span>) { fId = id; };</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="../../de/d55/classPythia8Generator.html#a497c7e6e6d433fdc8cb032fd472a8501">   70</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../de/d55/classPythia8Generator.html#a497c7e6e6d433fdc8cb032fd472a8501">SetHNLId</a>(Int_t <span class="keywordtype">id</span>) { fHNL = id; };</div>
+<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="../../de/d55/classPythia8Generator.html#aceb1443f87222964e0d7885b23d85549">   71</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../de/d55/classPythia8Generator.html#aceb1443f87222964e0d7885b23d85549">UseRandom1</a>()</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    {</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        fUseRandom1 = kTRUE;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        fUseRandom3 = kFALSE;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    };</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="../../de/d55/classPythia8Generator.html#aa66765891a7fd1913ef0c20334847dc7">   76</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../de/d55/classPythia8Generator.html#aa66765891a7fd1913ef0c20334847dc7">UseRandom3</a>()</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    {</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        fUseRandom1 = kFALSE;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        fUseRandom3 = kTRUE;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    };</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span> GetPythiaInstance(<span class="keywordtype">int</span>);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    Pythia fPythia;              </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    RndmEngine *fRandomEngine;   </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    Double_t fMom;        <span class="comment">// proton momentum</span></div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    Int_t fHNL;           <span class="comment">// HNL ID</span></div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    Int_t fId;            <span class="comment">// target type</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    Bool_t fUseRandom1;   <span class="comment">// flag to use TRandom1</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    Bool_t fUseRandom3;   <span class="comment">// flag to use TRandom3 (default)</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    ClassDef(<a class="code" href="../../de/d55/classPythia8Generator.html">Pythia8Generator</a>, 1);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;};</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* !My_PYTHIA8GENERATOR_H */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="classPythia8Generator_html_aceb1443f87222964e0d7885b23d85549"><div class="ttname"><a href="../../de/d55/classPythia8Generator.html#aceb1443f87222964e0d7885b23d85549">Pythia8Generator::UseRandom1</a></div><div class="ttdeci">void UseRandom1()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00071">Pythia8Generator.h:71</a></div></div>
 <div class="ttc" id="classPyTr3Rng_html_a7180fe38e3c7311e4a742b045d8d21a5"><div class="ttname"><a href="../../dd/d80/classPyTr3Rng.html#a7180fe38e3c7311e4a742b045d8d21a5">PyTr3Rng::flat</a></div><div class="ttdeci">Double_t flat()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00046">Pythia8Generator.h:46</a></div></div>
-<div class="ttc" id="classFairGenerator_html"><div class="ttname"><a href="../../df/d40/classFairGenerator.html">FairGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d97/FairGenerator_8h_source.html#l00034">FairGenerator.h:34</a></div></div>
-<div class="ttc" id="classPythia8Generator_html_a0ab8c1d670e1b28ebda9f24114f6b947"><div class="ttname"><a href="../../de/d55/classPythia8Generator.html#a0ab8c1d670e1b28ebda9f24114f6b947">Pythia8Generator::SetMom</a></div><div class="ttdeci">void SetMom(Double_t mom)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00072">Pythia8Generator.h:72</a></div></div>
-<div class="ttc" id="classPythia8Generator_html"><div class="ttname"><a href="../../de/d55/classPythia8Generator.html">Pythia8Generator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d99/project__root__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00055">Pythia8Generator.h:55</a></div></div>
+<div class="ttc" id="classFairGenerator_html"><div class="ttname"><a href="../../df/d40/classFairGenerator.html">FairGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d97/FairGenerator_8h_source.html#l00031">FairGenerator.h:31</a></div></div>
+<div class="ttc" id="classPythia8Generator_html_a0ab8c1d670e1b28ebda9f24114f6b947"><div class="ttname"><a href="../../de/d55/classPythia8Generator.html#a0ab8c1d670e1b28ebda9f24114f6b947">Pythia8Generator::SetMom</a></div><div class="ttdeci">void SetMom(Double_t mom)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00068">Pythia8Generator.h:68</a></div></div>
+<div class="ttc" id="classPythia8Generator_html"><div class="ttname"><a href="../../de/d55/classPythia8Generator.html">Pythia8Generator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d99/project__root__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00052">Pythia8Generator.h:52</a></div></div>
 <div class="ttc" id="classPyTr1Rng_html_ad8db8819c40eb0932cfb12f0b8852b68"><div class="ttname"><a href="../../d5/d4d/classPyTr1Rng.html#ad8db8819c40eb0932cfb12f0b8852b68">PyTr1Rng::flat</a></div><div class="ttdeci">Double_t flat()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00034">Pythia8Generator.h:34</a></div></div>
-<div class="ttc" id="classFairPrimaryGenerator_html"><div class="ttname"><a href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/dba/FairPrimaryGenerator_8h_source.html#l00041">FairPrimaryGenerator.h:41</a></div></div>
+<div class="ttc" id="classFairPrimaryGenerator_html"><div class="ttname"><a href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/dba/FairPrimaryGenerator_8h_source.html#l00039">FairPrimaryGenerator.h:39</a></div></div>
 <div class="ttc" id="classPyTr1Rng_html_a5f86600df2ba2af5e47df7eba5ba1d9b"><div class="ttname"><a href="../../d5/d4d/classPyTr1Rng.html#a5f86600df2ba2af5e47df7eba5ba1d9b">PyTr1Rng::~PyTr1Rng</a></div><div class="ttdeci">virtual ~PyTr1Rng()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00032">Pythia8Generator.h:32</a></div></div>
 <div class="ttc" id="classPyTr1Rng_html"><div class="ttname"><a href="../../d5/d4d/classPyTr1Rng.html">PyTr1Rng</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d99/project__root__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00028">Pythia8Generator.h:28</a></div></div>
 <div class="ttc" id="classPyTr3Rng_html"><div class="ttname"><a href="../../dd/d80/classPyTr3Rng.html">PyTr3Rng</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d99/project__root__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00040">Pythia8Generator.h:40</a></div></div>
-<div class="ttc" id="classPythia8Generator_html_a497c7e6e6d433fdc8cb032fd472a8501"><div class="ttname"><a href="../../de/d55/classPythia8Generator.html#a497c7e6e6d433fdc8cb032fd472a8501">Pythia8Generator::SetHNLId</a></div><div class="ttdeci">void SetHNLId(Int_t id)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00074">Pythia8Generator.h:74</a></div></div>
-<div class="ttc" id="classPythia8Generator_html_a4708306ada26d31dbb83e47d05f4d0eb"><div class="ttname"><a href="../../de/d55/classPythia8Generator.html#a4708306ada26d31dbb83e47d05f4d0eb">Pythia8Generator::SetId</a></div><div class="ttdeci">void SetId(Double_t id)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00073">Pythia8Generator.h:73</a></div></div>
+<div class="ttc" id="classPythia8Generator_html_a497c7e6e6d433fdc8cb032fd472a8501"><div class="ttname"><a href="../../de/d55/classPythia8Generator.html#a497c7e6e6d433fdc8cb032fd472a8501">Pythia8Generator::SetHNLId</a></div><div class="ttdeci">void SetHNLId(Int_t id)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00070">Pythia8Generator.h:70</a></div></div>
+<div class="ttc" id="classPythia8Generator_html_a4708306ada26d31dbb83e47d05f4d0eb"><div class="ttname"><a href="../../de/d55/classPythia8Generator.html#a4708306ada26d31dbb83e47d05f4d0eb">Pythia8Generator::SetId</a></div><div class="ttdeci">void SetId(Double_t id)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00069">Pythia8Generator.h:69</a></div></div>
 <div class="ttc" id="classPyTr3Rng_html_adb49a23253cf1b70b894e15173bf8349"><div class="ttname"><a href="../../dd/d80/classPyTr3Rng.html#adb49a23253cf1b70b894e15173bf8349">PyTr3Rng::PyTr3Rng</a></div><div class="ttdeci">PyTr3Rng()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00043">Pythia8Generator.h:43</a></div></div>
 <div class="ttc" id="classPythia8Generator_html_aa66765891a7fd1913ef0c20334847dc7"><div class="ttname"><a href="../../de/d55/classPythia8Generator.html#aa66765891a7fd1913ef0c20334847dc7">Pythia8Generator::UseRandom3</a></div><div class="ttdeci">void UseRandom3()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h_source.html#l00076">Pythia8Generator.h:76</a></div></div>
 <div class="ttc" id="namespacePythia8_html"><div class="ttname"><a href="../../d3/dee/namespacePythia8.html">Pythia8</a></div></div>
@@ -224,7 +226,7 @@ $(document).ready(function(){initNavTree('da/dd7/project__stl__containers_2MyPro
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_096b0de097b3e98f91191e9d894d4363.html">templates</a></li><li class="navelem"><a class="el" href="../../dir_ff524cbdd78500b78132ce63ddb53ead.html">project_stl_containers</a></li><li class="navelem"><a class="el" href="../../dir_3c2f1aae8f111a00f7304efd0083d395.html">MyProjGenerators</a></li><li class="navelem"><a class="el" href="../../da/dd7/project__stl__containers_2MyProjGenerators_2Pythia8Generator_8h.html">Pythia8Generator.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:52 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:59:00 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

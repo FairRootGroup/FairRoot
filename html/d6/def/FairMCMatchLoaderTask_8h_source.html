@@ -111,8 +111,8 @@ $(document).ready(function(){initNavTree('d6/def/FairMCMatchLoaderTask_8h_source
 <a href="../../d6/def/FairMCMatchLoaderTask_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/********************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *                                                                              *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             * </span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *  </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
@@ -120,66 +120,63 @@ $(document).ready(function(){initNavTree('d6/def/FairMCMatchLoaderTask_8h_source
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// -----                  Created 20/03/07  by R.Kliemt               -----</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#ifndef FAIRMCMATCHLOADERTASK_H</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#define FAIRMCMATCHLOADERTASK_H</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#ifndef FAIRMCMATCHLOADERTASK_H</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#define FAIRMCMATCHLOADERTASK_H</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d8/d44/FairTask_8h.html">FairTask.h</a>&quot;</span>   <span class="comment">// for FairTask, InitStatus</span></div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d8/d44/FairTask_8h.html">FairTask.h</a>&quot;</span>                   <span class="comment">// for FairTask, InitStatus</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>   <span class="comment">// for ClassDef</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>                     <span class="comment">// for ClassDef</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">class </span><a class="code" href="../../dd/d8c/classFairMCMatch.html">FairMCMatch</a>;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">class </span>TClonesArray;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="../../d1/de3/classFairMCMatchLoaderTask.html">   31</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html">FairMCMatchLoaderTask</a> : <span class="keyword">public</span> <a class="code" href="../../d2/d9e/classFairTask.html">FairTask</a></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a7d7e08ab267135e203dc959a1038b7f9">FairMCMatchLoaderTask</a>();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a972b2538665339f854b84e0ca50766d9">~FairMCMatchLoaderTask</a>();</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#ae813420f9e283160d50bc420da0118dd">SetParContainers</a>();</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d8/d44/FairTask_8h.html#ac29def3095b23bd5d68cec73adacbf4c">InitStatus</a> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a338ace115d85bf67ead8d15fc039ac13">Init</a>();</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">class </span><a class="code" href="../../dd/d8c/classFairMCMatch.html">FairMCMatch</a>;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keyword">class </span>TClonesArray;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="../../d1/de3/classFairMCMatchLoaderTask.html">   29</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html">FairMCMatchLoaderTask</a> : <span class="keyword">public</span> <a class="code" href="../../d2/d9e/classFairTask.html">FairTask</a></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a7d7e08ab267135e203dc959a1038b7f9">FairMCMatchLoaderTask</a>();</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a972b2538665339f854b84e0ca50766d9">~FairMCMatchLoaderTask</a>();</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#ae813420f9e283160d50bc420da0118dd">SetParContainers</a>();</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../d8/d44/FairTask_8h.html#ac29def3095b23bd5d68cec73adacbf4c">InitStatus</a> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a338ace115d85bf67ead8d15fc039ac13">Init</a>();</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a159508c2287455582fd3b46fd902d012">Exec</a>(Option_t* opt);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a159508c2287455582fd3b46fd902d012">Exec</a>(Option_t* opt);</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a6001b68613f456e6472e4c7a1a56607d">Finish</a>();</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a4e49a1951c2f891f1b825e9ec64a9e07">InitDataStages</a>() = 0;</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a6001b68613f456e6472e4c7a1a56607d">Finish</a>();</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a4e49a1951c2f891f1b825e9ec64a9e07">InitDataStages</a>() = 0;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="../../d1/de3/classFairMCMatchLoaderTask.html#ace070b57fc5b311836ef57d1a99a1b6a">   54</a></span>&#160;    <a class="code" href="../../dd/d8c/classFairMCMatch.html">FairMCMatch</a>* <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#ace070b57fc5b311836ef57d1a99a1b6a">fMCMatch</a>;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="../../d1/de3/classFairMCMatchLoaderTask.html#ace070b57fc5b311836ef57d1a99a1b6a">   50</a></span>&#160;    <a class="code" href="../../dd/d8c/classFairMCMatch.html">FairMCMatch</a>* <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#ace070b57fc5b311836ef57d1a99a1b6a">fMCMatch</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    TClonesArray* fMCLink;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">int</span> fEventNr;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    TClonesArray* fMCLink;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">int</span> fEventNr;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> Register();</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">void</span> Reset();</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span> Register();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordtype">void</span> ProduceHits();</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span> Reset();</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">void</span> ProduceHits();</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a7d7e08ab267135e203dc959a1038b7f9">FairMCMatchLoaderTask</a>(<span class="keyword">const</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html">FairMCMatchLoaderTask</a>&amp;);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html">FairMCMatchLoaderTask</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html">FairMCMatchLoaderTask</a>&amp;);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    ClassDef(<a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html">FairMCMatchLoaderTask</a>,1);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;};</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classFairMCMatchLoaderTask_html_ace070b57fc5b311836ef57d1a99a1b6a"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#ace070b57fc5b311836ef57d1a99a1b6a">FairMCMatchLoaderTask::fMCMatch</a></div><div class="ttdeci">FairMCMatch * fMCMatch</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/def/FairMCMatchLoaderTask_8h_source.html#l00054">FairMCMatchLoaderTask.h:54</a></div></div>
-<div class="ttc" id="classFairMCMatchLoaderTask_html_a7d7e08ab267135e203dc959a1038b7f9"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#a7d7e08ab267135e203dc959a1038b7f9">FairMCMatchLoaderTask::FairMCMatchLoaderTask</a></div><div class="ttdeci">FairMCMatchLoaderTask()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d8a/FairMCMatchLoaderTask_8cxx_source.html#l00021">FairMCMatchLoaderTask.cxx:21</a></div></div>
-<div class="ttc" id="classFairMCMatchLoaderTask_html_ae813420f9e283160d50bc420da0118dd"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#ae813420f9e283160d50bc420da0118dd">FairMCMatchLoaderTask::SetParContainers</a></div><div class="ttdeci">virtual void SetParContainers()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d8a/FairMCMatchLoaderTask_8cxx_source.html#l00108">FairMCMatchLoaderTask.cxx:108</a></div></div>
-<div class="ttc" id="classFairTask_html"><div class="ttname"><a href="../../d2/d9e/classFairTask.html">FairTask</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d44/FairTask_8h_source.html#l00036">FairTask.h:36</a></div></div>
-<div class="ttc" id="FairTask_8h_html_ac29def3095b23bd5d68cec73adacbf4c"><div class="ttname"><a href="../../d8/d44/FairTask_8h.html#ac29def3095b23bd5d68cec73adacbf4c">InitStatus</a></div><div class="ttdeci">InitStatus</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d44/FairTask_8h_source.html#l00034">FairTask.h:34</a></div></div>
-<div class="ttc" id="classFairMCMatchLoaderTask_html_a159508c2287455582fd3b46fd902d012"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#a159508c2287455582fd3b46fd902d012">FairMCMatchLoaderTask::Exec</a></div><div class="ttdeci">virtual void Exec(Option_t *opt)</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d8a/FairMCMatchLoaderTask_8cxx_source.html#l00112">FairMCMatchLoaderTask.cxx:112</a></div></div>
-<div class="ttc" id="classFairMCMatchLoaderTask_html_a338ace115d85bf67ead8d15fc039ac13"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#a338ace115d85bf67ead8d15fc039ac13">FairMCMatchLoaderTask::Init</a></div><div class="ttdeci">virtual InitStatus Init()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d8a/FairMCMatchLoaderTask_8cxx_source.html#l00033">FairMCMatchLoaderTask.cxx:33</a></div></div>
-<div class="ttc" id="classFairMCMatchLoaderTask_html_a972b2538665339f854b84e0ca50766d9"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#a972b2538665339f854b84e0ca50766d9">FairMCMatchLoaderTask::~FairMCMatchLoaderTask</a></div><div class="ttdeci">virtual ~FairMCMatchLoaderTask()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d8a/FairMCMatchLoaderTask_8cxx_source.html#l00029">FairMCMatchLoaderTask.cxx:29</a></div></div>
-<div class="ttc" id="classFairMCMatchLoaderTask_html_a6001b68613f456e6472e4c7a1a56607d"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#a6001b68613f456e6472e4c7a1a56607d">FairMCMatchLoaderTask::Finish</a></div><div class="ttdeci">virtual void Finish()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d8a/FairMCMatchLoaderTask_8cxx_source.html#l00125">FairMCMatchLoaderTask.cxx:125</a></div></div>
-<div class="ttc" id="classFairMCMatchLoaderTask_html"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html">FairMCMatchLoaderTask</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d6/def/FairMCMatchLoaderTask_8h_source.html#l00031">FairMCMatchLoaderTask.h:31</a></div></div>
-<div class="ttc" id="classFairMCMatch_html"><div class="ttname"><a href="../../dd/d8c/classFairMCMatch.html">FairMCMatch</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d8/ddb/FairMCMatch_8h_source.html#l00040">FairMCMatch.h:40</a></div></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html#a7d7e08ab267135e203dc959a1038b7f9">FairMCMatchLoaderTask</a>(<span class="keyword">const</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html">FairMCMatchLoaderTask</a>&amp;);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html">FairMCMatchLoaderTask</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html">FairMCMatchLoaderTask</a>&amp;);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    ClassDef(<a class="code" href="../../d1/de3/classFairMCMatchLoaderTask.html">FairMCMatchLoaderTask</a>, 1);</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classFairMCMatchLoaderTask_html_ace070b57fc5b311836ef57d1a99a1b6a"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#ace070b57fc5b311836ef57d1a99a1b6a">FairMCMatchLoaderTask::fMCMatch</a></div><div class="ttdeci">FairMCMatch * fMCMatch</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/def/FairMCMatchLoaderTask_8h_source.html#l00050">FairMCMatchLoaderTask.h:50</a></div></div>
+<div class="ttc" id="classFairMCMatchLoaderTask_html_a7d7e08ab267135e203dc959a1038b7f9"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#a7d7e08ab267135e203dc959a1038b7f9">FairMCMatchLoaderTask::FairMCMatchLoaderTask</a></div><div class="ttdeci">FairMCMatchLoaderTask()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d8a/FairMCMatchLoaderTask_8cxx_source.html#l00020">FairMCMatchLoaderTask.cxx:20</a></div></div>
+<div class="ttc" id="classFairMCMatchLoaderTask_html_ae813420f9e283160d50bc420da0118dd"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#ae813420f9e283160d50bc420da0118dd">FairMCMatchLoaderTask::SetParContainers</a></div><div class="ttdeci">virtual void SetParContainers()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d8a/FairMCMatchLoaderTask_8cxx_source.html#l00104">FairMCMatchLoaderTask.cxx:104</a></div></div>
+<div class="ttc" id="classFairTask_html"><div class="ttname"><a href="../../d2/d9e/classFairTask.html">FairTask</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d44/FairTask_8h_source.html#l00040">FairTask.h:40</a></div></div>
+<div class="ttc" id="FairTask_8h_html_ac29def3095b23bd5d68cec73adacbf4c"><div class="ttname"><a href="../../d8/d44/FairTask_8h.html#ac29def3095b23bd5d68cec73adacbf4c">InitStatus</a></div><div class="ttdeci">InitStatus</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d44/FairTask_8h_source.html#l00033">FairTask.h:33</a></div></div>
+<div class="ttc" id="classFairMCMatchLoaderTask_html_a159508c2287455582fd3b46fd902d012"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#a159508c2287455582fd3b46fd902d012">FairMCMatchLoaderTask::Exec</a></div><div class="ttdeci">virtual void Exec(Option_t *opt)</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d8a/FairMCMatchLoaderTask_8cxx_source.html#l00106">FairMCMatchLoaderTask.cxx:106</a></div></div>
+<div class="ttc" id="classFairMCMatchLoaderTask_html_a338ace115d85bf67ead8d15fc039ac13"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#a338ace115d85bf67ead8d15fc039ac13">FairMCMatchLoaderTask::Init</a></div><div class="ttdeci">virtual InitStatus Init()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d8a/FairMCMatchLoaderTask_8cxx_source.html#l00029">FairMCMatchLoaderTask.cxx:29</a></div></div>
+<div class="ttc" id="classFairMCMatchLoaderTask_html_a972b2538665339f854b84e0ca50766d9"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#a972b2538665339f854b84e0ca50766d9">FairMCMatchLoaderTask::~FairMCMatchLoaderTask</a></div><div class="ttdeci">virtual ~FairMCMatchLoaderTask()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d8a/FairMCMatchLoaderTask_8cxx_source.html#l00027">FairMCMatchLoaderTask.cxx:27</a></div></div>
+<div class="ttc" id="classFairMCMatchLoaderTask_html_a6001b68613f456e6472e4c7a1a56607d"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#a6001b68613f456e6472e4c7a1a56607d">FairMCMatchLoaderTask::Finish</a></div><div class="ttdeci">virtual void Finish()</div><div class="ttdef"><b>Definition:</b> <a href="../../d6/d8a/FairMCMatchLoaderTask_8cxx_source.html#l00121">FairMCMatchLoaderTask.cxx:121</a></div></div>
+<div class="ttc" id="classFairMCMatchLoaderTask_html"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html">FairMCMatchLoaderTask</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d6/def/FairMCMatchLoaderTask_8h_source.html#l00029">FairMCMatchLoaderTask.h:29</a></div></div>
+<div class="ttc" id="classFairMCMatch_html"><div class="ttname"><a href="../../dd/d8c/classFairMCMatch.html">FairMCMatch</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d8/ddb/FairMCMatch_8h_source.html#l00038">FairMCMatch.h:38</a></div></div>
 <div class="ttc" id="classFairMCMatchLoaderTask_html_a4e49a1951c2f891f1b825e9ec64a9e07"><div class="ttname"><a href="../../d1/de3/classFairMCMatchLoaderTask.html#a4e49a1951c2f891f1b825e9ec64a9e07">FairMCMatchLoaderTask::InitDataStages</a></div><div class="ttdeci">virtual void InitDataStages()=0</div></div>
 <div class="ttc" id="FairTask_8h_html"><div class="ttname"><a href="../../d8/d44/FairTask_8h.html">FairTask.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -188,7 +185,7 @@ $(document).ready(function(){initNavTree('d6/def/FairMCMatchLoaderTask_8h_source
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d4cf5ce4f2b45937075721e478addabf.html">datamatch</a></li><li class="navelem"><a class="el" href="../../d6/def/FairMCMatchLoaderTask_8h.html">FairMCMatchLoaderTask.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:49 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:57 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

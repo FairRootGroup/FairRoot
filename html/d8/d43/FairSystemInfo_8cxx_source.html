@@ -124,15 +124,15 @@ $(document).ready(function(){initNavTree('d8/d43/FairSystemInfo_8cxx_source.html
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d4/d2d/FairSystemInfo_8h.html">FairSystemInfo.h</a>&quot;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;sys/resource.h&gt;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;sys/resource.h&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;unistd.h&gt;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#if defined(__APPLE__) &amp;&amp; defined(__MACH__)</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;mach/mach.h&gt;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#elif defined(__linux__) || defined(__linux) || defined(linux) || defined(__gnu_linux__)</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;limits&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;limits&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#error &quot;Unknown OS.&quot;</span></div>
@@ -140,28 +140,28 @@ $(document).ready(function(){initNavTree('d8/d43/FairSystemInfo_8cxx_source.html
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="../../d2/dc5/classFairSystemInfo.html#ab06190d8663eb3ba74159c1755987cbc">   31</a></span>&#160;Float_t <a class="code" href="../../d2/dc5/classFairSystemInfo.html#ab06190d8663eb3ba74159c1755987cbc">FairSystemInfo::GetMaxMemory</a>()</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <span class="comment">// Returns the maximal used memory in MB</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="comment">// Returns the maximal used memory in MB</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">struct </span>rusage rusage;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  getrusage( RUSAGE_SELF, &amp;rusage );</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">struct </span>rusage rusage;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    getrusage(RUSAGE_SELF, &amp;rusage);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#if defined(__APPLE__) &amp;&amp; defined(__MACH__)</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Float_t<span class="keyword">&gt;</span>(rusage.ru_maxrss)/(1024*1024);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Float_t<span class="keyword">&gt;</span>(rusage.ru_maxrss) / (1024 * 1024);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Float_t<span class="keyword">&gt;</span>(rusage.ru_maxrss)/1024;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>Float_t<span class="keyword">&gt;</span>(rusage.ru_maxrss) / 1024;</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;}</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="../../d2/dc5/classFairSystemInfo.html#a0fbde3795e036725bc2c10478951a9e5">   49</a></span>&#160;<span class="keywordtype">size_t</span> <a class="code" href="../../d2/dc5/classFairSystemInfo.html#a0fbde3795e036725bc2c10478951a9e5">FairSystemInfo::GetCurrentMemory</a>( )</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="../../d2/dc5/classFairSystemInfo.html#a0fbde3795e036725bc2c10478951a9e5">   49</a></span>&#160;<span class="keywordtype">size_t</span> <a class="code" href="../../d2/dc5/classFairSystemInfo.html#a0fbde3795e036725bc2c10478951a9e5">FairSystemInfo::GetCurrentMemory</a>()</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;{</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#if defined(__APPLE__) &amp;&amp; defined(__MACH__)</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">/* OSX ------------------------------------------------------ */</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">struct </span>mach_task_basic_info info;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    mach_msg_type_number_t infoCount = MACH_TASK_BASIC_INFO_COUNT;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">if</span> ( task_info( mach_task_self( ), MACH_TASK_BASIC_INFO,</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        reinterpret_cast&lt;task_info_t&gt;(&amp;info), &amp;infoCount ) != KERN_SUCCESS )</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">//        (task_info_t)&amp;info, &amp;infoCount ) != KERN_SUCCESS )</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(0L);      <span class="comment">/* Can&#39;t access? */</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordflow">if</span> (task_info(mach_task_self(), MACH_TASK_BASIC_INFO, reinterpret_cast&lt;task_info_t&gt;(&amp;info), &amp;infoCount)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;        != KERN_SUCCESS)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;        <span class="comment">//        (task_info_t)&amp;info, &amp;infoCount ) != KERN_SUCCESS )</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;        <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(0L); <span class="comment">/* Can&#39;t access? */</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">size_t</span><span class="keyword">&gt;</span>(info.resident_size);</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#elif defined(__linux__) || defined(__linux) || defined(linux) || defined(__gnu_linux__)</span></div>
@@ -169,25 +169,24 @@ $(document).ready(function(){initNavTree('d8/d43/FairSystemInfo_8cxx_source.html
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">long</span> rss = 0L;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">long</span> pagesize = sysconf(_SC_PAGESIZE);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    FILE* fp = NULL;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">if</span> ( (fp = fopen( <span class="stringliteral">&quot;/proc/self/statm&quot;</span>, <span class="stringliteral">&quot;r&quot;</span> )) == NULL )</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">return</span> (<span class="keywordtype">size_t</span>)0L;      <span class="comment">/* Can&#39;t open? */</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">if</span> ( fscanf( fp, <span class="stringliteral">&quot;%*s%ld&quot;</span>, &amp;rss ) != 1 )</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        fclose( fp );</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">return</span> (<span class="keywordtype">size_t</span>)0L;      <span class="comment">/* Can&#39;t read? */</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    fclose( fp );</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordflow">if</span> (rss &gt; 0 &amp;&amp; rss &lt; std::numeric_limits&lt;std::size_t&gt;::max()/pagesize) {</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      <span class="keywordflow">return</span> (<span class="keywordtype">size_t</span>)rss * (size_t)sysconf(_SC_PAGESIZE);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;       <span class="keywordflow">return</span> (<span class="keywordtype">size_t</span>)0L;</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    }</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="comment">/* AIX, BSD, Solaris, and Unknown OS ------------------------ */</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordflow">return</span> (<span class="keywordtype">size_t</span>)0L;          <span class="comment">/* Unsupported. */</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">if</span> ((fp = fopen(<span class="stringliteral">&quot;/proc/self/statm&quot;</span>, <span class="stringliteral">&quot;r&quot;</span>)) == NULL)</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        <span class="keywordflow">return</span> (<span class="keywordtype">size_t</span>)0L; <span class="comment">/* Can&#39;t open? */</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">if</span> (fscanf(fp, <span class="stringliteral">&quot;%*s%ld&quot;</span>, &amp;rss) != 1) {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        fclose(fp);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="keywordflow">return</span> (<span class="keywordtype">size_t</span>)0L; <span class="comment">/* Can&#39;t read? */</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    }</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    fclose(fp);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordflow">if</span> (rss &gt; 0 &amp;&amp; rss &lt; std::numeric_limits&lt;std::size_t&gt;::max() / pagesize) {</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">return</span> (<span class="keywordtype">size_t</span>)rss * (size_t)sysconf(_SC_PAGESIZE);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordflow">return</span> (<span class="keywordtype">size_t</span>)0L;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="comment">/* AIX, BSD, Solaris, and Unknown OS ------------------------ */</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordflow">return</span> (<span class="keywordtype">size_t</span>)0L; <span class="comment">/* Unsupported. */</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;}</div>
 <div class="ttc" id="FairSystemInfo_8h_html"><div class="ttname"><a href="../../d4/d2d/FairSystemInfo_8h.html">FairSystemInfo.h</a></div></div>
 <div class="ttc" id="classFairSystemInfo_html_ab06190d8663eb3ba74159c1755987cbc"><div class="ttname"><a href="../../d2/dc5/classFairSystemInfo.html#ab06190d8663eb3ba74159c1755987cbc">FairSystemInfo::GetMaxMemory</a></div><div class="ttdeci">Float_t GetMaxMemory()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d43/FairSystemInfo_8cxx_source.html#l00031">FairSystemInfo.cxx:31</a></div></div>
 <div class="ttc" id="classFairSystemInfo_html_a0fbde3795e036725bc2c10478951a9e5"><div class="ttname"><a href="../../d2/dc5/classFairSystemInfo.html#a0fbde3795e036725bc2c10478951a9e5">FairSystemInfo::GetCurrentMemory</a></div><div class="ttdeci">size_t GetCurrentMemory()</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d43/FairSystemInfo_8cxx_source.html#l00049">FairSystemInfo.cxx:49</a></div></div>
@@ -197,7 +196,7 @@ $(document).ready(function(){initNavTree('d8/d43/FairSystemInfo_8cxx_source.html
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_de25c4cb714ca2c676b6c7c1aca22617.html">fairtools</a></li><li class="navelem"><a class="el" href="../../d8/d43/FairSystemInfo_8cxx.html">FairSystemInfo.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:50 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:59 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

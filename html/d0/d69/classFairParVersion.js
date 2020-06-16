@@ -3,6 +3,7 @@ var classFairParVersion =
     [ "FairParVersion", "d0/d69/classFairParVersion.html#afdbc3ecf9c739bc7988bc6bae82a39ae", null ],
     [ "FairParVersion", "d0/d69/classFairParVersion.html#a8dc1d38455606db4a4198fc1a7fcda1a", null ],
     [ "~FairParVersion", "d0/d69/classFairParVersion.html#a34e53c3cbcba21106412b3dd9f767edc", null ],
+    [ "ClassDef", "d0/d69/classFairParVersion.html#a2e1e9883a14d4df06f071613ec598c9e", null ],
     [ "getInputVersion", "d0/d69/classFairParVersion.html#a00946ef314b160b20f1261c11995a2bb", null ],
     [ "getRootVersion", "d0/d69/classFairParVersion.html#abd571251f3a7bffaf72c135872968fb1", null ],
     [ "resetInputVersions", "d0/d69/classFairParVersion.html#ad5bf513e9d547cdbe442f435a330b143", null ],

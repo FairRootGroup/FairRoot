@@ -119,41 +119,40 @@ $(document).ready(function(){initNavTree('df/d03/FairMQRunDevice_8h_source.html'
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#ifndef FAIRMQRUNDEVICE_H_</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#define FAIRMQRUNDEVICE_H_</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;FairMQDevice.h&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">class </span>TObject;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="../../dc/d6a/classFairMQRunDevice.html">   25</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../dc/d6a/classFairMQRunDevice.html">FairMQRunDevice</a> : <span class="keyword">public</span> FairMQDevice</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;{</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="../../dc/d6a/classFairMQRunDevice.html#a23bbc25a5c49d2d9266003f2551c38fc">   28</a></span>&#160;   <a class="code" href="../../dc/d6a/classFairMQRunDevice.html#a23bbc25a5c49d2d9266003f2551c38fc">FairMQRunDevice</a>() {}</div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="../../dc/d6a/classFairMQRunDevice.html#ad19cca52a7568eaecb3e24b591ca0926">   29</a></span>&#160;   <span class="keyword">virtual</span> <a class="code" href="../../dc/d6a/classFairMQRunDevice.html#ad19cca52a7568eaecb3e24b591ca0926">~FairMQRunDevice</a>() {}</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;   <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../dc/d6a/classFairMQRunDevice.html#a54bec9d73f2650a5de9a4d75e7c3cd65">SendBranches</a>();</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;   <span class="keywordtype">void</span> <a class="code" href="../../dc/d6a/classFairMQRunDevice.html#a14962999e289f8183e4ae08c07736d8c">SendObject</a>(TObject* obj, <span class="keyword">const</span> std::string&amp; chan);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;   <a class="code" href="../../dc/d6a/classFairMQRunDevice.html#a23bbc25a5c49d2d9266003f2551c38fc">FairMQRunDevice</a>(<span class="keyword">const</span> <a class="code" href="../../dc/d6a/classFairMQRunDevice.html">FairMQRunDevice</a>&amp;);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;   <a class="code" href="../../dc/d6a/classFairMQRunDevice.html">FairMQRunDevice</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../dc/d6a/classFairMQRunDevice.html">FairMQRunDevice</a>&amp;);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;};</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* FAIRMQRUNDEVICE_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="classFairMQRunDevice_html_a23bbc25a5c49d2d9266003f2551c38fc"><div class="ttname"><a href="../../dc/d6a/classFairMQRunDevice.html#a23bbc25a5c49d2d9266003f2551c38fc">FairMQRunDevice::FairMQRunDevice</a></div><div class="ttdeci">FairMQRunDevice()</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d03/FairMQRunDevice_8h_source.html#l00028">FairMQRunDevice.h:28</a></div></div>
-<div class="ttc" id="classFairMQRunDevice_html_a14962999e289f8183e4ae08c07736d8c"><div class="ttname"><a href="../../dc/d6a/classFairMQRunDevice.html#a14962999e289f8183e4ae08c07736d8c">FairMQRunDevice::SendObject</a></div><div class="ttdeci">void SendObject(TObject *obj, const std::string &amp;chan)</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/df1/FairMQRunDevice_8cxx_source.html#l00035">FairMQRunDevice.cxx:35</a></div></div>
-<div class="ttc" id="classFairMQRunDevice_html_a54bec9d73f2650a5de9a4d75e7c3cd65"><div class="ttname"><a href="../../dc/d6a/classFairMQRunDevice.html#a54bec9d73f2650a5de9a4d75e7c3cd65">FairMQRunDevice::SendBranches</a></div><div class="ttdeci">virtual void SendBranches()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/df1/FairMQRunDevice_8cxx_source.html#l00050">FairMQRunDevice.cxx:50</a></div></div>
-<div class="ttc" id="classFairMQRunDevice_html"><div class="ttname"><a href="../../dc/d6a/classFairMQRunDevice.html">FairMQRunDevice</a></div><div class="ttdef"><b>Definition:</b> <a href="../../df/d03/FairMQRunDevice_8h_source.html#l00025">FairMQRunDevice.h:25</a></div></div>
-<div class="ttc" id="classFairMQRunDevice_html_ad19cca52a7568eaecb3e24b591ca0926"><div class="ttname"><a href="../../dc/d6a/classFairMQRunDevice.html#ad19cca52a7568eaecb3e24b591ca0926">FairMQRunDevice::~FairMQRunDevice</a></div><div class="ttdeci">virtual ~FairMQRunDevice()</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d03/FairMQRunDevice_8h_source.html#l00029">FairMQRunDevice.h:29</a></div></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &lt;FairMQDevice.h&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">class </span>TObject;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="../../dc/d6a/classFairMQRunDevice.html">   24</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../dc/d6a/classFairMQRunDevice.html">FairMQRunDevice</a> : <span class="keyword">public</span> FairMQDevice</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="../../dc/d6a/classFairMQRunDevice.html#a23bbc25a5c49d2d9266003f2551c38fc">   27</a></span>&#160;    <a class="code" href="../../dc/d6a/classFairMQRunDevice.html#a23bbc25a5c49d2d9266003f2551c38fc">FairMQRunDevice</a>() {}</div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="../../dc/d6a/classFairMQRunDevice.html#ad19cca52a7568eaecb3e24b591ca0926">   28</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../dc/d6a/classFairMQRunDevice.html#ad19cca52a7568eaecb3e24b591ca0926">~FairMQRunDevice</a>() {}</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../dc/d6a/classFairMQRunDevice.html#a54bec9d73f2650a5de9a4d75e7c3cd65">SendBranches</a>();</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="../../dc/d6a/classFairMQRunDevice.html#a14962999e289f8183e4ae08c07736d8c">SendObject</a>(TObject* obj, <span class="keyword">const</span> std::string&amp; chan);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <a class="code" href="../../dc/d6a/classFairMQRunDevice.html#a23bbc25a5c49d2d9266003f2551c38fc">FairMQRunDevice</a>(<span class="keyword">const</span> <a class="code" href="../../dc/d6a/classFairMQRunDevice.html">FairMQRunDevice</a>&amp;);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="../../dc/d6a/classFairMQRunDevice.html">FairMQRunDevice</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../dc/d6a/classFairMQRunDevice.html">FairMQRunDevice</a>&amp;);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;};</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* FAIRMQRUNDEVICE_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="classFairMQRunDevice_html_a23bbc25a5c49d2d9266003f2551c38fc"><div class="ttname"><a href="../../dc/d6a/classFairMQRunDevice.html#a23bbc25a5c49d2d9266003f2551c38fc">FairMQRunDevice::FairMQRunDevice</a></div><div class="ttdeci">FairMQRunDevice()</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d03/FairMQRunDevice_8h_source.html#l00027">FairMQRunDevice.h:27</a></div></div>
+<div class="ttc" id="classFairMQRunDevice_html_a14962999e289f8183e4ae08c07736d8c"><div class="ttname"><a href="../../dc/d6a/classFairMQRunDevice.html#a14962999e289f8183e4ae08c07736d8c">FairMQRunDevice::SendObject</a></div><div class="ttdeci">void SendObject(TObject *obj, const std::string &amp;chan)</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/df1/FairMQRunDevice_8cxx_source.html#l00033">FairMQRunDevice.cxx:33</a></div></div>
+<div class="ttc" id="classFairMQRunDevice_html_a54bec9d73f2650a5de9a4d75e7c3cd65"><div class="ttname"><a href="../../dc/d6a/classFairMQRunDevice.html#a54bec9d73f2650a5de9a4d75e7c3cd65">FairMQRunDevice::SendBranches</a></div><div class="ttdeci">virtual void SendBranches()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/df1/FairMQRunDevice_8cxx_source.html#l00049">FairMQRunDevice.cxx:49</a></div></div>
+<div class="ttc" id="classFairMQRunDevice_html"><div class="ttname"><a href="../../dc/d6a/classFairMQRunDevice.html">FairMQRunDevice</a></div><div class="ttdef"><b>Definition:</b> <a href="../../df/d03/FairMQRunDevice_8h_source.html#l00024">FairMQRunDevice.h:24</a></div></div>
+<div class="ttc" id="classFairMQRunDevice_html_ad19cca52a7568eaecb3e24b591ca0926"><div class="ttname"><a href="../../dc/d6a/classFairMQRunDevice.html#ad19cca52a7568eaecb3e24b591ca0926">FairMQRunDevice::~FairMQRunDevice</a></div><div class="ttdeci">virtual ~FairMQRunDevice()</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d03/FairMQRunDevice_8h_source.html#l00028">FairMQRunDevice.h:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_caac58519ba4740e026a67a20b1aba91.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_8917bad9a7e0befb570da6fb7e3e9ebe.html">pixelDetector</a></li><li class="navelem"><a class="el" href="../../dir_8ef6bf25b506698a59ec0dffcae11e97.html">src</a></li><li class="navelem"><a class="el" href="../../dir_2c85000b11133a811cf9afb0052688ba.html">devices</a></li><li class="navelem"><a class="el" href="../../df/d03/FairMQRunDevice_8h.html">FairMQRunDevice.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:50 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

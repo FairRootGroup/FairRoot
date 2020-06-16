@@ -1,5 +1,6 @@
 var FairBoxSetDraw_8cxx =
 [
+    [ "ClassImp", "d0/d75/FairBoxSetDraw_8cxx.html#a58fb71dfcae7ec7c7f5327a522627c16", null ],
     [ "fq", "d0/d75/FairBoxSetDraw_8cxx.html#af06185b163898c15ed707e9abd478a31", null ],
     [ "fX", "d0/d75/FairBoxSetDraw_8cxx.html#a098473ef4da0de8c0bdb8c1dcbd1d6a1", null ],
     [ "fY", "d0/d75/FairBoxSetDraw_8cxx.html#a025e9d5ed1d47f47071144ef5af74a13", null ],

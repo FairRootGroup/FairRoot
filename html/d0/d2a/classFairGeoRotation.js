@@ -5,6 +5,7 @@ var classFairGeoRotation =
     [ "FairGeoRotation", "d0/d2a/classFairGeoRotation.html#aa21ca73d00563c82e9ca1bcb778f4341", null ],
     [ "FairGeoRotation", "d0/d2a/classFairGeoRotation.html#af8210fa653d3129a9d24a9459daba66c", null ],
     [ "~FairGeoRotation", "d0/d2a/classFairGeoRotation.html#a92d4d4ac0724cae9d053ecd78fd42ad8", null ],
+    [ "ClassDef", "d0/d2a/classFairGeoRotation.html#a77286951788d7ed2dd2af690ab34b069", null ],
     [ "createTRotMatrix", "d0/d2a/classFairGeoRotation.html#afab342f4fb5c4ce26096818156146c36", null ],
     [ "determinant", "d0/d2a/classFairGeoRotation.html#a2c8ac33c3c58fa531199a616e482b39e", null ],
     [ "diff2", "d0/d2a/classFairGeoRotation.html#a57b4a32e6baaba3045e530d41a80da8b", null ],

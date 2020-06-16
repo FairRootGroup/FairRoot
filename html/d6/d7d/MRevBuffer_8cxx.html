@@ -113,13 +113,13 @@ $(document).ready(function(){initNavTree('d6/d7d/MRevBuffer_8cxx.html','../../')
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="../../d6/d03/MRevBuffer_8h_source.html">MRevBuffer.h</a>&quot;</code><br />
 <code>#include &lt;TSocket.h&gt;</code><br />
-<code>#include &lt;signal.h&gt;</code><br />
-<code>#include &lt;unistd.h&gt;</code><br />
-<code>#include &lt;time.h&gt;</code><br />
 <code>#include &lt;netinet/in.h&gt;</code><br />
+<code>#include &lt;signal.h&gt;</code><br />
+<code>#include &lt;time.h&gt;</code><br />
+<code>#include &lt;unistd.h&gt;</code><br />
 <code>#include &lt;strings.h&gt;</code><br />
-<code>#include &lt;sys/socket.h&gt;</code><br />
 <code>#include &lt;sys/select.h&gt;</code><br />
+<code>#include &lt;sys/socket.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="../../df/dc6/ptrevcomm_8h_source.html">ptrevcomm.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../d3/d2d/ptrevmbsdef_8h_source.html">ptrevmbsdef.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="../../d5/de4/FairLogger_8h_source.html">FairLogger.h</a>&quot;</code><br />
@@ -128,8 +128,16 @@ $(document).ready(function(){initNavTree('d6/d7d/MRevBuffer_8cxx.html','../../')
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a32a52d6d5a199d7f3bd623f97c7a88ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d7d/MRevBuffer_8cxx.html#a32a52d6d5a199d7f3bd623f97c7a88ec">ClassImp</a> (<a class="el" href="../../d0/dac/classMRevBuffer.html">MRevBuffer</a>) ClassImp(<a class="el" href="../../db/d70/classREvent.html">REvent</a>) extern&quot;C&quot;</td></tr>
-<tr class="separator:a32a52d6d5a199d7f3bd623f97c7a88ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8228c6367a089e01fb4cb2eafdc883a2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d7d/MRevBuffer_8cxx.html#a8228c6367a089e01fb4cb2eafdc883a2">ClassImp</a> (<a class="el" href="../../d0/dac/classMRevBuffer.html">MRevBuffer</a>)</td></tr>
+<tr class="separator:a8228c6367a089e01fb4cb2eafdc883a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50dc61b7097d300a28771299a7440baf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d7d/MRevBuffer_8cxx.html#a50dc61b7097d300a28771299a7440baf">ClassImp</a> (<a class="el" href="../../db/d70/classREvent.html">REvent</a>)</td></tr>
+<tr class="separator:a50dc61b7097d300a28771299a7440baf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f4b7ccaea48f72fb44640ce80bb723f"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d7d/MRevBuffer_8cxx.html#a3f4b7ccaea48f72fb44640ce80bb723f">swaplw</a> (int *, int, int)</td></tr>
+<tr class="separator:a3f4b7ccaea48f72fb44640ce80bb723f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a499edcd428a77987be68b47460aa5d00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d7d/MRevBuffer_8cxx.html#a499edcd428a77987be68b47460aa5d00">exitCli</a> (int)</td></tr>
+<tr class="separator:a499edcd428a77987be68b47460aa5d00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9ca43f7cfbcece4ef1e9fd84a50af67"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d7d/MRevBuffer_8cxx.html#aa9ca43f7cfbcece4ef1e9fd84a50af67">rclose</a> (int *, int)</td></tr>
+<tr class="separator:aa9ca43f7cfbcece4ef1e9fd84a50af67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -141,7 +149,7 @@ Variables</h2></td></tr>
 <tr class="separator:ad9ae76aa1a010a1c1db3300d9d130ab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a32a52d6d5a199d7f3bd623f97c7a88ec"></a>
+<a class="anchor" id="a8228c6367a089e01fb4cb2eafdc883a2"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -155,7 +163,97 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d6/d7d/MRevBuffer_8cxx_source.html#l00054">54</a> of file <a class="el" href="../../d6/d7d/MRevBuffer_8cxx_source.html">MRevBuffer.cxx</a>.</p>
+</div>
+</div>
+<a class="anchor" id="a50dc61b7097d300a28771299a7440baf"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ClassImp </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../db/d70/classREvent.html">REvent</a>&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a499edcd428a77987be68b47460aa5d00"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void exitCli </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="aa9ca43f7cfbcece4ef1e9fd84a50af67"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int rclose </td>
+          <td>(</td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="../../d4/dac/rclose_8c_source.html#l00025">25</a> of file <a class="el" href="../../d4/dac/rclose_8c_source.html">rclose.c</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a3f4b7ccaea48f72fb44640ce80bb723f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">long swaplw </td>
+          <td>(</td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -208,7 +306,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_e914ee4d4a44400f1fdb170cb4ead18a.html">base</a></li><li class="navelem"><a class="el" href="../../dir_83799167c1376d980d4b19fd5c6a4400.html">source</a></li><li class="navelem"><a class="el" href="../../d6/d7d/MRevBuffer_8cxx.html">MRevBuffer.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:52 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:59:01 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

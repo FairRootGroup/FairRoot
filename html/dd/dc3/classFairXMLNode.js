@@ -5,6 +5,7 @@ var classFairXMLNode =
     [ "~FairXMLNode", "dd/dc3/classFairXMLNode.html#a6f953a11042675d8fb897b2bf181a3dd", null ],
     [ "AddAttrib", "dd/dc3/classFairXMLNode.html#a039bf1e1edb3c87e3a3c8cb92d0141d0", null ],
     [ "AddChild", "dd/dc3/classFairXMLNode.html#a939fe6a80927421648848c1d8142296e", null ],
+    [ "ClassDef", "dd/dc3/classFairXMLNode.html#ac6d21aadb7e8734bb61ee6d7d76731d9", null ],
     [ "Copy", "dd/dc3/classFairXMLNode.html#ae0fdc1a67725d6ca47972fc25cd73708", null ],
     [ "GetAttrib", "dd/dc3/classFairXMLNode.html#ab5e32a2dc601d18a840447ac76640543", null ],
     [ "GetAttrib", "dd/dc3/classFairXMLNode.html#af6d5ec329e7257d1729cdc7f1a2ce2a5", null ],

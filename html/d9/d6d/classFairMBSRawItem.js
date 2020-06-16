@@ -4,6 +4,7 @@ var classFairMBSRawItem =
     [ "FairMBSRawItem", "d9/d6d/classFairMBSRawItem.html#a448f44d980c8f10567ad82de18e68830", null ],
     [ "FairMBSRawItem", "d9/d6d/classFairMBSRawItem.html#a61350936f2e5f0e9f4bd41a0adab0d37", null ],
     [ "~FairMBSRawItem", "d9/d6d/classFairMBSRawItem.html#a7a62a74b492811c62d17e4a3424f5203", null ],
+    [ "ClassDef", "d9/d6d/classFairMBSRawItem.html#a46254504678471824cf91cb9c95174e5", null ],
     [ "GetCal", "d9/d6d/classFairMBSRawItem.html#ab830826c70bdcbaf08d39ea31f1043c7", null ],
     [ "GetClock", "d9/d6d/classFairMBSRawItem.html#ab3968adedfbded69509d41096fd62b59", null ],
     [ "GetGtb", "d9/d6d/classFairMBSRawItem.html#a88a7cb4aa641196306b60d512bb20666", null ],

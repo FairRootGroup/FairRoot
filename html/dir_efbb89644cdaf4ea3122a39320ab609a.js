@@ -4,7 +4,7 @@ var dir_efbb89644cdaf4ea3122a39320ab609a =
     [ "MyDigi.h", "dc/d9a/MyDigi_8h.html", [
       [ "MyDigi", "d6/dd4/classMyDigi.html", "d6/dd4/classMyDigi" ]
     ] ],
-    [ "MyHit.cxx", "d4/de5/MyHit_8cxx.html", null ],
+    [ "MyHit.cxx", "d4/de5/MyHit_8cxx.html", "d4/de5/MyHit_8cxx" ],
     [ "MyHit.h", "d5/d61/MyHit_8h.html", [
       [ "MyHit", "d8/de0/classMyHit.html", "d8/de0/classMyHit" ]
     ] ],

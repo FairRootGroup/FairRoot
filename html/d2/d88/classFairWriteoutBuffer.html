@@ -166,10 +166,8 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ac780bba3fdda9195f1b649aabf9212e7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d88/classFairWriteoutBuffer.html#ac780bba3fdda9195f1b649aabf9212e7">AddNewDataToTClonesArray</a> (<a class="el" href="../../d6/d15/classFairTimeStamp.html">FairTimeStamp</a> *data)=0</td></tr>
-<tr class="memdesc:ac780bba3fdda9195f1b649aabf9212e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">store the data from the <a class="el" href="../../d6/d15/classFairTimeStamp.html">FairTimeStamp</a> pointer in a TClonesArray (you have to cast it to your type of data)  <a href="#ac780bba3fdda9195f1b649aabf9212e7">More...</a><br /></td></tr>
 <tr class="separator:ac780bba3fdda9195f1b649aabf9212e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09f8ed4e43b8e82df03180217202feff"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d88/classFairWriteoutBuffer.html#a09f8ed4e43b8e82df03180217202feff">FindTimeForData</a> (<a class="el" href="../../d6/d15/classFairTimeStamp.html">FairTimeStamp</a> *data)=0</td></tr>
-<tr class="memdesc:a09f8ed4e43b8e82df03180217202feff"><td class="mdescLeft">&#160;</td><td class="mdescRight">if the same data object (like a pad or a pixel) is already present in the buffer, the time of this object has to be returned otherwise -1  <a href="#a09f8ed4e43b8e82df03180217202feff">More...</a><br /></td></tr>
 <tr class="separator:a09f8ed4e43b8e82df03180217202feff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a665c1f4bf1ac143447900bf4a8e1aad3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d88/classFairWriteoutBuffer.html#a665c1f4bf1ac143447900bf4a8e1aad3">FillDataMap</a> (<a class="el" href="../../d6/d15/classFairTimeStamp.html">FairTimeStamp</a> *data, double activeTime)=0</td></tr>
 <tr class="memdesc:a665c1f4bf1ac143447900bf4a8e1aad3"><td class="mdescLeft">&#160;</td><td class="mdescRight">add a new element in the search buffer  <a href="#a665c1f4bf1ac143447900bf4a8e1aad3">More...</a><br /></td></tr>
@@ -306,7 +304,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00054">54</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00062">62</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -334,7 +332,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; fActivateBuffering has to be set to kTRUE to use the buffering. Otherwise the data is directly stored in the given TClonesArray. </p>
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00059">59</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00069">69</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -359,7 +357,6 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
 <p>store the data from the <a class="el" href="../../d6/d15/classFairTimeStamp.html">FairTimeStamp</a> pointer in a TClonesArray (you have to cast it to your type of data) </p>
 
 <p>Implemented in <a class="el" href="../../d1/d50/classFairTestDetectorDigiWriteoutBuffer.html#a66f869b9afa96ba0bf4515c50cc1bf00">FairTestDetectorDigiWriteoutBuffer</a>, and <a class="el" href="../../dc/ddf/classMyWriteoutBuffer.html#a92a1d5fd6e9998e963af1eb65dcee275">MyWriteoutBuffer</a>.</p>
@@ -387,7 +384,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00079">79</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00088">88</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -495,7 +492,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html#l00161">161</a> of file <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html">FairWriteoutBuffer.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html#l00160">160</a> of file <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html">FairWriteoutBuffer.cxx</a>.</p>
 
 </div>
 </div>
@@ -563,7 +560,6 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
 <p>if the same data object (like a pad or a pixel) is already present in the buffer, the time of this object has to be returned otherwise -1 </p>
 
 <p>Implemented in <a class="el" href="../../d1/d50/classFairTestDetectorDigiWriteoutBuffer.html#a53de74e903de1134138465ca4adfbe75">FairTestDetectorDigiWriteoutBuffer</a>, and <a class="el" href="../../dc/ddf/classMyWriteoutBuffer.html#a61998c7c4e80596e726d8f5e690c2d42">MyWriteoutBuffer</a>.</p>
@@ -616,7 +612,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00069">69</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00082">82</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -667,7 +663,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00063">63</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00075">75</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -704,7 +700,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>Modify defines the behavior of the buffer if data should be stored which is already in the buffer. Parameters are the old data with the active time, the new data with an active time. Modify returns than a vector with the new data which should be stored. </p>
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00097">97</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00113">113</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -730,7 +726,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html#l00233">233</a> of file <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html">FairWriteoutBuffer.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html#l00246">246</a> of file <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html">FairWriteoutBuffer.cxx</a>.</p>
 
 </div>
 </div>
@@ -756,7 +752,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00107">107</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00125">125</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -783,7 +779,7 @@ Protected Attributes</h2></td></tr>
 
 <p>Method should be overwritten in derived classes to print the data of an object stored in the buffer. </p>
 
-<p>Definition at line <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html#l00257">257</a> of file <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html">FairWriteoutBuffer.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html#l00270">270</a> of file <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html">FairWriteoutBuffer.cxx</a>.</p>
 
 </div>
 </div>
@@ -808,7 +804,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html#l00246">246</a> of file <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html">FairWriteoutBuffer.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html#l00259">259</a> of file <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html">FairWriteoutBuffer.cxx</a>.</p>
 
 </div>
 </div>
@@ -835,7 +831,7 @@ Protected Attributes</h2></td></tr>
 </div><div class="memdoc">
 <p>&lt; If SaveDataToTree is set the data is stored at the end of the buffering into the given TClonesArray. </p>
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00056">56</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00064">64</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -861,7 +857,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00075">75</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00086">86</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -938,7 +934,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html#l00072">72</a> of file <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html">FairWriteoutBuffer.cxx</a>.</p>
+<p>Definition at line <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html#l00071">71</a> of file <a class="el" href="../../d8/d67/FairWriteoutBuffer_8cxx_source.html">FairWriteoutBuffer.cxx</a>.</p>
 
 </div>
 </div>
@@ -961,7 +957,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00119">119</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00138">138</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -983,7 +979,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00116">116</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00135">135</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -1005,7 +1001,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00117">117</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00136">136</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -1027,7 +1023,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00114">114</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00133">133</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -1049,7 +1045,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00121">121</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00140">140</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -1071,7 +1067,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00113">113</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00132">132</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -1093,7 +1089,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00118">118</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00137">137</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -1115,7 +1111,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00120">120</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
+<p>Definition at line <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html#l00139">139</a> of file <a class="el" href="../../dc/df9/FairWriteoutBuffer_8h_source.html">FairWriteoutBuffer.h</a>.</p>
 
 </div>
 </div>
@@ -1129,7 +1125,7 @@ Protected Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d2/d88/classFairWriteoutBuffer.html">FairWriteoutBuffer</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:57 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:59:05 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

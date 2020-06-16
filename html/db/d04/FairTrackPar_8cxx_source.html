@@ -111,8 +111,8 @@ $(document).ready(function(){initNavTree('db/d04/FairTrackPar_8cxx_source.html',
 <a href="../../db/d04/FairTrackPar_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/********************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *                                                                              *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             * </span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *  </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
@@ -121,129 +121,141 @@ $(document).ready(function(){initNavTree('db/d04/FairTrackPar_8cxx_source.html',
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/da0/FairTrackPar_8h.html">FairTrackPar.h</a>&quot;</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;TMath.h&gt;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../df/deb/FairField_8h.html">FairField.h</a>&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/de4/FairLogger_8h.html">FairLogger.h</a>&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/d7c/FairRunAna_8h.html">FairRunAna.h</a>&quot;</span> <span class="comment">// for GetFieldValue</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../df/deb/FairField_8h.html">FairField.h</a>&quot;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keyword">using namespace </span><a class="code" href="../../d8/dcc/namespacestd.html">std</a>;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="../../d2/dfb/classFairTrackPar.html#a490d33f6352dc8d8b806a31640f094bf">   21</a></span>&#160;<a class="code" href="../../d2/dfb/classFairTrackPar.html#a490d33f6352dc8d8b806a31640f094bf">FairTrackPar::FairTrackPar</a>()</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;  : TObject(),</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#a098473ef4da0de8c0bdb8c1dcbd1d6a1">fX</a> (0.),</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#a025e9d5ed1d47f47071144ef5af74a13">fY</a> (0.),</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#ab1e096c4992bf60b63b120aa9545e861">fZ</a> (0.),</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    fDX (0.),</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    fDY (0.),</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    fDZ (0.),</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    fPx (0.),</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    fPy (0.),</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    fPz (0.),</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    fDPx (0.),</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    fDPy (0.),</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    fDPz (0.),</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    fQp (0.),</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    fDQp (0.),</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#af06185b163898c15ed707e9abd478a31">fq</a>  (1)</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;}</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/d7c/FairRunAna_8h.html">FairRunAna.h</a>&quot;</span>   <span class="comment">// for GetFieldValue</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;TMath.h&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">using namespace </span><a class="code" href="../../d8/dcc/namespacestd.html">std</a>;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="../../d2/dfb/classFairTrackPar.html#a490d33f6352dc8d8b806a31640f094bf">   22</a></span>&#160;<a class="code" href="../../d2/dfb/classFairTrackPar.html#a490d33f6352dc8d8b806a31640f094bf">FairTrackPar::FairTrackPar</a>()</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    : TObject()</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    , <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#a098473ef4da0de8c0bdb8c1dcbd1d6a1">fX</a>(0.)</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    , <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#a025e9d5ed1d47f47071144ef5af74a13">fY</a>(0.)</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    , <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#ab1e096c4992bf60b63b120aa9545e861">fZ</a>(0.)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    , fDX(0.)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    , fDY(0.)</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    , fDZ(0.)</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    , fPx(0.)</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    , fPy(0.)</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    , fPz(0.)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    , fDPx(0.)</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    , fDPy(0.)</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    , fDPz(0.)</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    , fQp(0.)</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    , fDQp(0.)</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    , <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#af06185b163898c15ed707e9abd478a31">fq</a>(1)</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{}</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="../../d2/dfb/classFairTrackPar.html#a32a21ad01e60efd824c1026c9d2c7e53">   41</a></span>&#160;<a class="code" href="../../d2/dfb/classFairTrackPar.html#a490d33f6352dc8d8b806a31640f094bf">FairTrackPar::FairTrackPar</a>(Double_t x, Double_t y, Double_t z,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;                           Double_t px, Double_t py, Double_t pz, Int_t q)</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  : TObject(),</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#a098473ef4da0de8c0bdb8c1dcbd1d6a1">fX</a> (x),</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#a025e9d5ed1d47f47071144ef5af74a13">fY</a> (y),</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#ab1e096c4992bf60b63b120aa9545e861">fZ</a> (z),</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    fDX (x),</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    fDY (y),</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    fDZ (z),</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    fPx (px),</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    fPy (py),</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    fPz (pz),</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    fDPx (px),</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    fDPy (py),</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    fDPz (pz),</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    fQp (0.),</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    fDQp (0.),</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#af06185b163898c15ed707e9abd478a31">fq</a>  (q)</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  Double_t p=TMath::Sqrt(<a class="code" href="../../d2/dfb/classFairTrackPar.html#a662800084346e6aa684e3a8ecd14e0c8">fPx</a>*<a class="code" href="../../d2/dfb/classFairTrackPar.html#a662800084346e6aa684e3a8ecd14e0c8">fPx</a> +<a class="code" href="../../d2/dfb/classFairTrackPar.html#afdfbf8e62ba6cd691430b8f0b601152a">fPy</a>*<a class="code" href="../../d2/dfb/classFairTrackPar.html#afdfbf8e62ba6cd691430b8f0b601152a">fPy</a> +<a class="code" href="../../d2/dfb/classFairTrackPar.html#a1bdf8761d512233330228a439de2970f">fPz</a>*<a class="code" href="../../d2/dfb/classFairTrackPar.html#a1bdf8761d512233330228a439de2970f">fPz</a> );</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keywordflow">if</span> (p!=0) { <a class="code" href="../../d2/dfb/classFairTrackPar.html#af5e984100d76add85d51fb0a5a485dbd">fQp</a> = q/p; }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;}</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="../../d2/dfb/classFairTrackPar.html#a5363da1e741cc8e58bc02aa7dc12095b">   66</a></span>&#160;<a class="code" href="../../d2/dfb/classFairTrackPar.html#a490d33f6352dc8d8b806a31640f094bf">FairTrackPar::FairTrackPar</a>(Double_t x,  Double_t y,  Double_t z, Double_t dx, Double_t dy, Double_t dz,</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;                           Double_t px, Double_t py, Double_t pz, Double_t dpx, Double_t dpy, Double_t dpz,</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                           Int_t q)</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;: TObject(),</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#a098473ef4da0de8c0bdb8c1dcbd1d6a1">fX</a> (x),</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#a025e9d5ed1d47f47071144ef5af74a13">fY</a> (y),</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#ab1e096c4992bf60b63b120aa9545e861">fZ</a> (z),</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  fDX (dx),</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  fDY (dy),</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  fDZ (dz),</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  fPx (px),</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  fPy (py),</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  fPz (pz),</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  fDPx (dpx),</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  fDPy (dpy),</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  fDPz (dpz),</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  fQp (0.),</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  fDQp (0.),</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#af06185b163898c15ed707e9abd478a31">fq</a>  (q)</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;{</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  Double_t p=TMath::Sqrt(<a class="code" href="../../d2/dfb/classFairTrackPar.html#a662800084346e6aa684e3a8ecd14e0c8">fPx</a>*<a class="code" href="../../d2/dfb/classFairTrackPar.html#a662800084346e6aa684e3a8ecd14e0c8">fPx</a> +<a class="code" href="../../d2/dfb/classFairTrackPar.html#afdfbf8e62ba6cd691430b8f0b601152a">fPy</a>*<a class="code" href="../../d2/dfb/classFairTrackPar.html#afdfbf8e62ba6cd691430b8f0b601152a">fPy</a> +<a class="code" href="../../d2/dfb/classFairTrackPar.html#a1bdf8761d512233330228a439de2970f">fPz</a>*<a class="code" href="../../d2/dfb/classFairTrackPar.html#a1bdf8761d512233330228a439de2970f">fPz</a> );</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordflow">if</span> (p!=0) { <a class="code" href="../../d2/dfb/classFairTrackPar.html#af5e984100d76add85d51fb0a5a485dbd">fQp</a> = q/p; }</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="../../d2/dfb/classFairTrackPar.html#a3b7e85eee7548a149f156b5aa2477fe4">   90</a></span>&#160;<a class="code" href="../../d2/dfb/classFairTrackPar.html#a3b7e85eee7548a149f156b5aa2477fe4">FairTrackPar::~FairTrackPar</a>() {}</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="../../d2/dfb/classFairTrackPar.html#abc7cc727a823af04cbb6c39b30cb32d7">   92</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d2/dfb/classFairTrackPar.html#abc7cc727a823af04cbb6c39b30cb32d7">FairTrackPar::Print</a>(Option_t* <span class="comment">/*option*/</span>)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  LOG(info) &lt;&lt; <span class="stringliteral">&quot;Position :(&quot;</span> &lt;&lt; <a class="code" href="../../d2/dfb/classFairTrackPar.html#af5e6c5993bbb8797ef563886aab7c119">fX</a> &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="../../d2/dfb/classFairTrackPar.html#a94be07309ccb118b9b1245eb759713eb">fY</a> &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="../../d2/dfb/classFairTrackPar.html#a90b1117234df29c8e6958ed1d3b45fb0">fZ</a> &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  LOG(info) &lt;&lt; <span class="stringliteral">&quot;Momentum :(&quot;</span> &lt;&lt; <a class="code" href="../../d2/dfb/classFairTrackPar.html#a662800084346e6aa684e3a8ecd14e0c8">fPx</a> &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="../../d2/dfb/classFairTrackPar.html#afdfbf8e62ba6cd691430b8f0b601152a">fPy</a> &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="../../d2/dfb/classFairTrackPar.html#a1bdf8761d512233330228a439de2970f">fPz</a> &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="../../d2/dfb/classFairTrackPar.html#a2fba4e9ce6d8ed6d08ce9d42ea829847">   98</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d2/dfb/classFairTrackPar.html#a2fba4e9ce6d8ed6d08ce9d42ea829847">FairTrackPar::GetFieldValue</a>(<span class="keyword">const</span> Double_t point[3], Double_t* bField)</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;{</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <a class="code" href="../../de/da9/classFairRunAna.html">FairRunAna</a>* fRun = <a class="code" href="../../de/da9/classFairRunAna.html#a4de7f08c87479bf21bc2c3f267a72a19">FairRunAna::Instance</a>();</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="keywordflow">if</span> (fRun-&gt;<a class="code" href="../../de/da9/classFairRunAna.html#a77b6ac822fc0647295c5d3d22e3a52db">GetField</a>() != 0)</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    fRun-&gt;<a class="code" href="../../de/da9/classFairRunAna.html#a77b6ac822fc0647295c5d3d22e3a52db">GetField</a>()-&gt;<a class="code" href="../../dc/ddd/classFairField.html#aa3600a11d2b261c70396e19d1233e719">GetFieldValue</a>(point, bField);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    bField[0] = .0;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    bField[1] = .0;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    bField[2] = .0;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  }</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;}</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<a class="code" href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a>(<a class="code" href="../../d2/dfb/classFairTrackPar.html">FairTrackPar</a>)</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="ttc" id="classFairTrackPar_html_abc7cc727a823af04cbb6c39b30cb32d7"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#abc7cc727a823af04cbb6c39b30cb32d7">FairTrackPar::Print</a></div><div class="ttdeci">virtual void Print(Option_t *option=&quot;&quot;) const </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d04/FairTrackPar_8cxx_source.html#l00092">FairTrackPar.cxx:92</a></div></div>
-<div class="ttc" id="classFairTrackPar_html_af5e984100d76add85d51fb0a5a485dbd"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#af5e984100d76add85d51fb0a5a485dbd">FairTrackPar::fQp</a></div><div class="ttdeci">Double_t fQp</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00114">FairTrackPar.h:114</a></div></div>
-<div class="ttc" id="classFairTrackPar_html_a1bdf8761d512233330228a439de2970f"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a1bdf8761d512233330228a439de2970f">FairTrackPar::fPz</a></div><div class="ttdeci">Double_t fPz</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00108">FairTrackPar.h:108</a></div></div>
-<div class="ttc" id="namespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition:</b> <a href="../../da/dc9/build_2base_2G____Base_8cxx_source.html#l00037">G__Base.cxx:37</a></div></div>
-<div class="ttc" id="classFairTrackPar_html_a2fba4e9ce6d8ed6d08ce9d42ea829847"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a2fba4e9ce6d8ed6d08ce9d42ea829847">FairTrackPar::GetFieldValue</a></div><div class="ttdeci">virtual void GetFieldValue(const Double_t point[3], Double_t *bField)</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d04/FairTrackPar_8cxx_source.html#l00098">FairTrackPar.cxx:98</a></div></div>
-<div class="ttc" id="classFairTrackPar_html_a94be07309ccb118b9b1245eb759713eb"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a94be07309ccb118b9b1245eb759713eb">FairTrackPar::fY</a></div><div class="ttdeci">Double_t fY</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00102">FairTrackPar.h:102</a></div></div>
-<div class="ttc" id="classFairRunAna_html"><div class="ttname"><a href="../../de/da9/classFairRunAna.html">FairRunAna</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d7c/FairRunAna_8h_source.html#l00034">FairRunAna.h:34</a></div></div>
-<div class="ttc" id="FairBoxSetDraw_8cxx_html_ab1e096c4992bf60b63b120aa9545e861"><div class="ttname"><a href="../../d0/d75/FairBoxSetDraw_8cxx.html#ab1e096c4992bf60b63b120aa9545e861">fZ</a></div><div class="ttdeci">Double_t fZ</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d75/FairBoxSetDraw_8cxx_source.html#l00032">FairBoxSetDraw.cxx:32</a></div></div>
-<div class="ttc" id="classFairTrackPar_html_a90b1117234df29c8e6958ed1d3b45fb0"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a90b1117234df29c8e6958ed1d3b45fb0">FairTrackPar::fZ</a></div><div class="ttdeci">Double_t fZ</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00102">FairTrackPar.h:102</a></div></div>
-<div class="ttc" id="classFairTrackPar_html_af5e6c5993bbb8797ef563886aab7c119"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#af5e6c5993bbb8797ef563886aab7c119">FairTrackPar::fX</a></div><div class="ttdeci">Double_t fX</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00102">FairTrackPar.h:102</a></div></div>
-<div class="ttc" id="FairBoxSetDraw_8cxx_html_af06185b163898c15ed707e9abd478a31"><div class="ttname"><a href="../../d0/d75/FairBoxSetDraw_8cxx.html#af06185b163898c15ed707e9abd478a31">fq</a></div><div class="ttdeci">FairBoxSet * fq</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d75/FairBoxSetDraw_8cxx_source.html#l00031">FairBoxSetDraw.cxx:31</a></div></div>
-<div class="ttc" id="classFairTrackPar_html_a662800084346e6aa684e3a8ecd14e0c8"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a662800084346e6aa684e3a8ecd14e0c8">FairTrackPar::fPx</a></div><div class="ttdeci">Double_t fPx</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00108">FairTrackPar.h:108</a></div></div>
-<div class="ttc" id="classFairTrackPar_html"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html">FairTrackPar</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00016">FairTrackPar.h:16</a></div></div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="../../d2/dfb/classFairTrackPar.html#a32a21ad01e60efd824c1026c9d2c7e53">   41</a></span>&#160;<a class="code" href="../../d2/dfb/classFairTrackPar.html#a490d33f6352dc8d8b806a31640f094bf">FairTrackPar::FairTrackPar</a>(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz, Int_t q)</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    : TObject()</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    , <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#a098473ef4da0de8c0bdb8c1dcbd1d6a1">fX</a>(x)</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    , <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#a025e9d5ed1d47f47071144ef5af74a13">fY</a>(y)</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    , <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#ab1e096c4992bf60b63b120aa9545e861">fZ</a>(z)</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    , fDX(x)</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    , fDY(y)</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    , fDZ(z)</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    , fPx(px)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    , fPy(py)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    , fPz(pz)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    , fDPx(px)</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    , fDPy(py)</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    , fDPz(pz)</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    , fQp(0.)</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    , fDQp(0.)</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    , <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#af06185b163898c15ed707e9abd478a31">fq</a>(q)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;{</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    Double_t p = TMath::Sqrt(<a class="code" href="../../d2/dfb/classFairTrackPar.html#a662800084346e6aa684e3a8ecd14e0c8">fPx</a> * <a class="code" href="../../d2/dfb/classFairTrackPar.html#a662800084346e6aa684e3a8ecd14e0c8">fPx</a> + <a class="code" href="../../d2/dfb/classFairTrackPar.html#afdfbf8e62ba6cd691430b8f0b601152a">fPy</a> * <a class="code" href="../../d2/dfb/classFairTrackPar.html#afdfbf8e62ba6cd691430b8f0b601152a">fPy</a> + <a class="code" href="../../d2/dfb/classFairTrackPar.html#a1bdf8761d512233330228a439de2970f">fPz</a> * <a class="code" href="../../d2/dfb/classFairTrackPar.html#a1bdf8761d512233330228a439de2970f">fPz</a>);</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordflow">if</span> (p != 0) {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;        <a class="code" href="../../d2/dfb/classFairTrackPar.html#af5e984100d76add85d51fb0a5a485dbd">fQp</a> = q / p;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;}</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="../../d2/dfb/classFairTrackPar.html#a5363da1e741cc8e58bc02aa7dc12095b">   67</a></span>&#160;<a class="code" href="../../d2/dfb/classFairTrackPar.html#a490d33f6352dc8d8b806a31640f094bf">FairTrackPar::FairTrackPar</a>(Double_t x,</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;                           Double_t y,</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;                           Double_t z,</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;                           Double_t dx,</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;                           Double_t dy,</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;                           Double_t dz,</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;                           Double_t px,</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                           Double_t py,</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;                           Double_t pz,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                           Double_t dpx,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;                           Double_t dpy,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;                           Double_t dpz,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;                           Int_t q)</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    : TObject()</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    , <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#a098473ef4da0de8c0bdb8c1dcbd1d6a1">fX</a>(x)</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    , <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#a025e9d5ed1d47f47071144ef5af74a13">fY</a>(y)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    , <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#ab1e096c4992bf60b63b120aa9545e861">fZ</a>(z)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    , fDX(dx)</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    , fDY(dy)</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    , fDZ(dz)</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    , fPx(px)</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    , fPy(py)</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    , fPz(pz)</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    , fDPx(dpx)</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    , fDPy(dpy)</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    , fDPz(dpz)</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    , fQp(0.)</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    , fDQp(0.)</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    , <a class="code" href="../../d0/d75/FairBoxSetDraw_8cxx.html#af06185b163898c15ed707e9abd478a31">fq</a>(q)</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;{</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    Double_t p = TMath::Sqrt(<a class="code" href="../../d2/dfb/classFairTrackPar.html#a662800084346e6aa684e3a8ecd14e0c8">fPx</a> * <a class="code" href="../../d2/dfb/classFairTrackPar.html#a662800084346e6aa684e3a8ecd14e0c8">fPx</a> + <a class="code" href="../../d2/dfb/classFairTrackPar.html#afdfbf8e62ba6cd691430b8f0b601152a">fPy</a> * <a class="code" href="../../d2/dfb/classFairTrackPar.html#afdfbf8e62ba6cd691430b8f0b601152a">fPy</a> + <a class="code" href="../../d2/dfb/classFairTrackPar.html#a1bdf8761d512233330228a439de2970f">fPz</a> * <a class="code" href="../../d2/dfb/classFairTrackPar.html#a1bdf8761d512233330228a439de2970f">fPz</a>);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    <span class="keywordflow">if</span> (p != 0) {</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        <a class="code" href="../../d2/dfb/classFairTrackPar.html#af5e984100d76add85d51fb0a5a485dbd">fQp</a> = q / p;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;}</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
+<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="../../d2/dfb/classFairTrackPar.html#a3b7e85eee7548a149f156b5aa2477fe4">  103</a></span>&#160;<a class="code" href="../../d2/dfb/classFairTrackPar.html#a3b7e85eee7548a149f156b5aa2477fe4">FairTrackPar::~FairTrackPar</a>() {}</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="../../d2/dfb/classFairTrackPar.html#abc7cc727a823af04cbb6c39b30cb32d7">  105</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d2/dfb/classFairTrackPar.html#abc7cc727a823af04cbb6c39b30cb32d7">FairTrackPar::Print</a>(Option_t* <span class="comment">/*option*/</span>)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    LOG(info) &lt;&lt; <span class="stringliteral">&quot;Position :(&quot;</span> &lt;&lt; <a class="code" href="../../d2/dfb/classFairTrackPar.html#af5e6c5993bbb8797ef563886aab7c119">fX</a> &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="../../d2/dfb/classFairTrackPar.html#a94be07309ccb118b9b1245eb759713eb">fY</a> &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="../../d2/dfb/classFairTrackPar.html#a90b1117234df29c8e6958ed1d3b45fb0">fZ</a> &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    LOG(info) &lt;&lt; <span class="stringliteral">&quot;Momentum :(&quot;</span> &lt;&lt; <a class="code" href="../../d2/dfb/classFairTrackPar.html#a662800084346e6aa684e3a8ecd14e0c8">fPx</a> &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="../../d2/dfb/classFairTrackPar.html#afdfbf8e62ba6cd691430b8f0b601152a">fPy</a> &lt;&lt; <span class="stringliteral">&quot;,&quot;</span> &lt;&lt; <a class="code" href="../../d2/dfb/classFairTrackPar.html#a1bdf8761d512233330228a439de2970f">fPz</a> &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;}</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div>
+<div class="line"><a name="l00111"></a><span class="lineno"><a class="line" href="../../d2/dfb/classFairTrackPar.html#a2fba4e9ce6d8ed6d08ce9d42ea829847">  111</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../d2/dfb/classFairTrackPar.html#a2fba4e9ce6d8ed6d08ce9d42ea829847">FairTrackPar::GetFieldValue</a>(<span class="keyword">const</span> Double_t point[3], Double_t* bField)</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;{</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    <a class="code" href="../../de/da9/classFairRunAna.html">FairRunAna</a>* fRun = <a class="code" href="../../de/da9/classFairRunAna.html#a4de7f08c87479bf21bc2c3f267a72a19">FairRunAna::Instance</a>();</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;    <span class="keywordflow">if</span> (fRun-&gt;<a class="code" href="../../de/da9/classFairRunAna.html#a77b6ac822fc0647295c5d3d22e3a52db">GetField</a>() != 0)</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;        fRun-&gt;<a class="code" href="../../de/da9/classFairRunAna.html#a77b6ac822fc0647295c5d3d22e3a52db">GetField</a>()-&gt;<a class="code" href="../../dc/ddd/classFairField.html#aa3600a11d2b261c70396e19d1233e719">GetFieldValue</a>(point, bField);</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;        bField[0] = .0;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;        bField[1] = .0;</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        bField[2] = .0;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    }</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<a class="code" href="../../db/d04/FairTrackPar_8cxx.html#a13b3a5f46a0cf4d355e3d70d8bc644c8">ClassImp</a>(<a class="code" href="../../d2/dfb/classFairTrackPar.html">FairTrackPar</a>);</div>
+<div class="ttc" id="classFairTrackPar_html_abc7cc727a823af04cbb6c39b30cb32d7"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#abc7cc727a823af04cbb6c39b30cb32d7">FairTrackPar::Print</a></div><div class="ttdeci">virtual void Print(Option_t *option=&quot;&quot;) const </div><div class="ttdef"><b>Definition:</b> <a href="../../db/d04/FairTrackPar_8cxx_source.html#l00105">FairTrackPar.cxx:105</a></div></div>
+<div class="ttc" id="classFairTrackPar_html_af5e984100d76add85d51fb0a5a485dbd"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#af5e984100d76add85d51fb0a5a485dbd">FairTrackPar::fQp</a></div><div class="ttdeci">Double_t fQp</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00121">FairTrackPar.h:121</a></div></div>
+<div class="ttc" id="classFairTrackPar_html_a1bdf8761d512233330228a439de2970f"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a1bdf8761d512233330228a439de2970f">FairTrackPar::fPz</a></div><div class="ttdeci">Double_t fPz</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00115">FairTrackPar.h:115</a></div></div>
+<div class="ttc" id="namespacestd_html"><div class="ttname"><a href="../../d8/dcc/namespacestd.html">std</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dff/buildx_2base_2G____Base_8cxx_source.html#l00037">G__Base.cxx:37</a></div></div>
+<div class="ttc" id="FairTrackPar_8cxx_html_a13b3a5f46a0cf4d355e3d70d8bc644c8"><div class="ttname"><a href="../../db/d04/FairTrackPar_8cxx.html#a13b3a5f46a0cf4d355e3d70d8bc644c8">ClassImp</a></div><div class="ttdeci">ClassImp(FairTrackPar)</div></div>
+<div class="ttc" id="classFairTrackPar_html_a2fba4e9ce6d8ed6d08ce9d42ea829847"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a2fba4e9ce6d8ed6d08ce9d42ea829847">FairTrackPar::GetFieldValue</a></div><div class="ttdeci">virtual void GetFieldValue(const Double_t point[3], Double_t *bField)</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d04/FairTrackPar_8cxx_source.html#l00111">FairTrackPar.cxx:111</a></div></div>
+<div class="ttc" id="classFairTrackPar_html_a94be07309ccb118b9b1245eb759713eb"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a94be07309ccb118b9b1245eb759713eb">FairTrackPar::fY</a></div><div class="ttdeci">Double_t fY</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00109">FairTrackPar.h:109</a></div></div>
+<div class="ttc" id="classFairRunAna_html"><div class="ttname"><a href="../../de/da9/classFairRunAna.html">FairRunAna</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d7c/FairRunAna_8h_source.html#l00033">FairRunAna.h:33</a></div></div>
+<div class="ttc" id="FairBoxSetDraw_8cxx_html_ab1e096c4992bf60b63b120aa9545e861"><div class="ttname"><a href="../../d0/d75/FairBoxSetDraw_8cxx.html#ab1e096c4992bf60b63b120aa9545e861">fZ</a></div><div class="ttdeci">Double_t fZ</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d75/FairBoxSetDraw_8cxx_source.html#l00031">FairBoxSetDraw.cxx:31</a></div></div>
+<div class="ttc" id="classFairTrackPar_html_a90b1117234df29c8e6958ed1d3b45fb0"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a90b1117234df29c8e6958ed1d3b45fb0">FairTrackPar::fZ</a></div><div class="ttdeci">Double_t fZ</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00109">FairTrackPar.h:109</a></div></div>
+<div class="ttc" id="classFairTrackPar_html_af5e6c5993bbb8797ef563886aab7c119"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#af5e6c5993bbb8797ef563886aab7c119">FairTrackPar::fX</a></div><div class="ttdeci">Double_t fX</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00109">FairTrackPar.h:109</a></div></div>
+<div class="ttc" id="FairBoxSetDraw_8cxx_html_af06185b163898c15ed707e9abd478a31"><div class="ttname"><a href="../../d0/d75/FairBoxSetDraw_8cxx.html#af06185b163898c15ed707e9abd478a31">fq</a></div><div class="ttdeci">FairBoxSet * fq</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d75/FairBoxSetDraw_8cxx_source.html#l00030">FairBoxSetDraw.cxx:30</a></div></div>
+<div class="ttc" id="classFairTrackPar_html_a662800084346e6aa684e3a8ecd14e0c8"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a662800084346e6aa684e3a8ecd14e0c8">FairTrackPar::fPx</a></div><div class="ttdeci">Double_t fPx</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00115">FairTrackPar.h:115</a></div></div>
+<div class="ttc" id="classFairTrackPar_html"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html">FairTrackPar</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00015">FairTrackPar.h:15</a></div></div>
 <div class="ttc" id="FairRunAna_8h_html"><div class="ttname"><a href="../../d2/d7c/FairRunAna_8h.html">FairRunAna.h</a></div></div>
-<div class="ttc" id="classFairRunAna_html_a4de7f08c87479bf21bc2c3f267a72a19"><div class="ttname"><a href="../../de/da9/classFairRunAna.html#a4de7f08c87479bf21bc2c3f267a72a19">FairRunAna::Instance</a></div><div class="ttdeci">static FairRunAna * Instance()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dc8/FairRunAna_8cxx_source.html#l00063">FairRunAna.cxx:63</a></div></div>
-<div class="ttc" id="FairBoxSetDraw_8cxx_html_a025e9d5ed1d47f47071144ef5af74a13"><div class="ttname"><a href="../../d0/d75/FairBoxSetDraw_8cxx.html#a025e9d5ed1d47f47071144ef5af74a13">fY</a></div><div class="ttdeci">Double_t fY</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d75/FairBoxSetDraw_8cxx_source.html#l00032">FairBoxSetDraw.cxx:32</a></div></div>
-<div class="ttc" id="classFairTrackPar_html_a3b7e85eee7548a149f156b5aa2477fe4"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a3b7e85eee7548a149f156b5aa2477fe4">FairTrackPar::~FairTrackPar</a></div><div class="ttdeci">virtual ~FairTrackPar()</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d04/FairTrackPar_8cxx_source.html#l00090">FairTrackPar.cxx:90</a></div></div>
-<div class="ttc" id="classFairTrackPar_html_a490d33f6352dc8d8b806a31640f094bf"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a490d33f6352dc8d8b806a31640f094bf">FairTrackPar::FairTrackPar</a></div><div class="ttdeci">FairTrackPar()</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d04/FairTrackPar_8cxx_source.html#l00021">FairTrackPar.cxx:21</a></div></div>
-<div class="ttc" id="classFairTrackPar_html_afdfbf8e62ba6cd691430b8f0b601152a"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#afdfbf8e62ba6cd691430b8f0b601152a">FairTrackPar::fPy</a></div><div class="ttdeci">Double_t fPy</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00108">FairTrackPar.h:108</a></div></div>
-<div class="ttc" id="classFairField_html_aa3600a11d2b261c70396e19d1233e719"><div class="ttname"><a href="../../dc/ddd/classFairField.html#aa3600a11d2b261c70396e19d1233e719">FairField::GetFieldValue</a></div><div class="ttdeci">virtual void GetFieldValue(const Double_t point[3], Double_t *bField)</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/daf/FairField_8cxx_source.html#l00042">FairField.cxx:42</a></div></div>
-<div class="ttc" id="FairBoxSetDraw_8cxx_html_a098473ef4da0de8c0bdb8c1dcbd1d6a1"><div class="ttname"><a href="../../d0/d75/FairBoxSetDraw_8cxx.html#a098473ef4da0de8c0bdb8c1dcbd1d6a1">fX</a></div><div class="ttdeci">Double_t fX</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d75/FairBoxSetDraw_8cxx_source.html#l00032">FairBoxSetDraw.cxx:32</a></div></div>
+<div class="ttc" id="classFairRunAna_html_a4de7f08c87479bf21bc2c3f267a72a19"><div class="ttname"><a href="../../de/da9/classFairRunAna.html#a4de7f08c87479bf21bc2c3f267a72a19">FairRunAna::Instance</a></div><div class="ttdeci">static FairRunAna * Instance()</div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dc8/FairRunAna_8cxx_source.html#l00061">FairRunAna.cxx:61</a></div></div>
+<div class="ttc" id="FairBoxSetDraw_8cxx_html_a025e9d5ed1d47f47071144ef5af74a13"><div class="ttname"><a href="../../d0/d75/FairBoxSetDraw_8cxx.html#a025e9d5ed1d47f47071144ef5af74a13">fY</a></div><div class="ttdeci">Double_t fY</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d75/FairBoxSetDraw_8cxx_source.html#l00031">FairBoxSetDraw.cxx:31</a></div></div>
+<div class="ttc" id="classFairTrackPar_html_a3b7e85eee7548a149f156b5aa2477fe4"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a3b7e85eee7548a149f156b5aa2477fe4">FairTrackPar::~FairTrackPar</a></div><div class="ttdeci">virtual ~FairTrackPar()</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d04/FairTrackPar_8cxx_source.html#l00103">FairTrackPar.cxx:103</a></div></div>
+<div class="ttc" id="classFairTrackPar_html_a490d33f6352dc8d8b806a31640f094bf"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#a490d33f6352dc8d8b806a31640f094bf">FairTrackPar::FairTrackPar</a></div><div class="ttdeci">FairTrackPar()</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d04/FairTrackPar_8cxx_source.html#l00022">FairTrackPar.cxx:22</a></div></div>
+<div class="ttc" id="classFairTrackPar_html_afdfbf8e62ba6cd691430b8f0b601152a"><div class="ttname"><a href="../../d2/dfb/classFairTrackPar.html#afdfbf8e62ba6cd691430b8f0b601152a">FairTrackPar::fPy</a></div><div class="ttdeci">Double_t fPy</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/da0/FairTrackPar_8h_source.html#l00115">FairTrackPar.h:115</a></div></div>
+<div class="ttc" id="classFairField_html_aa3600a11d2b261c70396e19d1233e719"><div class="ttname"><a href="../../dc/ddd/classFairField.html#aa3600a11d2b261c70396e19d1233e719">FairField::GetFieldValue</a></div><div class="ttdeci">virtual void GetFieldValue(const Double_t point[3], Double_t *bField)</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/daf/FairField_8cxx_source.html#l00044">FairField.cxx:44</a></div></div>
+<div class="ttc" id="FairBoxSetDraw_8cxx_html_a098473ef4da0de8c0bdb8c1dcbd1d6a1"><div class="ttname"><a href="../../d0/d75/FairBoxSetDraw_8cxx.html#a098473ef4da0de8c0bdb8c1dcbd1d6a1">fX</a></div><div class="ttdeci">Double_t fX</div><div class="ttdef"><b>Definition:</b> <a href="../../d0/d75/FairBoxSetDraw_8cxx_source.html#l00031">FairBoxSetDraw.cxx:31</a></div></div>
 <div class="ttc" id="FairField_8h_html"><div class="ttname"><a href="../../df/deb/FairField_8h.html">FairField.h</a></div></div>
 <div class="ttc" id="FairTrackPar_8h_html"><div class="ttname"><a href="../../d2/da0/FairTrackPar_8h.html">FairTrackPar.h</a></div></div>
-<div class="ttc" id="FairLink_8cxx_html_a1957c9f11f7f50fe9b58f3f0bedb38de"><div class="ttname"><a href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a></div><div class="ttdeci">ClassImp(FairLink)</div></div>
-<div class="ttc" id="classFairRunAna_html_a77b6ac822fc0647295c5d3d22e3a52db"><div class="ttname"><a href="../../de/da9/classFairRunAna.html#a77b6ac822fc0647295c5d3d22e3a52db">FairRunAna::GetField</a></div><div class="ttdeci">FairField * GetField()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d7c/FairRunAna_8h_source.html#l00132">FairRunAna.h:132</a></div></div>
+<div class="ttc" id="classFairRunAna_html_a77b6ac822fc0647295c5d3d22e3a52db"><div class="ttname"><a href="../../de/da9/classFairRunAna.html#a77b6ac822fc0647295c5d3d22e3a52db">FairRunAna::GetField</a></div><div class="ttdeci">FairField * GetField()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d7c/FairRunAna_8h_source.html#l00126">FairRunAna.h:126</a></div></div>
 <div class="ttc" id="FairLogger_8h_html"><div class="ttname"><a href="../../d5/de4/FairLogger_8h.html">FairLogger.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -251,7 +263,7 @@ $(document).ready(function(){initNavTree('db/d04/FairTrackPar_8cxx_source.html',
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_1458883f8bb8555bd1757d1798bdde12.html">trackbase</a></li><li class="navelem"><a class="el" href="../../db/d04/FairTrackPar_8cxx.html">FairTrackPar.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:52 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:59:01 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

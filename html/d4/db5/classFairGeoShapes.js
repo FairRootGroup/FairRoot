@@ -2,6 +2,7 @@ var classFairGeoShapes =
 [
     [ "FairGeoShapes", "d4/db5/classFairGeoShapes.html#a5ed2e5cb790be24cba088d3294d2f9b1", null ],
     [ "~FairGeoShapes", "d4/db5/classFairGeoShapes.html#af9d8eeab9011ea450f3c4f08eb72e36e", null ],
+    [ "ClassDef", "d4/db5/classFairGeoShapes.html#a698baf373050a6c816f51e12739513be", null ],
     [ "printPoints", "d4/db5/classFairGeoShapes.html#ab5bad63ff4fd10d46b009490b05daa37", null ],
     [ "readPoints", "d4/db5/classFairGeoShapes.html#ad0ec2d837f4f9a4b802c6ad36a5031f3", null ],
     [ "selectShape", "d4/db5/classFairGeoShapes.html#aa8de564794c0b71c770b53aaa454894c", null ],

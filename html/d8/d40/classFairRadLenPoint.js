@@ -3,6 +3,7 @@ var classFairRadLenPoint =
     [ "FairRadLenPoint", "d8/d40/classFairRadLenPoint.html#a357fe57fdaa527a9990ac69a10786868", null ],
     [ "FairRadLenPoint", "d8/d40/classFairRadLenPoint.html#acdaf60b068bf799969eb78ebc67c3316", null ],
     [ "~FairRadLenPoint", "d8/d40/classFairRadLenPoint.html#ac5e0ae83efb994229bae7403082458df", null ],
+    [ "ClassDef", "d8/d40/classFairRadLenPoint.html#a57a8c81f6533b5a7910286138f3ba355", null ],
     [ "GetA", "d8/d40/classFairRadLenPoint.html#a6c83aa63392ec330a54990b3bac1f27a", null ],
     [ "GetDensity", "d8/d40/classFairRadLenPoint.html#aeff5327966787dabbc7fcb18ecc343cc", null ],
     [ "GetPosition", "d8/d40/classFairRadLenPoint.html#a0328a52baa84507c67d4a26b77938098", null ],

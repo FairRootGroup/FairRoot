@@ -2,6 +2,7 @@ var classFairTutorialDet2Geo =
 [
     [ "FairTutorialDet2Geo", "d2/d3a/classFairTutorialDet2Geo.html#af503c85bded57ee292ef0418e65dad80", null ],
     [ "~FairTutorialDet2Geo", "d2/d3a/classFairTutorialDet2Geo.html#aefa47bb35a062a2185a1f8a2bd25436a", null ],
+    [ "ClassDef", "d2/d3a/classFairTutorialDet2Geo.html#a3d256c19ab35f632ad6c3155bc1b1355", null ],
     [ "getEleName", "d2/d3a/classFairTutorialDet2Geo.html#af19125716a7e1d319769f5b4c76cb4cd", null ],
     [ "getModNumInMod", "d2/d3a/classFairTutorialDet2Geo.html#a3750a569105abff6707b1a87b9ac649e", null ],
     [ "getModuleName", "d2/d3a/classFairTutorialDet2Geo.html#afcd27631d11c78e0d63b25d367e5f578", null ],

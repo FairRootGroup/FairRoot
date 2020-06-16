@@ -2,6 +2,7 @@ var classREvent =
 [
     [ "REvent", "db/d70/classREvent.html#abaf0beececad63389e9e76b67bba4067", null ],
     [ "~REvent", "db/d70/classREvent.html#a803d6ce10c7574a1c889103cbf8f2dc1", null ],
+    [ "ClassDef", "db/d70/classREvent.html#a43bc186408844e13399a774602f55d14", null ],
     [ "GetData", "db/d70/classREvent.html#a72a75b918d0f39148eaded518d34d0f5", null ],
     [ "ReFillData", "db/d70/classREvent.html#a8865e59f33da79a23b0af8bb3aef2447", null ],
     [ "ReFillHead", "db/d70/classREvent.html#aaa16a083bec3148ca154a5e15050b3fd", null ],

@@ -111,8 +111,8 @@ $(document).ready(function(){initNavTree('d3/dd9/FairShieldGenerator_8h_source.h
 <a href="../../d3/dd9/FairShieldGenerator_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/********************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *                                                                              *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             * </span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *  </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
@@ -123,54 +123,53 @@ $(document).ready(function(){initNavTree('d3/dd9/FairShieldGenerator_8h_source.h
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef FAIRSHIELDGENERATOR_H</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define FAIRSHIELDGENERATOR_H 1</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/d97/FairGenerator_8h.html">FairGenerator.h</a>&quot;</span>              <span class="comment">// for FairGenerator</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/d97/FairGenerator_8h.html">FairGenerator.h</a>&quot;</span>   <span class="comment">// for FairGenerator</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>                     <span class="comment">// for FairShieldGenerator::Class, etc</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;TString.h&gt;</span>                    <span class="comment">// for TString</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;iosfwd&gt;</span>                       <span class="comment">// for ifstream</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span>                          <span class="comment">// for map</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">class </span>TDatabasePDG;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">class </span><a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">class </span><a class="code" href="../../df/df5/classFairIon.html">FairIon</a>;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="../../db/dce/classFairShieldGenerator.html">   43</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../db/dce/classFairShieldGenerator.html">FairShieldGenerator</a> : <span class="keyword">public</span> <a class="code" href="../../df/d40/classFairGenerator.html">FairGenerator</a></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;{</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="../../db/dce/classFairShieldGenerator.html#a4a7c6321028c8cd5fd57c44e77224754">FairShieldGenerator</a>();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <a class="code" href="../../db/dce/classFairShieldGenerator.html#a4a7c6321028c8cd5fd57c44e77224754">FairShieldGenerator</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fileName);</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../db/dce/classFairShieldGenerator.html#a98e5c4c2d77befcb7e03d13979ab60c0">~FairShieldGenerator</a>();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">virtual</span> Bool_t <a class="code" href="../../db/dce/classFairShieldGenerator.html#a0e28a1e38f84cc35597ceb638b9979f6">ReadEvent</a>(<a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>* primGen);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    std::ifstream*      fInputFile;          </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">const</span> Char_t*  fFileName;           </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    TDatabasePDG*  fPDG;                </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">void</span> CloseInput();</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    Int_t RegisterIons();</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    std::map&lt;TString, FairIon*&gt; fIonMap;       </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <a class="code" href="../../db/dce/classFairShieldGenerator.html#a4a7c6321028c8cd5fd57c44e77224754">FairShieldGenerator</a>(<span class="keyword">const</span> <a class="code" href="../../db/dce/classFairShieldGenerator.html">FairShieldGenerator</a>&amp;);</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <a class="code" href="../../db/dce/classFairShieldGenerator.html">FairShieldGenerator</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../db/dce/classFairShieldGenerator.html">FairShieldGenerator</a>&amp;);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    ClassDef(<a class="code" href="../../db/dce/classFairShieldGenerator.html">FairShieldGenerator</a>,1);</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;};</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classFairShieldGenerator_html_a98e5c4c2d77befcb7e03d13979ab60c0"><div class="ttname"><a href="../../db/dce/classFairShieldGenerator.html#a98e5c4c2d77befcb7e03d13979ab60c0">FairShieldGenerator::~FairShieldGenerator</a></div><div class="ttdeci">virtual ~FairShieldGenerator()</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d32/FairShieldGenerator_8cxx_source.html#l00056">FairShieldGenerator.cxx:56</a></div></div>
-<div class="ttc" id="classFairGenerator_html"><div class="ttname"><a href="../../df/d40/classFairGenerator.html">FairGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d97/FairGenerator_8h_source.html#l00034">FairGenerator.h:34</a></div></div>
-<div class="ttc" id="classFairPrimaryGenerator_html"><div class="ttname"><a href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/dba/FairPrimaryGenerator_8h_source.html#l00041">FairPrimaryGenerator.h:41</a></div></div>
-<div class="ttc" id="classFairShieldGenerator_html_a0e28a1e38f84cc35597ceb638b9979f6"><div class="ttname"><a href="../../db/dce/classFairShieldGenerator.html#a0e28a1e38f84cc35597ceb638b9979f6">FairShieldGenerator::ReadEvent</a></div><div class="ttdeci">virtual Bool_t ReadEvent(FairPrimaryGenerator *primGen)</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d32/FairShieldGenerator_8cxx_source.html#l00061">FairShieldGenerator.cxx:61</a></div></div>
-<div class="ttc" id="classFairShieldGenerator_html"><div class="ttname"><a href="../../db/dce/classFairShieldGenerator.html">FairShieldGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dd9/FairShieldGenerator_8h_source.html#l00043">FairShieldGenerator.h:43</a></div></div>
-<div class="ttc" id="classFairShieldGenerator_html_a4a7c6321028c8cd5fd57c44e77224754"><div class="ttname"><a href="../../db/dce/classFairShieldGenerator.html#a4a7c6321028c8cd5fd57c44e77224754">FairShieldGenerator::FairShieldGenerator</a></div><div class="ttdeci">FairShieldGenerator()</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d32/FairShieldGenerator_8cxx_source.html#l00027">FairShieldGenerator.cxx:27</a></div></div>
-<div class="ttc" id="classFairIon_html"><div class="ttname"><a href="../../df/df5/classFairIon.html">FairIon</a></div><div class="ttdef"><b>Definition:</b> <a href="../../de/d7f/FairIon_8h_source.html#l00030">FairIon.h:30</a></div></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;Rtypes.h&gt;</span>    <span class="comment">// for FairShieldGenerator::Class, etc</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;TString.h&gt;</span>   <span class="comment">// for TString</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;iosfwd&gt;</span>      <span class="comment">// for ifstream</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span>         <span class="comment">// for map</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="keyword">class </span>TDatabasePDG;</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">class </span><a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>;</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">class </span><a class="code" href="../../df/df5/classFairIon.html">FairIon</a>;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="../../db/dce/classFairShieldGenerator.html">   42</a></span>&#160;<span class="keyword">class </span><a class="code" href="../../db/dce/classFairShieldGenerator.html">FairShieldGenerator</a> : <span class="keyword">public</span> <a class="code" href="../../df/d40/classFairGenerator.html">FairGenerator</a></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;{</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="../../db/dce/classFairShieldGenerator.html#a4a7c6321028c8cd5fd57c44e77224754">FairShieldGenerator</a>();</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="../../db/dce/classFairShieldGenerator.html#a4a7c6321028c8cd5fd57c44e77224754">FairShieldGenerator</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* fileName);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="../../db/dce/classFairShieldGenerator.html#a98e5c4c2d77befcb7e03d13979ab60c0">~FairShieldGenerator</a>();</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">virtual</span> Bool_t <a class="code" href="../../db/dce/classFairShieldGenerator.html#a0e28a1e38f84cc35597ceb638b9979f6">ReadEvent</a>(<a class="code" href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a>* primGen);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    std::ifstream* fInputFile;   </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">const</span> Char_t* fFileName;     </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    TDatabasePDG* fPDG;          </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span> CloseInput();</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    Int_t RegisterIons();</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    std::map&lt;TString, FairIon*&gt; fIonMap;   </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <a class="code" href="../../db/dce/classFairShieldGenerator.html#a4a7c6321028c8cd5fd57c44e77224754">FairShieldGenerator</a>(<span class="keyword">const</span> <a class="code" href="../../db/dce/classFairShieldGenerator.html">FairShieldGenerator</a>&amp;);</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <a class="code" href="../../db/dce/classFairShieldGenerator.html">FairShieldGenerator</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../db/dce/classFairShieldGenerator.html">FairShieldGenerator</a>&amp;);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    ClassDef(<a class="code" href="../../db/dce/classFairShieldGenerator.html">FairShieldGenerator</a>, 1);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;};</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="classFairShieldGenerator_html_a98e5c4c2d77befcb7e03d13979ab60c0"><div class="ttname"><a href="../../db/dce/classFairShieldGenerator.html#a98e5c4c2d77befcb7e03d13979ab60c0">FairShieldGenerator::~FairShieldGenerator</a></div><div class="ttdeci">virtual ~FairShieldGenerator()</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d32/FairShieldGenerator_8cxx_source.html#l00054">FairShieldGenerator.cxx:54</a></div></div>
+<div class="ttc" id="classFairGenerator_html"><div class="ttname"><a href="../../df/d40/classFairGenerator.html">FairGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d97/FairGenerator_8h_source.html#l00031">FairGenerator.h:31</a></div></div>
+<div class="ttc" id="classFairPrimaryGenerator_html"><div class="ttname"><a href="../../d6/d1f/classFairPrimaryGenerator.html">FairPrimaryGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d1/dba/FairPrimaryGenerator_8h_source.html#l00039">FairPrimaryGenerator.h:39</a></div></div>
+<div class="ttc" id="classFairShieldGenerator_html_a0e28a1e38f84cc35597ceb638b9979f6"><div class="ttname"><a href="../../db/dce/classFairShieldGenerator.html#a0e28a1e38f84cc35597ceb638b9979f6">FairShieldGenerator::ReadEvent</a></div><div class="ttdeci">virtual Bool_t ReadEvent(FairPrimaryGenerator *primGen)</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d32/FairShieldGenerator_8cxx_source.html#l00056">FairShieldGenerator.cxx:56</a></div></div>
+<div class="ttc" id="classFairShieldGenerator_html"><div class="ttname"><a href="../../db/dce/classFairShieldGenerator.html">FairShieldGenerator</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/dd9/FairShieldGenerator_8h_source.html#l00042">FairShieldGenerator.h:42</a></div></div>
+<div class="ttc" id="classFairShieldGenerator_html_a4a7c6321028c8cd5fd57c44e77224754"><div class="ttname"><a href="../../db/dce/classFairShieldGenerator.html#a4a7c6321028c8cd5fd57c44e77224754">FairShieldGenerator::FairShieldGenerator</a></div><div class="ttdeci">FairShieldGenerator()</div><div class="ttdef"><b>Definition:</b> <a href="../../d1/d32/FairShieldGenerator_8cxx_source.html#l00026">FairShieldGenerator.cxx:26</a></div></div>
+<div class="ttc" id="classFairIon_html"><div class="ttname"><a href="../../df/df5/classFairIon.html">FairIon</a></div><div class="ttdef"><b>Definition:</b> <a href="../../de/d7f/FairIon_8h_source.html#l00029">FairIon.h:29</a></div></div>
 <div class="ttc" id="FairGenerator_8h_html"><div class="ttname"><a href="../../d5/d97/FairGenerator_8h.html">FairGenerator.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -178,7 +177,7 @@ $(document).ready(function(){initNavTree('d3/dd9/FairShieldGenerator_8h_source.h
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_76ab5dc027795deb5b098ae38ba247cb.html">generators</a></li><li class="navelem"><a class="el" href="../../d3/dd9/FairShieldGenerator_8h.html">FairShieldGenerator.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:51 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:59 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

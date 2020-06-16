@@ -111,8 +111,8 @@ $(document).ready(function(){initNavTree('d5/d2d/FairGeoInterface_8cxx_source.ht
 <a href="../../d5/d2d/FairGeoInterface_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/********************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *                                                                              *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             * </span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *  </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//*-- AUTHOR : Ilse Koenig</span></div>
@@ -131,512 +131,574 @@ $(document).ready(function(){initNavTree('d5/d2d/FairGeoInterface_8cxx_source.ht
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d6/dd0/FairGeoInterface_8h.html">FairGeoInterface.h</a>&quot;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d3/daf/FairGeoAsciiIo_8h.html">FairGeoAsciiIo.h</a>&quot;</span>             <span class="comment">// for FairGeoAsciiIo</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/dc5/FairGeoBuilder_8h.html">FairGeoBuilder.h</a>&quot;</span>             <span class="comment">// for FairGeoBuilder</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/d3f/FairGeoIo_8h.html">FairGeoIo.h</a>&quot;</span>                  <span class="comment">// for FairGeoIo</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../dc/d78/FairGeoMedia_8h.html">FairGeoMedia.h</a>&quot;</span>               <span class="comment">// for FairGeoMedia</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/d38/FairGeoSet_8h.html">FairGeoSet.h</a>&quot;</span>                 <span class="comment">// for FairGeoSet</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d9/d8f/FairGeoShapes_8h.html">FairGeoShapes.h</a>&quot;</span>              <span class="comment">// for FairGeoShapes</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d3/daf/FairGeoAsciiIo_8h.html">FairGeoAsciiIo.h</a>&quot;</span>   <span class="comment">// for FairGeoAsciiIo</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/dc5/FairGeoBuilder_8h.html">FairGeoBuilder.h</a>&quot;</span>   <span class="comment">// for FairGeoBuilder</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/d3f/FairGeoIo_8h.html">FairGeoIo.h</a>&quot;</span>        <span class="comment">// for FairGeoIo</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../dc/d78/FairGeoMedia_8h.html">FairGeoMedia.h</a>&quot;</span>     <span class="comment">// for FairGeoMedia</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d2/d38/FairGeoSet_8h.html">FairGeoSet.h</a>&quot;</span>       <span class="comment">// for FairGeoSet</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d9/d8f/FairGeoShapes_8h.html">FairGeoShapes.h</a>&quot;</span>    <span class="comment">// for FairGeoShapes</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;TClass.h&gt;</span>                     <span class="comment">// for TClass</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;TList.h&gt;</span>                      <span class="comment">// for TList</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;TObjArray.h&gt;</span>                  <span class="comment">// for TObjArray</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span>                      <span class="comment">// for sprintf</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span>                     <span class="comment">// for strcmp</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;sys/select.h&gt;</span>                 <span class="comment">// for time_t</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;time.h&gt;</span>                       <span class="comment">// for tm, localtime, time</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span>                     <span class="comment">// for operator&lt;&lt;, basic_ostream, etc</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">using</span> std::cout;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">using</span> std::endl;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="../../d5/d2d/FairGeoInterface_8cxx.html#a21ac5cbb705864c8148caa4f521d25b9">   46</a></span>&#160;<a class="code" href="../../d5/d2d/FairGeoInterface_8cxx.html#a21ac5cbb705864c8148caa4f521d25b9">ClassImp</a>(<a class="code" href="../../dc/dc3/classFairGeoInterface.html">FairGeoInterface</a>)</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<a class="code" href="../../dc/dc3/classFairGeoInterface.html">FairGeoInterface</a>::<a class="code" href="../../dc/dc3/classFairGeoInterface.html">FairGeoInterface</a>()</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  :TObject(),</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;   fileInput(<span class="keywordtype">nullptr</span>),</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;   oraInput(<span class="keywordtype">nullptr</span>),</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;   output(<span class="keywordtype">nullptr</span>),</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;   nSets(0),</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;   nActualSets(0),</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;   sets(new TObjArray()),</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;   media(new <a class="code" href="../../d9/d1e/classFairGeoMedia.html">FairGeoMedia</a>()),</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;   shapes(new <a class="code" href="../../d4/db5/classFairGeoShapes.html">FairGeoShapes</a>()),</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;   masterNodes(new TList()),</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;   setupFile(&quot;&quot;),</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;   geoBuilder(<span class="keywordtype">nullptr</span>)</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;{</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="comment">// Constructor</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;}</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a36cc343a4a9504d88378fa6259ee0cd7">   65</a></span>&#160;<a class="code" href="../../dc/dc3/classFairGeoInterface.html#a36cc343a4a9504d88378fa6259ee0cd7">FairGeoInterface::~FairGeoInterface</a>()</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;{</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="comment">// Destructor</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  <span class="keyword">delete</span> fileInput;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  fileInput=0;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">delete</span> oraInput;</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  oraInput=0;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keyword">delete</span> output;</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  output=0;</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="comment">//  if (geoBuilder) {</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="comment">//    delete geoBuilder;</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">//    geoBuilder=0;</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="comment">//  }</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  <span class="keywordflow">if</span> (masterNodes) {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    masterNodes-&gt;Delete();</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">delete</span> masterNodes;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    masterNodes=0;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  }</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="keywordflow">if</span> (sets) {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    sets-&gt;Delete();</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keyword">delete</span> sets;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    sets=0;</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  }</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  <span class="keywordflow">if</span> (media) {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">delete</span> media;</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    media=0;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  }</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keywordflow">if</span> (shapes) {</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">delete</span> shapes;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    shapes=0;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;}</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a697953369c00ee61e7f39d66a2ede212">   99</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a697953369c00ee61e7f39d66a2ede212">FairGeoInterface::addGeoModule</a>(<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet)</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;{</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  sets-&gt;AddLast(pSet);</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#aa15740d902581477e1162bbe1482b08e">setShapes</a>(shapes);</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#af9768491c6535dc4a199fc14f416b5f0">setMasterNodes</a>(masterNodes);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  nActualSets++;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;}</div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a0c405d9923ce90c050f78df85825b82b">  107</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a0c405d9923ce90c050f78df85825b82b">FairGeoInterface::setMediaFile</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* file)</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;TClass.h&gt;</span>       <span class="comment">// for TClass</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;TList.h&gt;</span>        <span class="comment">// for TList</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;TObjArray.h&gt;</span>    <span class="comment">// for TObjArray</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span>       <span class="comment">// for operator&lt;&lt;, basic_ostream, etc</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span>        <span class="comment">// for sprintf</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span>       <span class="comment">// for strcmp</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &lt;sys/select.h&gt;</span>   <span class="comment">// for time_t</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &lt;time.h&gt;</span>         <span class="comment">// for tm, localtime, time</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">using</span> std::cout;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">using</span> std::endl;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<a class="code" href="../../d5/d2d/FairGeoInterface_8cxx.html#a490fd3f322ae3d5fc9c7c6a2f86aeba1">ClassImp</a>(<a class="code" href="../../dc/dc3/classFairGeoInterface.html">FairGeoInterface</a>);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#aa8ae1cad8b47e2a6fb5f6a2347be17fa">   47</a></span>&#160;<a class="code" href="../../dc/dc3/classFairGeoInterface.html#aa8ae1cad8b47e2a6fb5f6a2347be17fa">FairGeoInterface::FairGeoInterface</a>()</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    : TObject()</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    , fileInput(nullptr)</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    , oraInput(nullptr)</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    , output(nullptr)</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    , nSets(0)</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    , nActualSets(0)</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    , sets(new TObjArray())</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    , media(new <a class="code" href="../../d9/d1e/classFairGeoMedia.html">FairGeoMedia</a>())</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    , shapes(new <a class="code" href="../../d4/db5/classFairGeoShapes.html">FairGeoShapes</a>())</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    , masterNodes(new TList())</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    , setupFile(<span class="stringliteral">&quot;&quot;</span>)</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    , geoBuilder(nullptr)</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;{</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// Constructor</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;}</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a36cc343a4a9504d88378fa6259ee0cd7">   64</a></span>&#160;<a class="code" href="../../dc/dc3/classFairGeoInterface.html#a36cc343a4a9504d88378fa6259ee0cd7">FairGeoInterface::~FairGeoInterface</a>()</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;{</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="comment">// Destructor</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">delete</span> fileInput;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    fileInput = 0;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keyword">delete</span> oraInput;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    oraInput = 0;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">delete</span> output;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    output = 0;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="comment">//  if (geoBuilder) {</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">//    delete geoBuilder;</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">//    geoBuilder=0;</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="comment">//  }</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keywordflow">if</span> (masterNodes) {</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        masterNodes-&gt;Delete();</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        <span class="keyword">delete</span> masterNodes;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        masterNodes = 0;</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    }</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordflow">if</span> (sets) {</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        sets-&gt;Delete();</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        <span class="keyword">delete</span> sets;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        sets = 0;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keywordflow">if</span> (media) {</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        <span class="keyword">delete</span> media;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        media = 0;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    }</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keywordflow">if</span> (shapes) {</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        <span class="keyword">delete</span> shapes;</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        shapes = 0;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;</div>
+<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a697953369c00ee61e7f39d66a2ede212">   98</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a697953369c00ee61e7f39d66a2ede212">FairGeoInterface::addGeoModule</a>(<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet)</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;{</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    sets-&gt;AddLast(pSet);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#aa15740d902581477e1162bbe1482b08e">setShapes</a>(shapes);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#af9768491c6535dc4a199fc14f416b5f0">setMasterNodes</a>(masterNodes);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    nActualSets++;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a0c405d9923ce90c050f78df85825b82b">  105</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a0c405d9923ce90c050f78df85825b82b">FairGeoInterface::setMediaFile</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* file) { media-&gt;<a class="code" href="../../d9/d1e/classFairGeoMedia.html#a29ed21b1abd8c1607f234e3a52bad3a8">setInputFile</a>(file); }</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a1350680adf337d4fbc7b537f04133099">  107</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a1350680adf337d4fbc7b537f04133099">FairGeoInterface::addInputFile</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* file)</div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;{</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  media-&gt;<a class="code" href="../../d9/d1e/classFairGeoMedia.html#a29ed21b1abd8c1607f234e3a52bad3a8">setInputFile</a>(file);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;}</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;</div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a1350680adf337d4fbc7b537f04133099">  112</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a1350680adf337d4fbc7b537f04133099">FairGeoInterface::addInputFile</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* file)</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;{</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;  Error(<span class="stringliteral">&quot;This Methode is not used any more &quot;</span>,<span class="stringliteral">&quot;Use addGeoModule to add detectors: %s&quot;</span>,file);</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;  <span class="comment">/*</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment">    // Adds the input file and creates the corresponding detector object</span></div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">    FairGeoSet* pSet=0;</span></div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">    TString setName(file);</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">    setName.ToLower();</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">    Int_t l=setName.Last(&#39;/&#39;)+1;</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">    setName=setName(l,setName.Length()-l);</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">    if (setName.Contains(&quot;media&quot;)) {</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">      media-&gt;setInputFile(file);</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment">    } else {</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">      if (setName.Contains(&quot;cave&quot;)) {</span></div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoCave));</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">        if (!pSet) {</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">          pSet=new FairGeoCave;</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoCave);</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;pipe&quot;)) {</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoPipe));</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">        if (!pSet) {</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">          pSet=new FairGeoPipe;</span></div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoPipe);</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;target&quot;)) {</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoTarget));</span></div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">        if (!pSet) {</span></div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="comment">          pSet=new FairGeoTarget;</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoTarget);</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;magnet&quot;)) {</span></div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoMagnet));</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">        if (!pSet) {</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">          pSet=new FairGeoMagnet;</span></div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoMagnet);</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;rich&quot;)) {</span></div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoRich));</span></div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">        if (!pSet) {</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">          pSet=new FairGeoRich;</span></div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoRich);</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;sts&quot;)) {</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoSts));</span></div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">        if (!pSet) {</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">          pSet=new FairGeoSts;</span></div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoSts);</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;trd&quot;)) {</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoTrd));</span></div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">        if (!pSet) {</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">          pSet=new FairGeoTrd;</span></div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoTrd);</span></div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;tof&quot;)) {</span></div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoTof));</span></div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">        if (!pSet) {</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">          pSet=new FairGeoTof;</span></div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoTof);</span></div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">        }</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">      } else Error(&quot;addInputFile&quot;,&quot;Unknown detector set: %s&quot;,file);</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">      if (pSet) {</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">        pSet-&gt;setShapes(shapes);</span></div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment">        pSet-&gt;setMasterNodes(masterNodes);</span></div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="comment">        pSet-&gt;setGeomFile(file);</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="comment">        nActualSets++;</span></div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="comment">      }</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="comment">    }</span></div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="comment">    */</span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;}</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;</div>
-<div class="line"><a name="l00185"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a0e04bbbfb4c1b8a27e2bb5e3c5a89159">  185</a></span>&#160;<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a0e04bbbfb4c1b8a27e2bb5e3c5a89159">FairGeoInterface::findSet</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name)</div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;{</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="comment">// Find the detector set in the actual setup</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;  <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet=0;</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;  TString setName(name);</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;  TString PSetName;</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  setName.ToLower();</div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;  Int_t l=setName.Last(<span class="charliteral">&#39;/&#39;</span>)+1;</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;  setName=setName(l,setName.Length()-l);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;  <span class="comment">/*  if (setName.Contains(&quot;cave&quot;))        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoCave));</span></div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">    else if (setName.Contains(&quot;pipe&quot;))   pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoPipe));</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">    else if (setName.Contains(&quot;target&quot;)) pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoTarget));</span></div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment">    else if (setName.Contains(&quot;magnet&quot;))  pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoMagnet));</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">    else if (setName.Contains(&quot;rich&quot;))   pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoRich));</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">    else if (setName.Contains(&quot;sts&quot;))    pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoSts));</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">    else if (setName.Contains(&quot;trd&quot;))    pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoTrd));</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="comment">    else if (setName.Contains(&quot;tof&quot;))    pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoTof));</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="comment">    else if (setName.Contains(&quot;ecal&quot;)) pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoEcal));</span></div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;<span class="comment">    return pSet;</span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="comment">    */</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;  <span class="keywordflow">for</span>(Int_t i=0; i&lt;nSets; i++) {</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    PSetName=sets-&gt;At(i)-&gt;GetName();</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordflow">if</span> (PSetName.Contains(setName.Data())) {</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;      pSet=<span class="keyword">static_cast&lt;</span><a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>*<span class="keyword">&gt;</span>(sets-&gt;At(i));</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;      cout &lt;&lt; <span class="stringliteral">&quot;FairGeoInterface::findSet&quot;</span> &lt;&lt;pSet-&gt;GetName() &lt;&lt;endl;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;      <span class="keywordflow">break</span>;</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    }</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;  }</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;  <span class="keywordflow">return</span> pSet;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;}</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;</div>
-<div class="line"><a name="l00218"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a542c17b45b8b9f259fb03e73484435b5">  218</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a542c17b45b8b9f259fb03e73484435b5">FairGeoInterface::readSet</a>(<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet)</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;{</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;  <span class="comment">// Reads the geometry for the detector part</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;  Bool_t rc=kFALSE;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;  <a class="code" href="../../d3/d1b/classFairGeoIo.html">FairGeoIo</a>* input=0;</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;  <span class="keywordflow">if</span> (pSet) {</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    input=connectInput(pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#a5cd70894f27de89898ddda3df159c9e7">getGeomFile</a>());</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keywordflow">if</span> (input) { rc=input-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a7ae08a2ed9e1ccdb1eec0c241b387ca3">read</a>(pSet,media); }</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;  }</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;  <span class="keywordflow">return</span> rc;</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;}</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;</div>
-<div class="line"><a name="l00230"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a35d3a6c6e411e6a2b1d1f0bc9c22c8aa">  230</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a35d3a6c6e411e6a2b1d1f0bc9c22c8aa">FairGeoInterface::writeSet</a>(<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet)</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;{</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;  <span class="comment">// Writes the geometry for the detector part to output</span></div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;  <span class="keywordflow">if</span> (pSet&amp;&amp;connectOutput(pSet-&gt;GetName())) { <span class="keywordflow">return</span> output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#ad378048d16dd320398d2177bcf1dabd7">write</a>(pSet); }</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;  <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;}</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;</div>
-<div class="line"><a name="l00237"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a087247419abc5c9c63b5e67c9133c3e8">  237</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a35d3a6c6e411e6a2b1d1f0bc9c22c8aa">FairGeoInterface::writeSet</a>(<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet, <span class="keyword">const</span> <span class="keywordtype">char</span>* filename)</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;{</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  <span class="comment">// Writes the geometry for the detector part to file</span></div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;  <span class="keywordflow">if</span> (pSet&amp;&amp;output) {</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#acedad2f2ae27e2bcc7a2dcb24a4e136e">open</a>(filename,<span class="stringliteral">&quot;out&quot;</span>);</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    <span class="keywordflow">if</span> (output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a79f4edf95e1e6b6454d1b74cd8670e12">isOpen</a>()) { <span class="keywordflow">return</span> output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#ad378048d16dd320398d2177bcf1dabd7">write</a>(pSet); }</div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;  }</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;}</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;</div>
-<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a5806a0ac402744eeb6b7956386ba7028">  247</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a5806a0ac402744eeb6b7956386ba7028">FairGeoInterface::deleteSet</a>(<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet)</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;{</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;  <span class="comment">// Deletes the set</span></div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;  <span class="keywordflow">if</span> (pSet) {</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    sets-&gt;Remove(pSet);</div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keyword">delete</span> pSet;</div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    pSet=0;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;  }</div>
-<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;}</div>
-<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;</div>
-<div class="line"><a name="l00257"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a8f007a06d077ea51d66e5c269f64fa01">  257</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a8f007a06d077ea51d66e5c269f64fa01">FairGeoInterface::readMedia</a>()</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;{</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;  <span class="comment">// Reads the media</span></div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;  Bool_t rc=kFALSE;</div>
-<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;  <a class="code" href="../../d3/d1b/classFairGeoIo.html">FairGeoIo</a>* input=connectInput(media-&gt;<a class="code" href="../../d9/d1e/classFairGeoMedia.html#a74be61a43220be1c2d74ad908e07a00e">getInputFile</a>());</div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;  <span class="keywordflow">if</span> (input) {</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    rc=input-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a7ae08a2ed9e1ccdb1eec0c241b387ca3">read</a>(media);</div>
-<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;  }</div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;  <span class="keywordflow">return</span> rc;</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;}</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;</div>
-<div class="line"><a name="l00268"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a30ab3bc6e424d0cdef888d29cb57a8fe">  268</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a30ab3bc6e424d0cdef888d29cb57a8fe">FairGeoInterface::writeMedia</a>()</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;{</div>
-<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;  <span class="comment">// Writes the media to output</span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;  <span class="keywordflow">if</span> (connectOutput(<span class="stringliteral">&quot;media&quot;</span>)) { <span class="keywordflow">return</span> output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#ad378048d16dd320398d2177bcf1dabd7">write</a>(media); }</div>
-<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;  <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;}</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;</div>
-<div class="line"><a name="l00275"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#ac310e3776c5a6fdbc72dc0eb97da1d74">  275</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a30ab3bc6e424d0cdef888d29cb57a8fe">FairGeoInterface::writeMedia</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename)</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;{</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;  <span class="comment">// Writes the media to file</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;  <span class="keywordflow">if</span> (output) {</div>
-<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#acedad2f2ae27e2bcc7a2dcb24a4e136e">open</a>(filename,<span class="stringliteral">&quot;out&quot;</span>);</div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="keywordflow">if</span> (output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a79f4edf95e1e6b6454d1b74cd8670e12">isOpen</a>()) { <span class="keywordflow">return</span> output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#ad378048d16dd320398d2177bcf1dabd7">write</a>(media); }</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;  }</div>
-<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;  <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;}</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;</div>
-<div class="line"><a name="l00285"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a43facf1e09b3213a4b44fc70637b8d4b">  285</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a43facf1e09b3213a4b44fc70637b8d4b">FairGeoInterface::readAll</a>()</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;{</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;  <span class="comment">// Reads the media and the whole geometry</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;  Bool_t rc=kTRUE;</div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;  <span class="keywordflow">if</span> (nActualSets==0&amp;&amp;oraInput) {</div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    rc=oraInput-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a6fdc818ca6c907ba386508d800269acf">readGeomConfig</a>(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;<span class="comment">//  if (rc) addInputFile(&quot;media_gdb&quot;);</span></div>
-<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="keywordflow">if</span> (rc) { <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a1350680adf337d4fbc7b537f04133099">addInputFile</a>(<span class="stringliteral">&quot;media_gdb&quot;</span>); }</div>
-<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;  }</div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;  <span class="keywordflow">if</span>(rc) { rc=<a class="code" href="../../dc/dc3/classFairGeoInterface.html#a77f62e2d43c222d07971400e73a38831">readSetupFile</a>(); }</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;  <span class="keywordflow">if</span>(rc) { rc=<a class="code" href="../../dc/dc3/classFairGeoInterface.html#a8f007a06d077ea51d66e5c269f64fa01">readMedia</a>(); }</div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;  <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet=0;</div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;  <span class="keywordflow">for</span>(Int_t i=0; i&lt;nSets&amp;&amp;rc; i++) {</div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    pSet=<span class="keyword">static_cast&lt;</span><a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>*<span class="keyword">&gt;</span>(sets-&gt;At(i));</div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <span class="keywordflow">if</span> (pSet) {</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;      cout&lt;&lt;<span class="stringliteral">&quot;Read &quot;</span>&lt;&lt;pSet-&gt;GetName()&lt;&lt;endl;</div>
-<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;      rc=<a class="code" href="../../dc/dc3/classFairGeoInterface.html#a542c17b45b8b9f259fb03e73484435b5">readSet</a>(pSet);</div>
-<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    }</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;  }</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;  <span class="keywordflow">return</span> rc;</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;}</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;</div>
-<div class="line"><a name="l00307"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a44a35f19ff017414d4f30c4c438c62f7">  307</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a44a35f19ff017414d4f30c4c438c62f7">FairGeoInterface::writeAll</a>()</div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;{</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;  <span class="comment">// Reads the media and the whole geometry to output</span></div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;  Bool_t rc=kTRUE;</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;  <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet=0;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;  rc=<a class="code" href="../../dc/dc3/classFairGeoInterface.html#a30ab3bc6e424d0cdef888d29cb57a8fe">writeMedia</a>();</div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;  <span class="keywordflow">for</span>(Int_t i=0; i&lt;nSets&amp;&amp;rc; i++) {</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    pSet=<span class="keyword">static_cast&lt;</span><a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>*<span class="keyword">&gt;</span>(sets-&gt;At(i));</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;    <span class="keywordflow">if</span> (pSet) { rc=<a class="code" href="../../dc/dc3/classFairGeoInterface.html#a35d3a6c6e411e6a2b1d1f0bc9c22c8aa">writeSet</a>(pSet); }</div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;  }</div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;  <span class="keywordflow">return</span> rc;</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;}</div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;</div>
-<div class="line"><a name="l00320"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a7a1d51046698ad9b9fdf344077d3d87d">  320</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a7a1d51046698ad9b9fdf344077d3d87d">FairGeoInterface::createAll</a>(Bool_t withCleanup)</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;{</div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;  <span class="comment">// Creates the whole geometry</span></div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;  <span class="comment">// (if withCleanup==kTRUE, the geometry input is deleted afterwards)</span></div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;  Bool_t rc=kTRUE;</div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  Int_t n=0;</div>
-<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;  <span class="keywordflow">if</span> (geoBuilder) {</div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet=0;</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <span class="keywordflow">for</span>(Int_t i=0; i&lt;nSets&amp;&amp;rc; i++) {</div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;      pSet=<span class="keyword">static_cast&lt;</span><a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>*<span class="keyword">&gt;</span>(sets-&gt;At(i));</div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;      <span class="keywordflow">if</span> (pSet) {</div>
-<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160;        cout&lt;&lt;<span class="stringliteral">&quot;Create &quot;</span>&lt;&lt;pSet-&gt;GetName()&lt;&lt;endl;</div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;        rc=pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#a368c6a14b11c2c06c2a9310f8c85382c">create</a>(geoBuilder);</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;        n++;</div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;        <span class="keywordflow">if</span> (withCleanup) {</div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;          sets-&gt;RemoveAt(i);</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;          <span class="keyword">delete</span> pSet;</div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;        }</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;      }</div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    }</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;    <span class="keywordflow">if</span> (rc&amp;&amp;n&gt;0) { geoBuilder-&gt;<a class="code" href="../../de/d6a/classFairGeoBuilder.html#ab207d5c84404f1a33857c947696e702a">finalize</a>(); }</div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;  } <span class="keywordflow">else</span> { Error(<span class="stringliteral">&quot;createAll()&quot;</span>,<span class="stringliteral">&quot;No Builder&quot;</span>); }</div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;  <span class="keywordflow">return</span> rc;</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;}</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;</div>
-<div class="line"><a name="l00345"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a20c09910c99d5f23510ed5eb4c8b0a4b">  345</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a20c09910c99d5f23510ed5eb4c8b0a4b">FairGeoInterface::createGeometry</a>(Bool_t withCleanup)</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;{</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;  <span class="comment">// Reads and creates the whole geometry</span></div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;  <span class="comment">// (if withCleanup==kTRUE, the geometry input is deleted after creation)</span></div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;  Bool_t rc=kTRUE;</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;  Int_t n=0;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;  <span class="keywordflow">if</span> (geoBuilder) {</div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <span class="keywordflow">if</span> (nActualSets==0&amp;&amp;oraInput) {</div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;      rc=oraInput-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a6fdc818ca6c907ba386508d800269acf">readGeomConfig</a>(<span class="keyword">this</span>);</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;      <span class="keywordflow">if</span> (rc) { <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a1350680adf337d4fbc7b537f04133099">addInputFile</a>(<span class="stringliteral">&quot;media_gdb&quot;</span>); }</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    }</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    <span class="keywordflow">if</span> (rc) { rc=<a class="code" href="../../dc/dc3/classFairGeoInterface.html#a77f62e2d43c222d07971400e73a38831">readSetupFile</a>(); }</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    <span class="keywordflow">if</span> (rc) { rc=<a class="code" href="../../dc/dc3/classFairGeoInterface.html#a8f007a06d077ea51d66e5c269f64fa01">readMedia</a>(); }</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet=0;</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    <span class="keywordflow">for</span>(Int_t i=0; i&lt;nSets&amp;&amp;rc; i++) {</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;      pSet=<span class="keyword">static_cast&lt;</span><a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>*<span class="keyword">&gt;</span>(sets-&gt;At(i));</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;      <span class="keywordflow">if</span> (pSet) {</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;        cout&lt;&lt;<span class="stringliteral">&quot;Read and create &quot;</span>&lt;&lt;pSet-&gt;GetName()&lt;&lt;endl;</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;        rc=<a class="code" href="../../dc/dc3/classFairGeoInterface.html#a542c17b45b8b9f259fb03e73484435b5">readSet</a>(pSet);</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        <span class="keywordflow">if</span> (rc) {</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;          rc=pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#a368c6a14b11c2c06c2a9310f8c85382c">create</a>(geoBuilder);</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;          n++;</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        }</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="keywordflow">if</span> (withCleanup) {</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;          sets-&gt;RemoveAt(i);</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;          <span class="keyword">delete</span> pSet;</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        }</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;      }</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    }</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <span class="keywordflow">if</span> (rc&amp;&amp;n&gt;0) { geoBuilder-&gt;<a class="code" href="../../de/d6a/classFairGeoBuilder.html#ab207d5c84404f1a33857c947696e702a">finalize</a>(); }</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;  } <span class="keywordflow">else</span> { Error(<span class="stringliteral">&quot;createAll()&quot;</span>,<span class="stringliteral">&quot;No Builder&quot;</span>); }</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;  <span class="keywordflow">return</span> rc;</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;}</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;<a class="code" href="../../d3/d1b/classFairGeoIo.html">FairGeoIo</a>* FairGeoInterface::connectInput(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename)</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;{</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;  <span class="comment">// Connects the input (ASCII or Oracle)</span></div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;  <a class="code" href="../../d3/d1b/classFairGeoIo.html">FairGeoIo</a>* currentIo=0;</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;  <span class="keywordflow">if</span> (filename) {</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    TString s(filename);</div>
-<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    s=s.Strip();</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;    <span class="keywordflow">if</span> (s.EndsWith(<span class="stringliteral">&quot;.dat&quot;</span>)||s.EndsWith(<span class="stringliteral">&quot;.geo&quot;</span>)||s.EndsWith(<span class="stringliteral">&quot;.setup&quot;</span>)) {</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;      <span class="keywordflow">if</span> (!fileInput) { fileInput=<span class="keyword">new</span> <a class="code" href="../../d4/d79/classFairGeoAsciiIo.html">FairGeoAsciiIo</a>(); }</div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;      fileInput-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#acedad2f2ae27e2bcc7a2dcb24a4e136e">open</a>(filename);</div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;      currentIo=fileInput;</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (s.EndsWith(<span class="stringliteral">&quot;_gdb&quot;</span>)) { currentIo=oraInput; }</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;  }</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;  <span class="keywordflow">if</span> (currentIo &amp;&amp; currentIo-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a79f4edf95e1e6b6454d1b74cd8670e12">isOpen</a>()) { <span class="keywordflow">return</span> currentIo; }</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;  <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;}</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;Bool_t FairGeoInterface::connectOutput (<span class="keyword">const</span> <span class="keywordtype">char</span>* name)</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;{</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;  <span class="comment">// Connects the output (ASCII or Oracle)</span></div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;  <span class="keywordflow">if</span> (output) {</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    <span class="keywordflow">if</span> (strcmp(output-&gt;IsA()-&gt;GetName(),<span class="stringliteral">&quot;FairGeoAsciiIo&quot;</span>)==0) {</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;      TString fName(name);</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;      <span class="keywordtype">char</span> buf[80];</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;      <span class="keyword">struct </span>tm* newtime;</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;      time_t t;</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;      time(&amp;t);</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;      newtime=localtime(&amp;t);</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;      <span class="keywordflow">if</span> (newtime-&gt;tm_mday&lt;10) { sprintf(buf,<span class="stringliteral">&quot;_0%i&quot;</span>,newtime-&gt;tm_mday); }</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;      <span class="keywordflow">else</span> { sprintf(buf,<span class="stringliteral">&quot;_%i&quot;</span>,newtime-&gt;tm_mday); }</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;      fName=fName+buf;</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;      <span class="keywordflow">if</span> (newtime-&gt;tm_mon&lt;9) { sprintf(buf,<span class="stringliteral">&quot;0%i&quot;</span>,newtime-&gt;tm_mon+1); }</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;      <span class="keywordflow">else</span> { sprintf(buf,<span class="stringliteral">&quot;%i&quot;</span>,newtime-&gt;tm_mon+1); }</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;      fName=fName+buf;</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;      Int_t y=newtime-&gt;tm_year-100;</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;      <span class="keywordflow">if</span> (y&lt;10) { sprintf(buf,<span class="stringliteral">&quot;0%i&quot;</span>,y); }</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;      <span class="keywordflow">else</span> { sprintf(buf,<span class="stringliteral">&quot;%i&quot;</span>,y); }</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;      fName=fName+buf;</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;      <span class="keywordflow">if</span> (newtime-&gt;tm_hour&lt;10) { sprintf(buf,<span class="stringliteral">&quot;0%i&quot;</span>,newtime-&gt;tm_hour); }</div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;      <span class="keywordflow">else</span> { sprintf(buf,<span class="stringliteral">&quot;%i&quot;</span>,newtime-&gt;tm_hour); }</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;      fName=fName+buf;</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;      <span class="keywordflow">if</span> (newtime-&gt;tm_min&lt;10) { sprintf(buf,<span class="stringliteral">&quot;0%i&quot;</span>,newtime-&gt;tm_min); }</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;      <span class="keywordflow">else</span> { sprintf(buf,<span class="stringliteral">&quot;%i&quot;</span>,newtime-&gt;tm_min); }</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;      fName=fName+buf;</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;      <span class="keywordflow">if</span> (newtime-&gt;tm_sec&lt;10) { sprintf(buf,<span class="stringliteral">&quot;0%i&quot;</span>,newtime-&gt;tm_sec); }</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;      <span class="keywordflow">else</span> { sprintf(buf,<span class="stringliteral">&quot;%i&quot;</span>,newtime-&gt;tm_sec); }</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;      fName=fName+buf+<span class="stringliteral">&quot;.geo&quot;</span>;</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;      output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#acedad2f2ae27e2bcc7a2dcb24a4e136e">open</a>(fName,<span class="stringliteral">&quot;out&quot;</span>);</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;      cout&lt;&lt;<span class="stringliteral">&quot;Output file for &quot;</span>&lt;&lt;name&lt;&lt;<span class="stringliteral">&quot;:  &quot;</span></div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;          &lt;&lt;(<span class="keyword">static_cast&lt;</span><a class="code" href="../../d4/d79/classFairGeoAsciiIo.html">FairGeoAsciiIo</a>*<span class="keyword">&gt;</span>(output))-&gt;getFilename()&lt;&lt;endl;</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    }</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    <span class="keywordflow">if</span> (output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a79f4edf95e1e6b6454d1b74cd8670e12">isOpen</a>()&amp;&amp;output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a541bb9983df8611e8fdfc082c829733c">isWritable</a>()) { <span class="keywordflow">return</span> kTRUE; }</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;  } <span class="keywordflow">else</span> { Error(<span class="stringliteral">&quot;connectOutput&quot;</span>,<span class="stringliteral">&quot;No output open&quot;</span>); }</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;  <span class="keywordflow">return</span> kFALSE;</div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;}</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;</div>
-<div class="line"><a name="l00435"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a173a18717e49c2c8485a0e32df72f862">  435</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a173a18717e49c2c8485a0e32df72f862">FairGeoInterface::createSet</a>(<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet)</div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;{</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;  <span class="comment">// Creates the geometry of detector part</span></div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;  <span class="keywordflow">if</span> (!geoBuilder) { <span class="keywordflow">return</span> kFALSE; }</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;  <span class="keywordflow">return</span> pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#a368c6a14b11c2c06c2a9310f8c85382c">create</a>(geoBuilder);</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;}</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;</div>
-<div class="line"><a name="l00442"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a0964ee1301ee5ad89db9c32c4c0f1e59">  442</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a0964ee1301ee5ad89db9c32c4c0f1e59">FairGeoInterface::print</a>()</div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;{</div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;  <span class="comment">// Prints the media and the list of detector parts</span></div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;  media-&gt;<a class="code" href="../../d9/d1e/classFairGeoMedia.html#ad5caebc9e179d0b25d256be2304e32f9">list</a>();</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;  cout&lt;&lt;<span class="stringliteral">&quot;********************************************************************\n&quot;</span>;</div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;  cout&lt;&lt;<span class="stringliteral">&quot;List of detector parts:\n&quot;</span>;</div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;  <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet=0;</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;  <span class="keywordflow">for</span>(Int_t i=0; i&lt;nSets; i++) {</div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;    pSet=<span class="keyword">static_cast&lt;</span><a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>*<span class="keyword">&gt;</span>(sets-&gt;At(i));</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    <span class="keywordflow">if</span> (pSet) { cout&lt;&lt;<span class="stringliteral">&quot;  &quot;</span>&lt;&lt;pSet-&gt;GetName()&lt;&lt;<span class="stringliteral">&quot;:\t&quot;</span>&lt;&lt;pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#a5cd70894f27de89898ddda3df159c9e7">getGeomFile</a>()&lt;&lt;<span class="charliteral">&#39;\n&#39;</span>; }</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;  }</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;  cout&lt;&lt;<span class="stringliteral">&quot;********************************************************************\n&quot;</span>;</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;}</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;</div>
-<div class="line"><a name="l00456"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a8d7f3cd4a5a89fbdfc5d56c59bee14ae">  456</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a8d7f3cd4a5a89fbdfc5d56c59bee14ae">FairGeoInterface::readGeomConfig</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* configFile)</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;{</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;  <span class="comment">// Reads the GEANT configuration file</span></div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;  Bool_t rc=kFALSE;</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;  <a class="code" href="../../d3/d1b/classFairGeoIo.html">FairGeoIo</a>* input=0;</div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;  <span class="keywordflow">if</span> (configFile) {</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;    input=connectInput(configFile);</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;    <span class="keywordflow">if</span> (input) { rc=input-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a6fdc818ca6c907ba386508d800269acf">readGeomConfig</a>(<span class="keyword">this</span>); }</div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;  }</div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;  <span class="keywordflow">return</span> rc;</div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;}</div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;</div>
-<div class="line"><a name="l00468"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a77f62e2d43c222d07971400e73a38831">  468</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a77f62e2d43c222d07971400e73a38831">FairGeoInterface::readSetupFile</a>()</div>
-<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;{</div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;  <span class="comment">// Reads the detector setups, needed for create only subsets</span></div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;  Bool_t rc=kTRUE;</div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;  <span class="keywordflow">if</span> (setupFile.Length()&gt;0) {</div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;    <a class="code" href="../../d4/d79/classFairGeoAsciiIo.html">FairGeoAsciiIo</a>* input=<span class="keyword">static_cast&lt;</span><a class="code" href="../../d4/d79/classFairGeoAsciiIo.html">FairGeoAsciiIo</a>*<span class="keyword">&gt;</span>(connectInput(setupFile));</div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;    <span class="keywordflow">if</span> (input) { rc=input-&gt;<a class="code" href="../../d4/d79/classFairGeoAsciiIo.html#af89e0a86478b13ce7bc8fda88bb98ae5">readDetectorSetup</a>(<span class="keyword">this</span>); }</div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;  }</div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;  <span class="keywordflow">return</span> rc;</div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;}</div>
-<div class="ttc" id="classFairGeoInterface_html_a0c405d9923ce90c050f78df85825b82b"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a0c405d9923ce90c050f78df85825b82b">FairGeoInterface::setMediaFile</a></div><div class="ttdeci">void setMediaFile(const char *file)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00107">FairGeoInterface.cxx:107</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a5806a0ac402744eeb6b7956386ba7028"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a5806a0ac402744eeb6b7956386ba7028">FairGeoInterface::deleteSet</a></div><div class="ttdeci">void deleteSet(FairGeoSet *pSet)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00247">FairGeoInterface.cxx:247</a></div></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    Error(<span class="stringliteral">&quot;This Methode is not used any more &quot;</span>, <span class="stringliteral">&quot;Use addGeoModule to add detectors: %s&quot;</span>, file);</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">    // Adds the input file and creates the corresponding detector object</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment">    FairGeoSet* pSet=0;</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">    TString setName(file);</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">    setName.ToLower();</span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">    Int_t l=setName.Last(&#39;/&#39;)+1;</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment">    setName=setName(l,setName.Length()-l);</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">    if (setName.Contains(&quot;media&quot;)) {</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment">      media-&gt;setInputFile(file);</span></div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">    } else {</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment">      if (setName.Contains(&quot;cave&quot;)) {</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoCave));</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment">        if (!pSet) {</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">          pSet=new FairGeoCave;</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoCave);</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;pipe&quot;)) {</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoPipe));</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">        if (!pSet) {</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment">          pSet=new FairGeoPipe;</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoPipe);</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;target&quot;)) {</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoTarget));</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">        if (!pSet) {</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="comment">          pSet=new FairGeoTarget;</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoTarget);</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;magnet&quot;)) {</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoMagnet));</span></div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;<span class="comment">        if (!pSet) {</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="comment">          pSet=new FairGeoMagnet;</span></div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoMagnet);</span></div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;rich&quot;)) {</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoRich));</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="comment">        if (!pSet) {</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="comment">          pSet=new FairGeoRich;</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoRich);</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;sts&quot;)) {</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoSts));</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">        if (!pSet) {</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="comment">          pSet=new FairGeoSts;</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoSts);</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;trd&quot;)) {</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoTrd));</span></div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="comment">        if (!pSet) {</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="comment">          pSet=new FairGeoTrd;</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoTrd);</span></div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="comment">      } else if (setName.Contains(&quot;tof&quot;)) {</span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="comment">        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoTof));</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="comment">        if (!pSet) {</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;<span class="comment">          pSet=new FairGeoTof;</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="comment">          sets-&gt;AddAt(pSet,kFairGeoTof);</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;<span class="comment">        }</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;<span class="comment">      } else Error(&quot;addInputFile&quot;,&quot;Unknown detector set: %s&quot;,file);</span></div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;<span class="comment">      if (pSet) {</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">        pSet-&gt;setShapes(shapes);</span></div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="comment">        pSet-&gt;setMasterNodes(masterNodes);</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;<span class="comment">        pSet-&gt;setGeomFile(file);</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;<span class="comment">        nActualSets++;</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">      }</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;<span class="comment">    }</span></div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;}</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;</div>
+<div class="line"><a name="l00180"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a0e04bbbfb4c1b8a27e2bb5e3c5a89159">  180</a></span>&#160;<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a0e04bbbfb4c1b8a27e2bb5e3c5a89159">FairGeoInterface::findSet</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* name)</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;{</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="comment">// Find the detector set in the actual setup</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet = 0;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    TString setName(name);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    TString PSetName;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    setName.ToLower();</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    Int_t l = setName.Last(<span class="charliteral">&#39;/&#39;</span>) + 1;</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    setName = setName(l, setName.Length() - l);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <span class="comment">/*  if (setName.Contains(&quot;cave&quot;))        pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoCave));</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="comment">    else if (setName.Contains(&quot;pipe&quot;))   pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoPipe));</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="comment">    else if (setName.Contains(&quot;target&quot;)) pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoTarget));</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="comment">    else if (setName.Contains(&quot;magnet&quot;))  pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoMagnet));</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;<span class="comment">    else if (setName.Contains(&quot;rich&quot;))   pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoRich));</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;<span class="comment">    else if (setName.Contains(&quot;sts&quot;))    pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoSts));</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="comment">    else if (setName.Contains(&quot;trd&quot;))    pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoTrd));</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;<span class="comment">    else if (setName.Contains(&quot;tof&quot;))    pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoTof));</span></div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="comment">    else if (setName.Contains(&quot;ecal&quot;)) pSet=static_cast&lt;FairGeoSet*&gt;(sets-&gt;At(kFairGeoEcal));</span></div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;<span class="comment">    return pSet;</span></div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keywordflow">for</span> (Int_t i = 0; i &lt; nSets; i++) {</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;        PSetName = sets-&gt;At(i)-&gt;GetName();</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;        <span class="keywordflow">if</span> (PSetName.Contains(setName.Data())) {</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;            pSet = <span class="keyword">static_cast&lt;</span><a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>*<span class="keyword">&gt;</span>(sets-&gt;At(i));</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;            cout &lt;&lt; <span class="stringliteral">&quot;FairGeoInterface::findSet&quot;</span> &lt;&lt; pSet-&gt;GetName() &lt;&lt; endl;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;            <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        }</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    }</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordflow">return</span> pSet;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;}</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;</div>
+<div class="line"><a name="l00211"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a542c17b45b8b9f259fb03e73484435b5">  211</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a542c17b45b8b9f259fb03e73484435b5">FairGeoInterface::readSet</a>(<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet)</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;{</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;    <span class="comment">// Reads the geometry for the detector part</span></div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    Bool_t rc = kFALSE;</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    <a class="code" href="../../d3/d1b/classFairGeoIo.html">FairGeoIo</a>* input = 0;</div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;    <span class="keywordflow">if</span> (pSet) {</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;        input = connectInput(pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#a5cd70894f27de89898ddda3df159c9e7">getGeomFile</a>());</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keywordflow">if</span> (input) {</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;            rc = input-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a7ae08a2ed9e1ccdb1eec0c241b387ca3">read</a>(pSet, media);</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;        }</div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    }</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;    <span class="keywordflow">return</span> rc;</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;}</div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;</div>
+<div class="line"><a name="l00225"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a35d3a6c6e411e6a2b1d1f0bc9c22c8aa">  225</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a35d3a6c6e411e6a2b1d1f0bc9c22c8aa">FairGeoInterface::writeSet</a>(<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet)</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;{</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="comment">// Writes the geometry for the detector part to output</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keywordflow">if</span> (pSet &amp;&amp; connectOutput(pSet-&gt;GetName())) {</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        <span class="keywordflow">return</span> output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#ad378048d16dd320398d2177bcf1dabd7">write</a>(pSet);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    }</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;}</div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;</div>
+<div class="line"><a name="l00234"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a087247419abc5c9c63b5e67c9133c3e8">  234</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a35d3a6c6e411e6a2b1d1f0bc9c22c8aa">FairGeoInterface::writeSet</a>(<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet, <span class="keyword">const</span> <span class="keywordtype">char</span>* filename)</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;{</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="comment">// Writes the geometry for the detector part to file</span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keywordflow">if</span> (pSet &amp;&amp; output) {</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#acedad2f2ae27e2bcc7a2dcb24a4e136e">open</a>(filename, <span class="stringliteral">&quot;out&quot;</span>);</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="keywordflow">if</span> (output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a79f4edf95e1e6b6454d1b74cd8670e12">isOpen</a>()) {</div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;            <span class="keywordflow">return</span> output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#ad378048d16dd320398d2177bcf1dabd7">write</a>(pSet);</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        }</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;    }</div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;}</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;</div>
+<div class="line"><a name="l00246"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a5806a0ac402744eeb6b7956386ba7028">  246</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a5806a0ac402744eeb6b7956386ba7028">FairGeoInterface::deleteSet</a>(<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet)</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;{</div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    <span class="comment">// Deletes the set</span></div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;    <span class="keywordflow">if</span> (pSet) {</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        sets-&gt;Remove(pSet);</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <span class="keyword">delete</span> pSet;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;        pSet = 0;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    }</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;}</div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;</div>
+<div class="line"><a name="l00256"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a8f007a06d077ea51d66e5c269f64fa01">  256</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a8f007a06d077ea51d66e5c269f64fa01">FairGeoInterface::readMedia</a>()</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;{</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="comment">// Reads the media</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    Bool_t rc = kFALSE;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;    <a class="code" href="../../d3/d1b/classFairGeoIo.html">FairGeoIo</a>* input = connectInput(media-&gt;<a class="code" href="../../d9/d1e/classFairGeoMedia.html#a74be61a43220be1c2d74ad908e07a00e">getInputFile</a>());</div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    <span class="keywordflow">if</span> (input) {</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;        rc = input-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a7ae08a2ed9e1ccdb1eec0c241b387ca3">read</a>(media);</div>
+<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160;    }</div>
+<div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160;    <span class="keywordflow">return</span> rc;</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;}</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;</div>
+<div class="line"><a name="l00267"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a30ab3bc6e424d0cdef888d29cb57a8fe">  267</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a30ab3bc6e424d0cdef888d29cb57a8fe">FairGeoInterface::writeMedia</a>()</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;{</div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160;    <span class="comment">// Writes the media to output</span></div>
+<div class="line"><a name="l00270"></a><span class="lineno">  270</span>&#160;    <span class="keywordflow">if</span> (connectOutput(<span class="stringliteral">&quot;media&quot;</span>)) {</div>
+<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160;        <span class="keywordflow">return</span> output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#ad378048d16dd320398d2177bcf1dabd7">write</a>(media);</div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    }</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;}</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;</div>
+<div class="line"><a name="l00276"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#ac310e3776c5a6fdbc72dc0eb97da1d74">  276</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a30ab3bc6e424d0cdef888d29cb57a8fe">FairGeoInterface::writeMedia</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename)</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;{</div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="comment">// Writes the media to file</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="keywordflow">if</span> (output) {</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;        output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#acedad2f2ae27e2bcc7a2dcb24a4e136e">open</a>(filename, <span class="stringliteral">&quot;out&quot;</span>);</div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160;        <span class="keywordflow">if</span> (output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a79f4edf95e1e6b6454d1b74cd8670e12">isOpen</a>()) {</div>
+<div class="line"><a name="l00282"></a><span class="lineno">  282</span>&#160;            <span class="keywordflow">return</span> output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#ad378048d16dd320398d2177bcf1dabd7">write</a>(media);</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;        }</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    }</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;}</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;</div>
+<div class="line"><a name="l00288"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a43facf1e09b3213a4b44fc70637b8d4b">  288</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a43facf1e09b3213a4b44fc70637b8d4b">FairGeoInterface::readAll</a>()</div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;{</div>
+<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160;    <span class="comment">// Reads the media and the whole geometry</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160;    Bool_t rc = kTRUE;</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    <span class="keywordflow">if</span> (nActualSets == 0 &amp;&amp; oraInput) {</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        rc = oraInput-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a6fdc818ca6c907ba386508d800269acf">readGeomConfig</a>(<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;        <span class="comment">//  if (rc) addInputFile(&quot;media_gdb&quot;);</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;        <span class="keywordflow">if</span> (rc) {</div>
+<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160;            <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a1350680adf337d4fbc7b537f04133099">addInputFile</a>(<span class="stringliteral">&quot;media_gdb&quot;</span>);</div>
+<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;        }</div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    }</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    <span class="keywordflow">if</span> (rc) {</div>
+<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160;        rc = <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a77f62e2d43c222d07971400e73a38831">readSetupFile</a>();</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    }</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;    <span class="keywordflow">if</span> (rc) {</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;        rc = <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a8f007a06d077ea51d66e5c269f64fa01">readMedia</a>();</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    }</div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet = 0;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="keywordflow">for</span> (Int_t i = 0; i &lt; nSets &amp;&amp; rc; i++) {</div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;        pSet = <span class="keyword">static_cast&lt;</span><a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>*<span class="keyword">&gt;</span>(sets-&gt;At(i));</div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;        <span class="keywordflow">if</span> (pSet) {</div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;            cout &lt;&lt; <span class="stringliteral">&quot;Read &quot;</span> &lt;&lt; pSet-&gt;GetName() &lt;&lt; endl;</div>
+<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;            rc = <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a542c17b45b8b9f259fb03e73484435b5">readSet</a>(pSet);</div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;        }</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    }</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keywordflow">return</span> rc;</div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;}</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;</div>
+<div class="line"><a name="l00316"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a44a35f19ff017414d4f30c4c438c62f7">  316</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a44a35f19ff017414d4f30c4c438c62f7">FairGeoInterface::writeAll</a>()</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;{</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    <span class="comment">// Reads the media and the whole geometry to output</span></div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    Bool_t rc = kTRUE;</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet = 0;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    rc = <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a30ab3bc6e424d0cdef888d29cb57a8fe">writeMedia</a>();</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keywordflow">for</span> (Int_t i = 0; i &lt; nSets &amp;&amp; rc; i++) {</div>
+<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;        pSet = <span class="keyword">static_cast&lt;</span><a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>*<span class="keyword">&gt;</span>(sets-&gt;At(i));</div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;        <span class="keywordflow">if</span> (pSet) {</div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;            rc = <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a35d3a6c6e411e6a2b1d1f0bc9c22c8aa">writeSet</a>(pSet);</div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;        }</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    }</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <span class="keywordflow">return</span> rc;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160;}</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;</div>
+<div class="line"><a name="l00331"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a7a1d51046698ad9b9fdf344077d3d87d">  331</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a7a1d51046698ad9b9fdf344077d3d87d">FairGeoInterface::createAll</a>(Bool_t withCleanup)</div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;{</div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160;    <span class="comment">// Creates the whole geometry</span></div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    <span class="comment">// (if withCleanup==kTRUE, the geometry input is deleted afterwards)</span></div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;    Bool_t rc = kTRUE;</div>
+<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;    Int_t n = 0;</div>
+<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <span class="keywordflow">if</span> (geoBuilder) {</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet = 0;</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;        <span class="keywordflow">for</span> (Int_t i = 0; i &lt; nSets &amp;&amp; rc; i++) {</div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;            pSet = <span class="keyword">static_cast&lt;</span><a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>*<span class="keyword">&gt;</span>(sets-&gt;At(i));</div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;            <span class="keywordflow">if</span> (pSet) {</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;                cout &lt;&lt; <span class="stringliteral">&quot;Create &quot;</span> &lt;&lt; pSet-&gt;GetName() &lt;&lt; endl;</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;                rc = pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#a368c6a14b11c2c06c2a9310f8c85382c">create</a>(geoBuilder);</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;                n++;</div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;                <span class="keywordflow">if</span> (withCleanup) {</div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;                    sets-&gt;RemoveAt(i);</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;                    <span class="keyword">delete</span> pSet;</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;                }</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;            }</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        }</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <span class="keywordflow">if</span> (rc &amp;&amp; n &gt; 0) {</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;            geoBuilder-&gt;<a class="code" href="../../de/d6a/classFairGeoBuilder.html#ab207d5c84404f1a33857c947696e702a">finalize</a>();</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;        }</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        Error(<span class="stringliteral">&quot;createAll()&quot;</span>, <span class="stringliteral">&quot;No Builder&quot;</span>);</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    }</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    <span class="keywordflow">return</span> rc;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;}</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;</div>
+<div class="line"><a name="l00360"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a20c09910c99d5f23510ed5eb4c8b0a4b">  360</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a20c09910c99d5f23510ed5eb4c8b0a4b">FairGeoInterface::createGeometry</a>(Bool_t withCleanup)</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;{</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    <span class="comment">// Reads and creates the whole geometry</span></div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <span class="comment">// (if withCleanup==kTRUE, the geometry input is deleted after creation)</span></div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    Bool_t rc = kTRUE;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    Int_t n = 0;</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <span class="keywordflow">if</span> (geoBuilder) {</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        <span class="keywordflow">if</span> (nActualSets == 0 &amp;&amp; oraInput) {</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;            rc = oraInput-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a6fdc818ca6c907ba386508d800269acf">readGeomConfig</a>(<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;            <span class="keywordflow">if</span> (rc) {</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;                <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a1350680adf337d4fbc7b537f04133099">addInputFile</a>(<span class="stringliteral">&quot;media_gdb&quot;</span>);</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;            }</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        }</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        <span class="keywordflow">if</span> (rc) {</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;            rc = <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a77f62e2d43c222d07971400e73a38831">readSetupFile</a>();</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        }</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        <span class="keywordflow">if</span> (rc) {</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;            rc = <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a8f007a06d077ea51d66e5c269f64fa01">readMedia</a>();</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;        }</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;        <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet = 0;</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;        <span class="keywordflow">for</span> (Int_t i = 0; i &lt; nSets &amp;&amp; rc; i++) {</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;            pSet = <span class="keyword">static_cast&lt;</span><a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>*<span class="keyword">&gt;</span>(sets-&gt;At(i));</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;            <span class="keywordflow">if</span> (pSet) {</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;                cout &lt;&lt; <span class="stringliteral">&quot;Read and create &quot;</span> &lt;&lt; pSet-&gt;GetName() &lt;&lt; endl;</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;                rc = <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a542c17b45b8b9f259fb03e73484435b5">readSet</a>(pSet);</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;                <span class="keywordflow">if</span> (rc) {</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;                    rc = pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#a368c6a14b11c2c06c2a9310f8c85382c">create</a>(geoBuilder);</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;                    n++;</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;                }</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;                <span class="keywordflow">if</span> (withCleanup) {</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;                    sets-&gt;RemoveAt(i);</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;                    <span class="keyword">delete</span> pSet;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;                }</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;            }</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;        }</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;        <span class="keywordflow">if</span> (rc &amp;&amp; n &gt; 0) {</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;            geoBuilder-&gt;<a class="code" href="../../de/d6a/classFairGeoBuilder.html#ab207d5c84404f1a33857c947696e702a">finalize</a>();</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        }</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;        Error(<span class="stringliteral">&quot;createAll()&quot;</span>, <span class="stringliteral">&quot;No Builder&quot;</span>);</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    }</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    <span class="keywordflow">return</span> rc;</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;}</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;<a class="code" href="../../d3/d1b/classFairGeoIo.html">FairGeoIo</a>* FairGeoInterface::connectInput(<span class="keyword">const</span> <span class="keywordtype">char</span>* filename)</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;{</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    <span class="comment">// Connects the input (ASCII or Oracle)</span></div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <a class="code" href="../../d3/d1b/classFairGeoIo.html">FairGeoIo</a>* currentIo = 0;</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    <span class="keywordflow">if</span> (filename) {</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;        TString s(filename);</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;        s = s.Strip();</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        <span class="keywordflow">if</span> (s.EndsWith(<span class="stringliteral">&quot;.dat&quot;</span>) || s.EndsWith(<span class="stringliteral">&quot;.geo&quot;</span>) || s.EndsWith(<span class="stringliteral">&quot;.setup&quot;</span>)) {</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;            <span class="keywordflow">if</span> (!fileInput) {</div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;                fileInput = <span class="keyword">new</span> <a class="code" href="../../d4/d79/classFairGeoAsciiIo.html">FairGeoAsciiIo</a>();</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;            }</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;            fileInput-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#acedad2f2ae27e2bcc7a2dcb24a4e136e">open</a>(filename);</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;            currentIo = fileInput;</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (s.EndsWith(<span class="stringliteral">&quot;_gdb&quot;</span>)) {</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;            currentIo = oraInput;</div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;        }</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    }</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    <span class="keywordflow">if</span> (currentIo &amp;&amp; currentIo-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a79f4edf95e1e6b6454d1b74cd8670e12">isOpen</a>()) {</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;        <span class="keywordflow">return</span> currentIo;</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    }</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;}</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;Bool_t FairGeoInterface::connectOutput(<span class="keyword">const</span> <span class="keywordtype">char</span>* name)</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;{</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    <span class="comment">// Connects the output (ASCII or Oracle)</span></div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    <span class="keywordflow">if</span> (output) {</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;        <span class="keywordflow">if</span> (strcmp(output-&gt;IsA()-&gt;GetName(), <span class="stringliteral">&quot;FairGeoAsciiIo&quot;</span>) == 0) {</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;            TString fName(name);</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;            <span class="keywordtype">char</span> buf[80];</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;            <span class="keyword">struct </span>tm* newtime;</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;            time_t t;</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;            time(&amp;t);</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;            newtime = localtime(&amp;t);</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;            <span class="keywordflow">if</span> (newtime-&gt;tm_mday &lt; 10) {</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;                sprintf(buf, <span class="stringliteral">&quot;_0%i&quot;</span>, newtime-&gt;tm_mday);</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;                sprintf(buf, <span class="stringliteral">&quot;_%i&quot;</span>, newtime-&gt;tm_mday);</div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;            }</div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;            fName = fName + buf;</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;            <span class="keywordflow">if</span> (newtime-&gt;tm_mon &lt; 9) {</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;                sprintf(buf, <span class="stringliteral">&quot;0%i&quot;</span>, newtime-&gt;tm_mon + 1);</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;                sprintf(buf, <span class="stringliteral">&quot;%i&quot;</span>, newtime-&gt;tm_mon + 1);</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;            }</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;            fName = fName + buf;</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;            Int_t y = newtime-&gt;tm_year - 100;</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;            <span class="keywordflow">if</span> (y &lt; 10) {</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;                sprintf(buf, <span class="stringliteral">&quot;0%i&quot;</span>, y);</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;                sprintf(buf, <span class="stringliteral">&quot;%i&quot;</span>, y);</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;            }</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;            fName = fName + buf;</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;            <span class="keywordflow">if</span> (newtime-&gt;tm_hour &lt; 10) {</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;                sprintf(buf, <span class="stringliteral">&quot;0%i&quot;</span>, newtime-&gt;tm_hour);</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;                sprintf(buf, <span class="stringliteral">&quot;%i&quot;</span>, newtime-&gt;tm_hour);</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;            }</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;            fName = fName + buf;</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;            <span class="keywordflow">if</span> (newtime-&gt;tm_min &lt; 10) {</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;                sprintf(buf, <span class="stringliteral">&quot;0%i&quot;</span>, newtime-&gt;tm_min);</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;                sprintf(buf, <span class="stringliteral">&quot;%i&quot;</span>, newtime-&gt;tm_min);</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;            }</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;            fName = fName + buf;</div>
+<div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;            <span class="keywordflow">if</span> (newtime-&gt;tm_sec &lt; 10) {</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;                sprintf(buf, <span class="stringliteral">&quot;0%i&quot;</span>, newtime-&gt;tm_sec);</div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;                sprintf(buf, <span class="stringliteral">&quot;%i&quot;</span>, newtime-&gt;tm_sec);</div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;            }</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;            fName = fName + buf + <span class="stringliteral">&quot;.geo&quot;</span>;</div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;            output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#acedad2f2ae27e2bcc7a2dcb24a4e136e">open</a>(fName, <span class="stringliteral">&quot;out&quot;</span>);</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;            cout &lt;&lt; <span class="stringliteral">&quot;Output file for &quot;</span> &lt;&lt; name &lt;&lt; <span class="stringliteral">&quot;:  &quot;</span> &lt;&lt; (<span class="keyword">static_cast&lt;</span><a class="code" href="../../d4/d79/classFairGeoAsciiIo.html">FairGeoAsciiIo</a>*<span class="keyword">&gt;</span>(output))-&gt;getFilename()</div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;                 &lt;&lt; endl;</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;        }</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;        <span class="keywordflow">if</span> (output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a79f4edf95e1e6b6454d1b74cd8670e12">isOpen</a>() &amp;&amp; output-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a541bb9983df8611e8fdfc082c829733c">isWritable</a>()) {</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;            <span class="keywordflow">return</span> kTRUE;</div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;        }</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;        Error(<span class="stringliteral">&quot;connectOutput&quot;</span>, <span class="stringliteral">&quot;No output open&quot;</span>);</div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;    }</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;    <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;}</div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;</div>
+<div class="line"><a name="l00488"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a173a18717e49c2c8485a0e32df72f862">  488</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a173a18717e49c2c8485a0e32df72f862">FairGeoInterface::createSet</a>(<a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet)</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;{</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;    <span class="comment">// Creates the geometry of detector part</span></div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;    <span class="keywordflow">if</span> (!geoBuilder) {</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;        <span class="keywordflow">return</span> kFALSE;</div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;    }</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;    <span class="keywordflow">return</span> pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#a368c6a14b11c2c06c2a9310f8c85382c">create</a>(geoBuilder);</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;}</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;</div>
+<div class="line"><a name="l00497"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a0964ee1301ee5ad89db9c32c4c0f1e59">  497</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a0964ee1301ee5ad89db9c32c4c0f1e59">FairGeoInterface::print</a>()</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;{</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;    <span class="comment">// Prints the media and the list of detector parts</span></div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160;    media-&gt;<a class="code" href="../../d9/d1e/classFairGeoMedia.html#ad5caebc9e179d0b25d256be2304e32f9">list</a>();</div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;********************************************************************\n&quot;</span>;</div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;List of detector parts:\n&quot;</span>;</div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;    <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>* pSet = 0;</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;    <span class="keywordflow">for</span> (Int_t i = 0; i &lt; nSets; i++) {</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;        pSet = <span class="keyword">static_cast&lt;</span><a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>*<span class="keyword">&gt;</span>(sets-&gt;At(i));</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;        <span class="keywordflow">if</span> (pSet) {</div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;            cout &lt;&lt; <span class="stringliteral">&quot;  &quot;</span> &lt;&lt; pSet-&gt;GetName() &lt;&lt; <span class="stringliteral">&quot;:\t&quot;</span> &lt;&lt; pSet-&gt;<a class="code" href="../../d0/d7b/classFairGeoSet.html#a5cd70894f27de89898ddda3df159c9e7">getGeomFile</a>() &lt;&lt; <span class="charliteral">&#39;\n&#39;</span>;</div>
+<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        }</div>
+<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;    }</div>
+<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;    cout &lt;&lt; <span class="stringliteral">&quot;********************************************************************\n&quot;</span>;</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;}</div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;</div>
+<div class="line"><a name="l00513"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a8d7f3cd4a5a89fbdfc5d56c59bee14ae">  513</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a8d7f3cd4a5a89fbdfc5d56c59bee14ae">FairGeoInterface::readGeomConfig</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* configFile)</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;{</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;    <span class="comment">// Reads the GEANT configuration file</span></div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;    Bool_t rc = kFALSE;</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;    <a class="code" href="../../d3/d1b/classFairGeoIo.html">FairGeoIo</a>* input = 0;</div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;    <span class="keywordflow">if</span> (configFile) {</div>
+<div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;        input = connectInput(configFile);</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;        <span class="keywordflow">if</span> (input) {</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;            rc = input-&gt;<a class="code" href="../../d3/d1b/classFairGeoIo.html#a6fdc818ca6c907ba386508d800269acf">readGeomConfig</a>(<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160;        }</div>
+<div class="line"><a name="l00523"></a><span class="lineno">  523</span>&#160;    }</div>
+<div class="line"><a name="l00524"></a><span class="lineno">  524</span>&#160;    <span class="keywordflow">return</span> rc;</div>
+<div class="line"><a name="l00525"></a><span class="lineno">  525</span>&#160;}</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;</div>
+<div class="line"><a name="l00527"></a><span class="lineno"><a class="line" href="../../dc/dc3/classFairGeoInterface.html#a77f62e2d43c222d07971400e73a38831">  527</a></span>&#160;Bool_t <a class="code" href="../../dc/dc3/classFairGeoInterface.html#a77f62e2d43c222d07971400e73a38831">FairGeoInterface::readSetupFile</a>()</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;{</div>
+<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;    <span class="comment">// Reads the detector setups, needed for create only subsets</span></div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;    Bool_t rc = kTRUE;</div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;    <span class="keywordflow">if</span> (setupFile.Length() &gt; 0) {</div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;        <a class="code" href="../../d4/d79/classFairGeoAsciiIo.html">FairGeoAsciiIo</a>* input = <span class="keyword">static_cast&lt;</span><a class="code" href="../../d4/d79/classFairGeoAsciiIo.html">FairGeoAsciiIo</a>*<span class="keyword">&gt;</span>(connectInput(setupFile));</div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;        <span class="keywordflow">if</span> (input) {</div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;            rc = input-&gt;<a class="code" href="../../d4/d79/classFairGeoAsciiIo.html#af89e0a86478b13ce7bc8fda88bb98ae5">readDetectorSetup</a>(<span class="keyword">this</span>);</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;        }</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;    }</div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;    <span class="keywordflow">return</span> rc;</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;}</div>
+<div class="ttc" id="classFairGeoInterface_html_a0c405d9923ce90c050f78df85825b82b"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a0c405d9923ce90c050f78df85825b82b">FairGeoInterface::setMediaFile</a></div><div class="ttdeci">void setMediaFile(const char *file)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00105">FairGeoInterface.cxx:105</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a5806a0ac402744eeb6b7956386ba7028"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a5806a0ac402744eeb6b7956386ba7028">FairGeoInterface::deleteSet</a></div><div class="ttdeci">void deleteSet(FairGeoSet *pSet)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00246">FairGeoInterface.cxx:246</a></div></div>
 <div class="ttc" id="classFairGeoBuilder_html_ab207d5c84404f1a33857c947696e702a"><div class="ttname"><a href="../../de/d6a/classFairGeoBuilder.html#ab207d5c84404f1a33857c947696e702a">FairGeoBuilder::finalize</a></div><div class="ttdeci">virtual void finalize()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/dc5/FairGeoBuilder_8h_source.html#l00034">FairGeoBuilder.h:34</a></div></div>
 <div class="ttc" id="classFairGeoMedia_html_ad5caebc9e179d0b25d256be2304e32f9"><div class="ttname"><a href="../../d9/d1e/classFairGeoMedia.html#ad5caebc9e179d0b25d256be2304e32f9">FairGeoMedia::list</a></div><div class="ttdeci">void list()</div><div class="ttdef"><b>Definition:</b> <a href="../../db/d6e/FairGeoMedia_8cxx_source.html#l00063">FairGeoMedia.cxx:63</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a36cc343a4a9504d88378fa6259ee0cd7"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a36cc343a4a9504d88378fa6259ee0cd7">FairGeoInterface::~FairGeoInterface</a></div><div class="ttdeci">~FairGeoInterface()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00065">FairGeoInterface.cxx:65</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a36cc343a4a9504d88378fa6259ee0cd7"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a36cc343a4a9504d88378fa6259ee0cd7">FairGeoInterface::~FairGeoInterface</a></div><div class="ttdeci">~FairGeoInterface()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00064">FairGeoInterface.cxx:64</a></div></div>
 <div class="ttc" id="classFairGeoIo_html_ad378048d16dd320398d2177bcf1dabd7"><div class="ttname"><a href="../../d3/d1b/classFairGeoIo.html#ad378048d16dd320398d2177bcf1dabd7">FairGeoIo::write</a></div><div class="ttdeci">virtual Bool_t write(FairGeoMedia *)=0</div></div>
-<div class="ttc" id="classFairGeoInterface_html_a542c17b45b8b9f259fb03e73484435b5"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a542c17b45b8b9f259fb03e73484435b5">FairGeoInterface::readSet</a></div><div class="ttdeci">Bool_t readSet(FairGeoSet *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00218">FairGeoInterface.cxx:218</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a8d7f3cd4a5a89fbdfc5d56c59bee14ae"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a8d7f3cd4a5a89fbdfc5d56c59bee14ae">FairGeoInterface::readGeomConfig</a></div><div class="ttdeci">Bool_t readGeomConfig(const char *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00456">FairGeoInterface.cxx:456</a></div></div>
-<div class="ttc" id="classFairGeoIo_html"><div class="ttname"><a href="../../d3/d1b/classFairGeoIo.html">FairGeoIo</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d3f/FairGeoIo_8h_source.html#l00023">FairGeoIo.h:23</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a542c17b45b8b9f259fb03e73484435b5"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a542c17b45b8b9f259fb03e73484435b5">FairGeoInterface::readSet</a></div><div class="ttdeci">Bool_t readSet(FairGeoSet *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00211">FairGeoInterface.cxx:211</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a8d7f3cd4a5a89fbdfc5d56c59bee14ae"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a8d7f3cd4a5a89fbdfc5d56c59bee14ae">FairGeoInterface::readGeomConfig</a></div><div class="ttdeci">Bool_t readGeomConfig(const char *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00513">FairGeoInterface.cxx:513</a></div></div>
+<div class="ttc" id="classFairGeoIo_html"><div class="ttname"><a href="../../d3/d1b/classFairGeoIo.html">FairGeoIo</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d3f/FairGeoIo_8h_source.html#l00022">FairGeoIo.h:22</a></div></div>
 <div class="ttc" id="FairGeoInterface_8h_html"><div class="ttname"><a href="../../d6/dd0/FairGeoInterface_8h.html">FairGeoInterface.h</a></div></div>
-<div class="ttc" id="classFairGeoAsciiIo_html_af89e0a86478b13ce7bc8fda88bb98ae5"><div class="ttname"><a href="../../d4/d79/classFairGeoAsciiIo.html#af89e0a86478b13ce7bc8fda88bb98ae5">FairGeoAsciiIo::readDetectorSetup</a></div><div class="ttdeci">Bool_t readDetectorSetup(FairGeoInterface *)</div><div class="ttdef"><b>Definition:</b> <a href="../../de/d9b/FairGeoAsciiIo_8cxx_source.html#l00194">FairGeoAsciiIo.cxx:194</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a173a18717e49c2c8485a0e32df72f862"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a173a18717e49c2c8485a0e32df72f862">FairGeoInterface::createSet</a></div><div class="ttdeci">Bool_t createSet(FairGeoSet *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00435">FairGeoInterface.cxx:435</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a8f007a06d077ea51d66e5c269f64fa01"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a8f007a06d077ea51d66e5c269f64fa01">FairGeoInterface::readMedia</a></div><div class="ttdeci">Bool_t readMedia()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00257">FairGeoInterface.cxx:257</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a20c09910c99d5f23510ed5eb4c8b0a4b"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a20c09910c99d5f23510ed5eb4c8b0a4b">FairGeoInterface::createGeometry</a></div><div class="ttdeci">Bool_t createGeometry(Bool_t withCleanup=kFALSE)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00345">FairGeoInterface.cxx:345</a></div></div>
+<div class="ttc" id="classFairGeoAsciiIo_html_af89e0a86478b13ce7bc8fda88bb98ae5"><div class="ttname"><a href="../../d4/d79/classFairGeoAsciiIo.html#af89e0a86478b13ce7bc8fda88bb98ae5">FairGeoAsciiIo::readDetectorSetup</a></div><div class="ttdeci">Bool_t readDetectorSetup(FairGeoInterface *)</div><div class="ttdef"><b>Definition:</b> <a href="../../de/d9b/FairGeoAsciiIo_8cxx_source.html#l00226">FairGeoAsciiIo.cxx:226</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a173a18717e49c2c8485a0e32df72f862"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a173a18717e49c2c8485a0e32df72f862">FairGeoInterface::createSet</a></div><div class="ttdeci">Bool_t createSet(FairGeoSet *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00488">FairGeoInterface.cxx:488</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a8f007a06d077ea51d66e5c269f64fa01"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a8f007a06d077ea51d66e5c269f64fa01">FairGeoInterface::readMedia</a></div><div class="ttdeci">Bool_t readMedia()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00256">FairGeoInterface.cxx:256</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a20c09910c99d5f23510ed5eb4c8b0a4b"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a20c09910c99d5f23510ed5eb4c8b0a4b">FairGeoInterface::createGeometry</a></div><div class="ttdeci">Bool_t createGeometry(Bool_t withCleanup=kFALSE)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00360">FairGeoInterface.cxx:360</a></div></div>
 <div class="ttc" id="classFairGeoIo_html_a6fdc818ca6c907ba386508d800269acf"><div class="ttname"><a href="../../d3/d1b/classFairGeoIo.html#a6fdc818ca6c907ba386508d800269acf">FairGeoIo::readGeomConfig</a></div><div class="ttdeci">virtual Bool_t readGeomConfig(FairGeoInterface *)=0</div></div>
 <div class="ttc" id="classFairGeoAsciiIo_html"><div class="ttname"><a href="../../d4/d79/classFairGeoAsciiIo.html">FairGeoAsciiIo</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d3/daf/FairGeoAsciiIo_8h_source.html#l00025">FairGeoAsciiIo.h:25</a></div></div>
 <div class="ttc" id="classFairGeoSet_html_af9768491c6535dc4a199fc14f416b5f0"><div class="ttname"><a href="../../d0/d7b/classFairGeoSet.html#af9768491c6535dc4a199fc14f416b5f0">FairGeoSet::setMasterNodes</a></div><div class="ttdeci">void setMasterNodes(TList *m)</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d38/FairGeoSet_8h_source.html#l00074">FairGeoSet.h:74</a></div></div>
 <div class="ttc" id="FairGeoBuilder_8h_html"><div class="ttname"><a href="../../d2/dc5/FairGeoBuilder_8h.html">FairGeoBuilder.h</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a697953369c00ee61e7f39d66a2ede212"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a697953369c00ee61e7f39d66a2ede212">FairGeoInterface::addGeoModule</a></div><div class="ttdeci">void addGeoModule(FairGeoSet *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00099">FairGeoInterface.cxx:99</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a697953369c00ee61e7f39d66a2ede212"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a697953369c00ee61e7f39d66a2ede212">FairGeoInterface::addGeoModule</a></div><div class="ttdeci">void addGeoModule(FairGeoSet *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00098">FairGeoInterface.cxx:98</a></div></div>
 <div class="ttc" id="FairGeoAsciiIo_8h_html"><div class="ttname"><a href="../../d3/daf/FairGeoAsciiIo_8h.html">FairGeoAsciiIo.h</a></div></div>
-<div class="ttc" id="classFairGeoSet_html_a368c6a14b11c2c06c2a9310f8c85382c"><div class="ttname"><a href="../../d0/d7b/classFairGeoSet.html#a368c6a14b11c2c06c2a9310f8c85382c">FairGeoSet::create</a></div><div class="ttdeci">virtual Bool_t create(FairGeoBuilder *)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/dc4/FairGeoSet_8cxx_source.html#l00384">FairGeoSet.cxx:384</a></div></div>
+<div class="ttc" id="classFairGeoSet_html_a368c6a14b11c2c06c2a9310f8c85382c"><div class="ttname"><a href="../../d0/d7b/classFairGeoSet.html#a368c6a14b11c2c06c2a9310f8c85382c">FairGeoSet::create</a></div><div class="ttdeci">virtual Bool_t create(FairGeoBuilder *)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/dc4/FairGeoSet_8cxx_source.html#l00452">FairGeoSet.cxx:452</a></div></div>
 <div class="ttc" id="classFairGeoIo_html_a79f4edf95e1e6b6454d1b74cd8670e12"><div class="ttname"><a href="../../d3/d1b/classFairGeoIo.html#a79f4edf95e1e6b6454d1b74cd8670e12">FairGeoIo::isOpen</a></div><div class="ttdeci">virtual Bool_t isOpen()=0</div></div>
-<div class="ttc" id="classFairGeoInterface_html_a43facf1e09b3213a4b44fc70637b8d4b"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a43facf1e09b3213a4b44fc70637b8d4b">FairGeoInterface::readAll</a></div><div class="ttdeci">Bool_t readAll()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00285">FairGeoInterface.cxx:285</a></div></div>
-<div class="ttc" id="FairGeoInterface_8cxx_html_a21ac5cbb705864c8148caa4f521d25b9"><div class="ttname"><a href="../../d5/d2d/FairGeoInterface_8cxx.html#a21ac5cbb705864c8148caa4f521d25b9">ClassImp</a></div><div class="ttdeci">ClassImp(FairGeoInterface) FairGeoInterface</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00046">FairGeoInterface.cxx:46</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a30ab3bc6e424d0cdef888d29cb57a8fe"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a30ab3bc6e424d0cdef888d29cb57a8fe">FairGeoInterface::writeMedia</a></div><div class="ttdeci">Bool_t writeMedia()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00268">FairGeoInterface.cxx:268</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a43facf1e09b3213a4b44fc70637b8d4b"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a43facf1e09b3213a4b44fc70637b8d4b">FairGeoInterface::readAll</a></div><div class="ttdeci">Bool_t readAll()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00288">FairGeoInterface.cxx:288</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a30ab3bc6e424d0cdef888d29cb57a8fe"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a30ab3bc6e424d0cdef888d29cb57a8fe">FairGeoInterface::writeMedia</a></div><div class="ttdeci">Bool_t writeMedia()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00267">FairGeoInterface.cxx:267</a></div></div>
 <div class="ttc" id="classFairGeoIo_html_a7ae08a2ed9e1ccdb1eec0c241b387ca3"><div class="ttname"><a href="../../d3/d1b/classFairGeoIo.html#a7ae08a2ed9e1ccdb1eec0c241b387ca3">FairGeoIo::read</a></div><div class="ttdeci">virtual Bool_t read(FairGeoMedia *)=0</div></div>
-<div class="ttc" id="classFairGeoInterface_html_a35d3a6c6e411e6a2b1d1f0bc9c22c8aa"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a35d3a6c6e411e6a2b1d1f0bc9c22c8aa">FairGeoInterface::writeSet</a></div><div class="ttdeci">Bool_t writeSet(FairGeoSet *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00230">FairGeoInterface.cxx:230</a></div></div>
-<div class="ttc" id="classFairGeoMedia_html_a29ed21b1abd8c1607f234e3a52bad3a8"><div class="ttname"><a href="../../d9/d1e/classFairGeoMedia.html#a29ed21b1abd8c1607f234e3a52bad3a8">FairGeoMedia::setInputFile</a></div><div class="ttdeci">void setInputFile(const char *file)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d78/FairGeoMedia_8h_source.html#l00035">FairGeoMedia.h:35</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a35d3a6c6e411e6a2b1d1f0bc9c22c8aa"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a35d3a6c6e411e6a2b1d1f0bc9c22c8aa">FairGeoInterface::writeSet</a></div><div class="ttdeci">Bool_t writeSet(FairGeoSet *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00225">FairGeoInterface.cxx:225</a></div></div>
+<div class="ttc" id="classFairGeoMedia_html_a29ed21b1abd8c1607f234e3a52bad3a8"><div class="ttname"><a href="../../d9/d1e/classFairGeoMedia.html#a29ed21b1abd8c1607f234e3a52bad3a8">FairGeoMedia::setInputFile</a></div><div class="ttdeci">void setInputFile(const char *file)</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d78/FairGeoMedia_8h_source.html#l00033">FairGeoMedia.h:33</a></div></div>
 <div class="ttc" id="classFairGeoSet_html_aa15740d902581477e1162bbe1482b08e"><div class="ttname"><a href="../../d0/d7b/classFairGeoSet.html#aa15740d902581477e1162bbe1482b08e">FairGeoSet::setShapes</a></div><div class="ttdeci">void setShapes(FairGeoShapes *s)</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d38/FairGeoSet_8h_source.html#l00073">FairGeoSet.h:73</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a0964ee1301ee5ad89db9c32c4c0f1e59"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a0964ee1301ee5ad89db9c32c4c0f1e59">FairGeoInterface::print</a></div><div class="ttdeci">void print()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00442">FairGeoInterface.cxx:442</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a77f62e2d43c222d07971400e73a38831"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a77f62e2d43c222d07971400e73a38831">FairGeoInterface::readSetupFile</a></div><div class="ttdeci">Bool_t readSetupFile()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00468">FairGeoInterface.cxx:468</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a7a1d51046698ad9b9fdf344077d3d87d"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a7a1d51046698ad9b9fdf344077d3d87d">FairGeoInterface::createAll</a></div><div class="ttdeci">Bool_t createAll(Bool_t withCleanup=kFALSE)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00320">FairGeoInterface.cxx:320</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a0964ee1301ee5ad89db9c32c4c0f1e59"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a0964ee1301ee5ad89db9c32c4c0f1e59">FairGeoInterface::print</a></div><div class="ttdeci">void print()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00497">FairGeoInterface.cxx:497</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a77f62e2d43c222d07971400e73a38831"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a77f62e2d43c222d07971400e73a38831">FairGeoInterface::readSetupFile</a></div><div class="ttdeci">Bool_t readSetupFile()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00527">FairGeoInterface.cxx:527</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a7a1d51046698ad9b9fdf344077d3d87d"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a7a1d51046698ad9b9fdf344077d3d87d">FairGeoInterface::createAll</a></div><div class="ttdeci">Bool_t createAll(Bool_t withCleanup=kFALSE)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00331">FairGeoInterface.cxx:331</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_aa8ae1cad8b47e2a6fb5f6a2347be17fa"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#aa8ae1cad8b47e2a6fb5f6a2347be17fa">FairGeoInterface::FairGeoInterface</a></div><div class="ttdeci">FairGeoInterface()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00047">FairGeoInterface.cxx:47</a></div></div>
 <div class="ttc" id="classFairGeoInterface_html"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html">FairGeoInterface</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d6/dd0/FairGeoInterface_8h_source.html#l00041">FairGeoInterface.h:41</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a0e04bbbfb4c1b8a27e2bb5e3c5a89159"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a0e04bbbfb4c1b8a27e2bb5e3c5a89159">FairGeoInterface::findSet</a></div><div class="ttdeci">FairGeoSet * findSet(const char *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00185">FairGeoInterface.cxx:185</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a1350680adf337d4fbc7b537f04133099"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a1350680adf337d4fbc7b537f04133099">FairGeoInterface::addInputFile</a></div><div class="ttdeci">void addInputFile(const char *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00112">FairGeoInterface.cxx:112</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a0e04bbbfb4c1b8a27e2bb5e3c5a89159"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a0e04bbbfb4c1b8a27e2bb5e3c5a89159">FairGeoInterface::findSet</a></div><div class="ttdeci">FairGeoSet * findSet(const char *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00180">FairGeoInterface.cxx:180</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a1350680adf337d4fbc7b537f04133099"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a1350680adf337d4fbc7b537f04133099">FairGeoInterface::addInputFile</a></div><div class="ttdeci">void addInputFile(const char *)</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00107">FairGeoInterface.cxx:107</a></div></div>
 <div class="ttc" id="FairGeoSet_8h_html"><div class="ttname"><a href="../../d2/d38/FairGeoSet_8h.html">FairGeoSet.h</a></div></div>
-<div class="ttc" id="classFairGeoShapes_html"><div class="ttname"><a href="../../d4/db5/classFairGeoShapes.html">FairGeoShapes</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d8f/FairGeoShapes_8h_source.html#l00024">FairGeoShapes.h:24</a></div></div>
+<div class="ttc" id="classFairGeoShapes_html"><div class="ttname"><a href="../../d4/db5/classFairGeoShapes.html">FairGeoShapes</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d9/d8f/FairGeoShapes_8h_source.html#l00023">FairGeoShapes.h:23</a></div></div>
 <div class="ttc" id="FairGeoIo_8h_html"><div class="ttname"><a href="../../d2/d3f/FairGeoIo_8h.html">FairGeoIo.h</a></div></div>
-<div class="ttc" id="classFairGeoInterface_html_a44a35f19ff017414d4f30c4c438c62f7"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a44a35f19ff017414d4f30c4c438c62f7">FairGeoInterface::writeAll</a></div><div class="ttdeci">Bool_t writeAll()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00307">FairGeoInterface.cxx:307</a></div></div>
+<div class="ttc" id="classFairGeoInterface_html_a44a35f19ff017414d4f30c4c438c62f7"><div class="ttname"><a href="../../dc/dc3/classFairGeoInterface.html#a44a35f19ff017414d4f30c4c438c62f7">FairGeoInterface::writeAll</a></div><div class="ttdeci">Bool_t writeAll()</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2d/FairGeoInterface_8cxx_source.html#l00316">FairGeoInterface.cxx:316</a></div></div>
 <div class="ttc" id="FairGeoShapes_8h_html"><div class="ttname"><a href="../../d9/d8f/FairGeoShapes_8h.html">FairGeoShapes.h</a></div></div>
 <div class="ttc" id="classFairGeoIo_html_a541bb9983df8611e8fdfc082c829733c"><div class="ttname"><a href="../../d3/d1b/classFairGeoIo.html#a541bb9983df8611e8fdfc082c829733c">FairGeoIo::isWritable</a></div><div class="ttdeci">virtual Bool_t isWritable()=0</div></div>
+<div class="ttc" id="FairGeoInterface_8cxx_html_a490fd3f322ae3d5fc9c7c6a2f86aeba1"><div class="ttname"><a href="../../d5/d2d/FairGeoInterface_8cxx.html#a490fd3f322ae3d5fc9c7c6a2f86aeba1">ClassImp</a></div><div class="ttdeci">ClassImp(FairGeoInterface)</div></div>
 <div class="ttc" id="classFairGeoIo_html_acedad2f2ae27e2bcc7a2dcb24a4e136e"><div class="ttname"><a href="../../d3/d1b/classFairGeoIo.html#acedad2f2ae27e2bcc7a2dcb24a4e136e">FairGeoIo::open</a></div><div class="ttdeci">virtual Bool_t open(const char *, const Text_t *status=&quot;in&quot;)=0</div></div>
 <div class="ttc" id="classFairGeoSet_html_a5cd70894f27de89898ddda3df159c9e7"><div class="ttname"><a href="../../d0/d7b/classFairGeoSet.html#a5cd70894f27de89898ddda3df159c9e7">FairGeoSet::getGeomFile</a></div><div class="ttdeci">const char * getGeomFile()</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d38/FairGeoSet_8h_source.html#l00076">FairGeoSet.h:76</a></div></div>
-<div class="ttc" id="classFairGeoMedia_html"><div class="ttname"><a href="../../d9/d1e/classFairGeoMedia.html">FairGeoMedia</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d78/FairGeoMedia_8h_source.html#l00025">FairGeoMedia.h:25</a></div></div>
+<div class="ttc" id="classFairGeoMedia_html"><div class="ttname"><a href="../../d9/d1e/classFairGeoMedia.html">FairGeoMedia</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d78/FairGeoMedia_8h_source.html#l00023">FairGeoMedia.h:23</a></div></div>
 <div class="ttc" id="FairGeoMedia_8h_html"><div class="ttname"><a href="../../dc/d78/FairGeoMedia_8h.html">FairGeoMedia.h</a></div></div>
-<div class="ttc" id="classFairGeoMedia_html_a74be61a43220be1c2d74ad908e07a00e"><div class="ttname"><a href="../../d9/d1e/classFairGeoMedia.html#a74be61a43220be1c2d74ad908e07a00e">FairGeoMedia::getInputFile</a></div><div class="ttdeci">const char * getInputFile()</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d78/FairGeoMedia_8h_source.html#l00036">FairGeoMedia.h:36</a></div></div>
-<div class="ttc" id="classFairGeoSet_html"><div class="ttname"><a href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d38/FairGeoSet_8h_source.html#l00032">FairGeoSet.h:32</a></div></div>
+<div class="ttc" id="classFairGeoMedia_html_a74be61a43220be1c2d74ad908e07a00e"><div class="ttname"><a href="../../d9/d1e/classFairGeoMedia.html#a74be61a43220be1c2d74ad908e07a00e">FairGeoMedia::getInputFile</a></div><div class="ttdeci">const char * getInputFile()</div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d78/FairGeoMedia_8h_source.html#l00034">FairGeoMedia.h:34</a></div></div>
+<div class="ttc" id="classFairGeoSet_html"><div class="ttname"><a href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d38/FairGeoSet_8h_source.html#l00030">FairGeoSet.h:30</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_7e8f636f425b79eb16fd5421c63a0185.html">geobase</a></li><li class="navelem"><a class="el" href="../../d5/d2d/FairGeoInterface_8cxx.html">FairGeoInterface.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:51 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:59 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -3,6 +3,7 @@ var classFairGeoTransform =
     [ "FairGeoTransform", "d1/d7a/classFairGeoTransform.html#a331bd65586255585da2bbd68e75415f7", null ],
     [ "FairGeoTransform", "d1/d7a/classFairGeoTransform.html#a731645aea0d66ac93940b5c3b06b224a", null ],
     [ "~FairGeoTransform", "d1/d7a/classFairGeoTransform.html#a9a85c85a0e0b851e8cbbbe47a551018d", null ],
+    [ "ClassDef", "d1/d7a/classFairGeoTransform.html#ac1f3aa5470ae4d3c448dae2224f079ec", null ],
     [ "clear", "d1/d7a/classFairGeoTransform.html#abff631d03895ae2e4ccf9b478c47265f", null ],
     [ "getRotation", "d1/d7a/classFairGeoTransform.html#a078c62fe21ab57ec775ca6046c92c5cb", null ],
     [ "getRotMatrix", "d1/d7a/classFairGeoTransform.html#a1cbefc7c71f79c91e35a7144d1af16b9", null ],

@@ -2,6 +2,7 @@ var classFairBaseParSet =
 [
     [ "FairBaseParSet", "de/dde/classFairBaseParSet.html#a678ac70f0a4b1c869773bcef6a7f7201", null ],
     [ "~FairBaseParSet", "de/dde/classFairBaseParSet.html#a2c2499be22c11b02f1b6be70eb694e0c", null ],
+    [ "ClassDef", "de/dde/classFairBaseParSet.html#a5cecd5e512317c7de60c78ecefac43a4", null ],
     [ "clear", "de/dde/classFairBaseParSet.html#a7115255b47a7782093b473cd2097dd1e", null ],
     [ "GetBeamMom", "de/dde/classFairBaseParSet.html#aaed77ccc1cf35ce5f73ea48d1aae8239", null ],
     [ "GetContList", "de/dde/classFairBaseParSet.html#ad7a1ebaea6840f20dacde0b33dddca4f", null ],
@@ -9,7 +10,6 @@ var classFairBaseParSet =
     [ "getParams", "de/dde/classFairBaseParSet.html#a331f5bfd2ca3d4bd23fcf77ca1b75180", null ],
     [ "GetPriGen", "de/dde/classFairBaseParSet.html#a57bf8b58cfa6d69e24f54bae4bc5e749", null ],
     [ "GetRndSeed", "de/dde/classFairBaseParSet.html#aae7f3e12360a475fc2d5c481d1e880d5", null ],
-    [ "operator=", "de/dde/classFairBaseParSet.html#a1a30092aa44ec086b87e22189455a83f", null ],
     [ "putParams", "de/dde/classFairBaseParSet.html#aaa903217cd8f020ab1c78f7a3a971323", null ],
     [ "SetBeamMom", "de/dde/classFairBaseParSet.html#a870dbbdbda1811eaf63ac0691b5cd55c", null ],
     [ "SetContListStr", "de/dde/classFairBaseParSet.html#a4804f7210f7bf1d806ba368249a395c9", null ],

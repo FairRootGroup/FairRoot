@@ -123,38 +123,35 @@ $(document).ready(function(){initNavTree('db/dfe/FairSink_8cxx_source.html','../
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// -----------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../de/d2a/FairSink_8h.html">FairSink.h</a>&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;TFolder.h&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;TTree.h&gt;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="../../df/db4/classFairSink.html#a8fc3cef7aa939defa3a8188edf5738a9">   19</a></span>&#160;<a class="code" href="../../df/db4/classFairSink.html#a8fc3cef7aa939defa3a8188edf5738a9">FairSink::FairSink</a>()</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  : fRunId(0)</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;  , fOutFolder(0)</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;{</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;}</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;TFolder.h&gt;</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;TTree.h&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno"><a class="line" href="../../df/db4/classFairSink.html#a8fc3cef7aa939defa3a8188edf5738a9">   20</a></span>&#160;<a class="code" href="../../df/db4/classFairSink.html#a8fc3cef7aa939defa3a8188edf5738a9">FairSink::FairSink</a>()</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    : fRunId(0)</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    , fOutFolder(0)</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{}</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
 <div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="../../df/db4/classFairSink.html#a706cffd4c27c299b24369923689e8dbe">   25</a></span>&#160;<a class="code" href="../../df/db4/classFairSink.html#a8fc3cef7aa939defa3a8188edf5738a9">FairSink::FairSink</a>(<span class="keyword">const</span> <a class="code" href="../../df/db4/classFairSink.html">FairSink</a>&amp; sink)</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;  : fRunId(sink.fRunId)</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  , fOutFolder(0)</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="../../df/db4/classFairSink.html#a479eca0d6daa61e7792282d977f49edd">   31</a></span>&#160;<a class="code" href="../../df/db4/classFairSink.html#a479eca0d6daa61e7792282d977f49edd">FairSink::~FairSink</a>()</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;{</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;}</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<a class="code" href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a>(<a class="code" href="../../df/db4/classFairSink.html">FairSink</a>)</div>
-<div class="ttc" id="classFairSink_html"><div class="ttname"><a href="../../df/db4/classFairSink.html">FairSink</a></div><div class="ttdef"><b>Definition:</b> <a href="../../de/d2a/FairSink_8h_source.html#l00032">FairSink.h:32</a></div></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    : fRunId(sink.fRunId)</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    , fOutFolder(0)</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{}</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="../../df/db4/classFairSink.html#a479eca0d6daa61e7792282d977f49edd">   30</a></span>&#160;<a class="code" href="../../df/db4/classFairSink.html#a479eca0d6daa61e7792282d977f49edd">FairSink::~FairSink</a>() {}</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<a class="code" href="../../db/dfe/FairSink_8cxx.html#aad0122b3ed281c5320ac6b1081e9dde5">ClassImp</a>(<a class="code" href="../../df/db4/classFairSink.html">FairSink</a>);</div>
+<div class="ttc" id="classFairSink_html"><div class="ttname"><a href="../../df/db4/classFairSink.html">FairSink</a></div><div class="ttdef"><b>Definition:</b> <a href="../../de/d2a/FairSink_8h_source.html#l00035">FairSink.h:35</a></div></div>
+<div class="ttc" id="FairSink_8cxx_html_aad0122b3ed281c5320ac6b1081e9dde5"><div class="ttname"><a href="../../db/dfe/FairSink_8cxx.html#aad0122b3ed281c5320ac6b1081e9dde5">ClassImp</a></div><div class="ttdeci">ClassImp(FairSink)</div></div>
 <div class="ttc" id="FairSink_8h_html"><div class="ttname"><a href="../../de/d2a/FairSink_8h.html">FairSink.h</a></div></div>
-<div class="ttc" id="classFairSink_html_a8fc3cef7aa939defa3a8188edf5738a9"><div class="ttname"><a href="../../df/db4/classFairSink.html#a8fc3cef7aa939defa3a8188edf5738a9">FairSink::FairSink</a></div><div class="ttdeci">FairSink()</div><div class="ttdef"><b>Definition:</b> <a href="../../db/dfe/FairSink_8cxx_source.html#l00019">FairSink.cxx:19</a></div></div>
-<div class="ttc" id="classFairSink_html_a479eca0d6daa61e7792282d977f49edd"><div class="ttname"><a href="../../df/db4/classFairSink.html#a479eca0d6daa61e7792282d977f49edd">FairSink::~FairSink</a></div><div class="ttdeci">virtual ~FairSink()</div><div class="ttdef"><b>Definition:</b> <a href="../../db/dfe/FairSink_8cxx_source.html#l00031">FairSink.cxx:31</a></div></div>
-<div class="ttc" id="FairLink_8cxx_html_a1957c9f11f7f50fe9b58f3f0bedb38de"><div class="ttname"><a href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a></div><div class="ttdeci">ClassImp(FairLink)</div></div>
+<div class="ttc" id="classFairSink_html_a8fc3cef7aa939defa3a8188edf5738a9"><div class="ttname"><a href="../../df/db4/classFairSink.html#a8fc3cef7aa939defa3a8188edf5738a9">FairSink::FairSink</a></div><div class="ttdeci">FairSink()</div><div class="ttdef"><b>Definition:</b> <a href="../../db/dfe/FairSink_8cxx_source.html#l00020">FairSink.cxx:20</a></div></div>
+<div class="ttc" id="classFairSink_html_a479eca0d6daa61e7792282d977f49edd"><div class="ttname"><a href="../../df/db4/classFairSink.html#a479eca0d6daa61e7792282d977f49edd">FairSink::~FairSink</a></div><div class="ttdeci">virtual ~FairSink()</div><div class="ttdef"><b>Definition:</b> <a href="../../db/dfe/FairSink_8cxx_source.html#l00030">FairSink.cxx:30</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_e914ee4d4a44400f1fdb170cb4ead18a.html">base</a></li><li class="navelem"><a class="el" href="../../dir_46c0084b4ec2730b67737c00a58e6105.html">sink</a></li><li class="navelem"><a class="el" href="../../db/dfe/FairSink_8cxx.html">FairSink.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:40 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:48 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

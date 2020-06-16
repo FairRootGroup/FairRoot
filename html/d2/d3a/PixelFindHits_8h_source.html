@@ -148,27 +148,27 @@ $(document).ready(function(){initNavTree('d2/d3a/PixelFindHits_8h_source.html','
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d5/dbb/classPixelFindHits.html#adfad15400941c38259f0a6d2a4384c56">Exec</a>(Option_t* opt);</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d5/dbb/classPixelFindHits.html#a9894f788be2a15482b24052322e52fd5">GetParList</a>(TList* tempList);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d5/dbb/classPixelFindHits.html#a2e683454741575e549be4ff0f147dd57">InitMQ</a>    (TList* tempList);</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d5/dbb/classPixelFindHits.html#aa97966c689e0822b5c864e589e656b3c">ExecMQ</a>    (TList* inputList, TList* outputList);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d5/dbb/classPixelFindHits.html#a2e683454741575e549be4ff0f147dd57">InitMQ</a>(TList* tempList);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="../../d5/dbb/classPixelFindHits.html#aa97966c689e0822b5c864e589e656b3c">ExecMQ</a>(TList* inputList, TList* outputList);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="../../d9/dfd/classPixelDigiPar.html">PixelDigiPar</a>*  fDigiPar;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <a class="code" href="../../d9/dfd/classPixelDigiPar.html">PixelDigiPar</a>* fDigiPar;</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="../../dd/ddd/classFairGeoParSet.html">FairGeoParSet</a>* fGeoParSet;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    TClonesArray*  fDigis;        </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    TClonesArray*  fHits;         </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    Int_t          fNDigis;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    Int_t          fNHits;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    TClonesArray* fDigis; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    TClonesArray* fHits;  </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    Int_t fNDigis;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    Int_t fNHits;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    Int_t          fTNofEvents;</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    Int_t          fTNofDigis;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    Int_t          fTNofHits;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    Int_t fTNofEvents;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    Int_t fTNofDigis;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    Int_t fTNofHits;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    Int_t fFeCols;            <span class="comment">// Colums read per Frontend</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    Int_t fFeRows;            <span class="comment">// Rows read per Frontend</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    Int_t fMaxFEperCol;       <span class="comment">// max number of Frontend elemens per column</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    Double_t fPitchX;         <span class="comment">// Pixel cell size X</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    Double_t fPitchY;         <span class="comment">// Pixel cell size Y</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    Int_t fFeCols;        <span class="comment">// Colums read per Frontend</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    Int_t fFeRows;        <span class="comment">// Rows read per Frontend</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    Int_t fMaxFEperCol;   <span class="comment">// max number of Frontend elemens per column</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    Double_t fPitchX;     <span class="comment">// Pixel cell size X</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    Double_t fPitchY;     <span class="comment">// Pixel cell size Y</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> SetParContainers();</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
@@ -183,21 +183,21 @@ $(document).ready(function(){initNavTree('d2/d3a/PixelFindHits_8h_source.html','
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <a class="code" href="../../d5/dbb/classPixelFindHits.html#aa7eb9cc6b7ebfdbae288679a46606f18">PixelFindHits</a>(<span class="keyword">const</span> <a class="code" href="../../d5/dbb/classPixelFindHits.html">PixelFindHits</a>&amp;);</div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <a class="code" href="../../d5/dbb/classPixelFindHits.html">PixelFindHits</a>&amp; operator=(<span class="keyword">const</span> <a class="code" href="../../d5/dbb/classPixelFindHits.html">PixelFindHits</a>&amp;);</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    ClassDef(<a class="code" href="../../d5/dbb/classPixelFindHits.html">PixelFindHits</a>,1);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    ClassDef(<a class="code" href="../../d5/dbb/classPixelFindHits.html">PixelFindHits</a>, 1);</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;};</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="classPixelFindHits_html_a712ef1276cd2321c65d200f44bb985e1"><div class="ttname"><a href="../../d5/dbb/classPixelFindHits.html#a712ef1276cd2321c65d200f44bb985e1">PixelFindHits::~PixelFindHits</a></div><div class="ttdeci">virtual ~PixelFindHits()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d6f/PixelFindHits_8cxx_source.html#l00067">PixelFindHits.cxx:67</a></div></div>
-<div class="ttc" id="classFairTask_html"><div class="ttname"><a href="../../d2/d9e/classFairTask.html">FairTask</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d44/FairTask_8h_source.html#l00036">FairTask.h:36</a></div></div>
+<div class="ttc" id="classPixelFindHits_html_a712ef1276cd2321c65d200f44bb985e1"><div class="ttname"><a href="../../d5/dbb/classPixelFindHits.html#a712ef1276cd2321c65d200f44bb985e1">PixelFindHits::~PixelFindHits</a></div><div class="ttdeci">virtual ~PixelFindHits()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d6f/PixelFindHits_8cxx_source.html#l00064">PixelFindHits.cxx:64</a></div></div>
+<div class="ttc" id="classFairTask_html"><div class="ttname"><a href="../../d2/d9e/classFairTask.html">FairTask</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d44/FairTask_8h_source.html#l00040">FairTask.h:40</a></div></div>
 <div class="ttc" id="classPixelFindHits_html"><div class="ttname"><a href="../../d5/dbb/classPixelFindHits.html">PixelFindHits</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d3a/PixelFindHits_8h_source.html#l00027">PixelFindHits.h:27</a></div></div>
-<div class="ttc" id="FairTask_8h_html_ac29def3095b23bd5d68cec73adacbf4c"><div class="ttname"><a href="../../d8/d44/FairTask_8h.html#ac29def3095b23bd5d68cec73adacbf4c">InitStatus</a></div><div class="ttdeci">InitStatus</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d44/FairTask_8h_source.html#l00034">FairTask.h:34</a></div></div>
-<div class="ttc" id="classPixelFindHits_html_aa97966c689e0822b5c864e589e656b3c"><div class="ttname"><a href="../../d5/dbb/classPixelFindHits.html#aa97966c689e0822b5c864e589e656b3c">PixelFindHits::ExecMQ</a></div><div class="ttdeci">virtual void ExecMQ(TList *inputList, TList *outputList)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d6f/PixelFindHits_8cxx_source.html#l00176">PixelFindHits.cxx:176</a></div></div>
-<div class="ttc" id="classFairGeoParSet_html"><div class="ttname"><a href="../../dd/ddd/classFairGeoParSet.html">FairGeoParSet</a></div><div class="ttdef"><b>Definition:</b> <a href="../../df/db1/FairGeoParSet_8h_source.html#l00024">FairGeoParSet.h:24</a></div></div>
-<div class="ttc" id="classPixelFindHits_html_a2e683454741575e549be4ff0f147dd57"><div class="ttname"><a href="../../d5/dbb/classPixelFindHits.html#a2e683454741575e549be4ff0f147dd57">PixelFindHits::InitMQ</a></div><div class="ttdeci">virtual void InitMQ(TList *tempList)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d6f/PixelFindHits_8cxx_source.html#l00154">PixelFindHits.cxx:154</a></div></div>
-<div class="ttc" id="classPixelDigiPar_html"><div class="ttname"><a href="../../d9/dfd/classPixelDigiPar.html">PixelDigiPar</a></div><div class="ttdoc">Digitization Parameter Class for Pixel detector. </div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d83/PixelDigiPar_8h_source.html#l00023">PixelDigiPar.h:23</a></div></div>
-<div class="ttc" id="classPixelFindHits_html_aa7eb9cc6b7ebfdbae288679a46606f18"><div class="ttname"><a href="../../d5/dbb/classPixelFindHits.html#aa7eb9cc6b7ebfdbae288679a46606f18">PixelFindHits::PixelFindHits</a></div><div class="ttdeci">PixelFindHits()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d6f/PixelFindHits_8cxx_source.html#l00036">PixelFindHits.cxx:36</a></div></div>
-<div class="ttc" id="classPixelFindHits_html_adfad15400941c38259f0a6d2a4384c56"><div class="ttname"><a href="../../d5/dbb/classPixelFindHits.html#adfad15400941c38259f0a6d2a4384c56">PixelFindHits::Exec</a></div><div class="ttdeci">virtual void Exec(Option_t *opt)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d6f/PixelFindHits_8cxx_source.html#l00077">PixelFindHits.cxx:77</a></div></div>
-<div class="ttc" id="classPixelFindHits_html_a9894f788be2a15482b24052322e52fd5"><div class="ttname"><a href="../../d5/dbb/classPixelFindHits.html#a9894f788be2a15482b24052322e52fd5">PixelFindHits::GetParList</a></div><div class="ttdeci">virtual void GetParList(TList *tempList)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d6f/PixelFindHits_8cxx_source.html#l00146">PixelFindHits.cxx:146</a></div></div>
+<div class="ttc" id="FairTask_8h_html_ac29def3095b23bd5d68cec73adacbf4c"><div class="ttname"><a href="../../d8/d44/FairTask_8h.html#ac29def3095b23bd5d68cec73adacbf4c">InitStatus</a></div><div class="ttdeci">InitStatus</div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d44/FairTask_8h_source.html#l00033">FairTask.h:33</a></div></div>
+<div class="ttc" id="classPixelFindHits_html_aa97966c689e0822b5c864e589e656b3c"><div class="ttname"><a href="../../d5/dbb/classPixelFindHits.html#aa97966c689e0822b5c864e589e656b3c">PixelFindHits::ExecMQ</a></div><div class="ttdeci">virtual void ExecMQ(TList *inputList, TList *outputList)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d6f/PixelFindHits_8cxx_source.html#l00175">PixelFindHits.cxx:175</a></div></div>
+<div class="ttc" id="classFairGeoParSet_html"><div class="ttname"><a href="../../dd/ddd/classFairGeoParSet.html">FairGeoParSet</a></div><div class="ttdef"><b>Definition:</b> <a href="../../df/db1/FairGeoParSet_8h_source.html#l00025">FairGeoParSet.h:25</a></div></div>
+<div class="ttc" id="classPixelFindHits_html_a2e683454741575e549be4ff0f147dd57"><div class="ttname"><a href="../../d5/dbb/classPixelFindHits.html#a2e683454741575e549be4ff0f147dd57">PixelFindHits::InitMQ</a></div><div class="ttdeci">virtual void InitMQ(TList *tempList)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d6f/PixelFindHits_8cxx_source.html#l00153">PixelFindHits.cxx:153</a></div></div>
+<div class="ttc" id="classPixelDigiPar_html"><div class="ttname"><a href="../../d9/dfd/classPixelDigiPar.html">PixelDigiPar</a></div><div class="ttdoc">Digitization Parameter Class for Pixel detector. </div><div class="ttdef"><b>Definition:</b> <a href="../../d8/d83/PixelDigiPar_8h_source.html#l00024">PixelDigiPar.h:24</a></div></div>
+<div class="ttc" id="classPixelFindHits_html_aa7eb9cc6b7ebfdbae288679a46606f18"><div class="ttname"><a href="../../d5/dbb/classPixelFindHits.html#aa7eb9cc6b7ebfdbae288679a46606f18">PixelFindHits::PixelFindHits</a></div><div class="ttdeci">PixelFindHits()</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d6f/PixelFindHits_8cxx_source.html#l00035">PixelFindHits.cxx:35</a></div></div>
+<div class="ttc" id="classPixelFindHits_html_adfad15400941c38259f0a6d2a4384c56"><div class="ttname"><a href="../../d5/dbb/classPixelFindHits.html#adfad15400941c38259f0a6d2a4384c56">PixelFindHits::Exec</a></div><div class="ttdeci">virtual void Exec(Option_t *opt)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d6f/PixelFindHits_8cxx_source.html#l00074">PixelFindHits.cxx:74</a></div></div>
+<div class="ttc" id="classPixelFindHits_html_a9894f788be2a15482b24052322e52fd5"><div class="ttname"><a href="../../d5/dbb/classPixelFindHits.html#a9894f788be2a15482b24052322e52fd5">PixelFindHits::GetParList</a></div><div class="ttdeci">virtual void GetParList(TList *tempList)</div><div class="ttdef"><b>Definition:</b> <a href="../../da/d6f/PixelFindHits_8cxx_source.html#l00145">PixelFindHits.cxx:145</a></div></div>
 <div class="ttc" id="FairTask_8h_html"><div class="ttname"><a href="../../d8/d44/FairTask_8h.html">FairTask.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
@@ -205,7 +205,7 @@ $(document).ready(function(){initNavTree('d2/d3a/PixelFindHits_8h_source.html','
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_caac58519ba4740e026a67a20b1aba91.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_8917bad9a7e0befb570da6fb7e3e9ebe.html">pixelDetector</a></li><li class="navelem"><a class="el" href="../../dir_8ef6bf25b506698a59ec0dffcae11e97.html">src</a></li><li class="navelem"><a class="el" href="../../d2/d3a/PixelFindHits_8h.html">PixelFindHits.h</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:50 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

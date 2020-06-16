@@ -3,6 +3,7 @@ var classFairRadMapPoint =
     [ "FairRadMapPoint", "dc/d28/classFairRadMapPoint.html#a3a053775a76ca8708f3b78147a7ce147", null ],
     [ "FairRadMapPoint", "dc/d28/classFairRadMapPoint.html#a688ae96c5c36b25ab660c1863c6cbbd3", null ],
     [ "~FairRadMapPoint", "dc/d28/classFairRadMapPoint.html#a4ab98b100d00b4d1d09c303af392bb38", null ],
+    [ "ClassDef", "dc/d28/classFairRadMapPoint.html#aa6664c80d81dc8fa1f13a2d0b0665940", null ],
     [ "GetA", "dc/d28/classFairRadMapPoint.html#a51f9dfddb3b8a6ebcd3e03428bee3017", null ],
     [ "GetDensity", "dc/d28/classFairRadMapPoint.html#af5a4c9c5b696d7f1c18f86cec0b8cbd4", null ],
     [ "GetDose", "dc/d28/classFairRadMapPoint.html#a7b0c0a45993cc070a5dac4896ac1abbf", null ],

@@ -111,8 +111,8 @@ $(document).ready(function(){initNavTree('de/da5/PixelHit_8cxx_source.html','../
 <a href="../../de/da5/PixelHit_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/********************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *                                                                              *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             * </span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *  </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">/*</span></div>
@@ -126,32 +126,28 @@ $(document).ready(function(){initNavTree('de/da5/PixelHit_8cxx_source.html','../
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
 <div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="../../da/db2/classPixelHit.html#a6f6a58783b13f616b4169b8330822ea5">   17</a></span>&#160;<a class="code" href="../../da/db2/classPixelHit.html#a6f6a58783b13f616b4169b8330822ea5">PixelHit::PixelHit</a>()</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    : <a class="code" href="../../df/dbd/classFairHit.html">FairHit</a>()</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;}</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="../../da/db2/classPixelHit.html#a655a083e3cd3284f85693c63849bd0f8">   22</a></span>&#160;<a class="code" href="../../da/db2/classPixelHit.html#a6f6a58783b13f616b4169b8330822ea5">PixelHit::PixelHit</a>(Int_t detID, Int_t mcindex, TVector3&amp; pos, TVector3&amp; dpos)</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    : <a class="code" href="../../df/dbd/classFairHit.html">FairHit</a>(detID, pos, dpos, mcindex)</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;{</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;}</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;{}</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="../../da/db2/classPixelHit.html#a213bcf8573e218bc4101fcd17f6b46bb">   21</a></span>&#160;<a class="code" href="../../da/db2/classPixelHit.html#a6f6a58783b13f616b4169b8330822ea5">PixelHit::PixelHit</a>(Int_t detID, Int_t mcindex, <span class="keyword">const</span> TVector3&amp; pos, <span class="keyword">const</span> TVector3&amp; dpos)</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    : <a class="code" href="../../df/dbd/classFairHit.html">FairHit</a>(detID, pos, dpos, mcindex)</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;{}</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="../../da/db2/classPixelHit.html#a79d90710a79ccd871a9829250c294b11">   25</a></span>&#160;<a class="code" href="../../da/db2/classPixelHit.html#a79d90710a79ccd871a9829250c294b11">PixelHit::~PixelHit</a>() {}</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="../../da/db2/classPixelHit.html#a79d90710a79ccd871a9829250c294b11">   27</a></span>&#160;<a class="code" href="../../da/db2/classPixelHit.html#a79d90710a79ccd871a9829250c294b11">PixelHit::~PixelHit</a>()</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;}</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<a class="code" href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a>(<a class="code" href="../../da/db2/classPixelHit.html">PixelHit</a>)</div>
-<div class="ttc" id="classPixelHit_html"><div class="ttname"><a href="../../da/db2/classPixelHit.html">PixelHit</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d9a/PixelHit_8h_source.html#l00026">PixelHit.h:26</a></div></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<a class="code" href="../../de/da5/PixelHit_8cxx.html#a065065fbbf64551c64fdd868ea27164e">ClassImp</a>(<a class="code" href="../../da/db2/classPixelHit.html">PixelHit</a>);</div>
+<div class="ttc" id="classPixelHit_html"><div class="ttname"><a href="../../da/db2/classPixelHit.html">PixelHit</a></div><div class="ttdef"><b>Definition:</b> <a href="../../dc/d9a/PixelHit_8h_source.html#l00031">PixelHit.h:31</a></div></div>
 <div class="ttc" id="classPixelHit_html_a6f6a58783b13f616b4169b8330822ea5"><div class="ttname"><a href="../../da/db2/classPixelHit.html#a6f6a58783b13f616b4169b8330822ea5">PixelHit::PixelHit</a></div><div class="ttdeci">PixelHit()</div><div class="ttdef"><b>Definition:</b> <a href="../../de/da5/PixelHit_8cxx_source.html#l00017">PixelHit.cxx:17</a></div></div>
 <div class="ttc" id="PixelHit_8h_html"><div class="ttname"><a href="../../dc/d9a/PixelHit_8h.html">PixelHit.h</a></div></div>
-<div class="ttc" id="classFairHit_html"><div class="ttname"><a href="../../df/dbd/classFairHit.html">FairHit</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d88/FairHit_8h_source.html#l00025">FairHit.h:25</a></div></div>
-<div class="ttc" id="classPixelHit_html_a79d90710a79ccd871a9829250c294b11"><div class="ttname"><a href="../../da/db2/classPixelHit.html#a79d90710a79ccd871a9829250c294b11">PixelHit::~PixelHit</a></div><div class="ttdeci">virtual ~PixelHit()</div><div class="ttdef"><b>Definition:</b> <a href="../../de/da5/PixelHit_8cxx_source.html#l00027">PixelHit.cxx:27</a></div></div>
-<div class="ttc" id="FairLink_8cxx_html_a1957c9f11f7f50fe9b58f3f0bedb38de"><div class="ttname"><a href="../../df/d1c/FairLink_8cxx.html#a1957c9f11f7f50fe9b58f3f0bedb38de">ClassImp</a></div><div class="ttdeci">ClassImp(FairLink)</div></div>
+<div class="ttc" id="classFairHit_html"><div class="ttname"><a href="../../df/dbd/classFairHit.html">FairHit</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d4/d88/FairHit_8h_source.html#l00029">FairHit.h:29</a></div></div>
+<div class="ttc" id="PixelHit_8cxx_html_a065065fbbf64551c64fdd868ea27164e"><div class="ttname"><a href="../../de/da5/PixelHit_8cxx.html#a065065fbbf64551c64fdd868ea27164e">ClassImp</a></div><div class="ttdeci">ClassImp(PixelHit)</div></div>
+<div class="ttc" id="classPixelHit_html_a79d90710a79ccd871a9829250c294b11"><div class="ttname"><a href="../../da/db2/classPixelHit.html#a79d90710a79ccd871a9829250c294b11">PixelHit::~PixelHit</a></div><div class="ttdeci">virtual ~PixelHit()</div><div class="ttdef"><b>Definition:</b> <a href="../../de/da5/PixelHit_8cxx_source.html#l00025">PixelHit.cxx:25</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_caac58519ba4740e026a67a20b1aba91.html">MQ</a></li><li class="navelem"><a class="el" href="../../dir_8917bad9a7e0befb570da6fb7e3e9ebe.html">pixelDetector</a></li><li class="navelem"><a class="el" href="../../dir_8ef6bf25b506698a59ec0dffcae11e97.html">src</a></li><li class="navelem"><a class="el" href="../../de/da5/PixelHit_8cxx.html">PixelHit.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:50 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:58 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

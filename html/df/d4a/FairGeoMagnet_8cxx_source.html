@@ -111,8 +111,8 @@ $(document).ready(function(){initNavTree('df/d4a/FairGeoMagnet_8cxx_source.html'
 <a href="../../df/d4a/FairGeoMagnet_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/********************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *                                                                              *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             * </span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *  </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">//*-- AUTHOR : Ilse Koenig</span></div>
@@ -125,33 +125,37 @@ $(document).ready(function(){initNavTree('df/d4a/FairGeoMagnet_8cxx_source.html'
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment"></span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/d2e/FairGeoMagnet_8h.html">FairGeoMagnet.h</a>&quot;</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;TString.h&gt;</span>                    <span class="comment">// for TString</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span>                     <span class="comment">// for strcpy</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="../../df/d4a/FairGeoMagnet_8cxx.html#a875e58ff9889040dcb74273bd6fe2c61">   24</a></span>&#160;<a class="code" href="../../df/d4a/FairGeoMagnet_8cxx.html#a875e58ff9889040dcb74273bd6fe2c61">ClassImp</a>(<a class="code" href="../../de/d52/classFairGeoMagnet.html">FairGeoMagnet</a>)</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<a class="code" href="../../de/d52/classFairGeoMagnet.html">FairGeoMagnet</a>::<a class="code" href="../../de/d52/classFairGeoMagnet.html">FairGeoMagnet</a>()</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  : <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>()</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;{</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="comment">// Constructor</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  fName=<span class="stringliteral">&quot;magnet&quot;</span>;</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  maxSectors=0;</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  maxModules=1;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  strcpy(modName,<span class="stringliteral">&quot;m&quot;</span>);</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  strcpy(eleName,<span class="stringliteral">&quot;m&quot;</span>);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;}</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;TString.h&gt;</span>   <span class="comment">// for TString</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;string.h&gt;</span>    <span class="comment">// for strcpy</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<a class="code" href="../../df/d4a/FairGeoMagnet_8cxx.html#a37ed792f9ec9c4b9bfb99534c7787316">ClassImp</a>(<a class="code" href="../../de/d52/classFairGeoMagnet.html">FairGeoMagnet</a>);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="../../de/d52/classFairGeoMagnet.html#a7b14d6b9682b79eacd9af2db8ef2e153">   25</a></span>&#160;<a class="code" href="../../de/d52/classFairGeoMagnet.html#a7b14d6b9682b79eacd9af2db8ef2e153">FairGeoMagnet::FairGeoMagnet</a>()</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    : <a class="code" href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a>()</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;{</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="comment">// Constructor</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    fName = <span class="stringliteral">&quot;magnet&quot;</span>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <a class="code" href="../../d0/d7b/classFairGeoSet.html#a30aeb6301737c722e702f7cfd750e071">maxSectors</a> = 0;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <a class="code" href="../../d0/d7b/classFairGeoSet.html#a2f864438718e08900d1fc67ec2958050">maxModules</a> = 1;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    strcpy(<a class="code" href="../../de/d52/classFairGeoMagnet.html#ad6372a88599c6e0608f2686c93755985">modName</a>, <span class="stringliteral">&quot;m&quot;</span>);</div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    strcpy(<a class="code" href="../../de/d52/classFairGeoMagnet.html#aaffb467434d9eef1de27ed6d646c524e">eleName</a>, <span class="stringliteral">&quot;m&quot;</span>);</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;}</div>
+<div class="ttc" id="classFairGeoMagnet_html_a7b14d6b9682b79eacd9af2db8ef2e153"><div class="ttname"><a href="../../de/d52/classFairGeoMagnet.html#a7b14d6b9682b79eacd9af2db8ef2e153">FairGeoMagnet::FairGeoMagnet</a></div><div class="ttdeci">FairGeoMagnet()</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d4a/FairGeoMagnet_8cxx_source.html#l00025">FairGeoMagnet.cxx:25</a></div></div>
+<div class="ttc" id="FairGeoMagnet_8cxx_html_a37ed792f9ec9c4b9bfb99534c7787316"><div class="ttname"><a href="../../df/d4a/FairGeoMagnet_8cxx.html#a37ed792f9ec9c4b9bfb99534c7787316">ClassImp</a></div><div class="ttdeci">ClassImp(FairGeoMagnet)</div></div>
+<div class="ttc" id="classFairGeoMagnet_html_aaffb467434d9eef1de27ed6d646c524e"><div class="ttname"><a href="../../de/d52/classFairGeoMagnet.html#aaffb467434d9eef1de27ed6d646c524e">FairGeoMagnet::eleName</a></div><div class="ttdeci">char eleName[2]</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2e/FairGeoMagnet_8h_source.html#l00019">FairGeoMagnet.h:19</a></div></div>
+<div class="ttc" id="classFairGeoSet_html_a30aeb6301737c722e702f7cfd750e071"><div class="ttname"><a href="../../d0/d7b/classFairGeoSet.html#a30aeb6301737c722e702f7cfd750e071">FairGeoSet::maxSectors</a></div><div class="ttdeci">Int_t maxSectors</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d38/FairGeoSet_8h_source.html#l00055">FairGeoSet.h:55</a></div></div>
 <div class="ttc" id="classFairGeoMagnet_html"><div class="ttname"><a href="../../de/d52/classFairGeoMagnet.html">FairGeoMagnet</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2e/FairGeoMagnet_8h_source.html#l00015">FairGeoMagnet.h:15</a></div></div>
+<div class="ttc" id="classFairGeoSet_html_a2f864438718e08900d1fc67ec2958050"><div class="ttname"><a href="../../d0/d7b/classFairGeoSet.html#a2f864438718e08900d1fc67ec2958050">FairGeoSet::maxModules</a></div><div class="ttdeci">Int_t maxModules</div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d38/FairGeoSet_8h_source.html#l00057">FairGeoSet.h:57</a></div></div>
 <div class="ttc" id="FairGeoMagnet_8h_html"><div class="ttname"><a href="../../d5/d2e/FairGeoMagnet_8h.html">FairGeoMagnet.h</a></div></div>
-<div class="ttc" id="FairGeoMagnet_8cxx_html_a875e58ff9889040dcb74273bd6fe2c61"><div class="ttname"><a href="../../df/d4a/FairGeoMagnet_8cxx.html#a875e58ff9889040dcb74273bd6fe2c61">ClassImp</a></div><div class="ttdeci">ClassImp(FairGeoMagnet) FairGeoMagnet</div><div class="ttdef"><b>Definition:</b> <a href="../../df/d4a/FairGeoMagnet_8cxx_source.html#l00024">FairGeoMagnet.cxx:24</a></div></div>
-<div class="ttc" id="classFairGeoSet_html"><div class="ttname"><a href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d38/FairGeoSet_8h_source.html#l00032">FairGeoSet.h:32</a></div></div>
+<div class="ttc" id="classFairGeoMagnet_html_ad6372a88599c6e0608f2686c93755985"><div class="ttname"><a href="../../de/d52/classFairGeoMagnet.html#ad6372a88599c6e0608f2686c93755985">FairGeoMagnet::modName</a></div><div class="ttdeci">char modName[2]</div><div class="ttdef"><b>Definition:</b> <a href="../../d5/d2e/FairGeoMagnet_8h_source.html#l00018">FairGeoMagnet.h:18</a></div></div>
+<div class="ttc" id="classFairGeoSet_html"><div class="ttname"><a href="../../d0/d7b/classFairGeoSet.html">FairGeoSet</a></div><div class="ttdef"><b>Definition:</b> <a href="../../d2/d38/FairGeoSet_8h_source.html#l00030">FairGeoSet.h:30</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d28a4824dc47e487b107a5db32ef43c4.html">examples</a></li><li class="navelem"><a class="el" href="../../dir_d697700341b5bc9df88e7bd81cbb1008.html">common</a></li><li class="navelem"><a class="el" href="../../dir_09ac1cdeee7dfc9b82a3eb5ad5bceb59.html">passive</a></li><li class="navelem"><a class="el" href="../../df/d4a/FairGeoMagnet_8cxx.html">FairGeoMagnet.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:49 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:57 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>

@@ -111,8 +111,8 @@ $(document).ready(function(){initNavTree('d4/d8e/FairFastSimRunConfiguration_8cx
 <a href="../../d4/d8e/FairFastSimRunConfiguration_8cxx.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/********************************************************************************</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *                                                                              *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             * </span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *  </span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *              This software is distributed under the terms of the             *</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *              GNU Lesser General Public Licence (LGPL) version 3,             *</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *                  copied verbatim in the file &quot;LICENSE&quot;                       *</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> ********************************************************************************/</span></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
@@ -120,17 +120,17 @@ $(document).ready(function(){initNavTree('d4/d8e/FairFastSimRunConfiguration_8cx
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// -----            Created 2019/01/30  by R. Karabowicz               -----</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">// -------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d9/d3c/FairFastSimRunConfiguration_8h.html">FairFastSimRunConfiguration.h</a>&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d8/dc2/FairFastSimulation_8h.html">FairFastSimulation.h</a>&quot;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d8/dc2/FairFastSimulation_8h.html">FairFastSimulation.h</a>&quot;</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="../../d5/de4/FairLogger_8h.html">FairLogger.h</a>&quot;</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;TG4RunConfiguration.h&gt;</span>  <span class="comment">// for TG4RunConfiguration</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;TG4RunConfiguration.h&gt;</span>   <span class="comment">// for TG4RunConfiguration</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
 <div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="../../d0/d43/classFairFastSimRunConfiguration.html#a94e19e748e11f89a602dedacebd27237">   19</a></span>&#160;<a class="code" href="../../d0/d43/classFairFastSimRunConfiguration.html#a94e19e748e11f89a602dedacebd27237">FairFastSimRunConfiguration::FairFastSimRunConfiguration</a>(<span class="keyword">const</span> TString&amp; geometry,</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;                                                         <span class="keyword">const</span> TString&amp; physicsList,</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;                                                         <span class="keyword">const</span> TString&amp; specialProcess,</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                                                         <span class="keyword">const</span> <span class="keywordtype">bool</span>     specialStacking,</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                                                         <span class="keyword">const</span> <span class="keywordtype">bool</span>     isMT)</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;                                                         <span class="keyword">const</span> <span class="keywordtype">bool</span> specialStacking,</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;                                                         <span class="keyword">const</span> <span class="keywordtype">bool</span> isMT)</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    : TG4RunConfiguration(geometry, physicsList, specialProcess, specialStacking, isMT)</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;{</div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;}</div>
@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('d4/d8e/FairFastSimRunConfiguration_8cx
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// protected methods</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="comment">//</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="../../d0/d43/classFairFastSimRunConfiguration.html#a3a8ae47b4ef146598b19183ed0578265">   41</a></span>&#160;TG4VUserFastSimulation*  <a class="code" href="../../d0/d43/classFairFastSimRunConfiguration.html#a3a8ae47b4ef146598b19183ed0578265">FairFastSimRunConfiguration::CreateUserFastSimulation</a>()</div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="../../d0/d43/classFairFastSimRunConfiguration.html#a3a8ae47b4ef146598b19183ed0578265">   41</a></span>&#160;TG4VUserFastSimulation* <a class="code" href="../../d0/d43/classFairFastSimRunConfiguration.html#a3a8ae47b4ef146598b19183ed0578265">FairFastSimRunConfiguration::CreateUserFastSimulation</a>()</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;{</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    LOG(info) &lt;&lt; <span class="stringliteral">&quot;Going to create FairFastSimulation&quot;</span>;</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">new</span> <a class="code" href="../../de/dc5/classFairFastSimulation.html">FairFastSimulation</a>();</div>
@@ -161,7 +161,7 @@ $(document).ready(function(){initNavTree('d4/d8e/FairFastSimRunConfiguration_8cx
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_e914ee4d4a44400f1fdb170cb4ead18a.html">base</a></li><li class="navelem"><a class="el" href="../../dir_939e218d2720f9464065ae23c74927ee.html">sim</a></li><li class="navelem"><a class="el" href="../../dir_3904f8952ac4d12206ba93506bdac608.html">fastsim</a></li><li class="navelem"><a class="el" href="../../d4/d8e/FairFastSimRunConfiguration_8cxx.html">FairFastSimRunConfiguration.cxx</a></li>
-    <li class="footer">Generated on Wed Apr 1 2020 08:18:40 for FairRoot by
+    <li class="footer">Generated on Mon Jun 15 2020 08:58:48 for FairRoot by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.9.1 </li>
   </ul>
