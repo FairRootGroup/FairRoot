@@ -36,12 +36,12 @@ class FairTutPropHit : public FairHit
     int    GetTrackID() { return fTrackID; }
     int    GetPdgCode() { return fPdgCode; }
     double GetCharge()  { return fCharge;  }
-    int    GetPx()      { return fPx;      }
-    int    GetPy()      { return fPy;      }
-    int    GetPz()      { return fPz;      }
-    int    GetDPx()     { return fDPx;     }
-    int    GetDPy()     { return fDPy;     }
-    int    GetDPz()     { return fDPz;     }
+    double GetPx()      { return fPx;      }
+    double GetPy()      { return fPy;      }
+    double GetPz()      { return fPz;      }
+    double GetDPx()     { return fDPx;     }
+    double GetDPy()     { return fDPy;     }
+    double GetDPz()     { return fDPz;     }
     
     template<class Archive>
     void serialize(Archive& ar, const unsigned int /*version*/)
