@@ -16,18 +16,21 @@
 class FairTutPropTrack : public TObject {
  public:
   FairTutPropTrack();
-  FairTutPropTrack(int pdgcode, const FairTrackParP &first, const std::vector<std::pair<int,int>> &hitsvector);
+  FairTutPropTrack(int pdgcode, const FairTrackParP &first, const std::vector<std::pair<int,int>> &hitsvector, int trueMCTrackIndex);
 
   void Print();
 
   FairTrackParP GetParamFirst()    { return fTrackParamFirst; }
   int           GetNofHits()       { return fHitsIndices.size(); }
   std::pair<int,int> GetHitIndex(int i) { return fHitsIndices[i];  }
+  int           GetMCTrackIndex()  { return fMCTrackIndex; }
 
  private:
   int           fPdgCode;
   FairTrackParP fTrackParamFirst;
   std::vector<std::pair<int,int>> fHitsIndices;
+
+  int           fMCTrackIndex;
 
  public:
   ClassDef(FairTutPropTrack, 1)

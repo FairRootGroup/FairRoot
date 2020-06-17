@@ -108,8 +108,8 @@ void FairTutPropHitProducer::Exec(Option_t* /*option*/)
         // simulate the detector response: smear position with gaussians
         dposition.SetXYZ(0.05, 0.05, 0.);
         position.SetXYZ(gRandom->Gaus(position.X(), 0.05), gRandom->Gaus(position.Y(), 0.05), position.Z());
-        dmomentum.SetXYZ(0.05, 0.05, 0.);
-        momentum.SetXYZ(gRandom->Gaus(momentum.X(), 0.05), gRandom->Gaus(momentum.Y(), 0.05), momentum.Z());
+        dmomentum.SetXYZ(0.05, 0.05, 0.05);
+        momentum.SetXYZ(gRandom->Gaus(momentum.X(), 0.05), gRandom->Gaus(momentum.Y(), 0.05), gRandom->Gaus(momentum.Z(), 0.05));
         //position.SetXYZ(position.X(), position.Y(), position.Z());
 
         FairMCTrack* track = static_cast<FairMCTrack*>(fTracksArray->At(point->GetTrackID()));
