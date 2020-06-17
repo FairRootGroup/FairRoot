@@ -18,13 +18,15 @@ FairTutPropTrack::FairTutPropTrack()
     , fPdgCode(0)
     , fTrackParamFirst()
     , fHitsIndices()
+    , fMCTrackIndex(-1)
 {}
 
-FairTutPropTrack::FairTutPropTrack(int pdgcode, const FairTrackParP &first, const std::vector<std::pair<int,int>> &hitsvector)
+FairTutPropTrack::FairTutPropTrack(int pdgcode, const FairTrackParP &first, const std::vector<std::pair<int,int>> &hitsvector, int trueMCTrackIndex)
     : TObject()
     , fPdgCode(pdgcode)
     , fTrackParamFirst(first)
     , fHitsIndices(hitsvector)
+    , fMCTrackIndex(trueMCTrackIndex)
 {
 }
 
