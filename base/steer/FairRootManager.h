@@ -484,6 +484,10 @@ TPtr FairRootManager::InitObjectAs(const char* brname)
     if (obj != nullptr)
         return *obj;
 
+    if (!fSource) {
+        return nullptr;
+    }
+
     // it does not seem to be the case, let us create the pointer which will be initialized
     // with the data (pointer to T)
     T** addr = new T*;
