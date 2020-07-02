@@ -6,15 +6,15 @@ NOFNEEDEDAGENTS=5
 
 export LC_ALL=C
 source @dds_location@/DDS_env.sh
-
-echo "***** expect dds version at least 3.0"
-dds-info --version
+echo "@dds_location@"
+ls @dds_location@/bin/wn_bins/
+cat @dds_location@/DDS_env.sh
 
 echo "***** Start dds server"
-dds-session start &> dds-server.log
+dds-session start &> dds-ps-server.log
 
-cat dds-server.log
-export DDS_SESSION_ID=$(cat dds-server.log | grep "Default DDS session is set to" | awk '{print $NF}' )
+cat dds-ps-server.log
+export DDS_SESSION_ID=$(cat dds-ps-server.log | grep "Default DDS session is set to" | awk '{print $NF}' )
 
 if [ -z "$DDS_SESSION_ID" ]; then
     echo "DDS not started, quitting"
@@ -22,7 +22,7 @@ if [ -z "$DDS_SESSION_ID" ]; then
 fi
 
 echo "***** Create local cluster with $NOFNEEDEDAGENTS agents"
-dds-submit -s $DDS_SESSION_ID -r localhost --slots $NOFNEEDEDAGENTS &> dds-agents.log
+dds-submit -s $DDS_SESSION_ID -r localhost --slots $NOFNEEDEDAGENTS &> dds-ps-agents.log
 
 #wait 5 seconds to start agents
 COUNTER=0
@@ -45,7 +45,7 @@ if [ $NOFAGENTS -lt $NOFNEEDEDAGENTS ]; then
     exit
 fi
 
-export FAIRMQ_DDS_TOPO_FILE=@splitmc_bin_location@/splitMC-topology.xml
+export FAIRMQ_DDS_TOPO_FILE=@pixel_bin_dir@/pixel-dds-simulation.xml
 echo "***** Activate topology"
 dds-topology -s $DDS_SESSION_ID --activate $FAIRMQ_DDS_TOPO_FILE --disable-validation
 
@@ -59,10 +59,10 @@ fairmq-dds-command-ui -c x
 fairmq-dds-command-ui -c j
 fairmq-dds-command-ui -c r
 
-sampler_string="main/Generator.*"
-echo "waiting for $sampler_string to transition RUNNING->READY" 
-fairmq-dds-command-ui -w "RUNNING->READY" -p $sampler_string
-echo "...$sampler_string is READY, sending shutdown..."
+samplers_string="main/SamplerGroup.*"
+echo "waiting for $samplers_string to transition RUNNING->READY" 
+fairmq-dds-command-ui -w "RUNNING->READY" -p $samplers_string
+echo "...$samplers_string are READY, sending shutdown..."
 
 sleep 2
 
@@ -83,13 +83,14 @@ echo "***** Stop DDS"
 dds-session stop $DDS_SESSION_ID -f
 
 echo "***** Check the output file"
-ls -ltrh @splitmc_file_location@/DDS.simulation_TGeant3.data.$DDS_SESSION_ID.root
-OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @splitmc_file_location@/DDS.simulation_TGeant3.data.$DDS_SESSION_ID.root | tail -1)"
+ls -ltrh @pixel_file_dir@/DDS.simulation_TGeant3.data.$DDS_SESSION_ID.root
+OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @pixel_file_dir@/DDS.simulation_TGeant3.data.$DDS_SESSION_ID.root | tail -1)"
 echo "There are $OUTPUT_EVENTS events in the output file."
 
-if (( $OUTPUT_EVENTS == 100 ));
+if (( $OUTPUT_EVENTS == $((NOFNEEDEDAGENTS - 2))*1000 ));
 then
     echo "Shell script finished successfully.";
 else
     echo "Shell script failed."
 fi
+
