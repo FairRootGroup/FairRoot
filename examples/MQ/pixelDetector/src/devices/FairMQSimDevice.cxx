@@ -33,6 +33,7 @@ FairMQSimDevice::FairMQSimDevice()
     : FairMQRunDevice()
     , fSimDeviceId(0)
     , fUpdateChannelName("updateChannel")
+    , fRunInitialized(false)
     , fRunSim(nullptr)
     , fNofEvents(1)
     , fTransportName("TGeant3")
@@ -81,7 +82,10 @@ void FairMQSimDevice::InitTask()
     for (int idet = 0; idet < fDetectorArray->GetEntries(); idet++) {
         fRunSim->AddModule((FairModule*)(fDetectorArray->At(idet)));
     }
+}
 
+void FairMQSimDevice::InitializeRun()
+{
     // -----   Negotiate the run number   -------------------------------------
     // -----      via the fUpdateChannelName   --------------------------------
     // -----      ask the fParamMQServer   ------------------------------------
@@ -124,6 +128,15 @@ void FairMQSimDevice::InitTask()
     // -----   Initialize simulation run   ------------------------------------
     fRunSim->SetRunId(runId);   // run n simulations with same run id - offset the event number
     fRunSim->Init();
+
+    fRunInitialized = true;
+}
+
+void FairMQSimDevice::PreRun()
+{
+    if (!fRunInitialized) {
+        InitializeRun();
+    }
 }
 
 bool FairMQSimDevice::ConditionalRun()

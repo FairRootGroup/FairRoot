@@ -7,8 +7,23 @@
 ################################################################################
 
 if(DDS_FOUND)
-  set(dds_location ${DDS_INSTALL_PREFIX})
+  if (DDS_LIBRARY_DIR)
+    set(dds_location ${DDS_LIBRARY_DIR}/..)
+  else()
+    set(dds_location ${DDS_INSTALL_PREFIX})
+  endif()
+  MESSAGE(STATUS "dds location is ${dds_location}")
+  set(dds_name_tag "name")
+  if(DDS_VERSION VERSION_LESS 2.4)
+    set(dds_name_tag "id")
+  endif()
 endif()
+
+#get_cmake_property(_variableNames VARIABLES)
+#list (SORT _variableNames)
+#foreach (_variableName ${_variableNames})
+#    message(STATUS "${_variableName}=${${_variableName}}")
+#endforeach()
 
 set(example_library_extension so)
 if(APPLE)
@@ -19,6 +34,9 @@ set(splitmc_bin_location ${CMAKE_CURRENT_BINARY_DIR})
 set(splitmc_file_location ${CMAKE_CURRENT_BINARY_DIR})
 set(pixel_bin_dir ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run)
 set(fairroot_bin_dir ${CMAKE_BINARY_DIR}/bin)
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/splitMC-topology_old.xml ${CMAKE_CURRENT_BINARY_DIR}/splitMC-topology_old.xml)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMC_old.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC_old.sh)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/splitMC-topology.xml ${CMAKE_CURRENT_BINARY_DIR}/splitMC-topology.xml)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMC.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
@@ -61,14 +79,22 @@ install(TARGETS pixel-sim-chunk-merger pixel-sim-gen pixel-sim-transport
 
 set(maxTestTime 90)
 
-# add_test(pixelSplitDDS ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
-# set_tests_properties(pixelSplitDDS PROPERTIES
-#   TIMEOUT ${maxTestTime}
-#   PASS_REGULAR_EXPRESSION "Shell script finished successfully"
-# )
-
 add_test(ex_MQ_pixel_split ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh)
 set_tests_properties(ex_MQ_pixel_split PROPERTIES
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Shell script finished successfully"
 )
+
+if(DDS_VERSION VERSION_LESS 3.0)
+  add_test(pixelSplitDDS ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC_old.sh)
+  set_tests_properties(pixelSplitDDS PROPERTIES
+    TIMEOUT ${maxTestTime}
+    PASS_REGULAR_EXPRESSION "Shell script finished successfully"
+  )
+else()
+  add_test(pixelSplitDDS ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
+  set_tests_properties(pixelSplitDDS PROPERTIES
+    TIMEOUT ${maxTestTime}
+    PASS_REGULAR_EXPRESSION "Shell script finished successfully"
+  )
+endif()
