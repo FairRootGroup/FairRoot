@@ -40,6 +40,7 @@
 #include <iostream>
 #include <map>
 #include <set>
+#include <sstream>
 #include <utility>   // for pair
 #ifdef NDEBUG
 #undef NDEBUG
