@@ -14,6 +14,7 @@
 
 // framework includes
 #include "FairTask.h"
+#include "TObjString.h"
 
 #include <map>
 
