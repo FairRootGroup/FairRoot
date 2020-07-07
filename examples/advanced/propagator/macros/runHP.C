@@ -46,7 +46,7 @@ int runHP()
 
     FairTutPropHitProducer* hpTask2 = new FairTutPropHitProducer();
     hpTask2->SetPointsArrayName("FairTutPropPoint2");
-    hpTask2->SetHitsArrayName  ("FairTutPropHits2");
+    hpTask2->SetHitsArrayName("FairTutPropHits2");
     fRun->AddTask(hpTask2);
 
     fRun->Init();

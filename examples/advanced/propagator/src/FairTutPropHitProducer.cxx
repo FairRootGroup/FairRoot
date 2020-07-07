@@ -7,11 +7,11 @@
  ********************************************************************************/
 #include "FairTutPropHitProducer.h"
 
-#include "FairLogger.h"              // for FairLogger, MESSAGE_ORIGIN
-#include "FairRootManager.h"         // for FairRootManager
-#include "FairTutPropHit.h"          // for FairTutPropHit
-#include "FairTutPropPoint.h"        // for FairTutPropPoint
-#include "FairMCTrack.h"             // for FairMCTrack
+#include "FairLogger.h"         // for FairLogger, MESSAGE_ORIGIN
+#include "FairMCTrack.h"        // for FairMCTrack
+#include "FairRootManager.h"    // for FairRootManager
+#include "FairTutPropHit.h"     // for FairTutPropHit
+#include "FairTutPropPoint.h"   // for FairTutPropPoint
 
 #include <TClonesArray.h>   // for TClonesArray
 #include <TDatabasePDG.h>   // for TDatabase
@@ -101,7 +101,7 @@ void FairTutPropHitProducer::Exec(Option_t* /*option*/)
         TVector3 momentum;
         point->Position(position);
         point->Momentum(momentum);
-        
+
         TVector3 dposition;
         TVector3 dmomentum;
 
@@ -109,18 +109,27 @@ void FairTutPropHitProducer::Exec(Option_t* /*option*/)
         dposition.SetXYZ(0.05, 0.05, 0.);
         position.SetXYZ(gRandom->Gaus(position.X(), 0.05), gRandom->Gaus(position.Y(), 0.05), position.Z());
         dmomentum.SetXYZ(0.05, 0.05, 0.05);
-        momentum.SetXYZ(gRandom->Gaus(momentum.X(), 0.05), gRandom->Gaus(momentum.Y(), 0.05), gRandom->Gaus(momentum.Z(), 0.05));
-        //position.SetXYZ(position.X(), position.Y(), position.Z());
+        momentum.SetXYZ(
+            gRandom->Gaus(momentum.X(), 0.05), gRandom->Gaus(momentum.Y(), 0.05), gRandom->Gaus(momentum.Z(), 0.05));
+        // position.SetXYZ(position.X(), position.Y(), position.Z());
 
         FairMCTrack* track = static_cast<FairMCTrack*>(fTracksArray->At(point->GetTrackID()));
         TDatabasePDG* dbPDG = TDatabasePDG::Instance();
         TParticlePDG* particle = dbPDG->GetParticle(track->GetPdgCode());
         double charge = 0;
-        if ( particle ) charge = particle->Charge();
-        
+        if (particle)
+            charge = particle->Charge();
+
         // hit = new ((*fHitsArray)[iPoint]) FairTutPropHit(point->GetDetectorID(), iPoint, position, dposition);
-        new ((*fHitsArray)[iPoint]) FairTutPropHit(point->GetDetectorID(), iPoint, position, dposition,
-                                                   point->GetTrackID(), track->GetPdgCode(), charge,  momentum, dmomentum);
+        new ((*fHitsArray)[iPoint]) FairTutPropHit(point->GetDetectorID(),
+                                                   iPoint,
+                                                   position,
+                                                   dposition,
+                                                   point->GetTrackID(),
+                                                   track->GetPdgCode(),
+                                                   charge,
+                                                   momentum,
+                                                   dmomentum);
     }
 }
 
