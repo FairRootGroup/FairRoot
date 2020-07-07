@@ -126,7 +126,8 @@ void FairTutPropDet::Register()
         only during the simulation.
     */
 
-    FairRootManager::Instance()->Register(fPointsArrayName.data(), "FairTutPropDet", fFairTutPropPointCollection, kTRUE);
+    FairRootManager::Instance()->Register(
+        fPointsArrayName.data(), "FairTutPropDet", fFairTutPropPointCollection, kTRUE);
 }
 
 TClonesArray* FairTutPropDet::GetCollection(Int_t iColl) const

@@ -39,8 +39,8 @@ class FairTutPropHitProducer : public FairTask
     virtual void Finish();
 
     void SetPointsArrayName(const std::string& tempName) { fPointsArrayName = tempName; };
-    void SetHitsArrayName  (const std::string& tempName) { fHitsArrayName   = tempName; };
-    
+    void SetHitsArrayName(const std::string& tempName) { fHitsArrayName = tempName; };
+
   private:
     std::string fPointsArrayName;
     std::string fHitsArrayName;
@@ -48,7 +48,7 @@ class FairTutPropHitProducer : public FairTask
     /** Input array from previous already existing data level **/
     TClonesArray* fPointsArray;
     TClonesArray* fTracksArray;
-    
+
     /** Output array to  new data level**/
     TClonesArray* fHitsArray;
 

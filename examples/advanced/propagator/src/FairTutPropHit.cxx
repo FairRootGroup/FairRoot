@@ -18,10 +18,17 @@ FairTutPropHit::FairTutPropHit()
     , fDPz(0.)
 {}
 
-FairTutPropHit::FairTutPropHit(int detID, int mcindex, const TVector3& pos, const TVector3& dpos,
-                               int trackID, int pdgCode, double charge, const TVector3& mom, const TVector3& dmom )
+FairTutPropHit::FairTutPropHit(int detID,
+                               int mcindex,
+                               const TVector3& pos,
+                               const TVector3& dpos,
+                               int trackID,
+                               int pdgCode,
+                               double charge,
+                               const TVector3& mom,
+                               const TVector3& dmom)
     : FairHit(detID, pos, dpos, mcindex)
-    , fTrackID(trackID) 
+    , fTrackID(trackID)
     , fPdgCode(pdgCode)
     , fCharge(charge)
     , fPx(mom.X())
