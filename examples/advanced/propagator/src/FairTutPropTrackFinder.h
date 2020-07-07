@@ -37,8 +37,8 @@ class FairTutPropTrackFinder : public FairTask
 
     /** Finish task called at the end of the run **/
     virtual void Finish();
-    
- private:
+
+  private:
     std::string fHitsArray1Name;
     std::string fHitsArray2Name;
 
@@ -50,7 +50,7 @@ class FairTutPropTrackFinder : public FairTask
     /** Output array to  new data level**/
     TClonesArray* fTracksArray;
 
-    bool FindCircPar(double *p1, double *p2, double *p3, double *cl);
+    bool FindCircPar(double* p1, double* p2, double* p3, double* cl);
 
     FairTutPropTrackFinder(const FairTutPropTrackFinder&);
     FairTutPropTrackFinder operator=(const FairTutPropTrackFinder&);

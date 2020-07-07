@@ -27,22 +27,29 @@ class FairTutPropHit : public FairHit
     FairTutPropHit();
 
     /** Constructor **/
-    FairTutPropHit(int detID, int mcindex, const TVector3& pos, const TVector3& dpos,
-                   int trackID, int pdgCode, double charge, const TVector3& mom, const TVector3& dmom );
-    
+    FairTutPropHit(int detID,
+                   int mcindex,
+                   const TVector3& pos,
+                   const TVector3& dpos,
+                   int trackID,
+                   int pdgCode,
+                   double charge,
+                   const TVector3& mom,
+                   const TVector3& dmom);
+
     /** Destructor **/
     virtual ~FairTutPropHit();
 
-    int    GetTrackID() { return fTrackID; }
-    int    GetPdgCode() { return fPdgCode; }
-    double GetCharge()  { return fCharge;  }
-    double GetPx()      { return fPx;      }
-    double GetPy()      { return fPy;      }
-    double GetPz()      { return fPz;      }
-    double GetDPx()     { return fDPx;     }
-    double GetDPy()     { return fDPy;     }
-    double GetDPz()     { return fDPz;     }
-    
+    int GetTrackID() { return fTrackID; }
+    int GetPdgCode() { return fPdgCode; }
+    double GetCharge() { return fCharge; }
+    double GetPx() { return fPx; }
+    double GetPy() { return fPy; }
+    double GetPz() { return fPz; }
+    double GetDPx() { return fDPx; }
+    double GetDPy() { return fDPy; }
+    double GetDPz() { return fDPz; }
+
     template<class Archive>
     void serialize(Archive& ar, const unsigned int /*version*/)
     {
@@ -62,12 +69,12 @@ class FairTutPropHit : public FairHit
     friend class boost::serialization::access;
 
     // magic detector that knows track ids and momenta
-    int    fTrackID;
-    int    fPdgCode;
+    int fTrackID;
+    int fPdgCode;
     double fCharge;
     double fPx, fPy, fPz;
     double fDPx, fDPy, fDPz;
-    
+
     ClassDef(FairTutPropHit, 1);
 };
 
