@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source @CMAKE_BINARY_DIR@/config.sh -p
+
 trap 'kill -TERM $GENERATE_PID; kill -TERM $SAMPLER_PID; kill -TERM $PROCESSOR1_PID; kill -TERM $FILESINK_PID; wait $GENERATE_PID; wait $SAMPLER_PID; wait $PROCESSOR1_PID; wait $FILESINK_PID;' TERM
 
 INPUTFILE="@CMAKE_CURRENT_BINARY_DIR@/data_io/testinput2.root"
