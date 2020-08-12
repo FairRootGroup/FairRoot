@@ -74,6 +74,8 @@ class FairMixedSource : public FairSource
 
     virtual Bool_t ActivateObject(TObject** obj, const char* BrName);
 
+    virtual Bool_t ActivateObjectAny(void**, const std::type_info&, const char*);
+
     void ReadBKEvent(UInt_t i = 0);
 
     /**Set the input signal file
