@@ -597,6 +597,19 @@ Bool_t FairMixedSource::ActivateObject(TObject** obj, const char* BrName)
     return kTRUE;
 }
 
+Bool_t FairMixedSource::ActivateObjectAny(void** obj, const std::type_info& info, const char* BrName)
+{
+
+    Bool_t BG_Object = ActivateObjectAnyImpl(fBackgroundChain, obj, info, BrName);
+
+    for (const auto& mi : fSignalTypeList) {
+        TChain* currentChain = mi.second;
+        if (!(ActivateObjectAnyImpl(currentChain, obj, info, BrName)))
+            return false;
+    }
+    return BG_Object;
+}
+
 void FairMixedSource::ReadBKEvent(UInt_t i)
 {
     if (0 == i) {

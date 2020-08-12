@@ -104,9 +104,6 @@ class FairFileSource : public FairSource
     void SetFileHeader(FairFileHeader* f) { fFileHeader = f; }
     Double_t GetEventTime();
 
-    //    virtual Bool_t   SetObject(TObject* obj, const char* ObjType);
-    //    virtual void     SetObjectName(const char* ObjName, const char* ObjType);
-
     virtual Bool_t ActivateObject(TObject** obj, const char* BrName);
     virtual Bool_t ActivateObjectAny(void**, const std::type_info&, const char*);
 
