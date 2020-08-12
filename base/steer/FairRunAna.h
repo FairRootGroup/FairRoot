@@ -69,54 +69,6 @@ class FairRunAna : public FairRun
 
     virtual void SetSource(FairSource* tempSource) { fRootManager->SetSource(tempSource); }
 
-    // ********************************************************* //
-    // THE BELOW FUNCTIONS SHOULD BE MOVED TO FairFileSource
-    /**Set the input file by name*/
-    void SetInputFile(TString fname);
-    /**Add a file to input chain */
-    void AddFile(TString name);
-    /** Add a friend file (input) by name)*/
-    void AddFriend(TString fName);
-    // ********************************************************* //
-    // THE BELOW FUNCTIONS SHOULD BE MOVED TO FairMixedSource
-    void SetSignalFile(TString name, UInt_t identifier);
-    /**Add signal file to input
-     *@param name :        signal file name
-     *@param identifier :  Unsigned integer which identify the signal file to which this signal should be added
-     */
-    void AddSignalFile(TString name, UInt_t identifier);
-    /**Set the input background file by name*/
-    void SetBackgroundFile(TString name);
-    /**Add input background file by name*/
-    void AddBackgroundFile(TString name);
-    /**Set the signal to background ratio in event units
-     *@param background :  Number of background Events for one signal
-     *@param Signalid :    Signal file Id, used when adding (setting) the signal file
-     * here we just forward the call to the FairRootManager
-     */
-    void BGWindowWidthNo(UInt_t background, UInt_t Signalid);
-    /**Set the signal to background rate in time units
-     *@param background :  Time of background Events before one signal
-     *@param Signalid :    Signal file Id, used when adding (setting) the signal file
-     * here we just forward the call to the FairRootManager
-     */
-    void BGWindowWidthTime(Double_t background, UInt_t Signalid);
-    /**
-     * This method will simply forward the call to the FairRootManager,
-     * if  true all inputs are mixed, i.e: each read event will take one entry from each input and put
-     * them in one big event and send it to the next step
-     */
-    //    void SetMixAllInputs(Bool_t Status);
-    // ********************************************************* //
-    // THE BELOW FUNCTIONS SHOULD BE MOVED TO FairFileSource and FairMixedSource
-    /** Set the min and max limit for event time in ns */
-    void SetEventTimeInterval(Double_t min, Double_t max);
-    /** Set the mean time for the event in ns */
-    void SetEventMeanTime(Double_t mean);
-    /** Set the time intervall the beam is interacting and the gap in ns */
-    void SetBeamTime(Double_t beamTime, Double_t gapTime);
-    // ********************************************************* //
-
     /** Switch On/Off the storing of FairEventHeader in output file*/
     void SetEventHeaderPersistence(Bool_t flag) { fStoreEventHeader = flag; }
 

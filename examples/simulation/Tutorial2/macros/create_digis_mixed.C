@@ -41,19 +41,19 @@ void create_digis_mixed()
     //----- Mix using entries  ----------------------------------------
 
     /** for each ~20 entries background 1 entry from signal chain  1 will be read  */
-    // fRun->BGWindowWidthNo(20,1);
+    // fMixedSource->BGWindowWidthNo(20,1);
     /** for each ~30 entries background 1 entry from signal chain  2 will be read  */
-    // fRun->BGWindowWidthNo(30,2);
+    // fMixedSource->BGWindowWidthNo(30,2);
 
     //----- Mix using time       ----------------------------------------
 
     /**Set the event mean time, event time will be a random number generated from (1/T)exp(-x/T) */
-    fRun->SetEventMeanTime(10);
+    fMixedSource->SetEventMeanTime(10);
 
     /** each ~100 ns background 1 entry from signal chain  1 will be read  */
-    fRun->BGWindowWidthTime(100, 1);
+    fMixedSource->BGWindowWidthTime(100, 1);
     /** each ~60 ns background 1 entry from signal chain  2 will be read  */
-    fRun->BGWindowWidthTime(60, 2);
+    fMixedSource->BGWindowWidthTime(60, 2);
 
     // Init Simulation Parameters from Root File
     FairRuntimeDb* rtdb = fRun->GetRuntimeDb();

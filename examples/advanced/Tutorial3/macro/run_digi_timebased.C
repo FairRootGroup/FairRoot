@@ -41,7 +41,7 @@ void run_digi_timebased(TString mcEngine = "TGeant3")
     fRun->SetSink(new FairRootFileSink(outFile));
     fRun->SetUseFairLinks(kTRUE);
 
-    fRun->SetEventMeanTime(50);
+    fFileSource->SetEventMeanTime(50);
 
     FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
     FairParRootFileIo* parInput1 = new FairParRootFileIo();
