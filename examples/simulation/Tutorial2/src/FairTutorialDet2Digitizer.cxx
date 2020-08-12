@@ -74,11 +74,18 @@ InitStatus FairTutorialDet2Digitizer::Init()
         return kERROR;
     } else {
         fTutorialDetPoints = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetPoint"));
-
-        fCustomData = ioman->InitObjectAs<std::vector<CustomClass> const*>("TutorialCustomData");
         if (!fTutorialDetPoints) {
             LOG(error) << "No TutorialDetPoints array!";
             LOG(error) << "Task will be inactive";
+            LOG(info) << " Task FairTutorialDet2Digitizer will be inactive, No TutorialDetPoints";
+            return kERROR;
+        }
+
+        fCustomData = ioman->InitObjectAs<std::vector<CustomClass> const*>("TutorialCustomData");
+        if (!fCustomData) {
+            LOG(error) << "Custom Data cannot be created!";
+            LOG(error) << "Task will be inactive";
+            LOG(info) << " Task FairTutorialDet2Digitizer will be inactive, No Custom Data Vector";
             return kERROR;
         }
 
@@ -87,7 +94,7 @@ InitStatus FairTutorialDet2Digitizer::Init()
         // ioman->Register("TRDDigi","TRD Digis",fDigiCollection,kTRUE);
 
         // now parameters are filled
-        fDigiPar->printparams();
+        // fDigiPar->printparams();
 
         // register data output of this task
         Register();
@@ -103,6 +110,7 @@ void FairTutorialDet2Digitizer::Exec(Option_t* /*option*/)
     LOG(info) << " I am in FairTutorialDet2Digitizer::Exec";
 
     LOG(info) << " The custom data input vector has size" << fCustomData->size() << "\n";
+
     for (auto& entry : *fCustomData) {
         LOG(info) << " Got entry " << entry.GetX() << " " << entry.GetQ() << "\n";
         // process data and fill a structure here, which can be consumed by the next task
