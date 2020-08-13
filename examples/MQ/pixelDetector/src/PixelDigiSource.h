@@ -38,6 +38,11 @@ class PixelDigiSource : public FairSource
     Int_t ReadEvent(UInt_t i = 0);
     void Close();
     void Reset();
+    Bool_t SpecifyRunId()
+    {
+        ReadEvent(0);
+        return true;
+    };
 
     virtual Source_Type GetSourceType() { return kFILE; }
 

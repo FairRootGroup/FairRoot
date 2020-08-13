@@ -208,7 +208,7 @@ void FairRunAna::Init()
     if (par && fInFileIsOpen) {
 
         LOG(info) << "Parameter and input file are available, Assure that basic info is there for the run!";
-        fRootManager->ReadEvent(0);
+        fRootManager->SpecifyRunId();
 
         //    fEvtHeader = GetEventHeader();
         GetEventHeader();
@@ -221,7 +221,7 @@ void FairRunAna::Init()
         fEvtHeader->Register(fStoreEventHeader);
 
         // Init the containers in Tasks
-
+        LOG(info) << "--- Initialize with RunId  --- " << fRunId;
         fRtdb->initContainers(fRunId);
         fTask->SetParTask();
 

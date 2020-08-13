@@ -13,7 +13,11 @@ void create_digis_mixed()
     TString SG1inFile = "./tutorial2_pions.mc_p2.000_t0_n10.sg1.root";
     TString SG2inFile = "./tutorial2_pions.mc_p2.000_t0_n20.sg2.root";
 
-    TString parFile = "./tutorial2_pions.params_p2.000_t0_n130.bg.root";
+    /** Choice of the parameter file should be consistence with the call to
+       UseRunIdFromBG or UseRunIdFromSG*/
+
+    TString parFile = "./tutorial2_pions.params_p2.000_t0_n10.root";
+
     TString outFile = "./digis.mix.mc.root";
 
     cout << "******************************" << endl;
@@ -33,6 +37,10 @@ void create_digis_mixed()
     fMixedSource->AddSignalFile(SG1inFile, 1);
     //** Set second signal file */
     fMixedSource->AddSignalFile(SG2inFile, 2);
+
+    // fMixedSource->UseRunIdFromBG();
+
+    fMixedSource->UseRunIdfromSG(1);
 
     fRun->SetSource(fMixedSource);
 

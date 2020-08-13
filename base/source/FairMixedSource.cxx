@@ -79,6 +79,9 @@ FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
     , fSignalChainList(nullptr)
     , fBackgroundChain(nullptr)
     , fSignalTypeList()
+    , fRunIdFromBG(kFALSE)
+    , fRunIdFromSG(kFALSE)
+    , fRunIdFromSG_identifier(0)
 {
     if (fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
@@ -131,6 +134,9 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
     , fSignalChainList(nullptr)
     , fBackgroundChain(nullptr)
     , fSignalTypeList()
+    , fRunIdFromBG(kFALSE)
+    , fRunIdFromSG(kFALSE)
+    , fRunIdFromSG_identifier(0)
 {
     fRootFile = TFile::Open(RootFileName->Data());
     if (fRootFile->IsZombie()) {
@@ -183,6 +189,9 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     , fSignalChainList(nullptr)
     , fBackgroundChain(nullptr)
     , fSignalTypeList()
+    , fRunIdFromBG(kFALSE)
+    , fRunIdFromSG(kFALSE)
+    , fRunIdFromSG_identifier(0)
 {
     fRootFile = TFile::Open(RootFileName.Data());
 
@@ -326,15 +335,42 @@ Bool_t FairMixedSource::Init()
     }
     FairRootManager::Instance()->SetListOfFolders(fListFolder);
 
-    fBackgroundChain->GetEntry(0);
+    LOG(info) << "Entries in this Source " << fNoOfEntries << " ------------";
+    return kTRUE;
+}
+
+Bool_t FairMixedSource::SpecifyRunId()
+{
+    LOG(debug) << "---FairMixedSource::SpecifyRunId --- ";
+    LOG(debug) << "---FairMixedSource::SpecifyRunId  fRunIdFromBG = " << fRunIdFromBG;
+    LOG(debug) << "---FairMixedSource::SpecifyRunId  fRunIdFromSG = " << fRunIdFromSG;
+    LOG(debug) << "---FairMixedSource::SpecifyRunId  fRunIdFromSG_identifier = " << fRunIdFromSG_identifier;
+
+    if (fRunIdFromBG == fRunIdFromSG) {
+        LOG(fatal)
+            << "Please specify where to take the from: Signal or Bcckgrand by calling UseRunIdFromBG or UseRunIdFromSG";
+        return false;
+    }
+
+    if (fRunIdFromBG) {
+        fBackgroundChain->GetEntry(0);
+        fBackgroundChain->Dump();
+        LOG(debug) << "---Get RunId from background chain  --- ";
+    } else {
+        if (fRunIdFromSG_identifier <= fNoOfSignals) {
+            TChain* Sig_chain = fRootManager->GetSignalChainNo(fRunIdFromSG_identifier);
+            Sig_chain->GetEntry(0);
+            LOG(debug) << "---Get RunId from Signal chain  --- ";
+        } else {
+            LOG(fatal) << "--- Invalid signal identifier, Max number of signals :  " << fNoOfSignals;
+        }
+    }
     if (fEvtHeader) {
         fOutHeader->SetRunId(fEvtHeader->GetRunId());
     }
     if (fMCHeader) {
         fOutHeader->SetRunId(fMCHeader->GetRunID());
     }
-
-    LOG(info) << "Entries in this Source " << fNoOfEntries << " ------------";
     return kTRUE;
 }
 
@@ -799,4 +835,18 @@ void FairMixedSource::ReadBranchEvent(const char* BrName, Int_t Entry)
     return;
 }
 
+void FairMixedSource::UseRunIdFromBG()
+{
+    /** Use the Backgraund rRunID to initialize the parameter for the run */
+    fRunIdFromBG = kTRUE;
+}
+
+void FairMixedSource::UseRunIdfromSG(UInt_t identifier)
+{
+    /** Use the Backgraund rRunID to initialize the parameter for the run
+     *@param identifier: Signal file identifier to be used by default we take the first Signal
+     */
+    fRunIdFromSG = kTRUE;
+    fRunIdFromSG_identifier = identifier;
+}
 ClassImp(FairMixedSource);

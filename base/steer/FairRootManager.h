@@ -281,6 +281,9 @@ class FairRootManager : public TObject
     TTree* GetOutTree();
     // ^^^^^^^^^^ depracted functions, replaced by FairSink ^^^^^^^^^^
 
+    /**Read one event from source to find out which RunId to use*/
+    Bool_t SpecifyRunId();
+
   private:
     // helper struct since std::pair has problems with type_info
     struct TypeAddressPair
