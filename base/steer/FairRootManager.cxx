@@ -427,7 +427,17 @@ void FairRootManager::WriteFolder()
         fSink->WriteObject(fTimeBasedBranchNameList, "TimeBasedBranchList", TObject::kSingleKey);
     }
 }
-
+Bool_t FairRootManager::SpecifyRunId()
+{
+    if (!fSource) {
+        LOG(fatal) << "No Source available";
+        return false;
+    }
+    Bool_t Result = fSource->SpecifyRunId();
+    fSource->FillEventHeader(fEventHeader);
+    LOG(info) << "---FairRootManager::SpecifyRunId --- ";
+    return Result;
+}
 Int_t FairRootManager::ReadEvent(Int_t i)
 {
     if (!fSource)

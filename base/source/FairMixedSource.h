@@ -135,6 +135,13 @@ class FairMixedSource : public FairSource
     void SetEvtHeaderNew(Bool_t Status) { fEvtHeaderIsNew = Status; }
     Bool_t IsEvtHeaderNew() { return fEvtHeaderIsNew; }
 
+    /** Use the Backgraund RunID to initialize the parameter for the run */
+    void UseRunIdFromBG();
+    /** Use the Backgraund RunID to initialize the parameter for the run
+     *@param identifier: Signal file identifier to be used by default we take the first Signal
+     */
+    void UseRunIdfromSG(UInt_t identifier = 1);
+
   private:
     /**IO manager */
     FairRootManager* fRootManager;
@@ -225,6 +232,18 @@ class FairMixedSource : public FairSource
     /**Chain containing the background*/
     TChain* fBackgroundChain;                    //!
     std::map<UInt_t, TChain*> fSignalTypeList;   //!
+
+    /**True if RunId is taken from Backgraund*/
+    Bool_t fRunIdFromBG;   //!
+    /**True if RunId is taken from Signal */
+    Bool_t fRunIdFromSG;   //!
+    /** Identifier of signal file for RunID
+     * Zero if RunId is taken from BG.
+     */
+    UInt_t fRunIdFromSG_identifier;   //!
+
+    /**Read one event from source to find out which RunId to use*/
+    Bool_t SpecifyRunId();
 
     FairMixedSource(const FairMixedSource&);
     FairMixedSource& operator=(const FairMixedSource&);
