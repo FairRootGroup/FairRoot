@@ -46,6 +46,12 @@ class FairOnlineSource : public FairSource
 
     virtual Source_Type GetSourceType() { return kONLINE; }
 
+    Bool_t SpecifyRunId()
+    {
+        ReadEvent(0);
+        return true;
+    };
+
   protected:
     TObjArray* fUnpackers;
 

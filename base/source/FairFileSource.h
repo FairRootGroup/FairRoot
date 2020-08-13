@@ -118,6 +118,9 @@ class FairFileSource : public FairSource
      */
     void SetCheckFileLayout(Bool_t enable) { fCheckFileLayout = enable; }
 
+    /**Read one event from source to find out which RunId to use*/
+    Bool_t SpecifyRunId();
+
   private:
     /** Title of input source, could be input, background or signal*/
     TString fInputTitle;

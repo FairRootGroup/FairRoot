@@ -40,7 +40,7 @@ FairTutorialDet2Digitizer::~FairTutorialDet2Digitizer()
 
 void FairTutorialDet2Digitizer::SetParContainers()
 {
-    LOG(info) << "FairTutorialDet2Digitizer :: SetParContainers() ";
+    LOG(debug) << "FairTutorialDet2Digitizer :: SetParContainers() ";
 
     // Get Base Container
     FairRunAna* ana = FairRunAna::Instance();
@@ -66,7 +66,7 @@ InitStatus FairTutorialDet2Digitizer::ReInit()
 
 InitStatus FairTutorialDet2Digitizer::Init()
 {
-    LOG(info) << " FairTutorialDet2Digitizer :: Init() ";
+    LOG(debug) << " FairTutorialDet2Digitizer :: Init() ";
 
     FairRootManager* ioman = FairRootManager::Instance();
     if (!ioman) {
@@ -107,12 +107,12 @@ void FairTutorialDet2Digitizer::Exec(Option_t* /*option*/)
 {
     // Here we print something
 
-    LOG(info) << " I am in FairTutorialDet2Digitizer::Exec";
+    LOG(debug) << " I am in FairTutorialDet2Digitizer::Exec";
 
-    LOG(info) << " The custom data input vector has size" << fCustomData->size() << "\n";
+    LOG(debug) << " The custom data input vector has size" << fCustomData->size() << "\n";
 
     for (auto& entry : *fCustomData) {
-        LOG(info) << " Got entry " << entry.GetX() << " " << entry.GetQ() << "\n";
+        LOG(debug) << " Got entry " << entry.GetX() << " " << entry.GetQ() << "\n";
         // process data and fill a structure here, which can be consumed by the next task
         fCustomData2->emplace_back(entry.GetX() * 2, entry.GetQ() * 10);
     }

@@ -43,6 +43,11 @@ class FairLmdSource : public FairMbsSource
     virtual Bool_t Init();
     virtual Int_t ReadEvent(UInt_t = 0);
     virtual void Close();
+    Bool_t SpecifyRunId()
+    {
+        ReadEvent(0);
+        return true;
+    };
 
   protected:
     Bool_t OpenNextFile(TString fileName);
