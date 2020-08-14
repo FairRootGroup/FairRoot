@@ -383,14 +383,6 @@ Int_t FairMixedSource::ReadEvent(UInt_t i)
 
     if (fSBRatiobyN || fSBRatiobyT) {
         Double_t ratio = 0;
-        if (fCurrentEntryNo == 0) {
-            for (const auto& mi : fSignalBGN) {
-                ratio += mi.second;
-                fSignalBGN[mi.first] = ratio;
-                LOG(debug) << "--------------Set signal no. " << mi.first << " weight " << ratio << ".";
-            }
-        }
-        ratio = 0;
         for (const auto& mi : fSignalBGN) {
             ratio = mi.second;
             LOG(debug) << "---Check signal no. " << mi.first << " SBratio " << SBratio << " : ratio " << ratio;
@@ -661,7 +653,8 @@ void FairMixedSource::BGWindowWidthNo(UInt_t background, UInt_t Signalid)
     if (fSBRatiobyT) {
         LOG(fatal) << "Signal rate already set by TIME!!";
     }
-    Double_t value = 1.0 / background;
+    Double_t value = 1.0 / (background + 1.0);
+    LOG(debug) << "-- Signal id =  " << Signalid << " with weight = " << value;
     if (background != 0) {
         fSignalBGN[Signalid] = value;
     } else {
