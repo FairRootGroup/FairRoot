@@ -33,6 +33,12 @@ find_path(PYTHIA8_INCLUDE_DIR
           PATH_SUFFIXES include include/Pythia8 include/pythia8
           DOC "Specify the directory containing Pythia.h.")
 
+if(PYTHIA8_INCLUDE_DIR MATCHES "include$")
+  get_filename_component(PYTHIA8_PREFIX ${PYTHIA8_INCLUDE_DIR}/.. ABSOLUTE)
+elseif()
+  get_filename_component(PYTHIA8_PREFIX ${PYTHIA8_INCLUDE_DIR}/../.. ABSOLUTE)
+endif()
+
 find_library(PYTHIA8_LIBRARY
              NAMES pythia8 Pythia8
              HINTS ${_pythia8dirs}
@@ -59,13 +65,11 @@ find_library(PYTHIA8_lhapdfdummy_LIBRARY
              PATH_SUFFIXES lib)
 
 
-find_path(PYTHIA8DATA NAMES MainProgramSettings.xml PATHS
-               $ENV{PYTHIA8DATA}
-               $ENV{PYTHIA_ROOT}/share/Pythia8/xmldoc
-               ${PYTHIA8_DIR}/share/Pythia8/xmldoc
-               ${SIMPATH}/share/pythia8/xmldoc
-             )
-
+find_path(PYTHIA8DATA
+  NAMES MainProgramSettings.xml
+  HINTS
+  ${PYTHIA8_PREFIX}/share/Pythia8/xmldoc
+  ${PYTHIA8_PREFIX}/share/pythia8/xmldoc)
 
 foreach(_lib PYTHIA8_LIBRARY PYTHIA8_hepmcinterface_LIBRARY PYTHIA8_lhapdfdummy_LIBRARY)
   if(${_lib})
@@ -74,14 +78,9 @@ foreach(_lib PYTHIA8_LIBRARY PYTHIA8_hepmcinterface_LIBRARY PYTHIA8_lhapdfdummy_
 endforeach()
 set(PYTHIA8_INCLUDE_DIRS ${PYTHIA8_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIR}/Pythia8 )
 
-find_path(PYTHIA8_DATA
-          NAMES MainProgramSettings.xml
-          HINTS ${_pythia8dirs}
-          PATH_SUFFIXES xmldoc)
-
 # handle the QUIETLY and REQUIRED arguments and set PYTHIA8_FOUND to TRUE if
 # all listed variables are TRUE
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(Pythia8 DEFAULT_MSG PYTHIA8_INCLUDE_DIR PYTHIA8_LIBRARY)
+find_package_handle_standard_args(Pythia8 DEFAULT_MSG PYTHIA8_INCLUDE_DIR PYTHIA8_LIBRARY PYTHIA8DATA)
 mark_as_advanced(PYTHIA8_INCLUDE_DIR PYTHIA8_LIBRARY PYTHIA8_hepmcinterface_LIBRARY PYTHIA8_lhapdfdummy_LIBRARY)
