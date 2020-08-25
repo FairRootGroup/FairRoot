@@ -276,7 +276,7 @@ void FairRunSim::CheckFlukaExec()
         // More generic for different macro
         // dir layout <D.B>
         TString macrodir = getenv("PWD");
-        cout << macrodir << endl;
+        // cout << macrodir << endl;
         flout = macrodir + "/fluka_out";
         flout.ReplaceAll("//", "/");
         gSystem->cd(flout.Data());
