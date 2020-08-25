@@ -621,8 +621,8 @@ TObject* FairRootManager::GetCloneOfLinkData(const FairLink link)
     } else {
         TClonesArray* dataArray = static_cast<TClonesArray*>(GetObject(GetBranchName(type)));
 
-        std::cout << "FairRootManager::GetCloneOfLinkData() dataArray size: " << dataArray->GetEntriesFast()
-                  << std::endl;
+        //  std::cout << "FairRootManager::GetCloneOfLinkData() dataArray size: " << dataArray->GetEntriesFast()
+        //            << std::endl;
         if (index < dataArray->GetEntriesFast()) {
             //      std::cout << "DataArray at index " << index << " has Link: " <<
             //      ((FairMultiLinkedData*)dataArray->At(index))->GetNLinks() << std::cout;
