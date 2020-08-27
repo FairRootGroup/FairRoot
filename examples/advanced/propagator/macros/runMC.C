@@ -78,7 +78,7 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = fals
 
     // -----   Create PrimaryGenerator   --------------------------------------
     FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
-    for(int iPart=0;iPart<3;iPart++){
+    for (int iPart = 0; iPart < 3; iPart++) {
 
         FairBoxGenerator* boxGen = new FairBoxGenerator(partPdgC[iPart], 3);
 
@@ -101,9 +101,9 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = fals
     run->Init();
     // ------------------------------------------------------------------------
     FairTrajFilter* trajFilter = FairTrajFilter::Instance();
-    trajFilter->SetStepSizeCut(0.01); // 1 cm
+    trajFilter->SetStepSizeCut(0.01);   // 1 cm
     //  trajFilter->SetVertexCut(-2000., -2000., 4., 2000., 2000., 100.);
-    trajFilter->SetMomentumCutP(.50); // p_lab > 500 MeV
+    trajFilter->SetMomentumCutP(.50);   // p_lab > 500 MeV
     //  trajFilter->SetEnergyCut(.2, 3.02); // 0 < Etot < 1.04 GeV
 
     trajFilter->SetStorePrimaries(kTRUE);
