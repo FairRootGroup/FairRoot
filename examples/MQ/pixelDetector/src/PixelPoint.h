@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef PIXELPOINT_H
@@ -10,8 +10,8 @@
 
 #include "FairMCPoint.h"
 
-#include <TVector3.h>
 #include <Rtypes.h>
+#include <TVector3.h>
 
 class PixelPoint : public FairMCPoint
 {
@@ -28,8 +28,7 @@ class PixelPoint : public FairMCPoint
      *@param length   Track length since creation [cm]
      *@param eLoss    Energy deposit [GeV]
      **/
-    PixelPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                     Double_t tof, Double_t length, Double_t eLoss);
+    PixelPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t tof, Double_t length, Double_t eLoss);
 
     /** Destructor **/
     virtual ~PixelPoint();
@@ -42,7 +41,7 @@ class PixelPoint : public FairMCPoint
     PixelPoint(const PixelPoint& point);
     PixelPoint operator=(const PixelPoint& point);
 
-    ClassDef(PixelPoint,1)
+    ClassDef(PixelPoint, 1);
 };
 
 #endif

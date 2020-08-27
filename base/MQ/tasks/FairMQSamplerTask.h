@@ -15,15 +15,14 @@
 #ifndef FAIRMQSAMPLERTASK_H_
 #define FAIRMQSAMPLERTASK_H_
 
-#include <string>
-#include <memory>
+#include "FairEventHeader.h"
+#include "FairMQTransportFactory.h"
+#include "FairTask.h"
 
 #include <FairMQMessage.h>
-#include "FairMQTransportFactory.h"
-
 #include <TClonesArray.h>
-#include "FairTask.h"
-#include "FairEventHeader.h"
+#include <memory>
+#include <string>
 
 class FairMQSamplerTask : public FairTask
 {
@@ -36,7 +35,7 @@ class FairMQSamplerTask : public FairTask
     virtual ~FairMQSamplerTask();
 
     virtual InitStatus Init();
-    virtual void Exec(Option_t *opt);
+    virtual void Exec(Option_t* opt);
 
     void SetEventIndex(Long64_t eventIndex);
     void SetBranch(const std::string& branch);

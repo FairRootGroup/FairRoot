@@ -175,6 +175,7 @@ done
 for (( i=0 ; i<$NOFSIMULS ; i++ ))
 do
     ASAMPLER[i]="$SAMPLER --id pixSim-sampler$i --random-seed ${RANDOMNUMBER[i]}"
+#    echo "$i >> ${ASAMPLER[i]}"
 done
 ########################## start FILESINK
 FILESINK="@pixel_bin_dir@/"
@@ -257,22 +258,33 @@ if [ "$COMMAND" == "static" ]; then
     done
     printf "|\n"
 
-    SAMPLERRUNNING=0
+    for (( i=0 ; i<$NOFSIMULS ; i++ ))
+    do
+	SAMPLERRUNNING[i]=10
+    done
+
+    ALLSAMPLERSRUNNING=0
     for ((isec = 0 ; isec < MAXRUNNINGTIME ; isec++ ));
     do
-	if (( SAMPLERRUNNING != -1 )); then
-	    SAMPLERRUNNING=0
+	if (( ALLSAMPLERSRUNNING != -1 )); then
+	    ALLSAMPLERSRUNNING=0
 	    for (( isimul=0 ; isimul<$NOFSIMULS ; isimul++ ))
 	    do
 		CHECK_SAMPLER="$(kill -0 ${SAMPLER_PID[isimul]} &> /dev/null && echo $RUN_STRING)";
 		if [ "$CHECK_SAMPLER" == "$RUN_STRING" ];
 		then
-		    SAMPLERRUNNING=1;
+		    SAMPLERRUNNING[isimul]=10
+		else
+		    if (( SAMPLERRUNNING[isimul] > 0 )); then
+			SAMPLERRUNNING[isimul]=$((SAMPLERRUNNING[isimul]-1))
+		    fi
 		fi
+		ALLSAMPLERSRUNNING=$((ALLSAMPLERSRUNNING+SAMPLERRUNNING[isimul]))
+#		echo "$CHECK_SAMPLER -> ${SAMPLERRUNNING[isimul]} -> $ALLSAMPLERSRUNNING"
 	    done
-	    if (( SAMPLERRUNNING == 0 )); then
+	    if (( ALLSAMPLERSRUNNING == 0 )); then
 		MAXRUNNINGTIME=$((isec+2)); #TODO let it run for two more seconds after all samplers finish working... workaround for now
-		SAMPLERRUNNING=-1
+		ALLSAMPLERSRUNNING=-1
 	    fi
 	fi
 
@@ -285,6 +297,7 @@ if [ "$COMMAND" == "static" ]; then
 	done
 	FILESINK_INFO="$(ps -o %cpu -o rss $FILESINK_PID | tail -1)"
 	printf " %5s %6s |\r" $FILESINK_INFO
+#	echo $ALLSAMPLERSRUNNING
 	sleep 1;
     done;
     echo;
@@ -310,7 +323,7 @@ if [ "$COMMAND" == "static" ]; then
 
     wait $FILESINK_PID
 
-    OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b $OUTPUTFILE | tail -1)"
+    OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | @ROOT_EXECUTABLE@ -l -b $OUTPUTFILE | tail -1)"
     echo "There are $OUTPUT_EVENTS events in the output file."
 
     if (( $OUTPUT_EVENTS == $NOFSIMULS*$NOFEVENTS ));

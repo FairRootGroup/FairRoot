@@ -5,12 +5,13 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void create_digis(){
+void create_digis()
+{
 
     TStopwatch timer;
     timer.Start();
 
-    gDebug=0;
+    gDebug = 0;
 
     TString dir = getenv("VMCWORKDIR");
     TString tutdir = dir + "/simulation/Tutorial2";
@@ -25,50 +26,47 @@ void create_digis(){
     cout << "OutFile: " << outFile << endl;
     cout << "******************************" << endl;
 
-    FairRunAna *fRun= new FairRunAna();
-    FairFileSource *fFileSource = new FairFileSource(inFile);
+    FairRunAna* fRun = new FairRunAna();
+    FairFileSource* fFileSource = new FairFileSource(inFile);
     fRun->SetSource(fFileSource);
 
     fRun->SetSink(new FairRootFileSink(outFile));
 
-
     // Init Simulation Parameters from Root File
-    FairRuntimeDb* rtdb=fRun->GetRuntimeDb();
-    FairParRootFileIo* io1=new FairParRootFileIo();
-    io1->open(parFile.Data(),"UPDATE");
+    FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
+    FairParRootFileIo* io1 = new FairParRootFileIo();
+    io1->open(parFile.Data(), "UPDATE");
 
     FairParAsciiFileIo* parInput2 = new FairParAsciiFileIo();
     TString tutDetDigiFile = gSystem->Getenv("VMCWORKDIR");
     tutDetDigiFile += "/simulation/Tutorial2/parameters/tutdet.digi.par";
-    parInput2->open(tutDetDigiFile.Data(),"in");
+    parInput2->open(tutDetDigiFile.Data(), "in");
 
     rtdb->setFirstInput(io1);
     rtdb->setSecondInput(parInput2);
 
-   rtdb->print();
+    rtdb->print();
 
     //**  TUt Det Digi Producer **//
 
-    FairTutorialDet2Digitizer *digi = new FairTutorialDet2Digitizer("tutdet","tut det task");
+    FairTutorialDet2Digitizer* digi = new FairTutorialDet2Digitizer("tutdet", "tut det task");
 
     // add the task
-    fRun->AddTask( digi );
+    fRun->AddTask(digi);
     // add another task (to test reading data from in memory branches)
-    fRun->AddTask( new FairTutorialDet2CustomTask() );
+    fRun->AddTask(new FairTutorialDet2CustomTask());
 
     fRun->Init();
 
     rtdb->getContainer("FairTutorialDet2DigiPar")->print();
 
-    FairTutorialDet2DigiPar* DigiPar = (FairTutorialDet2DigiPar*)
-                                      rtdb->getContainer("FairTutorialDet2DigiPar");
+    FairTutorialDet2DigiPar* DigiPar = (FairTutorialDet2DigiPar*)rtdb->getContainer("FairTutorialDet2DigiPar");
 
     DigiPar->setChanged();
-    DigiPar->setInputVersion(fRun->GetRunId(),1);
+    DigiPar->setInputVersion(fRun->GetRunId(), 1);
     rtdb->setOutput(io1);
     rtdb->saveOutput();
     rtdb->print();
-
 
     fRun->Run();
 
@@ -79,7 +77,7 @@ void create_digis(){
     // Extract the maximal used memory an add is as Dart measurement
     // This line is filtered by CTest and the value send to CDash
     FairSystemInfo sysInfo;
-    Float_t maxMemory=sysInfo.GetMaxMemory();
+    Float_t maxMemory = sysInfo.GetMaxMemory();
     cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
     cout << maxMemory;
     cout << "</DartMeasurement>" << endl;
@@ -88,16 +86,15 @@ void create_digis(){
     Double_t rtime = timer.RealTime();
     Double_t ctime = timer.CpuTime();
 
-    Float_t cpuUsage=ctime/rtime;
+    Float_t cpuUsage = ctime / rtime;
     cout << "<DartMeasurement name=\"CpuLoad\" type=\"numeric/double\">";
     cout << cpuUsage;
     cout << "</DartMeasurement>" << endl;
 
     cout << endl << endl;
-    cout << "Output file is "    << outFile << endl;
+    cout << "Output file is " << outFile << endl;
     cout << "Parameter file is " << parFile << endl;
-    cout << "Real time " << rtime << " s, CPU time " << ctime
-         << "s" << endl << endl;
+    cout << "Real time " << rtime << " s, CPU time " << ctime << "s" << endl << endl;
     cout << "Macro finished successfully." << endl;
 
     // ------------------------------------------------------------------------

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -15,77 +15,82 @@
 #ifndef FAIRMCSTAGE_H_
 #define FAIRMCSTAGE_H_
 
-#include "FairMCObject.h"               // for FairMCObject
+#include "FairMCObject.h"   // for FairMCObject
 
-#include <Rtypes.h>                     // for Bool_t, Double_t, etc
+#include <Rtypes.h>   // for Bool_t, Double_t, etc
+#include <iostream>   // for ostream, basic_ostream, etc
+#include <string>     // for string, operator<<, etc
 
-#include <iostream>                     // for ostream, basic_ostream, etc
-#include <string>                       // for string, operator<<, etc
-
-class FairMCStage: public FairMCObject
+class FairMCStage : public FairMCObject
 {
   public:
     FairMCStage();
     FairMCStage(Int_t id, const std::string& fileName, const std::string& branchName, Double_t weight = 1.0);
 
     FairMCStage(const FairMCStage& mcStage)
-      : FairMCObject(mcStage),
-        fBranchName(mcStage.fBranchName),
-        fFileName(mcStage.fFileName),
-        fWeight(mcStage.fWeight),
-        fLoaded(mcStage.fLoaded),
-        fFill(mcStage.fFill) {
-    }
+        : FairMCObject(mcStage)
+        , fBranchName(mcStage.fBranchName)
+        , fFileName(mcStage.fFileName)
+        , fWeight(mcStage.fWeight)
+        , fLoaded(mcStage.fLoaded)
+        , fFill(mcStage.fFill)
+    {}
 
-    FairMCStage& operator=(const FairMCStage& result) {
+    FairMCStage& operator=(const FairMCStage& result)
+    {
 
-      if (this == &result) { return *this; }
+        if (this == &result) {
+            return *this;
+        }
 
-      FairMCObject::operator=(result);
-      fBranchName = result.fBranchName;
-      fFileName = result.fFileName;
-      fWeight = result.fWeight;
-      fLoaded = result.fLoaded;
-      fFill = result.fFill;
+        FairMCObject::operator=(result);
+        fBranchName = result.fBranchName;
+        fFileName = result.fFileName;
+        fWeight = result.fWeight;
+        fLoaded = result.fLoaded;
+        fFill = result.fFill;
 
-      return *this;
+        return *this;
     }
 
     virtual ~FairMCStage();
 
-    void SetBranchName(const std::string& branchName)  { fBranchName = branchName; }
-    void SetFileName(const std::string& fileName)      { fFileName = fileName; }
-    void SetWeight(Double_t weight)       { fWeight = weight; }
-    void SetLoaded(Bool_t loaded)         { fLoaded = loaded; }
-    void SetFill(Bool_t fill)           { fFill = fill; }
+    void SetBranchName(const std::string& branchName) { fBranchName = branchName; }
+    void SetFileName(const std::string& fileName) { fFileName = fileName; }
+    void SetWeight(Double_t weight) { fWeight = weight; }
+    void SetLoaded(Bool_t loaded) { fLoaded = loaded; }
+    void SetFill(Bool_t fill) { fFill = fill; }
 
-    std::string GetBranchName(void)   const {return fBranchName;}
-    std::string GetFileName(void)     const {return fFileName;}
-    Double_t  GetWeight(void)     const {return fWeight;}
-    Bool_t    GetLoaded(void)   const {return fLoaded;}
-    Bool_t    GetFill(void)     const {return fFill;}
+    std::string GetBranchName(void) const { return fBranchName; }
+    std::string GetFileName(void) const { return fFileName; }
+    Double_t GetWeight(void) const { return fWeight; }
+    Bool_t GetLoaded(void) const { return fLoaded; }
+    Bool_t GetFill(void) const { return fFill; }
 
-    virtual void ClearEntries() {
-      FairMCObject::ClearEntries();
-      fLoaded = kFALSE;
+    virtual void ClearEntries()
+    {
+        FairMCObject::ClearEntries();
+        fLoaded = kFALSE;
     }
 
-    virtual void PrintInfo(std::ostream& out) {out << *this;}
+    virtual void PrintInfo(std::ostream& out) { out << *this; }
 
-    friend std::ostream& operator<< (std::ostream& out, const FairMCStage& stage) {
-      out << stage.GetStageId() << ": " << stage.GetBranchName() << " // " <<  stage.GetFileName() << std::endl; //" with weight: " << stage.GetWeight() << std::endl;
-      (static_cast<FairMCObject>(stage)).PrintInfo(out);
-      return out;
+    friend std::ostream& operator<<(std::ostream& out, const FairMCStage& stage)
+    {
+        out << stage.GetStageId() << ": " << stage.GetBranchName() << " // " << stage.GetFileName()
+            << std::endl;   //" with weight: " << stage.GetWeight() << std::endl;
+        (static_cast<FairMCObject>(stage)).PrintInfo(out);
+        return out;
     }
 
   private:
     std::string fBranchName;
     std::string fFileName;
     Double_t fWeight;
-    Bool_t fLoaded; ///< indicates if this stage was loaded already from a Link file
-    Bool_t fFill; ///< indicates if a corresponding DataFile with FairLinks exists to fill this stage
+    Bool_t fLoaded;   ///< indicates if this stage was loaded already from a Link file
+    Bool_t fFill;     ///< indicates if a corresponding DataFile with FairLinks exists to fill this stage
 
     ClassDef(FairMCStage, 1);
 };
 
-#endif /* PNDMCSTAGE_H_ */
+#endif /* FAIRMCSTAGE_H_ */

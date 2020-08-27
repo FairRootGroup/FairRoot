@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target Tutorial1)
+set(target ExSimulation1)
 
 set(sources
   FairFastSimExample.cxx
@@ -40,10 +40,10 @@ target_link_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::FairTools # FairLogger
-  FairRoot::MCStack
   FairRoot::FairFastSim
   FairRoot::ParBase
-  FairRoot::Passive
+  FairRoot::ExPassive
+  FairRoot::ExMCStack
   FairRoot::Gen
 
   Boost::program_options
@@ -51,7 +51,7 @@ target_link_libraries(${target} PUBLIC
   Core
   Physics
   Geom
-  VMC
+  ${VMCLIB}
 )
 
 fairroot_target_root_dictionary(${target}
@@ -63,7 +63,7 @@ install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(tut1 runTutorial1.cxx)
-target_link_libraries(tut1 PRIVATE Tutorial1)
+target_link_libraries(tut1 PRIVATE ExSimulation1)
 
 install(TARGETS tut1
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/simulation/Tutorial1/bin

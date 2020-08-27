@@ -15,11 +15,11 @@
  * @since 28.02.05
  */
 
-#include "FairRun.h"
 #include "FairRootManager.h"
+#include "FairRun.h"
 
-#include <TString.h>
 #include <Rtypes.h>
+#include <TString.h>
 
 class FairField;
 class FairSource;
@@ -35,34 +35,34 @@ class FairRunOnline : public FairRun
     FairRunOnline(FairSource* source);
 
     /**initialize the run manager*/
-    void        Init();
+    void Init();
     /**Run for the given number of events*/
-    void        Run(Int_t Ev_start, Int_t Ev_end);
+    void Run(Int_t Ev_start, Int_t Ev_end);
 
-    void        Reinit(UInt_t runId);
-    UInt_t      getRunId() { return fRunId; }
+    void Reinit(UInt_t runId);
+    UInt_t getRunId() { return fRunId; }
     /** Get the magnetic field **/
-    FairField*  GetField() { return fField; }
+    FairField* GetField() { return fField; }
     /** Set the magnetic Field */
-    void        SetField (FairField* ffield) { fField = ffield; }
+    void SetField(FairField* ffield) { fField = ffield; }
 
     /** Set if the run should be closed automatically after executing the
         run functuion
     **/
-    void        SetAutoFinish(Bool_t val) { fAutomaticFinish = val; }
+    void SetAutoFinish(Bool_t val) { fAutomaticFinish = val; }
     /** Set the source which should be used **/
-    void        SetSource(FairSource* source) { fRootManager->SetSource(source); }
+    void SetSource(FairSource* source) { fRootManager->SetSource(source); }
     /** Return pointer to source **/
-    FairSource*  GetSource() { return fRootManager->GetSource(); }
+    FairSource* GetSource() { return fRootManager->GetSource(); }
 
     /** Initialization of parameter container is set to static, i.e: the run id is
      *  is not checked anymore after initialization
      */
 
     /** Init containers executed on PROOF, which is part of Init when running locally*/
-    void        InitContainers();
-    void        SetContainerStatic(Bool_t tempBool=kTRUE);
-    Bool_t      GetContainerStatic() { return fStatic; };
+    void InitContainers();
+    void SetContainerStatic(Bool_t tempBool = kTRUE);
+    Bool_t GetContainerStatic() { return fStatic; };
 
     /** Add histogram to be displayed using THttpServer.*/
     void AddObject(TObject* object);
@@ -71,7 +71,7 @@ class FairRunOnline : public FairRun
      * @param refreshRate an interval in number of events for server update.
      * @param httpPort the port which is used by the http server
      */
-    void ActivateHttpServer(Int_t refreshRate = 10000, Int_t httpPort=8080);
+    void ActivateHttpServer(Int_t refreshRate = 10000, Int_t httpPort = 8080);
 
     /** Register a command on the http server.
      * @param name a command name starting with /
@@ -89,26 +89,26 @@ class FairRunOnline : public FairRun
     Bool_t fAutomaticFinish;
 
     FairRunOnline(const FairRunOnline& M);
-    FairRunOnline& operator= (const  FairRunOnline&) { return *this; }
+    FairRunOnline& operator=(const FairRunOnline&) { return *this; }
 
     /** Main Event loop **/
     Int_t EventLoop();
 
   protected:
     /** This variable became true after Init is called*/
-    Bool_t                                  fIsInitialized;
-    static FairRunOnline*                   fgRinstance;
+    Bool_t fIsInitialized;
+    static FairRunOnline* fgRinstance;
     /** true for static initialisation of parameters */
-    Bool_t                                  fStatic;//!
-    FairField*                              fField;
+    Bool_t fStatic;   //!
+    FairField* fField;
 
-    Int_t       fNevents;      //!
-    THttpServer* fServer;             //!
-    Int_t        fServerRefreshRate;  //!
+    Int_t fNevents;             //!
+    THttpServer* fServer;       //!
+    Int_t fServerRefreshRate;   //!
 
     virtual void Fill();
 
-    ClassDef(FairRunOnline, 0)
+    ClassDef(FairRunOnline, 0);
 };
 
-#endif //FAIRRUNONLINE_H
+#endif   // FAIRRUNONLINE_H

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -15,42 +15,41 @@
 #ifndef FAIRMCLIST_H_
 #define FAIRMCLIST_H_
 
-#include <TObject.h>                    // for TObject
-#include <Rtypes.h>                     // for Int_t, FairMCList::Class, etc
-
-#include <vector>                       // for vector
+#include <Rtypes.h>    // for Int_t, FairMCList::Class, etc
+#include <TObject.h>   // for TObject
+#include <vector>      // for vector
 
 class FairMCList : public TObject
 {
   public:
     FairMCList();
     FairMCList(Int_t type, Int_t entry)
-      : TObject(),
-        fList(),
-        fEntry(entry),
-        fType(type) {
-    }
+        : TObject()
+        , fList()
+        , fEntry(entry)
+        , fType(type)
+    {}
 
     FairMCList(Int_t type, Int_t entry, std::vector<Int_t> list)
-      : TObject(),
-        fList(list),
-        fEntry(entry),
-        fType(type) {
-    }
+        : TObject()
+        , fList(list)
+        , fEntry(entry)
+        , fType(type)
+    {}
 
     virtual ~FairMCList();
 
-    void SetType(Int_t type) { fType = type;}
-    void SetEntry(Int_t entry) { fEntry = entry;}
-    void AddElement(Int_t element) {fList.push_back(element);}
+    void SetType(Int_t type) { fType = type; }
+    void SetEntry(Int_t entry) { fEntry = entry; }
+    void AddElement(Int_t element) { fList.push_back(element); }
 
-    Int_t GetType() const {return fType;}
-    Int_t GetEntry() const {return fEntry;}
-    Int_t GetNElements() const {return fList.size();}
-    Int_t GetElement(Int_t index)const {return fList.at(index);}
-    std::vector<Int_t> GetElements() const {return fList;}
+    Int_t GetType() const { return fType; }
+    Int_t GetEntry() const { return fEntry; }
+    Int_t GetNElements() const { return fList.size(); }
+    Int_t GetElement(Int_t index) const { return fList.at(index); }
+    std::vector<Int_t> GetElements() const { return fList; }
 
-    void Reset() {fList.clear();}
+    void Reset() { fList.clear(); }
 
   private:
     std::vector<Int_t> fList;
@@ -60,4 +59,4 @@ class FairMCList : public TObject
     ClassDef(FairMCList, 1);
 };
 
-#endif /* PNDMCLIST_H_ */
+#endif /* FAIRMCLIST_H_ */

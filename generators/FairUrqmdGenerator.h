@@ -23,13 +23,12 @@
 #ifndef FAIRURQMDGENERATOR_H
 #define FAIRURQMDGENERATOR_H
 
-#include "FairGenerator.h"              // for FairGenerator
+#include "FairGenerator.h"   // for FairGenerator
 
-#include <Rtypes.h>                     // for Int_t, Bool_t, etc
+#include <Rtypes.h>   // for Int_t, Bool_t, etc
 #include <TString.h>
-
-#include <stdio.h>                      // for FILE
-#include <map>                          // for map
+#include <map>       // for map
+#include <stdio.h>   // for FILE
 
 class FairPrimaryGenerator;
 
@@ -49,7 +48,7 @@ class FairUrqmdGenerator : public FairGenerator
      * @param conversion_table name of conversion table file (from Urqmd->PDG) should use the full path to the file
      **/
 
-    FairUrqmdGenerator(const char* fileName,  const char* conversion_table);
+    FairUrqmdGenerator(const char* fileName, const char* conversion_table);
 
     /** Destructor. **/
     ~FairUrqmdGenerator();
@@ -65,16 +64,16 @@ class FairUrqmdGenerator : public FairGenerator
     Bool_t SkipEvents(Int_t count);
 
   private:
-    FILE* fInputFile;                     //!  Input file
+    FILE* fInputFile;   //!  Input file
 
-    std::map<Int_t,Int_t> fParticleTable;      //!  Map from UrQMD PID to PDGPID
+    std::map<Int_t, Int_t> fParticleTable;   //!  Map from UrQMD PID to PDGPID
 
-    const Char_t* fFileName;              //!  Input file name
+    const Char_t* fFileName;   //!  Input file name
 
     /** Private method ReadConversionTable. Reads the conversion table
         from UrQMD particle code to PDG particle code and fills the
         conversion map. Is called from the constructor. **/
-    void ReadConversionTable(TString conversion_table="");
+    void ReadConversionTable(TString conversion_table = "");
 
     /** Check return value from fscanf call **/
     void CheckReturnValue(Int_t retval);
@@ -82,7 +81,7 @@ class FairUrqmdGenerator : public FairGenerator
     FairUrqmdGenerator(const FairUrqmdGenerator&);
     FairUrqmdGenerator& operator=(const FairUrqmdGenerator&);
 
-    ClassDef(FairUrqmdGenerator,1);
+    ClassDef(FairUrqmdGenerator, 1);
 };
 
 #endif

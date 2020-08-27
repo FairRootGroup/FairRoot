@@ -23,7 +23,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/startFairMQPixAlt.sh.in ${CMA
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixAlt.sh_install DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelAlternative/bin RENAME startFairMQPixAlt.sh)
 
 set(exe_dependencies
-  FairRoot::PixelAlt
+  FairRoot::ExPixelAlt
   FairMQ::FairMQ
   Boost::program_options
 )

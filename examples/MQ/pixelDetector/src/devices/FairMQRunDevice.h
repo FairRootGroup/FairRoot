@@ -16,26 +16,25 @@
 #ifndef FAIRMQRUNDEVICE_H_
 #define FAIRMQRUNDEVICE_H_
 
-#include <string>
-
 #include <FairMQDevice.h>
+#include <string>
 
 class TObject;
 
 class FairMQRunDevice : public FairMQDevice
 {
   public:
-   FairMQRunDevice() {}
-   virtual ~FairMQRunDevice() {}
+    FairMQRunDevice() {}
+    virtual ~FairMQRunDevice() {}
 
-   virtual void SendBranches();
+    virtual void SendBranches();
 
- protected:
-   void SendObject(TObject* obj, const std::string& chan);
+  protected:
+    void SendObject(TObject* obj, const std::string& chan);
 
- private:
-   FairMQRunDevice(const FairMQRunDevice&);
-   FairMQRunDevice& operator=(const FairMQRunDevice&);
+  private:
+    FairMQRunDevice(const FairMQRunDevice&);
+    FairMQRunDevice& operator=(const FairMQRunDevice&);
 };
 
 #endif /* FAIRMQRUNDEVICE_H_ */

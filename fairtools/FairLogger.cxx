@@ -1,24 +1,23 @@
 /********************************************************************************
-*    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
-*                                                                              *
-*              This software is distributed under the terms of the             *
-*              GNU Lesser General Public Licence (LGPL) version 3,             *
-*                  copied verbatim in the file "LICENSE"                       *
-********************************************************************************/
+ *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /*
-* FairLogger.cxx
-*
-*  Created on: Mar 03, 2011
-*      Author: f.uhlig
-*/
+ * FairLogger.cxx
+ *
+ *  Created on: Mar 03, 2011
+ *      Author: f.uhlig
+ */
 
 #include "FairLogger.h"
 
-#include <TString.h>    // for TString, operator==, etc
-#include <TSystem.h>    // for gSystem, TSystem
-
-#include <stdio.h>      // for fclose, freopen, remove, etc
-#include <iostream>     // for cout, cerr
+#include <TString.h>   // for TString, operator==, etc
+#include <TSystem.h>   // for gSystem, TSystem
+#include <iostream>    // for cout, cerr
+#include <stdio.h>     // for fclose, freopen, remove, etc
 
 FairLogger* FairLogger::instance = nullptr;
 
@@ -39,8 +38,7 @@ FairLogger::FairLogger()
 
 FairLogger* FairLogger::GetLogger()
 {
-    if (!instance)
-    {
+    if (!instance) {
         instance = new FairLogger();
     }
 
@@ -57,8 +55,7 @@ void FairLogger::Fatal(const char* file, const char* line, const char* func, con
 
 void FairLogger::Error(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Severity::error))
-    {
+    if (IsLogNeeded(fair::Severity::error)) {
         va_list ap;
         va_start(ap, format);
         Log(fair::Severity::error, file, line, func, format, ap);
@@ -68,8 +65,7 @@ void FairLogger::Error(const char* file, const char* line, const char* func, con
 
 void FairLogger::Warning(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Severity::warning))
-    {
+    if (IsLogNeeded(fair::Severity::warning)) {
         va_list ap;
         va_start(ap, format);
         Log(fair::Severity::warning, file, line, func, format, ap);
@@ -79,8 +75,7 @@ void FairLogger::Warning(const char* file, const char* line, const char* func, c
 
 void FairLogger::Info(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Severity::info))
-    {
+    if (IsLogNeeded(fair::Severity::info)) {
         va_list ap;
         va_start(ap, format);
         Log(fair::Severity::info, file, line, func, format, ap);
@@ -90,8 +85,7 @@ void FairLogger::Info(const char* file, const char* line, const char* func, cons
 
 void FairLogger::Debug(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Severity::debug))
-    {
+    if (IsLogNeeded(fair::Severity::debug)) {
         va_list ap;
         va_start(ap, format);
         Log(fair::Severity::debug, file, line, func, format, ap);
@@ -101,8 +95,7 @@ void FairLogger::Debug(const char* file, const char* line, const char* func, con
 
 void FairLogger::Debug1(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Severity::debug1))
-    {
+    if (IsLogNeeded(fair::Severity::debug1)) {
         va_list ap;
         va_start(ap, format);
         Log(fair::Severity::debug1, file, line, func, format, ap);
@@ -112,8 +105,7 @@ void FairLogger::Debug1(const char* file, const char* line, const char* func, co
 
 void FairLogger::Debug2(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Severity::debug2))
-    {
+    if (IsLogNeeded(fair::Severity::debug2)) {
         va_list ap;
         va_start(ap, format);
         Log(fair::Severity::debug2, file, line, func, format, ap);
@@ -123,8 +115,7 @@ void FairLogger::Debug2(const char* file, const char* line, const char* func, co
 
 void FairLogger::Debug3(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Severity::debug3))
-    {
+    if (IsLogNeeded(fair::Severity::debug3)) {
         va_list ap;
         va_start(ap, format);
         Log(fair::Severity::debug3, file, line, func, format, ap);
@@ -134,8 +125,7 @@ void FairLogger::Debug3(const char* file, const char* line, const char* func, co
 
 void FairLogger::Debug4(const char* file, const char* line, const char* func, const char* format, ...)
 {
-    if (IsLogNeeded(fair::Severity::debug4))
-    {
+    if (IsLogNeeded(fair::Severity::debug4)) {
         va_list ap;
         va_start(ap, format);
         Log(fair::Severity::debug4, file, line, func, format, ap);
@@ -143,7 +133,12 @@ void FairLogger::Debug4(const char* file, const char* line, const char* func, co
     }
 }
 
-void FairLogger::Log(fair::Severity severity, const char* file, const char* line, const char* func, const char* format, va_list arglist)
+void FairLogger::Log(fair::Severity severity,
+                     const char* file,
+                     const char* line,
+                     const char* func,
+                     const char* format,
+                     va_list arglist)
 {
     // If the format string together with the argument list was used once it can't
     // be used another time. Don't know why but if we do so the arguments are not
@@ -152,8 +147,7 @@ void FairLogger::Log(fair::Severity severity, const char* file, const char* line
     // To vercome the problem the output is written to a buffer which then can be
     // used several times.
 
-    while (true)
-    {
+    while (true) {
         fBufferSizeNeeded = vsnprintf(fBufferPointer, fBufferSize, format, arglist);
 
         // Try to vsnprintf into our buffer.
@@ -177,15 +171,9 @@ void FairLogger::Log(fair::Severity severity, const char* file, const char* line
     }
 }
 
-bool FairLogger::IsLogNeeded(fair::Severity severity)
-{
-    return fair::Logger::Logging(severity);
-}
+bool FairLogger::IsLogNeeded(fair::Severity severity) { return fair::Logger::Logging(severity); }
 
-bool FairLogger::IsLogNeeded(FairLogLevel level)
-{
-    return fair::Logger::Logging(ConvertLogLevelToString(level));
-}
+bool FairLogger::IsLogNeeded(FairLogLevel level) { return fair::Logger::Logging(ConvertLogLevelToString(level)); }
 
 void FairLogger::LogFatalMessage()
 {
@@ -196,16 +184,14 @@ void FairLogger::LogFatalMessage()
     // Fatal also indicates a problem which is so severe that the process should
     // not go on, so the process is aborted.
 
-    if (gSystem)
-    {
+    if (gSystem) {
         TString corefile = "core_dump_";
         int pid = gSystem->GetPid();
         corefile += pid;
 
         std::cerr << "For later analysis we write a core dump to " << corefile << std::endl;
 
-        if (freopen(corefile, "w", stderr))
-        {
+        if (freopen(corefile, "w", stderr)) {
             gSystem->StackTrace();
             fclose(stderr);
         }
@@ -214,4 +200,4 @@ void FairLogger::LogFatalMessage()
     throw fair::FatalException("Fatal error occured. Exiting...");
 }
 
-ClassImp(FairLogger)
+ClassImp(FairLogger);

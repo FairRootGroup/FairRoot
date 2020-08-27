@@ -42,16 +42,16 @@ class PixelDigiWriteToBinFile : public FairTask
     /** Execution **/
     virtual void Exec(Option_t* opt);
 
-    void SetOutputFileName(TString tstr) {fOutputFileName = tstr;};
+    void SetOutputFileName(TString tstr) { fOutputFileName = tstr; };
 
-    void SetDivideLevel(Int_t idiv) { fDivideLevel = idiv; } // 0 - event, 1 - station, 2 - sensor
+    void SetDivideLevel(Int_t idiv) { fDivideLevel = idiv; }   // 0 - event, 1 - station, 2 - sensor
 
   private:
     TClonesArray* fDigis; /** Input array of PixelDigi **/
 
-    TString  fOutputFileName;
+    TString fOutputFileName;
     Int_t fNofOutputFiles;
-    std::ofstream fOutputFiles[12]; // no more than 12 output files....
+    std::ofstream fOutputFiles[12];   // no more than 12 output files....
 
     /** Get parameter containers **/
     virtual void SetParContainers() {}
@@ -77,7 +77,7 @@ class PixelDigiWriteToBinFile : public FairTask
     PixelDigiWriteToBinFile(const PixelDigiWriteToBinFile&);
     PixelDigiWriteToBinFile& operator=(const PixelDigiWriteToBinFile&);
 
-    ClassDef(PixelDigiWriteToBinFile,1);
+    ClassDef(PixelDigiWriteToBinFile, 1);
 };
 
 #endif

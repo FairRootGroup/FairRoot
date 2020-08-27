@@ -12,32 +12,32 @@
 // -----                Created 26/03/14  by M. Al-Turany              -----
 // -------------------------------------------------------------------------
 
-
 #ifndef MYGEOCAVE_H
 #define MYGEOCAVE_H
 
-#include "FairGeoSet.h"                 // for FairGeoSet
-#include <iosfwd>                       // for fstream
-#include <Rtypes.h>                     // for MyGeoCave::Class, Bool_t, etc
-#include <TString.h>                    // for TString
+#include "FairGeoSet.h"   // for FairGeoSet
 
-#include <fstream>                      // for fstream
+#include <Rtypes.h>    // for MyGeoCave::Class, Bool_t, etc
+#include <TString.h>   // for TString
+#include <fstream>     // for fstream
+#include <iosfwd>      // for fstream
 
 class FairGeoMedia;
 
-class  MyGeoCave : public FairGeoSet
+class MyGeoCave : public FairGeoSet
 {
   protected:
     TString name;
+
   public:
     MyGeoCave();
     ~MyGeoCave() {}
-    const char* getModuleName(Int_t) {return name.Data();}
-    Bool_t read(std::fstream&,FairGeoMedia*);
+    const char* getModuleName(Int_t) { return name.Data(); }
+    Bool_t read(std::fstream&, FairGeoMedia*);
     void addRefNodes();
     void write(std::fstream&);
     void print();
-    ClassDef(MyGeoCave,0) // Class for the geometry of CAVE
+    ClassDef(MyGeoCave, 0);   // Class for the geometry of CAVE
 };
 
-#endif  /* !PNDGEOCAVE_H */
+#endif /* !MyGEOCAVE_H */

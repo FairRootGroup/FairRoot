@@ -11,21 +11,21 @@
 // -------------------------------------------------------------------------
 
 #include "FairEventHeader.h"
+
 #include "FairRootManager.h"
 
 FairEventHeader::FairEventHeader()
-  :fRunId(0),
-   fEventTime(-1.),
-   fInputFileId(0),
-   fMCEntryNo(0)
-{
-}
+    : fRunId(0)
+    , fEventTime(-1.)
+    , fInputFileId(0)
+    , fMCEntryNo(0)
+{}
 
-FairEventHeader::~FairEventHeader() { }
+FairEventHeader::~FairEventHeader() {}
 
 void FairEventHeader::Register(Bool_t Persistence)
 {
-  FairRootManager::Instance()->Register("EventHeader.", "EvtHeader", this, Persistence);
+    FairRootManager::Instance()->Register("EventHeader.", "EvtHeader", this, Persistence);
 }
 
-ClassImp(FairEventHeader)
+ClassImp(FairEventHeader);

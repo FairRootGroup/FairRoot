@@ -10,8 +10,8 @@
 
 #include "FairMCPoint.h"
 
-#include <TVector3.h>
 #include <Rtypes.h>
+#include <TVector3.h>
 
 class FairTutorialDet2Point : public FairMCPoint
 {
@@ -28,8 +28,13 @@ class FairTutorialDet2Point : public FairMCPoint
      *@param length   Track length since creation [cm]
      *@param eLoss    Energy deposit [GeV]
      **/
-    FairTutorialDet2Point(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom,
-                          Double_t tof, Double_t length, Double_t eLoss);
+    FairTutorialDet2Point(Int_t trackID,
+                          Int_t detID,
+                          TVector3 pos,
+                          TVector3 mom,
+                          Double_t tof,
+                          Double_t length,
+                          Double_t eLoss);
 
     /** Copy constructor **/
     // FairTutorialDet2Point(const FairTutorialDet2Point& point) { *this = point; };
@@ -40,7 +45,7 @@ class FairTutorialDet2Point : public FairMCPoint
     /** Output to screen **/
     virtual void Print(const Option_t* opt) const;
 
-    ClassDef(FairTutorialDet2Point,1)
+    ClassDef(FairTutorialDet2Point, 1);
 };
 
 // a custom class holding some data
@@ -49,13 +54,16 @@ class CustomClass
 {
   public:
     CustomClass() {}
-    CustomClass(double x, int q) : fX(x), fQ(q) {}
-    double GetX() const {return fX;}
-    int GetQ() const {return fQ;}
+    CustomClass(double x, int q)
+        : fX(x)
+        , fQ(q)
+    {}
+    double GetX() const { return fX; }
+    int GetQ() const { return fQ; }
 
   private:
-    double fX = 0.; // x position
-    int    fQ = 0; // charge
+    double fX = 0.;   // x position
+    int fQ = 0;       // charge
     ClassDefNV(CustomClass, 1);
 };
 

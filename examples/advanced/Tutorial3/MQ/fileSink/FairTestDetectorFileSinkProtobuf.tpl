@@ -10,11 +10,10 @@
 #ifdef PROTOBUF
 #include "FairTestDetectorPayload.pb.h"
 
-template <>
+template<>
 void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::InitTask()
 {
-    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/)
-    {
+    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
         fOutput->Delete();
 
@@ -23,16 +22,14 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload
 
         int numEntries = hp.hit_size();
 
-        for (int i = 0; i < numEntries; ++i)
-        {
+        for (int i = 0; i < numEntries; ++i) {
             const TestDetectorProto::Hit& hit = hp.hit(i);
             TVector3 pos(hit.posx(), hit.posy(), hit.posz());
             TVector3 dpos(hit.dposx(), hit.dposy(), hit.dposz());
             new ((*fOutput)[i]) FairTestDetectorHit(hit.detid(), hit.mcindex(), pos, dpos);
         }
 
-        if (fOutput->IsEmpty())
-        {
+        if (fOutput->IsEmpty()) {
             LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
         }
 

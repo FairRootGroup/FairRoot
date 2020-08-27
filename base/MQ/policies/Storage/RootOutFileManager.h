@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   RootOutFileManager.h
  * Author: winckler
  *
@@ -10,25 +10,26 @@
 
 // std
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
 // ROOT
 #include <Rtypes.h>
-#include <TFile.h>
-#include <TTree.h>
 #include <TClonesArray.h>
-#include <TKey.h>
+#include <TFile.h>
 #include <TFolder.h>
-#include <TObjString.h>
+#include <TKey.h>
 #include <TList.h>
+#include <TObjString.h>
+#include <TTree.h>
 
 // FairRoot
 #include "FairLogger.h"
+
 #include <FairMQMessage.h>
 #include <options/FairMQProgOptions.h>
 
-template <typename DataType>
+template<typename DataType>
 class RootOutFileManager
 {
   public:
@@ -48,7 +49,11 @@ class RootOutFileManager
         , fFolder(nullptr)
     {}
 
-    RootOutFileManager(const std::string& filename, const std::string& treeName, const std::string& branchName, const std::string& className, const std::string& fileOption)
+    RootOutFileManager(const std::string& filename,
+                       const std::string& treeName,
+                       const std::string& branchName,
+                       const std::string& className,
+                       const std::string& fileOption)
         : fFilename(filename)
         , fTreeName(treeName)
         , fBranchName(branchName)
@@ -69,17 +74,14 @@ class RootOutFileManager
 
     virtual ~RootOutFileManager()
     {
-        if (fFlowMode && fWrite)
-        {
+        if (fFlowMode && fWrite) {
             fTree->Write("", TObject::kOverwrite);
         }
 
         delete fTree;
 
-        if (fOutFile)
-        {
-            if (fOutFile->IsOpen())
-            {
+        if (fOutFile) {
+            if (fOutFile->IsOpen()) {
                 fOutFile->Close();
             }
             delete fOutFile;
@@ -88,7 +90,13 @@ class RootOutFileManager
         delete fFolder;
     }
 
-    void SetFileProperties(const std::string& filename, const std::string& treeName, const std::string& branchName, const std::string& className = "", const std::string& fileOption = "RECREATE", bool useClonesArray = false, bool flowMode = true)
+    void SetFileProperties(const std::string& filename,
+                           const std::string& treeName,
+                           const std::string& branchName,
+                           const std::string& className = "",
+                           const std::string& fileOption = "RECREATE",
+                           bool useClonesArray = false,
+                           bool flowMode = true)
     {
         fFilename = filename;
         fTreeName = treeName;
@@ -97,8 +105,7 @@ class RootOutFileManager
         fFileOption = fileOption;
         fUseClonesArray = useClonesArray;
         fFlowMode = flowMode;
-        if (!std::is_base_of<TObject, DataType>::value && fUseClonesArray)
-        {
+        if (!std::is_base_of<TObject, DataType>::value && fUseClonesArray) {
             fUseClonesArray = false;
             LOG(warn) << "Deactivate TClonesArray method: the data class must inherit from TObject.";
         }
@@ -114,8 +121,7 @@ class RootOutFileManager
         fUseClonesArray = config.GetValue<bool>("use-clones-array");
         fFlowMode = config.GetValue<bool>("flow-mode");
 
-        if (!std::is_base_of<TObject, DataType>::value && fUseClonesArray)
-        {
+        if (!std::is_base_of<TObject, DataType>::value && fUseClonesArray) {
             fUseClonesArray = false;
             LOG(warn) << "Deactivate TClonesArray method: the data class must inherit from TObject.";
         }
@@ -123,61 +129,48 @@ class RootOutFileManager
 
     void AddToFile(std::vector<DataType>& inputData)
     {
-        if (fUseClonesArray)
-        {
+        if (fUseClonesArray) {
             fOutput->Delete();
 
-            for (unsigned int i = 0; i < inputData.size(); ++i)
-            {
+            for (unsigned int i = 0; i < inputData.size(); ++i) {
                 new ((*fOutput)[i]) DataType(inputData.at(i));
             }
 
-            if (fOutput->IsEmpty())
-            {
+            if (fOutput->IsEmpty()) {
                 LOG(debug) << "RootOutFileManager::AddToFile(vector<DataType>&): No Output array!";
             }
 
             fTree->Fill();
-        }
-        else
-        {
-            for (unsigned int i = 0; i < inputData.size(); ++i)
-            {
+        } else {
+            for (unsigned int i = 0; i < inputData.size(); ++i) {
                 fOutputData = &inputData.at(i);
                 fTree->Fill();
             }
         }
-        if (!fFlowMode)
-        {
+        if (!fFlowMode) {
             fTree->Write("", TObject::kOverwrite);
         }
     }
 
     void AddToFile(DataType* objArr, long size)
     {
-        //todo : check if fine when update option
-        if (fUseClonesArray)
-        {
+        // todo : check if fine when update option
+        if (fUseClonesArray) {
             fOutput->Delete();
 
-            for (unsigned int i = 0; i < size; ++i)
-            {
+            for (unsigned int i = 0; i < size; ++i) {
                 new ((*fOutput)[i]) DataType(objArr[i]);
             }
 
-            if (fOutput->IsEmpty())
-            {
+            if (fOutput->IsEmpty()) {
                 LOG(debug) << "RootOutFileManager::AddToFile(vector<DataType>&): No Output array!";
             }
 
             fTree->Fill();
-            if (!fFlowMode)
-            {
+            if (!fFlowMode) {
                 fTree->Write("", TObject::kOverwrite);
             }
-        }
-        else
-        {
+        } else {
             std::vector<DataType> dataVector(objArr, objArr + size);
             AddToFile(dataVector);
         }
@@ -185,23 +178,18 @@ class RootOutFileManager
 
     void AddToFile(TClonesArray* inputData)
     {
-        if (fUseClonesArray)
-        {
+        if (fUseClonesArray) {
             fOutput = inputData;
             fTree->SetBranchAddress(fBranchName.c_str(), &fOutput);
 
-            if (fOutput->IsEmpty())
-            {
+            if (fOutput->IsEmpty()) {
                 LOG(debug) << "RootOutFileManager::AddToFile(TClonesArray*): No Output array!";
             }
             fTree->Fill();
-            if (!fFlowMode)
-            {
+            if (!fFlowMode) {
                 fTree->Write("", TObject::kOverwrite);
             }
-        }
-        else
-        {
+        } else {
             LOG(debug) << "RootOutFileManager::AddToFile(TClonesArray*): TClonesArray not set as output container";
         }
     }
@@ -210,18 +198,14 @@ class RootOutFileManager
     {
         int inputSize = msg->GetSize();
         int numInput = 0;
-        if (inputSize > 0)
-        {
+        if (inputSize > 0) {
             numInput = inputSize / sizeof(DataType);
         }
         fOutputData = static_cast<DataType*>(msg->GetData());
         AddToFile(fOutputData, numInput);
     }
 
-    void AddToFile(std::unique_ptr<TClonesArray>& input)
-    {
-        AddToFile(input.get());
-    }
+    void AddToFile(std::unique_ptr<TClonesArray>& input) { AddToFile(input.get()); }
 
     void InitOutputFile()
     {
@@ -231,53 +215,39 @@ class RootOutFileManager
         bool updateTree = false;
 
         // if given option is update attempt to get tree from file
-        if (fFileOption == "UPDATE")
-        {
+        if (fFileOption == "UPDATE") {
             fTree = static_cast<TTree*>(fOutFile->Get(fTreeName.c_str()));
-            if (fTree)
-            {
+            if (fTree) {
                 updateTree = true;
                 LOG(info) << "Update tree";
-            }
-            else
-            {
+            } else {
                 updateTree = false;
                 LOG(info) << "Create new tree";
             }
         }
 
         // if tree not found or option is not UPDATE, create a new tree
-        if (!updateTree)
-        {
+        if (!updateTree) {
             fTree = new TTree(fTreeName.c_str(), "Test output");
         }
 
         // direct storage or TClonesArray
-        if (fUseClonesArray)
-        {
+        if (fUseClonesArray) {
             fOutput = new TClonesArray(fClassName.c_str());
-            if (updateTree)
-            {
+            if (updateTree) {
                 fTree->SetBranchAddress(fBranchName.c_str(), &fOutput);
+            } else {
+                fTree->Branch(fBranchName.c_str(), "TClonesArray", &fOutput);
             }
-            else
-            {
-                fTree->Branch(fBranchName.c_str(),"TClonesArray", &fOutput);
-            }
-        }
-        else
-        {
-            if (updateTree)
-            {
+        } else {
+            if (updateTree) {
                 fTree->SetBranchAddress(fBranchName.c_str(), &fOutputData);
-            }
-            else
-            {
+            } else {
                 fTree->Branch(fBranchName.c_str(), fClassName.c_str(), &fOutputData);
             }
         }
 
-        fFolder = new TFolder("cbmroot","/cbmroot");
+        fFolder = new TFolder("cbmroot", "/cbmroot");
         TList* branchNameList = new TList();
         branchNameList->AddLast(new TObjString(fBranchName.c_str()));
         branchNameList->Write("BranchList", TObject::kSingleKey);
@@ -287,7 +257,9 @@ class RootOutFileManager
     }
     void InitTCA(const std::string& classname);
 
-    std::vector<std::vector<DataType>> GetAllObj(const std::string& filename, const std::string& treename, const std::string& branchname)
+    std::vector<std::vector<DataType>> GetAllObj(const std::string& filename,
+                                                 const std::string& treename,
+                                                 const std::string& branchname)
     {
         fWrite = false;
 
@@ -296,57 +268,43 @@ class RootOutFileManager
         std::vector<std::vector<DataType>> allObj;
         std::vector<DataType> tempObj;
 
-        if (file)
-        {
+        if (file) {
             fTree = static_cast<TTree*>(file->Get(fTreeName.c_str()));
-        }
-        else
-        {
+        } else {
             LOG(error) << "Could not open file" << fTreeName.c_str();
         }
 
-        if (fTree)
-        {
-            if (fUseClonesArray)
-            {
+        if (fTree) {
+            if (fUseClonesArray) {
                 fOutput = new TClonesArray(fClassName.c_str());
                 fTree->SetBranchAddress(fBranchName.c_str(), &fOutput);
 
-                for (Long64_t i = 0; i < fTree->GetEntries(); i++)
-                {
+                for (Long64_t i = 0; i < fTree->GetEntries(); i++) {
                     tempObj.clear();
                     fTree->GetEntry(i);
-                    for (Int_t iobj = 0; iobj < fOutput->GetEntriesFast(); ++iobj)
-                    {
+                    for (Int_t iobj = 0; iobj < fOutput->GetEntriesFast(); ++iobj) {
                         DataType* data = reinterpret_cast<DataType*>(fOutput->At(iobj));
-                        if (!data)
-                        {
+                        if (!data) {
                             continue;
                         }
                         tempObj.push_back(*data);
                     }
                     allObj.push_back(tempObj);
                 }
-            }
-            else
-            {
+            } else {
                 fTree->SetBranchAddress(branchname.c_str(), &fOutputData);
-                for (Long64_t i = 0; i < fTree->GetEntries(); i++)
-                {
+                for (Long64_t i = 0; i < fTree->GetEntries(); i++) {
                     fTree->GetEntry(i);
                     DataType data = *fOutputData;
                     tempObj.push_back(data);
                 }
                 allObj.push_back(tempObj);
             }
-        }
-        else
-        {
+        } else {
             LOG(error) << "Could not find tree " << treename.c_str();
         }
 
-        if (file)
-        {
+        if (file) {
             file->Close();
         }
         return allObj;
@@ -367,49 +325,35 @@ class RootOutFileManager
         bool updateTree = false;
 
         // if given option is update attempt to get tree from file
-        if (fFileOption == "UPDATE")
-        {
+        if (fFileOption == "UPDATE") {
             fTree = static_cast<TTree*>(fOutFile->Get(fTreeName.c_str()));
-            if (fTree) 
-            {
+            if (fTree) {
                 updateTree = true;
                 LOG(info) << "Update tree";
-            }
-            else
-            {
+            } else {
                 updateTree = false;
                 LOG(info) << "Create new tree";
             }
         }
 
         // if tree not found or option is not UPDATE, create a new tree
-        if (!updateTree)
-        {
+        if (!updateTree) {
             fTree = new TTree(fTreeName.c_str(), "Test output");
         }
 
         // direct storage or TClonesArray
-        if (fUseClonesArray)
-        {
+        if (fUseClonesArray) {
             fOutput = new TClonesArray(fClassName.c_str());
-            if (updateTree)
-            {
+            if (updateTree) {
                 fTree->SetBranchAddress(fBranchName.c_str(), &fOutput);
+            } else {
+                fTree->Branch(fBranchName.c_str(), "TClonesArray", &fOutput);
             }
-            else
-            {
-                fTree->Branch(fBranchName.c_str(),"TClonesArray", &fOutput);
-            }
-        }
-        else
-        {
-            if (updateTree)
-            {
+        } else {
+            if (updateTree) {
                 fTree->SetBranchAddress(fBranchName.c_str(), &fOutputData);
-            }
-            else
-            {
-                fTree->Branch(fBranchName.c_str(),fClassName.c_str(), &fOutputData);
+            } else {
+                fTree->Branch(fBranchName.c_str(), fClassName.c_str(), &fOutputData);
             }
         }
     }

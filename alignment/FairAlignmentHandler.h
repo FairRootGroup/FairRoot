@@ -1,11 +1,11 @@
 #ifndef FAIR_ALIGNMENTHANDLER_H
 #define FAIR_ALIGNMENTHANDLER_H
 
+#include <TGeoMatrix.h>
 #include <map>
 
-#include <TGeoMatrix.h>
-
-class FairAlignmentHandler {
+class FairAlignmentHandler
+{
     friend class FairRun;
     std::map<std::string, TGeoHMatrix> fAlignmentMatrices;
 

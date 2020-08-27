@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -----------------------------------------------------------------------------
@@ -17,14 +17,14 @@
 extern "C"
 {
 #include "f_evt.h"
-#include "s_filhe_swap.h"
 #include "s_bufhe_swap.h"
+#include "s_filhe_swap.h"
 }
 
-#include <TString.h>
-#include <Rtypes.h>
-
 #include "FairMbsSource.h"
+
+#include <Rtypes.h>
+#include <TString.h>
 
 class TList;
 
@@ -41,8 +41,13 @@ class FairLmdSource : public FairMbsSource
     inline const TList* GetFileNames() const { return fFileNames; }
 
     virtual Bool_t Init();
-    virtual Int_t ReadEvent(UInt_t=0);
+    virtual Int_t ReadEvent(UInt_t = 0);
     virtual void Close();
+    Bool_t SpecifyRunId()
+    {
+        ReadEvent(0);
+        return true;
+    };
 
   protected:
     Bool_t OpenNextFile(TString fileName);
@@ -60,7 +65,7 @@ class FairLmdSource : public FairMbsSource
 
     FairLmdSource& operator=(const FairLmdSource&);
 
-    ClassDef(FairLmdSource, 0)
+    ClassDef(FairLmdSource, 0);
 };
 
 #endif

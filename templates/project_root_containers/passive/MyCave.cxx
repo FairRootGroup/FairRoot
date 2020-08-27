@@ -12,60 +12,53 @@
 // -----                Created 26/03/14  by M. Al-Turany              -----
 // -------------------------------------------------------------------------
 #include "MyCave.h"
-#include "MyGeoCave.h"                // for MyGeoCave
-#include "FairGeoInterface.h"           // for FairGeoInterface
-#include "FairGeoLoader.h"              // for FairGeoLoader
-#include "FairGeoNode.h"                // for FairGeoNode
-#include "FairGeoVolume.h"              // for FairGeoVolume
-#include "FairRun.h"                    // for FairRun
-#include "FairRuntimeDb.h"              // for FairRuntimeDb
 
-#include <TList.h>                      // for TListIter, TList (ptr only)
-#include <TObjArray.h>                  // for TObjArray
-#include <TString.h>                    // for TString
+#include "FairGeoInterface.h"   // for FairGeoInterface
+#include "FairGeoLoader.h"      // for FairGeoLoader
+#include "FairGeoNode.h"        // for FairGeoNode
+#include "FairGeoVolume.h"      // for FairGeoVolume
+#include "FairRun.h"            // for FairRun
+#include "FairRuntimeDb.h"      // for FairRuntimeDb
+#include "MyGeoCave.h"          // for MyGeoCave
 
-#include <stddef.h>                     // for NULL
+#include <TList.h>       // for TListIter, TList (ptr only)
+#include <TObjArray.h>   // for TObjArray
+#include <TString.h>     // for TString
+#include <stddef.h>      // for NULL
 
-ClassImp(MyCave)
+ClassImp(MyCave);
 
 void MyCave::ConstructGeometry()
 {
-  FairGeoLoader* loader=FairGeoLoader::Instance();
-  FairGeoInterface* GeoInterface =loader->getGeoInterface();
-  MyGeoCave* MGeo=new MyGeoCave();
-  MGeo->setGeomFile(GetGeometryFileName());
-  GeoInterface->addGeoModule(MGeo);
-  Bool_t rc = GeoInterface->readSet(MGeo);
-  if ( rc ) { MGeo->create(loader->getGeoBuilder()); }
-
+    FairGeoLoader* loader = FairGeoLoader::Instance();
+    FairGeoInterface* GeoInterface = loader->getGeoInterface();
+    MyGeoCave* MGeo = new MyGeoCave();
+    MGeo->setGeomFile(GetGeometryFileName());
+    GeoInterface->addGeoModule(MGeo);
+    Bool_t rc = GeoInterface->readSet(MGeo);
+    if (rc) {
+        MGeo->create(loader->getGeoBuilder());
+    }
 }
 MyCave::MyCave()
-:FairModule()
-{
-}
+    : FairModule()
+{}
 
-MyCave::~MyCave()
+MyCave::~MyCave() {}
+MyCave::MyCave(const char* name, const char* Title)
+    : FairModule(name, Title)
 {
-
-}
-MyCave::MyCave(const char* name,  const char* Title)
-  : FairModule(name ,Title)
-{
-  world[0] = 0;
-  world[1] = 0;
-  world[2] = 0;
+    world[0] = 0;
+    world[1] = 0;
+    world[2] = 0;
 }
 
 MyCave::MyCave(const MyCave& right)
-  : FairModule(right)
+    : FairModule(right)
 {
-  world[0] = right.world[0];
-  world[1] = right.world[1];
-  world[2] = right.world[2];
+    world[0] = right.world[0];
+    world[1] = right.world[1];
+    world[2] = right.world[2];
 }
 
-FairModule* MyCave::CloneModule() const
-{
-  return new MyCave(*this);
-}
-
+FairModule* MyCave::CloneModule() const { return new MyCave(*this); }

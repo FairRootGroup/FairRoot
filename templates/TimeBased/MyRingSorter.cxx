@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -12,16 +12,12 @@
  *      Author: uhlig
  */
 
-#include <MyRingSorter.h>
 #include "MyDataClass.h"
 
-MyRingSorter::~MyRingSorter()
-{
-}
+#include <MyRingSorter.h>
 
-FairTimeStamp* MyRingSorter::CreateElement(FairTimeStamp* data)
-{
-  return new MyDataClass(*(MyDataClass*)data);
-}
+MyRingSorter::~MyRingSorter() {}
+
+FairTimeStamp* MyRingSorter::CreateElement(FairTimeStamp* data) { return new MyDataClass(*(MyDataClass*)data); }
 
 ClassImp(MyRingSorter);

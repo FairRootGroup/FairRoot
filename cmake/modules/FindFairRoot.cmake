@@ -25,7 +25,7 @@ else()
   set(FAIRROOTPATH $ENV{FAIRROOTPATH})
 endif()
 
-MESSAGE(STATUS "Setting FairRoot environment…")
+MESSAGE(STATUS "Setting FairRoot environment:")
 
 FIND_PATH(FAIRROOT_INCLUDE_DIR NAMES FairRun.h PATHS
   ${FAIRROOTPATH}/include
@@ -53,10 +53,10 @@ endif()
 
 if(FAIRROOT_INCLUDE_DIR AND FAIRROOT_LIBRARY_DIR)
    set(FAIRROOT_FOUND TRUE)
-   MESSAGE(STATUS "FairRoot ... - found ${FAIRROOTPATH}")
-   MESSAGE(STATUS "FairRoot Library directory  :     ${FAIRROOT_LIBRARY_DIR}")
-   MESSAGE(STATUS "FairRoot Include path…      :     ${FAIRROOT_INCLUDE_DIR}")
-   MESSAGE(STATUS "FairRoot Cmake Modules      :     ${FAIRROOT_CMAKEMOD_DIR}")
+   MESSAGE(STATUS "  FairRoot prefix            : ${FAIRROOTPATH}")
+   MESSAGE(STATUS "  FairRoot Library directory : ${FAIRROOT_LIBRARY_DIR}")
+   MESSAGE(STATUS "  FairRoot Include path      : ${FAIRROOT_INCLUDE_DIR}")
+   MESSAGE(STATUS "  FairRoot Cmake Modules     : ${FAIRROOT_CMAKEMOD_DIR}")
 
 else(FAIRROOT_INCLUDE_DIR AND FAIRROOT_LIBRARY_DIR)
    set(FAIRROOT_FOUND FALSE)

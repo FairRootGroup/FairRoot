@@ -1,14 +1,13 @@
-################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
-#                                                                              #
-#              This software is distributed under the terms of the             #
-#              GNU Lesser General Public Licence (LGPL) version 3,             #
-#                  copied verbatim in the file "LICENSE"                       #
-################################################################################
-
-if(Geant4_FOUND AND Geant4VMC_FOUND)
-  add_subdirectory(sim/fastsim)
-endif()
+ ################################################################################
+ #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                              #
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
+ #                  copied verbatim in the file "LICENSE"                       #
+ ################################################################################
+If(Geant4_FOUND AND Geant4VMC_FOUND)
+  add_subdirectory (sim/fastsim)
+EndIf()
 
 set(target Base)
 
@@ -35,8 +34,6 @@ set(sources
 
   field/FairField.cxx
   field/FairFieldFactory.cxx
-  field/FairPropagator.cxx
-  field/FairRKPropagator.cxx
 
   sim/FairBaseContFact.cxx
   sim/FairBaseParSet.cxx
@@ -136,7 +133,7 @@ target_link_libraries(${target} PUBLIC
   Proof
   RIO
   Tree
-  VMC
+  ${VMCLIB}
   $<$<BOOL:${ROOT_GDML_FOUND}>:Gdml>
 )
 

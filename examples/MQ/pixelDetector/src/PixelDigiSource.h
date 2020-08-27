@@ -18,9 +18,8 @@
 
 #include "FairSource.h"
 
-#include <TString.h>
 #include <Rtypes.h>
-
+#include <TString.h>
 #include <fstream>
 
 class TClonesArray;
@@ -31,14 +30,19 @@ class FairEventHeader;
 class PixelDigiSource : public FairSource
 {
   public:
-    PixelDigiSource(TString inputFileName="test.dat");
+    PixelDigiSource(TString inputFileName = "test.dat");
     virtual ~PixelDigiSource();
 
-    Bool_t              Init();
+    Bool_t Init();
 
-    Int_t               ReadEvent(UInt_t i=0);
-    void                Close();
-    void                Reset();
+    Int_t ReadEvent(UInt_t i = 0);
+    void Close();
+    void Reset();
+    Bool_t SpecifyRunId()
+    {
+        ReadEvent(0);
+        return true;
+    };
 
     virtual Source_Type GetSourceType() { return kFILE; }
 
@@ -49,35 +53,35 @@ class PixelDigiSource : public FairSource
     virtual Bool_t ReInitUnpackers() { return kTRUE; }
 
     /**Check the maximum event number we can run to*/
-    virtual Int_t  CheckMaxEventNo(Int_t EvtEnd=0);
+    virtual Int_t CheckMaxEventNo(Int_t EvtEnd = 0);
 
     virtual void FillEventHeader(FairEventHeader* feh);
 
     void SetInputFileName(const TString& tstr) { fInputFileName = tstr; }
 
-    virtual Bool_t  ActivateObject(TObject** obj, const char* BrName);
+    virtual Bool_t ActivateObject(TObject** obj, const char* BrName);
 
   private:
     PixelEventHeader* fEventHeader;
-    TClonesArray*     fDigis;        /** Output array of PixelDigi **/
-    Int_t             fNDigis;
+    TClonesArray* fDigis; /** Output array of PixelDigi **/
+    Int_t fNDigis;
 
-    Int_t             fTNofEvents;
-    Int_t             fTNofDigis;
+    Int_t fTNofEvents;
+    Int_t fTNofDigis;
 
-    TString  fInputFileName;
+    TString fInputFileName;
     std::ifstream fInputFile;
 
-    Int_t    fCurrentEntryNo;
+    Int_t fCurrentEntryNo;
 
-    Int_t    fRunId;
-    Int_t    fMCEntryNo;
-    Int_t    fPartNo;
+    Int_t fRunId;
+    Int_t fMCEntryNo;
+    Int_t fPartNo;
 
     PixelDigiSource(const PixelDigiSource&);
     PixelDigiSource& operator=(const PixelDigiSource&);
 
-    ClassDef(PixelDigiSource, 1)
+    ClassDef(PixelDigiSource, 1);
 };
 
 #endif /* defined(PIXELDIGISOURCE_H_) */

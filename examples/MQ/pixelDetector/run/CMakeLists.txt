@@ -63,7 +63,7 @@ if(DDS_FOUND)
 endif()
 
 set(exe_dependencies
-  FairRoot::Pixel
+  FairRoot::ExPixel
   FairMQ::FairMQ
   Boost::program_options
 )
@@ -95,7 +95,7 @@ target_link_libraries(pixel-sim PRIVATE
   FairRoot::Base # FairModule, FairPrimaryGenerator
   FairRoot::Gen # FairBoxGenerator
   FairRoot::ParBase # FairParAsciiFileIo
-  FairRoot::Passive # FairCave
+  FairRoot::ExPassive # FairCave
   Core # TSystem
   MathCore # TRandom
 )
@@ -105,9 +105,9 @@ install(TARGETS pixel-sampler pixel-processor pixel-sink pixel-sampler-bin pixel
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelDetector/bin
 )
 
-set(maxTestTime 60)
+set(maxTestTime 100)
 
-add_test(ex_MQ_pixel_simulation ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixelSimulation.sh --work-dir ${CMAKE_CURRENT_BINARY_DIR}/../ -n 1000 -g TGeant3 -c static -s 6 --force-kill true -m 20 -v veryhigh -l false)
+add_test(ex_MQ_pixel_simulation ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixelSimulation.sh --work-dir ${CMAKE_CURRENT_BINARY_DIR}/../ -n 1000 -g TGeant3 -c static -s 3 --force-kill true -m 100 -v veryhigh -l false)
 set_tests_properties(ex_MQ_pixel_simulation PROPERTIES
   DEPENDS ex_MQ_pixel_static
   TIMEOUT ${maxTestTime}

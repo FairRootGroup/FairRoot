@@ -17,19 +17,18 @@
 #define BASE_FAIRSYSTEMINFO_H_
 
 #include <Rtypes.h>
-
 #include <cstddef>
 
 class FairSystemInfo
 {
- public:
-  FairSystemInfo() {}
-  virtual ~FairSystemInfo() {}
+  public:
+    FairSystemInfo() {}
+    virtual ~FairSystemInfo() {}
 
-  Float_t GetMaxMemory();
-  size_t GetCurrentMemory();
+    Float_t GetMaxMemory();
+    size_t GetCurrentMemory();
 
-  ClassDef(FairSystemInfo, 1)
+    ClassDef(FairSystemInfo, 1);
 };
 
-#endif  // BASE_FAIRSYSTEMINFO_H_
+#endif   // BASE_FAIRSYSTEMINFO_H_

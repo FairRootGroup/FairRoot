@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -----------------------------------------------------------------------------
@@ -29,7 +29,7 @@ class FairRemoteSource : public FairMbsSource
     virtual ~FairRemoteSource();
 
     virtual Bool_t Init();
-    virtual Int_t ReadEvent(UInt_t=0);
+    virtual Int_t ReadEvent(UInt_t = 0);
     virtual void Close();
 
     inline const char* GetNode() const { return fNode; }
@@ -43,7 +43,7 @@ class FairRemoteSource : public FairMbsSource
     FairRemoteSource& operator=(const FairRemoteSource&);
 
   public:
-    ClassDef(FairRemoteSource, 0)
+    ClassDef(FairRemoteSource, 0);
 };
 
 #endif

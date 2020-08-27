@@ -1,31 +1,30 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairTestDetectorTimeRecoTask.h"
 
-#include "FairRootManager.h"        // for FairRootManager
-#include "FairRunAna.h"             // for FairRunAna
-#include "FairTSBufferFunctional.h" // for StopTime
-#include "FairTestDetectorDigi.h"   // for FairTestDetectorDigi
-#include "FairTestDetectorHit.h"    // for FairTestDetectorHit
 #include "FairLogger.h"
+#include "FairRootManager.h"          // for FairRootManager
+#include "FairRunAna.h"               // for FairRunAna
+#include "FairTSBufferFunctional.h"   // for StopTime
+#include "FairTestDetectorDigi.h"     // for FairTestDetectorDigi
+#include "FairTestDetectorHit.h"      // for FairTestDetectorHit
 
-#include <TClonesArray.h> // for TClonesArray
-#include <TMath.h>        // for Sqrt
-#include <TVector3.h>     // for TVector3
+#include <TClonesArray.h>   // for TClonesArray
+#include <TMath.h>          // for Sqrt
+#include <TVector3.h>       // for TVector3
 
 FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask()
     : FairTask()
     , fDigiArray(nullptr)
     , fHitArray(nullptr)
-    , fTime (0.)
+    , fTime(0.)
     , fFunctor(nullptr)
-{
-}
+{}
 
 FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask(Int_t verbose)
     : FairTask()
@@ -37,22 +36,18 @@ FairTestDetectorTimeRecoTask::FairTestDetectorTimeRecoTask(Int_t verbose)
     fVerbose = verbose;
 }
 
-FairTestDetectorTimeRecoTask::~FairTestDetectorTimeRecoTask()
-{
-}
+FairTestDetectorTimeRecoTask::~FairTestDetectorTimeRecoTask() {}
 
 InitStatus FairTestDetectorTimeRecoTask::Init()
 {
     FairRootManager* ioman = FairRootManager::Instance();
-    if (!ioman)
-    {
-        LOG(error) <<"FairTestDetectorTimeRecoTask::Init: RootManager not instantiated!";
+    if (!ioman) {
+        LOG(error) << "FairTestDetectorTimeRecoTask::Init: RootManager not instantiated!";
         return kFATAL;
     }
 
     fDigiArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorSortedDigi"));
-    if (!fDigiArray)
-    {
+    if (!fDigiArray) {
         LOG(warn) << "FairTestDetectorTimeRecoTask::Init: No Point array!";
         return kERROR;
     }
@@ -71,20 +66,18 @@ void FairTestDetectorTimeRecoTask::Exec(Option_t* /*opt*/)
     fHitArray->Delete();
 
     fTime += 200;
-    if (FairRunAna::Instance()->IsTimeStamp())
-    {
+    if (FairRunAna::Instance()->IsTimeStamp()) {
         fDigiArray = FairRootManager::Instance()->GetData("FairTestDetectorSortedDigi", fFunctor, fTime);
-        //    LOG(info) << "EventTime: " << FairRootManager::Instance()->GetEntryNr() << " " << FairRootManager::Instance()->GetEventTime();
+        //    LOG(info) << "EventTime: " << FairRootManager::Instance()->GetEntryNr() << " " <<
+        //    FairRootManager::Instance()->GetEventTime();
     }
 
     // fill the map
     // LOG(info) << "NDigis: " << fDigiArray->GetEntries();
-    for (int ipnt = 0; ipnt < fDigiArray->GetEntries(); ipnt++)
-    {
+    for (int ipnt = 0; ipnt < fDigiArray->GetEntries(); ipnt++) {
         FairTestDetectorDigi* digi = static_cast<FairTestDetectorDigi*>(fDigiArray->At(ipnt));
-        if (!digi)
-        {
-            LOG(warn)  << "No digi!";
+        if (!digi) {
+            LOG(warn) << "No digi!";
             continue;
         }
 
@@ -104,4 +97,4 @@ void FairTestDetectorTimeRecoTask::Exec(Option_t* /*opt*/)
     fDigiArray->Delete();
 }
 
-ClassImp(FairTestDetectorTimeRecoTask)
+ClassImp(FairTestDetectorTimeRecoTask);

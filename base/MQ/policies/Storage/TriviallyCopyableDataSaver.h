@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   TriviallyCopyableDataSaver.h
  * Author: winckler
  *
@@ -6,24 +6,23 @@
  */
 
 #ifndef TRIVIALLYCOPYABLEDATASAVER_H
-#define	TRIVIALLYCOPYABLEDATASAVER_H
+#define TRIVIALLYCOPYABLEDATASAVER_H
 
 #include <FairMQMessage.h>
 
-template <typename TPayload>
+template<typename TPayload>
 class TriviallyCopyableDataSaver
 {
   public:
     TriviallyCopyableDataSaver() {}
-    virtual ~TriviallyCopyableDataSaver(){}
+    virtual ~TriviallyCopyableDataSaver() {}
 
-    virtual void InitOutputFile(){}
+    virtual void InitOutputFile() {}
 
     void Write(std::ofstream& outfile, TPayload* ObjArr, long sizeArr = 1)
     {
         // if (std::is_trivially_copyable<TPayload>::value) not implemented yet in gcc 4.8.2
-        if (std::is_trivial<TPayload>::value)
-        {
+        if (std::is_trivial<TPayload>::value) {
             write_pod_array<TPayload>(outfile, ObjArr, sizeArr);
             outfile.close();
         }
@@ -33,55 +32,47 @@ class TriviallyCopyableDataSaver
     {
         int inputSize = msg->GetSize();
         long sizeArr = 0;
-        if (inputSize > 0)
-        {
+        if (inputSize > 0) {
             sizeArr = inputSize / sizeof(TPayload);
         }
         TPayload* ObjArr = static_cast<TPayload*>(msg->GetData());
         // if (std::is_trivially_copyable<TPayload>::value)
-        if (std::is_trivial<TPayload>::value)
-        {
+        if (std::is_trivial<TPayload>::value) {
             write_pod_array<TPayload>(outfile, ObjArr, sizeArr);
             outfile.close();
         }
     }
 
-    std::vector<std::vector<TPayload> > Read(std::ifstream& infile)
+    std::vector<std::vector<TPayload>> Read(std::ifstream& infile)
     {
-        std::vector<std::vector<TPayload> > DataContainer;
-        ReadArr(infile,DataContainer);
+        std::vector<std::vector<TPayload>> DataContainer;
+        ReadArr(infile, DataContainer);
         return DataContainer;
     }
 
-    void ReadArr(std::ifstream& infile,std::vector<std::vector<TPayload> >& DataContainer)
+    void ReadArr(std::ifstream& infile, std::vector<std::vector<TPayload>>& DataContainer)
     {
         // if (std::is_trivially_copyable<TPayload>::value)
-        if (std::is_trivial<TPayload>::value)
-        {
+        if (std::is_trivial<TPayload>::value) {
             int c = infile.peek();
-            if (c == EOF) 
-            {
-                if (infile.eof())
-                {
-                     infile.close();
+            if (c == EOF) {
+                if (infile.eof()) {
+                    infile.close();
                 }
-            }
-            else
-            {
+            } else {
                 long sizeArr;
                 read_pod<long>(infile, sizeArr);
                 TPayload* ObjArr = new TPayload[sizeArr];
                 infile.read(reinterpret_cast<char*>(ObjArr), sizeArr * sizeof(TPayload));
-                std::vector<TPayload>  DataVector(ObjArr, ObjArr + sizeArr);
+                std::vector<TPayload> DataVector(ObjArr, ObjArr + sizeArr);
                 delete[] ObjArr;
                 DataContainer.push_back(DataVector);
                 ReadArr(infile, DataContainer);
             }
-        }
-        else
-        {
+        } else {
             LOG(error) << "In ReadArr(std::ifstream& , std::vector<std::vector<TPayload> >& ) :";
-            LOG(error) << "(de)serialization of object is not supported (Object must be a 'trivially copyable' data class).";
+            LOG(error)
+                << "(de)serialization of object is not supported (Object must be a 'trivially copyable' data class).";
         }
     }
 
@@ -89,26 +80,20 @@ class TriviallyCopyableDataSaver
     void ReadArr(std::ifstream& infile, T* ObjArr, long posArr = 0)
     {
         // if(std::is_trivially_copyable<T>::value)
-        if (std::is_trivial<TPayload>::value)
-        {
+        if (std::is_trivial<TPayload>::value) {
             int c = infile.peek();
-            if (c == EOF) 
-            {
-                if (infile.eof())
-                {
-                     infile.close();
+            if (c == EOF) {
+                if (infile.eof()) {
+                    infile.close();
                 }
-            }
-            else
-            {
+            } else {
                 posArr += read_pod_array<T>(infile, ObjArr, posArr);
                 ReadArr<T>(infile, ObjArr, posArr);
             }
-        }
-        else
-        {
+        } else {
             LOG(error) << "In ReadArr(std::ifstream& infile, T* ObjArr, long posArr = 0):";
-            LOG(error) << "(de)serialization of object is not supported (Object must be a 'trivially copyable' data class).";
+            LOG(error)
+                << "(de)serialization of object is not supported (Object must be a 'trivially copyable' data class).";
         }
     }
 
@@ -153,23 +138,18 @@ class TriviallyCopyableDataSaver
     {
         int count = 0;
         // if (std::is_trivially_copyable<T>::value)
-        if (std::is_trivial<TPayload>::value)
-        {
+        if (std::is_trivial<TPayload>::value) {
             int c = in.peek();
-            if (c == EOF)
-            {
-                if (in.eof())
-                {
-                     in.close();
+            if (c == EOF) {
+                if (in.eof()) {
+                    in.close();
                 }
-            }
-            else
-            {
+            } else {
                 long size;
                 read_pod<long>(in, size);
                 count += size;
-                in.seekg (size * sizeof(T), std::ios::cur);
-                count+=count_podObj_inFile<T>(in);
+                in.seekg(size * sizeof(T), std::ios::cur);
+                count += count_podObj_inFile<T>(in);
             }
         }
         return count;
@@ -180,7 +160,7 @@ class TriviallyCopyableDataSaver
     {
         long size;
         read_pod<long>(in, size);
-        in.read(reinterpret_cast<char*>(objarr+posArr), size * sizeof(T));
+        in.read(reinterpret_cast<char*>(objarr + posArr), size * sizeof(T));
         return size;
     }
 };

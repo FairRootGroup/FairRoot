@@ -11,7 +11,7 @@ INPUT_EVENTS="100"
 
 GENERATOR="@splitmc_bin_location@/pixel-sim-gen --id pixSplit-gen --channel-config name=primariesChannel,type=push,method=bind,rateLogging=1,address=tcp://*:5901 --running-mode pp --severity DEBUG --nof-events $INPUT_EVENTS --chunk-size 10 --ack-channel ack --channel-config name=ack,type=pull,method=bind,rateLogging=1,address=tcp://*:5905 --control static --color false"
 
-TRANSPORTER="@splitmc_bin_location@/pixel-sim-transport --config-key pixSplit-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect,rateLogging=1,address=tcp://localhost:5904 --channel-config name=primariesChannel,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5901 --channel-config name=data#all#,type=push,method=connect,rateLogging=1,address=tcp://localhost:5902 --transport-name TGeant3 --running-mode pp --severity DEBUG --detector-library @CMAKE_BINARY_DIR@/lib/libPixel.@example_library_extension@ --control static --color false"
+TRANSPORTER="@splitmc_bin_location@/pixel-sim-transport --config-key pixSplit-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect,rateLogging=1,address=tcp://localhost:5904 --channel-config name=primariesChannel,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5901 --channel-config name=data#all#,type=push,method=connect,rateLogging=1,address=tcp://localhost:5902 --transport-name TGeant3 --running-mode pp --severity DEBUG --detector-library @CMAKE_BINARY_DIR@/lib/libExPixel.@example_library_extension@ --control static --color false"
 
 MERGER="@splitmc_bin_location@/pixel-sim-chunk-merger --id pixSplit-merger --in-channel data#all# --channel-config name=data#all#,type=pull,method=bind,rateLogging=1,address=tcp://*:5902 --out-channel dataOut --channel-config name=dataOut,type=push,method=bind,rateLogging=1,address=tcp://*:5903 --transport zeromq --severity DEBUG --control static --color false"
 
@@ -37,10 +37,11 @@ FILESINK_PID=$!
 $PARMQSERVER &> par_log.dat &
 PARMQSERVER_PID=$!
 
+# ps -p $$ --ppid $$ --forest
+
 echo "Wait for generator to finish"
 wait $GENERATOR_PID
 
-echo "Sleep 1 second"
 sleep 1
 
 echo "Kill other devices"
@@ -49,7 +50,7 @@ kill $MERGER_PID
 kill $PARMQSERVER_PID
 kill $FILESINK_PID
 
-OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @splitmc_file_location@/MQ.simulation_TGeant3.data.root | tail -1)"
+OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | @ROOT_EXECUTABLE@ -l -b @splitmc_file_location@/MQ.simulation_TGeant3.data.root | tail -1)"
 
 echo "There are $OUTPUT_EVENTS events in the output file."
 

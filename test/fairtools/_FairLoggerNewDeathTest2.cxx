@@ -7,4 +7,3 @@ TEST(FairToolsTestFatal, TestFatalError1)
     ASSERT_THROW(LOG(fatal) << "This is a another fatal problem", fair::FatalException);
     // TODO: check if cored dump is written to file
 }
-

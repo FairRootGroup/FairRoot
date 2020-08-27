@@ -34,74 +34,70 @@
 #include "FairTimeStamp.h"
 
 #include <TClonesArray.h>
-
 #include <iostream>
 
 FairEventBuilder::FairEventBuilder()
-  : FairWriteoutBuffer(),
-    fBuilderName                (""),
-    fTimer                      (),
-    fExecTime                   (0.),
-    fIdentifier                 (0),
-    fMaxAllowedEventCreationTime(0.)
-{
-}
+    : FairWriteoutBuffer()
+    , fBuilderName("")
+    , fTimer()
+    , fExecTime(0.)
+    , fIdentifier(0)
+    , fMaxAllowedEventCreationTime(0.)
+{}
 
 FairEventBuilder::FairEventBuilder(TString branchName, TString className, TString folderName, Bool_t persistance)
-  : FairWriteoutBuffer(branchName,className,folderName,persistance),
-    fBuilderName                (""),
-    fTimer                      (),
-    fExecTime                   (0.),
-    fIdentifier                 (0),
-    fMaxAllowedEventCreationTime(0.)
-{
-}
+    : FairWriteoutBuffer(branchName, className, folderName, persistance)
+    , fBuilderName("")
+    , fTimer()
+    , fExecTime(0.)
+    , fIdentifier(0)
+    , fMaxAllowedEventCreationTime(0.)
+{}
 
-FairEventBuilder::~FairEventBuilder()
-{
-}
+FairEventBuilder::~FairEventBuilder() {}
 
 void FairEventBuilder::WriteOutAllDeadTimeData()
 {
-  if (fBranchName.Length() < 1) {
-    return;
-  }
+    if (fBranchName.Length() < 1) {
+        return;
+    }
 
-  FairRootManager* ioman = FairRootManager::Instance();
-  std::vector<FairTimeStamp*> data;
-  if (fActivateBuffering) {
-    if (fVerbose > 0) {
-      std::cout << "-I- FairEventBuilder::WriteOutAllDeadTimeData" << std::endl;
-    }
-    data = GetAllData();
-    if (fTreeSave && data.size() > 0) {
-      TClonesArray* myArray = ioman->GetTClonesArray(fBranchName);
-      if (!myArray) {
-        std::cout << "-E- FairEventBuilder::WriteOutData " << fBranchName << " array is not available!" << std::endl;
-      }
-      if (fVerbose > 0) {
-        std::cout << "-I- FairEventBuilder::WriteOutData size: " << data.size() << std::endl;
-      }
-      for (unsigned int i = 0; i < data.size(); i++) {
-        AddNewDataToTClonesArray(data[i]);
-        if (fVerbose > 1) {
-          std::cout << i << " : ";
-          data[i]->Print();
-          std::cout << std::endl;
+    FairRootManager* ioman = FairRootManager::Instance();
+    std::vector<FairTimeStamp*> data;
+    if (fActivateBuffering) {
+        if (fVerbose > 0) {
+            std::cout << "-I- FairEventBuilder::WriteOutAllDeadTimeData" << std::endl;
         }
-        delete data[i];
-      }
+        data = GetAllData();
+        if (fTreeSave && data.size() > 0) {
+            TClonesArray* myArray = ioman->GetTClonesArray(fBranchName);
+            if (!myArray) {
+                std::cout << "-E- FairEventBuilder::WriteOutData " << fBranchName << " array is not available!"
+                          << std::endl;
+            }
+            if (fVerbose > 0) {
+                std::cout << "-I- FairEventBuilder::WriteOutData size: " << data.size() << std::endl;
+            }
+            for (unsigned int i = 0; i < data.size(); i++) {
+                AddNewDataToTClonesArray(data[i]);
+                if (fVerbose > 1) {
+                    std::cout << i << " : ";
+                    data[i]->Print();
+                    std::cout << std::endl;
+                }
+                delete data[i];
+            }
+        }
+    } else {
+        ioman->GetTClonesArray(fBranchName);
     }
-  } else {
-    ioman->GetTClonesArray(fBranchName);
-  }
 }
 
 void FairEventBuilder::Finish()
 {
-  std::cout << "-------------------- " << GetBuilderName() << " : Summary -----------------------" << std::endl;
-  std::cout << " Should be implemented by the user" << std::endl;
-  std::cout << "---------------------------------------------------------------------" << std::endl;
+    std::cout << "-------------------- " << GetBuilderName() << " : Summary -----------------------" << std::endl;
+    std::cout << " Should be implemented by the user" << std::endl;
+    std::cout << "---------------------------------------------------------------------" << std::endl;
 }
 
-ClassImp(FairEventBuilder)
+ClassImp(FairEventBuilder);

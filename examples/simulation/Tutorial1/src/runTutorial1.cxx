@@ -5,10 +5,9 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+#include "../macros/run_tutorial1_binary.C"
 #include "FairLogger.h"
 #include "FairSimConfig.h"
-
-#include "../macros/run_tutorial1_binary.C"
 
 int main(int argc, char* argv[])
 {
@@ -16,13 +15,11 @@ int main(int argc, char* argv[])
 
     int value = simConfig.ParseCommandLine(argc, argv);
 
-    if (value)
-    {
+    if (value) {
         return 0;
     }
 
-    if (simConfig.IsHelp())
-    {
+    if (simConfig.IsHelp()) {
         simConfig.PrintHelpMessage();
         return 0;
     }

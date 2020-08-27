@@ -14,8 +14,7 @@ FairMCSplitEventHeader::FairMCSplitEventHeader()
     : FairMCEventHeader()
     , fNofChunks(1)
     , fChunkStart(0)
-{
-}
+{}
 
 FairMCSplitEventHeader::FairMCSplitEventHeader(UInt_t runID, UInt_t eventID, UInt_t nofChunks, UInt_t chunkStart)
     : FairMCEventHeader(runID)
@@ -25,14 +24,12 @@ FairMCSplitEventHeader::FairMCSplitEventHeader(UInt_t runID, UInt_t eventID, UIn
     SetEventID(eventID);
 }
 
-FairMCSplitEventHeader::~FairMCSplitEventHeader()
-{
-}
+FairMCSplitEventHeader::~FairMCSplitEventHeader() {}
 
 void FairMCSplitEventHeader::Register()
 {
-  // Dot at the end of the name is needed for splitting!!
-  FairRootManager::Instance()->Register("MCEventHeader.", "Event", this, kTRUE);
+    // Dot at the end of the name is needed for splitting!!
+    FairRootManager::Instance()->Register("MCEventHeader.", "Event", this, kTRUE);
 }
 
-ClassImp(FairMCSplitEventHeader)
+ClassImp(FairMCSplitEventHeader);

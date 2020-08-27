@@ -12,14 +12,14 @@
  * @author A. Rybalchenko
  */
 
-#include <thread> // this_thread::sleep_for
-#include <chrono>
+#include "FairMQExParamsClient.h"
+
+#include "FairMQExParamsParOne.h"
+#include "RootSerializer.h"
 
 #include <FairMQLogger.h>
-#include "FairMQExParamsClient.h"
-#include "FairMQExParamsParOne.h"
-
-#include "RootSerializer.h"
+#include <chrono>
+#include <thread>   // this_thread::sleep_for
 
 using namespace std;
 
@@ -28,12 +28,9 @@ FairMQExParamsClient::FairMQExParamsClient()
     , fParameterName()
     , fMaxIterations(0)
     , fNumIterations(0)
-{
-}
+{}
 
-FairMQExParamsClient::~FairMQExParamsClient()
-{
-}
+FairMQExParamsClient::~FairMQExParamsClient() {}
 
 void FairMQExParamsClient::InitTask()
 {
@@ -51,20 +48,15 @@ bool FairMQExParamsClient::ConditionalRun()
     FairMQMessagePtr req(NewSimpleMessage(fParameterName + "," + to_string(fRunId)));
     FairMQMessagePtr rep(NewMessage());
 
-    if (Send(req, "data") > 0)
-    {
-        if (Receive(rep, "data") >= 0)
-        {
-            if (rep->GetSize() != 0)
-            {
+    if (Send(req, "data") > 0) {
+        if (Receive(rep, "data") >= 0) {
+            if (rep->GetSize() != 0) {
                 FairMQExParamsParOne* par = nullptr;
                 Deserialize<RootSerializer>(*rep, par);
                 LOG(info) << "Received parameter from the server:";
                 par->print();
                 delete par;
-            }
-            else
-            {
+            } else {
                 LOG(error) << "Received empty reply. Parameter not available";
             }
         }
@@ -72,8 +64,7 @@ bool FairMQExParamsClient::ConditionalRun()
 
     fRunId == 2099 ? fRunId = 2000 : fRunId++;
 
-    if (fMaxIterations > 0 && ++fNumIterations >= fMaxIterations)
-    {
+    if (fMaxIterations > 0 && ++fNumIterations >= fMaxIterations) {
         LOG(info) << "Configured maximum number of iterations reached. Leaving RUNNING state.";
         return false;
     }

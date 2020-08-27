@@ -39,27 +39,27 @@ class PixelDigitize : public FairTask
     virtual void Exec(Option_t* opt);
 
     virtual void GetParList(TList* tempList);
-    virtual void InitMQ    (TList* tempList);
-    virtual void ExecMQ    (TList* inputList,TList* outputList);
+    virtual void InitMQ(TList* tempList);
+    virtual void ExecMQ(TList* inputList, TList* outputList);
 
   private:
-    PixelDigiPar*     fDigiPar;
+    PixelDigiPar* fDigiPar;
 
-    TClonesArray*     fPoints;       /** Input array of PixelPoint **/
-    TClonesArray*     fDigis;        /** Output array of PixelDigi **/
+    TClonesArray* fPoints; /** Input array of PixelPoint **/
+    TClonesArray* fDigis;  /** Output array of PixelDigi **/
 
-    Int_t             fNPoints;
-    Int_t             fNDigis;
+    Int_t fNPoints;
+    Int_t fNDigis;
 
-    Int_t             fTNofEvents;
-    Int_t             fTNofPoints;
-    Int_t             fTNofDigis;
+    Int_t fTNofEvents;
+    Int_t fTNofPoints;
+    Int_t fTNofDigis;
 
-    Int_t fFeCols;            // Colums read per Frontend
-    Int_t fFeRows;            // Rows read per Frontend
-    Int_t fMaxFEperCol;       // max number of Frontend elemens per column
-    Double_t fPitchX;         // Pixel cell size X
-    Double_t fPitchY;         // Pixel cell size Y
+    Int_t fFeCols;        // Colums read per Frontend
+    Int_t fFeRows;        // Rows read per Frontend
+    Int_t fMaxFEperCol;   // max number of Frontend elemens per column
+    Double_t fPitchX;     // Pixel cell size X
+    Double_t fPitchY;     // Pixel cell size Y
 
     /** Activate pixel **/
     void ActivatePixel(Int_t index, Int_t detId, Int_t feId, Int_t col, Int_t row, Double_t charge, Double_t timestamp);
@@ -82,7 +82,7 @@ class PixelDigitize : public FairTask
     PixelDigitize(const PixelDigitize&);
     PixelDigitize& operator=(const PixelDigitize&);
 
-    ClassDef(PixelDigitize,1);
+    ClassDef(PixelDigitize, 1);
 };
 
 #endif

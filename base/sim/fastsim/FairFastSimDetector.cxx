@@ -6,32 +6,30 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairFastSimDetector.h"
-#include "FairGeoMedia.h"
+
 #include "FairGeoBuilder.h"
-#include "FairGeoInterface.h" // for FairGeoInterface
-#include "FairGeoLoader.h" // for FairGeoLoader
-#include "FairGeoMedium.h" // for FairGeoMedium
+#include "FairGeoInterface.h"   // for FairGeoInterface
+#include "FairGeoLoader.h"      // for FairGeoLoader
+#include "FairGeoMedia.h"
+#include "FairGeoMedium.h"   // for FairGeoMedium
 
 // #include <TGeoMedium.h>
-#include <TGeoManager.h> // gGeoManager
+#include <TGeoManager.h>   // gGeoManager
 
 FairFastSimDetector::FairFastSimDetector()
     : FairDetector("FastSimulation", kTRUE)
     , fFastSimMedium(nullptr)
-{
-}
+{}
 
 FairFastSimDetector::FairFastSimDetector(const char* name, Int_t DetId)
     : FairDetector(name, kTRUE, DetId)
     , fFastSimMedium(nullptr)
-{
-}
+{}
 
 FairFastSimDetector::FairFastSimDetector(const FairFastSimDetector& right)
     : FairDetector(right)
     , fFastSimMedium(right.fFastSimMedium)
-{
-}
+{}
 
 FairFastSimDetector::~FairFastSimDetector() {}
 
@@ -43,11 +41,9 @@ void FairFastSimDetector::ConstructGeometry()
     FairGeoBuilder* geoBuild = geoLoad->getGeoBuilder();
 
     TGeoMedium* medium = gGeoManager->GetMedium("FastSimMedium");
-    if (!medium)
-    {
+    if (!medium) {
         FairGeoMedium* fairMedium = geoMedia->getMedium("FastSimMedium");
-        if (!fairMedium)
-        {
+        if (!fairMedium) {
             fairMedium = new FairGeoMedium("FastSimMedium");
             fairMedium->setMediumIndex(geoMedia->getListOfMedia()->GetEntries());
             fairMedium->setNComponents(1);
@@ -58,9 +54,7 @@ void FairFastSimDetector::ConstructGeometry()
         }
         geoBuild->createMedium(fairMedium);
         fFastSimMedium = gGeoManager->GetMedium("FastSimMedium");
-    }
-    else
-    {
+    } else {
         fFastSimMedium = medium;
     }
 }
@@ -72,4 +66,4 @@ Bool_t FairFastSimDetector::ProcessHits(FairVolume*)
     return kTRUE;
 }
 
-ClassImp(FairFastSimDetector)
+ClassImp(FairFastSimDetector);

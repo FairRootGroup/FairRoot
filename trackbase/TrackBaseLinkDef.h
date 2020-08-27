@@ -17,6 +17,9 @@
 #pragma link C++ class  FairTrackParH+;
 #pragma link C++ class  FairGeaneUtil+;
 
+#pragma link C++ class FairPropagator+;
+#pragma link C++ class FairRKPropagator+;
+
 
 #endif
 

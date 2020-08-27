@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   RooDataGenerator.h
  * Author: winckler
  *
@@ -6,20 +6,20 @@
  */
 
 #ifndef ROODATAGENERATOR_H
-#define	ROODATAGENERATOR_H
+#define ROODATAGENERATOR_H
 
 // root
 #include <TDatime.h>
 
 // roofit
-#include "RooGlobalFunc.h"
+#include "RooArgSet.h"
 #include "RooConstVar.h"
-#include "RooRealVar.h"
 #include "RooDataSet.h"
 #include "RooGaussian.h"
+#include "RooGlobalFunc.h"
 #include "RooProdPdf.h"
-#include "RooArgSet.h"
 #include "RooRandom.h"
+#include "RooRealVar.h"
 
 struct RdmVarParameters
 {
@@ -52,7 +52,10 @@ struct PDFConfig
         , fTErr(0.005, 0.001)
     {}
 
-    void Set(const RdmVarParameters& x, const RdmVarParameters& y, const RdmVarParameters& z, const RdmVarParameters& terr)
+    void Set(const RdmVarParameters& x,
+             const RdmVarParameters& y,
+             const RdmVarParameters& z,
+             const RdmVarParameters& terr)
     {
         fX = x;
         fY = y;
@@ -86,8 +89,14 @@ class MultiVariatePDF
         , fGaussY("fGaussY", "gaussian PDF", fY, RooFit::RooConst(fOpt.fY.fMean), RooFit::RooConst(fOpt.fY.fSigma))
         , fGaussZ("fGaussZ", "gaussian PDF", fZ, RooFit::RooConst(fOpt.fZ.fMean), RooFit::RooConst(fOpt.fZ.fSigma))
         , fGaussT("fGaussT", "gaussian PDF", fT, fMeanT, fSigmaT)
-        , fGaussTErr("fGaussTErr", "gaussian PDF", fTErr, RooFit::RooConst((fTErr.getMin() + fTErr.getMax()) / 2), RooFit::RooConst(fOpt.fTErr.fSigma))
-        , fModel("fGaussXyzt_ter", "fGaussX*fGaussY*fGaussZ*fGaussT*fGaussTErr", RooArgList(fGaussX, fGaussY, fGaussZ, fGaussT, fGaussTErr))
+        , fGaussTErr("fGaussTErr",
+                     "gaussian PDF",
+                     fTErr,
+                     RooFit::RooConst((fTErr.getMin() + fTErr.getMax()) / 2),
+                     RooFit::RooConst(fOpt.fTErr.fSigma))
+        , fModel("fGaussXyzt_ter",
+                 "fGaussX*fGaussY*fGaussZ*fGaussT*fGaussTErr",
+                 RooArgList(fGaussX, fGaussY, fGaussZ, fGaussT, fGaussTErr))
     {
         RooMsgService::instance().setGlobalKillBelow(RooFit::MsgLevel::ERROR);
         RooRandom::randomGenerator()->SetSeed(TDatime().GetTime());
@@ -96,8 +105,7 @@ class MultiVariatePDF
     MultiVariatePDF(const MultiVariatePDF&) = delete;
     MultiVariatePDF operator=(const MultiVariatePDF&) = delete;
 
-    ~MultiVariatePDF()
-    {}
+    ~MultiVariatePDF() {}
 
     RooDataSet* GetGeneratedData(unsigned int n, unsigned int ti)
     {

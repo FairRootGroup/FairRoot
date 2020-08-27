@@ -33,17 +33,24 @@ target_link_directories(${target} PUBLIC
   ${ROOT_LIBRARY_DIR}
 )
 
+# Geant4 uses namespace since 10.5
+if(${Geant4_VERSION} VERSION_LESS "10.6")
+  set(targetG4processes G4processes)
+else()
+  set(targetG4processes Geant4::G4processes)
+endif()
+
 target_link_libraries(${target} PUBLIC
   FairRoot::FairTools
   FairRoot::Base # FairDetector,
   FairRoot::GeoBase
 
-  G4processes
+  ${targetG4processes}
   geant4vmc
 
   Geom # TGeoManager
   Core # Rtypes
-  VMC # TVirtualMC
+  ${VMCLIB} # TVirtualMC
   EG # TParticle
   Physics # TVector
 )

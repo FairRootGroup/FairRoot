@@ -6,42 +6,41 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "runFairMQDevice.h"
-
-#include "Pixel.h"
-#include "PixelDigitize.h"
-#include "FairOnlineSink.h"
-
+#include "FairBoxGenerator.h"
+#include "FairCave.h"
 #include "FairMQSimDevice.h"
 #include "FairModule.h"
-#include "FairCave.h"
-#include "FairPrimaryGenerator.h"
-#include "FairBoxGenerator.h"
+#include "FairOnlineSink.h"
 #include "FairParAsciiFileIo.h"
+#include "FairPrimaryGenerator.h"
+#include "Pixel.h"
+#include "PixelDigitize.h"
+#include "runFairMQDevice.h"
 
-#include <TRandom.h>
-#include <TSystem.h>
 #include <Rtypes.h>
 #include <TObjArray.h>
+#include <TRandom.h>
 #include <TString.h>
-
-#include <string>
-#include <stdexcept>
+#include <TSystem.h>
 #include <cstdint>
 #include <cstdlib>
+#include <stdexcept>
+#include <string>
 
 namespace bpo = boost::program_options;
 
 void addCustomOptions(bpo::options_description& options)
 {
+    // clang-format off
     options.add_options()
-        ("random-seed",         bpo::value<int64_t>    ()->default_value(0)              , "Random seed number")
-        ("transport-name",      bpo::value<std::string>()->default_value("TGeant3")      , "Transport name")
-        ("nof-events",          bpo::value<int64_t>    ()->required()                    , "Number of events to simulate")
-        ("fairroot-config-dir", bpo::value<std::string>()->default_value("")             , "FairRoot config dir")
+        ("random-seed",         bpo::value<int64_t>    ()->default_value(0),               "Random seed number")
+        ("transport-name",      bpo::value<std::string>()->default_value("TGeant3"),       "Transport name")
+        ("nof-events",          bpo::value<int64_t>    ()->required(),                     "Number of events to simulate")
+        ("fairroot-config-dir", bpo::value<std::string>()->default_value(""),              "FairRoot config dir")
         ("param-channel-name",  bpo::value<std::string>()->default_value("updateChannel"), "Parameter update channel name")
-        ("run-digi-tasks",      bpo::value<bool>       ()->default_value(false)          , "Run digi tasks")
-    ;
+        ("run-digi-tasks",      bpo::value<bool>       ()->default_value(false),           "Run digi tasks")
+        // clang-format on
+        ;
 }
 
 FairMQDevicePtr getDevice(const FairMQProgOptions& config)
@@ -87,8 +86,8 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     detArray->Add(det);
     run->SetDetectorArray(detArray);
 
-    TString partName[] = {"pions","eplus","proton"};
-    Int_t   partPdgC[] = {    211,     11,    2212};
+    TString partName[] = {"pions", "eplus", "proton"};
+    Int_t partPdgC[] = {211, 11, 2212};
     Int_t chosenPart = 0;
 
     FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
@@ -105,7 +104,7 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
         // Attach tasks if needed
         TString digParFile = tutdir + "/param/pixel_digi.par";
         FairParAsciiFileIo* parIo1 = new FairParAsciiFileIo();
-        parIo1->open(digParFile.Data(),"in");
+        parIo1->open(digParFile.Data(), "in");
         run->SetFirstParameter(parIo1);
 
         TObjArray* taskArray = new TObjArray();

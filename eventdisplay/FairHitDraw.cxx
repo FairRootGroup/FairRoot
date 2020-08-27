@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -14,22 +14,20 @@
 
 #include "FairHitDraw.h"
 
-#include "FairHit.h"                    // for FairHit
+#include "FairHit.h"   // for FairHit
 
 class TObject;
 
-FairHitDraw::FairHitDraw()
-{
-}
+FairHitDraw::FairHitDraw() {}
 
-FairHitDraw::FairHitDraw(const char* name, Int_t iVerbose):FairBoxSetDraw(name, iVerbose)
-{
-}
+FairHitDraw::FairHitDraw(const char* name, Int_t iVerbose)
+    : FairBoxSetDraw(name, iVerbose)
+{}
 
 TVector3 FairHitDraw::GetVector(TObject* obj)
 {
-  FairHit* hit =static_cast<FairHit*>(obj);
-  return TVector3(hit->GetX(), hit->GetY(), hit->GetZ());
+    FairHit* hit = static_cast<FairHit*>(obj);
+    return TVector3(hit->GetX(), hit->GetY(), hit->GetZ());
 }
 
-ClassImp(FairHitDraw)
+ClassImp(FairHitDraw);

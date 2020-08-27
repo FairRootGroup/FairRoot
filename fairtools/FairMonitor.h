@@ -16,11 +16,10 @@
 #ifndef BASE_FAIRMONITOR_H_
 #define BASE_FAIRMONITOR_H_
 
-#include <map>
-
 #include <Rtypes.h>
 #include <TNamed.h>
 #include <TStopwatch.h>
+#include <map>
 
 class TCanvas;
 class TFile;
@@ -32,24 +31,30 @@ class FairMonitor : public TNamed
   public:
     static FairMonitor* GetMonitor();
 
-    void EnableMonitor(Bool_t tempBool = kTRUE, TString fileName = "") { fRunMonitor = tempBool; fOutputFileName = fileName; }
+    void EnableMonitor(Bool_t tempBool = kTRUE, TString fileName = "")
+    {
+        fRunMonitor = tempBool;
+        fOutputFileName = fileName;
+    }
     void EnableDrawing(Bool_t tempBool = kTRUE) { fDrawCanvas = tempBool; }
     Bool_t IsRunning() { return fRunMonitor; }
 
-    void StartMonitoring(const TTask* tTask, const char* identStr) {
-      StartTimer(tTask,identStr);
-      StartMemoryMonitor(tTask,identStr);
+    void StartMonitoring(const TTask* tTask, const char* identStr)
+    {
+        StartTimer(tTask, identStr);
+        StartMemoryMonitor(tTask, identStr);
     }
-    void  StopMonitoring(const TTask* tTask, const char* identStr) {
-      StopTimer(tTask,identStr);
-      StopMemoryMonitor(tTask,identStr);
+    void StopMonitoring(const TTask* tTask, const char* identStr)
+    {
+        StopTimer(tTask, identStr);
+        StopMemoryMonitor(tTask, identStr);
     }
 
     void StartTimer(const TTask* tTask, const char* identStr);
     void StopTimer(const TTask* tTask, const char* identStr);
 
     void StartMemoryMonitor(const TTask* tTask, const char* identStr);
-    void  StopMemoryMonitor(const TTask* tTask, const char* identStr);
+    void StopMemoryMonitor(const TTask* tTask, const char* identStr);
 
     void RecordInfo(const TTask* tTask, const char* identStr, Double_t value);
 
@@ -59,10 +64,10 @@ class FairMonitor : public TNamed
     void SetCurrentTask(TTask* tTask) { fCurrentTask = tTask; }
 
     virtual void Print(Option_t* option = "") const;
-    virtual void Draw (Option_t* option = "");
+    virtual void Draw(Option_t* option = "");
 
     void PrintTask(TString specString) const;
-    void PrintTask(TTask* tempTask, Int_t taskLevel=0) const;
+    void PrintTask(TTask* tempTask, Int_t taskLevel = 0) const;
     void DrawHist(TString specString);
 
     TList* GetHistList() { return fHistList; }
@@ -93,7 +98,7 @@ class FairMonitor : public TNamed
 
     TTask* fCurrentTask;
 
-    TString fOutputFileName; // output file name, if empty then try to use FairSink to store histograms
+    TString fOutputFileName;   // output file name, if empty then try to use FairSink to store histograms
 
     std::multimap<TString, TString> fTaskRequired;
     std::multimap<TString, TString> fTaskCreated;
@@ -102,15 +107,15 @@ class FairMonitor : public TNamed
     std::map<TString, Int_t> fObjectMap;
     std::map<TString, Int_t> fTaskMap;
 
-    std::map<TString, std::pair<Double_t, Double_t> > fObjectPos;
-    std::map<TString, std::pair<Double_t, Double_t> > fTaskPos;
+    std::map<TString, std::pair<Double_t, Double_t>> fObjectPos;
+    std::map<TString, std::pair<Double_t, Double_t>> fTaskPos;
 
     void GetTaskMap(TTask* tempTask);
     void AnalyzeObjectMap(TTask* tempTask);
 
-    ClassDef(FairMonitor, 0)
+    ClassDef(FairMonitor, 0);
 };
 
 extern FairMonitor* gMonitor;
 
-#endif  // BASE_FAIRMONITOR_H_
+#endif   // BASE_FAIRMONITOR_H_

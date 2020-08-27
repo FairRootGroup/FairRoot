@@ -1,133 +1,124 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 void run_tutorial1_urqmd(Int_t nEvents = 2, TString mcEngine = "TGeant3")
 {
-  
-  TString dir = getenv("VMCWORKDIR");
-  TString tutdir = dir + "/simulation//Tutorial1";
 
-  TString inFile = dir + "/common/input/urqmd.ftn14";
+    TString dir = getenv("VMCWORKDIR");
+    TString tutdir = dir + "/simulation//Tutorial1";
 
-  TString Urqmd_Conversion_table= dir + "/common/input/urqmd_pdg.dat";
-    
-  TString tut_geomdir = dir + "/common/geometry";
-  gSystem->Setenv("GEOMPATH",tut_geomdir.Data());
+    TString inFile = dir + "/common/input/urqmd.ftn14";
 
-  TString tut_configdir = dir + "/common/gconfig";
-  gSystem->Setenv("CONFIG_DIR",tut_configdir.Data());
-    
+    TString Urqmd_Conversion_table = dir + "/common/input/urqmd_pdg.dat";
 
-  TString outDir = "./"; 
+    TString tut_geomdir = dir + "/common/geometry";
+    gSystem->Setenv("GEOMPATH", tut_geomdir.Data());
 
-  // Output file name
-  TString outFile = Form("%s/tutorial1_urqmd_%s.mc.root",
-                         outDir.Data(),
-			 mcEngine.Data());
-    
-  
-  // Parameter file name
-  TString parFile = Form("%s/tutorial1_urqmd_%s.params.root",
-			 outDir.Data(),
-			 mcEngine.Data());
+    TString tut_configdir = dir + "/common/gconfig";
+    gSystem->Setenv("CONFIG_DIR", tut_configdir.Data());
 
-  TString geoFile = outDir + "geofile_urqmd_" + mcEngine + "_full.root";
+    TString outDir = "./";
 
-  // In general, the following parts need not be touched
-  // ========================================================================
+    // Output file name
+    TString outFile = Form("%s/tutorial1_urqmd_%s.mc.root", outDir.Data(), mcEngine.Data());
 
-  // ----    Debug option   -------------------------------------------------
-  gDebug = 0;
-  // ------------------------------------------------------------------------
+    // Parameter file name
+    TString parFile = Form("%s/tutorial1_urqmd_%s.params.root", outDir.Data(), mcEngine.Data());
 
-  // -----   Timer   --------------------------------------------------------
-  TStopwatch timer;
-  timer.Start();
-  // ------------------------------------------------------------------------
+    TString geoFile = outDir + "geofile_urqmd_" + mcEngine + "_full.root";
 
-  // -----   Create simulation run   ----------------------------------------
-  FairRunSim* run = new FairRunSim();
-  run->SetName(mcEngine);              // Transport engine
-  run->SetSink(new FairRootFileSink(outFile));          // Output file
-  FairRuntimeDb* rtdb = run->GetRuntimeDb();
-  // ------------------------------------------------------------------------
-  
-  // -----   Create media   -------------------------------------------------
-  run->SetMaterials("media.geo");       // Materials
-  // ------------------------------------------------------------------------
-  
-  // -----   Create geometry   ----------------------------------------------
+    // In general, the following parts need not be touched
+    // ========================================================================
 
-  FairModule* cave= new FairCave("CAVE");
-  cave->SetGeometryFileName("cave_vacuum.geo"); 
-  run->AddModule(cave);
+    // ----    Debug option   -------------------------------------------------
+    gDebug = 0;
+    // ------------------------------------------------------------------------
 
-  FairDetector* tutdet = new FairTutorialDet1("TUTDET", kTRUE);
-  tutdet->SetGeometryFileName("double_sector.geo"); 
-  run->AddModule(tutdet);
-  // ------------------------------------------------------------------------
+    // -----   Timer   --------------------------------------------------------
+    TStopwatch timer;
+    timer.Start();
+    // ------------------------------------------------------------------------
 
-  // -----   Create PrimaryGenerator   --------------------------------------
-  FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
+    // -----   Create simulation run   ----------------------------------------
+    FairRunSim* run = new FairRunSim();
+    run->SetName(mcEngine);                        // Transport engine
+    run->SetSink(new FairRootFileSink(outFile));   // Output file
+    FairRuntimeDb* rtdb = run->GetRuntimeDb();
+    // ------------------------------------------------------------------------
 
-  FairUrqmdGenerator* urqmdGen = new FairUrqmdGenerator(inFile.Data(),Urqmd_Conversion_table.Data());
-  primGen->AddGenerator(urqmdGen);
+    // -----   Create media   -------------------------------------------------
+    run->SetMaterials("media.geo");   // Materials
+    // ------------------------------------------------------------------------
 
-  run->SetGenerator(primGen);
-  // ------------------------------------------------------------------------
+    // -----   Create geometry   ----------------------------------------------
 
-  // -----   Initialize simulation run   ------------------------------------
-  run->Init();
-  // ------------------------------------------------------------------------
+    FairModule* cave = new FairCave("CAVE");
+    cave->SetGeometryFileName("cave_vacuum.geo");
+    run->AddModule(cave);
 
-  // -----   Runtime database   ---------------------------------------------
+    FairDetector* tutdet = new FairTutorialDet1("TUTDET", kTRUE);
+    tutdet->SetGeometryFileName("double_sector.geo");
+    run->AddModule(tutdet);
+    // ------------------------------------------------------------------------
 
-  Bool_t kParameterMerged = kTRUE;
-  FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
-  parOut->open(parFile.Data());
-  rtdb->setOutput(parOut);
-  rtdb->saveOutput();
-  rtdb->print();
-  // ------------------------------------------------------------------------
-   
-  // -----   Start run   ----------------------------------------------------
-  run->Run(nEvents);
-  run->CreateGeometryFile(geoFile);
-  // ------------------------------------------------------------------------
-  
-  // -----   Finish   -------------------------------------------------------
+    // -----   Create PrimaryGenerator   --------------------------------------
+    FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
 
-  cout << endl << endl;
+    FairUrqmdGenerator* urqmdGen = new FairUrqmdGenerator(inFile.Data(), Urqmd_Conversion_table.Data());
+    primGen->AddGenerator(urqmdGen);
 
-  // Extract the maximal used memory an add is as Dart measurement
-  // This line is filtered by CTest and the value send to CDash
-  FairSystemInfo sysInfo;
-  Float_t maxMemory=sysInfo.GetMaxMemory();
-  cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
-  cout << maxMemory;
-  cout << "</DartMeasurement>" << endl;
+    run->SetGenerator(primGen);
+    // ------------------------------------------------------------------------
 
-  timer.Stop();
-  Double_t rtime = timer.RealTime();
-  Double_t ctime = timer.CpuTime();
+    // -----   Initialize simulation run   ------------------------------------
+    run->Init();
+    // ------------------------------------------------------------------------
 
-  Float_t cpuUsage=ctime/rtime;
-  cout << "<DartMeasurement name=\"CpuLoad\" type=\"numeric/double\">";
-  cout << cpuUsage;
-  cout << "</DartMeasurement>" << endl;
+    // -----   Runtime database   ---------------------------------------------
 
-  cout << endl << endl;
-  cout << "Output file is "    << outFile << endl;
-  cout << "Parameter file is " << parFile << endl;
-  cout << "Real time " << rtime << " s, CPU time " << ctime 
-       << "s" << endl << endl;
-  cout << "Macro finished successfully." << endl;
+    Bool_t kParameterMerged = kTRUE;
+    FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
+    parOut->open(parFile.Data());
+    rtdb->setOutput(parOut);
+    rtdb->saveOutput();
+    rtdb->print();
+    // ------------------------------------------------------------------------
 
-  // ------------------------------------------------------------------------
+    // -----   Start run   ----------------------------------------------------
+    run->Run(nEvents);
+    run->CreateGeometryFile(geoFile);
+    // ------------------------------------------------------------------------
+
+    // -----   Finish   -------------------------------------------------------
+
+    cout << endl << endl;
+
+    // Extract the maximal used memory an add is as Dart measurement
+    // This line is filtered by CTest and the value send to CDash
+    FairSystemInfo sysInfo;
+    Float_t maxMemory = sysInfo.GetMaxMemory();
+    cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
+    cout << maxMemory;
+    cout << "</DartMeasurement>" << endl;
+
+    timer.Stop();
+    Double_t rtime = timer.RealTime();
+    Double_t ctime = timer.CpuTime();
+
+    Float_t cpuUsage = ctime / rtime;
+    cout << "<DartMeasurement name=\"CpuLoad\" type=\"numeric/double\">";
+    cout << cpuUsage;
+    cout << "</DartMeasurement>" << endl;
+
+    cout << endl << endl;
+    cout << "Output file is " << outFile << endl;
+    cout << "Parameter file is " << parFile << endl;
+    cout << "Real time " << rtime << " s, CPU time " << ctime << "s" << endl << endl;
+    cout << "Macro finished successfully." << endl;
+
+    // ------------------------------------------------------------------------
 }
-
-

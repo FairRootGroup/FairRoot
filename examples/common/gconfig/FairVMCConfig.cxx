@@ -19,19 +19,18 @@
 
 FairVMCConfig::FairVMCConfig()
     : FairYamlVMCConfig()
-{
-}
+{}
 
-FairVMCConfig::~FairVMCConfig()
-{
-}
+FairVMCConfig::~FairVMCConfig() {}
 
 void FairVMCConfig::SetupStack()
 {
     FairStack *stack = new FairStack(1000);
-    if ( fYamlConfig["FairStack_StoreSecondaries"] ) stack->StoreSecondaries(fYamlConfig["FairStack_StoreSecondaries"].as<bool>());
-    if ( fYamlConfig["FairStack_MinPoints"] )        stack->SetMinPoints    (fYamlConfig["FairStack_MinPoints"].as<int>());
+    if (fYamlConfig["FairStack_StoreSecondaries"])
+        stack->StoreSecondaries(fYamlConfig["FairStack_StoreSecondaries"].as<bool>());
+    if (fYamlConfig["FairStack_MinPoints"])
+        stack->SetMinPoints(fYamlConfig["FairStack_MinPoints"].as<int>());
     TVirtualMC::GetMC()->SetStack(stack);
 }
 
-ClassImp(FairVMCConfig)
+ClassImp(FairVMCConfig);

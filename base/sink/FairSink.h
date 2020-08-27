@@ -17,17 +17,20 @@
 
 #include <Rtypes.h>
 #include <TString.h>
-
-#include <map> // map
-#include <memory> // unique_ptr
-#include <string> // string
-#include <typeinfo> // type_info
+#include <map>        // map
+#include <memory>     // unique_ptr
+#include <string>     // string
+#include <typeinfo>   // type_info
 
 class TObject;
 class TFolder;
 class TTree;
 
-enum Sink_Type {kONLINESINK, kFILESINK};
+enum Sink_Type
+{
+    kONLINESINK,
+    kFILESINK
+};
 
 class FairSink
 {
@@ -41,7 +44,7 @@ class FairSink
     virtual void Reset() = 0;
 
     virtual Sink_Type GetSinkType() = 0;
-    virtual TString GetFileName () { return ""; }
+    virtual TString GetFileName() { return ""; }
 
     void SetRunId(Int_t runId) { fRunId = runId; }
     Int_t GetRunId() const { return fRunId; }
@@ -61,12 +64,19 @@ class FairSink
     virtual void WriteObject(TObject* f, const char*, Int_t option = 0) = 0;
     virtual void WriteGeometry() = 0;
 
+    virtual FairSink* CloneSink() = 0;
+
   protected:
-    struct TypeAddressPair {
-      TypeAddressPair(const std::type_info& oi, const std::type_info& pi, void* a) : origtypeinfo(oi), persistenttypeinfo(pi), ptraddr(a) {}
-      const std::type_info &origtypeinfo; // type_info of type addr points to
-      const std::type_info &persistenttypeinfo; // type_info of ROOT persistent branch (drops pointers)
-      void* ptraddr; // address of a pointer (pointing to origtypeinfo);
+    struct TypeAddressPair
+    {
+        TypeAddressPair(const std::type_info& oi, const std::type_info& pi, void* a)
+            : origtypeinfo(oi)
+            , persistenttypeinfo(pi)
+            , ptraddr(a)
+        {}
+        const std::type_info& origtypeinfo;         // type_info of type addr points to
+        const std::type_info& persistenttypeinfo;   // type_info of ROOT persistent branch (drops pointers)
+        void* ptraddr;                              // address of a pointer (pointing to origtypeinfo);
     };
 
     Int_t fRunId;
@@ -76,10 +86,10 @@ class FairSink
     /// A map of branchnames to typeinformation + memory address;
     /// used for branches registered to bes stored; use of ptr here
     /// since type_info cannot be copied
-    std::map<std::string, std::unique_ptr<TypeAddressPair const>> fPersistentBranchesMap; //!
+    std::map<std::string, std::unique_ptr<TypeAddressPair const>> fPersistentBranchesMap;   //!
 
   public:
-    ClassDef(FairSink, 1)
+    ClassDef(FairSink, 1);
 };
 
 #endif

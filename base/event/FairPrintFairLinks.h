@@ -14,6 +14,7 @@
 
 // framework includes
 #include "FairTask.h"
+#include "TObjString.h"
 
 #include <map>
 
@@ -31,9 +32,7 @@ class FairPrintFairLinks : public FairTask
     /** Virtual method Init **/
     virtual void SetParContainers();
 
-    virtual void AddBranchName(const TString& name){
-        fSelectedBranches->AddLast(new TObjString(name.Data()));
-    }
+    virtual void AddBranchName(const TString& name) { fSelectedBranches->AddLast(new TObjString(name.Data())); }
 
     virtual void PrintBranchNameList(TList* branches);
 
@@ -44,7 +43,7 @@ class FairPrintFairLinks : public FairTask
 
     virtual void Finish();
 
-    protected:
+  protected:
     void InitBranchList(TList* branches);
 
   private:
@@ -55,7 +54,7 @@ class FairPrintFairLinks : public FairTask
     void Reset();
     void ProduceHits();
 
-    ClassDef(FairPrintFairLinks,1);
+    ClassDef(FairPrintFairLinks, 1);
 };
 
 #endif

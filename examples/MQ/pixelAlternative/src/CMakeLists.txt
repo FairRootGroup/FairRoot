@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target PixelAlt)
+set(target ExPixelAlt)
 
 set(no_dict_sources
   devices/FairMQPixAltFileSinkBin.cxx
@@ -47,8 +47,8 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::FairTools # FairLogger
   FairRoot::ParBase
-  FairRoot::Pixel
   FairRoot::BaseMQ # Serialization policies
+  FairRoot::ExPixel
   FairMQ::FairMQ
 
   Tree

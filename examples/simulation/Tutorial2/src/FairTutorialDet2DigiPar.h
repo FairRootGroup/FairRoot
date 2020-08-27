@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -25,8 +25,8 @@ class FairTutorialDet2DigiPar : public FairParGenericSet
 {
   public:
     /** Standard constructor **/
-    FairTutorialDet2DigiPar(const char* name    = "FairTutorialDet2DigiPar",
-                            const char* title   = "Tutorial Det digi parameters",
+    FairTutorialDet2DigiPar(const char* name = "FairTutorialDet2DigiPar",
+                            const char* title = "Tutorial Det digi parameters",
                             const char* context = "Default");
 
     /** Destructor **/
@@ -48,14 +48,14 @@ class FairTutorialDet2DigiPar : public FairParGenericSet
     Bool_t getParams(FairParamList*);
 
   private:
-    TArrayF* ftutdetdigipar;  //
-    TArrayI ftutdetdigiparsector; //
-    Int_t ftutdetdigiparstation; //
+    TArrayF* ftutdetdigipar;        //
+    TArrayI ftutdetdigiparsector;   //
+    Int_t ftutdetdigiparstation;    //
 
     FairTutorialDet2DigiPar(const FairTutorialDet2DigiPar&);
     FairTutorialDet2DigiPar& operator=(const FairTutorialDet2DigiPar&);
 
-    ClassDef(FairTutorialDet2DigiPar,1);
+    ClassDef(FairTutorialDet2DigiPar, 1);
 };
 
 #endif

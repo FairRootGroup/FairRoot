@@ -16,10 +16,9 @@
 #define FAIRMQPIXELSAMPLER_H_
 
 #include <FairMQDevice.h>
-
+#include <cstdint>
 #include <string>
 #include <thread>
-#include <cstdint>
 #include <vector>
 
 class FairSource;
@@ -35,14 +34,14 @@ class FairMQPixelSampler : public FairMQDevice
     void AddInputFileName(const std::string& tempString) { fFileNames.push_back(tempString); }
     void AddInputBranchName(const std::string& tempString) { fBranchNames.push_back(tempString); }
 
-    void SetMaxIndex(int64_t tempInt) { fMaxIndex=tempInt; }
+    void SetMaxIndex(int64_t tempInt) { fMaxIndex = tempInt; }
 
     void SetSource(FairSource* tempSource) { fSource = tempSource; }
 
     void ListenForAcks();
 
-    void SetOutputChannelName(const std::string& tstr) {fOutputChannelName = tstr;}
-    void SetAckChannelName(const std::string& tstr) {fAckChannelName = tstr;}
+    void SetOutputChannelName(const std::string& tstr) { fOutputChannelName = tstr; }
+    void SetAckChannelName(const std::string& tstr) { fAckChannelName = tstr; }
 
   protected:
     virtual bool ConditionalRun();
@@ -54,13 +53,13 @@ class FairMQPixelSampler : public FairMQDevice
     std::string fOutputChannelName;
     std::string fAckChannelName;
 
-    FairRunAna*     fRunAna;
-    FairSource*     fSource;
-    TObject*        fInputObjects[100];
-    int             fNObjects;
-    int64_t         fMaxIndex;
+    FairRunAna* fRunAna;
+    FairSource* fSource;
+    TObject* fInputObjects[100];
+    int fNObjects;
+    int64_t fMaxIndex;
 
-    int             fEventCounter;
+    int fEventCounter;
 
     std::vector<std::string> fBranchNames;
     std::vector<std::string> fFileNames;

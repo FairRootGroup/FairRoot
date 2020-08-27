@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef MILLE_H
@@ -39,8 +39,7 @@ class Mille
     Mille(const char* outFileName, bool asBinary = true, bool writeZero = false);
     ~Mille();
 
-    void mille(int NLC, const float* derLc, int NGL, const float* derGl,
-               const int* label, float rMeas, float sigma);
+    void mille(int NLC, const float* derLc, int NGL, const float* derGl, const int* label, float rMeas, float sigma);
     void special(int nSpecial, const float* floatings, const int* integers);
     void kill();
     void end();
@@ -49,16 +48,22 @@ class Mille
     void newSet();
     bool checkBufferSize(int nLocal, int nGlobal);
 
-    std::ofstream myOutFile; // C-binary for output
-    bool myAsBinary;         // if false output as text
-    bool myWriteZero;        // if true also write out derivatives/lables ==0
+    std::ofstream myOutFile;   // C-binary for output
+    bool myAsBinary;           // if false output as text
+    bool myWriteZero;          // if true also write out derivatives/lables ==0
 
-    enum {myBufferSize = 10000};
-    int   myBufferInt[myBufferSize];   // to collect labels etc.
-    float myBufferFloat[myBufferSize]; // to collect derivatives etc.
-    int   myBufferPos;
-    bool  myHasSpecial; // if true, special(..) already called for this record
+    enum
+    {
+        myBufferSize = 10000
+    };
+    int myBufferInt[myBufferSize];       // to collect labels etc.
+    float myBufferFloat[myBufferSize];   // to collect derivatives etc.
+    int myBufferPos;
+    bool myHasSpecial;   // if true, special(..) already called for this record
 
-    enum {myMaxLabel = (0xFFFFFFFF - (1 << 31))}; // largest label allowed: 2^31 - 1
+    enum
+    {
+        myMaxLabel = (0xFFFFFFFF - (1 << 31))
+    };   // largest label allowed: 2^31 - 1
 };
 #endif

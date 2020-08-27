@@ -18,11 +18,10 @@
 
 #include "FairMQRunDevice.h"
 
-#include <TString.h>
 #include <Rtypes.h>
-
-#include <string>
+#include <TString.h>
 #include <cstdint>
+#include <string>
 
 class FairMCSplitEventHeader;
 class FairRunSim;
@@ -41,24 +40,24 @@ class FairMQTransportDevice : public FairMQRunDevice
     virtual ~FairMQTransportDevice();
 
     // ------ FairRunSim setters ------
-    void SetNofEvents       (int64_t nofev)          { fNofEvents = nofev;};
-    void SetTransportName   (const std::string& str) { fTransportName = str;};
-    void SetMaterials       (const std::string& str) { fMaterialsFile = str;};
-    void SetMagneticField   (FairField* field)       { fMagneticField = field;};
-    void SetDetectorArray   (TObjArray* array)       { fDetectorArray = array;};
-    void SetStoreTraj       (bool flag=true)         { fStoreTrajFlag = flag;};
-    void SetTaskArray       (TObjArray* array)       { fTaskArray = array;};
-    void SetFirstParameter  (FairParIo* par)         { fFirstParameter  = par;};
-    void SetSecondParameter (FairParIo* par)         { fSecondParameter = par;};
-    void SetUserConfig      (const TString& Config)  { fUserConfig = Config;}
-    void SetUserCuts        (const TString& Cuts)    { fUserCuts = Cuts;}
-    void SetSink            (FairSink* sink)         { fSink = sink;}
+    void SetNofEvents(int64_t nofev) { fNofEvents = nofev; };
+    void SetTransportName(const std::string& str) { fTransportName = str; };
+    void SetMaterials(const std::string& str) { fMaterialsFile = str; };
+    void SetMagneticField(FairField* field) { fMagneticField = field; };
+    void SetDetectorArray(TObjArray* array) { fDetectorArray = array; };
+    void SetStoreTraj(bool flag = true) { fStoreTrajFlag = flag; };
+    void SetTaskArray(TObjArray* array) { fTaskArray = array; };
+    void SetFirstParameter(FairParIo* par) { fFirstParameter = par; };
+    void SetSecondParameter(FairParIo* par) { fSecondParameter = par; };
+    void SetUserConfig(const TString& Config) { fUserConfig = Config; }
+    void SetUserCuts(const TString& Cuts) { fUserCuts = Cuts; }
+    void SetSink(FairSink* sink) { fSink = sink; }
     // ------ ---------- -------- ------
 
     void SetParamUpdateChannelName(TString tString) { fUpdateChannelName = tString; }
 
-    void RunInPullMode(bool tb=true) { fRunConditional = !tb; };
-    void RunInReqMode (bool tb=true) { fRunConditional = tb; };
+    void RunInPullMode(bool tb = true) { fRunConditional = !tb; };
+    void RunInReqMode(bool tb = true) { fRunConditional = tb; };
 
   protected:
     bool TransportData(FairMQParts&, int);
@@ -75,25 +74,25 @@ class FairMQTransportDevice : public FairMQRunDevice
     std::string fGeneratorChannelName;
     std::string fUpdateChannelName;
 
-    bool                  fRunConditional; // if true run ConditionalRun, if false run TransportData
+    bool fRunConditional;   // if true run ConditionalRun, if false run TransportData
 
-    TVirtualMC*           fVMC;
-    FairGenericStack*     fStack;
-    FairMCApplication*    fMCApplication;
-    FairRunSim*           fRunSim;
+    TVirtualMC* fVMC;
+    FairGenericStack* fStack;
+    FairMCApplication* fMCApplication;
+    FairRunSim* fRunSim;
     // ------ FairRunSim settings ------
-    int64_t               fNofEvents;
-    std::string           fTransportName;
-    std::string           fMaterialsFile;
-    FairField*            fMagneticField;
-    TObjArray*            fDetectorArray;
-    bool                  fStoreTrajFlag;
-    TObjArray*            fTaskArray;
-    FairParIo*            fFirstParameter;    // first (prefered) input for parameters
-    FairParIo*            fSecondParameter;   // second input (used if not found in first input)
-    TString               fUserConfig;        //!                  /** Macro for geant configuration*/
-    TString               fUserCuts;          //!                  /** Macro for geant cuts*/
-    FairSink*             fSink;
+    int64_t fNofEvents;
+    std::string fTransportName;
+    std::string fMaterialsFile;
+    FairField* fMagneticField;
+    TObjArray* fDetectorArray;
+    bool fStoreTrajFlag;
+    TObjArray* fTaskArray;
+    FairParIo* fFirstParameter;    // first (prefered) input for parameters
+    FairParIo* fSecondParameter;   // second input (used if not found in first input)
+    TString fUserConfig;           //!                  /** Macro for geant configuration*/
+    TString fUserCuts;             //!                  /** Macro for geant cuts*/
+    FairSink* fSink;
     // ------ ---------- -------- ------
 
     FairMCSplitEventHeader* fMCSplitEventHeader;

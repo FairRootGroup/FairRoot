@@ -1,16 +1,16 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRBASECONTFACT_H
 #define FAIRBASECONTFACT_H
 
-#include "FairContFact.h"               // for FairContFact, etc
+#include "FairContFact.h"   // for FairContFact, etc
 
-#include <Rtypes.h>                     // for FairBaseContFact::Class, etc
+#include <Rtypes.h>   // for FairBaseContFact::Class, etc
 
 class FairParSet;
 
@@ -19,6 +19,7 @@ class FairBaseContFact : public FairContFact
     /** Factory for all Base parameter containers */
   private:
     void setAllContainers();
+
   public:
     /**default ctor*/
     FairBaseContFact();
@@ -28,7 +29,7 @@ class FairBaseContFact : public FairContFact
      * For an actual context, which is not an empty string and not the default context
      * of this container, the name is concatinated with the context. */
     FairParSet* createContainer(FairContainer*);
-    ClassDef( FairBaseContFact,0)
+    ClassDef(FairBaseContFact, 0);
 };
 
-#endif  /* !FAIRBASECONTFACT_H */
+#endif /* !FAIRBASECONTFACT_H */

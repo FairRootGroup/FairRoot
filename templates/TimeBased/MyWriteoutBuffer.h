@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /* MyWriteoutBuffer.h
@@ -29,17 +29,17 @@ class MyWriteoutBuffer : public FairWriteoutBuffer
 
     virtual ~MyWriteoutBuffer();
 
-    virtual std::vector<std::pair<double, MyDataClass*> > Modify(std::pair<double, MyDataClass*> oldData, std::pair<double, MyDataClass*> newData);
+    virtual std::vector<std::pair<double, MyDataClass*>> Modify(std::pair<double, MyDataClass*> oldData,
+                                                                std::pair<double, MyDataClass*> newData);
 
-    virtual double FindTimeForData(FairTimeStamp* data) ;
-    virtual void FillDataMap(FairTimeStamp* data, double activeTime) ;
+    virtual double FindTimeForData(FairTimeStamp* data);
+    virtual void FillDataMap(FairTimeStamp* data, double activeTime);
     virtual void EraseDataFromDataMap(FairTimeStamp* data);
-  protected:
 
+  protected:
     std::map<MyDataClass, double> fData_map;
 
     ClassDef(MyWriteoutBuffer, 1);
 };
 
 #endif /* MYWRITEOUTBUFFER_H_ */
-

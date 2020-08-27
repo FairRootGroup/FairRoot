@@ -1,24 +1,25 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairTestDetectorContFact.h"
 
-#include "FairConstPar.h"           // for FairConstPar
-#include "FairRuntimeDb.h"          // for FairRuntimeDb
-#include "FairTestDetectorGeoPar.h" // for FairTestDetectorGeoPar
+#include "FairConstPar.h"             // for FairConstPar
+#include "FairRuntimeDb.h"            // for FairRuntimeDb
+#include "FairTestDetectorGeoPar.h"   // for FairTestDetectorGeoPar
 
-#include <TList.h>   // for TList
-#include <TString.h> // for TString
-
-#include <cstring> // for strcmp
+#include <TList.h>     // for TList
+#include <TString.h>   // for TString
+#include <cstring>     // for strcmp
 
 class FairParSet;
 
-ClassImp(FairTestDetectorContFact) static FairTestDetectorContFact gFairTestDetectorContFact;
+ClassImp(FairTestDetectorContFact);
+
+static FairTestDetectorContFact gFairTestDetectorContFact;
 
 FairTestDetectorContFact::FairTestDetectorContFact()
     : FairContFact()
@@ -37,7 +38,8 @@ void FairTestDetectorContFact::setAllContainers()
         the list of containers for the FairTestDetector library.
     */
 
-    FairContainer* p = new FairContainer("FairTestDetectorGeoPar", "FairTestDetector Geometry Parameters", "TestDefaultContext");
+    FairContainer* p =
+        new FairContainer("FairTestDetectorGeoPar", "FairTestDetector Geometry Parameters", "TestDefaultContext");
     p->addContext("TestNonDefaultContext");
 
     FairContainer* p1 = new FairContainer("FairConstPar", "Constant Field Parameters", "TestDefaultContext");
@@ -56,12 +58,10 @@ FairParSet* FairTestDetectorContFact::createContainer(FairContainer* c)
     */
     const char* name = c->GetName();
     FairParSet* p = nullptr;
-    if (strcmp(name, "FairTestDetectorGeoPar") == 0)
-    {
+    if (strcmp(name, "FairTestDetectorGeoPar") == 0) {
         p = new FairTestDetectorGeoPar(c->getConcatName().Data(), c->GetTitle(), c->getContext());
     }
-    if (strcmp(name, "FairConstPar") == 0)
-    {
+    if (strcmp(name, "FairConstPar") == 0) {
         p = new FairConstPar(c->getConcatName().Data(), c->GetTitle(), c->getContext());
     }
 

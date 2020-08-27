@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 //*-- AUTHOR : Ilse Koenig
@@ -22,60 +22,64 @@
 /////////////////////////////////////////////////////////////
 #include "FairGeoBrik.h"
 
-#include "FairGeoTransform.h"           // for FairGeoTransform
-#include "FairGeoVector.h"              // for FairGeoVector
-#include "FairGeoVolume.h"              // for FairGeoVolume
+#include "FairGeoTransform.h"   // for FairGeoTransform
+#include "FairGeoVector.h"      // for FairGeoVector
+#include "FairGeoVolume.h"      // for FairGeoVolume
 
-#include <TArrayD.h>                    // for TArrayD
-#include <TString.h>                    // for TString
+#include <TArrayD.h>   // for TArrayD
+#include <TString.h>   // for TString
 
-ClassImp(FairGeoBrik)
+ClassImp(FairGeoBrik);
 
 FairGeoBrik::FairGeoBrik()
-  :FairGeoBasicShape()
+    : FairGeoBasicShape()
 {
-  // constructor
-  fName="BOX ";
-  nPoints=8;
-  nParam=3;
-  param=new TArrayD(nParam);
+    // constructor
+    fName = "BOX ";
+    nPoints = 8;
+    nParam = 3;
+    param = new TArrayD(nParam);
 }
 
 FairGeoBrik::~FairGeoBrik()
 {
-  // destructor
-  if (param) {
-    delete param;
-    param=0;
-  }
-  if (center) {
-    delete center;
-    center=0;
-  }
-  if (position) {
-    delete position;
-    position=0;
-  }
+    // destructor
+    if (param) {
+        delete param;
+        param = 0;
+    }
+    if (center) {
+        delete center;
+        center = 0;
+    }
+    if (position) {
+        delete position;
+        position = 0;
+    }
 }
 
 TArrayD* FairGeoBrik::calcVoluParam(FairGeoVolume* volu)
 {
-  // calculates the parameters needed to create the shape
-  if (!volu) { return 0; }
-  FairGeoVector v=*(volu->getPoint(5)) - *(volu->getPoint(3));
-  v.abs();
-  v*=(1/20.);
-  for(Int_t i=0; i<nParam; i++) { param->AddAt(v(i),i); }
-  return param;
+    // calculates the parameters needed to create the shape
+    if (!volu) {
+        return 0;
+    }
+    FairGeoVector v = *(volu->getPoint(5)) - *(volu->getPoint(3));
+    v.abs();
+    v *= (1 / 20.);
+    for (Int_t i = 0; i < nParam; i++) {
+        param->AddAt(v(i), i);
+    }
+    return param;
 }
 
-void FairGeoBrik::calcVoluPosition(FairGeoVolume* volu, const FairGeoTransform& dTC,const FairGeoTransform& mTR)
+void FairGeoBrik::calcVoluPosition(FairGeoVolume* volu, const FairGeoTransform& dTC, const FairGeoTransform& mTR)
 {
-  // calls the function posInMother(...) to calculate the position of the
-  // volume in its mother
-  FairGeoVector trans=*(volu->getPoint(5)) + *(volu->getPoint(3));
-  trans*=0.5;
-  center->clear();
-  center->setTransVector(trans);
-  posInMother(dTC,mTR);
+    // calls the function posInMother(...) to calculate the position of the
+    // volume in its mother
+    FairGeoVector trans = *(volu->getPoint(5)) + *(volu->getPoint(3));
+    trans *= 0.5;
+    center->clear();
+    center->setTransVector(trans);
+    posInMother(dTC, mTR);
 }

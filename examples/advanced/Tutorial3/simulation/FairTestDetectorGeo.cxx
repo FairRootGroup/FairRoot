@@ -1,15 +1,15 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairTestDetectorGeo.h"
 
-#include <cstdio> // for sprintf
+#include <cstdio>   // for sprintf
 
-ClassImp(FairTestDetectorGeo)
+ClassImp(FairTestDetectorGeo);
 
 FairTestDetectorGeo::FairTestDetectorGeo()
     : FairGeoSet()
@@ -18,6 +18,8 @@ FairTestDetectorGeo::FairTestDetectorGeo()
     // fName has to be the name used in the geometry for all volumes.
     // If there is a mismatch the geometry cannot be build.
     fName = "torino";
+    strcpy(modName, "torino");
+    strcpy(eleName, "torino");
     maxSectors = 0;
     maxModules = 10;
 }

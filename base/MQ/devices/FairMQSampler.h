@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
@@ -15,18 +15,17 @@
 #ifndef FAIRMQSAMPLER_H_
 #define FAIRMQSAMPLER_H_
 
-#include <chrono>
-#include <thread>
-
-#include "FairParRootFileIo.h"
-#include "FairRuntimeDb.h"
-#include "FairRunAna.h"
-#include "FairRootFileSink.h"
 #include "FairFileSource.h"
+#include "FairMQSamplerTask.h"
+#include "FairParRootFileIo.h"
+#include "FairRootFileSink.h"
+#include "FairRunAna.h"
+#include "FairRuntimeDb.h"
 
 #include <FairMQDevice.h>
-#include "FairMQSamplerTask.h"
 #include <FairMQLogger.h>
+#include <chrono>
+#include <thread>
 
 /**
  * Reads simulated digis from a root file and samples the digi as a time-series UDP stream.
@@ -40,7 +39,7 @@
  * feasibility and quality of the various possible online analysis features.
  */
 
-template <typename Task>
+template<typename Task>
 class FairMQSampler : public FairMQDevice
 {
   public:
@@ -63,8 +62,7 @@ class FairMQSampler : public FairMQDevice
     FairMQSampler(const FairMQSampler&) = delete;
     FairMQSampler operator=(const FairMQSampler&) = delete;
 
-    virtual ~FairMQSampler()
-    {}
+    virtual ~FairMQSampler() {}
 
   protected:
     virtual void InitTask()
@@ -82,12 +80,10 @@ class FairMQSampler : public FairMQDevice
         std::string outChannelName = fConfig->GetValue<std::string>("out-channel");
         std::string ackChannelName = fConfig->GetValue<std::string>("ack-channel");
         // check if the returned value actually exists, for the compatibility with old devices.
-        if (outChannelName != "")
-        {
+        if (outChannelName != "") {
             fOutChannelName = outChannelName;
         }
-        if (ackChannelName != "")
-        {
+        if (ackChannelName != "") {
             fAckChannelName = ackChannelName;
         }
 
@@ -96,8 +92,7 @@ class FairMQSampler : public FairMQDevice
 
         FairFileSource* source = new FairFileSource(TString(fInputFile));
         // Adds the same file to the input. The output will still be a single file.
-        for (int i = 0; i < fChainInput; ++i)
-        {
+        for (int i = 0; i < fChainInput; ++i) {
             source->AddFile(fInputFile);
         }
 
@@ -109,16 +104,13 @@ class FairMQSampler : public FairMQDevice
 
         fFairRunAna->AddTask(fSamplerTask);
 
-        if (fParFile != "")
-        {
+        if (fParFile != "") {
             FairRuntimeDb* rtdb = fFairRunAna->GetRuntimeDb();
             FairParRootFileIo* parInput = new FairParRootFileIo();
             parInput->open(TString(fParFile).Data());
             rtdb->setFirstInput(parInput);
             rtdb->print();
-        }
-        else
-        {
+        } else {
             LOG(warn) << "Parameter file not provided. Starting without RuntimeDB.";
         }
 
@@ -144,11 +136,9 @@ class FairMQSampler : public FairMQDevice
         fFairRunAna->RunMQ(fSentMsgs);
         fSamplerTask->GetPayload(msg);
 
-        if (Send(msg, fOutChannelName) >= 0)
-        {
+        if (Send(msg, fOutChannelName) >= 0) {
             ++fSentMsgs;
-            if (fSentMsgs == fNumEvents)
-            {
+            if (fSentMsgs == fNumEvents) {
                 return false;
             }
         }
@@ -158,12 +148,9 @@ class FairMQSampler : public FairMQDevice
 
     virtual void PostRun()
     {
-        try
-        {
+        try {
             fAckListener.join();
-        }
-        catch (std::exception& e)
-        {
+        } catch (std::exception& e) {
             LOG(error) << "Exception when ending AckListener thread: " << e.what();
             exit(EXIT_FAILURE);
         }
@@ -171,8 +158,7 @@ class FairMQSampler : public FairMQDevice
 
     virtual void ResetTask()
     {
-        if (fFairRunAna)
-        {
+        if (fFairRunAna) {
             fFairRunAna->TerminateRun();
         }
         delete fSamplerTask;
@@ -181,22 +167,20 @@ class FairMQSampler : public FairMQDevice
     void ListenForAcks()
     {
         uint64_t numAcks = 0;
-        for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr)
-        {
+        for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr) {
             FairMQMessagePtr ack(NewMessage());
-            if (Receive(ack, fAckChannelName) >= 0)
-            {
+            if (Receive(ack, fAckChannelName) >= 0) {
                 ++numAcks;
             }
 
-            if (!CheckCurrentState(RUNNING))
-            {
+            if (NewStatePending()) {
                 break;
             }
         }
 
         fEnd = std::chrono::high_resolution_clock::now();
-        LOG(info) << "Acknowledged " << numAcks << " messages in: " << std::chrono::duration<double, std::milli>(fEnd - fStart).count() << "ms.";
+        LOG(info) << "Acknowledged " << numAcks
+                  << " messages in: " << std::chrono::duration<double, std::milli>(fEnd - fStart).count() << "ms.";
     }
 
   private:
@@ -204,9 +188,9 @@ class FairMQSampler : public FairMQDevice
     FairMQSamplerTask* fSamplerTask;
     std::chrono::high_resolution_clock::time_point fStart;
     std::chrono::high_resolution_clock::time_point fEnd;
-    std::string fInputFile; // Filename of a root file containing the simulated digis.
+    std::string fInputFile;   // Filename of a root file containing the simulated digis.
     std::string fParFile;
-    std::string fBranch; // The name of the sub-detector branch to stream the digis from.
+    std::string fBranch;   // The name of the sub-detector branch to stream the digis from.
     std::string fOutChannelName;
     std::string fAckChannelName;
     int fNumEvents;

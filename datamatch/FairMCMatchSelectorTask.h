@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -10,24 +10,21 @@
 // -----                  Created 18/01/10  by T.Stockmanns             -----
 // -------------------------------------------------------------------------
 
-
 /** FAIRMCMATCHSELECTORTASK.h
  *@author T.Stockmanns <t.stockmanns@fz-juelich.de>
  **
  ** Displays all available informations for a given event
  **/
 
-
 #ifndef FAIRMCMATCHSELECTORTASK_H
 #define FAIRMCMATCHSELECTORTASK_H
 
-#include "FairTask.h"                   // for FairTask, InitStatus
+#include "FairTask.h"   // for FairTask, InitStatus
 
-#include <Rtypes.h>                     // for Int_t, Float_t, etc
-#include <TString.h>                    // for TString
-
-#include <utility>                      // for pair
-#include <vector>                       // for vector
+#include <Rtypes.h>    // for Int_t, Float_t, etc
+#include <TString.h>   // for TString
+#include <utility>     // for pair
+#include <vector>      // for vector
 
 class FairMCMatch;
 
@@ -44,23 +41,22 @@ class FairMCMatchSelectorTask : public FairTask
     /** Destructor **/
     virtual ~FairMCMatchSelectorTask();
 
-
     /** Virtual method Init **/
     virtual void SetParContainers();
     virtual InitStatus Init();
-
 
     /** Virtual method Exec **/
     virtual void Exec(Option_t* opt);
 
     virtual void Finish();
 
-    virtual void SetStart(Int_t type) {fStart = type;}
-    virtual void SetStop(Int_t type) {fStop = type;}
+    virtual void SetStart(Int_t type) { fStart = type; }
+    virtual void SetStop(Int_t type) { fStop = type; }
 
-    virtual void SetAllWeights(Float_t weight) {fCommonWeight = weight;}
-    virtual void SetWeightStage(Int_t type, Float_t weight) {
-      fStageWeights.push_back(std::pair<Int_t, Float_t>(static_cast<Int_t>(type), weight));
+    virtual void SetAllWeights(Float_t weight) { fCommonWeight = weight; }
+    virtual void SetWeightStage(Int_t type, Float_t weight)
+    {
+        fStageWeights.push_back(std::pair<Int_t, Float_t>(static_cast<Int_t>(type), weight));
     }
 
     virtual void SetWeights();
@@ -85,7 +81,7 @@ class FairMCMatchSelectorTask : public FairTask
     FairMCMatchSelectorTask(const FairMCMatchSelectorTask&);
     FairMCMatchSelectorTask& operator=(const FairMCMatchSelectorTask&);
 
-    ClassDef(FairMCMatchSelectorTask,1);
+    ClassDef(FairMCMatchSelectorTask, 1);
 };
 
 #endif

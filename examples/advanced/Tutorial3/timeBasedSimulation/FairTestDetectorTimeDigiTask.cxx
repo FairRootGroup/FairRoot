@@ -7,17 +7,17 @@
  ********************************************************************************/
 #include "FairTestDetectorTimeDigiTask.h"
 
-#include "FairLink.h"             // for FairLink
-#include "FairRootManager.h"      // for FairRootManager
-#include "FairTestDetectorDigi.h" // for FairTestDetectorDigi
-#include "FairTestDetectorDigiWriteoutBuffer.h"
-#include "FairTestDetectorPoint.h" // for FairTestDetectorPoint
+#include "FairLink.h"   // for FairLink
 #include "FairLogger.h"
+#include "FairRootManager.h"        // for FairRootManager
+#include "FairTestDetectorDigi.h"   // for FairTestDetectorDigi
+#include "FairTestDetectorDigiWriteoutBuffer.h"
+#include "FairTestDetectorPoint.h"   // for FairTestDetectorPoint
 
-#include <TClonesArray.h> // for TClonesArray
-#include <TMath.h>        // for Sqrt
-#include <TRandom.h>      // for TRandom, gRandom
-#include <TString.h>      // for TString
+#include <TClonesArray.h>   // for TClonesArray
+#include <TMath.h>          // for Sqrt
+#include <TRandom.h>        // for TRandom, gRandom
+#include <TString.h>        // for TString
 
 FairTestDetectorTimeDigiTask::FairTestDetectorTimeDigiTask()
     : FairTask()
@@ -26,32 +26,28 @@ FairTestDetectorTimeDigiTask::FairTestDetectorTimeDigiTask()
     , fDigiArray(nullptr)
     , fDataBuffer(nullptr)
     , fTimeOrderedDigi(kFALSE)
-{
-}
+{}
 
-FairTestDetectorTimeDigiTask::~FairTestDetectorTimeDigiTask()
-{
-}
+FairTestDetectorTimeDigiTask::~FairTestDetectorTimeDigiTask() {}
 
 InitStatus FairTestDetectorTimeDigiTask::Init()
 {
     FairRootManager* ioman = FairRootManager::Instance();
-    if (!ioman)
-    {
+    if (!ioman) {
         LOG(error) << "FairTestDetectorTimeDigiTask::Init: RootManager not instantiated!";
         return kFATAL;
     }
 
     fPointArray = static_cast<TClonesArray*>(ioman->GetObject("FairTestDetectorPoint"));
-    if (!fPointArray)
-    {
+    if (!fPointArray) {
         LOG(warn) << "FairTestDetectorTimeDigiTask::Init: No Point array!";
         return kERROR;
     }
 
     // Create and register output array
     fDataBuffer = new FairTestDetectorDigiWriteoutBuffer("FairTestDetectorDigi", "TOY", kTRUE);
-    fDataBuffer = static_cast<FairTestDetectorDigiWriteoutBuffer*>(ioman->RegisterWriteoutBuffer("FairTestDetectorDigi", fDataBuffer));
+    fDataBuffer = static_cast<FairTestDetectorDigiWriteoutBuffer*>(
+        ioman->RegisterWriteoutBuffer("FairTestDetectorDigi", fDataBuffer));
     fDataBuffer->ActivateBuffering(fTimeOrderedDigi);
 
     return kSUCCESS;
@@ -64,11 +60,9 @@ void FairTestDetectorTimeDigiTask::Exec(Option_t* /*opt*/)
     // fill the map
     LOG(info) << "EventTime: " << FairRootManager::Instance()->GetEventTime();
 
-    for (int ipnt = 0; ipnt < fPointArray->GetEntries(); ipnt++)
-    {
+    for (int ipnt = 0; ipnt < fPointArray->GetEntries(); ipnt++) {
         FairTestDetectorPoint* point = static_cast<FairTestDetectorPoint*>(fPointArray->At(ipnt));
-        if (!point)
-        {
+        if (!point) {
             continue;
         }
 
@@ -79,12 +73,9 @@ void FairTestDetectorTimeDigiTask::Exec(Option_t* /*opt*/)
         Double_t timestamp = CalcTimeStamp(point->GetTime());
 
         FairTestDetectorDigi* digi = new FairTestDetectorDigi(xPad, yPad, zPad, timestamp);
-        if (fTimeResolution > 0)
-        {
+        if (fTimeResolution > 0) {
             digi->SetTimeStampError(fTimeResolution / TMath::Sqrt(fTimeResolution));
-        }
-        else
-        {
+        } else {
             digi->SetTimeStampError(0);
         }
 
@@ -110,14 +101,11 @@ Double_t FairTestDetectorTimeDigiTask::CalcTimeStamp(Double_t timeOfFlight)
 
     Double_t result = eventTime + timeOfFlight + detectionTime;
 
-    if (result < 0)
-    {
+    if (result < 0) {
         return 0;
-    }
-    else
-    {
+    } else {
         return result;
     }
 }
 
-ClassImp(FairTestDetectorTimeDigiTask)
+ClassImp(FairTestDetectorTimeDigiTask);

@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   BoostDataSaver.h
  * Author: winckler
  *
@@ -6,17 +6,21 @@
  */
 
 #ifndef BOOSTDATASAVER_H
-#define	BOOSTDATASAVER_H
+#define BOOSTDATASAVER_H
 
 // std
-#include <iostream>
-#include <vector>
-#include <string>
 #include <fstream>
+#include <iostream>
+#include <string>
 #include <type_traits>
+#include <vector>
 
 // boost
-namespace boost { namespace serialization { class access; } }
+namespace boost {
+namespace serialization {
+class access;
+}
+}   // namespace boost
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
@@ -24,7 +28,9 @@ namespace boost { namespace serialization { class access; } }
 // FairRoot
 #include <FairMQMessage.h>
 
-template <typename TPayload, typename TArchiveIn = boost::archive::binary_iarchive, typename TArchiveOut = TBoboost::archive::binary_oarchiveostOut>
+template<typename TPayload,
+         typename TArchiveIn = boost::archive::binary_iarchive,
+         typename TArchiveOut = TBoboost::archive::binary_oarchiveostOut>
 class BoostDataSaver
 {
   public:
@@ -52,12 +58,9 @@ class BoostDataSaver
         std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());
         std::istringstream ibuffer(msgStr);
         TArchiveIn inputArchive(ibuffer);
-        try
-        {
+        try {
             inputArchive >> objArr;
-        }
-        catch (boost::archive::archive_exception& e)
-        {
+        } catch (boost::archive::archive_exception& e) {
             LOG(error) << e.what();
         }
         TArchiveOut outArchive(outfile);
@@ -67,8 +70,7 @@ class BoostDataSaver
     std::vector<std::vector<TPayload>> Read(std::ifstream& infile)
     {
         std::vector<std::vector<TPayload>> dataContainer;
-        while (infile.peek()!= EOF && !infile.eof())
-        {
+        while (infile.peek() != EOF && !infile.eof()) {
             TArchiveIn inArchive(infile);
             std::vector<TPayload> temp;
             inArchive >> temp;

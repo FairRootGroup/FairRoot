@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -28,10 +28,10 @@
 #ifndef FAIR_ASCIIGENERATOR_H
 #define FAIR_ASCIIGENERATOR_H
 
-#include "FairGenerator.h"              // for FairGenerator
+#include "FairGenerator.h"   // for FairGenerator
 
-#include <iosfwd>                       // for ifstream
-#include <Rtypes.h>                     // for FairAsciiGenerator::Class, etc
+#include <Rtypes.h>   // for FairAsciiGenerator::Class, etc
+#include <iosfwd>     // for ifstream
 
 class FairPrimaryGenerator;
 
@@ -56,8 +56,8 @@ class FairAsciiGenerator : public FairGenerator
     virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
   private:
-    std::ifstream* fInputFile;               //! Input file stream
-    const Char_t* fFileName;            //! Input file Name
+    std::ifstream* fInputFile;   //! Input file stream
+    const Char_t* fFileName;     //! Input file Name
 
     /** Private method CloseInput. Just for convenience. Closes the
      ** input file properly. Called from destructor and from ReadEvent. **/
@@ -70,7 +70,7 @@ class FairAsciiGenerator : public FairGenerator
 
     // TDatabasePDG *fPDG; //!
 
-    ClassDef(FairAsciiGenerator,1);
+    ClassDef(FairAsciiGenerator, 1);
 };
 
 #endif

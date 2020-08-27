@@ -16,7 +16,6 @@
 #define FAIRMQPIXELFILESINKBIN_H_
 
 #include <FairMQDevice.h>
-
 #include <string>
 #include <vector>
 
@@ -34,10 +33,10 @@ class FairMQPixelFileSinkBin : public FairMQDevice
     void SetOutputFileName(const std::string& tempString) { fFileName = tempString; }
     void AddOutputBranch(const std::string& classString, const std::string& branchString)
     {
-      fClassNames .push_back(classString);
-      fBranchNames.push_back(branchString);
+        fClassNames.push_back(classString);
+        fBranchNames.push_back(branchString);
     }
-    std::string GetOutputFileName () { return fFileName; }
+    std::string GetOutputFileName() { return fFileName; }
 
     void SetInputChannelName(const std::string& tstr) { fInputChannelName = tstr; }
     void SetAckChannelName(const std::string& tstr) { fAckChannelName = tstr; }
@@ -46,7 +45,7 @@ class FairMQPixelFileSinkBin : public FairMQDevice
     bool StoreData(FairMQParts&, int);
     virtual void Init();
 
- private:
+  private:
     std::string fInputChannelName;
     std::string fAckChannelName;
 

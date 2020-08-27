@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   RootSerializer.h
  * Author: winckler
  *
@@ -8,12 +8,10 @@
 #ifndef ROOTSERIALIZER_H
 #define ROOTSERIALIZER_H
 
-#include <memory>
-
+#include <FairMQMessage.h>
 #include <TClonesArray.h>
 #include <TMessage.h>
-
-#include <FairMQMessage.h>
+#include <memory>
 
 // special class to expose protected TMessage constructor
 class FairTMessage : public TMessage
@@ -36,10 +34,8 @@ struct RootSerializer
     {
         TMessage* tm = new TMessage(kMESS_OBJECT);
         tm->WriteObject(input);
-        msg.Rebuild(tm->Buffer(),
-                    tm->BufferSize(),
-                    [](void*, void* tmsg){ delete static_cast<TMessage*>(tmsg); },
-                    tm);
+        msg.Rebuild(
+            tm->Buffer(), tm->BufferSize(), [](void*, void* tmsg) { delete static_cast<TMessage*>(tmsg); }, tm);
     }
 
     template<typename T>
@@ -47,10 +43,8 @@ struct RootSerializer
     {
         TMessage* tm = new TMessage(kMESS_OBJECT);
         tm->WriteObject(input.get());
-        msg.Rebuild(tm->Buffer(),
-                    tm->BufferSize(),
-                    [](void*, void* tmsg){ delete static_cast<TMessage*>(tmsg); },
-                    tm);
+        msg.Rebuild(
+            tm->Buffer(), tm->BufferSize(), [](void*, void* tmsg) { delete static_cast<TMessage*>(tmsg); }, tm);
     }
 
     template<typename T>

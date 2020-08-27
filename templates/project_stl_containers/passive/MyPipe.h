@@ -16,9 +16,10 @@
 
 #include "FairModule.h"
 
-class MyPipe : public FairModule {
+class MyPipe : public FairModule
+{
   public:
-    MyPipe(const char * name, const char *Title="My Pipe");
+    MyPipe(const char* name, const char* Title = "My Pipe");
     MyPipe();
 
     virtual ~MyPipe();
@@ -29,10 +30,8 @@ class MyPipe : public FairModule {
   private:
     MyPipe(const MyPipe&);
     MyPipe& operator=(const MyPipe&);
-   
-  ClassDef(MyPipe,1) //MyPIPE
 
+    ClassDef(MyPipe, 1);   // MyPIPE
 };
 
-#endif //PIPE_H
-
+#endif   // PIPE_H

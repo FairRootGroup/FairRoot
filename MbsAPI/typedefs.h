@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /* This central include file defines data types for all platforms */
@@ -12,16 +12,16 @@
 
 /* Platform independent definitions */
 
-typedef          char   CHARS;
-typedef unsigned char   CHARU;
-typedef          char   INTS1;
-typedef unsigned char   INTU1;
-typedef          short  INTS2;
-typedef unsigned short  INTU2;
-typedef          int    INTS4;
-typedef unsigned int    INTU4;
-typedef          float  REAL4;
-typedef          double REAL8;
+typedef char CHARS;
+typedef unsigned char CHARU;
+typedef char INTS1;
+typedef unsigned char INTU1;
+typedef short INTS2;
+typedef unsigned short INTU2;
+typedef int INTS4;
+typedef unsigned int INTU4;
+typedef float REAL4;
+typedef double REAL8;
 
 /* Platform specific definitions */
 
@@ -31,7 +31,6 @@ typedef          double REAL8;
 #include "typedefs_nt.h"
 typedef unsigned long ADDRS;
 #endif
-
 
 #ifdef Linux
 #define MBS_ENDIAN 0 /* little endian               */
@@ -47,7 +46,6 @@ typedef unsigned long ADDRS;
 typedef unsigned long ADDRS;
 #endif
 
-
 #ifdef Darwin
 #define MBS_ENDIAN 0 /* little endian               */
 #define GSI__LINUX
@@ -55,12 +53,11 @@ typedef unsigned long ADDRS;
 typedef unsigned long ADDRS;
 #endif
 
-
 #ifdef _AIX
 #define MBS_ENDIAN 1 /* big    endian */
 #define GSI__AIX
 #define GSI__UNIX
-typedef          long long INTS8;
+typedef long long INTS8;
 typedef unsigned long long INTU8;
 typedef unsigned long ADDRS;
 #endif
@@ -71,34 +68,34 @@ typedef unsigned long ADDRS;
 #define AXP
 #define GSI__UNIX_AXP
 #define GSI__UNIX
-typedef          long INTS8;
+typedef long INTS8;
 typedef unsigned long INTU8;
 typedef unsigned long ADDRS;
 #endif
 #endif
 
 #ifdef _HPUX_SOURCE
-#define MBS_ENDIAN  1 /* big    endian               */
+#define MBS_ENDIAN 1 /* big    endian               */
 #define GSI__HPUX
 #define GSI__UNIX
-typedef          long INTS8;
+typedef long INTS8;
 typedef unsigned long INTU8;
 typedef unsigned long ADDRS;
 #endif
 
 #ifdef Lynx
-#define MBS_ENDIAN  1 /* big    endian               */
+#define MBS_ENDIAN 1 /* big    endian               */
 #define GSI__LYNX
 #define GSI__UNIX
-typedef          long INTS8;
+typedef long INTS8;
 typedef unsigned long INTU8;
 typedef unsigned long ADDRS;
 #endif
 
 #ifdef VMS
-#define MBS_ENDIAN  0  /* little endian               */
+#define MBS_ENDIAN 0 /* little endian               */
 #define GSI__VMS
-typedef          long INTS8;
+typedef long INTS8;
 typedef unsigned long INTU8;
 typedef unsigned long ADDRS;
 #ifdef __alpha
@@ -109,6 +106,5 @@ typedef unsigned long ADDRS;
 #define GSI__VMS_VAX
 #endif
 #endif
-
 
 #endif

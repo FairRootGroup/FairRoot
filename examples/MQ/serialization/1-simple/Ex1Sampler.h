@@ -2,13 +2,11 @@
 #define EX1SAMPLER_H
 
 #include "MyDigi.h"
-
 #include "RootSerializer.h"
 
 #include <FairMQDevice.h>
-
-#include <TClonesArray.h>
 #include <Rtypes.h>
+#include <TClonesArray.h>
 #include <TFile.h>
 #include <TTree.h>
 
@@ -27,8 +25,7 @@ class Ex1Sampler : public FairMQDevice
 
     virtual ~Ex1Sampler()
     {
-        if (fInputFile)
-        {
+        if (fInputFile) {
             fInputFile->Close();
             delete fInputFile;
         }
@@ -39,20 +36,14 @@ class Ex1Sampler : public FairMQDevice
     {
         fFileName = fConfig->GetValue<std::string>("input-file");
         fInputFile = TFile::Open(fFileName.c_str(), "READ");
-        if (fInputFile)
-        {
+        if (fInputFile) {
             fTree = static_cast<TTree*>(fInputFile->Get("cbmsim"));
-            if (fTree)
-            {
+            if (fTree) {
                 fTree->SetBranchAddress("MyDigi", &fInput);
-            }
-            else
-            {
+            } else {
                 LOG(error) << "Could not find tree 'MyDigi'";
             }
-        }
-        else
-        {
+        } else {
             LOG(error) << "Could not open file " << fFileName << " in SimpleTreeReader::InitSource()";
         }
     }
@@ -63,15 +54,13 @@ class Ex1Sampler : public FairMQDevice
         const uint64_t numEvents = fTree->GetEntries();
         LOG(info) << "Number of events to process: " << numEvents;
 
-        for (uint64_t i = 0; i < numEvents; i++)
-        {
+        for (uint64_t i = 0; i < numEvents; i++) {
             FairMQMessagePtr msg(NewMessage());
             fTree->GetEntry(i);
             Serialize<RootSerializer>(*msg, fInput);
             Send(msg, "data1");
             sentMsgs++;
-            if (!CheckCurrentState(RUNNING))
-            {
+            if (NewStatePending()) {
                 break;
             }
         }
@@ -86,4 +75,4 @@ class Ex1Sampler : public FairMQDevice
     TFile* fInputFile;
 };
 
-#endif // EX1SAMPLER_H
+#endif   // EX1SAMPLER_H

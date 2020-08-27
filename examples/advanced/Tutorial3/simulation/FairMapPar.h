@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
@@ -17,10 +17,10 @@
 #ifndef FairMAPPAR_H
 #define FairMAPPAR_H 1
 
-#include "FairParGenericSet.h" // for FairParGenericSet
+#include "FairParGenericSet.h"   // for FairParGenericSet
 
-#include <Rtypes.h>  // for Double_t, FairMapPar::Class, etc
-#include <TString.h> // for TString
+#include <Rtypes.h>    // for Double_t, FairMapPar::Class, etc
+#include <TString.h>   // for TString
 
 class FairMapPar : public FairParGenericSet
 {
@@ -35,54 +35,18 @@ class FairMapPar : public FairParGenericSet
     ~FairMapPar();
 
     /** Accessors **/
-    Int_t GetType() const
-    {
-        return fType;
-    }
-    Double_t GetXmin() const
-    {
-        return fXmin;
-    }
-    Double_t GetXmax() const
-    {
-        return fXmax;
-    }
-    Double_t GetYmin() const
-    {
-        return fYmin;
-    }
-    Double_t GetYmax() const
-    {
-        return fYmax;
-    }
-    Double_t GetZmin() const
-    {
-        return fZmin;
-    }
-    Double_t GetZmax() const
-    {
-        return fZmax;
-    }
-    void MapName(TString& name)
-    {
-        name = fMapName;
-    }
-    Double_t GetPositionX() const
-    {
-        return fPosX;
-    }
-    Double_t GetPositionY() const
-    {
-        return fPosY;
-    }
-    Double_t GetPositionZ() const
-    {
-        return fPosZ;
-    }
-    Double_t GetScale() const
-    {
-        return fScale;
-    }
+    Int_t GetType() const { return fType; }
+    Double_t GetXmin() const { return fXmin; }
+    Double_t GetXmax() const { return fXmax; }
+    Double_t GetYmin() const { return fYmin; }
+    Double_t GetYmax() const { return fYmax; }
+    Double_t GetZmin() const { return fZmin; }
+    Double_t GetZmax() const { return fZmax; }
+    void MapName(TString& name) { name = fMapName; }
+    Double_t GetPositionX() const { return fPosX; }
+    Double_t GetPositionY() const { return fPosY; }
+    Double_t GetPositionZ() const { return fPosZ; }
+    Double_t GetScale() const { return fScale; }
 
   protected:
     /** Field type

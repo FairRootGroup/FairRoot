@@ -31,7 +31,7 @@ target_link_libraries(${target} PUBLIC
   Tree
   Hist
   RIO
-  VMC
+  ${VMCLIB}
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})

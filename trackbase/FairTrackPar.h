@@ -1,17 +1,16 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRSTSTRACKPAR
 #define FAIRSTSTRACKPAR 1
 
-#include <TObject.h>                    // for TObject
-
-#include <Rtypes.h>                     // for Double_t, Int_t, etc
-#include <TVector3.h>                   // for TVector3
+#include <Rtypes.h>     // for Double_t, Int_t, etc
+#include <TObject.h>    // for TObject
+#include <TVector3.h>   // for TVector3
 
 class FairTrackPar : public TObject
 {
@@ -20,29 +19,38 @@ class FairTrackPar : public TObject
     FairTrackPar();
 
     /** Constructor with all variables **/
-    FairTrackPar(Double_t x,  Double_t y,  Double_t z,
-                 Double_t px, Double_t py, Double_t pz, Int_t q);
+    FairTrackPar(Double_t x, Double_t y, Double_t z, Double_t px, Double_t py, Double_t pz, Int_t q);
 
-    FairTrackPar(Double_t x,  Double_t y,  Double_t z, Double_t dx, Double_t dy, Double_t dz,
-                 Double_t px, Double_t py, Double_t pz, Double_t dpx, Double_t dpy, Double_t dpz,
+    FairTrackPar(Double_t x,
+                 Double_t y,
+                 Double_t z,
+                 Double_t dx,
+                 Double_t dy,
+                 Double_t dz,
+                 Double_t px,
+                 Double_t py,
+                 Double_t pz,
+                 Double_t dpx,
+                 Double_t dpy,
+                 Double_t dpz,
                  Int_t q);
 
     /** Destructor **/
     virtual ~FairTrackPar();
 
     /** Output to screen **/
-    virtual void  Print(Option_t* option = "") const;
+    virtual void Print(Option_t* option = "") const;
     /** Accessors **/
     virtual TVector3 GetPosition() const { return TVector3(fX, fY, fZ); }
 
     virtual Double_t GetX() { return fX; }
     virtual Double_t GetY() { return fY; }
     virtual Double_t GetZ() { return fZ; }
-    Int_t   GetQ()  const { return fq; }
+    Int_t GetQ() const { return fq; }
 
-    virtual Double_t GetDX()  const { return fDX; }
-    virtual Double_t GetDY()  const { return fDY; }
-    virtual Double_t GetDZ()  const { return fDZ; }
+    virtual Double_t GetDX() const { return fDX; }
+    virtual Double_t GetDY() const { return fDY; }
+    virtual Double_t GetDZ() const { return fDZ; }
 
     virtual TVector3 GetMomentum() const { return TVector3(fPx, fPy, fPz); }
 
@@ -58,10 +66,9 @@ class FairTrackPar : public TObject
 
     virtual void GetFieldValue(const Double_t point[3], Double_t* bField);
 
-
-    virtual void SetX(Double_t x) { fX  = x; }
-    virtual void SetY(Double_t y) { fY  = y; }
-    virtual void SetZ(Double_t z) { fZ  = z; }
+    virtual void SetX(Double_t x) { fX = x; }
+    virtual void SetY(Double_t y) { fY = y; }
+    virtual void SetZ(Double_t z) { fZ = z; }
 
     virtual void SetDX(Double_t dx) { fDX = dx; }
     virtual void SetDY(Double_t dy) { fDY = dy; }
@@ -119,7 +126,7 @@ class FairTrackPar : public TObject
     /** charge*/
     Int_t fq;
 
-    ClassDef(FairTrackPar,2);
+    ClassDef(FairTrackPar, 2);
 };
 
 #endif

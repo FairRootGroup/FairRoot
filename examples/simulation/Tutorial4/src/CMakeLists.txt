@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target Tutorial4)
+set(target ExSimulation4)
 
 set(sources
   data/FairTutorialDet4Point.cxx
@@ -27,7 +27,7 @@ set(sources
   tools/Mille.cc
 )
 
-if(ROOT_HAS_OPENGL)
+if(${ROOT_HAS_OPENGL})
   list(APPEND sources
     display/FairTutorialDet4PointDraw.cxx
   )
@@ -59,16 +59,16 @@ target_link_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::FairTools # FairLogger
-  FairRoot::MCStack
+  FairRoot::ExMCStack
   FairRoot::GeoBase
   FairRoot::ParBase
   FairRoot::Gen
-  FairRoot::EventDisplay
+  $<$<BOOL:${ROOT_HAS_OPENGL}>:FairRoot::EventDisplay>
 
   Core
   Physics
   Geom
-  VMC
+  ${VMCLIB}
   MathCore
   Hist
   $<$<BOOL:${ROOT_HAS_OPENGL}>:Eve>

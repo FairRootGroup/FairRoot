@@ -13,13 +13,13 @@
 #ifndef FAIREVENTHEADER_H
 #define FAIREVENTHEADER_H
 
-#include <TNamed.h> // for TNamed
-#include <Rtypes.h> // for Int_t, Double_t, UInt_t, ClassDef, etc
+#include <Rtypes.h>   // for Int_t, Double_t, UInt_t, ClassDef, etc
+#include <TNamed.h>   // for TNamed
 
 /**
  *  Event Header Class
-  **@author D.Bertini <d.bertini@gsi.de>
-  **@author M.Al-Turany <m.al-turany@gsi.de>
+ **@author D.Bertini <d.bertini@gsi.de>
+ **@author M.Al-Turany <m.al-turany@gsi.de>
  */
 class FairEventHeader : public TNamed
 {
@@ -40,8 +40,8 @@ class FairEventHeader : public TNamed
     Int_t GetMCEntryNumber() { return fMCEntryNo; }
 
     /** Set the run ID for this run
-    * @param runid : unique run id
-    */
+     * @param runid : unique run id
+     */
     void SetRunId(UInt_t runid) { fRunId = runid; }
 
     /** Set the MC time for this event
@@ -65,13 +65,13 @@ class FairEventHeader : public TNamed
     /** Run Id */
     UInt_t fRunId;
     /** Event Time **/
-    Double_t  fEventTime;
+    Double_t fEventTime;
     /** Input file identifier, the file description is in the File header*/
-    Int_t     fInputFileId;
+    Int_t fInputFileId;
     /**MC entry number from input chain*/
-    Int_t     fMCEntryNo;
+    Int_t fMCEntryNo;
 
-    ClassDef(FairEventHeader,3)
+    ClassDef(FairEventHeader, 3);
 };
 
 #endif

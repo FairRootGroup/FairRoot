@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -11,39 +11,46 @@
 // -------------------------------------------------------------------------
 
 #include "FairGeoParSet.h"
-#include <TObjArray.h>                  // for TObjArray
-#include "FairParamList.h"              // for FairParamList
 
-ClassImp(FairGeoParSet)
+#include "FairParamList.h"   // for FairParamList
 
-FairGeoParSet::FairGeoParSet(const char* name,const char* title,const char* context)
-  : FairParGenericSet(name,title,context),
-    fGeoNodes(new TObjArray()),
-    fGeom(0)
-{
-}
+#include <TObjArray.h>   // for TObjArray
 
-FairGeoParSet::~FairGeoParSet(void)
-{
-}
+ClassImp(FairGeoParSet);
+
+FairGeoParSet::FairGeoParSet(const char* name, const char* title, const char* context)
+    : FairParGenericSet(name, title, context)
+    , fGeoNodes(new TObjArray())
+    , fGeom(0)
+{}
+
+FairGeoParSet::~FairGeoParSet(void) {}
 
 void FairGeoParSet::clear(void)
 {
-  //delete fGeoNodes;
-// delete fGeom;
+    // delete fGeoNodes;
+    // delete fGeom;
 }
 
 void FairGeoParSet::putParams(FairParamList* l)
 {
-  if (!l) { return; }
-  l->addObject("FairGeoNodes List", fGeoNodes);
-  l->addObject("Detector Geometry", fGeom);
+    if (!l) {
+        return;
+    }
+    l->addObject("FairGeoNodes List", fGeoNodes);
+    l->addObject("Detector Geometry", fGeom);
 }
 
 Bool_t FairGeoParSet::getParams(FairParamList* l)
 {
-  if (!l) { return kFALSE; }
-  if (!l->fillObject("FairGeoNodes List", fGeoNodes)) { return kFALSE; }
-  if (!l->fillObject("Detector Geometry", fGeom)) { return kFALSE; }
-  return kTRUE;
+    if (!l) {
+        return kFALSE;
+    }
+    if (!l->fillObject("FairGeoNodes List", fGeoNodes)) {
+        return kFALSE;
+    }
+    if (!l->fillObject("Detector Geometry", fGeom)) {
+        return kFALSE;
+    }
+    return kTRUE;
 }

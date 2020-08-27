@@ -1,16 +1,16 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRTESTDETECTORDIGITASK_H_
 #define FAIRTESTDETECTORDIGITASK_H_
 
-#include "FairTask.h" // for FairTask, InitStatus
+#include "FairTask.h"   // for FairTask, InitStatus
 
-#include <Rtypes.h> // for Double_t, etc
+#include <Rtypes.h>   // for Double_t, etc
 
 class TClonesArray;
 
@@ -29,14 +29,8 @@ class FairTestDetectorDigiTask : public FairTask
     /** Virtual method Exec **/
     virtual void Exec(Option_t* opt);
 
-    void SetTimeResolution(Double_t timeInNs)
-    {
-        fTimeResolution = timeInNs;
-    }
-    Double_t GetTimeResolution()
-    {
-        return fTimeResolution;
-    }
+    void SetTimeResolution(Double_t timeInNs) { fTimeResolution = timeInNs; }
+    Double_t GetTimeResolution() { return fTimeResolution; }
 
   private:
     Int_t CalcPad(Double_t posIn, Double_t posOut);

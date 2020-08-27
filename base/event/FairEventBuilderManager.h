@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 //* $Id: */
@@ -11,7 +11,6 @@
 // -----                     FairEventBuilderManager header file              -----
 // -----                  Created 20/09/2013 by R. Karabowicz          -----
 // -------------------------------------------------------------------------
-
 
 /** FairEventBuilderManager
  *@author Radoslaw Karabowicz <r.karabowicz@gsi.de>
@@ -32,11 +31,10 @@
 #ifndef FAIREVENTBUILDERMANAGER_H
 #define FAIREVENTBUILDERMANAGER_H 1
 
-#include "FairTask.h"
 #include "FairEventBuilder.h"
+#include "FairTask.h"
 
-#include <Rtypes.h> // ClassDef
-
+#include <Rtypes.h>   // ClassDef
 #include <vector>
 
 class TClonesArray;
@@ -48,7 +46,7 @@ class FairEventBuilderManager : public FairTask
     FairEventBuilderManager();
 
     /** Constructor with task name **/
-    FairEventBuilderManager(const char* name, Int_t iVerbose=1);
+    FairEventBuilderManager(const char* name, Int_t iVerbose = 1);
 
     /** Destructor **/
     virtual ~FairEventBuilderManager();
@@ -61,7 +59,7 @@ class FairEventBuilderManager : public FairTask
 
   protected:
     std::vector<FairEventBuilder*> fEventBuilders;
-    std::vector<std::vector<std::pair<double,FairRecoEventHeader*>>>  fPossibleEvents;
+    std::vector<std::vector<std::pair<double, FairRecoEventHeader*>>> fPossibleEvents;
 
     /** Fill events from various builders **/
     virtual Double_t FillEventVectors();
@@ -85,7 +83,7 @@ class FairEventBuilderManager : public FairTask
     /** Finish at the end of each event **/
     virtual void Finish();
 
-    ClassDef(FairEventBuilderManager,1);
+    ClassDef(FairEventBuilderManager, 1);
 };
 
 #endif

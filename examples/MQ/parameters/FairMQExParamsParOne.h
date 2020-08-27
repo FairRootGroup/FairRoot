@@ -18,8 +18,8 @@ class FairMQExParamsParOne : public FairParGenericSet
 {
   public:
     /** Standard constructor **/
-    FairMQExParamsParOne(const char* name    = "FairMQExParamsParOne",
-                         const char* title   = "FairMQ Example Parameters Parameter One",
+    FairMQExParamsParOne(const char* name = "FairMQExParamsParOne",
+                         const char* title = "FairMQ Example Parameters Parameter One",
                          const char* context = "Default");
 
     /** Destructor **/
@@ -36,12 +36,12 @@ class FairMQExParamsParOne : public FairParGenericSet
     inline void SetValue(const Int_t& val) { fParameterValue = val; }
 
   private:
-    Int_t fParameterValue; //
+    Int_t fParameterValue;   //
 
     FairMQExParamsParOne(const FairMQExParamsParOne&);
     FairMQExParamsParOne& operator=(const FairMQExParamsParOne&);
 
-    ClassDef(FairMQExParamsParOne,1);
+    ClassDef(FairMQExParamsParOne, 1);
 };
 
-#endif // FAIRMQEXPARAMSPARONE_H_
+#endif   // FAIRMQEXPARAMSPARONE_H_

@@ -14,8 +14,9 @@
 #ifndef FAIRTUTORIALDET4POINTDRAW_H
 #define FAIRTUTORIALDET4POINTDRAW_H
 
-#include "FairTask.h"                   // for FairTask, InitStatus
-#include <Rtypes.h>                     // for Bool_t, Int_t, etc
+#include "FairTask.h"   // for FairTask, InitStatus
+
+#include <Rtypes.h>   // for Bool_t, Int_t, etc
 
 class FairTutorialDet4GeoPar;
 class FairTutorialDet4DigiPar;
@@ -32,9 +33,9 @@ class FairTutorialDet4PointDraw : public FairTask
     FairTutorialDet4PointDraw();
 
     /** Standard constructor
-    *@param name        Name of task
-    *@param iVerbose    Verbosity level
-    **/
+     *@param name        Name of task
+     *@param iVerbose    Verbosity level
+     **/
     FairTutorialDet4PointDraw(const char* name, Color_t color, Style_t mstyle);
 
     /** Destructor **/
@@ -51,19 +52,19 @@ class FairTutorialDet4PointDraw : public FairTask
     virtual void Finish() {}
 
   private:
-    TClonesArray *fPointList; //!
-    FairTutorialDet4GeoPar *fGeoPar; //!
-    FairEventManager *fEventManager;   //!
-    TEvePointSet* fq;    //!
-    Color_t fColor; //!
-    Style_t fStyle; //!
-    Bool_t fGlobalCoordinates; //!
-    FairTutorialDet4GeoHandler* fGeoHandler; //!
+    TClonesArray* fPointList;                  //!
+    FairTutorialDet4GeoPar* fGeoPar;           //!
+    FairEventManager* fEventManager;           //!
+    TEvePointSet* fq;                          //!
+    Color_t fColor;                            //!
+    Style_t fStyle;                            //!
+    Bool_t fGlobalCoordinates;                 //!
+    FairTutorialDet4GeoHandler* fGeoHandler;   //!
 
     FairTutorialDet4PointDraw(const FairTutorialDet4PointDraw&);
     FairTutorialDet4PointDraw& operator=(const FairTutorialDet4PointDraw&);
 
-    ClassDef(FairTutorialDet4PointDraw,1);
+    ClassDef(FairTutorialDet4PointDraw, 1);
 };
 
 #endif

@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
@@ -19,17 +19,16 @@
  Derived from FairGenerator.
 **/
 
-
 #ifndef FAIR_PARTICLEGENERATOR_H
 #define FAIR_PARTICLEGENERATOR_H
 
-#include "FairGenerator.h"              // for FairGenerator
+#include "FairBaseMCGenerator.h"   // for FairGenerator
 
-#include <Rtypes.h>                     // for Double32_t, Int_t, etc
+#include <Rtypes.h>   // for Double32_t, Int_t, etc
 
 class FairPrimaryGenerator;
 
-class FairParticleGenerator : public FairGenerator
+class FairParticleGenerator : public FairBaseMCGenerator
 {
   public:
     /** Default constructor. **/
@@ -42,18 +41,20 @@ class FairParticleGenerator : public FairGenerator
      **@param px,py,pz Momentum components [GeV]
      **@param vx,vy,vz Vertex coordinates [cm], Default (0,0,0)
      **/
-    FairParticleGenerator(Int_t pdgid, Int_t mult, Double32_t px,
-                          Double32_t py, Double32_t pz, Double32_t vx = 0.,
-                          Double32_t vy = 0., Double32_t vz = 0.);
+    FairParticleGenerator(Int_t pdgid,
+                          Int_t mult,
+                          Double32_t px,
+                          Double32_t py,
+                          Double32_t pz,
+                          Double32_t vx = 0.,
+                          Double32_t vy = 0.,
+                          Double32_t vz = 0.);
 
     /** Destructor **/
-    virtual ~FairParticleGenerator() {};
+    virtual ~FairParticleGenerator(){};
 
     /** Modifiers **/
-    void SetPDGType(Int_t pdg)       {fPDGType = pdg;  };
-    void SetMultiplicity(Int_t mult) {fMult    = mult; };
     void SetMomentum(Double32_t px, Double32_t py, Double32_t pz);
-    void SetVertex(Double32_t vx, Double32_t vy, Double32_t vz);
 
     /** Creates an event with given type and multiplicity.
      **@param primGen  pointer to the FairPrimaryGenerator
@@ -61,12 +62,9 @@ class FairParticleGenerator : public FairGenerator
     virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 
   private:
-    Int_t      fPDGType;       // Particle type (PDG encoding)
-    Int_t      fMult;          // Multiplicity
-    Double32_t fPx, fPy, fPz;  // Momentum components [GeV]
-    Double32_t fVx, fVy, fVz;  // Vertex coordinates [cm]
+    Double32_t fPx, fPy, fPz;   // Momentum components [GeV]
 
-    ClassDef(FairParticleGenerator,1);
+    ClassDef(FairParticleGenerator, 2);
 };
 
 #endif

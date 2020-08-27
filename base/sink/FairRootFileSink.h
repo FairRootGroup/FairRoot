@@ -20,7 +20,6 @@
 #include <Rtypes.h>
 #include <TFile.h>
 #include <TString.h>
-
 #include <typeinfo>
 
 class FairEventHeader;
@@ -34,39 +33,41 @@ class TFolder;
 class FairRootFileSink : public FairSink
 {
   public:
-    FairRootFileSink(TFile *f, const char* Title="OutputRootFile");
-    FairRootFileSink(const TString* RootFileName, const char* Title="OutputRootFile");
-    FairRootFileSink(const TString RootFileName, const char* Title="OutputRootFile");
+    FairRootFileSink(TFile* f, const char* Title = "OutputRootFile");
+    FairRootFileSink(const TString* RootFileName, const char* Title = "OutputRootFile");
+    FairRootFileSink(const TString RootFileName, const char* Title = "OutputRootFile");
     //  FairRootFileSink(const FairRootFileSink& file);
     virtual ~FairRootFileSink();
 
-    virtual Bool_t    InitSink();
-    virtual void      Close();
-    virtual void      Reset();
+    virtual Bool_t InitSink();
+    virtual void Close();
+    virtual void Reset();
 
     virtual Sink_Type GetSinkType() { return kFILESINK; }
 
-    virtual void      FillEventHeader(FairEventHeader* feh);
+    virtual void FillEventHeader(FairEventHeader* feh);
 
-    virtual TFile*    OpenRootFile(TString fileName="");
-    TFile*            GetRootFile (){return fRootFile;}
-    virtual TString   GetFileName (){return (fRootFile?fRootFile->GetName():"");}
+    virtual TFile* OpenRootFile(TString fileName = "");
+    TFile* GetRootFile() { return fRootFile; }
+    virtual TString GetFileName() { return (fRootFile ? fRootFile->GetName() : ""); }
 
-    virtual void      SetOutTree(TTree* fTree) { fOutTree=fTree;}
-    TTree*            GetOutTree() { return fOutTree; }
+    virtual void SetOutTree(TTree* fTree) { fOutTree = fTree; }
+    TTree* GetOutTree() { return fOutTree; }
 
-    virtual void      Fill();
+    virtual void Fill();
 
-    virtual Int_t     Write(const char* name=0, Int_t option=0, Int_t bufsize=0);
+    virtual Int_t Write(const char* name = 0, Int_t option = 0, Int_t bufsize = 0);
 
-    virtual void      RegisterImpl(const char* , const char* , void* );
-    virtual void      RegisterAny(const char* brname, const std::type_info &oi, const std::type_info &pi, void* obj);
+    virtual void RegisterImpl(const char*, const char*, void*);
+    virtual void RegisterAny(const char* brname, const std::type_info& oi, const std::type_info& pi, void* obj);
 
-    virtual void      WriteFolder();
-    virtual bool      CreatePersistentBranchesAny();
+    virtual void WriteFolder();
+    virtual bool CreatePersistentBranchesAny();
 
-    virtual void      WriteObject(TObject* f, const char*, Int_t option = 0);
-    virtual void      WriteGeometry();
+    virtual void WriteObject(TObject* f, const char*, Int_t option = 0);
+    virtual void WriteGeometry();
+
+    virtual FairSink* CloneSink();
 
   private:
     /** Title of input sink, could be input, background or signal*/
@@ -76,7 +77,7 @@ class FairRootFileSink : public FairSink
     /** Output Tree  */
     TTree* fOutTree;
     /**  list of folders from all input (and friends) files */
-    TObjArray *fListFolder; //!
+    TObjArray* fListFolder;   //!
     /** folder structure of output */
     TFolder* fCbmout;
     /** Initialization flag, true if initialized */
@@ -90,9 +91,9 @@ class FairRootFileSink : public FairSink
     // bool CreatePersistentBranchesAny();
 
     /**File Header*/
-    FairFileHeader*                        fFileHeader; //!
+    FairFileHeader* fFileHeader;   //!
 
-    ClassDef(FairRootFileSink, 1)
+    ClassDef(FairRootFileSink, 1);
 };
 
 #endif /* defined(__FAIRROOT__FairRootFileSink__) */

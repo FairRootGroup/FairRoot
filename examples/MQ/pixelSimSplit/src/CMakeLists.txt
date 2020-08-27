@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target SimMQ)
+set(target ExSimMQ)
 
 set(no_dict_sources
   devices/FairMQChunkMerger.cxx
@@ -47,14 +47,14 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::BaseMQ # Serialization policies
   FairRoot::FairTools # FairLogger
-  FairRoot::MCStack
   FairRoot::ParBase
-  FairRoot::Pixel
+  FairRoot::ExMCStack
+  FairRoot::ExPixel
 
   FairMQ::FairMQ
 
   Core
-  VMC
+  ${VMCLIB}
 )
 
 fairroot_target_root_dictionary(${target}

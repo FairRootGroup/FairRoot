@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target FairRutherford)
+set(target ExRutherford)
 
 set(sources
   FairRutherford.cxx
@@ -37,13 +37,13 @@ target_link_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::FairTools # FairLogger
-  FairRoot::MCStack
+  FairRoot::ExMCStack
   FairRoot::GeoBase
   FairRoot::ParBase
 
   Core
   Physics
-  VMC
+  ${VMCLIB}
 )
 
 fairroot_target_root_dictionary(${target}

@@ -1,17 +1,16 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRGEANEUTIL_H
 #define FAIRGEANEUTIL_H
 
-#include <TObject.h>                    // for TObject
-
-#include <Rtypes.h>                     // for Double_t, Int_t, etc
-#include <TVector3.h>                   // for TVector3
+#include <Rtypes.h>     // for Double_t, Int_t, etc
+#include <TObject.h>    // for TObject
+#include <TVector3.h>   // for TVector3
 
 class FairGeaneUtil : public TObject
 {
@@ -20,54 +19,93 @@ class FairGeaneUtil : public TObject
     ~FairGeaneUtil();
 
     // frame changing
-    void FromPtToSC(Double_t PC[3], Double_t RC[15],
-                    Double_t* PD, Double_t* RD, Int_t& IERR);
+    void FromPtToSC(Double_t PC[3], Double_t RC[15], Double_t* PD, Double_t* RD, Int_t& IERR);
 
-    void FromPtToSD(Double_t PD[3], Double_t RD[15], Double_t H[3],Int_t CH,
-                    Double_t SPU, Double_t DJ[3], Double_t DK[3],
-                    Int_t& IERR, Double_t* PC, Double_t* RC);
+    void FromPtToSD(Double_t PD[3],
+                    Double_t RD[15],
+                    Double_t H[3],
+                    Int_t CH,
+                    Double_t SPU,
+                    Double_t DJ[3],
+                    Double_t DK[3],
+                    Int_t& IERR,
+                    Double_t* PC,
+                    Double_t* RC);
 
-    void FromSCToPt(Double_t PC[3], Double_t RC[15],
-                    Double_t* PD, Double_t* RD, Int_t& IERR);
+    void FromSCToPt(Double_t PC[3], Double_t RC[15], Double_t* PD, Double_t* RD, Int_t& IERR);
 
-    void FromSCToSD(Double_t PC[3], Double_t RC[15], Double_t H[3], Int_t CH,
-                    Double_t DJ[3], Double_t DK[3],
-                    Int_t& IERR, Double_t& SPU,
-                    Double_t* PD, Double_t* RD);
+    void FromSCToSD(Double_t PC[3],
+                    Double_t RC[15],
+                    Double_t H[3],
+                    Int_t CH,
+                    Double_t DJ[3],
+                    Double_t DK[3],
+                    Int_t& IERR,
+                    Double_t& SPU,
+                    Double_t* PD,
+                    Double_t* RD);
 
-    void FromSD1ToSD2(Double_t PD1[3], Double_t RD1[15],Double_t H[3],
-                      Int_t CH, Double_t SP1,
-                      Double_t DJ1[3], Double_t DK1[3],
-                      Double_t DJ2[3], Double_t DK2[3],
-                      Int_t& IERR, Double_t& SP2,
-                      Double_t* PD2, Double_t* RD2);
+    void FromSD1ToSD2(Double_t PD1[3],
+                      Double_t RD1[15],
+                      Double_t H[3],
+                      Int_t CH,
+                      Double_t SP1,
+                      Double_t DJ1[3],
+                      Double_t DK1[3],
+                      Double_t DJ2[3],
+                      Double_t DK2[3],
+                      Int_t& IERR,
+                      Double_t& SP2,
+                      Double_t* PD2,
+                      Double_t* RD2);
 
-    void FromSDToPt(Double_t PD[3], Double_t RD[15], Double_t H[3],
-                    Int_t CH, Double_t SPU, Double_t DJ[3], Double_t DK[3],
-                    Int_t& IERR, Double_t* PC, Double_t* RC);
+    void FromSDToPt(Double_t PD[3],
+                    Double_t RD[15],
+                    Double_t H[3],
+                    Int_t CH,
+                    Double_t SPU,
+                    Double_t DJ[3],
+                    Double_t DK[3],
+                    Int_t& IERR,
+                    Double_t* PC,
+                    Double_t* RC);
 
-    void FromSDToSC(Double_t PD[3], Double_t RD[15], Double_t H[3], Int_t CH,
-                    Double_t SPU, Double_t DJ[3], Double_t DK[3],
-                    Int_t& IERR, Double_t* PC, Double_t* RC);
+    void FromSDToSC(Double_t PD[3],
+                    Double_t RD[15],
+                    Double_t H[3],
+                    Int_t CH,
+                    Double_t SPU,
+                    Double_t DJ[3],
+                    Double_t DK[3],
+                    Int_t& IERR,
+                    Double_t* PC,
+                    Double_t* RC);
 
     typedef Double_t sixMat[6][6];
-    void FromSCToMars(Double_t PC[3], Double_t RC[15], Double_t H[3], Int_t CH,
-                      Double_t* PD, sixMat& RD);
+    void FromSCToMars(Double_t PC[3], Double_t RC[15], Double_t H[3], Int_t CH, Double_t* PD, sixMat& RD);
 
-    void FromMarsToSC(Double_t PD[3], Double_t RD[6][6],  Double_t H[3],
+    void FromMarsToSC(Double_t PD[3], Double_t RD[6][6], Double_t H[3], Int_t CH, Double_t* PC, Double_t* RC);
+
+    void FromSDToMars(Double_t PC[3],
+                      Double_t RC[15],
+                      Double_t H[3],
                       Int_t CH,
-                      Double_t* PC, Double_t* RC);
+                      Double_t SP1,
+                      Double_t DJ1[3],
+                      Double_t DK1[3],
+                      Double_t* PD,
+                      sixMat& RD);
 
-    void FromSDToMars(Double_t PC[3], Double_t RC[15],
-                      Double_t H[3], Int_t CH,
-                      Double_t SP1, Double_t DJ1[3], Double_t DK1[3],
-                      Double_t* PD, sixMat& RD);
-
-    void FromMarsToSD(Double_t PD[3], Double_t RD[6][6],
-                      Double_t H[3], Int_t CH,
-                      Double_t DJ1[3], Double_t DK1[3],
-                      Int_t& IERR, Double_t& SP1,
-                      Double_t* PC, Double_t* RC);
+    void FromMarsToSD(Double_t PD[3],
+                      Double_t RD[6][6],
+                      Double_t H[3],
+                      Int_t CH,
+                      Double_t DJ1[3],
+                      Double_t DK1[3],
+                      Int_t& IERR,
+                      Double_t& SP1,
+                      Double_t* PC,
+                      Double_t* RC);
 
     void FromMat25ToVec15(Double_t A[5][5], Double_t* V);
     void FromMatToVec(Double_t A[5][5], Double_t* V);
@@ -80,7 +118,7 @@ class FairGeaneUtil : public TObject
     TVector3 FromMARSToSDCoord(TVector3 xyz, TVector3 o, TVector3 di, TVector3 dj, TVector3 dk);
     TVector3 FromSDToMARSCoord(TVector3 uvw, TVector3 o, TVector3 di, TVector3 dj, TVector3 dk);
 
-    ClassDef(FairGeaneUtil,1);
+    ClassDef(FairGeaneUtil, 1);
 };
 
 #endif

@@ -11,18 +11,17 @@
 // -----                Created 26/03/14  by M. Al-Turany              -----
 // -------------------------------------------------------------------------
 
-
 #ifndef Cave_H
 #define Cave_H
 
-#include "FairModule.h"                 // for FairModule
+#include "FairModule.h"   // for FairModule
 
-#include <Rtypes.h>                     // for MyCave::Class, ClassDef, etc
+#include <Rtypes.h>   // for MyCave::Class, ClassDef, etc
 
 class MyCave : public FairModule
 {
   public:
-    MyCave(const char* name, const char* Title="Exp Cave");
+    MyCave(const char* name, const char* Title = "Exp Cave");
     MyCave();
     virtual ~MyCave();
     virtual void ConstructGeometry();
@@ -35,8 +34,7 @@ class MyCave : public FairModule
     MyCave(const MyCave&);
     MyCave& operator=(const MyCave&);
 
-    ClassDef(MyCave,1) //PNDCaveSD
+    ClassDef(MyCave, 1);
 };
 
-#endif //Cave_H
-
+#endif   // Cave_H

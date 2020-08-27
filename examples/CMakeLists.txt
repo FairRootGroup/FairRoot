@@ -17,6 +17,7 @@ if(Geant3_FOUND)
     add_subdirectory(simulation/Tutorial1)
   endif()
   add_subdirectory(simulation/Tutorial2)
+  add_subdirectory(advanced/propagator)
 
   add_subdirectory(simulation/Tutorial4)
   if(FairMQ_FOUND AND Boost_FOUND)
@@ -33,10 +34,6 @@ endif()
 if(FairMQ_FOUND AND Boost_FOUND)
   add_subdirectory(MQ/Lmd)
   add_subdirectory(MQ/histogramServer)
-endif()
-
-if(Go_FOUND AND ZeroMQ_FOUND)
-  add_subdirectory(advanced/GoTutorial)
 endif()
 
 add_subdirectory(advanced/MbsTutorial)

@@ -6,18 +6,17 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "runFairMQDevice.h"
 #include "Ex2Processor.h"
+#include "runFairMQDevice.h"
 
 namespace bpo = boost::program_options;
 
 void addCustomOptions(bpo::options_description& options)
 {
+    // clang-format off
     options.add_options()
         ("num-msgs", bpo::value<int>()->default_value(0), "Stop after <n> msgs (0 - no limit).");
+    // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/)
-{
-    return new Ex2Processor();
-}
+FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/) { return new Ex2Processor(); }

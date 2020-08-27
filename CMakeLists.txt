@@ -14,13 +14,13 @@
 
 # Check if cmake has the required version
 CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0 FATAL_ERROR)
-cmake_policy(VERSION 3.11...3.14)
+cmake_policy(VERSION 3.11...3.17)
 
 set(CMAKE_INSTALL_MESSAGE LAZY)
 # Set project version
 SET(FAIRROOT_MAJOR_VERSION 18)
-SET(FAIRROOT_MINOR_VERSION 2)
-SET(FAIRROOT_PATCH_VERSION 2)
+SET(FAIRROOT_MINOR_VERSION 4)
+SET(FAIRROOT_PATCH_VERSION 0)
 
 # Set name of our project to "FAIRROOT".
 # Has to be done after check of cmake version
@@ -171,6 +171,12 @@ endif()
 
 # FairRoot only supports ROOT6, so check which version is available
 find_package2(PUBLIC ROOT  VERSION 6.10.00  REQUIRED)
+if(ROOT_vmc_FOUND)
+  set(VMCLIB ROOT::VMC)
+else()
+  find_package2(PUBLIC VMC REQUIRED)
+  set(VMCLIB VMCLibrary)
+endif()
 find_package2(PUBLIC FairLogger  VERSION 1.2.0 REQUIRED)
 
 foreach(dep IN LISTS FairLogger_PACKAGE_DEPENDENCIES)
@@ -198,19 +204,13 @@ Find_Package2(PUBLIC VGM)
 find_package2(PUBLIC Geant4VMC)
 
 find_package2(PUBLIC IWYU)
-if(WITH_GO_EXAMPLE)
-  find_package2(PUBLIC Go VERSION 1.7)
-  if(Go_FOUND)
-    set(Go_VERSION "${GO_VERSION}")
-  endif()
-endif()
 
 find_package2(PUBLIC GSL)
 if(NOT DEFINED GTEST_ROOT)
   set(GTEST_ROOT ${SIMPATH})
 endif()
 
-find_package2(PUBLIC FairMQ VERSION 1.2.3)
+find_package2(PUBLIC FairMQ VERSION 1.4.0)
 find_package2(PUBLIC DDS)
 
 If(FAIRSOFT_EXTERN)
@@ -308,11 +308,14 @@ If(Geant3_FOUND)
  add_subdirectory(trackbase)
 EndIf ()
 
-execute_process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --has-opengl OUTPUT_VARIABLE ROOT_HAS_OPENGL)
-if(${ROOT_HAS_OPENGL} MATCHES "yes")
+execute_process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --has-opengl OUTPUT_VARIABLE
+    ROOT_HAS_OPENGL_VAR)
+if(${ROOT_HAS_OPENGL_VAR} MATCHES "yes")
   add_subdirectory(eventdisplay)
+  Set(ROOT_HAS_OPENGL TRUE)
 else()
   message(STATUS "eventdisplay will not be built, because ROOT has no opengl support.")
+  Set(ROOT_HAS_OPENGL FALSE)
 endif()
 
 add_subdirectory(MbsAPI)
@@ -341,6 +344,14 @@ endif(BUILD_EXAMPLES)
 if(IWYU_FOUND)
   add_custom_target(checkHEADERS DEPENDS $ENV{ALL_HEADER_RULES})
 endif(IWYU_FOUND)
+
+find_package2(PRIVATE ClangFormat)
+if(ClangFormat_FOUND)
+  add_custom_target(FormatCheck
+    ${CMAKE_COMMAND} -E env FAIRROOT_GIT_CLANG_FORMAT_BIN=${GIT_CLANG_FORMAT_BIN} ${CMAKE_SOURCE_DIR}/check-format.sh
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+  )
+endif()
 
 if(${CMAKE_BUILD_TYPE} MATCHES PROFILE)
   set(BUILD_UNITTESTS ON)
@@ -516,8 +527,15 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
     elseif(${dep} STREQUAL fmt)
       get_target_property(fmt_include fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
       get_filename_component(prefix ${fmt_include}/.. ABSOLUTE)
+    elseif(${dep} STREQUAL VMC)
+      get_target_property(vmc_include VMCLibrary INTERFACE_INCLUDE_DIRECTORIES)
+      get_filename_component(prefix ${vmc_include}/.. ABSOLUTE)
     elseif(${dep} STREQUAL Flatbuffers)
-      get_target_property(flatbuffers_include flatbuffers::flatbuffers INTERFACE_INCLUDE_DIRECTORIES)
+      if(TARGET flatbuffers::flatbuffers)
+        get_target_property(flatbuffers_include flatbuffers::flatbuffers INTERFACE_INCLUDE_DIRECTORIES)
+      else()
+        get_target_property(flatbuffers_include flatbuffers::flatbuffers_shared INTERFACE_INCLUDE_DIRECTORIES)
+      endif()
       get_filename_component(prefix ${flatbuffers_include}/.. ABSOLUTE)
     endif()
 
@@ -561,14 +579,6 @@ else()
   set(unittests_summary "${BRed} NO${CR}     (default, enable with ${BMagenta}-DBUILD_UNITTESTS=ON${CR})")
 endif()
 message(STATUS "  ${BWhite}Unit tests${CR}          ${unittests_summary}")
-
-if(WITH_GO_EXAMPLE)
-  set(Go_summary "${BGreen} YES${CR}    (disable with ${BMagenta}-DWITH_GO_EXAMPLE=OFF${CR})")
-else()
-   set(Go_summary "${BRed} NO${CR}     (default, enable with ${BMagenta}-DWITH_GO_EXAMPLE=ON${CR})")
-endif()
-message(STATUS "  ${BWhite}Go Example ${CR}         ${Go_summary}")
-
 
 message(STATUS "  ")
 ################################################################################

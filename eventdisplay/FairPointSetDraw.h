@@ -1,15 +1,14 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // -------------------------------------------------------------------------
 // -----                      FairPointSetDraw header file                    -----
 // -----          Created 10/12/07  by M. Al-Turany                    -----
 // -------------------------------------------------------------------------
-
 
 /** FairPointSetDraw
  * @author M. Al-Turany
@@ -21,9 +20,9 @@
 #ifndef FAIRPOINTSETDRAW_H
 #define FAIRPOINTSETDRAW_H
 
-#include "FairTask.h"                   // for FairTask, InitStatus
+#include "FairTask.h"   // for FairTask, InitStatus
 
-#include <Rtypes.h>                     // for Int_t, Color_t, etc
+#include <Rtypes.h>   // for Int_t, Color_t, etc
 
 class FairEventManager;
 class TClonesArray;
@@ -38,40 +37,40 @@ class FairPointSetDraw : public FairTask
     FairPointSetDraw();
 
     /** Standard constructor
-    *@param name        Name of task
-    *@param iVerbose    Verbosity level
-    **/
-    FairPointSetDraw(const char* name, Color_t color ,Style_t mstyle, Int_t iVerbose = 1);
+     *@param name        Name of task
+     *@param iVerbose    Verbosity level
+     **/
+    FairPointSetDraw(const char* name, Color_t color, Style_t mstyle, Int_t iVerbose = 1);
 
     /** Destructor **/
     virtual ~FairPointSetDraw();
 
     /** Set verbosity level. For this task and all of the subtasks. **/
-    void SetVerbose(Int_t iVerbose) {fVerbose = iVerbose;};
+    void SetVerbose(Int_t iVerbose) { fVerbose = iVerbose; };
     /** Executed task **/
     virtual void Exec(Option_t* option);
     void Reset();
 
   protected:
     virtual TVector3 GetVector(TObject* obj) = 0;
-    virtual TObject* GetValue(TObject* obj,Int_t i);
+    virtual TObject* GetValue(TObject* obj, Int_t i);
 
-    Int_t   fVerbose;       //  Verbosity level
-    virtual void SetParContainers() ;
+    Int_t fVerbose;   //  Verbosity level
+    virtual void SetParContainers();
     virtual InitStatus Init();
     /** Action after each event**/
-    virtual void Finish() ;
-    TClonesArray* fPointList; //!
+    virtual void Finish();
+    TClonesArray* fPointList;          //!
     FairEventManager* fEventManager;   //!
-    TEvePointSet* fq;    //!
-    Color_t fColor; //!
-    Style_t fStyle; //!
+    TEvePointSet* fq;                  //!
+    Color_t fColor;                    //!
+    Style_t fStyle;                    //!
 
   private:
     FairPointSetDraw(const FairPointSetDraw&);
     FairPointSetDraw& operator=(const FairPointSetDraw&);
 
-    ClassDef(FairPointSetDraw,1);
+    ClassDef(FairPointSetDraw, 1);
 };
 
 #endif

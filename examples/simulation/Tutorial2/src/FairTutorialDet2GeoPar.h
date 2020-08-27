@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #ifndef FAIRTUTORIALDET2GEOPAR_H
@@ -32,13 +32,13 @@ class FairTutorialDet2GeoPar : public FairParGenericSet
     void putParams(FairParamList*);
     Bool_t getParams(FairParamList*);
     TObjArray* GetGeoSensitiveNodes() { return fGeoSensNodes; }
-    TObjArray* GetGeoPassiveNodes()   { return fGeoPassNodes; }
+    TObjArray* GetGeoPassiveNodes() { return fGeoPassNodes; }
 
   private:
     FairTutorialDet2GeoPar(const FairTutorialDet2GeoPar&);
     FairTutorialDet2GeoPar& operator=(const FairTutorialDet2GeoPar&);
 
-    ClassDef(FairTutorialDet2GeoPar,1)
+    ClassDef(FairTutorialDet2GeoPar, 1);
 };
 
 #endif /* FAIRTUTORIALDETGEOPAR_H */

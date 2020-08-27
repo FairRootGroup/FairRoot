@@ -3,19 +3,21 @@
 
 #include <memory>
 
-namespace fair
-{
-namespace mq
-{
-namespace policy
-{
+namespace fair {
+namespace mq {
+namespace policy {
 
 // PassTypes
-struct PointerType {};
-struct ReferenceType {};
-struct ValueType {};
-struct UniquePtrType {};
-struct SharedPtrType {};
+struct PointerType
+{};
+struct ReferenceType
+{};
+struct ValueType
+{};
+struct UniquePtrType
+{};
+struct SharedPtrType
+{};
 
 // PassType
 template<typename flag, typename T>
@@ -56,7 +58,6 @@ struct SelectPassType<SharedPtrType, T>
     using Type = std::shared_ptr<T>;
 };
 
-
 // AllocatorType
 struct OpNewCreator
 {
@@ -71,7 +72,7 @@ struct OpNewCreator
 struct NullptrCreator
 {
     template<typename T, typename... Args>
-    static void CreateImpl(T*& input, Args&&... args)
+    static void CreateImpl(T*& input, [[gnu::unused]] Args&&... args)
     {
         input = nullptr;
     }
@@ -81,7 +82,7 @@ struct NullptrCreator
 struct EmptyCreator
 {
     template<typename... Args>
-    static void CreateImpl(Args&&... args)
+    static void CreateImpl([[gnu::unused]] Args&&... args)
     {}
 };
 
@@ -102,22 +103,21 @@ struct SmartPtrCreator
     }
 };
 
-
 // InitializerType
 struct NullptrInitializer
 {
     template<typename T, typename... Args>
-    static void InitializeImpl(T*& input, Args&&... args)
+    static void InitializeImpl(T*& input, [[gnu::unused]] Args&&... args)
     {
         input = nullptr;
     }
     template<typename T, typename... Args>
-    static void InitializeImpl(std::unique_ptr<T>& input, Args&&... args)
+    static void InitializeImpl(std::unique_ptr<T>& input, [[gnu::unused]] Args&&... args)
     {
         input = nullptr;
     }
     template<typename T, typename... Args>
-    static void InitializeImpl(std::shared_ptr<T>& input, Args&&... args)
+    static void InitializeImpl(std::shared_ptr<T>& input, [[gnu::unused]] Args&&... args)
     {
         input = nullptr;
     }
@@ -127,16 +127,15 @@ struct NullptrInitializer
 struct EmptyInitializer
 {
     template<typename... Args>
-    static void InitializeImpl(Args&&... args)
+    static void InitializeImpl([[gnu::unused]] Args&&... args)
     {}
 };
-
 
 // DeleterType
 struct EmptyDeleter
 {
     template<typename... Args>
-    static void DestroyImpl(Args&&... args)
+    static void DestroyImpl([[gnu::unused]] Args&&... args)
     {}
 };
 
@@ -152,7 +151,12 @@ struct RawPtrDeleter
 };
 
 // Input Policy
-template<typename Deserializer, typename Data, typename PassType, typename AllocatorType, typename InitializerType, typename DeleterType>
+template<typename Deserializer,
+         typename Data,
+         typename PassType,
+         typename AllocatorType,
+         typename InitializerType,
+         typename DeleterType>
 class InputPolicy : public Deserializer
 {
   public:
@@ -176,17 +180,18 @@ class InputPolicy : public Deserializer
     }
 
   protected:
-    virtual ~InputPolicy() 
-    {
-        DeleterType::DestroyImpl(fInput);
-    }
+    virtual ~InputPolicy() { DeleterType::DestroyImpl(fInput); }
 
     DataType fInput;
 };
 
-
 // Output Policy
-template<typename Serializer, typename Data, typename PassType, typename AllocatorType, typename InitializerType, typename DeleterType>
+template<typename Serializer,
+         typename Data,
+         typename PassType,
+         typename AllocatorType,
+         typename InitializerType,
+         typename DeleterType>
 class OutputPolicy : public Serializer
 {
   public:
@@ -206,16 +211,13 @@ class OutputPolicy : public Serializer
     }
 
   protected:
-    ~OutputPolicy()
-    {
-        DeleterType::DestroyImpl(fOutput);
-    }
+    ~OutputPolicy() { DeleterType::DestroyImpl(fOutput); }
 
     DataType fOutput;
 };
 
-} // namespace policy
-} // namespace mq
-} // namespace fair
+}   // namespace policy
+}   // namespace mq
+}   // namespace fair
 
-#endif // IOPOLICY_H
+#endif   // IOPOLICY_H

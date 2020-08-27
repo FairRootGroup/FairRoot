@@ -8,7 +8,7 @@
 
 add_subdirectory(macro)
 
-set(target FairTestDetector)
+set(target ExTestDetector)
 
 set(sources
   data/FairTestDetectorDigi.cxx
@@ -66,6 +66,12 @@ if(Flatbuffers_FOUND)
     COMMAND $<TARGET_FILE:flatbuffers::flatc> -c -o ${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayloadHit.fbs
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/MQ/data
   )
+
+  if(TARGET flatbuffers::flatbuffers_shared)
+    set(flatbuffers_lib flatbuffers::flatbuffers_shared)
+  else()
+    set(flatbuffers_lib flatbuffers::flatbuffers)
+  endif()
 else()
   set(FLATBUFFERS_USED false)
 endif()
@@ -117,14 +123,14 @@ target_link_libraries(${target} PUBLIC
   FairRoot::BaseMQ # Serialization policies
   FairRoot::FairTools # FairLogger
   FairRoot::GeoBase # FairGeoSet
-  FairRoot::MCStack
+  FairRoot::ExMCStack
   FairRoot::ParBase # FairRuntimeDb, FairContFact, FairParamList
 
   FairMQ::FairMQ
 
   Boost::serialization
   $<$<BOOL:${Protobuf_FOUND}>:protobuf::libprotobuf>
-  $<$<BOOL:${Flatbuffers_FOUND}>:flatbuffers::flatbuffers>
+  $<$<BOOL:${Flatbuffers_FOUND}>:${flatbuffers_lib}>
   $<$<BOOL:${msgpack_FOUND}>:msgpackc>
 
   Core # Rtypes
@@ -143,15 +149,15 @@ install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(tut3-sampler MQ/run/runTestDetectorSampler.cxx)
-target_link_libraries(tut3-sampler PRIVATE FairRoot::BaseMQ FairRoot::FairTestDetector FairMQ::FairMQ)
+target_link_libraries(tut3-sampler PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairMQ::FairMQ)
 target_compile_definitions(tut3-sampler PRIVATE ${defs})
 
 add_executable(tut3-processor MQ/run/runTestDetectorProcessor.cxx)
-target_link_libraries(tut3-processor PRIVATE FairRoot::BaseMQ FairRoot::FairTestDetector FairMQ::FairMQ)
+target_link_libraries(tut3-processor PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairMQ::FairMQ)
 target_compile_definitions(tut3-processor PRIVATE ${defs})
 
 add_executable(tut3-sink MQ/run/runTestDetectorFileSink.cxx)
-target_link_libraries(tut3-sink PRIVATE FairRoot::BaseMQ FairRoot::FairTestDetector FairMQ::FairMQ)
+target_link_libraries(tut3-sink PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairMQ::FairMQ)
 target_compile_definitions(tut3-sink PRIVATE ${defs})
 
 install(TARGETS tut3-sampler tut3-processor tut3-sink

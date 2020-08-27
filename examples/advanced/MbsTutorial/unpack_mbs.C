@@ -55,8 +55,7 @@ void unpack_mbs()
     Double_t rtime = timer.RealTime();
     Double_t ctime = timer.CpuTime();
     Int_t nHits = unpacker->GetNHitsTotal();
-    if(9086 == nHits)
-    {
+    if (9086 == nHits) {
         cout << endl << endl;
         cout << "Macro finished successfully." << endl;
         cout << "Real time " << rtime << " s, CPU time " << ctime << "s" << endl << endl;

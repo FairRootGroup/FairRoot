@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
@@ -23,8 +23,7 @@ PixelDigi::PixelDigi()
     , fCharge(0.)
     , fCol(0)
     , fRow(0)
-{
-}
+{}
 
 PixelDigi::PixelDigi(Int_t in, Int_t detid, Int_t feid, Int_t col, Int_t row, Double_t ch, Double_t tstamp)
     : FairTimeStamp(tstamp)
@@ -34,9 +33,6 @@ PixelDigi::PixelDigi(Int_t in, Int_t detid, Int_t feid, Int_t col, Int_t row, Do
     , fCharge(ch)
     , fCol(col)
     , fRow(row)
-{
-}
+{}
 
-PixelDigi::~PixelDigi()
-{
-}
+PixelDigi::~PixelDigi() {}

@@ -11,7 +11,7 @@
 
 // example TIn: FairTestDetectorHit
 // example TPayloadIn: boost::archive::binary_iarchive
-template <typename TIn, typename TPayloadIn>
+template<typename TIn, typename TPayloadIn>
 void FairTestDetectorFileSink<TIn, TPayloadIn>::InitTask()
 {
     OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/) {

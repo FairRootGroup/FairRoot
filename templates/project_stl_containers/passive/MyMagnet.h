@@ -11,18 +11,18 @@
 // -----                Created 26/03/14  by M. Al-Turany              -----
 // -------------------------------------------------------------------------
 
-
 #ifndef MAGNET_H
 #define MAGNET_H
 
-#include "FairModule.h"                 // for FairModule
-#include <Rtypes.h>                     // for MyMagnet::Class, Bool_t, etc
-#include <string>                       // for string
+#include "FairModule.h"   // for FairModule
+
+#include <Rtypes.h>   // for MyMagnet::Class, Bool_t, etc
+#include <string>     // for string
 
 class MyMagnet : public FairModule
 {
   public:
-    MyMagnet(const char* name, const char* Title="MY Magnet");
+    MyMagnet(const char* name, const char* Title = "MY Magnet");
     MyMagnet();
     virtual ~MyMagnet();
     void ConstructGeometry();
@@ -33,8 +33,7 @@ class MyMagnet : public FairModule
     MyMagnet(const MyMagnet&);
     MyMagnet& operator=(const MyMagnet&);
 
-    ClassDef(MyMagnet,1)
+    ClassDef(MyMagnet, 1);
 };
 
-#endif //MAGNET_H
-
+#endif   // MAGNET_H
