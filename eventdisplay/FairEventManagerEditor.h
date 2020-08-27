@@ -16,6 +16,10 @@
 #include <Rtypes.h>      // for ClassDef
 #include <TGFrame.h>     // for EFrameType::kChildFrame
 #include <TGedFrame.h>   // for TGedFrame
+#include <TGComboBox.h>
+
+#include "FairEveAnimationButton.h"
+#include "tracks/FairEveCut.h"
 
 class FairEventManager;
 class TEveGValuator;
@@ -30,15 +34,15 @@ class FairEventManagerEditor : public TGedFrame
     FairEventManagerEditor(const FairEventManagerEditor&);              // Not implemented
     FairEventManagerEditor& operator=(const FairEventManagerEditor&);   // Not implemented
 
-  protected:
+protected:
     TObject* fObject;
     FairEventManager* fManager;
-    TGNumberEntry *fCurrentEvent, *fCurrentPDG;
-    TGCheckButton* fVizPri;
-    TEveGValuator *fMinEnergy, *fMaxEnergy;
+    TGNumberEntry *fCurrentEvent;
+    TGNumberEntry *fGlobalTransparency;
     TGLabel* fEventTime;
-
-  public:
+    TGComboBox *fScreenshotOpt;
+    FairEveAnimationButton *fAnimation;
+public:
     FairEventManagerEditor(const TGWindow* p = 0,
                            Int_t width = 170,
                            Int_t height = 30,
@@ -47,12 +51,23 @@ class FairEventManagerEditor : public TGedFrame
     virtual ~FairEventManagerEditor() {}
     void SetModel(TObject* obj);
     virtual void SelectEvent();
-    virtual void SelectPDG();
-    void DoVizPri();
-    virtual void MaxEnergy();
-    virtual void MinEnergy();
+    virtual void StartAnimation();
     virtual void Init();
-
+    /**
+     *
+     * @param transparency true if set hight transparency for detectors
+     */
+    void SwitchTransparency(Bool_t transparency);
+    /**
+     *
+     * @param light_background true if use white background
+     */
+    void SwitchBackground(Bool_t light_background);
+    /**
+     * make screenshot
+     */
+    void MakeScreenshot();
+    ;
     // Specialization of TGedEditor for proper update propagation to TEveManager.
     ClassDef(FairEventManagerEditor, 0);
 };
