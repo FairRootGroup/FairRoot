@@ -11,17 +11,15 @@
 #include <TEveManager.h>
 #include <TEveSelection.h>
 
+FairGeoTracksDraw::FairGeoTracksDraw()
+    : fEventManager(nullptr)
+    , fVisualizer(nullptr)
+{}
 
+void FairGeoTracksDraw::Exec(Option_t *option) { fVisualizer->Repaint(); }
 
-FairGeoTracksDraw::FairGeoTracksDraw() :fEventManager(nullptr),fVisualizer(nullptr){
-
-}
-
-void FairGeoTracksDraw::Exec(Option_t *option) {
-    fVisualizer->Repaint();
-}
-
-InitStatus FairGeoTracksDraw::Init() {
+InitStatus FairGeoTracksDraw::Init()
+{
     fEventManager = FairEventManager::Instance();
     fVisualizer = new FairEveGeoTracks();
     fVisualizer->SetRnrChildren(1);
@@ -32,6 +30,4 @@ InitStatus FairGeoTracksDraw::Init() {
     return fVisualizer->Init();
 }
 
-FairGeoTracksDraw::~FairGeoTracksDraw() {
-}
-
+FairGeoTracksDraw::~FairGeoTracksDraw() {}

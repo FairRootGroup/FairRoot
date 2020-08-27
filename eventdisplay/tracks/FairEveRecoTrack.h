@@ -9,23 +9,26 @@
 #ifndef FAIREVERECOTRACK_H_
 #define FAIREVERECOTRACK_H_
 
-#include <TEvePointSet.h>
-#include <TEveTrackPropagator.h>
-#include <TEveCompound.h>
-#include <TGeoTrack.h>
 #include "FairEveTrack.h"
 
-class FairEveRecoTrack : public TEveCompound{
+#include <TEveCompound.h>
+#include <TEvePointSet.h>
+#include <TEveTrackPropagator.h>
+#include <TGeoTrack.h>
+
+class FairEveRecoTrack : public TEveCompound
+{
     TEvePointSet *fHits;
     Int_t fNPoints;
     FairEveTrack *fRecoTrack;
     FairEveTrack *fMCTrack;
-public:
+
+  public:
     FairEveRecoTrack();
-    FairEveRecoTrack(TParticle *t, Int_t label,TEveTrackPropagator *prop=nullptr);
-    FairEveTrack *GetRecoTrack()const{return fRecoTrack;};
-    FairEveTrack *GetMCTrack()const{return fMCTrack;}
-    TEvePointSet *GetHits()const{return fHits;};
+    FairEveRecoTrack(TParticle *t, Int_t label, TEveTrackPropagator *prop = nullptr);
+    FairEveTrack *GetRecoTrack() const { return fRecoTrack; };
+    FairEveTrack *GetMCTrack() const { return fMCTrack; }
+    TEvePointSet *GetHits() const { return fHits; };
     void AddHit(TVector3 hit);
     /**
      * make and draw MC track
@@ -36,7 +39,7 @@ public:
     void InitMCTrack(const TParticle *p);
     void SetMainColor(Color_t color);
     virtual ~FairEveRecoTrack();
-    ClassDef(FairEveRecoTrack,0);
+    ClassDef(FairEveRecoTrack, 0);
 };
 
 #endif /* FAIREVERECOTRACK_H_ */
