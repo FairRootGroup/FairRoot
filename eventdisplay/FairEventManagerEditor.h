@@ -12,14 +12,14 @@
 #ifndef ROOT_FAIREVENTMANAGEREDITOR
 #define ROOT_FAIREVENTMANAGEREDITOR
 
-#include <GuiTypes.h>    // for Pixel_t
-#include <Rtypes.h>      // for ClassDef
-#include <TGFrame.h>     // for EFrameType::kChildFrame
-#include <TGedFrame.h>   // for TGedFrame
-#include <TGComboBox.h>
-
 #include "FairEveAnimationButton.h"
 #include "tracks/FairEveCut.h"
+
+#include <GuiTypes.h>   // for Pixel_t
+#include <Rtypes.h>     // for ClassDef
+#include <TGComboBox.h>
+#include <TGFrame.h>     // for EFrameType::kChildFrame
+#include <TGedFrame.h>   // for TGedFrame
 
 class FairEventManager;
 class TEveGValuator;
@@ -34,15 +34,16 @@ class FairEventManagerEditor : public TGedFrame
     FairEventManagerEditor(const FairEventManagerEditor&);              // Not implemented
     FairEventManagerEditor& operator=(const FairEventManagerEditor&);   // Not implemented
 
-protected:
+  protected:
     TObject* fObject;
     FairEventManager* fManager;
-    TGNumberEntry *fCurrentEvent;
-    TGNumberEntry *fGlobalTransparency;
+    TGNumberEntry* fCurrentEvent;
+    TGNumberEntry* fGlobalTransparency;
     TGLabel* fEventTime;
-    TGComboBox *fScreenshotOpt;
-    FairEveAnimationButton *fAnimation;
-public:
+    TGComboBox* fScreenshotOpt;
+    FairEveAnimationButton* fAnimation;
+
+  public:
     FairEventManagerEditor(const TGWindow* p = 0,
                            Int_t width = 170,
                            Int_t height = 30,

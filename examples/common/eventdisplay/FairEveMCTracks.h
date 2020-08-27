@@ -12,10 +12,11 @@
 #include "FairEveTracks.h"
 #include "FairMCTrack.h"
 
-#include <TDatabasePDG.h>
 #include <FairRKPropagator.h>
+#include <TDatabasePDG.h>
 
-class FairEveMCTracks : public FairEveTracks{
+class FairEveMCTracks : public FairEveTracks
+{
     TClonesArray *fContainer;
     Bool_t fShowPrimary;
     Bool_t fShowSecondary;
@@ -23,19 +24,28 @@ class FairEveMCTracks : public FairEveTracks{
     Int_t fPdgCut;
     FairRKPropagator *fRK;
     TDatabasePDG *fPDG;
-protected:
+
+  protected:
     Bool_t CheckCuts(FairMCTrack *tr);
     void DrawTrack(Int_t id);
     TEveTrackList *GetTrackGroup(void *tr);
-public:
+
+  public:
     FairEveMCTracks();
     void Repaint();
-    void SetPdgCut(Int_t pdg, Bool_t use){fPdgCut = pdg; fUsePdg = use;};
-    void SetShowPrimSec(Bool_t prim, Bool_t sec){fShowPrimary = prim;
-    fShowSecondary = sec;}
+    void SetPdgCut(Int_t pdg, Bool_t use)
+    {
+        fPdgCut = pdg;
+        fUsePdg = use;
+    };
+    void SetShowPrimSec(Bool_t prim, Bool_t sec)
+    {
+        fShowPrimary = prim;
+        fShowSecondary = sec;
+    }
     virtual InitStatus Init();
     virtual ~FairEveMCTracks();
-    ClassDef(FairEveMCTracks,0)
+    ClassDef(FairEveMCTracks, 0)
 };
 
 #endif /* FAIREVEMCTRACKS_H_ */

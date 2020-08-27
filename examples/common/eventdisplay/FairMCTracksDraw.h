@@ -10,22 +10,25 @@
 #define FAIRMCTRACKSDRAW_H_
 
 #include "FairEveMCTracks.h"
-#include "FairTask.h"
 #include "FairEventManager.h"
+#include "FairTask.h"
 
-class FairMCTracksDraw : public FairTask{
+class FairMCTracksDraw : public FairTask
+{
     FairEventManager *fEventManager;
     FairEveMCTracks *fVisualizer;
-protected:
+
+  protected:
     Bool_t CheckCuts(FairMCTrack *tr);
     void DrawTrack(Int_t id);
     TEveTrackList *GetTrackGroup(void *tr);
-public:
+
+  public:
     FairMCTracksDraw();
-    virtual void Exec(Option_t *opt="");
+    virtual void Exec(Option_t *opt = "");
     virtual InitStatus Init();
     virtual ~FairMCTracksDraw();
-    ClassDef(FairMCTracksDraw,0)
+    ClassDef(FairMCTracksDraw, 0)
 };
 
 #endif /* FAIRMCTRACKSDRAW_H_ */

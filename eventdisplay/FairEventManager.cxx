@@ -11,6 +11,7 @@
  *  M. Al-Turany 06.12.2007
  **/
 #include "FairEventManager.h"
+
 #include "FairRootManager.h"   // for FairRootManager
 #include "FairRunAna.h"        // for FairRunAna
 #include "FairXMLNode.h"
@@ -24,6 +25,7 @@
 #include <TEveScene.h>
 #include <TEveViewer.h>
 #include <TEveWindow.h>   // for TEveWindowPack, TEveWindowSlot
+#include <TGFileDialog.h>
 #include <TGLCameraOverlay.h>
 #include <TGLClip.h>   // for TGLClip, TGLClip::kClipPlane, TGL...
 #include <TGLLightSet.h>
@@ -31,8 +33,6 @@
 #include <TGeoManager.h>   // for gGeoManager, TGeoManager
 #include <TGeoNode.h>
 #include <TGeoVolume.h>   // for TGeoVolume
-#include <TGFileDialog.h>
-
 
 ClassImp(FairEventManager);
 
@@ -190,7 +190,6 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
     fMultiView->GetEveFrame()->HideAllDecorations();
     fMultiRPhiView->GetEveFrame()->HideAllDecorations();
     fMultiRhoZView->GetEveFrame()->HideAllDecorations();
-
 }
 
 void FairEventManager::UpdateEditor() {}
@@ -231,7 +230,7 @@ Int_t FairEventManager::Color(int pdg)
 
 void FairEventManager::AddParticlesToPdgDataBase(Int_t /*pdg*/)
 {
-// Add particles to the PDG data base
+    // Add particles to the PDG data base
 
     TDatabasePDG *pdgDB = TDatabasePDG::Instance();
 
@@ -266,7 +265,7 @@ void FairEventManager::AddParticlesToPdgDataBase(Int_t /*pdg*/)
         pdgDB->AddParticle("FeedbackPhoton", "FeedbackPhoton", 0, kFALSE, 0, 0, "Special", 50000051);
 }
 
-void FairEventManager::SetViewers(TEveViewer* RPhi, TEveViewer* RhoZ)
+void FairEventManager::SetViewers(TEveViewer *RPhi, TEveViewer *RhoZ)
 {
     RPhi->GetGLViewer()->SetCurrentCamera(fRphiCam);
     // set clip plane and camera parameters
@@ -341,7 +340,7 @@ void FairEventManager::LoadXMLSettings()
     gEve->Redraw3D();
 }
 
-void FairEventManager::LoadXMLDetector(TGeoNode* node, FairXMLNode* xml, Int_t depth)
+void FairEventManager::LoadXMLDetector(TGeoNode *node, FairXMLNode *xml, Int_t depth)
 {
     TString name = xml->GetAttrib("name")->GetValue();
     TString node_name = node->GetName();
@@ -439,82 +438,85 @@ Int_t FairEventManager::StringToColor(TString color) const
     }
 }
 
-void FairEventManager::SwitchTransparency(Bool_t state, Int_t trans) {
-    if(state){ //high transparency
+void FairEventManager::SwitchTransparency(Bool_t state, Int_t trans)
+{
+    if (state) {   // high transparency
         Int_t vis_level = gGeoManager->GetVisLevel();
         TGeoNode *top = gGeoManager->GetTopNode();
         SetTransparencyForLayer(top, vis_level, trans);
-    }else{// normal transparency
-        if(fXMLConfig!=""){
+    } else {   // normal transparency
+        if (fXMLConfig != "") {
             LoadXMLSettings();
-        }else{
+        } else {
             Int_t vis_level = gGeoManager->GetVisLevel();
             TGeoNode *top = gGeoManager->GetTopNode();
             SetTransparencyForLayer(top, vis_level, 0);
         }
     }
-    if (gEve->GetGlobalScene()->GetRnrState())
-    {
+    if (gEve->GetGlobalScene()->GetRnrState()) {
         gEve->GetGlobalScene()->SetRnrState(kFALSE);
         gEve->GetGlobalScene()->SetRnrState(kTRUE);
         gEve->Redraw3D();
     }
 }
 
-void FairEventManager::SwitchBackground(Bool_t light) {
-    gEve->GetViewers()->SwitchColorSet();
-}
+void FairEventManager::SwitchBackground(Bool_t light) { gEve->GetViewers()->SwitchColorSet(); }
 
-void FairEventManager::SetTransparencyForLayer(TGeoNode *node, Int_t depth,Char_t transparency) {
+void FairEventManager::SetTransparencyForLayer(TGeoNode *node, Int_t depth, Char_t transparency)
+{
     node->GetVolume()->SetTransparency(transparency);
-    if(depth<=0) return;
-    for(int i=0;i<node->GetNdaughters();i++){
+    if (depth <= 0)
+        return;
+    for (int i = 0; i < node->GetNdaughters(); i++) {
         TGeoNode *dau = node->GetDaughter(i);
-        SetTransparencyForLayer(dau, depth-1, transparency);
+        SetTransparencyForLayer(dau, depth - 1, transparency);
     }
 }
 
-void FairEventManager::MakeScreenshot(FairEveAnimationButton::eScreenshotType  proj, TString path) {
+void FairEventManager::MakeScreenshot(FairEveAnimationButton::eScreenshotType proj, TString path)
+{
     TString filename;
-    if(path==""){
-        const char* filetypes[] = {"PNG", "*.png", "JPG", "*.jpg",0,0};
+    if (path == "") {
+        const char *filetypes[] = {"PNG", "*.png", "JPG", "*.jpg", 0, 0};
         TGFileInfo fi;
         fi.fFileTypes = filetypes;
-        fi.fIniDir    = StrDup(".");
+        fi.fIniDir = StrDup(".");
         new TGFileDialog(gClient->GetRoot(), gEve->GetMainWindow(), kFDSave, &fi);
-        filename  = fi.fFilename;
-        if(!(filename.Contains(".png")||filename.Contains(".jpg"))) return;
-        if(filename.BeginsWith("unknown")) return;
-    }else{
+        filename = fi.fFilename;
+        if (!(filename.Contains(".png") || filename.Contains(".jpg")))
+            return;
+        if (filename.BeginsWith("unknown"))
+            return;
+    } else {
         filename = path;
     }
-    switch(proj){
-    case FairEveAnimationButton::eScreenshotType::k3D:{
-        gEve->GetDefaultGLViewer()->SavePicture(filename);
-    } break;
-    case FairEveAnimationButton::eScreenshotType::kXY:{
-        TEveViewer* view = GetRPhiView();
-        TGLViewer*gl = view->GetGLViewer();
-        gl->SavePicture(filename);
-    }break;
-    case FairEveAnimationButton::eScreenshotType::kZ:{
-        TEveViewer* view = GetRhoZView();
-        TGLViewer*gl = view->GetGLViewer();
-        gl->SavePicture(filename);
-    }break;
-    case FairEveAnimationButton::eScreenshotType::kAll:{
-        TString filename_path = filename(0,filename.Last('.'));
-        TString filename_ext = filename(filename.Last('.'),4);
-        TString filename3d = Form("%s_3d.%s",filename_path.Data(),filename_ext.Data());
-        TString filenameRphi= Form("%s_XY.%s",filename_path.Data(),filename_ext.Data());
-        TString filenameRhoz = Form("%s_Z.%s",filename_path.Data(),filename_ext.Data());
-        gEve->GetDefaultGLViewer()->SavePicture(filename3d);
-        TEveViewer* view = GetRPhiView();
-        TGLViewer*gl = view->GetGLViewer();
-        gl->SavePicture(filenameRphi);
-        view = GetRhoZView();
-        gl = view->GetGLViewer();
-        gl->SavePicture(filenameRhoz);
-    }break;
+    switch (proj) {
+        case FairEveAnimationButton::eScreenshotType::k3D: {
+            gEve->GetDefaultGLViewer()->SavePicture(filename);
+        } break;
+        case FairEveAnimationButton::eScreenshotType::kXY: {
+            TEveViewer *view = GetRPhiView();
+            TGLViewer *gl = view->GetGLViewer();
+            gl->SavePicture(filename);
+        } break;
+        case FairEveAnimationButton::eScreenshotType::kZ: {
+            TEveViewer *view = GetRhoZView();
+            TGLViewer *gl = view->GetGLViewer();
+            gl->SavePicture(filename);
+        } break;
+        case FairEveAnimationButton::eScreenshotType::kAll: {
+            TString filename_path = filename(0, filename.Last('.'));
+            TString filename_ext = filename(filename.Last('.'), 4);
+            TString filename3d = Form("%s_3d.%s", filename_path.Data(), filename_ext.Data());
+            TString filenameRphi = Form("%s_XY.%s", filename_path.Data(), filename_ext.Data());
+            TString filenameRhoz = Form("%s_Z.%s", filename_path.Data(), filename_ext.Data());
+            gEve->GetDefaultGLViewer()->SavePicture(filename3d);
+            TEveViewer *view = GetRPhiView();
+            TGLViewer *gl = view->GetGLViewer();
+            gl->SavePicture(filenameRphi);
+            view = GetRhoZView();
+            gl = view->GetGLViewer();
+            gl->SavePicture(filenameRhoz);
+        } break;
     }
 }

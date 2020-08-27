@@ -9,11 +9,13 @@
 #ifndef FAIREVEMCTRACKSEDITOR_H_
 #define FAIREVEMCTRACKSEDITOR_H_
 
-#include <TGedFrame.h>
 #include "FairEveCut.h"
 #include "FairEveMCTracks.h"
 
-class FairEveMCTracksEditor:public TGedFrame {
+#include <TGedFrame.h>
+
+class FairEveMCTracksEditor : public TGedFrame
+{
     FairEveMinMaxCut *fPtCut;
     FairEveMinMaxCut *fEtaCut;
     FairEveMinMaxCut *fEnergyCut;
@@ -21,13 +23,18 @@ class FairEveMCTracksEditor:public TGedFrame {
     FairEveBoolCut *fSecondary;
     FairEveIntCut *fPdgCut;
     FairEveMCTracks *fMCTracks;
-public:
-    FairEveMCTracksEditor(const TGWindow* p=0, Int_t width=170, Int_t height=30, UInt_t options=kChildFrame, Pixel_t back=GetDefaultFrameBackground());
-    virtual void SetModel(TObject* obj);
+
+  public:
+    FairEveMCTracksEditor(const TGWindow *p = 0,
+                          Int_t width = 170,
+                          Int_t height = 30,
+                          UInt_t options = kChildFrame,
+                          Pixel_t back = GetDefaultFrameBackground());
+    virtual void SetModel(TObject *obj);
     void SwapTracks();
     void Repaint();
     virtual ~FairEveMCTracksEditor();
-    ClassDef(FairEveMCTracksEditor,0)
+    ClassDef(FairEveMCTracksEditor, 0)
 };
 
 #endif /* FAIREVEMCTRACKSEDITOR_H_ */

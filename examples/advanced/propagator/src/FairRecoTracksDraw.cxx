@@ -11,14 +11,15 @@
 #include <TEveManager.h>
 #include <TEveSelection.h>
 
-FairRecoTracksDraw::FairRecoTracksDraw() :fEventManager(nullptr),fVisualizer(nullptr){
-}
+FairRecoTracksDraw::FairRecoTracksDraw()
+    : fEventManager(nullptr)
+    , fVisualizer(nullptr)
+{}
 
-void FairRecoTracksDraw::Exec(Option_t *option) {
-    fVisualizer->Repaint();
-}
+void FairRecoTracksDraw::Exec(Option_t *option) { fVisualizer->Repaint(); }
 
-InitStatus FairRecoTracksDraw::Init() {
+InitStatus FairRecoTracksDraw::Init()
+{
     fEventManager = FairEventManager::Instance();
     fVisualizer = new FairEveRecoTracksExample();
     fVisualizer->SetRnrChildren(1);
@@ -29,7 +30,4 @@ InitStatus FairRecoTracksDraw::Init() {
     return fVisualizer->Init();
 }
 
-FairRecoTracksDraw::~FairRecoTracksDraw() {
-
-}
-
+FairRecoTracksDraw::~FairRecoTracksDraw() {}

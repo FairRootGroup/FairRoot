@@ -6,19 +6,20 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+#include "FairMCTracksDraw.h"
+
 #include <TEveManager.h>
 #include <TEveSelection.h>
 
-#include "FairMCTracksDraw.h"
+FairMCTracksDraw::FairMCTracksDraw()
+    : fEventManager(nullptr)
+    , fVisualizer(nullptr)
+{}
 
-FairMCTracksDraw::FairMCTracksDraw() :fEventManager(nullptr),fVisualizer(nullptr){
-}
+void FairMCTracksDraw::Exec(Option_t* /*option*/) { fVisualizer->Repaint(); }
 
-void FairMCTracksDraw::Exec(Option_t * /*option*/) {
-    fVisualizer->Repaint();
-}
-
-InitStatus FairMCTracksDraw::Init() {
+InitStatus FairMCTracksDraw::Init()
+{
     fEventManager = FairEventManager::Instance();
     fVisualizer = new FairEveMCTracks();
     fVisualizer->SetRnrChildren(1);
@@ -29,5 +30,4 @@ InitStatus FairMCTracksDraw::Init() {
     return fVisualizer->Init();
 }
 
-FairMCTracksDraw::~FairMCTracksDraw() {
-}
+FairMCTracksDraw::~FairMCTracksDraw() {}

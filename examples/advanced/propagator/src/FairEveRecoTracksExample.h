@@ -9,16 +9,16 @@
 #ifndef FAIREVERECOTRACKS_H_
 #define FAIREVERECOTRACKS_H_
 
-#include "FairTask.h"
 #include "FairEveTracks.h"
 #include "FairMCTrack.h"
+#include "FairTask.h"
 #include "FairTutPropTrack.h"
 
-#include <TDatabasePDG.h>
 #include <FairRKPropagator.h>
+#include <TDatabasePDG.h>
 
-
-class FairEveRecoTracksExample  : public FairEveTracks{
+class FairEveRecoTracksExample : public FairEveTracks
+{
     TClonesArray *fContainerReco;
     TClonesArray *fContainerSim;
     TClonesArray *fHits1, *fHits2;
@@ -29,21 +29,30 @@ class FairEveRecoTracksExample  : public FairEveTracks{
     Int_t fPdgCut;
     FairRKPropagator *fRK;
     TDatabasePDG *fPDG;
-protected:
+
+  protected:
     Bool_t CheckCuts(FairTutPropTrack *tr);
     void DrawTrack(Int_t id);
     TEveTrackList *GetTrackGroup(void *tr);
-public:
+
+  public:
     FairEveRecoTracksExample();
     void Repaint();
     void SetDrawMC(Bool_t draw);
-    void SetPdgCut(Int_t pdg, Bool_t use){fPdgCut = pdg; fUsePdg = use;};
-    void SetShowPrimSec(Bool_t prim, Bool_t sec){fShowPrimary = prim;
-    fShowSecondary = sec;}
+    void SetPdgCut(Int_t pdg, Bool_t use)
+    {
+        fPdgCut = pdg;
+        fUsePdg = use;
+    };
+    void SetShowPrimSec(Bool_t prim, Bool_t sec)
+    {
+        fShowPrimary = prim;
+        fShowSecondary = sec;
+    }
     virtual void SwapTracks();
     virtual InitStatus Init();
     virtual ~FairEveRecoTracksExample();
-    ClassDef(FairEveRecoTracksExample,0)
+    ClassDef(FairEveRecoTracksExample, 0)
 };
 
 #endif /* FAIREVERECOTRACKS_H_ */

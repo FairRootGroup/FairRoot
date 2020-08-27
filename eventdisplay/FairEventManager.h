@@ -12,15 +12,14 @@
 #ifndef FairEventManager_H
 #define FairEventManager_H
 
+#include "FairEveAnimationButton.h"
 #include "FairRunAna.h"   // for FairRunAna
 
 #include <Rtypes.h>             // for Float_t, Int_t, Bool_t, etc
 #include <TEveEventManager.h>   // for TEveEventManager
 #include <TEveProjectionAxes.h>
 #include <TGLViewer.h>
-
 #include <map>
-#include "FairEveAnimationButton.h"
 
 class FairRootManager;   // does not work with streamer, reason unclear
 class FairTask;
@@ -49,7 +48,7 @@ class FairEventManager : public TEveEventManager
     virtual Int_t Color(Int_t pdg);
     void AddTask(FairTask *t) { fRunAna->AddTask(t); }
     virtual void Init(Int_t visopt = 1, Int_t vislvl = 3, Int_t maxvisnds = 10000);
-    virtual Int_t GetCurrentEvent() {return fEntry;}
+    virtual Int_t GetCurrentEvent() { return fEntry; }
     /**
      * set plane  on RPhi-view, first parameters describe plane equation Ax+By+Cz+D=0
      * @param a
@@ -58,7 +57,7 @@ class FairEventManager : public TEveEventManager
      * @param d
      * @param camtype camera type
      */
-    virtual void SetRPhiPlane(Double_t a, Double_t b, Double_t c, Double_t d,TGLViewer::ECameraType camtype);
+    virtual void SetRPhiPlane(Double_t a, Double_t b, Double_t c, Double_t d, TGLViewer::ECameraType camtype);
     /**
      * set plane  on RhoZ-view, first parameters describe plane equation Ax+By+Cz+D=0
      * @param a
@@ -67,16 +66,24 @@ class FairEventManager : public TEveEventManager
      * @param d
      * @param camtype camera type
      */
-    virtual void SetRhoZPlane(Double_t a, Double_t b, Double_t c, Double_t d,TGLViewer::ECameraType camtype);
+    virtual void SetRhoZPlane(Double_t a, Double_t b, Double_t c, Double_t d, TGLViewer::ECameraType camtype);
     void UpdateEditor();
     /**
      * set time limits (used in timeslice animations)
      * @param min
      * @param max
      */
-    void SetTimeLimits(Double_t min, Double_t max){fTimeMin = min; fTimeMax=max;};
-    void GetTimeLimits(Double_t &min, Double_t &max){min = fTimeMin;max = fTimeMax;};
-    virtual void AddParticlesToPdgDataBase(Int_t pdg=0);
+    void SetTimeLimits(Double_t min, Double_t max)
+    {
+        fTimeMin = min;
+        fTimeMax = max;
+    };
+    void GetTimeLimits(Double_t &min, Double_t &max)
+    {
+        min = fTimeMin;
+        max = fTimeMax;
+    };
+    virtual void AddParticlesToPdgDataBase(Int_t pdg = 0);
     /**
      * switch element transparency
      * @param state high transparency enabled if true
@@ -90,25 +97,30 @@ class FairEventManager : public TEveEventManager
     virtual void SwitchBackground(Bool_t light);
     /* functions below are obsolete  **/
     virtual void SetPriOnly(Bool_t Pri) {}
-    virtual Bool_t IsPriOnly() {return kFALSE;}
+    virtual Bool_t IsPriOnly() { return kFALSE; }
     virtual void SelectPDG(Int_t PDG) {}
-    virtual Int_t GetCurrentPDG() {return 0;}
-    virtual void SetMaxEnergy( Float_t max) {}
-    virtual void SetMinEnergy( Float_t min) {}
-    virtual void SetEvtMaxEnergy( Float_t max) {}
-    virtual void SetEvtMinEnergy( Float_t min) {}
-    virtual Float_t GetEvtMaxEnergy() {return 1E+9;}
-    virtual Float_t GetEvtMinEnergy() {return 0;;}
-    virtual Float_t GetMaxEnergy() {return 1E+9;}
-    virtual Float_t GetMinEnergy() {return 0; }
+    virtual Int_t GetCurrentPDG() { return 0; }
+    virtual void SetMaxEnergy(Float_t max) {}
+    virtual void SetMinEnergy(Float_t min) {}
+    virtual void SetEvtMaxEnergy(Float_t max) {}
+    virtual void SetEvtMinEnergy(Float_t min) {}
+    virtual Float_t GetEvtMaxEnergy() { return 1E+9; }
+    virtual Float_t GetEvtMinEnergy()
+    {
+        return 0;
+        ;
+    }
+    virtual Float_t GetMaxEnergy() { return 1E+9; }
+    virtual Float_t GetMinEnergy() { return 0; }
     /**
      *
      * @param name name of file with screenshot
      * @param proj 0 - 3D view, 1 - RPhi, 2 RhoZ, 3 - all
      * @param def_path - default path to screenshot, if empty -user will be asked
      */
-    void MakeScreenshot(FairEveAnimationButton::eScreenshotType screen,TString def_path="");
-    ClassDef(FairEventManager,1);
+    void MakeScreenshot(FairEveAnimationButton::eScreenshotType screen, TString def_path = "");
+    ClassDef(FairEventManager, 1);
+
   protected:
     TEveViewer *GetRPhiView() const { return fRPhiView; };
     TEveViewer *GetRhoZView() const { return fRhoZView; };
@@ -124,10 +136,11 @@ class FairEventManager : public TEveEventManager
     virtual void LoadXMLSettings();
     void LoadXMLDetector(TGeoNode *node, FairXMLNode *xml, Int_t depth = 0);
     Int_t StringToColor(TString color) const;
+
   private:
     FairRootManager *fRootManager;             //!
     Int_t fEntry;                              //!
-    Double_t fTimeMin, fTimeMax;//!
+    Double_t fTimeMin, fTimeMax;               //!
     FairRunAna *fRunAna;                       //!
     TGListTreeItem *fEvent;                    //!
     Double_t fRPhiPlane[4];                    //!
@@ -147,12 +160,11 @@ class FairEventManager : public TEveEventManager
     TEveProjectionAxes *fAxesRho;
     TString fXMLConfig;
     std::map<int, int> fPDGToColor;
-    void SetTransparencyForLayer(TGeoNode *node, Int_t depth,Char_t transparency);
-    static FairEventManager*    fgRinstance; //!
-    FairEventManager(const FairEventManager&);
-    FairEventManager& operator=(const FairEventManager&);
+    void SetTransparencyForLayer(TGeoNode *node, Int_t depth, Char_t transparency);
+    static FairEventManager *fgRinstance;   //!
+    FairEventManager(const FairEventManager &);
+    FairEventManager &operator=(const FairEventManager &);
     void SetViewers(TEveViewer *RPhi, TEveViewer *RhoZ);
-
 };
 
 #endif
