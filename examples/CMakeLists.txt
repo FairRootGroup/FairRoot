@@ -9,6 +9,7 @@
 if(Geant3_FOUND)
   add_subdirectory(common/passive)
   add_subdirectory(common/mcstack)
+  add_subdirectory(common/eventdisplay)
   if(TARGET MCConfigurator)
     add_subdirectory(common/gconfig)
   endif()

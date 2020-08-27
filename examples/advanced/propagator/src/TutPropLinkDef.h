@@ -21,5 +21,8 @@
 #pragma link C++ class FairTutPropHitProducer+;
 #pragma link C++ class FairTutPropTrack+;
 #pragma link C++ class FairTutPropTrackFinder+;
+#pragma link C++ class FairEveRecoTracksExample;
+#pragma link C++ class FairEveRecoTracksExampleEditor;
+#pragma link C++ class FairRecoTracksDraw;
 
 #endif
