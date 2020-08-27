@@ -8,25 +8,27 @@
  */
 #ifndef FAIRGEOTRACKSDRAW_H_
 #define FAIRGEOTRACKSDRAW_H_
-#include <FairTask.h>
-#include <Rtypes.h>
-
 #include "FairEveGeoTracks.h"
 #include "FairEventManager.h"
+
+#include <FairTask.h>
+#include <Rtypes.h>
 
 /**
  * task that draws the TGeoTracks
  */
 
-class FairGeoTracksDraw : public FairTask{
+class FairGeoTracksDraw : public FairTask
+{
     FairEventManager *fEventManager;
     FairEveGeoTracks *fVisualizer;
-public:
+
+  public:
     FairGeoTracksDraw();
-    virtual void Exec(Option_t* option);
+    virtual void Exec(Option_t *option);
     virtual InitStatus Init();
     virtual ~FairGeoTracksDraw();
-    ClassDef(FairGeoTracksDraw,0)
+    ClassDef(FairGeoTracksDraw, 0)
 };
 
 #endif /* FAIRGEOTRACKSDRAW_H_ */

@@ -1,48 +1,37 @@
 /*
- * FairEveGeoTracks.h
+ * FairMCTracks.h
  *
- *  Created on: 23 kwi 2020
+ *  Created on: 27 sie 2020
  *      Author: Daniel Wielanek
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
-#ifndef FAIREVEGEOTRACKS_H_
-#define FAIREVEGEOTRACKS_H_
+#ifndef FAIREVEMCTRACKS_H_
+#define FAIREVEMCTRACKS_H_
 
 #include "FairEveTracks.h"
-#include "FairEventManager.h"
-#include "FairTask.h"
+#include "FairMCTrack.h"
 
-#include <Rtypes.h>
-#include <RtypesCore.h>
-#include <TClonesArray.h>
-#include <TEveElement.h>
-#include <TEveTrack.h>
-#include <TEveTrackPropagator.h>
-#include <TGeoTrack.h>
-#include <TNamed.h>
+#include <FairRKPropagator.h>
+#include <TDatabasePDG.h>
 
-/**
- * draw TGeoTracks
- */
-
-class FairEveGeoTracks : public FairEveTracks
+class FairEveMCTracks : public FairEveTracks
 {
     TClonesArray *fContainer;
     Bool_t fShowPrimary;
     Bool_t fShowSecondary;
     Bool_t fUsePdg;
     Int_t fPdgCut;
-    Double_t fTMin, fTMax;
+    FairRKPropagator *fRK;
+    TDatabasePDG *fPDG;
 
   protected:
-    Bool_t CheckCuts(TGeoTrack *tr);
+    Bool_t CheckCuts(FairMCTrack *tr);
     void DrawTrack(Int_t id);
-    void DrawAnimatedTrack(Int_t id);
     TEveTrackList *GetTrackGroup(void *tr);
 
   public:
-    FairEveGeoTracks();
+    FairEveMCTracks();
     void Repaint();
     void SetPdgCut(Int_t pdg, Bool_t use)
     {
@@ -55,8 +44,8 @@ class FairEveGeoTracks : public FairEveTracks
         fShowSecondary = sec;
     }
     virtual InitStatus Init();
-    virtual ~FairEveGeoTracks();
-    ClassDef(FairEveGeoTracks, 0)
+    virtual ~FairEveMCTracks();
+    ClassDef(FairEveMCTracks, 0)
 };
 
-#endif /* FAIREVEGEOTRACKS_H_ */
+#endif /* FAIREVEMCTRACKS_H_ */

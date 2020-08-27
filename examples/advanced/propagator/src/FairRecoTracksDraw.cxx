@@ -1,27 +1,27 @@
 /*
- * FairGeoTracksDraw.cxx
+ * FairRecoTracksDraw.cxx
  *
- *  Created on: 23 kwi 2020
+ *  Created on: 27 sie 2020
  *      Author: Daniel Wielanek
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
-#include "FairGeoTracksDraw.h"
+#include "FairRecoTracksDraw.h"
 
 #include <TEveManager.h>
 #include <TEveSelection.h>
 
-FairGeoTracksDraw::FairGeoTracksDraw()
+FairRecoTracksDraw::FairRecoTracksDraw()
     : fEventManager(nullptr)
     , fVisualizer(nullptr)
 {}
 
-void FairGeoTracksDraw::Exec(Option_t *option) { fVisualizer->Repaint(); }
+void FairRecoTracksDraw::Exec(Option_t *option) { fVisualizer->Repaint(); }
 
-InitStatus FairGeoTracksDraw::Init()
+InitStatus FairRecoTracksDraw::Init()
 {
     fEventManager = FairEventManager::Instance();
-    fVisualizer = new FairEveGeoTracks();
+    fVisualizer = new FairEveRecoTracksExample();
     fVisualizer->SetRnrChildren(1);
     gEve->AddElement(fVisualizer, FairEventManager::Instance());
     gEve->GetSelection()->SetPickToSelect(TEveSelection::kPS_PableCompound);
@@ -30,4 +30,4 @@ InitStatus FairGeoTracksDraw::Init()
     return fVisualizer->Init();
 }
 
-FairGeoTracksDraw::~FairGeoTracksDraw() {}
+FairRecoTracksDraw::~FairRecoTracksDraw() {}
