@@ -19,11 +19,18 @@ set(sources
   FairHitDraw.cxx
   FairHitPointSetDraw.cxx
   FairMCPointDraw.cxx
-  FairMCTracks.cxx
-  FairMCTracksEditor.cxx
   FairPointSetDraw.cxx
   FairTimeStampPointDraw.cxx
   FairXMLNode.cxx
+  FairEveAnimationButton.cxx
+  tracks/FairEveCut.cxx
+  tracks/FairEveGeoTracks.cxx
+  tracks/FairEveGeoTracksEditor.cxx
+  tracks/FairEveRecoTrack.cxx
+  tracks/FairEveRecoTrackList.cxx
+  tracks/FairEveTrack.cxx
+  tracks/FairEveTracks.cxx
+  tracks/FairGeoTracksDraw.cxx
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
@@ -34,11 +41,13 @@ set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/tracks
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
   # TODO: DELETE ME ONCE USING root targets
   ${ROOT_INCLUDE_DIR}
 )
+
 
 target_link_directories(${target} PUBLIC
   ${ROOT_LIBRARY_DIR}
