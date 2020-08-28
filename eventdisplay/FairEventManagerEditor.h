@@ -13,7 +13,7 @@
 #define ROOT_FAIREVENTMANAGEREDITOR
 
 #include "FairEveAnimationButton.h"
-#include "tracks/FairEveCut.h"
+#include "FairEveCut.h"
 
 #include <GuiTypes.h>   // for Pixel_t
 #include <Rtypes.h>     // for ClassDef
