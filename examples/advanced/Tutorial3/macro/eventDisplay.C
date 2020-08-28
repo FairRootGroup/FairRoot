@@ -28,7 +28,7 @@ eventDisplay(TString mcEngine = "TGeant3")
     FairEventManager *fMan = new FairEventManager();
 
     //----------------------Traks and points -------------------------------------
-    FairMCTracks *Track = new FairMCTracks("Monte-Carlo Tracks");
+    FairMCTracksDraw *Track = new FairMCTracksDraw();
     FairMCPointDraw *TorinoDetectorPoints = new FairMCPointDraw("FairTestDetectorPoint", kRed, kFullSquare);
     //  FairHitDraw     *ToyHits   = new FairHitDraw("ToyHit");
 

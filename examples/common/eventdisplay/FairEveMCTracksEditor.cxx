@@ -24,8 +24,8 @@ FairEveMCTracksEditor::FairEveMCTracksEditor(const TGWindow *p, Int_t width, Int
     SetName("MCtracksEditor");
 
     TGVerticalFrame *kinFrame = CreateEditorTabSubFrame("Kin");
-    fPtCut  = std::unique_ptr<FairEveMinMaxCut>(new FairEveMinMaxCut(this, kinFrame, "Pt", width));
-    fEtaCut = std::unique_ptr<FairEveMinMaxCut>( new FairEveMinMaxCut(this, kinFrame, "Eta", width));
+    fPtCut = std::unique_ptr<FairEveMinMaxCut>(new FairEveMinMaxCut(this, kinFrame, "Pt", width));
+    fEtaCut = std::unique_ptr<FairEveMinMaxCut>(new FairEveMinMaxCut(this, kinFrame, "Eta", width));
     fEnergyCut = std::unique_ptr<FairEveMinMaxCut>(new FairEveMinMaxCut(this, kinFrame, "E", width));
     fPtCut->Init();
     fEtaCut->Init();
@@ -40,7 +40,7 @@ FairEveMCTracksEditor::FairEveMCTracksEditor(const TGWindow *p, Int_t width, Int
     fSecondary = std::unique_ptr<FairEveBoolCut>(new FairEveBoolCut(this, statFrame, "Secondary", width));
     fSecondary->SetInitStatus(kTRUE);
     fSecondary->UpdateWhenChanged();
-    fPdgCut = std::unique_ptr<FairEveIntCut>( new FairEveIntCut(this, statFrame, "PDG", width));
+    fPdgCut = std::unique_ptr<FairEveIntCut>(new FairEveIntCut(this, statFrame, "PDG", width));
     fPrimary->Init();
     fSecondary->Init();
     fPdgCut->Init();

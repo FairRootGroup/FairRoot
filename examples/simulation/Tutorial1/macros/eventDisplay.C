@@ -19,7 +19,7 @@ void eventDisplay()
     FairEventManager *fMan = new FairEventManager();
 
     //----------------------Traks and points -------------------------------------
-    FairMCTracks *Track = new FairMCTracks("Monte-Carlo Tracks");
+    FairMCTracksDraw *Track = new FairMCTracksDraw();
     //  FairMCPointDraw *TorinoDetectorPoints = new FairMCPointDraw("FairTestDetectorPoint", kRed, kFullSquare);
 
     fMan->AddTask(Track);

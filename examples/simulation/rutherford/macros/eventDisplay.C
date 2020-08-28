@@ -28,7 +28,7 @@ eventDisplay(TString mcEngine = "TGeant3")
     // ------------------------------------------------------------------------
 
     FairEventManager *fMan = new FairEventManager();
-    FairMCTracks *Track = new FairMCTracks("Monte-Carlo Tracks");
+    FairMCTracksDraw *Track = new FairMCTracksDraw();
     FairMCPointDraw *RutherfordPoints = new FairMCPointDraw("FairRutherfordPoint", kBlue, kFullSquare);
 
     fMan->AddTask(Track);

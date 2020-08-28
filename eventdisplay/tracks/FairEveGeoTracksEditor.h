@@ -28,6 +28,7 @@
 #include <TGLabel.h>
 #include <TGNumberEntry.h>
 #include <TGedFrame.h>   // for TGedFrame
+#include <memory.h>
 
 /**
  * editor of TGeoTracks in event display
