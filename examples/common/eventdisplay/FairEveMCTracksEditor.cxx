@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /*
  * FairEveMCTracksEditor.cxx
  *
@@ -17,9 +24,9 @@ FairEveMCTracksEditor::FairEveMCTracksEditor(const TGWindow *p, Int_t width, Int
     SetName("MCtracksEditor");
 
     TGVerticalFrame *kinFrame = CreateEditorTabSubFrame("Kin");
-    fPtCut = new FairEveMinMaxCut(this, kinFrame, "Pt", width);
-    fEtaCut = new FairEveMinMaxCut(this, kinFrame, "Eta", width);
-    fEnergyCut = new FairEveMinMaxCut(this, kinFrame, "E", width);
+    fPtCut = std::unique_ptr<FairEveMinMaxCut>(new FairEveMinMaxCut(this, kinFrame, "Pt", width));
+    fEtaCut = std::unique_ptr<FairEveMinMaxCut>(new FairEveMinMaxCut(this, kinFrame, "Eta", width));
+    fEnergyCut = std::unique_ptr<FairEveMinMaxCut>(new FairEveMinMaxCut(this, kinFrame, "E", width));
     fPtCut->Init();
     fEtaCut->Init();
     fEnergyCut->Init();
@@ -27,13 +34,13 @@ FairEveMCTracksEditor::FairEveMCTracksEditor(const TGWindow *p, Int_t width, Int
 
     TGVerticalFrame *statFrame = CreateEditorTabSubFrame("Status");
 
-    fPrimary = new FairEveBoolCut(this, statFrame, "Primary", width);
+    fPrimary = std::unique_ptr<FairEveBoolCut>(new FairEveBoolCut(this, statFrame, "Primary", width));
     fPrimary->UpdateWhenChanged();
     fPrimary->SetInitStatus(kTRUE);
-    fSecondary = new FairEveBoolCut(this, statFrame, "Secondary", width);
+    fSecondary = std::unique_ptr<FairEveBoolCut>(new FairEveBoolCut(this, statFrame, "Secondary", width));
     fSecondary->SetInitStatus(kTRUE);
     fSecondary->UpdateWhenChanged();
-    fPdgCut = new FairEveIntCut(this, statFrame, "PDG", width);
+    fPdgCut = std::unique_ptr<FairEveIntCut>(new FairEveIntCut(this, statFrame, "PDG", width));
     fPrimary->Init();
     fSecondary->Init();
     fPdgCut->Init();

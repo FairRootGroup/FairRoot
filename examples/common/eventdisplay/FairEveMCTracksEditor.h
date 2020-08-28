@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /*
  * FairEveMCTracksEditor.h
  *
@@ -13,15 +20,16 @@
 #include "FairEveMCTracks.h"
 
 #include <TGedFrame.h>
+#include <memory.h>
 
 class FairEveMCTracksEditor : public TGedFrame
 {
-    FairEveMinMaxCut *fPtCut;
-    FairEveMinMaxCut *fEtaCut;
-    FairEveMinMaxCut *fEnergyCut;
-    FairEveBoolCut *fPrimary;
-    FairEveBoolCut *fSecondary;
-    FairEveIntCut *fPdgCut;
+    std::unique_ptr<FairEveMinMaxCut> fPtCut;
+    std::unique_ptr<FairEveMinMaxCut> fEtaCut;
+    std::unique_ptr<FairEveMinMaxCut> fEnergyCut;
+    std::unique_ptr<FairEveBoolCut> fPrimary;
+    std::unique_ptr<FairEveBoolCut> fSecondary;
+    std::unique_ptr<FairEveIntCut> fPdgCut;
     FairEveMCTracks *fMCTracks;
 
   public:

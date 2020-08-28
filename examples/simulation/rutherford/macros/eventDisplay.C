@@ -5,7 +5,7 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-eventDisplay(TString mcEngine = "TGeant3")
+void eventDisplay(TString mcEngine = "TGeant3")
 {
 
     TString inFile = "data/test_" + mcEngine + ".mc.root";
@@ -28,7 +28,7 @@ eventDisplay(TString mcEngine = "TGeant3")
     // ------------------------------------------------------------------------
 
     FairEventManager *fMan = new FairEventManager();
-    FairMCTracks *Track = new FairMCTracks("Monte-Carlo Tracks");
+    FairMCTracksDraw *Track = new FairMCTracksDraw();
     FairMCPointDraw *RutherfordPoints = new FairMCPointDraw("FairRutherfordPoint", kBlue, kFullSquare);
 
     fMan->AddTask(Track);

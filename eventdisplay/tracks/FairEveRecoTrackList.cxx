@@ -1,5 +1,12 @@
+/********************************************************************************
+ *    Copyright (C) 2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /*
- * FairRecoTrackList2.cpp
+ * FairEveRecoTrackList.cxx
  *
  *  Created on: 17 cze 2020
  *      Author: Daniel Wielanek

@@ -105,11 +105,7 @@ class FairEventManager : public TEveEventManager
     virtual void SetEvtMaxEnergy(Float_t max) {}
     virtual void SetEvtMinEnergy(Float_t min) {}
     virtual Float_t GetEvtMaxEnergy() { return 1E+9; }
-    virtual Float_t GetEvtMinEnergy()
-    {
-        return 0;
-        ;
-    }
+    virtual Float_t GetEvtMinEnergy() { return 0; }
     virtual Float_t GetMaxEnergy() { return 1E+9; }
     virtual Float_t GetMinEnergy() { return 0; }
     /**

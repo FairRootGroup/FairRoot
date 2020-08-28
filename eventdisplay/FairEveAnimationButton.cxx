@@ -1,3 +1,10 @@
+/********************************************************************************
+ *    Copyright (C) 2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /*
  * FairAnimationButton.cxx
  *
@@ -14,14 +21,15 @@ FairEveAnimationButton::FairEveAnimationButton(TGedFrame *frame,
                                                Int_t width,
                                                Int_t buttons)
     : fWidth(width)
+    , fValMin(0)
+    , fValMax(10)
+    , fFunctionName("")
     , fParent(frame)
     , fTab(tab)
     , fMin(nullptr)
     , fMax(nullptr)
     , fStep(nullptr)
     , fComboOpt(nullptr)
-    , fValMin(0)
-    , fValMax(10)
     , fTypeOpt(nullptr)
 {
     SetName(name);
