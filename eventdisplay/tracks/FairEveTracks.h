@@ -67,7 +67,7 @@ class FairEveTracks
      * @param tr
      * @return track group based on parameter
      */
-    virtual TEveTrackList *GetTrackGroup(void *tr) = 0;
+    virtual TEveTrackList *GetTrackGroup(void *tr);
 
   public:
     FairEveTracks();

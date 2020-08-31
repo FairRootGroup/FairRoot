@@ -97,7 +97,4 @@ void FairEveRecoTrack::SetMainColor(Color_t color)
         fMCTrack->SetMainColor(color);
 }
 
-FairEveRecoTrack::~FairEveRecoTrack()
-{
-    // TODO Auto-generated destructor stub
-}
+FairEveRecoTrack::~FairEveRecoTrack() {}
