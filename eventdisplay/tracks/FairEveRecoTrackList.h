@@ -36,7 +36,6 @@ class FairEveRecoTrackList : public TEveTrackList
     void SetMarkerColor(Color_t c);
     void SetMarkerSize(Size_t s);
     void SetMarkerStyle(Style_t s);
-    virtual Bool_t AcceptElement(TEveElement* el);
     virtual ~FairEveRecoTrackList();
     ClassDef(FairEveRecoTrackList, 0)
 };
