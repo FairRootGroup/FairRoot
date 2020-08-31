@@ -22,7 +22,6 @@
 
 class FairEveTrack : public TEveTrack
 {
-    Int_t fNPoints;
     static Float_t fgWorldSize;
 
   public:

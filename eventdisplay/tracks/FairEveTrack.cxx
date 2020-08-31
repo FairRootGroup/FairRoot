@@ -19,17 +19,15 @@ Float_t FairEveTrack::fgWorldSize = 2000;
 
 FairEveTrack::FairEveTrack()
     : TEveTrack()
-    , fNPoints(0)
 {}
 
 FairEveTrack::FairEveTrack(TParticle *t, Int_t label, TEveTrackPropagator *prop)
     : TEveTrack(t, label, prop)
-    , fNPoints(0)
 {}
 
 void FairEveTrack::SetFirstPoint(const TVector3 &mom, const TVector3 &pos)
 {
-    TEveTrack::SetPoint(fNPoints++, pos.X(), pos.Y(), pos.Z());
+    TEveTrack::SetPoint(0, pos.X(), pos.Y(), pos.Z());
     TEvePathMark path;
     Float_t point[3] = {(Float_t)pos.X(), (Float_t)pos.Y(), (Float_t)pos.Z()};
     path.fV = point;
@@ -49,7 +47,7 @@ void FairEveTrack::SetNextPoint(const TVector3 &point)
         return;
     if (TMath::IsNaN(point.X()))
         return;
-    TEveTrack::SetPoint(fNPoints++, point.X(), point.Y(), point.Z());
+    TEveTrack::SetNextPoint(point.X(), point.Y(), point.Z());
     TEvePathMark path;
     Float_t hit[3] = {(Float_t)point.X(), (Float_t)point.Y(), (Float_t)point.Z()};
     path.fV = hit;
@@ -57,7 +55,4 @@ void FairEveTrack::SetNextPoint(const TVector3 &point)
     AddPathMark(path);
 }
 
-FairEveTrack::~FairEveTrack()
-{
-    // TODO Auto-generated destructor stub
-}
+FairEveTrack::~FairEveTrack() {}
