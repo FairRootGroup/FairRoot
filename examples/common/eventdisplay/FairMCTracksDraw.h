@@ -31,7 +31,7 @@ class FairMCTracksDraw : public FairTask
     TEveTrackList *GetTrackGroup(void *tr);
 
   public:
-    FairMCTracksDraw();
+    FairMCTracksDraw(const char *name = "MC tracks");
     virtual void Exec(Option_t *opt = "");
     virtual InitStatus Init();
     virtual ~FairMCTracksDraw();

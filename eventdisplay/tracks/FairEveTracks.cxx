@@ -15,6 +15,7 @@
  */
 #include "FairEveTracks.h"
 
+#include "FairEveRecoTrackList.h"
 #include "FairEveTrack.h"
 
 #include <TEveElement.h>
@@ -22,7 +23,7 @@
 #include <TEveSelection.h>
 #include <TEveTrack.h>
 
-FairEveTracks::FairEveTracks()
+FairEveTracks::FairEveTracks(Bool_t acceptCompound)
     : fEventManager(nullptr)
     , fEveTrList(nullptr)
     , fPt{0, 10}
@@ -31,10 +32,8 @@ FairEveTracks::FairEveTracks()
     , fUsePt(kFALSE)
     , fUseEta(kFALSE)
     , fUseEnergy(kFALSE)
-    , fTrPropagator(nullptr)
-    , fTrackGroup(nullptr)
+    , fAcceptCompound(acceptCompound)
 {
-    fTrPropagator = new TEveTrackPropagator();
     fEveTrList = new TObjArray();
 }
 
@@ -72,20 +71,29 @@ InitStatus FairEveTracks::Init()
     return kSUCCESS;
 }
 
-FairEveTracks::~FairEveTracks()
-{
-    // TODO Auto-generated destructor stub
-}
+FairEveTracks::~FairEveTracks() {}
 
-TEveTrackList *FairEveTracks::GetTrackGroup(void *tr)
+TEveTrackList *FairEveTracks::GetTrackGroup(TString groupName, Color_t color)
 {
-    if (fTrackGroup == nullptr) {
-        fTrPropagator = new TEveTrackPropagator();
-        fTrackGroup = new TEveTrackList("tracks", fTrPropagator);
-        fTrackGroup->SetMainColor(kRed);
-        GetTracksList()->Add(fTrackGroup);
-        gEve->AddElement(fTrackGroup, this);
-        fTrackGroup->SetRnrLine(kTRUE);
+    TEveTrackList *TrackGroup = nullptr;
+    for (Int_t i = 0; i < GetTracksList()->GetEntriesFast(); i++) {
+        TEveTrackList *TrListIn = static_cast<TEveTrackList *>(GetTracksList()->At(i));
+        if (strcmp(TrListIn->GetName(), groupName) == 0) {
+            TrackGroup = TrListIn;
+            break;
+        }
     }
-    return fTrackGroup;
+    if (TrackGroup == nullptr) {
+        TEveTrackPropagator *TrPropagator = new TEveTrackPropagator();
+        if (fAcceptCompound) {
+            TrackGroup = new FairEveRecoTrackList(groupName, TrPropagator);
+        } else {
+            TrackGroup = new TEveTrackList(groupName, TrPropagator);
+        }
+        TrackGroup->SetMainColor(color);
+        GetTracksList()->Add(TrackGroup);
+        gEve->AddElement(TrackGroup, this);
+        TrackGroup->SetRnrLine(kTRUE);
+    }
+    return TrackGroup;
 }

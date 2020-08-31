@@ -42,6 +42,7 @@ class FairEveTracks
     Bool_t fUsePt;
     Bool_t fUseEta;
     Bool_t fUseEnergy;
+    Bool_t fAcceptCompound;
 
   protected:
     Double_t GetPtMin() const { return fPt[0]; };
@@ -54,8 +55,6 @@ class FairEveTracks
     Bool_t UsePtCut() const { return fUsePt; };
     Bool_t UseEtaCut() const { return fUseEta; };
     Bool_t UseEnergyCut() const { return fUseEnergy; };
-    TEveTrackPropagator *fTrPropagator;
-    TEveTrackList *fTrackGroup;
     /**
      * reset object group (track groups)
      */
@@ -64,13 +63,18 @@ class FairEveTracks
     TObjArray *GetTracksList() const { return fEveTrList; };
     /**
      *
-     * @param tr
+     * @param groupName - name of the track group
+     * @param color - group color
      * @return track group based on parameter
      */
-    virtual TEveTrackList *GetTrackGroup(void *tr);
+    TEveTrackList *GetTrackGroup(TString groupName, Color_t color);
 
   public:
-    FairEveTracks();
+    /**
+     *
+     * @param acceptCompound use compound tracks in track list
+     */
+    FairEveTracks(Bool_t acceptCompound = kFALSE);
     /**
      * makes visible tracks not visible, hidden tracks become visible
      */

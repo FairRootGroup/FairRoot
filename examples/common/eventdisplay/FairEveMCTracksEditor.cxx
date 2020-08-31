@@ -78,7 +78,4 @@ void FairEveMCTracksEditor::Repaint()
     fMCTracks->Repaint();
 }
 
-FairEveMCTracksEditor::~FairEveMCTracksEditor()
-{
-    // TODO Auto-generated destructor stub
-}
+FairEveMCTracksEditor::~FairEveMCTracksEditor() {}

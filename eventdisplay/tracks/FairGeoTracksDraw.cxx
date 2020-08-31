@@ -18,12 +18,13 @@
 #include <TEveManager.h>
 #include <TEveSelection.h>
 
-FairGeoTracksDraw::FairGeoTracksDraw()
-    : fEventManager(nullptr)
+FairGeoTracksDraw::FairGeoTracksDraw(const char* name)
+    : FairTask(name)
+    , fEventManager(nullptr)
     , fVisualizer(nullptr)
 {}
 
-void FairGeoTracksDraw::Exec(Option_t *option) { fVisualizer->Repaint(); }
+void FairGeoTracksDraw::Exec(Option_t* option) { fVisualizer->Repaint(); }
 
 InitStatus FairGeoTracksDraw::Init()
 {

@@ -73,6 +73,4 @@ void FairEveRecoTracksExampleEditor::Repaint()
     fRecoTracks->Repaint();
 }
 
-FairEveRecoTracksExampleEditor::~FairEveRecoTracksExampleEditor()
-{
-}
+FairEveRecoTracksExampleEditor::~FairEveRecoTracksExampleEditor() {}

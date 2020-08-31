@@ -46,7 +46,6 @@ class FairEveGeoTracks : public FairEveTracks
     Bool_t CheckCuts(TGeoTrack *tr);
     void DrawTrack(Int_t id);
     void DrawAnimatedTrack(Int_t id);
-    TEveTrackList *GetTrackGroup(void *tr);
 
   public:
     FairEveGeoTracks();

@@ -20,7 +20,7 @@
 #include "FairEveMCTracks.h"
 
 #include <TGedFrame.h>
-#include <memory.h>
+#include <memory>
 
 class FairEveMCTracksEditor : public TGedFrame
 {

@@ -40,7 +40,6 @@ class FairEveRecoTracksExample : public FairEveTracks
   protected:
     Bool_t CheckCuts(FairTutPropTrack *tr);
     void DrawTrack(Int_t id);
-    TEveTrackList *GetTrackGroup(void *tr);
 
   public:
     FairEveRecoTracksExample();

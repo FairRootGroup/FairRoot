@@ -28,7 +28,7 @@ class FairRecoTracksDraw : public FairTask
     FairEveRecoTracksExample *fVisualizer;
 
   public:
-    FairRecoTracksDraw();
+    FairRecoTracksDraw(const char *name = "reconstructed tracks");
     virtual void Exec(Option_t *option);
     virtual InitStatus Init();
     virtual ~FairRecoTracksDraw();

@@ -18,8 +18,9 @@
 #include <TEveManager.h>
 #include <TEveSelection.h>
 
-FairMCTracksDraw::FairMCTracksDraw()
-    : fEventManager(nullptr)
+FairMCTracksDraw::FairMCTracksDraw(const char* name)
+    : FairTask(name)
+    , fEventManager(nullptr)
     , fVisualizer(nullptr)
 {}
 
