@@ -72,10 +72,7 @@ InitStatus FairEveTracks::Init()
     return kSUCCESS;
 }
 
-FairEveTracks::~FairEveTracks()
-{
-    // TODO Auto-generated destructor stub
-}
+FairEveTracks::~FairEveTracks() {}
 
 TEveTrackList *FairEveTracks::GetTrackGroup(void *tr)
 {
