@@ -20,14 +20,15 @@
 #include "FairEveRecoTracksExample.h"
 
 #include <TGedFrame.h>
+#include <memory.h>
 
 class FairEveRecoTracksExampleEditor : public TGedFrame
 {
-    FairEveMinMaxCut *fPtCut;
-    FairEveMinMaxCut *fEtaCut;
-    FairEveMinMaxCut *fEnergyCut;
+    std::unique_ptr<FairEveMinMaxCut> fPtCut;
+    std::unique_ptr<FairEveMinMaxCut> fEtaCut;
+    std::unique_ptr<FairEveMinMaxCut> fEnergyCut;
     FairEveRecoTracksExample *fRecoTracks;
-    FairEveBoolCut *fDrawMC;
+    std::unique_ptr<FairEveBoolCut> fDrawMC;
 
   public:
     FairEveRecoTracksExampleEditor(const TGWindow *p = 0,
