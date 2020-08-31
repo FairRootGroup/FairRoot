@@ -76,3 +76,16 @@ FairEveTracks::~FairEveTracks()
 {
     // TODO Auto-generated destructor stub
 }
+
+TEveTrackList *FairEveTracks::GetTrackGroup(void *tr)
+{
+    if (fTrackGroup == nullptr) {
+        fTrPropagator = new TEveTrackPropagator();
+        fTrackGroup = new TEveTrackList("tracks", fTrPropagator);
+        fTrackGroup->SetMainColor(kRed);
+        GetTracksList()->Add(fTrackGroup);
+        gEve->AddElement(fTrackGroup, this);
+        fTrackGroup->SetRnrLine(kTRUE);
+    }
+    return fTrackGroup;
+}

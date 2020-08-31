@@ -25,13 +25,6 @@ FairEveRecoTrackList::FairEveRecoTrackList(TString name, TEveTrackPropagator* pr
     fChildClass = FairEveRecoTrack::Class();
 }
 
-Bool_t FairEveRecoTrackList::AcceptElement(TEveElement* el)
-{
-    if (dynamic_cast<TEveCompound*>(el))
-        return kTRUE;
-    return kFALSE;
-}
-
 void FairEveRecoTrackList::SetLineColor(Color_t col)
 {
     for (List_i i = BeginChildren(); i != EndChildren(); ++i) {

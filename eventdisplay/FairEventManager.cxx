@@ -44,6 +44,8 @@ FairEventManager::FairEventManager()
     : TEveEventManager("FairEventManager", "")
     , fRootManager(FairRootManager::Instance())
     , fEntry(0)
+    , fTimeMin(0)
+    , fTimeMax(DBL_MAX)
     , fRunAna(FairRunAna::Instance())
     , fEvent(0)
     , fRPhiPlane{0, 0, 10, 0}
@@ -201,18 +203,24 @@ void FairEventManager::Open() {}
 void FairEventManager::GotoEvent(Int_t event)
 {
     fEntry = event;
+    fTimeMin = 0;
+    fTimeMax = DBL_MAX;
     fRunAna->Run(static_cast<Long64_t>(event));
 }
 
 void FairEventManager::NextEvent()
 {
     fEntry += 1;
+    fTimeMin = 0;
+    fTimeMax = DBL_MAX;
     fRunAna->Run(static_cast<Long64_t>(fEntry));
 }
 
 void FairEventManager::PrevEvent()
 {
     fEntry -= 1;
+    fTimeMin = 0;
+    fTimeMax = DBL_MAX;
     fRunAna->Run(static_cast<Long64_t>(fEntry));
 }
 
