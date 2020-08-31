@@ -35,10 +35,6 @@ target_compile_definitions(${target} PUBLIC ${defs})
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/trackbase
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/eventdisplay
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/eventdisplay/tracks
-  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/trackbase/
   
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
