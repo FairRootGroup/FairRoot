@@ -171,7 +171,4 @@ InitStatus FairEveMCTracks::Init()
     return FairEveTracks::Init();
 }
 
-FairEveMCTracks::~FairEveMCTracks()
-{
-    // TODO Auto-generated destructor stub
-}
+FairEveMCTracks::~FairEveMCTracks() {}
