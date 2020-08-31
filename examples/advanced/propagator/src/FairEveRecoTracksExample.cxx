@@ -256,7 +256,4 @@ void FairEveRecoTracksExample::SwapTracks()
     gEve->Redraw3D(kFALSE);
 }
 
-FairEveRecoTracksExample::~FairEveRecoTracksExample()
-{
-    // TODO Auto-generated destructor stub
-}
+FairEveRecoTracksExample::~FairEveRecoTracksExample() {}
