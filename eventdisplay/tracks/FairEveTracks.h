@@ -68,7 +68,7 @@ class FairEveTracks
      * @param color - group color
      * @return track group based on parameter
      */
-    TEveTrackList *GetTrackGroup(TString groupName, Color_t color);
+    TEveTrackList *FindTrackGroup(TString groupName, Color_t color);
 
   public:
     /**
