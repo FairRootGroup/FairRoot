@@ -23,7 +23,6 @@
 #include <TEveSelection.h>
 #include <TEveTrack.h>
 
-
 FairEveTracks::FairEveTracks(Bool_t acceptCompound)
     : fEventManager(nullptr)
     , fEveTrList(nullptr)

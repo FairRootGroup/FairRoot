@@ -135,25 +135,25 @@ class FairEventManager : public TEveEventManager
     Int_t StringToColor(TString color) const;
 
   private:
-    FairRootManager *fRootManager;             //!
-    Int_t fEntry;                              //!
-    Double_t fWorldSizeX, fWorldSizeY, fWorldSizeZ;                       //!
-    Double_t fTimeMin, fTimeMax;               //!
-    FairRunAna *fRunAna;                       //!
-    TGListTreeItem *fEvent;                    //!
-    Double_t fRPhiPlane[4];                    //!
-    Double_t fRhoZPlane[4];                    //!
-    TGLViewer::ECameraType fRphiCam;           //!
-    TGLViewer::ECameraType fRhoCam;            //!
-    TEveViewer *fRPhiView;                     //!
-    TEveViewer *fRhoZView;                     //!
-    TEveViewer *fMultiView;                    //!
-    TEveViewer *fMultiRPhiView;                //!
-    TEveViewer *fMultiRhoZView;                //!
-    TEveScene *fRPhiScene;                     //!
-    TEveScene *fRhoZScene;                     //!
-    TEveProjectionManager *fRPhiProjManager;   //!
-    TEveProjectionManager *fRhoZProjManager;   //!
+    FairRootManager *fRootManager;                    //!
+    Int_t fEntry;                                     //!
+    Double_t fWorldSizeX, fWorldSizeY, fWorldSizeZ;   //!
+    Double_t fTimeMin, fTimeMax;                      //!
+    FairRunAna *fRunAna;                              //!
+    TGListTreeItem *fEvent;                           //!
+    Double_t fRPhiPlane[4];                           //!
+    Double_t fRhoZPlane[4];                           //!
+    TGLViewer::ECameraType fRphiCam;                  //!
+    TGLViewer::ECameraType fRhoCam;                   //!
+    TEveViewer *fRPhiView;                            //!
+    TEveViewer *fRhoZView;                            //!
+    TEveViewer *fMultiView;                           //!
+    TEveViewer *fMultiRPhiView;                       //!
+    TEveViewer *fMultiRhoZView;                       //!
+    TEveScene *fRPhiScene;                            //!
+    TEveScene *fRhoZScene;                            //!
+    TEveProjectionManager *fRPhiProjManager;          //!
+    TEveProjectionManager *fRhoZProjManager;          //!
     TEveProjectionAxes *fAxesPhi;
     TEveProjectionAxes *fAxesRho;
     TString fXMLConfig;

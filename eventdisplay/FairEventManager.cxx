@@ -130,7 +130,7 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
         return;
     TGeoNode *N = gGeoManager->GetTopNode();
     TEveGeoTopNode *TNod = new TEveGeoTopNode(gGeoManager, N, visopt, vislvl, maxvisnds);
-    TGeoBBox *box = dynamic_cast<TGeoBBox*>(gGeoManager->GetTopNode()->GetVolume()->GetShape());
+    TGeoBBox *box = dynamic_cast<TGeoBBox *>(gGeoManager->GetTopNode()->GetVolume()->GetShape());
     if (box) {
         fWorldSizeX = box->GetDX();
         fWorldSizeY = box->GetDY();
@@ -283,8 +283,8 @@ void FairEventManager::AddParticlesToPdgDataBase(Int_t /*pdg*/)
         pdgDB->AddParticle("FeedbackPhoton", "FeedbackPhoton", 0, kFALSE, 0, 0, "Special", 50000051);
 }
 
-void FairEventManager::GetWorldSize(Double_t &x, Double_t &y,
-        Double_t &z) const {
+void FairEventManager::GetWorldSize(Double_t &x, Double_t &y, Double_t &z) const
+{
     x = fWorldSizeX;
     y = fWorldSizeY;
     z = fWorldSizeZ;

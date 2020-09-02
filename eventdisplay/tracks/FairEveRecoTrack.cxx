@@ -14,6 +14,7 @@
  *		Warsaw University of Technology, Faculty of Physics
  */
 #include "FairEveRecoTrack.h"
+
 #include "FairEventManager.h"
 
 FairEveRecoTrack::FairEveRecoTrack()
@@ -37,8 +38,8 @@ FairEveRecoTrack::FairEveRecoTrack(TParticle *t, Int_t label, TEveTrackPropagato
 
 void FairEveRecoTrack::AddHit(TVector3 hit)
 {
-   Double_t worldSizeX, worldSizeY,worldSizeZ;
-    FairEventManager::Instance()->GetWorldSize(worldSizeX, worldSizeY,worldSizeZ);
+    Double_t worldSizeX, worldSizeY, worldSizeZ;
+    FairEventManager::Instance()->GetWorldSize(worldSizeX, worldSizeY, worldSizeZ);
     if (TMath::Abs(hit.X()) > worldSizeX)
         return;
     if (TMath::Abs(hit.Y()) > worldSizeY)

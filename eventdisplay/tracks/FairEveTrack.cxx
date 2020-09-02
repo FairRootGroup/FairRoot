@@ -14,6 +14,7 @@
  *		Warsaw University of Technology, Faculty of Physics
  */
 #include "FairEveTrack.h"
+
 #include "FairEventManager.h"
 
 FairEveTrack::FairEveTrack()
@@ -38,8 +39,8 @@ void FairEveTrack::SetFirstPoint(const TVector3 &mom, const TVector3 &pos)
 
 void FairEveTrack::SetNextPoint(const TVector3 &point)
 {
-    Double_t worldSizeX, worldSizeY,worldSizeZ;
-    FairEventManager::Instance()->GetWorldSize(worldSizeX, worldSizeY,worldSizeZ);
+    Double_t worldSizeX, worldSizeY, worldSizeZ;
+    FairEventManager::Instance()->GetWorldSize(worldSizeX, worldSizeY, worldSizeZ);
     if (TMath::Abs(point.X()) > worldSizeX)
         return;
     if (TMath::Abs(point.Y()) > worldSizeY)
