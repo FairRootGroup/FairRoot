@@ -20,7 +20,7 @@
 #include "FairEveRecoTracksExample.h"
 
 #include <TGedFrame.h>
-#include <memory.h>
+#include <memory>
 
 class FairEveRecoTracksExampleEditor : public TGedFrame
 {

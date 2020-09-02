@@ -22,7 +22,7 @@
 #include <TParticlePDG.h>
 
 FairEveMCTracks::FairEveMCTracks()
-    : FairEveTracks()
+    : FairEveTracks(kTRUE)
     , fContainer(nullptr)
     , fShowPrimary(kTRUE)
     , fShowSecondary(kTRUE)

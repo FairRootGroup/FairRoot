@@ -49,8 +49,9 @@ void FairEveGeoTracks::DrawTrack(Int_t id)
     if (!CheckCuts(tr))
         return;
     TParticle *p = (TParticle *)tr->GetParticle();
-    TEveTrackList *trList = GetTrackGroup(tr);
     Color_t color = GetEventManager()->Color(p->GetPdgCode());
+    TEveTrackList *trList = GetTrackGroup(p->GetName(),color);
+
     FairEveTrack *track = new FairEveTrack(p, p->GetPdgCode(), fTrPropagator);
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p->Px(), p->Py(), p->Pz()));
     track->SetMainColor(color);
@@ -81,8 +82,8 @@ void FairEveGeoTracks::DrawAnimatedTrack(Int_t id)
     if (tr->GetPoint(0)[3] * timeScale > fTMax)
         return;   // first point after tmax
     TParticle *p = (TParticle *)tr->GetParticle();
-    TEveTrackList *trList = GetTrackGroup(tr);
     Color_t color = GetEventManager()->Color(p->GetPdgCode());
+    TEveTrackList *trList = GetTrackGroup(p->GetName(),color);
     FairEveTrack *track = new FairEveTrack(p, p->GetPdgCode(), fTrPropagator);
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p->Px(), p->Py(), p->Pz()));
     track->SetMainColor(color);
@@ -130,29 +131,6 @@ void FairEveGeoTracks::Repaint()
         }
     }
     gEve->Redraw3D(kFALSE);
-}
-
-TEveTrackList *FairEveGeoTracks::GetTrackGroup(void *tr)
-{
-    TGeoTrack *track = static_cast<TGeoTrack *>(tr);
-    TParticle *P = static_cast<TParticle *>(track->GetParticle());
-    fTrackGroup = nullptr;
-    for (Int_t i = 0; i < GetTracksList()->GetEntriesFast(); i++) {
-        TEveTrackList *TrListIn = static_cast<TEveTrackList *>(GetTracksList()->At(i));
-        if (strcmp(TrListIn->GetName(), P->GetName()) == 0) {
-            fTrackGroup = TrListIn;
-            break;
-        }
-    }
-    if (fTrackGroup == nullptr) {
-        fTrPropagator = new TEveTrackPropagator();
-        fTrackGroup = new TEveTrackList(P->GetName(), fTrPropagator);
-        fTrackGroup->SetMainColor(GetEventManager()->Color(P->GetPdgCode()));
-        GetTracksList()->Add(fTrackGroup);
-        gEve->AddElement(fTrackGroup, this);
-        fTrackGroup->SetRnrLine(kTRUE);
-    }
-    return fTrackGroup;
 }
 
 Bool_t FairEveGeoTracks::CheckCuts(TGeoTrack *tr)

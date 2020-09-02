@@ -31,7 +31,7 @@ class FairGeoTracksDraw : public FairTask
     FairEveGeoTracks *fVisualizer;
 
   public:
-    FairGeoTracksDraw();
+    FairGeoTracksDraw(const char *name = "MC tracks");
     virtual void Exec(Option_t *option);
     virtual InitStatus Init();
     virtual ~FairGeoTracksDraw();

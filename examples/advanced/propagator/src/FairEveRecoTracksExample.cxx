@@ -26,7 +26,7 @@
 #include <TParticlePDG.h>
 
 FairEveRecoTracksExample::FairEveRecoTracksExample()
-    : FairEveTracks()
+    : FairEveTracks(kTRUE)
     , fContainerReco(nullptr)
     , fContainerSim(nullptr)
     , fHits1(nullptr)
@@ -75,17 +75,21 @@ void FairEveRecoTracksExample::DrawTrack(Int_t id)
     FairMCTrack *mc = nullptr;   // TODO add MC stuff
     if (!CheckCuts(tr))
         return;
-    TEveTrackList *trList = GetTrackGroup(tr);
-    FairTrackParP par = tr->GetParamFirst();
     Color_t col = kYellow;
+    TString gropuName = "neutral";
     Int_t dummy_pid = 111;
-    if (par.GetQ() < 0) {
+    Int_t q = tr->GetParamFirst().GetQ();
+    if (q < 0) {
+        gropuName = "neg";
         col = kBlue;
         dummy_pid = -211;
-    } else if (par.GetQ() > 0) {
+    } else if (q > 0) {
+        gropuName = "pos";
         col = kRed;
         dummy_pid = 211;
     }
+    TEveTrackList *trList = GetTrackGroup(gropuName, col);
+    FairTrackParP par = tr->GetParamFirst();
     TParticle p(
         dummy_pid, 0, 0, 0, 0, 0, par.GetPx(), par.GetPy(), par.GetPz(), 0, par.GetX(), par.GetY(), par.GetZ(), 0);
     FairEveRecoTrack *track = new FairEveRecoTrack(&p, par.GetQ(), fTrPropagator);
@@ -158,40 +162,6 @@ void FairEveRecoTracksExample::DrawTrack(Int_t id)
     track->CloseCompound();
     track->GetRecoTrack()->SetRnrLine(kTRUE);
     trList->AddElement(track);
-}
-
-TEveTrackList *FairEveRecoTracksExample::GetTrackGroup(void *tr)
-{
-    FairTutPropTrack *track = static_cast<FairTutPropTrack *>(tr);
-    Color_t col = kYellow;
-    TString pid = "neutral";
-    Int_t q = track->GetParamFirst().GetQ();
-    if (q < 0) {
-        pid = "neg";
-        col = kBlue;
-    } else if (q > 0) {
-        pid = "pos";
-        col = kRed;
-    }
-
-    fTrackGroup = nullptr;
-    for (Int_t i = 0; i < GetTracksList()->GetEntriesFast(); i++) {
-        FairEveRecoTrackList *TrListIn = static_cast<FairEveRecoTrackList *>(GetTracksList()->At(i));
-        TString listName = TrListIn->GetName();
-        if (listName.EqualTo(pid)) {
-            fTrackGroup = TrListIn;
-            break;
-        }
-    }
-    if (fTrackGroup == nullptr) {
-        fTrPropagator = new TEveTrackPropagator();
-        fTrackGroup = new FairEveRecoTrackList(pid, fTrPropagator);
-        fTrackGroup->SetMainColor(col);
-        GetTracksList()->Add(fTrackGroup);
-        gEve->AddElement(fTrackGroup, this);
-        fTrackGroup->SetRnrLine(kTRUE);
-    }
-    return fTrackGroup;
 }
 
 void FairEveRecoTracksExample::Repaint()

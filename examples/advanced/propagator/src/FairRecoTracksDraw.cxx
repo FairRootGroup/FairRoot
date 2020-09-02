@@ -18,12 +18,13 @@
 #include <TEveManager.h>
 #include <TEveSelection.h>
 
-FairRecoTracksDraw::FairRecoTracksDraw()
-    : fEventManager(nullptr)
+FairRecoTracksDraw::FairRecoTracksDraw(const char* name)
+    : FairTask(name)
+    , fEventManager(nullptr)
     , fVisualizer(nullptr)
 {}
 
-void FairRecoTracksDraw::Exec(Option_t *option) { fVisualizer->Repaint(); }
+void FairRecoTracksDraw::Exec(Option_t* option) { fVisualizer->Repaint(); }
 
 InitStatus FairRecoTracksDraw::Init()
 {

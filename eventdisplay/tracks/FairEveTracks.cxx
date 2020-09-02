@@ -15,6 +15,7 @@
  */
 #include "FairEveTracks.h"
 
+#include "FairEveRecoTrackList.h"
 #include "FairEveTrack.h"
 
 #include <TEveElement.h>
@@ -22,7 +23,7 @@
 #include <TEveSelection.h>
 #include <TEveTrack.h>
 
-FairEveTracks::FairEveTracks()
+FairEveTracks::FairEveTracks(Bool_t acceptCompound)
     : fEventManager(nullptr)
     , fEveTrList(nullptr)
     , fPt{0, 10}
@@ -31,6 +32,7 @@ FairEveTracks::FairEveTracks()
     , fUsePt(kFALSE)
     , fUseEta(kFALSE)
     , fUseEnergy(kFALSE)
+    , fAcceptCompound(acceptCompound)
     , fTrPropagator(nullptr)
     , fTrackGroup(nullptr)
 {
@@ -74,12 +76,24 @@ InitStatus FairEveTracks::Init()
 
 FairEveTracks::~FairEveTracks() {}
 
-TEveTrackList *FairEveTracks::GetTrackGroup(void *tr)
+TEveTrackList *FairEveTracks::GetTrackGroup(TString groupName, Color_t color)
 {
+    fTrackGroup = nullptr;
+    for (Int_t i = 0; i < GetTracksList()->GetEntriesFast(); i++) {
+        TEveTrackList *TrListIn = static_cast<TEveTrackList *>(GetTracksList()->At(i));
+        if (strcmp(TrListIn->GetName(), groupName) == 0) {
+            fTrackGroup = TrListIn;
+            break;
+        }
+    }
     if (fTrackGroup == nullptr) {
         fTrPropagator = new TEveTrackPropagator();
-        fTrackGroup = new TEveTrackList("tracks", fTrPropagator);
-        fTrackGroup->SetMainColor(kRed);
+        if (fAcceptCompound) {
+            fTrackGroup = new FairEveRecoTrackList(groupName, fTrPropagator);
+        } else {
+            fTrackGroup = new TEveTrackList(groupName, fTrPropagator);
+        }
+        fTrackGroup->SetMainColor(color);
         GetTracksList()->Add(fTrackGroup);
         gEve->AddElement(fTrackGroup, this);
         fTrackGroup->SetRnrLine(kTRUE);
