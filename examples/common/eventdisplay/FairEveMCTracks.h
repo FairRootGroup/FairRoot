@@ -35,7 +35,6 @@ class FairEveMCTracks : public FairEveTracks
   protected:
     Bool_t CheckCuts(FairMCTrack *tr);
     void DrawTrack(Int_t id);
-    TEveTrackList *GetTrackGroup(void *tr);
 
   public:
     FairEveMCTracks();

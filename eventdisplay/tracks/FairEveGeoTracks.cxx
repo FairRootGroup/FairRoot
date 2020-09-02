@@ -52,7 +52,7 @@ void FairEveGeoTracks::DrawTrack(Int_t id)
     Color_t color = GetEventManager()->Color(p->GetPdgCode());
     TEveTrackList *trList = GetTrackGroup(p->GetName(), color);
 
-    FairEveTrack *track = new FairEveTrack(p, p->GetPdgCode(), fTrPropagator);
+    FairEveTrack *track = new FairEveTrack(p, p->GetPdgCode(), trList->GetPropagator());
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p->Px(), p->Py(), p->Pz()));
     track->SetMainColor(color);
     Double_t x, y, z, t;
@@ -84,7 +84,7 @@ void FairEveGeoTracks::DrawAnimatedTrack(Int_t id)
     TParticle *p = (TParticle *)tr->GetParticle();
     Color_t color = GetEventManager()->Color(p->GetPdgCode());
     TEveTrackList *trList = GetTrackGroup(p->GetName(), color);
-    FairEveTrack *track = new FairEveTrack(p, p->GetPdgCode(), fTrPropagator);
+    FairEveTrack *track = new FairEveTrack(p, p->GetPdgCode(), trList->GetPropagator());
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p->Px(), p->Py(), p->Pz()));
     track->SetMainColor(color);
     Double_t x, y, z, t;

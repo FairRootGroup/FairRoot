@@ -22,7 +22,7 @@
 #include <TParticlePDG.h>
 
 FairEveMCTracks::FairEveMCTracks()
-    : FairEveTracks(kTRUE)
+    : FairEveTracks(kFALSE)
     , fContainer(nullptr)
     , fShowPrimary(kTRUE)
     , fShowSecondary(kTRUE)
@@ -75,8 +75,8 @@ void FairEveMCTracks::DrawTrack(Int_t id)
     FairMCTrack *tr = (FairMCTrack *)fContainer->UncheckedAt(id);
     if (!CheckCuts(tr))
         return;
-    TEveTrackList *trList = GetTrackGroup(tr);
     Color_t color = GetEventManager()->Color(tr->GetPdgCode());
+    TEveTrackList *trList = GetTrackGroup(Form("%i", tr->GetPdgCode()), color);
     TParticle p(tr->GetPdgCode(),
                 0,
                 0,
@@ -91,7 +91,7 @@ void FairEveMCTracks::DrawTrack(Int_t id)
                 tr->GetStartY(),
                 tr->GetStartZ(),
                 tr->GetStartT());
-    FairEveTrack *track = new FairEveTrack(&p, tr->GetPdgCode(), fTrPropagator);
+    FairEveTrack *track = new FairEveTrack(&p, tr->GetPdgCode(), trList->GetPropagator());
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p.Px(), p.Py(), p.Pz()));
     track->SetMainColor(color);
     TVector3 pos(p.Vx(), p.Vy(), p.Vz());
@@ -118,30 +118,6 @@ void FairEveMCTracks::DrawTrack(Int_t id)
     }
     track->SetRnrLine(kTRUE);
     trList->AddElement(track);
-}
-
-TEveTrackList *FairEveMCTracks::GetTrackGroup(void *tr)
-{
-    FairMCTrack *track = static_cast<FairMCTrack *>(tr);
-    TString pid = Form("%i", track->GetPdgCode());
-    fTrackGroup = nullptr;
-    for (Int_t i = 0; i < GetTracksList()->GetEntriesFast(); i++) {
-        TEveTrackList *TrListIn = static_cast<TEveTrackList *>(GetTracksList()->At(i));
-        TString listName = TrListIn->GetName();
-        if (listName.EqualTo(pid)) {
-            fTrackGroup = TrListIn;
-            break;
-        }
-    }
-    if (fTrackGroup == nullptr) {
-        fTrPropagator = new TEveTrackPropagator();
-        fTrackGroup = new TEveTrackList(pid, fTrPropagator);
-        fTrackGroup->SetMainColor(GetEventManager()->Color(track->GetPdgCode()));
-        GetTracksList()->Add(fTrackGroup);
-        gEve->AddElement(fTrackGroup, this);
-        fTrackGroup->SetRnrLine(kTRUE);
-    }
-    return fTrackGroup;
 }
 
 void FairEveMCTracks::Repaint()

@@ -55,8 +55,6 @@ class FairEveTracks
     Bool_t UsePtCut() const { return fUsePt; };
     Bool_t UseEtaCut() const { return fUseEta; };
     Bool_t UseEnergyCut() const { return fUseEnergy; };
-    TEveTrackPropagator *fTrPropagator;
-    TEveTrackList *fTrackGroup;
     /**
      * reset object group (track groups)
      */

@@ -92,7 +92,7 @@ void FairEveRecoTracksExample::DrawTrack(Int_t id)
     FairTrackParP par = tr->GetParamFirst();
     TParticle p(
         dummy_pid, 0, 0, 0, 0, 0, par.GetPx(), par.GetPy(), par.GetPz(), 0, par.GetX(), par.GetY(), par.GetZ(), 0);
-    FairEveRecoTrack *track = new FairEveRecoTrack(&p, par.GetQ(), fTrPropagator);
+    FairEveRecoTrack *track = new FairEveRecoTrack(&p, par.GetQ(), trList->GetPropagator());
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p.Px(), p.Py(), p.Pz()));
     track->SetMainColor(col);
     TVector3 pos(p.Vx(), p.Vy(), p.Vz());

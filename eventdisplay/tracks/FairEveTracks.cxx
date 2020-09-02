@@ -33,10 +33,7 @@ FairEveTracks::FairEveTracks(Bool_t acceptCompound)
     , fUseEta(kFALSE)
     , fUseEnergy(kFALSE)
     , fAcceptCompound(acceptCompound)
-    , fTrPropagator(nullptr)
-    , fTrackGroup(nullptr)
 {
-    fTrPropagator = new TEveTrackPropagator();
     fEveTrList = new TObjArray();
 }
 
@@ -78,25 +75,25 @@ FairEveTracks::~FairEveTracks() {}
 
 TEveTrackList *FairEveTracks::GetTrackGroup(TString groupName, Color_t color)
 {
-    fTrackGroup = nullptr;
+    TEveTrackList *TrackGroup = nullptr;
     for (Int_t i = 0; i < GetTracksList()->GetEntriesFast(); i++) {
         TEveTrackList *TrListIn = static_cast<TEveTrackList *>(GetTracksList()->At(i));
         if (strcmp(TrListIn->GetName(), groupName) == 0) {
-            fTrackGroup = TrListIn;
+            TrackGroup = TrListIn;
             break;
         }
     }
-    if (fTrackGroup == nullptr) {
-        fTrPropagator = new TEveTrackPropagator();
+    if (TrackGroup == nullptr) {
+        TEveTrackPropagator *TrPropagator = new TEveTrackPropagator();
         if (fAcceptCompound) {
-            fTrackGroup = new FairEveRecoTrackList(groupName, fTrPropagator);
+            TrackGroup = new FairEveRecoTrackList(groupName, TrPropagator);
         } else {
-            fTrackGroup = new TEveTrackList(groupName, fTrPropagator);
+            TrackGroup = new TEveTrackList(groupName, TrPropagator);
         }
-        fTrackGroup->SetMainColor(color);
-        GetTracksList()->Add(fTrackGroup);
-        gEve->AddElement(fTrackGroup, this);
-        fTrackGroup->SetRnrLine(kTRUE);
+        TrackGroup->SetMainColor(color);
+        GetTracksList()->Add(TrackGroup);
+        gEve->AddElement(TrackGroup, this);
+        TrackGroup->SetRnrLine(kTRUE);
     }
-    return fTrackGroup;
+    return TrackGroup;
 }
