@@ -15,6 +15,8 @@
  */
 #include "FairEveRecoTrack.h"
 
+#include "FairEventManager.h"
+
 FairEveRecoTrack::FairEveRecoTrack()
     : TEveCompound()
     , fHits(nullptr)
@@ -36,11 +38,13 @@ FairEveRecoTrack::FairEveRecoTrack(TParticle *t, Int_t label, TEveTrackPropagato
 
 void FairEveRecoTrack::AddHit(TVector3 hit)
 {
-    if (TMath::Abs(hit.X()) > FairEveTrack::GetWorldSize())
+    Double_t worldSizeX, worldSizeY, worldSizeZ;
+    FairEventManager::Instance()->GetWorldSize(worldSizeX, worldSizeY, worldSizeZ);
+    if (TMath::Abs(hit.X()) > worldSizeX)
         return;
-    if (TMath::Abs(hit.Y()) > FairEveTrack::GetWorldSize())
+    if (TMath::Abs(hit.Y()) > worldSizeY)
         return;
-    if (TMath::Abs(hit.Z()) > FairEveTrack::GetWorldSize())
+    if (TMath::Abs(hit.Z()) > worldSizeZ)
         return;
     if (fHits == nullptr) {
         fHits = new TEvePointSet();

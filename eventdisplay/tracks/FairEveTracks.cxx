@@ -34,7 +34,7 @@ FairEveTracks::FairEveTracks(Bool_t acceptCompound)
     , fUseEnergy(kFALSE)
     , fAcceptCompound(acceptCompound)
 {
-    fEveTrList = new TObjArray();
+    fEveTrList = std::unique_ptr<TObjArray>(new TObjArray());
 }
 
 void FairEveTracks::ResetGroup()
@@ -73,7 +73,7 @@ InitStatus FairEveTracks::Init()
 
 FairEveTracks::~FairEveTracks() {}
 
-TEveTrackList *FairEveTracks::GetTrackGroup(TString groupName, Color_t color)
+TEveTrackList *FairEveTracks::FindTrackGroup(TString groupName, Color_t color)
 {
     TEveTrackList *TrackGroup = nullptr;
     for (Int_t i = 0; i < GetTracksList()->GetEntriesFast(); i++) {
@@ -91,8 +91,8 @@ TEveTrackList *FairEveTracks::GetTrackGroup(TString groupName, Color_t color)
             TrackGroup = new TEveTrackList(groupName, TrPropagator);
         }
         TrackGroup->SetMainColor(color);
-        GetTracksList()->Add(TrackGroup);
-        gEve->AddElement(TrackGroup, this);
+        fEveTrList->Add(TrackGroup);
+        AddElement(TrackGroup);
         TrackGroup->SetRnrLine(kTRUE);
     }
     return TrackGroup;

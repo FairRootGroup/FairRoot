@@ -30,10 +30,11 @@
 #include <TGLClip.h>   // for TGLClip, TGLClip::kClipPlane, TGL...
 #include <TGLLightSet.h>
 #include <TGLViewer.h>
+#include <TGeoBBox.h>
 #include <TGeoManager.h>   // for gGeoManager, TGeoManager
 #include <TGeoNode.h>
 #include <TGeoVolume.h>   // for TGeoVolume
-
+#include <iostream>
 ClassImp(FairEventManager);
 
 FairEventManager *FairEventManager::fgRinstance = 0;
@@ -44,6 +45,9 @@ FairEventManager::FairEventManager()
     : TEveEventManager("FairEventManager", "")
     , fRootManager(FairRootManager::Instance())
     , fEntry(0)
+    , fWorldSizeX(2000)
+    , fWorldSizeY(2000)
+    , fWorldSizeZ(2000)
     , fTimeMin(0)
     , fTimeMax(DBL_MAX)
     , fRunAna(FairRunAna::Instance())
@@ -126,6 +130,12 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
         return;
     TGeoNode *N = gGeoManager->GetTopNode();
     TEveGeoTopNode *TNod = new TEveGeoTopNode(gGeoManager, N, visopt, vislvl, maxvisnds);
+    TGeoBBox *box = dynamic_cast<TGeoBBox *>(gGeoManager->GetTopNode()->GetVolume()->GetShape());
+    if (box) {
+        fWorldSizeX = box->GetDX();
+        fWorldSizeY = box->GetDY();
+        fWorldSizeZ = box->GetDZ();
+    }
     if (!fXMLConfig.EqualTo(""))
         LoadXMLSettings();
     gEve->AddGlobalElement(TNod);
@@ -271,6 +281,13 @@ void FairEventManager::AddParticlesToPdgDataBase(Int_t /*pdg*/)
 
     if (!pdgDB->GetParticle(50000051))
         pdgDB->AddParticle("FeedbackPhoton", "FeedbackPhoton", 0, kFALSE, 0, 0, "Special", 50000051);
+}
+
+void FairEventManager::GetWorldSize(Double_t &x, Double_t &y, Double_t &z) const
+{
+    x = fWorldSizeX;
+    y = fWorldSizeY;
+    z = fWorldSizeZ;
 }
 
 void FairEventManager::SetViewers(TEveViewer *RPhi, TEveViewer *RhoZ)

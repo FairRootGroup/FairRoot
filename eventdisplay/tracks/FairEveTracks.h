@@ -26,6 +26,7 @@
 #include <TEveTrackPropagator.h>
 #include <TGeoTrack.h>
 #include <TNamed.h>
+#include <memory>
 
 /**
  * base evelement that represents tracks
@@ -35,14 +36,14 @@ class FairEveTracks
     , public TNamed
 {
     FairEventManager *fEventManager;
-    TObjArray *fEveTrList;
+    std::unique_ptr<TObjArray> fEveTrList;
     Double_t fPt[2];
     Double_t fEta[2];
     Double_t fEnergy[2];
     Bool_t fUsePt;
     Bool_t fUseEta;
     Bool_t fUseEnergy;
-    Bool_t fAcceptCompound;
+    const Bool_t fAcceptCompound;
 
   protected:
     Double_t GetPtMin() const { return fPt[0]; };
@@ -60,14 +61,14 @@ class FairEveTracks
      */
     void ResetGroup();
     FairEventManager *GetEventManager() const { return fEventManager; };
-    TObjArray *GetTracksList() const { return fEveTrList; };
+    TObjArray *GetTracksList() const { return fEveTrList.get(); };
     /**
      *
      * @param groupName - name of the track group
      * @param color - group color
      * @return track group based on parameter
      */
-    TEveTrackList *GetTrackGroup(TString groupName, Color_t color);
+    TEveTrackList *FindTrackGroup(TString groupName, Color_t color);
 
   public:
     /**

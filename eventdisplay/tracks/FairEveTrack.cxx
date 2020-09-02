@@ -15,7 +15,7 @@
  */
 #include "FairEveTrack.h"
 
-Float_t FairEveTrack::fgWorldSize = 2000;
+#include "FairEventManager.h"
 
 FairEveTrack::FairEveTrack()
     : TEveTrack()
@@ -39,11 +39,13 @@ void FairEveTrack::SetFirstPoint(const TVector3 &mom, const TVector3 &pos)
 
 void FairEveTrack::SetNextPoint(const TVector3 &point)
 {
-    if (TMath::Abs(point.X()) > fgWorldSize)
+    Double_t worldSizeX, worldSizeY, worldSizeZ;
+    FairEventManager::Instance()->GetWorldSize(worldSizeX, worldSizeY, worldSizeZ);
+    if (TMath::Abs(point.X()) > worldSizeX)
         return;
-    if (TMath::Abs(point.Y()) > fgWorldSize)
+    if (TMath::Abs(point.Y()) > worldSizeY)
         return;
-    if (TMath::Abs(point.Z()) > fgWorldSize)
+    if (TMath::Abs(point.Z()) > worldSizeZ)
         return;
     if (TMath::IsNaN(point.X()))
         return;

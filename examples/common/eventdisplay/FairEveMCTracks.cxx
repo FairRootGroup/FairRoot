@@ -76,7 +76,7 @@ void FairEveMCTracks::DrawTrack(Int_t id)
     if (!CheckCuts(tr))
         return;
     Color_t color = GetEventManager()->Color(tr->GetPdgCode());
-    TEveTrackList *trList = GetTrackGroup(Form("%i", tr->GetPdgCode()), color);
+    TEveTrackList *trList = FindTrackGroup(Form("%i", tr->GetPdgCode()), color);
     TParticle p(tr->GetPdgCode(),
                 0,
                 0,

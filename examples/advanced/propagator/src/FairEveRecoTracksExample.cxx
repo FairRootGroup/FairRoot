@@ -88,7 +88,7 @@ void FairEveRecoTracksExample::DrawTrack(Int_t id)
         col = kRed;
         dummy_pid = 211;
     }
-    TEveTrackList *trList = GetTrackGroup(gropuName, col);
+    TEveTrackList *trList = FindTrackGroup(gropuName, col);
     FairTrackParP par = tr->GetParamFirst();
     TParticle p(
         dummy_pid, 0, 0, 0, 0, 0, par.GetPx(), par.GetPy(), par.GetPz(), 0, par.GetX(), par.GetY(), par.GetZ(), 0);
