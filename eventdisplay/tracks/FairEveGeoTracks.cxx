@@ -50,7 +50,7 @@ void FairEveGeoTracks::DrawTrack(Int_t id)
         return;
     TParticle *p = (TParticle *)tr->GetParticle();
     Color_t color = GetEventManager()->Color(p->GetPdgCode());
-    TEveTrackList *trList = GetTrackGroup(p->GetName(),color);
+    TEveTrackList *trList = GetTrackGroup(p->GetName(), color);
 
     FairEveTrack *track = new FairEveTrack(p, p->GetPdgCode(), fTrPropagator);
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p->Px(), p->Py(), p->Pz()));
@@ -83,7 +83,7 @@ void FairEveGeoTracks::DrawAnimatedTrack(Int_t id)
         return;   // first point after tmax
     TParticle *p = (TParticle *)tr->GetParticle();
     Color_t color = GetEventManager()->Color(p->GetPdgCode());
-    TEveTrackList *trList = GetTrackGroup(p->GetName(),color);
+    TEveTrackList *trList = GetTrackGroup(p->GetName(), color);
     FairEveTrack *track = new FairEveTrack(p, p->GetPdgCode(), fTrPropagator);
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p->Px(), p->Py(), p->Pz()));
     track->SetMainColor(color);
