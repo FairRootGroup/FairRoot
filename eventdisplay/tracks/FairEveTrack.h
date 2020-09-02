@@ -22,7 +22,6 @@
 
 class FairEveTrack : public TEveTrack
 {
-    static Float_t fgWorldSize;
 
   public:
     /**
@@ -30,16 +29,6 @@ class FairEveTrack : public TEveTrack
      */
     FairEveTrack();
     FairEveTrack(TParticle *t, Int_t label, TEveTrackPropagator *prop = nullptr);
-    /**
-     * set world size, trajectories are not drawn outside of the world size
-     * @param size world size
-     */
-    static void SetWorldSize(Float_t size) { fgWorldSize = size; };
-    /**
-     *
-     * @return world size
-     */
-    static Float_t GetWorldSize() { return fgWorldSize; };
     /**
      * set properties of first point must be called before calling SetNextPoint
      * @param mom momentum of particle

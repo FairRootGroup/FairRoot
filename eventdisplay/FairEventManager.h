@@ -108,6 +108,7 @@ class FairEventManager : public TEveEventManager
     virtual Float_t GetEvtMinEnergy() { return 0; }
     virtual Float_t GetMaxEnergy() { return 1E+9; }
     virtual Float_t GetMinEnergy() { return 0; }
+    void GetWorldSize(Double_t &x, Double_t &y, Double_t &z) const;
     /**
      *
      * @param name name of file with screenshot
@@ -136,6 +137,7 @@ class FairEventManager : public TEveEventManager
   private:
     FairRootManager *fRootManager;             //!
     Int_t fEntry;                              //!
+    Double_t fWorldSizeX, fWorldSizeY, fWorldSizeZ;                       //!
     Double_t fTimeMin, fTimeMax;               //!
     FairRunAna *fRunAna;                       //!
     TGListTreeItem *fEvent;                    //!

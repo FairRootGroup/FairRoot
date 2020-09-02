@@ -22,6 +22,7 @@
 #include <TEveManager.h>
 #include <TEveSelection.h>
 #include <TEveTrack.h>
+#include <iostream>
 
 FairEveTracks::FairEveTracks(Bool_t acceptCompound)
     : fEventManager(nullptr)
@@ -34,7 +35,7 @@ FairEveTracks::FairEveTracks(Bool_t acceptCompound)
     , fUseEnergy(kFALSE)
     , fAcceptCompound(acceptCompound)
 {
-    fEveTrList = new TObjArray();
+    fEveTrList = std::unique_ptr<TObjArray>(new TObjArray());
 }
 
 void FairEveTracks::ResetGroup()
@@ -91,7 +92,7 @@ TEveTrackList *FairEveTracks::GetTrackGroup(TString groupName, Color_t color)
             TrackGroup = new TEveTrackList(groupName, TrPropagator);
         }
         TrackGroup->SetMainColor(color);
-        GetTracksList()->Add(TrackGroup);
+        fEveTrList->Add(TrackGroup);
         gEve->AddElement(TrackGroup, this);
         TrackGroup->SetRnrLine(kTRUE);
     }
