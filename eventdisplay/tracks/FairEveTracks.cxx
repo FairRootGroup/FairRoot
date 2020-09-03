@@ -99,9 +99,9 @@ void FairEveTracks::ToggleGroups()
     for (int iTrackGroup = 0; iTrackGroup < fEveTrList->GetEntriesFast(); iTrackGroup++) {
         TEveTrackList *trackGroup = (TEveTrackList *)fEveTrList->UncheckedAt(iTrackGroup);
         if (trackGroup->GetRnrSelf()) {
-            trackGroup->SetRnrChildren(kFALSE);
+            trackGroup->SetRnrSelfChildren(kFALSE, kFALSE);
         } else {
-            trackGroup->SetRnrChildren(kTRUE);
+            trackGroup->SetRnrSelfChildren(kTRUE, kTRUE);
         }
     }
     gEve->Redraw3D(kFALSE);
