@@ -41,11 +41,11 @@ FairEveRecoTracksExampleEditor::FairEveRecoTracksExampleEditor(const TGWindow *p
     fDrawMC->UpdateWhenChanged();
     fDrawMC->Init();
 
-    TGCompositeFrame *Frame = new TGCompositeFrame(statFrame, width, 20, kHorizontalFrame | kFixedWidth);
-    TGTextButton *UpdateButton = new TGTextButton(Frame, "Swap Tracks");
-    UpdateButton->Connect("Clicked()", this->ClassName(), this, "SwapTracks()");
-    Frame->AddFrame(UpdateButton, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 1, 1, 2, 1));
-    statFrame->AddFrame(Frame, new TGLayoutHints(kLHintsTop, 1, 1, 2, 1));
+    TGCompositeFrame *ToogleFrame = new TGCompositeFrame(statFrame, width, 20, kHorizontalFrame | kFixedWidth);
+    TGTextButton *ToogleButton = new TGTextButton(ToogleFrame, "Toggle Tracks");
+    ToogleButton->Connect("Clicked()", this->ClassName(), this, "ToggleTracks()");
+    ToogleFrame->AddFrame(ToogleButton, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 1, 1, 2, 1));
+    statFrame->AddFrame(ToogleFrame, new TGLayoutHints(kLHintsTop, 1, 1, 2, 1));
 }
 
 void FairEveRecoTracksExampleEditor::SetModel(TObject *obj)

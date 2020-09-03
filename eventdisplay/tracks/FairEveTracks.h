@@ -79,7 +79,11 @@ class FairEveTracks
     /**
      * makes visible tracks not visible, hidden tracks become visible
      */
-    virtual void ToggleTracks();
+    void ToggleTracks();
+    /**
+     * makes visible group of tracks that was not visible, hiden groups become visible
+     */
+    void ToggleGroups();
     /**
      * set pt cut, cut is used only if use = kTRUE
      * @param min

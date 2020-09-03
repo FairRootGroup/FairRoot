@@ -122,12 +122,12 @@ void FairEveGeoTracks::Repaint()
     ResetGroup();
     FairEventManager::Instance()->GetTimeLimits(fTMin, fTMax);
     if (fTMin > fTMax) {   // wrong time limits draw entire tracks
-        for (int i = 0; i < nTracks; i++) {
-            DrawTrack(i);
+        for (int iTrack = 0; iTrack < nTracks; iTrack++) {
+            DrawTrack(iTrack);
         }
     } else {
-        for (int i = 0; i < nTracks; i++) {
-            DrawAnimatedTrack(i);
+        for (int iTrack = 0; iTrack < nTracks; iTrack++) {
+            DrawAnimatedTrack(iTrack);
         }
     }
     gEve->Redraw3D(kFALSE);

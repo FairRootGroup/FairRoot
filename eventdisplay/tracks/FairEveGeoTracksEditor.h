@@ -52,6 +52,7 @@ class FairEveGeoTracksEditor : public TGedFrame
                            Pixel_t back = GetDefaultFrameBackground());
     virtual void SetModel(TObject* obj);
     void ToggleTracks();
+    void ToggleGroups();
     void Repaint();
     virtual ~FairEveGeoTracksEditor();
     ClassDef(FairEveGeoTracksEditor, 1)

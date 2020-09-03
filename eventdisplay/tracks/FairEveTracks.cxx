@@ -42,8 +42,8 @@ void FairEveTracks::ResetGroup()
     TEveElement *el = dynamic_cast<TEveElement *>(this);
     if (el == nullptr)
         return;
-    for (Int_t i = 0; i < fEveTrList->GetEntriesFast(); i++) {
-        TEveTrackList *ele = static_cast<TEveTrackList *>(fEveTrList->At(i));
+    for (Int_t iTrackGroup = 0; iTrackGroup < fEveTrList->GetEntriesFast(); iTrackGroup++) {
+        TEveTrackList *ele = static_cast<TEveTrackList *>(fEveTrList->At(iTrackGroup));
         gEve->RemoveElement(ele, el);
     }
     fEveTrList->Clear();
@@ -51,14 +51,14 @@ void FairEveTracks::ResetGroup()
 
 void FairEveTracks::ToggleTracks()
 {
-    for (int i = 0; i < fEveTrList->GetEntriesFast(); i++) {
-        TEveTrackList *eveList = (TEveTrackList *)fEveTrList->UncheckedAt(i);
-        for (TEveElement::List_i iter = eveList->BeginChildren(); iter != eveList->EndChildren(); ++iter) {
-            FairEveTrack *el = dynamic_cast<FairEveTrack *>((*iter));
-            if (el->GetRnrSelf()) {
-                el->SetRnrSelfChildren(kFALSE, kFALSE);
+    for (int iTrackGroup = 0; iTrackGroup < fEveTrList->GetEntriesFast(); iTrackGroup++) {
+        TEveTrackList *trackList = (TEveTrackList *)fEveTrList->UncheckedAt(iTrackGroup);
+        for (TEveElement::List_i eveTrackIterator = trackList->BeginChildren(); eveTrackIterator != trackList->EndChildren(); ++eveTrackIterator) {
+            FairEveTrack *track = dynamic_cast<FairEveTrack *>((*eveTrackIterator));
+            if (track->GetRnrSelf()) {
+                track->SetRnrSelfChildren(kFALSE, kFALSE);
             } else {
-                el->SetRnrSelfChildren(kTRUE, kTRUE);
+                track->SetRnrSelfChildren(kTRUE, kTRUE);
             }
         }
     }
@@ -90,4 +90,16 @@ TEveTrackList *FairEveTracks::FindTrackGroup(TString groupName, Color_t color)
         TrackGroup->SetRnrLine(kTRUE);
     }
     return TrackGroup;
+}
+
+void FairEveTracks::ToggleGroups() {
+    for (int iTrackGroup = 0; iTrackGroup < fEveTrList->GetEntriesFast(); iTrackGroup++) {
+        TEveTrackList *trackGroup = (TEveTrackList *)fEveTrList->UncheckedAt(iTrackGroup);
+        if(trackGroup->GetRnrSelf()){
+            trackGroup->SetRnrChildren(kFALSE);
+        }else{
+            trackGroup->SetRnrChildren(kTRUE);
+        }
+    }
+    gEve->Redraw3D(kFALSE);
 }
