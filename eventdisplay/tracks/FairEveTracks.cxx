@@ -53,7 +53,9 @@ void FairEveTracks::ToggleTracks()
 {
     for (int iTrackGroup = 0; iTrackGroup < fEveTrList->GetEntriesFast(); iTrackGroup++) {
         TEveTrackList *trackList = (TEveTrackList *)fEveTrList->UncheckedAt(iTrackGroup);
-        for (TEveElement::List_i eveTrackIterator = trackList->BeginChildren(); eveTrackIterator != trackList->EndChildren(); ++eveTrackIterator) {
+        for (TEveElement::List_i eveTrackIterator = trackList->BeginChildren();
+             eveTrackIterator != trackList->EndChildren();
+             ++eveTrackIterator) {
             FairEveTrack *track = dynamic_cast<FairEveTrack *>((*eveTrackIterator));
             if (track->GetRnrSelf()) {
                 track->SetRnrSelfChildren(kFALSE, kFALSE);
@@ -76,7 +78,7 @@ FairEveTracks::~FairEveTracks() {}
 TEveTrackList *FairEveTracks::FindTrackGroup(TString groupName, Color_t color)
 {
     TEveTrackList *TrackGroup = nullptr;
-    TrackGroup = static_cast<TEveTrackList*>(FindChild(groupName));
+    TrackGroup = static_cast<TEveTrackList *>(FindChild(groupName));
     if (TrackGroup == nullptr) {
         TEveTrackPropagator *TrPropagator = new TEveTrackPropagator();
         if (fAcceptCompound) {
@@ -92,12 +94,13 @@ TEveTrackList *FairEveTracks::FindTrackGroup(TString groupName, Color_t color)
     return TrackGroup;
 }
 
-void FairEveTracks::ToggleGroups() {
+void FairEveTracks::ToggleGroups()
+{
     for (int iTrackGroup = 0; iTrackGroup < fEveTrList->GetEntriesFast(); iTrackGroup++) {
         TEveTrackList *trackGroup = (TEveTrackList *)fEveTrList->UncheckedAt(iTrackGroup);
-        if(trackGroup->GetRnrSelf()){
+        if (trackGroup->GetRnrSelf()) {
             trackGroup->SetRnrChildren(kFALSE);
-        }else{
+        } else {
             trackGroup->SetRnrChildren(kTRUE);
         }
     }

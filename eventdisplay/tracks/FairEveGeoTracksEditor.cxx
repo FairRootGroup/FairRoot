@@ -63,8 +63,6 @@ FairEveGeoTracksEditor::FairEveGeoTracksEditor(const TGWindow *p,
     ToogleGroupButton->Connect("Clicked()", this->ClassName(), this, "ToggleGroups()");
     ToogleGroupFrame->AddFrame(ToogleGroupButton, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 1, 1, 2, 1));
     statFrame->AddFrame(ToogleGroupFrame, new TGLayoutHints(kLHintsTop, 1, 1, 2, 1));
-
-
 }
 
 void FairEveGeoTracksEditor::SetModel(TObject *obj) { fGeoTracks = dynamic_cast<FairEveGeoTracks *>(obj); }
@@ -92,8 +90,6 @@ void FairEveGeoTracksEditor::Repaint()
     fGeoTracks->Repaint();
 }
 
-void FairEveGeoTracksEditor::ToggleGroups() {
-    fGeoTracks->ToggleGroups();
-}
+void FairEveGeoTracksEditor::ToggleGroups() { fGeoTracks->ToggleGroups(); }
 
 FairEveGeoTracksEditor::~FairEveGeoTracksEditor() {}
