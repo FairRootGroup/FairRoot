@@ -39,7 +39,7 @@ class FairEveMCTracksEditor : public TGedFrame
                           UInt_t options = kChildFrame,
                           Pixel_t back = GetDefaultFrameBackground());
     virtual void SetModel(TObject *obj);
-    void SwapTracks();
+    void ToggleTracks();
     void Repaint();
     virtual ~FairEveMCTracksEditor();
     ClassDef(FairEveMCTracksEditor, 0)

@@ -55,7 +55,7 @@ class FairEveRecoTracksExample : public FairEveTracks
         fShowPrimary = prim;
         fShowSecondary = sec;
     }
-    virtual void SwapTracks();
+    virtual void ToggleTracks();
     virtual InitStatus Init();
     virtual ~FairEveRecoTracksExample();
     ClassDef(FairEveRecoTracksExample, 0)

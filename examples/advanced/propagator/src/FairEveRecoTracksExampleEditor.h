@@ -37,7 +37,7 @@ class FairEveRecoTracksExampleEditor : public TGedFrame
                                    UInt_t options = kChildFrame,
                                    Pixel_t back = GetDefaultFrameBackground());
     virtual void SetModel(TObject *obj);
-    void SwapTracks();
+    void ToggleTracks();
     void Repaint();
     virtual ~FairEveRecoTracksExampleEditor();
     ClassDef(FairEveRecoTracksExampleEditor, 0);

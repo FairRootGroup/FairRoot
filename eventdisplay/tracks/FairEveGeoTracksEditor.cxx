@@ -51,14 +51,20 @@ FairEveGeoTracksEditor::FairEveGeoTracksEditor(const TGWindow *p,
     fSecondary->Init();
     fPdgCut->Init();
     fPdgCut->AddUpdateButton();
+
+    TGCompositeFrame *Frame = new TGCompositeFrame(statFrame, width, 20, kHorizontalFrame | kFixedWidth);
+    TGTextButton *UpdateButton = new TGTextButton(Frame, "Toggle Tracks");
+    UpdateButton->Connect("Clicked()", this->ClassName(), this, "ToggleTracks()");
+    Frame->AddFrame(UpdateButton, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 1, 1, 2, 1));
+    statFrame->AddFrame(Frame, new TGLayoutHints(kLHintsTop, 1, 1, 2, 1));
 }
 
 void FairEveGeoTracksEditor::SetModel(TObject *obj) { fGeoTracks = dynamic_cast<FairEveGeoTracks *>(obj); }
 
-void FairEveGeoTracksEditor::SwapTracks()
+void FairEveGeoTracksEditor::ToggleTracks()
 {
     if (fGeoTracks)
-        fGeoTracks->SwapTracks();
+        fGeoTracks->ToggleTracks();
 }
 
 void FairEveGeoTracksEditor::Repaint()

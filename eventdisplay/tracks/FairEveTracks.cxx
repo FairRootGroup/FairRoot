@@ -49,7 +49,7 @@ void FairEveTracks::ResetGroup()
     fEveTrList->Clear();
 }
 
-void FairEveTracks::SwapTracks()
+void FairEveTracks::ToggleTracks()
 {
     for (int i = 0; i < fEveTrList->GetEntriesFast(); i++) {
         TEveTrackList *eveList = (TEveTrackList *)fEveTrList->UncheckedAt(i);
