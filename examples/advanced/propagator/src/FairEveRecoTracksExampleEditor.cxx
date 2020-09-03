@@ -53,10 +53,10 @@ void FairEveRecoTracksExampleEditor::SetModel(TObject *obj)
     fRecoTracks = dynamic_cast<FairEveRecoTracksExample *>(obj);
 }
 
-void FairEveRecoTracksExampleEditor::SwapTracks()
+void FairEveRecoTracksExampleEditor::ToggleTracks()
 {
     if (fRecoTracks)
-        fRecoTracks->SwapTracks();
+        fRecoTracks->ToggleTracks();
 }
 
 void FairEveRecoTracksExampleEditor::Repaint()

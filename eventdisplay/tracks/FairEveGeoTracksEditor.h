@@ -51,7 +51,7 @@ class FairEveGeoTracksEditor : public TGedFrame
                            UInt_t options = kChildFrame,
                            Pixel_t back = GetDefaultFrameBackground());
     virtual void SetModel(TObject* obj);
-    void SwapTracks();
+    void ToggleTracks();
     void Repaint();
     virtual ~FairEveGeoTracksEditor();
     ClassDef(FairEveGeoTracksEditor, 1)

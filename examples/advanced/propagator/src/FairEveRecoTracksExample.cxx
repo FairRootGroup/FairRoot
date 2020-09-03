@@ -210,7 +210,7 @@ void FairEveRecoTracksExample::SetDrawMC(Bool_t draw)
     }
 }
 
-void FairEveRecoTracksExample::SwapTracks()
+void FairEveRecoTracksExample::ToggleTracks()
 {
     for (int i = 0; i < GetTracksList()->GetEntriesFast(); i++) {
         TEveTrackList *eveList = (TEveTrackList *)GetTracksList()->UncheckedAt(i);

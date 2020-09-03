@@ -79,7 +79,7 @@ class FairEveTracks
     /**
      * makes visible tracks not visible, hidden tracks become visible
      */
-    virtual void SwapTracks();
+    virtual void ToggleTracks();
     /**
      * set pt cut, cut is used only if use = kTRUE
      * @param min

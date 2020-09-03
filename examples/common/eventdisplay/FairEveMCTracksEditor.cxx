@@ -47,18 +47,18 @@ FairEveMCTracksEditor::FairEveMCTracksEditor(const TGWindow *p, Int_t width, Int
     fPdgCut->AddUpdateButton();
 
     TGCompositeFrame *Frame = new TGCompositeFrame(statFrame, width, 20, kHorizontalFrame | kFixedWidth);
-    TGTextButton *UpdateButton = new TGTextButton(Frame, "Swap Tracks");
-    UpdateButton->Connect("Clicked()", this->ClassName(), this, "SwapTracks()");
+    TGTextButton *UpdateButton = new TGTextButton(Frame, "Toggle Tracks");
+    UpdateButton->Connect("Clicked()", this->ClassName(), this, "ToggleTracks()");
     Frame->AddFrame(UpdateButton, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 1, 1, 2, 1));
     statFrame->AddFrame(Frame, new TGLayoutHints(kLHintsTop, 1, 1, 2, 1));
 }
 
 void FairEveMCTracksEditor::SetModel(TObject *obj) { fMCTracks = dynamic_cast<FairEveMCTracks *>(obj); }
 
-void FairEveMCTracksEditor::SwapTracks()
+void FairEveMCTracksEditor::ToggleTracks()
 {
     if (fMCTracks)
-        fMCTracks->SwapTracks();
+        fMCTracks->ToggleTracks();
 }
 
 void FairEveMCTracksEditor::Repaint()
