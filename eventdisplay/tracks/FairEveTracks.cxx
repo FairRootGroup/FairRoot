@@ -76,13 +76,7 @@ FairEveTracks::~FairEveTracks() {}
 TEveTrackList *FairEveTracks::FindTrackGroup(TString groupName, Color_t color)
 {
     TEveTrackList *TrackGroup = nullptr;
-    for (Int_t i = 0; i < GetTracksList()->GetEntriesFast(); i++) {
-        TEveTrackList *TrListIn = static_cast<TEveTrackList *>(GetTracksList()->At(i));
-        if (strcmp(TrListIn->GetName(), groupName) == 0) {
-            TrackGroup = TrListIn;
-            break;
-        }
-    }
+    TrackGroup = static_cast<TEveTrackList*>(FindChild(groupName));
     if (TrackGroup == nullptr) {
         TEveTrackPropagator *TrPropagator = new TEveTrackPropagator();
         if (fAcceptCompound) {
