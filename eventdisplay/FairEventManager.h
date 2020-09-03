@@ -21,11 +21,12 @@
 #include <TGLViewer.h>
 #include <map>
 
+class TVector3;
+
 class FairRootManager;   // does not work with streamer, reason unclear
 class FairTask;
 class FairXMLNode;
 
-class TEveProjectionAxes;
 class TEveProjectionManager;
 class TEveScene;
 class TEveViewer;
@@ -108,7 +109,7 @@ class FairEventManager : public TEveEventManager
     virtual Float_t GetEvtMinEnergy() { return 0; }
     virtual Float_t GetMaxEnergy() { return 1E+9; }
     virtual Float_t GetMinEnergy() { return 0; }
-    void GetWorldSize(Double_t &x, Double_t &y, Double_t &z) const;
+    TVector3 GetWorldSize() const;
     /**
      *
      * @param name name of file with screenshot
@@ -154,8 +155,8 @@ class FairEventManager : public TEveEventManager
     TEveScene *fRhoZScene;                            //!
     TEveProjectionManager *fRPhiProjManager;          //!
     TEveProjectionManager *fRhoZProjManager;          //!
-    TEveProjectionAxes *fAxesPhi;
-    TEveProjectionAxes *fAxesRho;
+    TEveProjectionAxes *fAxesPhi;                     //!
+    TEveProjectionAxes *fAxesRho;                     //!
     TString fXMLConfig;
     std::map<int, int> fPDGToColor;
     void SetTransparencyForLayer(TGeoNode *node, Int_t depth, Char_t transparency);

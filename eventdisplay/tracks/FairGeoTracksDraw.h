@@ -15,11 +15,11 @@
  */
 #ifndef FAIRGEOTRACKSDRAW_H_
 #define FAIRGEOTRACKSDRAW_H_
-#include "FairEveGeoTracks.h"
-#include "FairEventManager.h"
 
-#include <FairTask.h>
-#include <Rtypes.h>
+#include "FairTask.h"
+
+class FairEveGeoTracks;
+class FairEventManager;
 
 /**
  * task that draws the TGeoTracks
@@ -27,8 +27,8 @@
 
 class FairGeoTracksDraw : public FairTask
 {
-    FairEventManager *fEventManager;
-    FairEveGeoTracks *fVisualizer;
+    FairEventManager *fEventManager;   //!
+    FairEveGeoTracks *fVisualizer;     //!
 
   public:
     FairGeoTracksDraw(const char *name = "MC tracks");

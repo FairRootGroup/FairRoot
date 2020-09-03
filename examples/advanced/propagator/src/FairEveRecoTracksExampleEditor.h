@@ -16,18 +16,20 @@
 #ifndef FAIREVERECOTRACKSEXAMPLEEDITOR_H_
 #define FAIREVERECOTRACKSEXAMPLEEDITOR_H_
 
-#include "FairEveCut.h"
-#include "FairEveRecoTracksExample.h"
-
+#include <TGFrame.h>
 #include <TGedFrame.h>
 #include <memory>
+
+class FairEveBoolCut;
+class FairEveMinMaxCut;
+class FairEveRecoTracksExample;
 
 class FairEveRecoTracksExampleEditor : public TGedFrame
 {
     std::unique_ptr<FairEveMinMaxCut> fPtCut;
     std::unique_ptr<FairEveMinMaxCut> fEtaCut;
     std::unique_ptr<FairEveMinMaxCut> fEnergyCut;
-    FairEveRecoTracksExample *fRecoTracks;
+    FairEveRecoTracksExample *fRecoTracks;   //!
     std::unique_ptr<FairEveBoolCut> fDrawMC;
 
   public:

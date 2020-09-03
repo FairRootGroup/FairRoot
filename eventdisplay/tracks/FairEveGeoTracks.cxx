@@ -13,13 +13,24 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairEveGeoTracks.h"
 
 #include "FairEveTrack.h"
+#include "FairEventManager.h"
+#include "FairRootManager.h"
 
+#include <TClonesArray.h>
 #include <TEveManager.h>
-#include <TEveSelection.h>
-#include <iostream>
+#include <TEvePointSet.h>
+#include <TEveTrack.h>
+#include <TEveTrackPropagator.h>
+#include <TGeoTrack.h>
+#include <TObjArray.h>
+#include <TParticle.h>
+#include <TVector3.h>
+#include <TVirtualGeoTrack.h>
+#include <limits>
 
 FairEveGeoTracks::FairEveGeoTracks()
     : FairEveTracks()
@@ -119,15 +130,15 @@ void FairEveGeoTracks::DrawAnimatedTrack(Int_t id)
 void FairEveGeoTracks::Repaint()
 {
     Int_t nTracks = fContainer->GetEntriesFast();
-    ResetGroup();
+    RemoveElements();
     FairEventManager::Instance()->GetTimeLimits(fTMin, fTMax);
     if (fTMin > fTMax) {   // wrong time limits draw entire tracks
-        for (int i = 0; i < nTracks; i++) {
-            DrawTrack(i);
+        for (int iTrack = 0; iTrack < nTracks; iTrack++) {
+            DrawTrack(iTrack);
         }
     } else {
-        for (int i = 0; i < nTracks; i++) {
-            DrawAnimatedTrack(i);
+        for (int iTrack = 0; iTrack < nTracks; iTrack++) {
+            DrawAnimatedTrack(iTrack);
         }
     }
     gEve->Redraw3D(kFALSE);

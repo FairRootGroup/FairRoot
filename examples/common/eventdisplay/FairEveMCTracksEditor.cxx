@@ -13,7 +13,16 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairEveMCTracksEditor.h"
+
+#include "FairEveCut.h"
+#include "FairEveMCTracks.h"
+#include "FairEveTracks.h"
+
+#include <TGButton.h>
+#include <TGLayout.h>
+#include <TGWindow.h>
 
 FairEveMCTracksEditor::FairEveMCTracksEditor(const TGWindow *p, Int_t width, Int_t height, UInt_t options, Pixel_t back)
     : TGedFrame(p, width, height, options | kVerticalFrame, back)
@@ -46,11 +55,11 @@ FairEveMCTracksEditor::FairEveMCTracksEditor(const TGWindow *p, Int_t width, Int
     fPdgCut->Init();
     fPdgCut->AddUpdateButton();
 
-    TGCompositeFrame *Frame = new TGCompositeFrame(statFrame, width, 20, kHorizontalFrame | kFixedWidth);
-    TGTextButton *UpdateButton = new TGTextButton(Frame, "Toggle Tracks");
-    UpdateButton->Connect("Clicked()", this->ClassName(), this, "ToggleTracks()");
-    Frame->AddFrame(UpdateButton, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 1, 1, 2, 1));
-    statFrame->AddFrame(Frame, new TGLayoutHints(kLHintsTop, 1, 1, 2, 1));
+    TGCompositeFrame *ToogleFrame = new TGCompositeFrame(statFrame, width, 20, kHorizontalFrame | kFixedWidth);
+    TGTextButton *ToogleButton = new TGTextButton(ToogleFrame, "Toggle Tracks");
+    ToogleButton->Connect("Clicked()", this->ClassName(), this, "ToggleTracks()");
+    ToogleFrame->AddFrame(ToogleButton, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 1, 1, 2, 1));
+    statFrame->AddFrame(ToogleFrame, new TGLayoutHints(kLHintsTop, 1, 1, 2, 1));
 }
 
 void FairEveMCTracksEditor::SetModel(TObject *obj) { fMCTracks = dynamic_cast<FairEveMCTracks *>(obj); }

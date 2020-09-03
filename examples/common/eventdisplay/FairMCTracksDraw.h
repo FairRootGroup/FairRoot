@@ -16,14 +16,17 @@
 #ifndef FAIRMCTRACKSDRAW_H_
 #define FAIRMCTRACKSDRAW_H_
 
-#include "FairEveMCTracks.h"
-#include "FairEventManager.h"
 #include "FairTask.h"
+
+class FairEveMCTracks;
+class FairEventManager;
+class FairMCTrack;
+class TEveTrackList;
 
 class FairMCTracksDraw : public FairTask
 {
-    FairEventManager *fEventManager;
-    FairEveMCTracks *fVisualizer;
+    FairEventManager *fEventManager;   //!
+    FairEveMCTracks *fVisualizer;      //!
 
   protected:
     Bool_t CheckCuts(FairMCTrack *tr);

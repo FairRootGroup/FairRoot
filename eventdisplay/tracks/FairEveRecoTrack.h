@@ -16,12 +16,14 @@
 #ifndef FAIREVERECOTRACK_H_
 #define FAIREVERECOTRACK_H_
 
-#include "FairEveTrack.h"
-
 #include <TEveCompound.h>
-#include <TEvePointSet.h>
-#include <TEveTrackPropagator.h>
-#include <TGeoTrack.h>
+#include <TVector3.h>
+
+class FairEveTrack;
+class TEvePointSet;
+class TEveTrackPropagator;
+class TGeoTrack;
+class TParticle;
 
 class FairEveRecoTrack : public TEveCompound
 {

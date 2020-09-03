@@ -13,11 +13,12 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairEveRecoTrackList.h"
 
-#include "FairEveRecoTrack.h"
+#include "FairEveTrack.h"
 
-#include <iostream>
+#include <TEveElement.h>
 
 FairEveRecoTrackList::FairEveRecoTrackList(TString name, TEveTrackPropagator* prop)
     : TEveTrackList(name, prop)

@@ -13,19 +13,20 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairEveTracks.h"
 
 #include "FairEveRecoTrackList.h"
-#include "FairEveTrack.h"
+#include "FairEventManager.h"
 
-#include <TEveElement.h>
+#include <RtypesCore.h>
 #include <TEveManager.h>
-#include <TEveSelection.h>
-#include <TEveTrack.h>
+#include <TEveTrackPropagator.h>
+#include <TString.h>
+#include <algorithm>
 
 FairEveTracks::FairEveTracks(Bool_t acceptCompound)
     : fEventManager(nullptr)
-    , fEveTrList(nullptr)
     , fPt{0, 10}
     , fEta{-10, 10}
     , fEnergy{0, 10}
@@ -33,35 +34,19 @@ FairEveTracks::FairEveTracks(Bool_t acceptCompound)
     , fUseEta(kFALSE)
     , fUseEnergy(kFALSE)
     , fAcceptCompound(acceptCompound)
-{
-    fEveTrList = std::unique_ptr<TObjArray>(new TObjArray());
-}
-
-void FairEveTracks::ResetGroup()
-{
-    TEveElement *el = dynamic_cast<TEveElement *>(this);
-    if (el == nullptr)
-        return;
-    for (Int_t i = 0; i < fEveTrList->GetEntriesFast(); i++) {
-        TEveTrackList *ele = static_cast<TEveTrackList *>(fEveTrList->At(i));
-        gEve->RemoveElement(ele, el);
-    }
-    fEveTrList->Clear();
-}
+{}
 
 void FairEveTracks::ToggleTracks()
 {
-    for (int i = 0; i < fEveTrList->GetEntriesFast(); i++) {
-        TEveTrackList *eveList = (TEveTrackList *)fEveTrList->UncheckedAt(i);
-        for (TEveElement::List_i iter = eveList->BeginChildren(); iter != eveList->EndChildren(); ++iter) {
-            FairEveTrack *el = dynamic_cast<FairEveTrack *>((*iter));
-            if (el->GetRnrSelf()) {
-                el->SetRnrSelfChildren(kFALSE, kFALSE);
+    std::for_each(BeginChildren(), EndChildren(), [](TEveElement *trackGroup) {
+        std::for_each(trackGroup->BeginChildren(), trackGroup->EndChildren(), [](TEveElement *track) {
+            if (track->GetRnrSelf()) {
+                track->SetRnrSelfChildren(kFALSE, kFALSE);
             } else {
-                el->SetRnrSelfChildren(kTRUE, kTRUE);
+                track->SetRnrSelfChildren(kTRUE, kTRUE);
             }
-        }
-    }
+        });
+    });
     gEve->Redraw3D(kFALSE);
 }
 
@@ -75,19 +60,30 @@ FairEveTracks::~FairEveTracks() {}
 
 TEveTrackList *FairEveTracks::FindTrackGroup(TString groupName, Color_t color)
 {
-    TEveTrackList *TrackGroup = nullptr;
-    TrackGroup = static_cast<TEveTrackList*>(FindChild(groupName));
-    if (TrackGroup == nullptr) {
+    auto trackGroup(static_cast<TEveTrackList *>(FindChild(groupName)));
+
+    if (trackGroup == nullptr) {
         TEveTrackPropagator *TrPropagator = new TEveTrackPropagator();
         if (fAcceptCompound) {
-            TrackGroup = new FairEveRecoTrackList(groupName, TrPropagator);
+            trackGroup = new FairEveRecoTrackList(groupName, TrPropagator);
         } else {
-            TrackGroup = new TEveTrackList(groupName, TrPropagator);
+            trackGroup = new TEveTrackList(groupName, TrPropagator);
         }
-        TrackGroup->SetMainColor(color);
-        fEveTrList->Add(TrackGroup);
-        AddElement(TrackGroup);
-        TrackGroup->SetRnrLine(kTRUE);
+        AddElement(trackGroup);
+        trackGroup->SetRnrLine(kTRUE);
+        trackGroup->SetMainColor(color);
     }
-    return TrackGroup;
+    return trackGroup;
+}
+
+void FairEveTracks::ToggleGroups()
+{
+    std::for_each(BeginChildren(), EndChildren(), [](TEveElement *trackGroup) {
+        if (trackGroup->GetRnrSelf()) {
+            trackGroup->SetRnrSelfChildren(kFALSE, kFALSE);
+        } else {
+            trackGroup->SetRnrSelfChildren(kTRUE, kTRUE);
+        }
+    });
+    gEve->Redraw3D(kFALSE);
 }

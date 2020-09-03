@@ -5,28 +5,31 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
 #include "FairEventManagerEditor.h"
 
 #include "FairEventManager.h"   // for FairEventManager
 #include "FairRootManager.h"    // for FairRootManager
-#include "FairRunAna.h"         // for FairRunAna
+#include "FairRun.h"
+#include "FairRunAna.h"   // for FairRunAna
 #include "FairTask.h"
-#include "TEveViewer.h"
-#include "TGLViewer.h"
 
-#include <TChain.h>           // for TChain
-#include <TEveGValuators.h>   // for TEveGValuator
+#include <RtypesCore.h>
+#include <TChain.h>   // for TChain
 #include <TEveManager.h>
-#include <TEveScene.h>
 #include <TFile.h>           // for TFile
 #include <TGButton.h>        // for TGCheckButton, TGTextButton
 #include <TGLabel.h>         // for TGLabel
 #include <TGLayout.h>        // for TGLayoutHints, etc
 #include <TGNumberEntry.h>   // for TGNumberEntry, etc
-#include <TGeoManager.h>     // for TGeoManager, gGeoManager
-#include <TString.h>         // for TString
-#include <TThread.h>
-#include <stddef.h>   // for NULL
+#include <TGenericClassInfo.h>
+#include <TGeoManager.h>   // for TGeoManager, gGeoManager
+#include <TList.h>
+#include <TNamed.h>
+#include <TString.h>   // for TString
+#include <TSystem.h>
+#include <TTask.h>
+#include <TTree.h>
 
 class TGWindow;
 class TObject;

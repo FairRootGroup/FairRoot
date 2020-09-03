@@ -17,6 +17,8 @@
 
 #include "FairEventManager.h"
 
+#include <TVector3.h>
+
 FairEveTrack::FairEveTrack()
     : TEveTrack()
 {}
@@ -39,13 +41,12 @@ void FairEveTrack::SetFirstPoint(const TVector3 &mom, const TVector3 &pos)
 
 void FairEveTrack::SetNextPoint(const TVector3 &point)
 {
-    Double_t worldSizeX, worldSizeY, worldSizeZ;
-    FairEventManager::Instance()->GetWorldSize(worldSizeX, worldSizeY, worldSizeZ);
-    if (TMath::Abs(point.X()) > worldSizeX)
+    TVector3 world = FairEventManager::Instance()->GetWorldSize();
+    if (TMath::Abs(point.X()) > world.X())
         return;
-    if (TMath::Abs(point.Y()) > worldSizeY)
+    if (TMath::Abs(point.Y()) > world.Y())
         return;
-    if (TMath::Abs(point.Z()) > worldSizeZ)
+    if (TMath::Abs(point.Z()) > world.Z())
         return;
     if (TMath::IsNaN(point.X()))
         return;

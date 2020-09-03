@@ -13,9 +13,16 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairEveGeoTracksEditor.h"
 
-#include <iostream>
+#include "FairEveCut.h"
+#include "FairEveGeoTracks.h"
+#include "FairEveTracks.h"
+
+#include <TGButton.h>
+#include <TGLayout.h>
+#include <TGWindow.h>
 
 FairEveGeoTracksEditor::FairEveGeoTracksEditor(const TGWindow *p,
                                                Int_t width,
@@ -52,11 +59,17 @@ FairEveGeoTracksEditor::FairEveGeoTracksEditor(const TGWindow *p,
     fPdgCut->Init();
     fPdgCut->AddUpdateButton();
 
-    TGCompositeFrame *Frame = new TGCompositeFrame(statFrame, width, 20, kHorizontalFrame | kFixedWidth);
-    TGTextButton *UpdateButton = new TGTextButton(Frame, "Toggle Tracks");
-    UpdateButton->Connect("Clicked()", this->ClassName(), this, "ToggleTracks()");
-    Frame->AddFrame(UpdateButton, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 1, 1, 2, 1));
-    statFrame->AddFrame(Frame, new TGLayoutHints(kLHintsTop, 1, 1, 2, 1));
+    TGCompositeFrame *ToogleFrame = new TGCompositeFrame(statFrame, width, 20, kHorizontalFrame | kFixedWidth);
+    TGTextButton *ToogleButton = new TGTextButton(ToogleFrame, "Toggle Tracks");
+    ToogleButton->Connect("Clicked()", this->ClassName(), this, "ToggleTracks()");
+    ToogleFrame->AddFrame(ToogleButton, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 1, 1, 2, 1));
+    statFrame->AddFrame(ToogleFrame, new TGLayoutHints(kLHintsTop, 1, 1, 2, 1));
+
+    TGCompositeFrame *ToogleGroupFrame = new TGCompositeFrame(statFrame, width, 20, kHorizontalFrame | kFixedWidth);
+    TGTextButton *ToogleGroupButton = new TGTextButton(ToogleGroupFrame, "Toggle Groups");
+    ToogleGroupButton->Connect("Clicked()", this->ClassName(), this, "ToggleGroups()");
+    ToogleGroupFrame->AddFrame(ToogleGroupButton, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 1, 1, 2, 1));
+    statFrame->AddFrame(ToogleGroupFrame, new TGLayoutHints(kLHintsTop, 1, 1, 2, 1));
 }
 
 void FairEveGeoTracksEditor::SetModel(TObject *obj) { fGeoTracks = dynamic_cast<FairEveGeoTracks *>(obj); }
@@ -83,5 +96,7 @@ void FairEveGeoTracksEditor::Repaint()
     TGedFrame::Update();
     fGeoTracks->Repaint();
 }
+
+void FairEveGeoTracksEditor::ToggleGroups() { fGeoTracks->ToggleGroups(); }
 
 FairEveGeoTracksEditor::~FairEveGeoTracksEditor() {}

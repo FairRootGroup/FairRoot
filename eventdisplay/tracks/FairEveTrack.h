@@ -17,7 +17,6 @@
 #define FAIREVETRACK_H_
 
 #include <TEveTrack.h>
-#include <TEveTrackPropagator.h>
 #include <TVector3.h>
 
 class FairEveTrack : public TEveTrack

@@ -12,14 +12,14 @@
 #ifndef ROOT_FAIREVENTMANAGEREDITOR
 #define ROOT_FAIREVENTMANAGEREDITOR
 
-#include "FairEveAnimationButton.h"
-#include "FairEveCut.h"
-
 #include <GuiTypes.h>   // for Pixel_t
 #include <Rtypes.h>     // for ClassDef
-#include <TGComboBox.h>
+#include <RtypesCore.h>
 #include <TGFrame.h>     // for EFrameType::kChildFrame
 #include <TGedFrame.h>   // for TGedFrame
+
+class FairEveAnimationButton;
+class TGComboBox;
 
 class FairEventManager;
 class TEveGValuator;
