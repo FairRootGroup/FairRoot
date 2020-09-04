@@ -13,13 +13,30 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairEveMCTracks.h"
 
-#include "FairEveTrack.h"
 
-#include <FairField.h>
+#include <TClonesArray.h>
+#include <TDatabasePDG.h>
 #include <TEveManager.h>
+#include <TEvePointSet.h>
+#include <TEveTrack.h>
+#include <TEveTrackPropagator.h>
+#include <TLorentzVector.h>
+#include <TObjArray.h>
+#include <TParticle.h>
 #include <TParticlePDG.h>
+#include <TString.h>
+#include <TVector3.h>
+
+#include "FairField.h"
+#include "FairRootManager.h"
+#include "FairRunAna.h"
+#include "FairEventManager.h"
+#include "FairEveTrack.h"
+#include "FairRKPropagator.h"
+#include "FairMCTrack.h"
 
 FairEveMCTracks::FairEveMCTracks()
     : FairEveTracks(kFALSE)
@@ -123,7 +140,7 @@ void FairEveMCTracks::DrawTrack(Int_t id)
 void FairEveMCTracks::Repaint()
 {
     Int_t nTracks = fContainer->GetEntriesFast();
-    ResetGroup();
+    RemoveElements();
     for (int i = 0; i < nTracks; i++) {
         DrawTrack(i);
     }

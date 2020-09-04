@@ -13,10 +13,14 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairMCTracksDraw.h"
 
 #include <TEveManager.h>
 #include <TEveSelection.h>
+
+#include "FairEventManager.h"
+#include "FairEveMCTracks.h"
 
 FairMCTracksDraw::FairMCTracksDraw(const char* name)
     : FairTask(name)

@@ -16,13 +16,15 @@
 #ifndef FAIREVERECOTRACKS_H_
 #define FAIREVERECOTRACKS_H_
 
-#include "FairEveTracks.h"
-#include "FairMCTrack.h"
-#include "FairTask.h"
-#include "FairTutPropTrack.h"
+#include <Rtypes.h>
+#include <RtypesCore.h>
 
-#include <FairRKPropagator.h>
-#include <TDatabasePDG.h>
+#include "FairTask.h"
+#include "FairEveTracks.h"
+
+class FairRKPropagator;
+class FairTutPropTrack;
+class TDatabasePDG;
 
 class FairEveRecoTracksExample : public FairEveTracks
 {
@@ -55,7 +57,6 @@ class FairEveRecoTracksExample : public FairEveTracks
         fShowPrimary = prim;
         fShowSecondary = sec;
     }
-    virtual void ToggleTracks();
     virtual InitStatus Init();
     virtual ~FairEveRecoTracksExample();
     ClassDef(FairEveRecoTracksExample, 0)

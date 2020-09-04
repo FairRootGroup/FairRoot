@@ -13,7 +13,18 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairEveRecoTracksExampleEditor.h"
+
+#include <GuiTypes.h>
+#include <RtypesCore.h>
+#include <TGButton.h>
+#include <TGLayout.h>
+#include <TGWindow.h>
+
+#include "FairEveCut.h"
+#include "FairEveTracks.h"
+#include "FairEveRecoTracksExample.h"
 
 FairEveRecoTracksExampleEditor::FairEveRecoTracksExampleEditor(const TGWindow *p,
                                                                Int_t width,

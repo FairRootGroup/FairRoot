@@ -16,16 +16,13 @@
 #ifndef FAIREVECUT_H_
 #define FAIREVECUT_H_
 
-#include <GuiTypes.h>
 #include <Rtypes.h>
 #include <RtypesCore.h>
 #include <TGButton.h>
-#include <TGDoubleSlider.h>
-#include <TGFrame.h>
-#include <TGLabel.h>
-#include <TGNumberEntry.h>
-#include <TGedFrame.h>   // for TGedFrame
-#include <TObject.h>
+#include <TString.h>
+
+class TGedFrame;
+class TGNumberEntry;
 
 /**
  * base class for graphics cuts

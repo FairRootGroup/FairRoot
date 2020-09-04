@@ -16,11 +16,12 @@
 #ifndef FAIREVEMCTRACKS_H_
 #define FAIREVEMCTRACKS_H_
 
+#include "FairTask.h"
 #include "FairEveTracks.h"
-#include "FairMCTrack.h"
 
-#include <FairRKPropagator.h>
-#include <TDatabasePDG.h>
+class FairMCTrack;
+class FairRKPropagator;
+class TDatabasePDG;
 
 class FairEveMCTracks : public FairEveTracks
 {

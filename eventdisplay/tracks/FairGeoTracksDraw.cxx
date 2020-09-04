@@ -13,10 +13,14 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairGeoTracksDraw.h"
 
 #include <TEveManager.h>
 #include <TEveSelection.h>
+
+#include "FairEventManager.h"
+#include "FairEveGeoTracks.h"
 
 FairGeoTracksDraw::FairGeoTracksDraw(const char* name)
     : FairTask(name)

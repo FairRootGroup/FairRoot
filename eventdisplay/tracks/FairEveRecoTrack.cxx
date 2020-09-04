@@ -13,9 +13,18 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairEveRecoTrack.h"
 
+#include <TEveElement.h>
+#include <TEveTrack.h>
+#include <TEveTrackPropagator.h>
+#include <TGeoTrack.h>
+#include <TParticle.h>
+#include <TVirtualGeoTrack.h>
+
 #include "FairEventManager.h"
+#include "FairEveTrack.h"
 
 FairEveRecoTrack::FairEveRecoTrack()
     : TEveCompound()
@@ -38,13 +47,12 @@ FairEveRecoTrack::FairEveRecoTrack(TParticle *t, Int_t label, TEveTrackPropagato
 
 void FairEveRecoTrack::AddHit(TVector3 hit)
 {
-    Double_t worldSizeX, worldSizeY, worldSizeZ;
-    FairEventManager::Instance()->GetWorldSize(worldSizeX, worldSizeY, worldSizeZ);
-    if (TMath::Abs(hit.X()) > worldSizeX)
+    TVector3 world = FairEventManager::Instance()->GetWorldSize();
+    if (TMath::Abs(hit.X()) > world.X())
         return;
-    if (TMath::Abs(hit.Y()) > worldSizeY)
+    if (TMath::Abs(hit.Y()) > world.Y())
         return;
-    if (TMath::Abs(hit.Z()) > worldSizeZ)
+    if (TMath::Abs(hit.Z()) > world.Z())
         return;
     if (fHits == nullptr) {
         fHits = new TEvePointSet();

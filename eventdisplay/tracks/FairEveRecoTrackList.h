@@ -16,14 +16,9 @@
 #ifndef FAIREVERECOTRACKLIST_H_
 #define FAIREVERECOTRACKLIST_H_
 
-#include "FairEveRecoTrack.h"
-#include "TEveTrackEditor.h"
-
-#include <TEveCompound.h>
-#include <TEvePointSet.h>
 #include <TEveTrack.h>
-#include <TEveTrackPropagator.h>
-#include <TGedFrame.h>
+
+#include "FairEveRecoTrack.h"
 
 class FairEveRecoTrackList : public TEveTrackList
 {

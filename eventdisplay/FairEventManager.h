@@ -12,20 +12,21 @@
 #ifndef FairEventManager_H
 #define FairEventManager_H
 
-#include "FairEveAnimationButton.h"
-#include "FairRunAna.h"   // for FairRunAna
-
 #include <Rtypes.h>             // for Float_t, Int_t, Bool_t, etc
 #include <TEveEventManager.h>   // for TEveEventManager
-#include <TEveProjectionAxes.h>
 #include <TGLViewer.h>
 #include <map>
+
+#include "FairRunAna.h"   // for FairRunAna
+#include "FairEveAnimationButton.h"
+#include <TEveProjectionAxes.h>
+
+class TVector3;
 
 class FairRootManager;   // does not work with streamer, reason unclear
 class FairTask;
 class FairXMLNode;
 
-class TEveProjectionAxes;
 class TEveProjectionManager;
 class TEveScene;
 class TEveViewer;
@@ -108,7 +109,7 @@ class FairEventManager : public TEveEventManager
     virtual Float_t GetEvtMinEnergy() { return 0; }
     virtual Float_t GetMaxEnergy() { return 1E+9; }
     virtual Float_t GetMinEnergy() { return 0; }
-    void GetWorldSize(Double_t &x, Double_t &y, Double_t &z) const;
+    TVector3 GetWorldSize() const;
     /**
      *
      * @param name name of file with screenshot
@@ -154,8 +155,8 @@ class FairEventManager : public TEveEventManager
     TEveScene *fRhoZScene;                            //!
     TEveProjectionManager *fRPhiProjManager;          //!
     TEveProjectionManager *fRhoZProjManager;          //!
-    TEveProjectionAxes *fAxesPhi;
-    TEveProjectionAxes *fAxesRho;
+    TEveProjectionAxes *fAxesPhi; //!
+    TEveProjectionAxes *fAxesRho; //!
     TString fXMLConfig;
     std::map<int, int> fPDGToColor;
     void SetTransparencyForLayer(TGeoNode *node, Int_t depth, Char_t transparency);

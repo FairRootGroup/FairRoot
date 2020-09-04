@@ -16,19 +16,15 @@
 #ifndef FAIREVEGEOTRACKSEDITOR_H_
 #define FAIREVEGEOTRACKSEDITOR_H_
 
-#include "FairEveCut.h"
-#include "FairEveGeoTracks.h"
-
 #include <GuiTypes.h>
-#include <Rtypes.h>
-#include <RtypesCore.h>
-#include <TGButton.h>
-#include <TGDoubleSlider.h>
-#include <TGFrame.h>
-#include <TGLabel.h>
-#include <TGNumberEntry.h>
 #include <TGedFrame.h>   // for TGedFrame
+#include <TGFrame.h>
 #include <memory>
+
+class FairEveBoolCut;
+class FairEveGeoTracks;
+class FairEveIntCut;
+class FairEveMinMaxCut;
 
 /**
  * editor of TGeoTracks in event display
@@ -42,7 +38,7 @@ class FairEveGeoTracksEditor : public TGedFrame
     std::unique_ptr<FairEveBoolCut> fPrimary;
     std::unique_ptr<FairEveBoolCut> fSecondary;
     std::unique_ptr<FairEveIntCut> fPdgCut;
-    FairEveGeoTracks* fGeoTracks;
+    FairEveGeoTracks* fGeoTracks; //!
 
   public:
     FairEveGeoTracksEditor(const TGWindow* p = 0,

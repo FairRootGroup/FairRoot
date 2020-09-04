@@ -13,17 +13,35 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairEveRecoTracksExample.h"
 
-#include "FairEveRecoTrack.h"
-#include "FairEveRecoTrackList.h"
-#include "FairEveTrack.h"
-#include "FairTutPropHit.h"
-
-#include <FairField.h>
+#include <TClonesArray.h>
+#include <TDatabasePDG.h>
+#include <TEveCompound.h>
+#include <TEveElement.h>
 #include <TEveManager.h>
+#include <TEveTrack.h>
+#include <TEveTrackPropagator.h>
+#include <TMath.h>
+#include <TObjArray.h>
 #include <TParticle.h>
-#include <TParticlePDG.h>
+#include <TString.h>
+#include <TVector3.h>
+#include <utility>
+
+#include "FairHit.h"
+#include "FairField.h"
+#include "FairRootManager.h"
+#include "FairRunAna.h"
+#include "FairEveRecoTrack.h"
+#include "FairEveTrack.h"
+#include "FairRKPropagator.h"
+#include "FairTrackPar.h"
+#include "FairTrackParP.h"
+#include "FairMCTrack.h"
+#include "FairTutPropHit.h"
+#include "FairTutPropTrack.h"
 
 FairEveRecoTracksExample::FairEveRecoTracksExample()
     : FairEveTracks(kTRUE)
@@ -167,7 +185,7 @@ void FairEveRecoTracksExample::DrawTrack(Int_t id)
 void FairEveRecoTracksExample::Repaint()
 {
     Int_t nTracks = fContainerReco->GetEntriesFast();
-    ResetGroup();
+    RemoveElements();
     for (int i = 0; i < nTracks; i++) {
         DrawTrack(i);
     }
@@ -208,22 +226,6 @@ void FairEveRecoTracksExample::SetDrawMC(Bool_t draw)
     if (fContainerSim) {
         fDrawMC = draw;
     }
-}
-
-void FairEveRecoTracksExample::ToggleTracks()
-{
-    for (int i = 0; i < GetTracksList()->GetEntriesFast(); i++) {
-        TEveTrackList *eveList = (TEveTrackList *)GetTracksList()->UncheckedAt(i);
-        for (TEveElement::List_i iter = eveList->BeginChildren(); iter != eveList->EndChildren(); ++iter) {
-            FairEveRecoTrack *el = dynamic_cast<FairEveRecoTrack *>((*iter));
-            if (el->GetRnrSelf()) {
-                el->SetRnrSelfChildren(kFALSE, kFALSE);
-            } else {
-                el->SetRnrSelfChildren(kTRUE, kTRUE);
-            }
-        }
-    }
-    gEve->Redraw3D(kFALSE);
 }
 
 FairEveRecoTracksExample::~FairEveRecoTracksExample() {}

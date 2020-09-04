@@ -16,16 +16,15 @@
 #ifndef FAIRRECOTRACKSDRAW_H_
 #define FAIRRECOTRACKSDRAW_H_
 
-#include "FairEveRecoTracksExample.h"
-#include "FairEventManager.h"
+#include "FairTask.h"
 
-#include <FairTask.h>
-#include <Rtypes.h>
+class FairEventManager;
+class FairEveRecoTracksExample;
 
 class FairRecoTracksDraw : public FairTask
 {
-    FairEventManager *fEventManager;
-    FairEveRecoTracksExample *fVisualizer;
+    FairEventManager *fEventManager; //!
+    FairEveRecoTracksExample *fVisualizer; //!
 
   public:
     FairRecoTracksDraw(const char *name = "reconstructed tracks");

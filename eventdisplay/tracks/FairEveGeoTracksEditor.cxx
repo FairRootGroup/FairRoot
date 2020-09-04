@@ -13,9 +13,16 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairEveGeoTracksEditor.h"
 
-#include <iostream>
+#include <TGButton.h>
+#include <TGLayout.h>
+#include <TGWindow.h>
+
+#include "FairEveCut.h"
+#include "FairEveGeoTracks.h"
+#include "FairEveTracks.h"
 
 FairEveGeoTracksEditor::FairEveGeoTracksEditor(const TGWindow *p,
                                                Int_t width,

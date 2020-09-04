@@ -13,9 +13,13 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairEveCut.h"
 
-#include <iostream>
+#include <TGedFrame.h>
+#include <TGLabel.h>
+#include <TGLayout.h>
+#include <TGNumberEntry.h>
 
 FairEveCut::FairEveCut(TGedFrame *frame, TGCompositeFrame *tab, TString name, Int_t width)
     : fWidth(width)

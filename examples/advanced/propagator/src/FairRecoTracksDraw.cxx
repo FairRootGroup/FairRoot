@@ -13,10 +13,15 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
+
 #include "FairRecoTracksDraw.h"
 
+#include <RtypesCore.h>
 #include <TEveManager.h>
 #include <TEveSelection.h>
+
+#include "FairEventManager.h"
+#include "FairEveRecoTracksExample.h"
 
 FairRecoTracksDraw::FairRecoTracksDraw(const char* name)
     : FairTask(name)

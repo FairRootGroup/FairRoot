@@ -16,18 +16,10 @@
 #ifndef FAIREVEGEOTRACKS_H_
 #define FAIREVEGEOTRACKS_H_
 
-#include "FairEveTracks.h"
-#include "FairEventManager.h"
 #include "FairTask.h"
+#include "FairEveTracks.h"
 
-#include <Rtypes.h>
-#include <RtypesCore.h>
-#include <TClonesArray.h>
-#include <TEveElement.h>
-#include <TEveTrack.h>
-#include <TEveTrackPropagator.h>
-#include <TGeoTrack.h>
-#include <TNamed.h>
+class TGeoTrack;
 
 /**
  * draw TGeoTracks

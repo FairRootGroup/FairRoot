@@ -15,18 +15,13 @@
  */
 #ifndef FAIRTEVERACKS_H_
 #define FAIRTEVERACKS_H_
-#include "FairEventManager.h"
+
+#include <TEveElement.h>
+
 #include "FairTask.h"
 
-#include <Rtypes.h>
-#include <RtypesCore.h>
-#include <TClonesArray.h>
-#include <TEveElement.h>
-#include <TEveTrack.h>
-#include <TEveTrackPropagator.h>
-#include <TGeoTrack.h>
-#include <TNamed.h>
-#include <memory>
+class FairEventManager;
+class TEveTrackList;
 
 /**
  * base evelement that represents tracks
@@ -35,8 +30,7 @@ class FairEveTracks
     : public TEveElement
     , public TNamed
 {
-    FairEventManager *fEventManager;
-    std::unique_ptr<TObjArray> fEveTrList;
+    FairEventManager *fEventManager; //!
     Double_t fPt[2];
     Double_t fEta[2];
     Double_t fEnergy[2];
@@ -52,16 +46,10 @@ class FairEveTracks
     Double_t GetEtaMax() const { return fEta[1]; }
     Double_t GetEnergyMin() const { return fEnergy[0]; };
     Double_t GetEnergyMax() const { return fEnergy[1]; };
-    ;
     Bool_t UsePtCut() const { return fUsePt; };
     Bool_t UseEtaCut() const { return fUseEta; };
     Bool_t UseEnergyCut() const { return fUseEnergy; };
-    /**
-     * reset object group (track groups)
-     */
-    void ResetGroup();
     FairEventManager *GetEventManager() const { return fEventManager; };
-    TObjArray *GetTracksList() const { return fEveTrList.get(); };
     /**
      *
      * @param groupName - name of the track group
