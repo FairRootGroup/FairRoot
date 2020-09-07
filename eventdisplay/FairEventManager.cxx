@@ -34,7 +34,6 @@
 #include <TGeoManager.h>   // for gGeoManager, TGeoManager
 #include <TGeoNode.h>
 #include <TGeoVolume.h>   // for TGeoVolume
-#include <iostream>
 #include <TVector3.h>
 
 ClassImp(FairEventManager);
@@ -285,10 +284,7 @@ void FairEventManager::AddParticlesToPdgDataBase(Int_t /*pdg*/)
         pdgDB->AddParticle("FeedbackPhoton", "FeedbackPhoton", 0, kFALSE, 0, 0, "Special", 50000051);
 }
 
-TVector3 FairEventManager::GetWorldSize() const
-{
-    return TVector3(fWorldSizeX,fWorldSizeY,fWorldSizeZ);
-}
+TVector3 FairEventManager::GetWorldSize() const { return TVector3(fWorldSizeX, fWorldSizeY, fWorldSizeZ); }
 
 void FairEventManager::SetViewers(TEveViewer *RPhi, TEveViewer *RhoZ)
 {

@@ -16,11 +16,11 @@
 
 #include "FairGeoTracksDraw.h"
 
+#include "FairEveGeoTracks.h"
+#include "FairEventManager.h"
+
 #include <TEveManager.h>
 #include <TEveSelection.h>
-
-#include "FairEventManager.h"
-#include "FairEveGeoTracks.h"
 
 FairGeoTracksDraw::FairGeoTracksDraw(const char* name)
     : FairTask(name)

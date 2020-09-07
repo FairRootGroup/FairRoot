@@ -27,8 +27,8 @@ class FairEventManager;
 
 class FairGeoTracksDraw : public FairTask
 {
-    FairEventManager *fEventManager; //!
-    FairEveGeoTracks *fVisualizer; //!
+    FairEventManager *fEventManager;   //!
+    FairEveGeoTracks *fVisualizer;     //!
 
   public:
     FairGeoTracksDraw(const char *name = "MC tracks");

@@ -16,11 +16,11 @@
 
 #include "FairMCTracksDraw.h"
 
+#include "FairEveMCTracks.h"
+#include "FairEventManager.h"
+
 #include <TEveManager.h>
 #include <TEveSelection.h>
-
-#include "FairEventManager.h"
-#include "FairEveMCTracks.h"
 
 FairMCTracksDraw::FairMCTracksDraw(const char* name)
     : FairTask(name)

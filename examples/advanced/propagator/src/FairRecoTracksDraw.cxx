@@ -16,12 +16,12 @@
 
 #include "FairRecoTracksDraw.h"
 
+#include "FairEveRecoTracksExample.h"
+#include "FairEventManager.h"
+
 #include <RtypesCore.h>
 #include <TEveManager.h>
 #include <TEveSelection.h>
-
-#include "FairEventManager.h"
-#include "FairEveRecoTracksExample.h"
 
 FairRecoTracksDraw::FairRecoTracksDraw(const char* name)
     : FairTask(name)

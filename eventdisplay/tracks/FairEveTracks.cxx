@@ -16,14 +16,14 @@
 
 #include "FairEveTracks.h"
 
+#include "FairEveRecoTrackList.h"
+#include "FairEventManager.h"
+
 #include <RtypesCore.h>
 #include <TEveManager.h>
 #include <TEveTrackPropagator.h>
 #include <TString.h>
 #include <algorithm>
-
-#include "FairEventManager.h"
-#include "FairEveRecoTrackList.h"
 
 FairEveTracks::FairEveTracks(Bool_t acceptCompound)
     : fEventManager(nullptr)
@@ -34,18 +34,17 @@ FairEveTracks::FairEveTracks(Bool_t acceptCompound)
     , fUseEta(kFALSE)
     , fUseEnergy(kFALSE)
     , fAcceptCompound(acceptCompound)
-{
-}
+{}
 
 void FairEveTracks::ToggleTracks()
 {
-    std::for_each(BeginChildren(), EndChildren(), [](TEveElement* trackGroup) {
-        std::for_each(trackGroup->BeginChildren(), trackGroup->EndChildren(), [](TEveElement* track) {
+    std::for_each(BeginChildren(), EndChildren(), [](TEveElement *trackGroup) {
+        std::for_each(trackGroup->BeginChildren(), trackGroup->EndChildren(), [](TEveElement *track) {
             if (track->GetRnrSelf()) {
-               track->SetRnrSelfChildren(kFALSE, kFALSE);
+                track->SetRnrSelfChildren(kFALSE, kFALSE);
             } else {
                 track->SetRnrSelfChildren(kTRUE, kTRUE);
-             }
+            }
         });
     });
     gEve->Redraw3D(kFALSE);
@@ -79,13 +78,12 @@ TEveTrackList *FairEveTracks::FindTrackGroup(TString groupName, Color_t color)
 
 void FairEveTracks::ToggleGroups()
 {
-    std::for_each(BeginChildren(),EndChildren(), [](TEveElement *trackGroup)
-            {
+    std::for_each(BeginChildren(), EndChildren(), [](TEveElement *trackGroup) {
         if (trackGroup->GetRnrSelf()) {
-                    trackGroup->SetRnrSelfChildren(kFALSE, kFALSE);
-                } else {
-                    trackGroup->SetRnrSelfChildren(kTRUE, kTRUE);
-                }
-            });
+            trackGroup->SetRnrSelfChildren(kFALSE, kFALSE);
+        } else {
+            trackGroup->SetRnrSelfChildren(kTRUE, kTRUE);
+        }
+    });
     gEve->Redraw3D(kFALSE);
 }

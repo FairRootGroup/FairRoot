@@ -16,6 +16,19 @@
 
 #include "FairEveRecoTracksExample.h"
 
+#include "FairEveRecoTrack.h"
+#include "FairEveTrack.h"
+#include "FairField.h"
+#include "FairHit.h"
+#include "FairMCTrack.h"
+#include "FairRKPropagator.h"
+#include "FairRootManager.h"
+#include "FairRunAna.h"
+#include "FairTrackPar.h"
+#include "FairTrackParP.h"
+#include "FairTutPropHit.h"
+#include "FairTutPropTrack.h"
+
 #include <TClonesArray.h>
 #include <TDatabasePDG.h>
 #include <TEveCompound.h>
@@ -29,19 +42,6 @@
 #include <TString.h>
 #include <TVector3.h>
 #include <utility>
-
-#include "FairHit.h"
-#include "FairField.h"
-#include "FairRootManager.h"
-#include "FairRunAna.h"
-#include "FairEveRecoTrack.h"
-#include "FairEveTrack.h"
-#include "FairRKPropagator.h"
-#include "FairTrackPar.h"
-#include "FairTrackParP.h"
-#include "FairMCTrack.h"
-#include "FairTutPropHit.h"
-#include "FairTutPropTrack.h"
 
 FairEveRecoTracksExample::FairEveRecoTracksExample()
     : FairEveTracks(kTRUE)

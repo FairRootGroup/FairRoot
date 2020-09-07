@@ -16,11 +16,11 @@
 #ifndef FAIREVERECOTRACKS_H_
 #define FAIREVERECOTRACKS_H_
 
+#include "FairEveTracks.h"
+#include "FairTask.h"
+
 #include <Rtypes.h>
 #include <RtypesCore.h>
-
-#include "FairTask.h"
-#include "FairEveTracks.h"
 
 class FairRKPropagator;
 class FairTutPropTrack;

@@ -17,8 +17,8 @@
 #define FAIREVEGEOTRACKSEDITOR_H_
 
 #include <GuiTypes.h>
-#include <TGedFrame.h>   // for TGedFrame
 #include <TGFrame.h>
+#include <TGedFrame.h>   // for TGedFrame
 #include <memory>
 
 class FairEveBoolCut;
@@ -38,7 +38,7 @@ class FairEveGeoTracksEditor : public TGedFrame
     std::unique_ptr<FairEveBoolCut> fPrimary;
     std::unique_ptr<FairEveBoolCut> fSecondary;
     std::unique_ptr<FairEveIntCut> fPdgCut;
-    FairEveGeoTracks* fGeoTracks; //!
+    FairEveGeoTracks* fGeoTracks;   //!
 
   public:
     FairEveGeoTracksEditor(const TGWindow* p = 0,

@@ -25,8 +25,8 @@ class TEveTrackList;
 
 class FairMCTracksDraw : public FairTask
 {
-    FairEventManager *fEventManager; //!
-    FairEveMCTracks *fVisualizer; //!
+    FairEventManager *fEventManager;   //!
+    FairEveMCTracks *fVisualizer;      //!
 
   protected:
     Bool_t CheckCuts(FairMCTrack *tr);

@@ -16,8 +16,8 @@
 #ifndef FAIREVEMCTRACKSEDITOR_H_
 #define FAIREVEMCTRACKSEDITOR_H_
 
-#include <TGedFrame.h>
 #include <TGFrame.h>
+#include <TGedFrame.h>
 #include <memory>
 
 class FairEveBoolCut;
@@ -33,7 +33,7 @@ class FairEveMCTracksEditor : public TGedFrame
     std::unique_ptr<FairEveBoolCut> fPrimary;
     std::unique_ptr<FairEveBoolCut> fSecondary;
     std::unique_ptr<FairEveIntCut> fPdgCut;
-    FairEveMCTracks *fMCTracks; //!
+    FairEveMCTracks *fMCTracks;   //!
 
   public:
     FairEveMCTracksEditor(const TGWindow *p = 0,

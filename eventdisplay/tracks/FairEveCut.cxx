@@ -16,10 +16,10 @@
 
 #include "FairEveCut.h"
 
-#include <TGedFrame.h>
 #include <TGLabel.h>
 #include <TGLayout.h>
 #include <TGNumberEntry.h>
+#include <TGedFrame.h>
 
 FairEveCut::FairEveCut(TGedFrame *frame, TGCompositeFrame *tab, TString name, Int_t width)
     : fWidth(width)

@@ -15,8 +15,8 @@
 #include <GuiTypes.h>   // for Pixel_t
 #include <Rtypes.h>     // for ClassDef
 #include <RtypesCore.h>
-#include <TGedFrame.h>   // for TGedFrame
 #include <TGFrame.h>     // for EFrameType::kChildFrame
+#include <TGedFrame.h>   // for TGedFrame
 
 class FairEveAnimationButton;
 class TGComboBox;

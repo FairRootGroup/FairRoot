@@ -16,9 +16,9 @@
 #ifndef FAIRTEVERACKS_H_
 #define FAIRTEVERACKS_H_
 
-#include <TEveElement.h>
-
 #include "FairTask.h"
+
+#include <TEveElement.h>
 
 class FairEventManager;
 class TEveTrackList;
@@ -30,7 +30,7 @@ class FairEveTracks
     : public TEveElement
     , public TNamed
 {
-    FairEventManager *fEventManager; //!
+    FairEventManager *fEventManager;   //!
     Double_t fPt[2];
     Double_t fEta[2];
     Double_t fEnergy[2];

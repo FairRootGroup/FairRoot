@@ -16,15 +16,15 @@
 
 #include "FairEveRecoTracksExampleEditor.h"
 
+#include "FairEveCut.h"
+#include "FairEveRecoTracksExample.h"
+#include "FairEveTracks.h"
+
 #include <GuiTypes.h>
 #include <RtypesCore.h>
 #include <TGButton.h>
 #include <TGLayout.h>
 #include <TGWindow.h>
-
-#include "FairEveCut.h"
-#include "FairEveTracks.h"
-#include "FairEveRecoTracksExample.h"
 
 FairEveRecoTracksExampleEditor::FairEveRecoTracksExampleEditor(const TGWindow *p,
                                                                Int_t width,

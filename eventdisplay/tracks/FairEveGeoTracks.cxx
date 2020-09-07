@@ -16,6 +16,10 @@
 
 #include "FairEveGeoTracks.h"
 
+#include "FairEveTrack.h"
+#include "FairEventManager.h"
+#include "FairRootManager.h"
+
 #include <TClonesArray.h>
 #include <TEveManager.h>
 #include <TEvePointSet.h>
@@ -27,10 +31,6 @@
 #include <TVector3.h>
 #include <TVirtualGeoTrack.h>
 #include <limits>
-
-#include "FairRootManager.h"
-#include "FairEventManager.h"
-#include "FairEveTrack.h"
 
 FairEveGeoTracks::FairEveGeoTracks()
     : FairEveTracks()

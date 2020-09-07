@@ -8,28 +8,28 @@
 
 #include "FairEventManagerEditor.h"
 
+#include "FairEventManager.h"   // for FairEventManager
+#include "FairRootManager.h"    // for FairRootManager
+#include "FairRun.h"
+#include "FairRunAna.h"   // for FairRunAna
+#include "FairTask.h"
+
 #include <RtypesCore.h>
-#include <TChain.h>           // for TChain
+#include <TChain.h>   // for TChain
 #include <TEveManager.h>
 #include <TFile.h>           // for TFile
 #include <TGButton.h>        // for TGCheckButton, TGTextButton
-#include <TGenericClassInfo.h>
-#include <TGeoManager.h>     // for TGeoManager, gGeoManager
 #include <TGLabel.h>         // for TGLabel
 #include <TGLayout.h>        // for TGLayoutHints, etc
 #include <TGNumberEntry.h>   // for TGNumberEntry, etc
+#include <TGenericClassInfo.h>
+#include <TGeoManager.h>   // for TGeoManager, gGeoManager
 #include <TList.h>
 #include <TNamed.h>
-#include <TString.h>         // for TString
+#include <TString.h>   // for TString
 #include <TSystem.h>
 #include <TTask.h>
 #include <TTree.h>
-
-#include "FairRootManager.h"    // for FairRootManager
-#include "FairRun.h"
-#include "FairRunAna.h"         // for FairRunAna
-#include "FairTask.h"
-#include "FairEventManager.h"   // for FairEventManager
 
 class TGWindow;
 class TObject;

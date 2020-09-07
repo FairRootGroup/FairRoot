@@ -16,15 +16,15 @@
 
 #include "FairEveRecoTrack.h"
 
+#include "FairEveTrack.h"
+#include "FairEventManager.h"
+
 #include <TEveElement.h>
 #include <TEveTrack.h>
 #include <TEveTrackPropagator.h>
 #include <TGeoTrack.h>
 #include <TParticle.h>
 #include <TVirtualGeoTrack.h>
-
-#include "FairEventManager.h"
-#include "FairEveTrack.h"
 
 FairEveRecoTrack::FairEveRecoTrack()
     : TEveCompound()

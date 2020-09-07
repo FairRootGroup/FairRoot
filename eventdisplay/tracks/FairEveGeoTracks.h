@@ -16,8 +16,8 @@
 #ifndef FAIREVEGEOTRACKS_H_
 #define FAIREVEGEOTRACKS_H_
 
-#include "FairTask.h"
 #include "FairEveTracks.h"
+#include "FairTask.h"
 
 class TGeoTrack;
 

@@ -16,13 +16,13 @@
 
 #include "FairEveGeoTracksEditor.h"
 
-#include <TGButton.h>
-#include <TGLayout.h>
-#include <TGWindow.h>
-
 #include "FairEveCut.h"
 #include "FairEveGeoTracks.h"
 #include "FairEveTracks.h"
+
+#include <TGButton.h>
+#include <TGLayout.h>
+#include <TGWindow.h>
 
 FairEveGeoTracksEditor::FairEveGeoTracksEditor(const TGWindow *p,
                                                Int_t width,

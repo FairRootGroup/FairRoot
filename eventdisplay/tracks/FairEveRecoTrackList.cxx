@@ -16,9 +16,9 @@
 
 #include "FairEveRecoTrackList.h"
 
-#include <TEveElement.h>
-
 #include "FairEveTrack.h"
+
+#include <TEveElement.h>
 
 FairEveRecoTrackList::FairEveRecoTrackList(TString name, TEveTrackPropagator* prop)
     : TEveTrackList(name, prop)

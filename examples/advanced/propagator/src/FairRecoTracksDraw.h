@@ -23,8 +23,8 @@ class FairEveRecoTracksExample;
 
 class FairRecoTracksDraw : public FairTask
 {
-    FairEventManager *fEventManager; //!
-    FairEveRecoTracksExample *fVisualizer; //!
+    FairEventManager *fEventManager;         //!
+    FairEveRecoTracksExample *fVisualizer;   //!
 
   public:
     FairRecoTracksDraw(const char *name = "reconstructed tracks");

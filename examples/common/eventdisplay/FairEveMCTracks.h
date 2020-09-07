@@ -16,8 +16,8 @@
 #ifndef FAIREVEMCTRACKS_H_
 #define FAIREVEMCTRACKS_H_
 
-#include "FairTask.h"
 #include "FairEveTracks.h"
+#include "FairTask.h"
 
 class FairMCTrack;
 class FairRKPropagator;

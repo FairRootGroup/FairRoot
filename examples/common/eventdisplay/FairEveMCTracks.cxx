@@ -16,6 +16,13 @@
 
 #include "FairEveMCTracks.h"
 
+#include "FairEveTrack.h"
+#include "FairEventManager.h"
+#include "FairField.h"
+#include "FairMCTrack.h"
+#include "FairRKPropagator.h"
+#include "FairRootManager.h"
+#include "FairRunAna.h"
 
 #include <TClonesArray.h>
 #include <TDatabasePDG.h>
@@ -29,14 +36,6 @@
 #include <TParticlePDG.h>
 #include <TString.h>
 #include <TVector3.h>
-
-#include "FairField.h"
-#include "FairRootManager.h"
-#include "FairRunAna.h"
-#include "FairEventManager.h"
-#include "FairEveTrack.h"
-#include "FairRKPropagator.h"
-#include "FairMCTrack.h"
 
 FairEveMCTracks::FairEveMCTracks()
     : FairEveTracks(kFALSE)
