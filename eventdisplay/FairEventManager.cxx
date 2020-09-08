@@ -503,7 +503,8 @@ void FairEventManager::MakeScreenshot(FairEveAnimationControl::eScreenshotType p
         fi.fFileTypes = filetypes;
         fi.fIniDir = StrDup(".");
         new TGFileDialog(gClient->GetRoot(), gEve->GetMainWindow(), kFDSave, &fi);
-        if(fi.fFilename==nullptr) return;
+        if (fi.fFilename == nullptr)
+            return;
         filename = fi.fFilename;
     } else {
         filename = path;

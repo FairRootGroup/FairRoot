@@ -116,7 +116,4 @@ FairEveAnimationControl::eAnimationType FairEveAnimationControl::GetAnimationTyp
     return static_cast<eAnimationType>(fTypeOpt->GetSelected());
 }
 
-FairEveAnimationControl::~FairEveAnimationControl()
-{
-    // TODO Auto-generated destructor stub
-}
+FairEveAnimationControl::~FairEveAnimationControl(){}
