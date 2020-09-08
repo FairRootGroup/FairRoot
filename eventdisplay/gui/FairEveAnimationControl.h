@@ -6,15 +6,15 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
- * FairEveAnimationButton.h
+ * FairEveAnimationControl.h
  *
  *  Created on: 26 maj 2020
  *      Author: Daniel Wielanek
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
-#ifndef FAIREVEANIMATIONBUTTON_H_
-#define FAIREVEANIMATIONBUTTON_H_
+#ifndef FAIREVEANIMATIONCONTROL_H_
+#define FAIREVEANIMATIONCONTROL_H_
 
 #include <GuiTypes.h>
 #include <Rtypes.h>
@@ -28,7 +28,7 @@
 #include <TGedFrame.h>   // for TGedFrame
 #include <TObject.h>
 
-class FairEveAnimationButton : public TNamed
+class FairEveAnimationControl : public TNamed
 {
     const Int_t fWidth;
     Double_t fValMin, fValMax;
@@ -54,11 +54,11 @@ class FairEveAnimationButton : public TNamed
         kZ = 2,
         kAll = 3
     };
-    FairEveAnimationButton(TGedFrame *frame = 0,
-                           TGCompositeFrame *tab = 0,
-                           TString name = "",
-                           Int_t width = 170,
-                           Int_t buttons = 2);
+    FairEveAnimationControl(TGedFrame *frame = 0,
+                            TGCompositeFrame *tab = 0,
+                            TString name = "",
+                            Int_t width = 170,
+                            Int_t buttons = 2);
     /**
      * set name of function called when button is pressed
      * @param name
@@ -75,9 +75,9 @@ class FairEveAnimationButton : public TNamed
     Double_t GetMin();
     Double_t GetMax();
     Double_t GetStep();
-    virtual ~FairEveAnimationButton();
+    virtual ~FairEveAnimationControl();
 
-    ClassDef(FairEveAnimationButton, 1)
+    ClassDef(FairEveAnimationControl, 1)
 };
 
-#endif /* FAIREVEANIMATIONBUTTON_H_ */
+#endif /* FAIREVEANIMATIONCONTROL_H_ */

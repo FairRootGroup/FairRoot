@@ -22,8 +22,9 @@ set(sources
   FairPointSetDraw.cxx
   FairTimeStampPointDraw.cxx
   FairXMLNode.cxx
-  FairEveAnimationButton.cxx
-  tracks/FairEveCut.cxx
+  gui/FairEveAnimationControl.cxx
+  gui/FairEveCut.cxx
+  gui/FairEveTransparencyControl.cxx
   tracks/FairEveGeoTracks.cxx
   tracks/FairEveGeoTracksEditor.cxx
   tracks/FairEveRecoTrack.cxx
@@ -42,6 +43,7 @@ set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/tracks
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/gui
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
   # TODO: DELETE ME ONCE USING root targets

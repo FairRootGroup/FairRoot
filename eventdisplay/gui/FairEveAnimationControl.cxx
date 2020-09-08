@@ -13,13 +13,13 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
-#include "FairEveAnimationButton.h"
+#include "FairEveAnimationControl.h"
 
-FairEveAnimationButton::FairEveAnimationButton(TGedFrame *frame,
-                                               TGCompositeFrame *tab,
-                                               TString name,
-                                               Int_t width,
-                                               Int_t buttons)
+FairEveAnimationControl::FairEveAnimationControl(TGedFrame *frame,
+                                                 TGCompositeFrame *tab,
+                                                 TString name,
+                                                 Int_t width,
+                                                 Int_t buttons)
     : fWidth(width)
     , fValMin(0)
     , fValMax(10)
@@ -35,7 +35,7 @@ FairEveAnimationButton::FairEveAnimationButton(TGedFrame *frame,
     SetName(name);
 }
 
-void FairEveAnimationButton::Init()
+void FairEveAnimationControl::Init()
 {
     TGGroupFrame *cuts = new TGGroupFrame(fTab, GetName());
     cuts->SetTitlePos(TGGroupFrame::kCenter);
@@ -95,28 +95,28 @@ void FairEveAnimationButton::Init()
     fTab->AddFrame(cuts, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 1, 1, 2, 1));
 }
 
-Double_t FairEveAnimationButton::GetMin() { return fMin->GetNumber(); }
+Double_t FairEveAnimationControl::GetMin() { return fMin->GetNumber(); }
 
-Double_t FairEveAnimationButton::GetMax() { return fMax->GetNumber(); }
+Double_t FairEveAnimationControl::GetMax() { return fMax->GetNumber(); }
 
-Double_t FairEveAnimationButton::GetStep()
+Double_t FairEveAnimationControl::GetStep()
 {
     if (fStep)
         return fStep->GetNumber();
     return 1;
 }
 
-FairEveAnimationButton::eScreenshotType FairEveAnimationButton::GetScreenshotType()
+FairEveAnimationControl::eScreenshotType FairEveAnimationControl::GetScreenshotType()
 {
     return static_cast<eScreenshotType>(fComboOpt->GetSelected());
 }
 
-FairEveAnimationButton::eAnimationType FairEveAnimationButton::GetAnimationType()
+FairEveAnimationControl::eAnimationType FairEveAnimationControl::GetAnimationType()
 {
     return static_cast<eAnimationType>(fTypeOpt->GetSelected());
 }
 
-FairEveAnimationButton::~FairEveAnimationButton()
+FairEveAnimationControl::~FairEveAnimationControl()
 {
     // TODO Auto-generated destructor stub
 }

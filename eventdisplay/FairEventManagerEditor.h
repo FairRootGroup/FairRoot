@@ -18,7 +18,7 @@
 #include <TGFrame.h>     // for EFrameType::kChildFrame
 #include <TGedFrame.h>   // for TGedFrame
 
-class FairEveAnimationButton;
+class FairEveAnimationControl;
 class TGComboBox;
 
 class FairEventManager;
@@ -41,7 +41,7 @@ class FairEventManagerEditor : public TGedFrame
     TGNumberEntry* fGlobalTransparency;
     TGLabel* fEventTime;
     TGComboBox* fScreenshotOpt;
-    FairEveAnimationButton* fAnimation;
+    FairEveAnimationControl* fAnimation;
 
   public:
     FairEventManagerEditor(const TGWindow* p = 0,
@@ -54,11 +54,6 @@ class FairEventManagerEditor : public TGedFrame
     virtual void SelectEvent();
     virtual void StartAnimation();
     virtual void Init();
-    /**
-     *
-     * @param transparency true if set hight transparency for detectors
-     */
-    void SwitchTransparency(Bool_t transparency);
     /**
      *
      * @param light_background true if use white background

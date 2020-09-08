@@ -12,7 +12,7 @@
 #ifndef FairEventManager_H
 #define FairEventManager_H
 
-#include "FairEveAnimationButton.h"
+#include "FairEveAnimationControl.h"
 #include "FairRunAna.h"   // for FairRunAna
 
 #include <Rtypes.h>             // for Float_t, Int_t, Bool_t, etc
@@ -86,11 +86,11 @@ class FairEventManager : public TEveEventManager
     };
     virtual void AddParticlesToPdgDataBase(Int_t pdg = 0);
     /**
-     * switch element transparency
-     * @param state high transparency enabled if true
-     * @param trans global transparency (used if stat == true)
+     * set detector's transparency
+     * @param use_xml use xml colors if available
+     * @param trans transparency for detector (if xml not used)
      */
-    virtual void SwitchTransparency(Bool_t state, Int_t trans);
+    virtual void SetTransparency(Bool_t use_xml, Int_t trans);
     /**
      * switch background color
      * @param light use white if true
@@ -116,7 +116,7 @@ class FairEventManager : public TEveEventManager
      * @param proj 0 - 3D view, 1 - RPhi, 2 RhoZ, 3 - all
      * @param def_path - default path to screenshot, if empty -user will be asked
      */
-    void MakeScreenshot(FairEveAnimationButton::eScreenshotType screen, TString def_path = "");
+    void MakeScreenshot(FairEveAnimationControl::eScreenshotType screen, TString def_path = "");
     ClassDef(FairEventManager, 1);
 
   protected:
