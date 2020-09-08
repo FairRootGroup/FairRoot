@@ -105,11 +105,16 @@ class FairEventManager : public TEveEventManager
     virtual void SetMinEnergy(Float_t min) {}
     virtual void SetEvtMaxEnergy(Float_t max) {}
     virtual void SetEvtMinEnergy(Float_t min) {}
+    virtual void SetEvtTime(Float_t time){ fTimeEvent = time; }
+    void SetUseTimeOfEvent(Bool_t val){ fUseTimeOfEvent = val; }
     virtual Float_t GetEvtMaxEnergy() { return 1E+9; }
     virtual Float_t GetEvtMinEnergy() { return 0; }
     virtual Float_t GetMaxEnergy() { return 1E+9; }
     virtual Float_t GetMinEnergy() { return 0; }
     TVector3 GetWorldSize() const;
+    Float_t GetEvtTime();
+    Bool_t GetUseTimeOfEvent() const { return fUseTimeOfEvent; }
+
     /**
      *
      * @param name name of file with screenshot
@@ -140,6 +145,8 @@ class FairEventManager : public TEveEventManager
     Int_t fEntry;                                     //!
     Double_t fWorldSizeX, fWorldSizeY, fWorldSizeZ;   //!
     Double_t fTimeMin, fTimeMax;                      //!
+    Bool_t fUseTimeOfEvent;							  //!
+    Double_t fTimeEvent;							  //!
     FairRunAna *fRunAna;                              //!
     TGListTreeItem *fEvent;                           //!
     Double_t fRPhiPlane[4];                           //!
