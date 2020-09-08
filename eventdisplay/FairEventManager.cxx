@@ -503,11 +503,8 @@ void FairEventManager::MakeScreenshot(FairEveAnimationControl::eScreenshotType p
         fi.fFileTypes = filetypes;
         fi.fIniDir = StrDup(".");
         new TGFileDialog(gClient->GetRoot(), gEve->GetMainWindow(), kFDSave, &fi);
+        if(fi.fFilename==nullptr) return;
         filename = fi.fFilename;
-        if (!(filename.Contains(".png") || filename.Contains(".jpg")))
-            return;
-        if (filename.BeginsWith("unknown"))
-            return;
     } else {
         filename = path;
     }
