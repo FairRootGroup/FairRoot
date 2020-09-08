@@ -116,4 +116,4 @@ FairEveAnimationControl::eAnimationType FairEveAnimationControl::GetAnimationTyp
     return static_cast<eAnimationType>(fTypeOpt->GetSelected());
 }
 
-FairEveAnimationControl::~FairEveAnimationControl(){}
+FairEveAnimationControl::~FairEveAnimationControl() {}
