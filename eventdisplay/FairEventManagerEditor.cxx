@@ -133,8 +133,7 @@ void FairEventManagerEditor::Init()
     TGVerticalFrame* scene_conf = CreateEditorTabSubFrame("Graphics");
     TGHorizontalFrame* transparency_frame = new TGHorizontalFrame(scene_conf);
 
-    auto transparency(
-        std::unique_ptr<FairEveTransparencyControl>(new FairEveTransparencyControl(scene_conf, "Global transparency")));
+    std::unique_ptr<FairEveTransparencyControl> transparency(new FairEveTransparencyControl(scene_conf, "Global transparency"));
     scene_conf->AddFrame(transparency.release(), new TGLayoutHints(kLHintsNormal, 5, 5, 1, 1));
 
     TGCheckButton* backgroundButton = new TGCheckButton(scene_conf, "Light background");
