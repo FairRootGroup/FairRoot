@@ -10,6 +10,7 @@
 
 #include "FairEventManager.h"   // for FairEventManager
 #include "FairRootManager.h"    // for FairRootManager
+#include "FairEveTransparencyControl.h"
 #include "FairRun.h"
 #include "FairRunAna.h"   // for FairRunAna
 #include "FairTask.h"
@@ -30,6 +31,7 @@
 #include <TSystem.h>
 #include <TTask.h>
 #include <TTree.h>
+#include <memory>
 
 class TGWindow;
 class TObject;
@@ -57,11 +59,6 @@ FairEventManagerEditor::FairEventManagerEditor(const TGWindow* p,
     , fScreenshotOpt(nullptr)
 {
     Init();
-}
-
-void FairEventManagerEditor::SwitchTransparency(Bool_t transparency)
-{
-    fManager->SwitchTransparency(transparency, fGlobalTransparency->GetIntNumber());
 }
 
 void FairEventManagerEditor::SwitchBackground(Bool_t light_background) { fManager->SwitchBackground(light_background); }
@@ -135,23 +132,11 @@ void FairEventManagerEditor::Init()
     //=============== graphics =============================
     TGVerticalFrame* scene_conf = CreateEditorTabSubFrame("Graphics");
     TGHorizontalFrame* transparency_frame = new TGHorizontalFrame(scene_conf);
-    TGCheckButton* Transparency = new TGCheckButton(transparency_frame, "Global transparency");
-    transparency_frame->AddFrame(Transparency, new TGLayoutHints(kLHintsLeft | kLHintsExpandX, 5, 5, 1, 1));
-    Transparency->Connect("Toggled(Bool_t)", this->ClassName(), this, "SwitchTransparency(Bool_t)");
 
-    fGlobalTransparency = new TGNumberEntry(transparency_frame,
-                                            0.,
-                                            6,
-                                            -1,
-                                            TGNumberFormat::kNESInteger,
-                                            TGNumberFormat::kNEANonNegative,
-                                            TGNumberFormat::kNELLimitMinMax,
-                                            0,
-                                            100);
-    fGlobalTransparency->SetIntNumber(80);
-    transparency_frame->AddFrame(fGlobalTransparency, new TGLayoutHints(kLHintsRight, 1, 1, 1, 1));
-    fGlobalTransparency->Connect("ValueSet(Long_t)", "FairEventManagerEditor", this, "SwitchTransparency(Bool_t)");
-    scene_conf->AddFrame(transparency_frame);
+
+    auto transparency(std::unique_ptr<FairEveTransparencyControl>(new FairEveTransparencyControl(scene_conf, "Global transparency")));
+    //transparency->Connect("SetSignal(Int_t)", fManager->ClassName(), fManager, "SetTransparency(Int_t)");
+    scene_conf->AddFrame(transparency.release(), new TGLayoutHints(kLHintsNormal, 5, 5, 1, 1));
 
     TGCheckButton* backgroundButton = new TGCheckButton(scene_conf, "Light background");
     scene_conf->AddFrame(backgroundButton, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 5, 5, 1, 1));
@@ -176,7 +161,7 @@ void FairEventManagerEditor::Init()
     frame_screenshot->AddFrame(fScreenshotOpt, new TGLayoutHints(kLHintsRight | kLHintsExpandX));
     scene_conf->AddFrame(frame_screenshot, new TGLayoutHints(kLHintsTop | kLHintsExpandX, 1, 1, 2, 1));
 
-    fAnimation = new FairEveAnimationButton(this, scene_conf, "Animation", fWidth, 2);
+    fAnimation = new FairEveAnimationControl(this, scene_conf, "Animation", fWidth, 2);
     fAnimation->SetMinMax(0, Entries);
     fAnimation->SetFunctionName("StartAnimation()");
     fAnimation->Init();
@@ -199,12 +184,12 @@ void FairEventManagerEditor::SetModel(TObject* obj) { fObject = obj; }
 void FairEventManagerEditor::StartAnimation()
 {
     switch (fAnimation->GetAnimationType()) {
-        case FairEveAnimationButton::eAnimationType::kEventByEvent: {   // event by event
+        case FairEveAnimationControl::eAnimationType::kEventByEvent: {   // event by event
             gSystem->mkdir("event_animations");
             FairEventManager::Instance()->SetTimeLimits(0, -1);   // disable drawing by timeslice
             Int_t start = (Int_t)fAnimation->GetMin();
             Int_t end = (Int_t)fAnimation->GetMax();
-            FairEveAnimationButton::eScreenshotType screen = fAnimation->GetScreenshotType();
+            FairEveAnimationControl::eScreenshotType screen = fAnimation->GetScreenshotType();
             gSystem->mkdir("event_animations");
             for (int i = start; i < end; i++) {
                 fCurrentEvent->SetIntNumber(i);
@@ -213,7 +198,7 @@ void FairEventManagerEditor::StartAnimation()
                 fManager->MakeScreenshot(screen, Form("event_animations/event_%i.png", i));
             }
         } break;
-        case FairEveAnimationButton::eAnimationType::kTimeSlice: {   // timeslice
+        case FairEveAnimationControl::eAnimationType::kTimeSlice: {   // timeslice
             gSystem->mkdir("timeslice_animations");
             SelectEvent();
             Double_t start = (Double_t)fAnimation->GetMin();
@@ -223,7 +208,7 @@ void FairEventManagerEditor::StartAnimation()
                 step = 1;
             }
             Int_t no = 0;
-            FairEveAnimationButton::eScreenshotType screen = fAnimation->GetScreenshotType();
+            FairEveAnimationControl::eScreenshotType screen = fAnimation->GetScreenshotType();
             FairRunAna* ana = FairRunAna::Instance();
             FairTask* pMainTask = ana->GetMainTask();
             TList* taskList = pMainTask->GetListOfTasks();
@@ -246,5 +231,5 @@ void FairEventManagerEditor::StartAnimation()
 
 void FairEventManagerEditor::MakeScreenshot()
 {
-    fManager->MakeScreenshot(static_cast<FairEveAnimationButton::eScreenshotType>(fScreenshotOpt->GetSelected()));
+    fManager->MakeScreenshot(static_cast<FairEveAnimationControl::eScreenshotType>(fScreenshotOpt->GetSelected()));
 }

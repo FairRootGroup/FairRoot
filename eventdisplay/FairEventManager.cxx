@@ -459,11 +459,11 @@ Int_t FairEventManager::StringToColor(TString color) const
     }
 }
 
-void FairEventManager::SwitchTransparency(Bool_t state, Int_t trans)
+void FairEventManager::SetTransparency(Bool_t use_xml, Int_t trans)
 {
-    if (state) {   // high transparency
+    if (use_xml==kFALSE) {   // high transparency
         Int_t vis_level = gGeoManager->GetVisLevel();
-        TGeoNode *top = gGeoManager->GetTopNode();
+          TGeoNode *top = gGeoManager->GetTopNode();
         SetTransparencyForLayer(top, vis_level, trans);
     } else {   // normal transparency
         if (fXMLConfig != "") {
@@ -494,7 +494,7 @@ void FairEventManager::SetTransparencyForLayer(TGeoNode *node, Int_t depth, Char
     }
 }
 
-void FairEventManager::MakeScreenshot(FairEveAnimationButton::eScreenshotType proj, TString path)
+void FairEventManager::MakeScreenshot(FairEveAnimationControl::eScreenshotType proj, TString path)
 {
     TString filename;
     if (path == "") {
@@ -512,20 +512,20 @@ void FairEventManager::MakeScreenshot(FairEveAnimationButton::eScreenshotType pr
         filename = path;
     }
     switch (proj) {
-        case FairEveAnimationButton::eScreenshotType::k3D: {
+        case FairEveAnimationControl::eScreenshotType::k3D: {
             gEve->GetDefaultGLViewer()->SavePicture(filename);
         } break;
-        case FairEveAnimationButton::eScreenshotType::kXY: {
+        case FairEveAnimationControl::eScreenshotType::kXY: {
             TEveViewer *view = GetRPhiView();
             TGLViewer *gl = view->GetGLViewer();
             gl->SavePicture(filename);
         } break;
-        case FairEveAnimationButton::eScreenshotType::kZ: {
+        case FairEveAnimationControl::eScreenshotType::kZ: {
             TEveViewer *view = GetRhoZView();
             TGLViewer *gl = view->GetGLViewer();
             gl->SavePicture(filename);
         } break;
-        case FairEveAnimationButton::eScreenshotType::kAll: {
+        case FairEveAnimationControl::eScreenshotType::kAll: {
             TString filename_path = filename(0, filename.Last('.'));
             TString filename_ext = filename(filename.Last('.'), 4);
             TString filename3d = Form("%s_3d.%s", filename_path.Data(), filename_ext.Data());
