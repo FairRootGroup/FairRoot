@@ -26,8 +26,8 @@ class FairEveTransparencyControl : public TGHorizontalFrame
     TGCheckButton *GetCheck() const { return fCheck; }
     TGNumberEntry *GetNumber() const { return fNumber; }
 
-    void Toggled(Bool_t);  // SLOT to receive check button events
-    void ValueSet();  // SLOT to receive number entry events
+    void Toggled(Bool_t);   // SLOT to receive check button events
+    void ValueSet();        // SLOT to receive number entry events
 
     virtual ~FairEveTransparencyControl(){};
 

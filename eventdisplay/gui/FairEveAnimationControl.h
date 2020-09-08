@@ -55,10 +55,10 @@ class FairEveAnimationControl : public TNamed
         kAll = 3
     };
     FairEveAnimationControl(TGedFrame *frame = 0,
-                           TGCompositeFrame *tab = 0,
-                           TString name = "",
-                           Int_t width = 170,
-                           Int_t buttons = 2);
+                            TGCompositeFrame *tab = 0,
+                            TString name = "",
+                            Int_t width = 170,
+                            Int_t buttons = 2);
     /**
      * set name of function called when button is pressed
      * @param name

@@ -461,9 +461,9 @@ Int_t FairEventManager::StringToColor(TString color) const
 
 void FairEventManager::SetTransparency(Bool_t use_xml, Int_t trans)
 {
-    if (use_xml==kFALSE) {   // high transparency
+    if (use_xml == kFALSE) {   // high transparency
         Int_t vis_level = gGeoManager->GetVisLevel();
-          TGeoNode *top = gGeoManager->GetTopNode();
+        TGeoNode *top = gGeoManager->GetTopNode();
         SetTransparencyForLayer(top, vis_level, trans);
     } else {   // normal transparency
         if (fXMLConfig != "") {

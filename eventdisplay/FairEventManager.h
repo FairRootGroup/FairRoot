@@ -12,6 +12,7 @@
 #ifndef FairEventManager_H
 #define FairEventManager_H
 
+#include "FairEveAnimationControl.h"
 #include "FairRunAna.h"   // for FairRunAna
 
 #include <Rtypes.h>             // for Float_t, Int_t, Bool_t, etc
@@ -19,8 +20,6 @@
 #include <TEveProjectionAxes.h>
 #include <TGLViewer.h>
 #include <map>
-
-#include "FairEveAnimationControl.h"
 
 class TVector3;
 
@@ -87,9 +86,9 @@ class FairEventManager : public TEveEventManager
     };
     virtual void AddParticlesToPdgDataBase(Int_t pdg = 0);
     /**
-     * set detector transparency
-     * @param use_xml high transparency enabled if true
-     * @param trans global transparency (used if stat == true)
+     * set detector's transparency
+     * @param use_xml use xml colors if available
+     * @param trans transparency for detector (if xml not used)
      */
     virtual void SetTransparency(Bool_t use_xml, Int_t trans);
     /**

@@ -8,8 +8,9 @@
 
 #include "FairEveTransparencyControl.h"
 
-#include <TGNumberEntry.h>
 #include "FairEventManager.h"
+
+#include <TGNumberEntry.h>
 
 FairEveTransparencyControl::FairEveTransparencyControl(TGFrame const *parent, char const *label)
     : TGHorizontalFrame(parent)
@@ -35,10 +36,11 @@ FairEveTransparencyControl::FairEveTransparencyControl(TGFrame const *parent, ch
     fNumber->Connect("ValueSet(Long_t)", this->ClassName(), this, "ValueSet()");
 }
 
-void FairEveTransparencyControl::Toggled(Bool_t on) {
+void FairEveTransparencyControl::Toggled(Bool_t on)
+{
     if (fCheck->IsOn()) {
         FairEventManager::Instance()->SetTransparency(kFALSE, fNumber->GetIntNumber());
-    }else{
+    } else {
         FairEventManager::Instance()->SetTransparency(kTRUE, fNumber->GetIntNumber());
     }
 }
@@ -47,8 +49,7 @@ void FairEveTransparencyControl::ValueSet()
 {
     if (fCheck->IsOn()) {
         FairEventManager::Instance()->SetTransparency(kFALSE, fNumber->GetIntNumber());
-    }else{
+    } else {
         FairEventManager::Instance()->SetTransparency(kTRUE, fNumber->GetIntNumber());
     }
 }
-
