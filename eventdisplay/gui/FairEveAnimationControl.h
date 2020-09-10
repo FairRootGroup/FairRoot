@@ -46,7 +46,7 @@ class FairEveAnimationControl : public TNamed
     {
         kEventByEvent = 0,
         kTimeSlice = 1,
-		kTimeStep = 2
+        kTimeStep = 2
     };
     enum eScreenshotType
     {

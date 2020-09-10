@@ -30,4 +30,10 @@ TVector3 FairHitDraw::GetVector(TObject* obj)
     return TVector3(hit->GetX(), hit->GetY(), hit->GetZ());
 }
 
+double FairHitDraw::GetTime(TObject* obj)
+{
+    FairHit* hit = static_cast<FairHit*>(obj);
+    return hit->GetTimeStamp();
+}
+
 ClassImp(FairHitDraw);
