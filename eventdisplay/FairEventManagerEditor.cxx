@@ -229,7 +229,7 @@ void FairEventManagerEditor::StartAnimation()
                 fManager->MakeScreenshot(screen, Form("timeslice_animations/event_%i.png", no++));
             }
         } break;
-        case FairEveAnimationButton::eAnimationType::kTimeStep: {   // timeslice
+        case FairEveAnimationControl::eAnimationType::kTimeStep: {   // timeslice
                     gSystem->mkdir("timestep_animations");
                     SelectEvent();
                     Double_t start = (Double_t)fAnimation->GetMin();
@@ -239,7 +239,7 @@ void FairEventManagerEditor::StartAnimation()
                         step = 1;
                     }
                     Int_t no = 0;
-                    FairEveAnimationButton::eScreenshotType screen = fAnimation->GetScreenshotType();
+                    FairEveAnimationControl::eScreenshotType screen = fAnimation->GetScreenshotType();
                     FairRunAna* ana = FairRunAna::Instance();
                     FairTask* pMainTask = ana->GetMainTask();
                     TList* taskList = pMainTask->GetListOfTasks();
