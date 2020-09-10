@@ -51,6 +51,7 @@ void FairEveAnimationControl::Init()
     fTypeOpt = new TGComboBox(frame1);
     fTypeOpt->AddEntry("Event by Event", kEventByEvent);
     fTypeOpt->AddEntry("Timeslice", kTimeSlice);
+    fTypeOpt->AddEntry("Timestep", kTimeStep);
     fTypeOpt->Select(kEventByEvent);
     fTypeOpt->Resize(100, 20);
     frame1->AddFrame(fTypeOpt, new TGLayoutHints(kLHintsLeft | kLHintsExpandX));

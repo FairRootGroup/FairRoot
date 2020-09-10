@@ -171,11 +171,15 @@ void FairEventManagerEditor::Init()
 void FairEventManagerEditor::SelectEvent()
 {
     fManager->GotoEvent(fCurrentEvent->GetIntNumber());
-    TString time;
-    time.Form("%.2f", FairRootManager::Instance()->GetEventTime());
-    time += " ns";
-    fEventTime->SetText(time.Data());
-    Update();
+    SetEventTimeLabel(FairRootManager::Instance()->GetEventTime());
+}
+
+void FairEventManagerEditor::SetEventTimeLabel(Double_t time){
+	TString stime;
+	    stime.Form("%.2f", time);
+	    stime += " ns";
+	    fEventTime->SetText(stime.Data());
+	    Update();
 }
 
 void FairEventManagerEditor::SetModel(TObject* obj) { fObject = obj; }
@@ -225,6 +229,37 @@ void FairEventManagerEditor::StartAnimation()
                 fManager->MakeScreenshot(screen, Form("timeslice_animations/event_%i.png", no++));
             }
         } break;
+        case FairEveAnimationButton::eAnimationType::kTimeStep: {   // timeslice
+                    gSystem->mkdir("timestep_animations");
+                    SelectEvent();
+                    Double_t start = (Double_t)fAnimation->GetMin();
+                    Double_t end = (Double_t)fAnimation->GetMax();
+                    Double_t step = (Double_t)fAnimation->GetStep();
+                    if (step == 0) {
+                        step = 1;
+                    }
+                    Int_t no = 0;
+                    FairEveAnimationButton::eScreenshotType screen = fAnimation->GetScreenshotType();
+                    FairRunAna* ana = FairRunAna::Instance();
+                    FairTask* pMainTask = ana->GetMainTask();
+                    TList* taskList = pMainTask->GetListOfTasks();
+
+                    Int_t ntask = ana->GetNTasks();
+                    FairEventManager::Instance()->SetUseTimeOfEvent(kFALSE);
+                    for (Double_t i = start; i < end; i += step) {
+                        FairEventManager::Instance()->SetEvtTime(i);
+                        SetEventTimeLabel(i);
+                        TObjLink* lnk = taskList->FirstLink();
+                        while (lnk) {
+                            FairTask* pCurTask = (FairTask*)lnk->GetObject();
+                            pCurTask->ExecuteTask("");
+                            lnk = lnk->Next();
+                        }
+                        gEve->FullRedraw3D();
+                        fManager->MakeScreenshot(screen, Form("timestep_animations/event_%i.png", no++));
+                    }
+                    FairEventManager::Instance()->SetUseTimeOfEvent(kTRUE);
+                } break;
     }
 }
 

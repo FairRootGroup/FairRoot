@@ -104,7 +104,7 @@ void FairBoxSetDraw::Exec(Option_t* /*option*/)
         CreateBoxSet();
         if (FairRunAna::Instance()->IsTimeStamp()) {
             fList->Clear();
-            Double_t eventTime = FairRootManager::Instance()->GetEventTime();
+            Double_t eventTime = FairEventManager::Instance()->GetEvtTime();
             if (fUseEventTime) {
                 fStartTime = eventTime - fTimeWindowMinus;
             }

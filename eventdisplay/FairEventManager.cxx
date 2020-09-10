@@ -51,6 +51,8 @@ FairEventManager::FairEventManager()
     , fWorldSizeZ(2000)
     , fTimeMin(0)
     , fTimeMax(DBL_MAX)
+    , fUseTimeOfEvent(kTRUE)
+	, fTimeEvent(-1.)
     , fRunAna(FairRunAna::Instance())
     , fEvent(0)
     , fRPhiPlane{0, 0, 10, 0}
@@ -538,4 +540,12 @@ void FairEventManager::MakeScreenshot(FairEveAnimationControl::eScreenshotType p
             gl->SavePicture(filenameRhoz);
         } break;
     }
+}
+
+Float_t FairEventManager::GetEvtTime()
+{
+	if (fUseTimeOfEvent == kTRUE){
+		fTimeEvent = FairRootManager::Instance()->GetEventTime();
+	}
+	return fTimeEvent;
 }

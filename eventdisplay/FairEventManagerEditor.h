@@ -43,6 +43,8 @@ class FairEventManagerEditor : public TGedFrame
     TGComboBox* fScreenshotOpt;
     FairEveAnimationControl* fAnimation;
 
+    void SetEventTimeLabel(Double_t time);
+
   public:
     FairEventManagerEditor(const TGWindow* p = 0,
                            Int_t width = 170,
