@@ -83,9 +83,13 @@ class FairIon : public TNamed
      */
     void SetExcEnergy(Double_t eExc) { fExcEnergy = eExc; }
     /**
+     * Set the atomic mass, use SetMass to set the mass of the ion
+     */
+    void SetA(Int_t a) { fA = a; }
+    /**
      * Set the mass in GeV
      */
-    void SetMass(Double_t mass) { fMass = mass * amu; }
+    void SetMass(Double_t mass) { fMass = mass; }
 
   private:
     static Int_t fgNIon;         //! /// Number of ions instantiated. One per generator.
@@ -95,7 +99,6 @@ class FairIon : public TNamed
     Double_t fExcEnergy;         /// Excitation energy [GeV]
     Double_t fMass;              /// Mass [GeV]
     FairLogger* fLogger;         //! /// FairLogger
-    static const Double_t amu;   ///  .931494028 Gev/c**2
 
     FairIon(const FairIon&);
     FairIon& operator=(const FairIon&);
