@@ -54,6 +54,7 @@ class FairPointSetDraw : public FairTask
   protected:
     virtual TVector3 GetVector(TObject* obj) = 0;
     virtual TObject* GetValue(TObject* obj, Int_t i);
+    virtual double   GetTime(TObject* obj){ return -1; };
 
     Int_t fVerbose;   //  Verbosity level
     virtual void SetParContainers();
