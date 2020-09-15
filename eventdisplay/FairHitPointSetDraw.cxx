@@ -41,4 +41,13 @@ TVector3 FairHitPointSetDraw::GetVector(TObject* obj)
     return TVector3(p->GetX(), p->GetY(), p->GetZ());
 }
 
+double FairHitPointSetDraw::GetTime(TObject* obj)
+{
+    FairHit* p = static_cast<FairHit*>(obj);
+    if (fVerbose > 1) {
+        cout << "-I- FairHitPointSetDraw::GetTime: " << p->GetTimeStamp() << endl;
+    }
+    return p->GetTimeStamp();
+}
+
 ClassImp(FairHitPointSetDraw);
