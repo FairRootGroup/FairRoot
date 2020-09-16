@@ -85,7 +85,7 @@ class FairBoxSetDraw : public FairTask
     virtual TVector3 GetVector(TObject* obj) = 0;
     virtual Int_t GetValue(TObject* obj, Int_t i);
     virtual void AddBoxes(FairBoxSet* set, TObject* obj, Int_t i = 0);
-    virtual double GetTime(TObject* obj){ return -1.; };
+    virtual double GetTime(TObject* obj) { return -1.; };
 
     TClonesArray* fList;               //!
     FairEventManager* fEventManager;   //!

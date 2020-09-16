@@ -32,7 +32,7 @@ class FairMCPointDraw : public FairPointSetDraw
 
   protected:
     TVector3 GetVector(TObject* obj);
-    double   GetTime(TObject* obj);
+    double GetTime(TObject* obj);
 
     ClassDef(FairMCPointDraw, 1);
 };

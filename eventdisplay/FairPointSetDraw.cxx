@@ -90,13 +90,13 @@ void FairPointSetDraw::Exec(Option_t* /*option*/)
             TObject* p = static_cast<TObject*>(fPointList->At(i));
             if (p != 0) {
                 TVector3 vec(GetVector(p));
-                if (checkTime){
-                	double time = GetTime(p);
-                	if (time > 0){
-						if (time < tmin || time > tmax){
-							continue;
-						}
-                	}
+                if (checkTime) {
+                    double time = GetTime(p);
+                    if (time > 0) {
+                        if (time < tmin || time > tmax) {
+                            continue;
+                        }
+                    }
                 }
                 q->SetNextPoint(vec.X(), vec.Y(), vec.Z());
                 q->SetPointId(GetValue(p, i));
