@@ -82,11 +82,22 @@ void FairPointSetDraw::Exec(Option_t* /*option*/)
         q->SetMarkerColor(fColor);
         q->SetMarkerSize(1.5);
         q->SetMarkerStyle(fStyle);
+        double tmin, tmax;
+        FairEventManager::Instance()->GetTimeLimits(tmin, tmax);
+        bool checkTime = tmin < tmax;
         // std::cout << "fPointList: " << fPointList << " " << fPointList->GetEntries() << std::endl;
         for (Int_t i = 0; i < npoints; ++i) {
             TObject* p = static_cast<TObject*>(fPointList->At(i));
             if (p != 0) {
                 TVector3 vec(GetVector(p));
+                if (checkTime) {
+                    double time = GetTime(p);
+                    if (time > 0) {
+                        if (time < tmin || time > tmax) {
+                            continue;
+                        }
+                    }
+                }
                 q->SetNextPoint(vec.X(), vec.Y(), vec.Z());
                 q->SetPointId(GetValue(p, i));
             }

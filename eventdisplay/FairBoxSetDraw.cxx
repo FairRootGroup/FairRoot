@@ -108,8 +108,9 @@ void FairBoxSetDraw::Exec(Option_t* /*option*/)
             if (fUseEventTime) {
                 fStartTime = eventTime - fTimeWindowMinus;
             }
-            cout << "EventTime: " << eventTime << " TimeWindow: " << fStartTime << " - " << eventTime + fTimeWindowPlus
-                 << std::endl;
+            if (fVerbose > 1)
+                cout << "EventTime: " << eventTime << " TimeWindow: " << fStartTime << " - "
+                     << eventTime + fTimeWindowPlus << std::endl;
 
             fList = FairRootManager::Instance()->GetData(
                 GetName(),
@@ -123,11 +124,20 @@ void FairBoxSetDraw::Exec(Option_t* /*option*/)
         if (fVerbose > 1) {
             std::cout << GetName() << " fList: " << fList->GetEntries() << std::endl;
         }
+        double tmin = -1.;
+        double tmax = -1.;
+        FairEventManager::Instance()->GetTimeLimits(tmin, tmax);
+        bool checkTime = tmin < tmax;
+
         for (Int_t i = 0; i < fList->GetEntriesFast(); ++i) {
             p = fList->At(i);
-            if (fVerbose > 2) {
-                //        FairTimeStamp* data = (FairTimeStamp*)p;
-                //        cout << "TimeStamp: " <<  data->GetTimeStamp() << std::endl;
+            if (checkTime) {
+                double time = GetTime(p);
+                if (time + fTimeWindowMinus > 0) {
+                    if (time + fTimeWindowMinus < tmin || time - fTimeWindowPlus > tmax) {
+                        continue;
+                    }
+                }
             }
             AddBoxes(fq, p, i);
         }
