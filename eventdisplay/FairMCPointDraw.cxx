@@ -38,7 +38,7 @@ TVector3 FairMCPointDraw::GetVector(TObject* obj)
 
 double FairMCPointDraw::GetTime(TObject* obj)
 {
-	FairMCPoint* p = static_cast<FairMCPoint*>(obj);
-	return p->GetTime();
+    FairMCPoint* p = static_cast<FairMCPoint*>(obj);
+    return p->GetTime();
 }
 ClassImp(FairMCPointDraw);
