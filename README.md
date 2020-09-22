@@ -49,7 +49,7 @@ echo 'treename=name_you_chose' > config/rootmanager.dat
     cd ~/fair_install
     #git clone https://github.com/FairRootGroup/FairSoft.git
     git clone -b dev https://github.com/FairRootGroup/FairSoft.git
-    cd FairSoft
+    cd FairSoft/legacy
     ./configure.sh
     # 1) gcc (on Linux) 5) Clang (on OSX)
     # 1) No Debug Info
