@@ -9,11 +9,14 @@
 #ifndef FAIREVETRANSPARENCYCONTROL_H_
 #define FAIREVETRANSPARENCYCONTROL_H_
 
-#include <Rtypes.h>
-#include <TGButton.h>
-#include <TGFrame.h>
-
-class TGNumberEntry;
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Bool_t
+#include <TGFrame.h>     // for TGFrame (ptr only), TGHorizontalFrame
+class TBuffer;
+class TClass;
+class TGCheckButton;
+class TGNumberEntry;  // lines 16-16
+class TMemberInspector;
 
 class FairEveTransparencyControl : public TGHorizontalFrame
 {

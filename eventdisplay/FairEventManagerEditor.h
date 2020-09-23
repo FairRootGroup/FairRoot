@@ -11,23 +11,21 @@
 // -------------------------------------------------------------------------
 #ifndef ROOT_FAIREVENTMANAGEREDITOR
 #define ROOT_FAIREVENTMANAGEREDITOR
-
-#include <GuiTypes.h>   // for Pixel_t
-#include <Rtypes.h>     // for ClassDef
-#include <RtypesCore.h>
-#include <TGFrame.h>     // for EFrameType::kChildFrame
+#include <GuiTypes.h>    // for Pixel_t
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Int_t, Bool_t, Double_t, UInt_t
+#include <TGFrame.h>     // for kChildFrame
 #include <TGedFrame.h>   // for TGedFrame
-
-class FairEveAnimationControl;
-class TGComboBox;
-
-class FairEventManager;
-class TEveGValuator;
-class TGCheckButton;
-class TGLabel;
-class TGNumberEntry;
-class TGWindow;
-class TObject;
+class FairEveAnimationControl;  // lines 21-21
+class FairEventManager;  // lines 24-24
+class TBuffer;
+class TClass;
+class TGComboBox;  // lines 22-22
+class TGLabel;  // lines 27-27
+class TGNumberEntry;  // lines 28-28
+class TGWindow;  // lines 29-29
+class TMemberInspector;
+class TObject;  // lines 30-30
 
 class FairEventManagerEditor : public TGedFrame
 {

@@ -14,16 +14,17 @@
  *		Warsaw University of Technology, Faculty of Physics
  */
 
-#include "FairEveTracks.h"
+ #include "FairEveTracks.h"
+ #include <RtypesCore.h>            // for kFALSE, kTRUE, Bool_t, Color_t
+ #include <TEveManager.h>           // for TEveManager, gEve
+ #include <TEveTrack.h>             // for TEveTrackList
+ #include <TEveTrackPropagator.h>   // for TEveTrackPropagator
+ #include <TString.h>               // for TString
+ #include <algorithm>               // for for_each
+ #include <list>                    // for __list_iterator, operator!=
+ #include "FairEveRecoTrackList.h"  // for FairEveRecoTrackList
+ #include "FairEventManager.h"      // for FairEventManager
 
-#include "FairEveRecoTrackList.h"
-#include "FairEventManager.h"
-
-#include <RtypesCore.h>
-#include <TEveManager.h>
-#include <TEveTrackPropagator.h>
-#include <TString.h>
-#include <algorithm>
 
 FairEveTracks::FairEveTracks(Bool_t acceptCompound)
     : fEventManager(nullptr)

@@ -14,11 +14,12 @@
  *		Warsaw University of Technology, Faculty of Physics
  */
 
-#include "FairEveRecoTrackList.h"
-
-#include "FairEveTrack.h"
-
-#include <TEveElement.h>
+ #include "FairEveRecoTrackList.h"
+ #include <TEveElement.h>   // for TEveElement::List_i
+ #include <TEvePointSet.h>  // for TEvePointSet
+ #include <list>            // for operator!=, __list_iterator
+ #include "FairEveTrack.h"  // for FairEveTrack
+ class TEveTrackPropagator;
 
 FairEveRecoTrackList::FairEveRecoTrackList(TString name, TEveTrackPropagator* prop)
     : TEveTrackList(name, prop)

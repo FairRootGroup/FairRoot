@@ -16,10 +16,15 @@
 #ifndef FAIREVEGEOTRACKS_H_
 #define FAIREVEGEOTRACKS_H_
 
-#include "FairEveTracks.h"
-#include "FairTask.h"
-
-class TGeoTrack;
+#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>     // for Bool_t, Int_t, Double_t
+#include "FairEveTracks.h"  // for FairEveTracks
+#include "FairTask.h"       // for InitStatus
+class TBuffer;
+class TClass;
+class TClonesArray;
+class TGeoTrack;  // lines 22-22
+class TMemberInspector;
 
 /**
  * draw TGeoTracks

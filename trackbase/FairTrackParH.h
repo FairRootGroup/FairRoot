@@ -17,12 +17,15 @@
 #ifndef FAIRSTSTRACKPARH
 #define FAIRSTSTRACKPARH 1
 
-#include "FairTrackPar.h"   // for FairTrackPar
+#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>    // for Double_t, Int_t, Option_t
+#include <TVector3.h>      // for TVector3
+#include "FairTrackPar.h"  // for FairTrackPar
+class FairTrackParP;  // lines 25-25
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
-#include <Rtypes.h>     // for Double_t, Int_t, etc
-#include <TVector3.h>   // for TVector3
-
-class FairTrackParP;
 
 class FairTrackParH : public FairTrackPar
 {

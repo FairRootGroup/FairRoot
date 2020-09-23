@@ -16,9 +16,15 @@
 #ifndef FAIREVERECOTRACKLIST_H_
 #define FAIREVERECOTRACKLIST_H_
 
-#include "FairEveRecoTrack.h"
-
-#include <TEveTrack.h>
+#include <Rtypes.h>            // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>        // for Color_t, Style_t, Size_t, Width_t
+#include <TEveTrack.h>         // for TEveTrackList
+#include <TString.h>           // for TString
+#include "FairEveRecoTrack.h"  // for FairEveRecoTrack
+class TBuffer;
+class TClass;
+class TEveTrackPropagator;
+class TMemberInspector;
 
 class FairEveRecoTrackList : public TEveTrackList
 {

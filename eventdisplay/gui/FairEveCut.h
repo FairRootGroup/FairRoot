@@ -15,14 +15,17 @@
  */
 #ifndef FAIREVECUT_H_
 #define FAIREVECUT_H_
-
-#include <Rtypes.h>
-#include <RtypesCore.h>
-#include <TGButton.h>
-#include <TString.h>
-
-class TGedFrame;
-class TGNumberEntry;
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Bool_t, Int_t, Double_t, kTRUE
+#include <TGButton.h>    // for TGCheckButton
+#include <TObject.h>     // for TObject
+#include <TString.h>     // for TString
+class TBuffer;
+class TClass;
+class TGCompositeFrame;
+class TGNumberEntry;  // lines 25-25
+class TGedFrame;  // lines 24-24
+class TMemberInspector;
 
 /**
  * base class for graphics cuts

@@ -5,11 +5,10 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include "FairRutherfordGeoPar.h"
-
-#include "FairParamList.h"   // for FairParamList
-
-#include <TObjArray.h>   // for TObjArray
+ #include "FairRutherfordGeoPar.h"
+ #include <TGenericClassInfo.h>  // for TGenericClassInfo
+ #include <TObjArray.h>          // for TObjArray
+ #include "FairParamList.h"      // for FairParamList
 
 ClassImp(FairRutherfordGeoPar);
 

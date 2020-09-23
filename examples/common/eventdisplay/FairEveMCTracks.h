@@ -15,13 +15,18 @@
  */
 #ifndef FAIREVEMCTRACKS_H_
 #define FAIREVEMCTRACKS_H_
+#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>     // for Bool_t, Int_t
+#include "FairEveTracks.h"  // for FairEveTracks
+#include "FairTask.h"       // for InitStatus
+class FairMCTrack;  // lines 22-22
+class FairRKPropagator;  // lines 23-23
+class TBuffer;
+class TClass;
+class TClonesArray;
+class TDatabasePDG;  // lines 24-24
+class TMemberInspector;
 
-#include "FairEveTracks.h"
-#include "FairTask.h"
-
-class FairMCTrack;
-class FairRKPropagator;
-class TDatabasePDG;
 
 class FairEveMCTracks : public FairEveTracks
 {
