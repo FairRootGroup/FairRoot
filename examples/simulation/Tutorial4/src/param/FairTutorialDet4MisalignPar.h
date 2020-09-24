@@ -8,12 +8,16 @@
 #ifndef FAIRTUTORIALDET4MISSALLIGNPAR_H
 #define FAIRTUTORIALDET4MISSALLIGNPAR_H
 
-#include "FairParGenericSet.h"   // for FairParGenericSet
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <TArrayD.h>            // for TArrayD
+#include <RtypesCore.h>         // for Int_t, Bool_t
 
-#include <Rtypes.h>    // for ClassDef
-#include <TArrayD.h>   // for TArrayD
+#include "FairParGenericSet.h"  // for FairParGenericSet
 
 class FairParamList;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutorialDet4MisalignPar : public FairParGenericSet
 {

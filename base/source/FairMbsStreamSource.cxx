@@ -10,7 +10,11 @@
 
 #include "FairMbsStreamSource.h"
 
-#include "FairLogger.h"
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for LOG, Logger
+
+#include "s_filhe.h"            // for s_filhe
+#include "typedefs.h"           // for CHARS, INTS4
 
 FairMbsStreamSource::FairMbsStreamSource(TString tServerName)
     : FairMbsSource()

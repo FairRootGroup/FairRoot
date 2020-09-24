@@ -11,18 +11,18 @@
 // -------------------------------------------------------------------------
 #include "FairBoxSetDraw.h"
 
-#include "FairBoxSet.h"               // for FairBoxSet
-#include "FairEventManager.h"         // for FairEventManager
-#include "FairRootManager.h"          // for FairRootManager
-#include "FairRunAna.h"               // for FairRunAna
-#include "FairTSBufferFunctional.h"   // for StopTime
-#include "FairTimeStamp.h"            // for FairTimeStamp
+#include <TClonesArray.h>            // for TClonesArray
+#include <TEveBoxSet.h>              // for TEveBoxSet::kBT_AABoxFixedDim
+#include <TEveManager.h>             // for TEveManager, gEve
+#include <TVector3.h>                // for TVector3
+#include <TGenericClassInfo.h>       // for TGenericClassInfo
+#include <iostream>                  // for operator<<, basic_ostream, endl
 
-#include <TClonesArray.h>   // for TClonesArray
-#include <TEveBoxSet.h>
-#include <TEveManager.h>   // for TEveManager, gEve
-#include <TVector3.h>      // for TVector3
-#include <iostream>        // for operator<<, basic_ostream, etc
+#include "FairBoxSet.h"              // for FairBoxSet
+#include "FairEventManager.h"        // for FairEventManager
+#include "FairRootManager.h"         // for FairRootManager
+#include "FairRunAna.h"              // for FairRunAna
+#include "FairTSBufferFunctional.h"  // for StopTime
 
 using std::cout;
 using std::endl;

@@ -8,11 +8,16 @@
 #ifndef FAIRGEOCOMPOSITEVOLUME_H
 #define FAIRGEOCOMPOSITEVOLUME_H
 
-#include "FairGeoVolume.h"   // for FairGeoVolume
+#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>     // for Int_t
 
-#include <Rtypes.h>   // for Int_t, etc
+#include "FairGeoVolume.h"  // for FairGeoVolume
 
 class TObjArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
+
 /**
  * basic geometry of a volume with components
  * @author Ilse koenig

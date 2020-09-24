@@ -8,11 +8,15 @@
 #ifndef FAIRTUTORIALDET4STRAIGHTLINEFITTER_H
 #define FAIRTUTORIALDET4STRAIGHTLINEFITTER_H
 
-#include "FairTask.h"   // for InitStatus, FairTask
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Int_t, Bool_t, Option_t
 
-#include <Rtypes.h>   // for ClassDef
+#include "FairTask.h"    // for InitStatus, FairTask
 
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutorialDet4StraightLineFitter : public FairTask
 {

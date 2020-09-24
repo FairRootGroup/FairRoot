@@ -12,13 +12,20 @@
 #ifndef FairPrintFairLinks_H
 #define FairPrintFairLinks_H
 
-// framework includes
-#include "FairTask.h"
-#include "TObjString.h"
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Int_t, Option_t
+#include <TList.h>       // for TList
+#include <TString.h>     // for TString
+#include <map>           // for map
 
-#include <map>
+// framework includes
+#include "FairTask.h"    // for FairTask, InitStatus
+#include "TObjString.h"  // for TObjString
 
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairPrintFairLinks : public FairTask
 {

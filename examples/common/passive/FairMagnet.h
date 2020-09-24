@@ -8,10 +8,16 @@
 #ifndef MAGNET_H
 #define MAGNET_H
 
-#include "FairModule.h"   // for FairModule
-
-#include <Rtypes.h>   // for FairMagnet::Class, Bool_t, etc
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Bool_t
 #include <string>     // for string
+#include <iosfwd>        // for string
+
+#include "FairModule.h"  // for FairModule
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMagnet : public FairModule
 {

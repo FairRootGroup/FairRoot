@@ -15,14 +15,19 @@
 #ifndef FAIRTESTDETECTORDIGI_H_
 #define FAIRTESTDETECTORDIGI_H_
 
-#include "FairTimeStamp.h"   // for FairTimeStamp
-
-#include <Rtypes.h>   // for Int_t, etc
-#include <boost/serialization/base_object.hpp>
-#include <iosfwd>     // for ostream
-#include <iostream>   // for operator<<, basic_ostream, etc
+#include <Rtypes.h>                             // for THashConsistencyHolder
+#include <RtypesCore.h>                         // for Int_t, Double_t
+#include <iosfwd>                               // for stringstream, ostream
+#include <iostream>                             // for operator<<, basic_ost...
 #include <sstream>
-#include <string>
+#include <string>                               // for allocator, operator+
+
+#include "FairTimeStamp.h"                      // for FairTimeStamp
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
+
 namespace boost {
 namespace serialization {
 class access;

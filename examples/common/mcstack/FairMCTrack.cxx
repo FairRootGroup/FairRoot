@@ -11,11 +11,11 @@
 // -------------------------------------------------------------------------
 #include "FairMCTrack.h"
 
-#include "FairLogger.h"   // for FairLogger, etc
-
-#include <TDatabasePDG.h>   // for TDatabasePDG
-#include <TParticle.h>      // for TParticle
-#include <TParticlePDG.h>   // for TParticlePDG
+#include <TDatabasePDG.h>       // for TDatabasePDG
+#include <TParticle.h>          // for TParticle
+#include <TParticlePDG.h>       // for TParticlePDG
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for Logger, LOG
 
 FairMCTrack::FairMCTrack()
     : TObject()

@@ -34,12 +34,17 @@
 #ifndef FAIR_BOXGENERATOR_H
 #define FAIR_BOXGENERATOR_H
 
-#include "FairBaseMCGenerator.h"
+#include <Rtypes.h>               // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>           // for Double32_t, Bool_t, kTRUE, Int_t
+
+#include "FairBaseMCGenerator.h"  // for FairBaseMCGenerator
 #include "FairGenerator.h"   // for FairGenerator
 
-#include <Rtypes.h>   // for Double32_t, Bool_t, kTRUE, etc
-
 class FairPrimaryGenerator;
+class FairGenerator;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairBoxGenerator : public FairBaseMCGenerator
 {

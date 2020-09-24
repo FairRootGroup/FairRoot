@@ -16,13 +16,21 @@
 #ifndef FAIREVERECOTRACKSEXAMPLEEDITOR_H_
 #define FAIREVERECOTRACKSEXAMPLEEDITOR_H_
 
-#include <TGFrame.h>
-#include <TGedFrame.h>
-#include <memory>
+#include <TGFrame.h>     // for kChildFrame
+#include <TGedFrame.h>   // for TGedFrame
+#include <GuiTypes.h>    // for Pixel_t
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Int_t, UInt_t
+#include <memory>        // for unique_ptr
 
 class FairEveBoolCut;
 class FairEveMinMaxCut;
 class FairEveRecoTracksExample;
+class TBuffer;
+class TClass;
+class TGWindow;
+class TMemberInspector;
+class TObject;
 
 class FairEveRecoTracksExampleEditor : public TGedFrame
 {

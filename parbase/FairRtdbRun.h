@@ -8,13 +8,18 @@
 #ifndef FAIRRTDBRUN_H
 #define FAIRRTDBRUN_H
 
-#include <Rtypes.h>    // for Int_t, Text_t, UInt_t, etc
-#include <TNamed.h>    // for TNamed
-#include <TString.h>   // for TString
-#include <iosfwd>      // for fstream
-#include <stdio.h>     // for sprintf, sscanf
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TNamed.h>      // for TNamed
+#include <TString.h>     // for TString
+#include <stdio.h>       // for sprintf, sscanf
+#include <RtypesCore.h>  // for Int_t, Text_t, UInt_t
+#include <iosfwd>        // for fstream
 
 class TList;
+class TBuffer;
+class TClass;
+class TMemberInspector;
+
 using std::fstream;
 
 class FairParVersion : public TNamed

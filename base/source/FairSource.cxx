@@ -14,7 +14,9 @@
 
 #include "FairSource.h"
 
-#include "FairEventHeader.h"
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
+#include "FairEventHeader.h"    // for FairEventHeader
 
 FairSource::FairSource()
     : TObject()

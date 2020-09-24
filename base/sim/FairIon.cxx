@@ -10,10 +10,12 @@
 // -------------------------------------------------------------------------
 #include "FairIon.h"
 
-#include "FairLogger.h"
+#include <TDatabasePDG.h>       // for TDatabasePDG
+#include <TParticlePDG.h>       // for TParticlePDG
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for Logger, LOG
 
-#include <TDatabasePDG.h>
-#include <TParticlePDG.h>
+#include "FairLogger.h"         // for FairLogger
 
 FairIon::FairIon()
     : TNamed()

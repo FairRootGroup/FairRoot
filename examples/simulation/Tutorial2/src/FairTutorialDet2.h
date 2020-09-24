@@ -8,18 +8,22 @@
 #ifndef FAIRTUTORIALDET2_H
 #define FAIRTUTORIALDET2_H
 
-#include "FairDetector.h"
-#include "FairTutorialDet2Point.h"
+#include <Rtypes.h>                 // for THashConsistencyHolder, ClassDef
+#include <TLorentzVector.h>         // for TLorentzVector
+#include <TVector3.h>               // for TVector3
+#include <RtypesCore.h>             // for Int_t, Double32_t, Double_t, Bool_t
+#include <vector>                   // for vector
 
-#include <Rtypes.h>
-#include <TLorentzVector.h>
-#include <TVector3.h>
-#include <vector>
+#include "FairDetector.h"           // for FairDetector
+#include "FairTutorialDet2Point.h"  // for CustomClass, FairTutorialDet2Poin...
 
 class FairModule;
 class FairTutorialDet2Geo;
 class FairVolume;
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutorialDet2 : public FairDetector
 {

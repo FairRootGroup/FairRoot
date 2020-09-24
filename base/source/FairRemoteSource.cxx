@@ -12,11 +12,11 @@
 // -----------------------------------------------------------------------------
 #include "FairRemoteSource.h"
 
-#include "MRevBuffer.h"
-#include "ptrevmbsdef.h"   // MBS data definitions
+#include <unistd.h>             // for usleep
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
 
-#include <TSocket.h>
-#include <unistd.h>   // usleep
+#include "MRevBuffer.h"         // for MRevBuffer, REvent
+#include "ptrevmbsdef.h"        // for sMbsEv101
 
 FairRemoteSource::FairRemoteSource(char* node)
     : FairMbsSource()

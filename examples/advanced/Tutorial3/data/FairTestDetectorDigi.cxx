@@ -13,6 +13,9 @@
  */
 
 #include "FairTestDetectorDigi.h"
+
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 ClassImp(FairTestDetectorDigi);
 
 FairTestDetectorDigi::FairTestDetectorDigi()

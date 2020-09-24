@@ -13,11 +13,12 @@
 
 #include "FairRadGridManager.h"
 
-#include "FairMesh.h"
-#include "FairRootManager.h"
+#include <TParticle.h>          // for TParticle
+#include <TVirtualMC.h>         // for TVirtualMC
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TVirtualMCStack.h>    // for TVirtualMCStack
 
-#include <TParticle.h>
-#include <TVirtualMC.h>
+#include "FairMesh.h"           // for FairMesh
 
 ClassImp(FairRadGridManager);
 

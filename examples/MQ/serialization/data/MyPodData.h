@@ -18,6 +18,7 @@
 
 // for root types
 #include <Rtypes.h>
+#include <RtypesCore.h>                         // for Double_t, Int_t
 #include <iosfwd>
 
 namespace boost {
@@ -25,7 +26,7 @@ namespace serialization {
 class access;
 }
 }   // namespace boost
-#include <boost/serialization/base_object.hpp>
+#include <boost/serialization/base_object.hpp>  // for base_object
 
 namespace MyPodData {
 

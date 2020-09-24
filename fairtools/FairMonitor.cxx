@@ -14,28 +14,29 @@
 
 #include "FairMonitor.h"
 
-#include "FairLogger.h"
-#include "FairSystemInfo.h"
+#include <TArrow.h>             // for TArrow
+#include <TAxis.h>              // for TAxis
+#include <TBox.h>               // for TBox
+#include <TCanvas.h>            // for TCanvas
+#include <TCollection.h>        // for TIter
+#include <TFile.h>              // for TFile
+#include <TH1.h>                // for TH1F, TH1
+#include <TLatex.h>             // for TLatex
+#include <TLegend.h>            // for TLegend
+#include <TList.h>              // for TList
+#include <TMathBase.h>          // for Abs
+#include <TNamed.h>             // for TNamed
+#include <TObject.h>            // for TObject
+#include <TPaveText.h>          // for TPaveText
+#include <TROOT.h>              // for TROOT, gROOT
+#include <TStopwatch.h>         // for TStopwatch
+#include <TString.h>            // for TString, Form, operator<, operator!=
+#include <TTask.h>              // for TTask
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for Logger, LOG
+#include <utility>              // for pair
 
-#include <TArrow.h>
-#include <TAxis.h>
-#include <TBox.h>
-#include <TCanvas.h>
-#include <TCollection.h>
-#include <TFile.h>
-#include <TH1.h>
-#include <TLatex.h>
-#include <TLegend.h>
-#include <TList.h>
-#include <TMathBase.h>
-#include <TNamed.h>
-#include <TObject.h>
-#include <TPaveText.h>
-#include <TROOT.h>
-#include <TStopwatch.h>
-#include <TString.h>
-#include <TTask.h>
-#include <utility>
+#include "FairSystemInfo.h"     // for FairSystemInfo
 
 FairMonitor* FairMonitor::instance = nullptr;
 

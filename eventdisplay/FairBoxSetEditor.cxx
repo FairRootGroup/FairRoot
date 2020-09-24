@@ -7,15 +7,15 @@
  ********************************************************************************/
 #include "FairBoxSetEditor.h"
 
+#include <TGLabel.h>            // for TGLabel
+#include <TGLayout.h>           // for TGLayoutHints, kLHintsCenterY, kLHint...
+#include <TGNumberEntry.h>      // for TGNumberEntry, TGNumberEntryField
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <iostream>             // for operator<<, endl, basic_ostream, cout
+
 #include "FairEventManager.h"   // for FairEventManager
 
-#include <TGLabel.h>         // for TGLabel
-#include <TGLayout.h>        // for TGLayoutHints, etc
-#include <TGNumberEntry.h>   // for TGNumberEntry, etc
-
 class TGWindow;
-
-#include <iostream>   // for operator<<, basic_ostream, etc
 
 // FairBoxSetEditor
 //

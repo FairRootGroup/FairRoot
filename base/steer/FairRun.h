@@ -8,15 +8,18 @@
 #ifndef FAIRRUN_H
 #define FAIRRUN_H
 
-#include "FairAlignmentHandler.h"
-#include "FairRootManager.h"
-
-#include <Rtypes.h>   // for Int_t, Bool_t, etc
-#include <TMCtls.h>   // for multi-threading
-#include <TNamed.h>   // for TNamed
-#include <TString.h>
-#include <map>
+#include <Rtypes.h>                // for THashConsistencyHolder, ClassDef
+#include <TMCtls.h>                // for TMCThreadLocal
+#include <TNamed.h>                // for TNamed
+#include <TString.h>               // for TString
+#include <RtypesCore.h>            // for Bool_t, Int_t, UInt_t, kTRUE
+#include <map>                     // for map
 #include <string>
+#include <iosfwd>                  // for string
+
+#include "FairAlignmentHandler.h"  // for FairAlignmentHandler
+#include "FairRootManager.h"       // for FairRootManager
+#include "FairSink.h"              // for FairSink
 
 class FairEventHeader;
 class FairFileHeader;
@@ -26,6 +29,9 @@ class FairTask;
 class TFile;
 class FairField;
 class TGeoHMatrix;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * Configure the Simuation or Analysis

@@ -92,4 +92,6 @@
 
 #include "FairGeoVector.h"
 
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 ClassImp(FairGeoVector);

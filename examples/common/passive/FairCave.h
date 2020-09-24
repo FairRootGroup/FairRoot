@@ -8,9 +8,14 @@
 #ifndef Cave_H
 #define Cave_H
 
-#include "FairModule.h"   // for FairModule
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Double_t
 
-#include <Rtypes.h>   // for FairCave::Class, ClassDef, etc
+#include "FairModule.h"  // for FairModule
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairCave : public FairModule
 {

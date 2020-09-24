@@ -16,8 +16,13 @@
 #ifndef BASE_FAIRSYSTEMINFO_H_
 #define BASE_FAIRSYSTEMINFO_H_
 
-#include <Rtypes.h>
-#include <cstddef>
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Float_t
+#include <cstddef>       // for size_t
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairSystemInfo
 {

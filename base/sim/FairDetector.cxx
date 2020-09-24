@@ -12,20 +12,26 @@
 
 #include "FairDetector.h"
 
-#include "FairGeoNode.h"   // for FairGeoNode
-#include "FairLogger.h"    // for FairLogger, MESSAGE_ORIGIN
-#include "FairModule.h"    // for FairModule::svList, etc
-#include "FairRootManager.h"
-#include "FairVolume.h"   // for FairVolume
+#include <TFolder.h>            // for TFolder
+#include <TGeoManager.h>        // for TGeoManager, gGeoManager
+#include <TList.h>              // for TList
+#include <TObject.h>            // for TObject
+#include <TROOT.h>              // for TROOT, gROOT
+#include <TRefArray.h>          // for TRefArray
+#include <TString.h>            // for TString
+#include <TVirtualMC.h>         // for TVirtualMC, gMC
+#include <TCollection.h>        // for TIter
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGeoVolume.h>         // for TGeoVolume
+#include <TObjArray.h>          // for TObjArray
+#include <fairlogger/Logger.h>  // for LOG, Logger
+#include <iostream>             // for operator<<, endl, basic_ostream, cout
 
-#include <TFolder.h>       // for TFolder
-#include <TGeoManager.h>   // for gGeoManager
-#include <TList.h>         // for TList
-#include <TObject.h>       // for TObject
-#include <TROOT.h>         // for TROOT, gROOT
-#include <TRefArray.h>     // for TRefArray
-#include <TString.h>       // for TString
-#include <TVirtualMC.h>    // for TVirtualMC
+#include "FairGeoNode.h"        // for FairGeoNode
+#include "FairLogger.h"         // for FairLogger
+#include "FairModule.h"         // for FairModule, FairModule::svList
+#include "FairRootManager.h"    // for FairRootManager
+#include "FairVolume.h"         // for FairVolume
 
 FairDetector::FairDetector(const char* Name, Bool_t Active, Int_t DetId)
     : FairModule(Name, "FAIR Detector", Active)

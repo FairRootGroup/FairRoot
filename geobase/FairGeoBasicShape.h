@@ -8,13 +8,18 @@
 #ifndef FAIRGEOBASICSHAPE_H
 #define FAIRGEOBASICSHAPE_H
 
-#include <Rtypes.h>   // for Int_t, etc
-#include <TNamed.h>   // for TNamed
-#include <iosfwd>     // for fstream
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TNamed.h>      // for TNamed
+#include <RtypesCore.h>  // for Int_t, Bool_t
+#include <iosfwd>        // for fstream
 
 class FairGeoTransform;
 class FairGeoVolume;
 class TArrayD;
+class TBuffer;
+class TClass;
+class TMemberInspector;
+
 /**
  * base class for all shapes
  * @author Ilse koenig

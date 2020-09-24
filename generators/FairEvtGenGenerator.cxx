@@ -11,12 +11,13 @@
 // -------------------------------------------------------------------------
 #include "FairEvtGenGenerator.h"
 
-#include "FairLogger.h"
-#include "FairPrimaryGenerator.h"   // for FairPrimaryGenerator
+#include <TF1.h>                   // for TF1
+#include <TRandom.h>               // for TRandom, gRandom
+#include <TGenericClassInfo.h>     // for TGenericClassInfo
+#include <fairlogger/Logger.h>     // for LOG, Logger
+#include <algorithm>               // for max
 
-#include <TF1.h>       // for TF1
-#include <TRandom.h>   // for TRandom, gRandom
-#include <algorithm>   // max
+#include "FairPrimaryGenerator.h"  // for FairPrimaryGenerator
 
 FairEvtGenGenerator::FairEvtGenGenerator()
     : FairGenerator()

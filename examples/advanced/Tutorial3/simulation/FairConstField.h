@@ -15,11 +15,15 @@
 #ifndef FairConstFIELD_H
 #define FairConstFIELD_H 1
 
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Double_t, Option_t
+
 #include "FairField.h"   // for FairField
 
-#include <Rtypes.h>   // for Double_t, etc
-
 class FairConstPar;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairConstField : public FairField
 {

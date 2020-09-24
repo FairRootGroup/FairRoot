@@ -11,20 +11,21 @@
 // -------------------------------------------------------------------------
 #include "FairUrqmdGenerator.h"
 
-#include "FairLogger.h"             // for logging
-#include "FairMCEventHeader.h"      // for FairMCEventHeader
-#include "FairPrimaryGenerator.h"   // for FairPrimaryGenerator
+#include <TDatabasePDG.h>          // for TDatabasePDG
+#include <TLorentzVector.h>        // for TLorentzVector
+#include <TMath.h>                 // for Sqrt
+#include <TParticlePDG.h>          // for TParticlePDG
+#include <TString.h>               // for TString, operator+, operator<<
+#include <TVector3.h>              // for TVector3
+#include <TGenericClassInfo.h>     // for TGenericClassInfo
+#include <fairlogger/Logger.h>     // for LOG, Logger
+#include <climits>                 // for INT_MAX
+#include <cmath>                   // for sqrt
+#include <cstdlib>                 // for getenv
+#include <fstream>                 // for ifstream, basic_istream
 
-#include <TDatabasePDG.h>     // for TDatabasePDG
-#include <TLorentzVector.h>   // for TLorentzVector
-#include <TMath.h>            // for Sqrt, sqrt
-#include <TParticlePDG.h>     // for TParticlePDG
-#include <TString.h>          // for TString, operator+
-#include <TVector3.h>         // for TVector3
-#include <climits>            // for INT_MAX
-#include <cmath>              // sqrt
-#include <cstdlib>            // for getenv
-#include <fstream>            // IWYU pragma: keep for ifstream
+#include "FairMCEventHeader.h"     // for FairMCEventHeader
+#include "FairPrimaryGenerator.h"  // for FairPrimaryGenerator
 
 FairUrqmdGenerator::FairUrqmdGenerator()
     : FairGenerator()

@@ -8,13 +8,17 @@
 #ifndef FAIRRUNINFO_H
 #define FAIRRUNINFO_H
 
-#include <Rtypes.h>       // for Double_t, Long_t, etc
-#include <TObject.h>      // for TObject
-#include <TSystem.h>      // for CpuInfo_t, MemInfo_t, etc
-#include <TTimeStamp.h>   // for TTimeStamp
-#include <vector>         // for vector
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TObject.h>     // for TObject
+#include <TSystem.h>     // for CpuInfo_t, MemInfo_t, ProcInfo_t
+#include <TTimeStamp.h>  // for TTimeStamp
+#include <RtypesCore.h>  // for Double_t, Long_t
+#include <vector>        // for vector
 
 class TList;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairRunInfo : public TObject
 {

@@ -7,24 +7,23 @@
  ********************************************************************************/
 #include "Pixel.h"
 
-#include "FairDetectorList.h"   // for DetectorId::kTutDet
-#include "FairLogger.h"         // for logging
+#include <TClonesArray.h>       // for TClonesArray
+#include <TString.h>            // for TString
+#include <TVirtualMC.h>         // for TVirtualMC
+#include <TVirtualMCStack.h>    // for TVirtualMCStack
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <iostream>             // for operator<<, endl, basic_ostream, cout
+
+#include "FairDetectorList.h"   // for kPixel
 #include "FairRootManager.h"    // for FairRootManager
 #include "FairRunSim.h"         // for FairRunSim
 #include "FairStack.h"          // for FairStack
 #include "FairVolume.h"         // for FairVolume
-#include "PixelGeo.h"
-#include "PixelGeoPar.h"
-#include "PixelPoint.h"
+#include "PixelGeo.h"           // for PixelGeo
+#include "PixelGeoPar.h"        // for PixelGeoPar
+#include "PixelPoint.h"         // for PixelPoint
 
-#include <TClonesArray.h>   // for TClonesArray
-#include <TGeoManager.h>
-#include <TGeoMatrix.h>
-#include <TGeoPhysicalNode.h>
-#include <TString.h>           // for TString
-#include <TVirtualMC.h>        // for TVirtualMC
-#include <TVirtualMCStack.h>   // for TVirtualMCStack
-#include <iostream>
+class FairModule;
 
 using std::cout;
 using std::endl;

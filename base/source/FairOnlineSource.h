@@ -16,11 +16,16 @@
 #ifndef FAIRONLINESOURCE_H
 #define FAIRONLINESOURCE_H
 
-#include "FairSource.h"
-#include "FairUnpack.h"
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TObjArray.h>   // for TObjArray
+#include <RtypesCore.h>  // for Bool_t, Int_t, UInt_t
 
-#include <Rtypes.h>
-#include <TObjArray.h>
+#include "FairSource.h"  // for FairSource, Source_Type, kONLINE
+#include "FairUnpack.h"  // for FairUnpack
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairOnlineSource : public FairSource
 {

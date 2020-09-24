@@ -8,9 +8,15 @@
 #ifndef FAIRTUTORIALDET2GEO_H
 #define FAIRTUTORIALDET2GEO_H
 
-#include "FairGeoSet.h"
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Int_t
+#include <TString.h>     // for TString
 
-#include <Rtypes.h>
+#include "FairGeoSet.h"  // for FairGeoSet
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutorialDet2Geo : public FairGeoSet
 {

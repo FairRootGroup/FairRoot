@@ -24,15 +24,19 @@
 #ifndef FAIRTUTORIALDET4HITPRODUCERIDEALMISSALLIGN_H
 #define FAIRTUTORIALDET4HITPRODUCERIDEALMISSALLIGN_H 1
 
-#include "FairTask.h"   // for InitStatus, FairTask
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TArrayD.h>     // for TArrayD
+#include <RtypesCore.h>  // for Bool_t, Double_t, Option_t
 
-#include <Rtypes.h>    // for Bool_t, Double_t, etc
-#include <TArrayD.h>   // for TArrayD
+#include "FairTask.h"    // for InitStatus, FairTask
 
 class FairTutorialDet4MisalignPar;
 class FairTutorialDet4GeoPar;
 class FairTutorialDet4GeoHandler;
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutorialDet4HitProducerIdealMisalign : public FairTask
 {

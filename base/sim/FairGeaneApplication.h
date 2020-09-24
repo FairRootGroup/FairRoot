@@ -13,11 +13,15 @@
 #ifndef FAIR_GEANE_APPLICATION_H
 #define FAIR_GEANE_APPLICATION_H
 
-#include <Rtypes.h>                  // for Bool_t, etc
-#include <TLorentzVector.h>          // for TLorentzVector
-#include <TVirtualMCApplication.h>   // for TVirtualMCApplication
+#include <Rtypes.h>                 // for THashConsistencyHolder, ClassDef
+#include <TLorentzVector.h>         // for TLorentzVector
+#include <TVirtualMCApplication.h>  // for TVirtualMCApplication
+#include <RtypesCore.h>             // for Bool_t, Int_t
 
 class FairField;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * The Main Application for GEANE

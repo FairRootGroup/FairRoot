@@ -14,12 +14,17 @@
 #ifndef FAIRREMOTESOURCE_H
 #define FAIRREMOTESOURCE_H
 
-#include "FairMbsSource.h"
+#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>     // for Bool_t, Int_t, UInt_t
+
+#include "FairMbsSource.h"  // for FairMbsSource
 
 class MRevBuffer;
 class REvent;
-
 class TSocket;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairRemoteSource : public FairMbsSource
 {

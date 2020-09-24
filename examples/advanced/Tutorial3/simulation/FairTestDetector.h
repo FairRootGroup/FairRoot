@@ -8,15 +8,19 @@
 #ifndef FAIRTESTDETECTOR_H_
 #define FAIRTESTDETECTOR_H_
 
-#include "FairDetector.h"
+#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
+#include <TLorentzVector.h>  // for TLorentzVector
+#include <TVector3.h>        // for TVector3
+#include <RtypesCore.h>      // for Int_t, Double32_t, Double_t, Bool_t
 
-#include <Rtypes.h>           // for Int_t, Double32_t, Double_t, etc
-#include <TLorentzVector.h>   // for TLorentzVector
-#include <TVector3.h>         // for TVector3
+#include "FairDetector.h"    // for FairDetector
 
 class FairTestDetectorPoint;
 class FairVolume;
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTestDetector : public FairDetector
 {

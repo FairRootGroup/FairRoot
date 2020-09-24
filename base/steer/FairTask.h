@@ -21,14 +21,18 @@
 #ifndef FAIRTASK_H
 #define FAIRTASK_H
 
-#include "FairRootManager.h"   // for FairRootManager
+#include <Rtypes.h>           // for THashConsistencyHolder, ClassDef
+#include <TString.h>          // for TString
+#include <TTask.h>            // for TTask
+#include <RtypesCore.h>       // for Bool_t, Int_t, Option_t, kTRUE
+#include <map>                // for map
 
-#include <Rtypes.h>    // for Int_t, FairTask::Class, etc
-#include <TString.h>   // for TString
-#include <TTask.h>     // for TTask
-#include <map>
+#include "FairRootManager.h"  // for FairRootManager
 
 class FairLogger;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 enum InitStatus
 {

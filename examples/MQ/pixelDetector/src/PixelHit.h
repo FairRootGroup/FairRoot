@@ -15,18 +15,22 @@
 #ifndef PIXELHIT_H_
 #define PIXELHIT_H_
 
-#include "FairHit.h"   // for FairHit
+#include <Rtypes.h>                             // for THashConsistencyHolder
+#include <RtypesCore.h>                         // for Int_t
 
-#include <Rtypes.h>   // for PixelHit::Class, ClassDef, PixelHit::Streamer
+#include "FairHit.h"                            // for FairHit
 
 class TVector3;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 namespace boost {
 namespace serialization {
 class access;
 }
 }   // namespace boost
-#include <boost/serialization/base_object.hpp>
+#include <boost/serialization/base_object.hpp>  // for base_object
 
 class PixelHit : public FairHit
 {

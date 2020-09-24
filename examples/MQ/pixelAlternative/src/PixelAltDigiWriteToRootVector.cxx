@@ -14,17 +14,16 @@
 
 #include "PixelAltDigiWriteToRootVector.h"
 
-// Includes from base
-#include "FairLogger.h"
-#include "FairRootManager.h"
+#include <TClonesArray.h>       // for TClonesArray
+#include <TFile.h>              // for TFile
+#include <TTree.h>              // for TTree
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for Logger, LOG
 
+#include "FairRootManager.h"    // for FairRootManager
 // Includes from ROOT
-#include "PixelDigi.h"
-#include "PixelPayload.h"
-
-#include <TClonesArray.h>
-#include <TFile.h>
-#include <TTree.h>
+#include "PixelDigi.h"          // for PixelDigi
+#include "PixelPayload.h"       // for Digi, EventHeader
 
 PixelAltDigiWriteToRootVector::PixelAltDigiWriteToRootVector()
     : PixelAltDigiWriteToRootVector("Pixel DigiWriter", 0)

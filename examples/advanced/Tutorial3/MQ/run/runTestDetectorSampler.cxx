@@ -6,9 +6,29 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "FairMQSampler.h"
-#include "FairTestDetectorDigiLoader.h"
-#include "runFairMQDevice.h"
+#include <fairlogger/Logger.h>                              // for LOG
+#include <stdlib.h>                                         // for exit, EXI...
+#include <exception>                                        // for exception
+#include <iosfwd>                                           // for string
+#include <string>                                           // for basic_string
+
+#include "FairMQSampler.h"                                  // for FairMQSam...
+#include "FairTestDetectorDigiLoader.h"                     // for FairTestD...
+#include "runFairMQDevice.h"                                // for FairMQDev...
+#include "BoostSerializer.h"                                // for has_Boost...
+#include "FairTestDetectorDigi.h"                           // for FairTestD...
+
+class TMessage;
+namespace TestDetectorFlat {
+struct DigiPayload;
+}  // namespace TestDetectorFlat
+namespace TestDetectorPayload {
+class Digi;
+}  // namespace TestDetectorPayload
+namespace TestDetectorProto {
+class DigiPayload;
+}  // namespace TestDetectorProto
+struct MsgPack;
 
 namespace bpo = boost::program_options;
 

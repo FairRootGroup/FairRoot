@@ -7,8 +7,16 @@
  ********************************************************************************/
 #include "FairTutorialDet4.h"
 
-#include "FairDetectorList.h"             // for DetectorId::kTutDet
-#include "FairLogger.h"                   // for FairLogger, etc
+#include <TGeoMatrix.h>                   // for TGeoHMatrix, TGeoCombiTrans
+#include <TString.h>                      // for TString, operator<<
+#include <TVirtualMC.h>                   // for TVirtualMC
+#include <TVirtualMCStack.h>              // for TVirtualMCStack
+#include <TClonesArray.h>                 // for TClonesArray
+#include <TGenericClassInfo.h>            // for TGenericClassInfo
+#include <fairlogger/Logger.h>            // for LOG, Logger, LOG_IF
+#include <string>                         // for operator<
+
+#include "FairDetectorList.h"             // for kTutDet
 #include "FairModule.h"                   // for FairModule
 #include "FairRootManager.h"              // for FairRootManager
 #include "FairRun.h"                      // for FairRun
@@ -17,13 +25,8 @@
 #include "FairTutorialDet4Geo.h"          // for FairTutorialDet4Geo
 #include "FairTutorialDet4GeoHandler.h"   // for FairTutorialDet4GeoHandler
 #include "FairTutorialDet4GeoPar.h"       // for FairTutorialDet4GeoPar
-#include "FairTutorialDet4MisalignPar.h"
-#include "FairTutorialDet4Point.h"   // for FairTutorialDet4Point
-
-#include <TGeoMatrix.h>        // for TGeoHMatrix, TGeoCombiTrans, etc
-#include <TString.h>           // for TString, operator<<, Form
-#include <TVirtualMC.h>        // for TVirtualMC
-#include <TVirtualMCStack.h>   // for TVirtualMCStack
+#include "FairTutorialDet4MisalignPar.h"  // for FairTutorialDet4MisalignPar
+#include "FairTutorialDet4Point.h"        // for FairTutorialDet4Point
 
 FairTutorialDet4Geo* FairTutorialDet4::fgGeo;   //!
 

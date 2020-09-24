@@ -16,32 +16,27 @@
 
 #include "FairEveRecoTracksExample.h"
 
-#include "FairEveRecoTrack.h"
-#include "FairEveTrack.h"
-#include "FairField.h"
-#include "FairHit.h"
-#include "FairMCTrack.h"
-#include "FairRKPropagator.h"
-#include "FairRootManager.h"
-#include "FairRunAna.h"
-#include "FairTrackPar.h"
-#include "FairTrackParP.h"
-#include "FairTutPropHit.h"
-#include "FairTutPropTrack.h"
+#include <TClonesArray.h>       // for TClonesArray
+#include <TDatabasePDG.h>       // for TDatabasePDG
+#include <TEveManager.h>        // for TEveManager, gEve
+#include <TEveTrack.h>          // for TEveTrackList
+#include <TMath.h>              // for Sqrt
+#include <TParticle.h>          // for TParticle
+#include <TString.h>            // for TString, Form
+#include <TVector3.h>           // for TVector3
+#include <fairlogger/Logger.h>  // for LOG
+#include <utility>              // for pair
 
-#include <TClonesArray.h>
-#include <TDatabasePDG.h>
-#include <TEveCompound.h>
-#include <TEveElement.h>
-#include <TEveManager.h>
-#include <TEveTrack.h>
-#include <TEveTrackPropagator.h>
-#include <TMath.h>
-#include <TObjArray.h>
-#include <TParticle.h>
-#include <TString.h>
-#include <TVector3.h>
-#include <utility>
+#include "FairEveRecoTrack.h"   // for FairEveRecoTrack
+#include "FairEveTrack.h"       // for FairEveTrack
+#include "FairField.h"          // for FairField
+#include "FairMCTrack.h"        // for FairMCTrack
+#include "FairRKPropagator.h"   // for FairRKPropagator
+#include "FairRootManager.h"    // for FairRootManager
+#include "FairRunAna.h"         // for FairRunAna
+#include "FairTrackParP.h"      // for FairTrackParP
+#include "FairTutPropHit.h"     // for FairTutPropHit
+#include "FairTutPropTrack.h"   // for FairTutPropTrack
 
 FairEveRecoTracksExample::FairEveRecoTracksExample()
     : FairEveTracks(kTRUE)

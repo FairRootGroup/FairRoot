@@ -9,8 +9,13 @@
 #ifndef FAIRMBSRAWITEM_H
 #define FAIRMBSRAWITEM_H
 
-#include <Rtypes.h>
-#include <TObject.h>
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TObject.h>     // for TObject
+#include <RtypesCore.h>  // for UShort_t
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * An example class for raw data object of a detector.

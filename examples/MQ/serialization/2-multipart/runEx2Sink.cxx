@@ -5,9 +5,8 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-
-#include "Ex2Sink.h"
-#include "runFairMQDevice.h"
+#include "Ex2Sink.h"                                        // for Ex2Sink
+#include "runFairMQDevice.h"                                // for FairMQDev...
 
 namespace bpo = boost::program_options;
 

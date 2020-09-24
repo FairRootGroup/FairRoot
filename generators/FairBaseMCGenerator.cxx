@@ -8,11 +8,10 @@
  */
 #include "FairBaseMCGenerator.h"
 
-#include "FairLogger.h"
-
-#include <TDatabasePDG.h>
-#include <TParticlePDG.h>
-#include <TRandom.h>
+#include <TDatabasePDG.h>       // for TDatabasePDG
+#include <TParticlePDG.h>       // for TParticlePDG
+#include <TRandom.h>            // for TRandom, gRandom
+#include <fairlogger/Logger.h>  // for Logger, LOG
 
 FairBaseMCGenerator::FairBaseMCGenerator()
     : FairGenerator()

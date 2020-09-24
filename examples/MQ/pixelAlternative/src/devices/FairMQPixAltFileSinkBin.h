@@ -15,9 +15,11 @@
 #ifndef FAIRMQPIXALTFILESINKBIN_H_
 #define FAIRMQPIXALTFILESINKBIN_H_
 
-#include <FairMQDevice.h>
-#include <fstream>
+#include <FairMQDevice.h>  // for FairMQDevice
+#include <fstream>         // for string, ofstream
 #include <string>
+
+class FairMQParts;
 
 class FairMQPixAltFileSinkBin : public FairMQDevice
 {

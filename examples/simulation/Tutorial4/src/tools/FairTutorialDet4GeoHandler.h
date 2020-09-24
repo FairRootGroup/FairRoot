@@ -20,13 +20,17 @@
 #ifndef FAIRTUTORIALDET4GEOHANDLER_H
 #define FAIRTUTORIALDET4GEOHANDLER_H 1
 
-#include <Rtypes.h>    // for Int_t, Double_t, Bool_t, etc
-#include <TObject.h>   // for TObject
-#include <TString.h>   // for TString
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TObject.h>     // for TObject
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Int_t, Double_t, Bool_t, kFALSE, Text_t, UInt_t
 
 class TGeoBBox;
 class TGeoVolume;
 class TGeoHMatrix;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutorialDet4GeoHandler : public TObject
 {

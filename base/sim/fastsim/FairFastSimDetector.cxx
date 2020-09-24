@@ -7,14 +7,16 @@
  ********************************************************************************/
 #include "FairFastSimDetector.h"
 
-#include "FairGeoBuilder.h"
+// #include <TGeoMedium.h>
+#include <TGeoManager.h>        // for TGeoManager, gGeoManager
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TList.h>              // for TList
+
+#include "FairGeoBuilder.h"     // for FairGeoBuilder
 #include "FairGeoInterface.h"   // for FairGeoInterface
 #include "FairGeoLoader.h"      // for FairGeoLoader
-#include "FairGeoMedia.h"
-#include "FairGeoMedium.h"   // for FairGeoMedium
-
-// #include <TGeoMedium.h>
-#include <TGeoManager.h>   // gGeoManager
+#include "FairGeoMedia.h"       // for FairGeoMedia
+#include "FairGeoMedium.h"      // for FairGeoMedium
 
 FairFastSimDetector::FairFastSimDetector()
     : FairDetector("FastSimulation", kTRUE)

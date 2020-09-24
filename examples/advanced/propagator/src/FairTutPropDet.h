@@ -8,13 +8,20 @@
 #ifndef FAIRTUTPROPDET_H
 #define FAIRTUTPROPDET_H
 
-#include "FairDetector.h"     // for FairDetector
-#include "Rtypes.h"           // for Int_t, Double32_t, Double_t, etc
-#include "TLorentzVector.h"   // for TLorentzVector
-#include "TVector3.h"         // for TVector3
+#include <RtypesCore.h>      // for Int_t, Double32_t, Double_t, Bool_t
+#include <iosfwd>            // for string
+
+#include "FairDetector.h"    // for FairDetector
+#include "Rtypes.h"          // for THashConsistencyHolder, ClassDef
+#include "TLorentzVector.h"  // for TLorentzVector
+#include "TVector3.h"        // for TVector3
+
 class FairTutPropPoint;
 class FairVolume;
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutPropDet : public FairDetector
 {

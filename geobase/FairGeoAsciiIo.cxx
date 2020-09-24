@@ -16,15 +16,16 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "FairGeoAsciiIo.h"
 
+#include <stdio.h>              // for sscanf
+#include <string.h>             // for strcmp, strlen, strtok
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fstream>              // for operator<<, endl, basic_ostream, basi...
+#include <iostream>             // for cout
+
 #include "FairGeoInterface.h"   // for FairGeoInterface
 #include "FairGeoIo.h"          // for FairGeoIo
 #include "FairGeoMedia.h"       // for FairGeoMedia
 #include "FairGeoSet.h"         // for FairGeoSet
-
-#include <fstream>    // for fstream
-#include <iostream>   // for cout
-#include <stdio.h>    // for sscanf
-#include <string.h>   // for strcmp, strlen, strtok, etc
 
 using std::cout;
 using std::endl;

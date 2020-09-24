@@ -8,12 +8,15 @@
 #ifndef PIXELCONTFACT_H
 #define PIXELCONTFACT_H
 
-#include "FairContFact.h"
-#include "FairContFact.h"   // for FairContFact, FairContainer (ptr only)
+#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
 
-#include <Rtypes.h>   // for PixelContFact::Class, ClassDef, PixelContF...
+#include "FairContFact.h"  // for FairContFact, FairContainer (ptr only)
+#include "FairContFact.h"  // for FairContFact, FairContainer (ptr only)
 
 class FairParSet;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class PixelContFact : public FairContFact
 {

@@ -21,10 +21,14 @@
 #ifndef FAIRION_H
 #define FAIRION_H
 
-#include <Rtypes.h>   // for Int_t, Double_t, etc
-#include <TNamed.h>   // for TNamed
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TNamed.h>      // for TNamed
+#include <RtypesCore.h>  // for Int_t, Double_t
 
 class FairLogger;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairIon : public TNamed
 {

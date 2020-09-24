@@ -15,6 +15,9 @@
 
 #include "MyHit.h"
 
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TVector3.h>           // for TVector3
+
 MyHit::MyHit()
     : FairHit()
 {}

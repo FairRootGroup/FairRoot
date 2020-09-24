@@ -13,7 +13,13 @@
 #ifndef FAIRRECOEVENTHEADER_H
 #define FAIRRECOEVENTHEADER_H
 
-#include <TNamed.h>
+#include <TNamed.h>      // for TNamed
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Double_t, Int_t, UInt_t
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  *  Event Header Class

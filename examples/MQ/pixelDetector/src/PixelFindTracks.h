@@ -15,14 +15,18 @@
 #ifndef PIXELFINDTRACKS_H
 #define PIXELFINDTRACKS_H 1
 
-#include "FairTask.h"
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Int_t, Option_t
 
-#include <Rtypes.h>
+#include "FairTask.h"    // for InitStatus, FairTask
 
 class TClonesArray;
 class TH2F;
 class TList;
 class PixelDigiPar;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class PixelFindTracks : public FairTask
 {

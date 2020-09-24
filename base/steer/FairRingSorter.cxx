@@ -13,7 +13,9 @@
 
 #include "FairRingSorter.h"
 
-#include "FairTimeStamp.h"   // for FairTimeStamp
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
+#include "FairTimeStamp.h"      // for FairTimeStamp
 
 FairTimeStamp* FairRingSorter::CreateElement(FairTimeStamp* data) { return static_cast<FairTimeStamp*>(data->Clone()); }
 

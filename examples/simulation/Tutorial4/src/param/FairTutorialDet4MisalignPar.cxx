@@ -7,7 +7,9 @@
  ********************************************************************************/
 #include "FairTutorialDet4MisalignPar.h"
 
-#include "FairParamList.h"
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
+#include "FairParamList.h"      // for FairParamList
 
 ClassImp(FairTutorialDet4MisalignPar);
 

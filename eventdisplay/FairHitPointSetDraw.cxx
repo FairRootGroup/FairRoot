@@ -14,10 +14,11 @@
 
 #include "FairHitPointSetDraw.h"
 
-#include "FairHit.h"   // for FairHit
+#include <TVector3.h>           // for TVector3
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <iostream>             // for operator<<, basic_ostream, endl, cout
 
-#include <TVector3.h>   // for TVector3
-#include <iostream>     // for operator<<, basic_ostream, etc
+#include "FairHit.h"            // for FairHit
 
 using std::cout;
 using std::endl;

@@ -25,11 +25,12 @@
 ///////////////////////////////////////////////////////////////////
 #include "FairRtdbRun.h"
 
-#include <TCollection.h>   // for TIter
-#include <TList.h>         // for TList
-#include <fstream>         // for fstream
-#include <iomanip>         // for setw, operator<<
-#include <iostream>        // for cout
+#include <TCollection.h>        // for TIter
+#include <TList.h>              // for TList
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <iomanip>              // for operator<<, setw
+#include <iostream>             // for operator<<, basic_ostream, char_traits
+#include <fstream>
 
 using std::cout;
 using std::ios;

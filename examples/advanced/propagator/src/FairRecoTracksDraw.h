@@ -16,10 +16,16 @@
 #ifndef FAIRRECOTRACKSDRAW_H_
 #define FAIRRECOTRACKSDRAW_H_
 
-#include "FairTask.h"
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Option_t
+
+#include "FairTask.h"    // for FairTask, InitStatus
 
 class FairEventManager;
 class FairEveRecoTracksExample;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairRecoTracksDraw : public FairTask
 {

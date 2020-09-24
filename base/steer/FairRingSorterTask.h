@@ -13,14 +13,18 @@
 #ifndef FairRingSorterTask_H
 #define FairRingSorterTask_H
 
-#include "FairRingSorter.h"   // for FairRingSorter
-#include "FairTask.h"         // for FairTask, InitStatus
+#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
+#include <TString.h>         // for TString
+#include <RtypesCore.h>      // for Bool_t, Int_t, kTRUE, Double_t, kFALSE
 
-#include <Rtypes.h>    // for Bool_t, Int_t, kTRUE, etc
-#include <TString.h>   // for TString
+#include "FairRingSorter.h"  // for FairRingSorter
+#include "FairTask.h"        // for FairTask, InitStatus
 
 class FairTimeStamp;
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairRingSorterTask : public FairTask
 {

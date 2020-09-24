@@ -7,33 +7,25 @@
  ********************************************************************************/
 #include "FairTutPropDet.h"
 
-#include "FairDetectorList.h"   // for DetectorId::kTutDet
-#include "FairGeoInterface.h"   // for FairGeoInterface
-#include "FairGeoLoader.h"      // for FairGeoLoader
-#include "FairGeoNode.h"        // for FairGeoNode
-#include "FairGeoVolume.h"      // for FairGeoVolume
-#include "FairLogger.h"         // for logging
-#include "FairRootManager.h"    // for FairRootManager
-#include "FairRun.h"            // for FairRun
-#include "FairRuntimeDb.h"      // for FairRuntimeDb
-#include "FairStack.h"          // for FairStack
-#include "FairTutPropGeo.h"
-#include "FairTutPropGeoPar.h"
-#include "FairTutPropPoint.h"
-#include "FairVolume.h"     // for FairVolume
-#include "TClonesArray.h"   // for TClonesArray
-#include "TGeoManager.h"
-#include "TGeoMatrix.h"
-#include "TGeoPhysicalNode.h"
-#include "TList.h"             // for TListIter, TList (ptr only)
-#include "TObjArray.h"         // for TObjArray
-#include "TString.h"           // for TString
-#include "TVirtualMC.h"        // for TVirtualMC
-#include "TVirtualMCStack.h"   // for TVirtualMCStack
+#include <stddef.h>             // for NULL
+#include <Rtypes.h>             // for ClassImp
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TLorentzVector.h>     // for TLorentzVector
+#include <TVector3.h>           // for TVector3
+#include <iostream>             // for cout, endl, string
 
-#include <iosfwd>   // for ostream
-#include <iostream>
-#include <stddef.h>   // for NULL
+#include "FairDetectorList.h"   // for kTutProp
+#include "FairRootManager.h"    // for FairRootManager
+#include "FairStack.h"          // for FairStack
+#include "FairTutPropGeo.h"     // for FairTutPropGeo
+#include "FairTutPropGeoPar.h"  // for FairTutPropGeoPar
+#include "FairTutPropPoint.h"   // for FairTutPropPoint
+#include "FairVolume.h"         // for FairVolume
+#include "TClonesArray.h"       // for TClonesArray
+#include "TString.h"            // for TString
+#include "TVirtualMC.h"         // for TVirtualMC
+#include "TVirtualMCStack.h"    // for TVirtualMCStack
+
 using std::cout;
 using std::endl;
 

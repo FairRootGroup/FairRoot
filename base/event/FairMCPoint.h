@@ -13,10 +13,15 @@
 #ifndef FAIRMCPOINT_H
 #define FAIRMCPOINT_H
 
-#include "FairMultiLinkedData_Interface.h"   // for FairMultiLinkedData
+#include <Rtypes.h>                         // for THashConsistencyHolder
+#include <TVector3.h>                       // for TVector3
+#include <RtypesCore.h>                     // for Double_t, Double32_t, Int_t
 
-#include <Rtypes.h>     // for Double_t, Double32_t, Int_t, etc
-#include <TVector3.h>   // for TVector3
+#include "FairMultiLinkedData_Interface.h"  // for FairMultiLinkedData_Inter...
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 namespace boost {
 namespace serialization {

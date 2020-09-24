@@ -8,12 +8,16 @@
 #ifndef FAIRGEOIO_H
 #define FAIRGEOIO_H
 
-#include <Rtypes.h>    // for Bool_t, FairGeoIo::Class, etc
-#include <TObject.h>   // for TObject
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TObject.h>     // for TObject
+#include <RtypesCore.h>  // for Bool_t, Text_t
 
 class FairGeoMedia;
 class FairGeoSet;
 class FairGeoInterface;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * Abstract base class for geometry I/O

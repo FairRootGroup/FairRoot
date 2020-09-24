@@ -9,10 +9,18 @@
 #ifndef FAIRTUTPROPTRACK_H_
 #define FAIRTUTPROPTRACK_H_
 
-#include "TObject.h"
-#include "FairTrackParP.h"
-#include "TObject.h"
+#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
+#include <utility>          // for pair
+#include <vector>           // for vector
+
+#include "TObject.h"        // for TObject
+#include "FairTrackParP.h"  // for FairTrackParP
+#include "TObject.h"        // for TObject
 #include "TRef.h"
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutPropTrack : public TObject
 {

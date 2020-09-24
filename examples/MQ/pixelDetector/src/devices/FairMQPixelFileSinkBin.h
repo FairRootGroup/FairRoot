@@ -15,14 +15,16 @@
 #ifndef FAIRMQPIXELFILESINKBIN_H_
 #define FAIRMQPIXELFILESINKBIN_H_
 
-#include <FairMQDevice.h>
+#include <FairMQDevice.h>  // for FairMQDevice
 #include <string>
-#include <vector>
+#include <vector>          // for vector
+#include <iosfwd>          // for string
 
 class TFile;
 class TFolder;
 class TObject;
 class TTree;
+class FairMQParts;
 
 class FairMQPixelFileSinkBin : public FairMQDevice
 {

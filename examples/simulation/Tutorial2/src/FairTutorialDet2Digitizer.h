@@ -13,14 +13,18 @@
 #ifndef FAIRTUTORIALDET2DIGITIZER_H
 #define FAIRTUTORIALDET2DIGITIZER_H
 
-#include "FairTask.h"
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Option_t
+#include <vector>        // for vector
 
-#include <Rtypes.h>
-#include <vector>
+#include "FairTask.h"    // for InitStatus, FairTask
 
 class TClonesArray;
 class FairTutorialDet2DigiPar;
 class CustomClass;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutorialDet2Digitizer : public FairTask
 {

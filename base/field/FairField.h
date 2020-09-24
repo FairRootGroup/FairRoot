@@ -28,10 +28,16 @@
 #ifndef FAIRFIELD_H
 #define FAIRFIELD_H 1
 
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <TVirtualMagField.h>   // for TVirtualMagField
+#include <RtypesCore.h>         // for Double_t, Bool_t, Int_t, Option_t
+#include <fairlogger/Logger.h>  // for LOG
+
 #include "FairLogger.h"
 
-#include <Rtypes.h>   // for Double_t, Bool_t, etc
-#include <TVirtualMagField.h>
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairField : public TVirtualMagField
 {

@@ -8,16 +8,22 @@
 #ifndef FairMultiLinkedData_Interface_H_
 #define FairMultiLinkedData_Interface_H_
 
-#include "FairLink.h"   // for FairLink
-#include "FairMultiLinkedData.h"
+#include <Rtypes.h>               // for THashConsistencyHolder, ClassDef
+#include <TObject.h>              // for TObject
+#include <TString.h>              // for TString
+#include <RtypesCore.h>           // for Int_t, Bool_t, kTRUE, kFALSE, Float_t
+#include <iostream>               // for ostream, cout
+#include <memory>                 // for unique_ptr
+#include <set>                    // for set
+#include <vector>                 // for vector
+#include <type_traits>            // for move
 
-#include <Rtypes.h>    // for Int_t, Bool_t, kFALSE, etc
-#include <TObject.h>   // for TObject
-#include <TString.h>   // for TString
-#include <iostream>    // for operator<<, ostream, cout
-#include <memory>      // for std::unique_ptr
-#include <set>         // for set
-#include <vector>      // for vector
+#include "FairLink.h"             // for FairLink
+#include "FairMultiLinkedData.h"  // for FairMultiLinkedData
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMultiLinkedData_Interface : public TObject
 {

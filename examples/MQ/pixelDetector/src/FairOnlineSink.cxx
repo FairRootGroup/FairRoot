@@ -14,10 +14,12 @@
 
 #include "FairOnlineSink.h"
 
-#include "FairMQRunDevice.h"
-#include "FairRootManager.h"
+#include <fairlogger/Logger.h>  // for Logger, LOG
+#include <iosfwd>               // for string
+#include <string>               // for operator<
 
-#include <FairMQLogger.h>
+#include "FairMQRunDevice.h"    // for FairMQRunDevice
+#include "FairRootManager.h"    // for FairRootManager
 
 FairOnlineSink::FairOnlineSink()
     : FairSink()

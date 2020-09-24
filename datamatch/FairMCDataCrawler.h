@@ -15,14 +15,18 @@
 #ifndef FAIRMCDATACRAWLER_H_
 #define FAIRMCDATACRAWLER_H_
 
-#include "FairMultiLinkedData.h"   // for FairMultiLinkedData
+#include <Rtypes.h>               // for THashConsistencyHolder, ClassDef
+#include <TObject.h>              // for TObject
+#include <TString.h>              // for TString
+#include <RtypesCore.h>           // for Int_t, Bool_t, kTRUE, Float_t
 
-#include <Rtypes.h>    // for Int_t, Bool_t, etc
-#include <TObject.h>   // for TObject
-#include <TString.h>   // for TString
+#include "FairMultiLinkedData.h"  // for FairMultiLinkedData
 
 class FairLink;
 class FairRootManager;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMCDataCrawler : public TObject
 {

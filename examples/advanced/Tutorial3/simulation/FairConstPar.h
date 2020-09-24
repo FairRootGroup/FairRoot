@@ -16,12 +16,16 @@
 #ifndef FairConstPAR_H
 #define FairConstPAR_H 1
 
-#include "FairMapPar.h"   // for FairMapPar
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Double_t, Bool_t
 
-#include <Rtypes.h>   // for Double_t, etc
+#include "FairMapPar.h"  // for FairMapPar
 
 class FairField;
 class FairParamList;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairConstPar : public FairMapPar
 {

@@ -15,14 +15,17 @@
 #ifndef PIXELDIGIWRITETOBINFILE_H
 #define PIXELDIGIWRITETOBINFILE_H 1
 
-#include "FairTask.h"
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Int_t, Option_t
+#include <fstream>       // for ofstream
 
-#include <Rtypes.h>
-#include <TString.h>
+#include "FairTask.h"    // for InitStatus, FairTask
 
 class TClonesArray;
-
-#include <fstream>
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class PixelDigiWriteToBinFile : public FairTask
 {

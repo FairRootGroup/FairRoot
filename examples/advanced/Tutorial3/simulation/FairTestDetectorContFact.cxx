@@ -7,13 +7,14 @@
  ********************************************************************************/
 #include "FairTestDetectorContFact.h"
 
-#include "FairConstPar.h"             // for FairConstPar
-#include "FairRuntimeDb.h"            // for FairRuntimeDb
-#include "FairTestDetectorGeoPar.h"   // for FairTestDetectorGeoPar
+#include <TList.h>                   // for TList
+#include <TString.h>                 // for TString
+#include <TGenericClassInfo.h>       // for TGenericClassInfo
+#include <cstring>                   // for strcmp
 
-#include <TList.h>     // for TList
-#include <TString.h>   // for TString
-#include <cstring>     // for strcmp
+#include "FairConstPar.h"            // for FairConstPar
+#include "FairRuntimeDb.h"           // for FairRuntimeDb
+#include "FairTestDetectorGeoPar.h"  // for FairTestDetectorGeoPar
 
 class FairParSet;
 

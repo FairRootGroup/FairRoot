@@ -30,12 +30,17 @@
 
 #include "FairEventBuilderManager.h"
 
-#include "FairRecoEventHeader.h"
-#include "FairRootManager.h"
-#include "FairRunAna.h"
+#include <TMath.h>                // for Power
+#include <TGenericClassInfo.h>    // for TGenericClassInfo
+#include <TString.h>              // for TString
+#include <iostream>               // for operator<<, basic_ostream, endl, cout
 
-#include <TMath.h>
-#include <iostream>
+#include "FairRecoEventHeader.h"  // for FairRecoEventHeader
+#include "FairRootManager.h"      // for FairRootManager
+#include "FairRunAna.h"           // for FairRunAna
+#include "FairEventBuilder.h"     // for FairEventBuilder
+
+class FairRuntimeDb;
 
 using std::cout;
 using std::endl;

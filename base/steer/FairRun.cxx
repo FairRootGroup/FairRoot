@@ -12,19 +12,20 @@
 
 #include "FairRun.h"
 
+#include <TFile.h>              // for TFile
+#include <TList.h>              // for TList
+#include <TObject.h>            // for TObject
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for LOG
+#include <cassert>              // for assert
+
 #include "FairEventHeader.h"    // for FairEventHeader
 #include "FairFileHeader.h"     // for FairFileHeader
 #include "FairLinkManager.h"    // for FairLinkManager
-#include "FairLogger.h"         // for FairLogger, MESSAGE_ORIGIN
-#include "FairRootFileSink.h"   // only temporary, should be removed after the move to FairSink is finished
+#include "FairRootFileSink.h"   // for FairRootFileSink
 #include "FairRootManager.h"    // for FairRootManager
 #include "FairRuntimeDb.h"      // for FairRuntimeDb
 #include "FairTask.h"           // for FairTask
-
-#include <TFile.h>     // for TFile
-#include <TList.h>     // for TList
-#include <TObject.h>   // for TObject
-#include <cassert>     // for... well, assert
 
 TMCThreadLocal FairRun* FairRun::fRunInstance = 0;
 

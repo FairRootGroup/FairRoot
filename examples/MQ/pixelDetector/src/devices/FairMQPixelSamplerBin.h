@@ -15,11 +15,12 @@
 #ifndef FAIRMQPIXELSAMPLERBIN_H_
 #define FAIRMQPIXELSAMPLERBIN_H_
 
-#include <FairMQDevice.h>
-#include <cstdint>
+#include <FairMQDevice.h>  // for FairMQDevice
+#include <cstdint>         // for int64_t
 #include <string>
-#include <thread>
-#include <vector>
+#include <thread>          // for thread
+#include <vector>          // for vector
+#include <iosfwd>          // for string
 
 class FairFileSource;
 class FairRunAna;

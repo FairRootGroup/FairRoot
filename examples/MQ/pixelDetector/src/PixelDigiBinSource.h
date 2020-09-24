@@ -16,16 +16,20 @@
 #ifndef PIXELDIGIBINSOURCE_H_
 #define PIXELDIGIBINSOURCE_H_
 
-#include "FairSource.h"
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Int_t, Bool_t, kTRUE, UInt_t
+#include <fstream>       // for ifstream
 
-#include <Rtypes.h>
-#include <TString.h>
-#include <fstream>
+#include "FairSource.h"  // for FairSource, Source_Type, kFILE
 
 class TClonesArray;
 class TObject;
 class PixelEventHeader;
 class FairEventHeader;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class PixelDigiBinSource : public FairSource
 {

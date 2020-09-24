@@ -16,17 +16,25 @@
 
 extern "C"
 {
-#include "f_evt.h"
+#include "f_evt.h"          // for s_evt_channel
 #include "s_bufhe_swap.h"
 #include "s_filhe_swap.h"
+#include "s_bufhe.h"        // for s_bufhe
+#include "s_filhe.h"        // for s_filhe
+#include "s_ve10_1.h"       // for s_ve10_1
+#include "s_ves10_1.h"      // for s_ves10_1
 }
 
-#include "FairMbsSource.h"
+#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
+#include <TString.h>        // for TString
+#include <RtypesCore.h>     // for Int_t, Bool_t, UInt_t
 
-#include <Rtypes.h>
-#include <TString.h>
+#include "FairMbsSource.h"  // for FairMbsSource
 
 class TList;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairLmdSource : public FairMbsSource
 {

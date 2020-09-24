@@ -8,12 +8,14 @@
 #ifndef FAIRMQEXHISTOCANVASDRAWEREXAMPLE
 #define FAIRMQEXHISTOCANVASDRAWEREXAMPLE
 
-#include "FairMQExHistoCanvasDrawer.h"
+#include <functional>                   // for function
+#include <memory>                       // for unique_ptr
+
+#include "FairMQExHistoCanvasDrawer.h"  // for FairMQExHistoCanvasDrawer
 
 class TCanvas;
-
-#include <functional>
-#include <memory>
+class THttpServer;
+class TObjArray;
 
 class FairMQExHistoCanvasDrawerExample : public FairMQExHistoCanvasDrawer
 {

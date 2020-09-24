@@ -17,15 +17,16 @@
 ////////////////////////////////////////////////////////////////
 #include "FairGeoNode.h"
 
-#include "FairGeoRotation.h"   // for FairGeoRotation
-#include "FairGeoVector.h"     // for FairGeoVector
-
-#include <TList.h>   // for TList
-#include <cmath>     // IWYU pragma: keep for abs
+#include <TList.h>              // for TList
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <cmath>                // for fabs
 // IWYU pragma: no_include <architecture/i386/math.h>
-#include <cstdio>   // for sscanf
+#include <cstdio>               // for sscanf
+#include <iostream>             // for operator<<, basic_ostream, cout, char...
 #include <fstream>
-#include <iostream>   // for operator<<, basic_ostream, etc
+
+#include "FairGeoRotation.h"    // for FairGeoRotation
+#include "FairGeoVector.h"      // for FairGeoVector
 
 using std::cout;
 using std::endl;

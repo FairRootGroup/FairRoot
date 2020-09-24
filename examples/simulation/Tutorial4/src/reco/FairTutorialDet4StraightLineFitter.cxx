@@ -7,16 +7,17 @@
  ********************************************************************************/
 #include "FairTutorialDet4StraightLineFitter.h"
 
-#include "FairLogger.h"            // for FairLogger, etc
-#include "FairRootManager.h"       // for FairRootManager
-#include "FairTrackParam.h"        // for FairTrackParam
-#include "FairTutorialDet4Hit.h"   // for FairTutorialDet4Hit
+#include <TClonesArray.h>         // for TClonesArray
+#include <TF1.h>                  // for TF1
+#include <TGraphErrors.h>         // for TGraphErrors
+#include <TVector3.h>             // for TVector3
+#include <TGenericClassInfo.h>    // for TGenericClassInfo
+#include <fairlogger/Logger.h>    // for Logger, LOG
+#include <set>                    // for set, set<>::iterator
 
-#include <TClonesArray.h>   // for TClonesArray
-#include <TF1.h>            // for TF1
-#include <TGraphErrors.h>   // for TGraphErrors
-#include <TVector3.h>       // for TVector3
-#include <set>              // for set, set<>::iterator, etc
+#include "FairRootManager.h"      // for FairRootManager
+#include "FairTrackParam.h"       // for FairTrackParam
+#include "FairTutorialDet4Hit.h"  // for FairTutorialDet4Hit
 
 FairTutorialDet4StraightLineFitter::FairTutorialDet4StraightLineFitter()
     : FairTask("FairTutorialDet4StraightLineFitter")

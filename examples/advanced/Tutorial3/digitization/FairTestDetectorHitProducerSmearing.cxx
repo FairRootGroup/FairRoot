@@ -7,14 +7,15 @@
  ********************************************************************************/
 #include "FairTestDetectorHitProducerSmearing.h"
 
-#include "FairLogger.h"              // for FairLogger, MESSAGE_ORIGIN
-#include "FairRootManager.h"         // for FairRootManager
-#include "FairTestDetectorHit.h"     // for FairTestDetectorHit
-#include "FairTestDetectorPoint.h"   // for FairTestDetectorPoint
+#include <TClonesArray.h>           // for TClonesArray
+#include <TRandom.h>                // for TRandom, gRandom
+#include <TVector3.h>               // for TVector3
+#include <TGenericClassInfo.h>      // for TGenericClassInfo
+#include <fairlogger/Logger.h>      // for LOG
 
-#include <TClonesArray.h>   // for TClonesArray
-#include <TRandom.h>        // for TRandom, gRandom
-#include <TVector3.h>       // for TVector3
+#include "FairRootManager.h"        // for FairRootManager
+#include "FairTestDetectorHit.h"    // for FairTestDetectorHit
+#include "FairTestDetectorPoint.h"  // for FairTestDetectorPoint
 
 FairTestDetectorHitProducerSmearing::FairTestDetectorHitProducerSmearing()
     : FairTask("FairTestDetectorHitProducerSmearing")

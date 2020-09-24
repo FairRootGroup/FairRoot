@@ -13,14 +13,18 @@
 #ifndef FAIRRADGRIDMANAGER_H
 #define FAIRRADGRIDMANAGER_H 1
 
-#include <Rtypes.h>           // for Float_t, Double_t, Int_t, etc
-#include <TLorentzVector.h>   // for TLorentzVector
-#include <TObjArray.h>        // for TObjArray
-#include <TString.h>          // for TString
-#include <iostream>           // for basic_ostream::operator<<, etc
+#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
+#include <TLorentzVector.h>  // for TLorentzVector
+#include <TObjArray.h>       // for TObjArray
+#include <TString.h>         // for TString
+#include <RtypesCore.h>      // for Float_t, Double_t, Int_t, Bool_t
+#include <iostream>          // for operator<<, basic_ostream, endl, cout
 
 class FairMesh;
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * @class FairRadGridManager

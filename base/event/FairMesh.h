@@ -14,10 +14,15 @@
 #ifndef FAIRMESH_H
 #define FAIRMESH_H
 
-#include <Rtypes.h>    // for Double_t, Int_t, etc
-#include <TH2.h>       // for TH2D
-#include <TObject.h>   // for TObject
-#include <TString.h>   // for TString
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TH2.h>         // for TH2D
+#include <TObject.h>     // for TObject
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Double_t, Int_t
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * Abstract base class for Mesh Objects.

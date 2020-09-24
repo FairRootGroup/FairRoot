@@ -8,6 +8,9 @@
 //*-- AUTHOR : Ilse Koenig
 //*-- Created : 20/10/2004
 #include "FairDetParIo.h"
+
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 /////////////////////////////////////////////////////////////
 //  FairDetParIo
 //

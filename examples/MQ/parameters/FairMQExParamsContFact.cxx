@@ -8,10 +8,13 @@
 
 #include "FairMQExParamsContFact.h"
 
-#include "FairMQExParamsParOne.h"
-#include "FairRuntimeDb.h"
+#include <TGenericClassInfo.h>     // for TGenericClassInfo
+#include <TList.h>                 // for TList
+#include <TString.h>               // for TString
+#include <cstring>                 // for strcmp
 
-#include <cstring>   // strcmp
+#include "FairMQExParamsParOne.h"  // for FairMQExParamsParOne
+#include "FairRuntimeDb.h"         // for FairRuntimeDb
 
 static FairMQExParamsContFact gFairMQExParamsContFact;
 

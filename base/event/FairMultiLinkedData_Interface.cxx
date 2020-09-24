@@ -7,7 +7,9 @@
 
 #include "FairMultiLinkedData_Interface.h"
 
-#include "FairRootManager.h"   // for FairRootManager
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
+#include "FairRootManager.h"    // for FairRootManager
 
 ClassImp(FairMultiLinkedData_Interface);
 

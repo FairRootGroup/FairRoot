@@ -6,16 +6,17 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "PixelDigitize.h"
-#include "PixelFindHits.h"
-#include "PixelFindTracks.h"
-#include "PixelFitTracks.h"
-#include "runFairMQDevice.h"
+#include <string>                                           // for basic_string
+#include <functional>                                       // for __base
+#include <iosfwd>                                           // for string
 
+#include "PixelDigitize.h"                                  // for PixelDigi...
+#include "PixelFindHits.h"                                  // for PixelFind...
+#include "PixelFindTracks.h"                                // for PixelFind...
+#include "PixelFitTracks.h"                                 // for PixelFitT...
+#include "runFairMQDevice.h"                                // for FairMQDev...
 // PixelDetector example
-#include "FairMQPixelTaskProcessor.h"
-
-#include <string>
+#include "FairMQPixelTaskProcessor.h"                       // for FairMQPix...
 
 using Digitizer = FairMQPixelTaskProcessor<PixelDigitize>;
 using HitFinder = FairMQPixelTaskProcessor<PixelFindHits>;

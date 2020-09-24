@@ -15,13 +15,15 @@
 #ifndef FAIRMQPIXELMERGER_H_
 #define FAIRMQPIXELMERGER_H_
 
-#include <FairMQDevice.h>
-#include <map>
+#include <FairMQDevice.h>  // for FairMQDevice
+#include <map>             // for multimap<>::iterator, map, multimap, multi...
 #include <string>
-#include <utility>   // pair
+#include <utility>         // for pair
+#include <iosfwd>          // for string
 
 class PixelEventHeader;
 class TObject;
+class FairMQParts;
 
 typedef std::multimap<std::pair<std::pair<int, int>, int>, TObject*> MultiMapDef;
 

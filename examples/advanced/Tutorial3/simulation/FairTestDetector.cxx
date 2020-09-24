@@ -7,20 +7,21 @@
  ********************************************************************************/
 #include "FairTestDetector.h"
 
-#include "FairDetectorList.h"         // for DetectorId::kTutDet
-#include "FairLink.h"                 // for FairLink
-#include "FairRootManager.h"          // for FairRootManager
-#include "FairRun.h"                  // for FairRun
-#include "FairRuntimeDb.h"            // for FairRuntimeDb
-#include "FairStack.h"                // for FairStack
-#include "FairTestDetectorGeo.h"      // for FairTestDetectorGeo
-#include "FairTestDetectorGeoPar.h"   // for FairTestDetectorGeoPar
-#include "FairTestDetectorPoint.h"    // for FairTestDetectorPoint
-#include "FairVolume.h"               // for FairVolume
+#include <TClonesArray.h>            // for TClonesArray
+#include <TVirtualMC.h>              // for TVirtualMC
+#include <TVirtualMCStack.h>         // for TVirtualMCStack
+#include <TGenericClassInfo.h>       // for TGenericClassInfo
 
-#include <TClonesArray.h>      // for TClonesArray
-#include <TVirtualMC.h>        // for TVirtualMC
-#include <TVirtualMCStack.h>   // for TVirtualMCStack
+#include "FairDetectorList.h"        // for kTutDet
+#include "FairLink.h"                // for FairLink
+#include "FairRootManager.h"         // for FairRootManager
+#include "FairRun.h"                 // for FairRun
+#include "FairRuntimeDb.h"           // for FairRuntimeDb
+#include "FairStack.h"               // for FairStack
+#include "FairTestDetectorGeo.h"     // for FairTestDetectorGeo
+#include "FairTestDetectorGeoPar.h"  // for FairTestDetectorGeoPar
+#include "FairTestDetectorPoint.h"   // for FairTestDetectorPoint
+#include "FairVolume.h"              // for FairVolume
 
 FairTestDetector::FairTestDetector()
     : FairDetector("FairTestDetector", kTRUE, kTutDet)

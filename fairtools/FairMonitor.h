@@ -16,15 +16,21 @@
 #ifndef BASE_FAIRMONITOR_H_
 #define BASE_FAIRMONITOR_H_
 
-#include <Rtypes.h>
-#include <TNamed.h>
-#include <TStopwatch.h>
-#include <map>
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TNamed.h>      // for TNamed
+#include <TStopwatch.h>  // for TStopwatch
+#include <RtypesCore.h>  // for Int_t, Double_t, Bool_t, Option_t, kTRUE
+#include <TString.h>     // for TString
+#include <map>           // for map, multimap
+#include <utility>       // for pair
 
 class TCanvas;
 class TFile;
 class TList;
 class TTask;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMonitor : public TNamed
 {

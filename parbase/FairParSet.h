@@ -8,12 +8,16 @@
 #ifndef FAIRPARSET_H
 #define FAIRPARSET_H
 
-#include <Rtypes.h>   // for Int_t, Bool_t, etc
-#include <TObject.h>
-#include <TString.h>   // for TString
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TObject.h>     // for TObject
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Bool_t, Int_t, kFALSE, kTRUE, UInt_t
 
 class FairLogger;
 class FairParIo;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairParSet : public TObject
 {

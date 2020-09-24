@@ -12,8 +12,11 @@
  * Created on January 15, 2015, 1:57 PM
  */
 
-#include "FairMQLmdSampler.h"
-#include "runFairMQDevice.h"
+#include <iosfwd>                                           // for string
+#include <string>                                           // for operator+
+
+#include "FairMQLmdSampler.h"                               // for FairMQLmd...
+#include "runFairMQDevice.h"                                // for FairMQDev...
 
 namespace bpo = boost::program_options;
 

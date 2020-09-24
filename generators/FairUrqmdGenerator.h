@@ -23,14 +23,18 @@
 #ifndef FAIRURQMDGENERATOR_H
 #define FAIRURQMDGENERATOR_H
 
-#include "FairGenerator.h"   // for FairGenerator
+#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
+#include <TString.h>        // for TString
+#include <stdio.h>          // for FILE
+#include <RtypesCore.h>     // for Int_t, Bool_t, Char_t
+#include <map>              // for map
 
-#include <Rtypes.h>   // for Int_t, Bool_t, etc
-#include <TString.h>
-#include <map>       // for map
-#include <stdio.h>   // for FILE
+#include "FairGenerator.h"  // for FairGenerator
 
 class FairPrimaryGenerator;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairUrqmdGenerator : public FairGenerator
 {

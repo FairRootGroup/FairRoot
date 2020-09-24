@@ -11,10 +11,17 @@
 // -------------------------------------------------------------------------
 #include "FairGenericVMCConfig.h"
 
-#include "FairLogger.h"
-#include "FairRunSim.h"
+#include <TROOT.h>              // for TROOT, gROOT
+#include <Rtypes.h>             // for ClassImp
+#include <RtypesCore.h>         // for kTRUE, Bool_t, kFALSE
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TString.h>            // for TString, operator+, operator!=
+#include <TSystem.h>            // for TSystem, gSystem
+#include <fairlogger/Logger.h>  // for LOG, Logger
+#include <stdlib.h>             // for getenv
+#include <string.h>             // for strcmp
 
-#include <TROOT.h>
+#include "FairRunSim.h"         // for FairRunSim
 
 FairGenericVMCConfig::FairGenericVMCConfig() {}
 

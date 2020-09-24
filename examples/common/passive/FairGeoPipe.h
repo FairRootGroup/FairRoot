@@ -8,11 +8,15 @@
 #ifndef FAIRGEOPIPE_H
 #define FAIRGEOPIPE_H
 
-#include "FairGeoSet.h"   // for FairGeoSet
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Int_t, Bool_t
 
-#include <Rtypes.h>   // for FairGeoPipe::Class, Int_t, etc
+#include "FairGeoSet.h"  // for FairGeoSet
 
 class FairGeoBuilder;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairGeoPipe : public FairGeoSet
 {

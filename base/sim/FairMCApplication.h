@@ -13,14 +13,15 @@
 #ifndef FAIR_MC_APPLICATION_H
 #define FAIR_MC_APPLICATION_H
 
-#include "FairRunInfo.h"   // for FairRunInfo
+#include <Rtypes.h>                 // for THashConsistencyHolder, ClassDef
+#include <TLorentzVector.h>         // for TLorentzVector
+#include <TString.h>                // for TString
+#include <TVirtualMCApplication.h>  // for TVirtualMCApplication
+#include <RtypesCore.h>             // for Int_t, Bool_t, Double_t
+#include <list>                     // for list
+#include <map>                      // for map, multimap, map<>::iterator
 
-#include <Rtypes.h>                  // for Int_t, Bool_t, Double_t, etc
-#include <TLorentzVector.h>          // for TLorentzVector
-#include <TString.h>                 // for TString
-#include <TVirtualMCApplication.h>   // for TVirtualMCApplication
-#include <list>                      // for list
-#include <map>                       // for map, multimap, etc
+#include "FairRunInfo.h"            // for FairRunInfo
 
 class FairDetector;
 class FairEventHeader;
@@ -42,6 +43,9 @@ class TObjArray;
 class TRefArray;
 class TTask;
 class TVirtualMC;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 enum class FairMCApplicationState
 {

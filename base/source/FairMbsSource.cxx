@@ -15,7 +15,11 @@
 
 #include "FairMbsSource.h"
 
-#include "FairLogger.h"
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TObjArray.h>          // for TObjArray
+#include <fairlogger/Logger.h>  // for Logger, LOG
+
+#include "FairUnpack.h"         // for FairUnpack
 
 FairMbsSource::FairMbsSource()
     : FairOnlineSource()

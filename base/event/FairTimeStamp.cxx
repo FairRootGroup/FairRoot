@@ -7,6 +7,9 @@
  ********************************************************************************/
 #include "FairTimeStamp.h"
 
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <iosfwd>               // for ostream
+
 std::ostream& FairTimeStamp::PrintTimeInfo(std::ostream& out) const
 {
     out << " TimeStamp: " << GetTimeStamp() << " +/- " << GetTimeStampError() << std::endl;

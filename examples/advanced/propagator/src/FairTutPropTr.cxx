@@ -14,12 +14,17 @@
 
 #include "FairTutPropTr.h"
 
-#include "FairLogger.h"
-#include "FairRootManager.h"
-#include "FairTrackParP.h"
-#include "FairTutPropPoint.h"
-#include "TClonesArray.h"
-#include "TDatabasePDG.h"
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TParticlePDG.h>       // for TParticlePDG
+#include <TVector3.h>           // for TVector3
+#include <fairlogger/Logger.h>  // for Logger, LOG
+
+#include "FairRootManager.h"    // for FairRootManager
+#include "FairTrackParP.h"      // for FairTrackParP
+#include "FairTutPropPoint.h"   // for FairTutPropPoint
+#include "TClonesArray.h"       // for TClonesArray
+#include "TDatabasePDG.h"       // for TDatabasePDG
+#include "FairPropagator.h"     // for FairPropagator
 
 // -----   Default constructor   -------------------------------------------
 FairTutPropTr::FairTutPropTr()

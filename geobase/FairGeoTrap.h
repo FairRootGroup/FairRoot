@@ -8,14 +8,17 @@
 #ifndef FAIRGEOTRAP_H
 #define FAIRGEOTRAP_H
 
-#include "FairGeoBasicShape.h"   // for FairGeoBasicShape
-#include "FairGeoRotation.h"     // for FairGeoRotation
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
 
-#include <Rtypes.h>   // for FairGeoPcon::Class, Bool_t, etc
+#include "FairGeoBasicShape.h"  // for FairGeoBasicShape
+#include "FairGeoRotation.h"    // for FairGeoRotation
 
 class FairGeoTransform;
 class FairGeoVolume;
 class TArrayD;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairGeoTrap : public FairGeoBasicShape
 {

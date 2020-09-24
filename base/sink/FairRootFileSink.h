@@ -15,12 +15,13 @@
 #ifndef __FAIRROOT__FairRootFileSink__
 #define __FAIRROOT__FairRootFileSink__
 
-#include "FairSink.h"
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TFile.h>       // for TFile
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Int_t, Bool_t
+#include <typeinfo>      // for type_info
 
-#include <Rtypes.h>
-#include <TFile.h>
-#include <TString.h>
-#include <typeinfo>
+#include "FairSink.h"    // for FairSink, Sink_Type, kFILESINK
 
 class FairEventHeader;
 class FairFileHeader;
@@ -29,6 +30,9 @@ class TObjArray;
 class TObject;
 class TTree;
 class TFolder;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairRootFileSink : public FairSink
 {

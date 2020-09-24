@@ -15,17 +15,21 @@
 #ifndef FAIRMQPIXALTSAMPLERBIN_H_
 #define FAIRMQPIXALTSAMPLERBIN_H_
 
-#include "PixelPayload.h"
-
-#include <FairMQDevice.h>
-#include <cstdint>
-#include <fstream>
+#include <FairMQDevice.h>  // for FairMQDevice
+#include <cstdint>         // for int64_t
+#include <fstream>         // for string, ifstream
 #include <string>
-#include <thread>
-#include <vector>
+#include <thread>          // for thread
+#include <vector>          // for vector
+
+#include "PixelPayload.h"
 
 class TBranch;
 class TChain;
+namespace PixelPayload {
+class Digi;
+class EventHeader;
+}  // namespace PixelPayload
 
 class FairMQPixAltSamplerBin : public FairMQDevice
 {

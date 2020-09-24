@@ -22,16 +22,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "FairDetParRootFileIo.h"
 
-#include "FairParRootFileIo.h"   // for FairParRootFile
-#include "FairParSet.h"          // for FairParSet
-#include "FairRtdbRun.h"         // for FairParVersion, FairRtdbRun
-#include "FairRuntimeDb.h"       // for FairRuntimeDb
+#include <TDirectory.h>         // for TDirectory, gDirectory
+#include <TKey.h>               // for TKey
+#include <TROOT.h>              // for TROOT, gROOT
+#include <stdio.h>              // for sprintf
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <iostream>             // for operator<<, basic_ostream, char_traits
 
-#include <TDirectory.h>   // for TDirectory, gDirectory
-#include <TKey.h>         // for TKey
-#include <TROOT.h>        // for TROOT, gROOT
-#include <iostream>       // for operator<<, basic_ostream, etc
-#include <stdio.h>        // for sprintf
+#include "FairParRootFileIo.h"  // for FairParRootFile
+#include "FairParSet.h"         // for FairParSet
+#include "FairRtdbRun.h"        // for FairParVersion, FairRtdbRun
+#include "FairRuntimeDb.h"      // for FairRuntimeDb
 
 class TObject;
 

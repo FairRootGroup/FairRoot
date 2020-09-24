@@ -8,9 +8,13 @@
 #ifndef PIPE_H
 #define PIPE_H
 
-#include "FairModule.h"   // for FairModule
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
 
-#include <Rtypes.h>   // for FairPipe::Class, ClassDef, etc
+#include "FairModule.h"  // for FairModule
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairPipe : public FairModule
 {

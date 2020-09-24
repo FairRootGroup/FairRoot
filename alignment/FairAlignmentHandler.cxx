@@ -1,9 +1,13 @@
 #include "FairAlignmentHandler.h"
 
-#include "FairLogger.h"
-
-#include <TGeoManager.h>
-#include <TGeoPhysicalNode.h>
+#include <TGeoManager.h>        // for TGeoManager, gGeoManager
+#include <TGeoPhysicalNode.h>   // for TGeoPhysicalNode, TGeoPNEntry (ptr only)
+#include <TGeoNode.h>           // for TGeoNode
+#include <TString.h>            // for TString
+#include <fairlogger/Logger.h>  // for LOG, Logger
+#include <stddef.h>             // for NULL
+#include <string>               // for operator<
+#include <utility>              // for pair
 
 FairAlignmentHandler::FairAlignmentHandler() {}
 

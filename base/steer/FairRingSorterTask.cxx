@@ -11,14 +11,15 @@
 
 #include "FairRingSorterTask.h"
 
-#include "FairLink.h"          // for FairLink
-#include "FairRootManager.h"   // for FairRootManager
-#include "FairTimeStamp.h"     // for FairTimeStamp
+#include <TClass.h>             // for TClass
+#include <TClonesArray.h>       // for TClonesArray
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <iostream>             // for operator<<, endl, basic_ostream, cout
+#include <vector>               // for vector
 
-#include <TClass.h>         // for TClass
-#include <TClonesArray.h>   // for TClonesArray
-#include <iostream>         // for operator<<, cout, ostream, etc
-#include <vector>           // for vector
+#include "FairLink.h"           // for FairLink
+#include "FairRootManager.h"    // for FairRootManager
+#include "FairTimeStamp.h"      // for FairTimeStamp
 
 InitStatus FairRingSorterTask::ReInit() { return kSUCCESS; }
 

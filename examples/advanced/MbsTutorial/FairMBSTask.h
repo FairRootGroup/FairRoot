@@ -9,12 +9,16 @@
 #ifndef _FAIRMBS_TASK_
 #define _FAIRMBS_TASK_
 
-#include "FairTask.h"
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Int_t, Option_t
 
-#include <Rtypes.h>
+#include "FairTask.h"    // for FairTask, InitStatus
 
 class TClonesArray;
 class TH1F;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * An example analysis task for demonstartion of THttpServer usage.

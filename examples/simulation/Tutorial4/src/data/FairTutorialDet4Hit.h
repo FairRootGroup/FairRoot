@@ -8,11 +8,15 @@
 #ifndef FAIRTUTORIALDERT4HIT_H
 #define FAIRTUTORIALDET4HIT_H 1
 
-#include "FairHit.h"   // for FairHit
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Int_t
 
-#include <Rtypes.h>   // for FairTutorialDet4Hit::Class, etc
+#include "FairHit.h"     // for FairHit
 
 class TVector3;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutorialDet4Hit : public FairHit
 {

@@ -7,15 +7,15 @@
  ********************************************************************************/
 #include "FairRunInfo.h"
 
-#include "FairLogger.h"   // for FairLogger
-
-#include <TFile.h>       // for TFile, gFile
-#include <TH1.h>         // for TH1F
-#include <TIterator.h>   // for TIterator
-#include <TList.h>       // for TList
-#include <TString.h>     // for TString
-#include <TSystem.h>     // for ProcInfo_t, TSystem, etc
-#include <algorithm>     // for sort
+#include <TFile.h>              // for TFile, gFile
+#include <TH1.h>                // for TH1F
+#include <TIterator.h>          // for TIterator
+#include <TList.h>              // for TList
+#include <TString.h>            // for TString
+#include <TSystem.h>            // for ProcInfo_t, TSystem, gSystem
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for Logger, LOG
+#include <algorithm>            // for sort
 
 ClassImp(FairRunInfo);
 

@@ -14,7 +14,9 @@
 
 #include "FairHitDraw.h"
 
-#include "FairHit.h"   // for FairHit
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
+#include "FairHit.h"            // for FairHit
 
 class TObject;
 

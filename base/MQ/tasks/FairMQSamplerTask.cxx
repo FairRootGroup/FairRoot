@@ -14,6 +14,14 @@
 
 #include "FairMQSamplerTask.h"
 
+#include <TClonesArray.h>     // for TClonesArray
+#include <type_traits>        // for move
+
+#include "FairEventHeader.h"  // for FairEventHeader
+#include "FairRootManager.h"  // for FairRootManager
+
+class FairMQTransportFactory;
+
 using namespace std;
 
 FairMQSamplerTask::FairMQSamplerTask()

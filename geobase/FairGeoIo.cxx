@@ -17,4 +17,6 @@
 
 #include "FairGeoIo.h"
 
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 ClassImp(FairGeoIo);

@@ -14,18 +14,26 @@
 
 #include "FairMQPixelSamplerBin.h"
 
-#include "FairEventHeader.h"
-#include "FairFileSource.h"
-#include "FairRunAna.h"
-#include "PixelDigi.h"
-#include "PixelPayload.h"
+#include <TClonesArray.h>                          // for TClonesArray
+#include <TObject.h>                               // for TObject
+#include <FairMQMessage.h>                         // for FairMQMessagePtr
+#include <FairMQParts.h>                           // for FairMQParts
+#include <ProgOptions.h>                           // for ProgOptions
+#include <RtypesCore.h>                            // for Int_t, Long64_t
+#include <TString.h>                               // for TString
+#include <fairlogger/Logger.h>                     // for Logger, LOG
+#include <boost/type_index/type_index_facade.hpp>  // for operator==
+#include <cstring>                                 // for strcmp, size_t
+#include <memory>                                  // for unique_ptr
+#include <new>                                     // for operator new
+#include <string>                                  // for operator!=, basic_...
+#include <type_traits>                             // for move
 
-#include <FairMQLogger.h>
-#include <Rtypes.h>   // for Int_t, Long64_t
-#include <TClonesArray.h>
-#include <TObject.h>
-#include <cstring>
-#include <utility>   // move
+#include "FairEventHeader.h"                       // for FairEventHeader
+#include "FairFileSource.h"                        // for FairFileSource
+#include "FairRunAna.h"                            // for FairRunAna
+#include "PixelDigi.h"                             // for PixelDigi
+#include "PixelPayload.h"                          // for Digi, EventHeader
 
 using namespace std;
 

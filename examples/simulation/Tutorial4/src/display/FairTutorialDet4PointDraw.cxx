@@ -5,18 +5,19 @@
 
 #include "FairTutorialDet4PointDraw.h"
 
-#include "FairEventManager.h"   // for FairEventManager
-#include "FairLogger.h"
-#include "FairRootManager.h"   // for FairRootManager
-#include "FairRun.h"           // for FairRunAna
-#include "FairRuntimeDb.h"     // for FairRuntimeDb
-#include "FairTutorialDet4GeoHandler.h"
-#include "FairTutorialDet4GeoPar.h"
-#include "FairTutorialDet4Point.h"
+#include <TClonesArray.h>                // for TClonesArray
+#include <TEveManager.h>                 // for TEveManager, gEve
+#include <TEvePointSet.h>                // for TEvePointSet
+#include <TEveTreeTools.h>               // for TEvePointSelectorConsumer
+#include <fairlogger/Logger.h>           // for Logger, LOG
 
-#include <TClonesArray.h>   // for TClonesArray
-#include <TEveManager.h>    // for TEveManager, gEve
-#include <TEvePointSet.h>   // for TEveBoxSet, etc
+#include "FairEventManager.h"            // for FairEventManager
+#include "FairRootManager.h"             // for FairRootManager
+#include "FairRun.h"                     // for FairRun
+#include "FairRuntimeDb.h"               // for FairRuntimeDb
+#include "FairTutorialDet4GeoHandler.h"  // for FairTutorialDet4GeoHandler
+#include "FairTutorialDet4GeoPar.h"      // for FairTutorialDet4GeoPar
+#include "FairTutorialDet4Point.h"       // for FairTutorialDet4Point
 
 FairTutorialDet4PointDraw::FairTutorialDet4PointDraw()
     : FairTask("FairTutorialDet4PointDraw")

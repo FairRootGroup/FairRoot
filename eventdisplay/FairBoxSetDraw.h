@@ -24,10 +24,11 @@
 #ifndef FAIRBOXSETDRAW_H
 #define FAIRBOXSETDRAW_H
 
-#include "FairTSBufferFunctional.h"   // IWYU pragma: keep needed for cint
-#include "FairTask.h"                 // for FairTask, InitStatus
+#include <Rtypes.h>                  // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>              // for Double_t, Int_t, Bool_t, Option_t
 
-#include <Rtypes.h>   // for Double_t, Int_t, Bool_t, etc
+#include "FairTSBufferFunctional.h"  // for BinaryFunctor (ptr only)
+#include "FairTask.h"                // for FairTask, InitStatus
 
 class FairBoxSet;
 class FairEventManager;
@@ -35,6 +36,9 @@ class FairRootManager;
 class TObject;
 class TVector3;
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairBoxSetDraw : public FairTask
 {

@@ -14,13 +14,18 @@
 
 #include "FairMQPixelMerger.h"
 
-#include "PixelEventHeader.h"
-#include "RootSerializer.h"
+#include <TClonesArray.h>       // for TClonesArray
+#include <TObject.h>            // for TObject
+#include <FairMQMessage.h>      // for FairMQMessagePtr
+#include <FairMQParts.h>        // for FairMQParts
+#include <fairlogger/Logger.h>  // for Logger, LOG
+#include <cstring>              // for strcmp
+#include <functional>           // for __base
+#include <memory>               // for unique_ptr
+#include <type_traits>          // for move
 
-#include <FairMQLogger.h>
-#include <TClonesArray.h>
-#include <TObject.h>
-#include <cstring>   // strcmp
+#include "PixelEventHeader.h"   // for PixelEventHeader
+#include "RootSerializer.h"     // for RootSerializer
 
 using namespace std;
 

@@ -22,11 +22,15 @@
 #ifndef FAIR_PARTICLEGENERATOR_H
 #define FAIR_PARTICLEGENERATOR_H
 
-#include "FairBaseMCGenerator.h"   // for FairGenerator
+#include <Rtypes.h>               // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>           // for Double32_t, Int_t, Bool_t
 
-#include <Rtypes.h>   // for Double32_t, Int_t, etc
+#include "FairBaseMCGenerator.h"  // for FairBaseMCGenerator
 
 class FairPrimaryGenerator;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairParticleGenerator : public FairBaseMCGenerator
 {

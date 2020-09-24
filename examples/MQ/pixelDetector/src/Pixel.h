@@ -8,15 +8,21 @@
 #ifndef PIXEL_H
 #define PIXEL_H
 
-#include "FairDetector.h"   // for FairDetector
+#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
+#include <TLorentzVector.h>  // for TLorentzVector
+#include <TVector3.h>        // for TVector3
+#include <RtypesCore.h>      // for Int_t, Bool_t, Double32_t, Double_t
+#include <iosfwd>            // for string
 
-#include <Rtypes.h>           // for Int_t, Double32_t, Double_t, etc
-#include <TLorentzVector.h>   // for TLorentzVector
-#include <TVector3.h>         // for TVector3
+#include "FairDetector.h"    // for FairDetector
 
 class PixelPoint;
 class FairVolume;
 class TClonesArray;
+class FairModule;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class Pixel : public FairDetector
 {

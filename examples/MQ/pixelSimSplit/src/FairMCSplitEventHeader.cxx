@@ -8,7 +8,9 @@
 
 #include "FairMCSplitEventHeader.h"
 
-#include "FairRootManager.h"
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
+#include "FairRootManager.h"    // for FairRootManager
 
 FairMCSplitEventHeader::FairMCSplitEventHeader()
     : FairMCEventHeader()

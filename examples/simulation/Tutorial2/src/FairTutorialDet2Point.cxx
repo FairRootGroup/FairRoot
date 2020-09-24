@@ -7,7 +7,8 @@
  ********************************************************************************/
 #include "FairTutorialDet2Point.h"
 
-#include "FairLogger.h"
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for Logger, LOG
 
 FairTutorialDet2Point::FairTutorialDet2Point()
     : FairMCPoint()

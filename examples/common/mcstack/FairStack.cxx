@@ -11,19 +11,21 @@
 // -------------------------------------------------------------------------
 #include "FairStack.h"
 
-#include "FairDetector.h"      // for FairDetector
-#include "FairLink.h"          // for FairLink
-#include "FairLogger.h"        // for FairLogger, MESSAGE_ORIGIN
-#include "FairMCPoint.h"       // for FairMCPoint
-#include "FairMCTrack.h"       // for FairMCTrack
-#include "FairRootManager.h"   // for FairRootManager
+#include <TClonesArray.h>       // for TClonesArray
+#include <TIterator.h>          // for TIterator
+#include <TLorentzVector.h>     // for TLorentzVector
+#include <TParticle.h>          // for TParticle
+#include <TRefArray.h>          // for TRefArray
+#include <TVirtualMC.h>         // for gMC
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for Logger, LOG, Severity, Severity::DEBUG1
 
-#include <TClonesArray.h>     // for TClonesArray
-#include <TIterator.h>        // for TIterator
-#include <TLorentzVector.h>   // for TLorentzVector
-#include <TParticle.h>        // for TParticle
-#include <TRefArray.h>        // for TRefArray
-#include <TVirtualMC.h>       // for gMC
+#include "FairDetector.h"       // for FairDetector
+#include "FairLink.h"           // for FairLink
+#include "FairLogger.h"         // for FairLogger, gLogger
+#include "FairMCPoint.h"        // for FairMCPoint
+#include "FairMCTrack.h"        // for FairMCTrack
+#include "FairRootManager.h"    // for FairRootManager
 
 using std::pair;
 

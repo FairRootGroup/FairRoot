@@ -8,13 +8,15 @@
  */
 #include "FairYPtGenerator.h"
 
-#include "FairLogger.h"
-#include "FairPrimaryGenerator.h"
+#include <TRandom.h>               // for TRandom, gRandom
+#include <TMath.h>                 // for Exp, Pi, Cos, Sin, Sqrt
+#include <TMathBase.h>             // for Sign
+#include <TString.h>               // for Form
+#include <fairlogger/Logger.h>     // for LOG, Logger
 
-#include <TDatabasePDG.h>
-#include <TLorentzVector.h>
-#include <TParticlePDG.h>
-#include <TRandom.h>
+#include "FairPrimaryGenerator.h"  // for FairPrimaryGenerator
+
+class FairGenerator;
 
 FairYPtGenerator::FairYPtGenerator()
     : FairBaseMCGenerator()

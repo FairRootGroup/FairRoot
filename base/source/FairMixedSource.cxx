@@ -15,23 +15,29 @@
 //
 #include "FairMixedSource.h"
 
-#include "FairEventHeader.h"
-#include "FairLogger.h"
-#include "FairMCEventHeader.h"
-#include "FairRootManager.h"
-#include "FairRuntimeDb.h"   // for FairRuntimeDb
+#include <TFolder.h>            // for TFolder
+#include <TList.h>              // for TList
+#include <TObjArray.h>          // for TObjArray
+#include <TObjString.h>         // for TObjString
+#include <TObject.h>            // for TObject
+#include <TROOT.h>              // for TROOT, gROOT
+#include <TRandom.h>            // for TRandom, gRandom
+#include <TString.h>            // for TString, operator<, Form
+#include <TBranch.h>            // for TBranch
+#include <TChain.h>             // for TChain
+#include <TF1.h>                // for TF1
+#include <TFile.h>              // for TFile, gFile
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for Logger, LOG
+#include <cmath>                // for floor, fmod
+#include <map>                  // for map, multimap
+#include <set>                  // for set, set<>::iterator
+#include <utility>              // for pair
 
-#include <TFolder.h>
-#include <TList.h>
-#include <TObjArray.h>
-#include <TObjString.h>
-#include <TObject.h>
-#include <TROOT.h>
-#include <TRandom.h>   // for TRandom, gRandom
-#include <TString.h>
-#include <cmath>   // floor, fmod
-#include <map>
-#include <set>
+#include "FairEventHeader.h"    // for FairEventHeader
+#include "FairMCEventHeader.h"  // for FairMCEventHeader
+#include "FairRootManager.h"    // for FairRootManager
+#include "FairRuntimeDb.h"      // for FairRuntimeDb
 
 using std::map;
 using std::set;

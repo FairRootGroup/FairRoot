@@ -6,10 +6,12 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "runFairMQDevice.h"
+#include <iosfwd>                                           // for string
+#include <string>                                           // for basic_string
 
+#include "runFairMQDevice.h"                                // for FairMQDev...
 // PixelAlternative example
-#include "FairMQPixAltFileSinkBin.h"
+#include "FairMQPixAltFileSinkBin.h"                        // for FairMQPix...
 
 namespace bpo = boost::program_options;
 

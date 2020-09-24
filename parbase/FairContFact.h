@@ -8,14 +8,18 @@
 #ifndef FAIRCONTFACT_H
 #define FAIRCONTFACT_H
 
-#include <Rtypes.h>    // for Bool_t, ClassDef, etc
-#include <TList.h>     // for TList
-#include <TNamed.h>    // for TNamed
-#include <TString.h>   // for TString
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TList.h>       // for TList
+#include <TNamed.h>      // for TNamed
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Bool_t
 
 class FairLogger;
 class FairParIo;
 class FairParSet;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairContainer : public TNamed
 {

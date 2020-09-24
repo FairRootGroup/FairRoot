@@ -15,42 +15,41 @@
 // Class that takes care of Root IO.
 #include "FairRootManager.h"
 
-#include "FairEventHeader.h"          // for FairEventHeader
-#include "FairFileHeader.h"           // for FairFileHeader
-#include "FairLink.h"                 // for FairLink
-#include "FairLinkManager.h"          // for FairLinkManager
-#include "FairLogger.h"               // for FairLogger, MESSAGE_ORIGIN
-#include "FairMonitor.h"              // for FairMonitor
-#include "FairRootFileSink.h"         // to enable GetOutFile()
-#include "FairRun.h"                  // for FairRun
-#include "FairTSBufferFunctional.h"   // for FairTSBufferFunctional, etc
-#include "FairWriteoutBuffer.h"       // for FairWriteoutBuffer
+#include <TBranch.h>                 // for TBranch
+#include <TClonesArray.h>            // for TClonesArray
+#include <TCollection.h>             // for TCollection
+#include <TFile.h>                   // for TFile, gFile
+#include <TFolder.h>                 // for TFolder
+#include <TGeoManager.h>             // for TGeoManager, gGeoManager
+#include <TIterator.h>               // for TIterator
+#include <TList.h>                   // for TList
+#include <TMCAutoLock.h>             // for TMCAutoLock, TMCMUTEX_INITIALIZER
+#include <TNamed.h>                  // for TNamed
+#include <TObjArray.h>               // for TObjArray
+#include <TObjString.h>              // for TObjString
+#include <TRefArray.h>               // for TRefArray
+#include <TTree.h>                   // for TTree
+#include <stdlib.h>                  // for getenv
+#include <TGenericClassInfo.h>       // for TGenericClassInfo
+#include <cassert>                   // for assert
+#include <cstdio>                    // for fclose, fgets, fopen, sscanf, FILE
+#include <cstring>                   // for strcmp
+#include <iostream>                  // for string, operator<<, endl, basic_...
+#include <list>                      // for list
+#include <map>                       // for map, operator!=, map<>::iterator
+#include <set>                       // for set
+#include <utility>                   // for pair
+#include <vector>                    // for vector
 
-#include <TBranch.h>        // for TBranch
-#include <TClonesArray.h>   // for TClonesArray
-#include <TCollection.h>    // for TCollection, TIter
-#include <TFile.h>          // for TFile
-#include <TFolder.h>        // for TFolder
-#include <TGeoManager.h>    // for TGeoManager, gGeoManager
-#include <TIterator.h>      // for TIterator
-#include <TList.h>          // for TList
-#include <TMCAutoLock.h>
-#include <TNamed.h>       // for TNamed
-#include <TObjArray.h>    // for TObjArray
-#include <TObjString.h>   // for TObjString
-#include <TRefArray.h>    // for TRefArray
-#include <TTree.h>        // for TTree
-#include <algorithm>      // for find
-#include <cassert>
-#include <cstdio>
-#include <cstring>    // for strcmp
-#include <iostream>   // for operator<<, basic_ostream, etc
-#include <list>       // for _List_iterator, list, etc
-#include <map>        // for map, _Rb_tree_iterator, etc
-#include <set>        // for set, set<>::iterator
-#include <stdlib.h>   // for exit
-#include <utility>    // for pair
-#include <vector>     // for vector
+#include "FairEventHeader.h"         // for FairEventHeader
+#include "FairFileHeader.h"          // for FairFileHeader
+#include "FairLink.h"                // for FairLink
+#include "FairLinkManager.h"         // for FairLinkManager
+#include "FairMonitor.h"             // for FairMonitor
+#include "FairRootFileSink.h"        // for FairRootFileSink
+#include "FairRun.h"                 // for FairRun
+#include "FairTSBufferFunctional.h"  // for FairTSBufferFunctional, BinaryFu...
+#include "FairWriteoutBuffer.h"      // for FairWriteoutBuffer
 
 using std::list;
 using std::map;

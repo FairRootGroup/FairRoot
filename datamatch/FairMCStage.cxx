@@ -14,6 +14,8 @@
 
 #include "FairMCStage.h"
 
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 ClassImp(FairMCStage);
 
 FairMCStage::FairMCStage()

@@ -14,11 +14,12 @@
 
 #include "PixelDigiWriteToFile.h"
 
-#include "FairLogger.h"
-#include "FairRootManager.h"
-#include "PixelDigi.h"
+#include <TClonesArray.h>       // for TClonesArray
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for LOG, Logger
 
-#include <TClonesArray.h>
+#include "FairRootManager.h"    // for FairRootManager
+#include "PixelDigi.h"          // for PixelDigi
 
 PixelDigiWriteToFile::PixelDigiWriteToFile()
     : PixelDigiWriteToFile("Pixel DigiWriter", 0)

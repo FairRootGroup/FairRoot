@@ -15,14 +15,23 @@
 #ifndef PIXELALTFINDHITS_H
 #define PIXELALTFINDHITS_H 1
 
-#include "FairTask.h"
-#include "PixelPayload.h"
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Int_t, Double_t, Option_t
 
-#include <Rtypes.h>
+#include "FairTask.h"    // for InitStatus, FairTask
+#include "PixelPayload.h"
 
 class TClonesArray;
 class PixelDigiPar;
 class FairGeoParSet;
+class TBuffer;
+class TClass;
+class TList;
+class TMemberInspector;
+namespace PixelPayload {
+class Digi;
+class Hit;
+}  // namespace PixelPayload
 
 class PixelAltFindHits : public FairTask
 {

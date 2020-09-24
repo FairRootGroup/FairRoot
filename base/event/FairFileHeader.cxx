@@ -12,12 +12,14 @@
 
 #include "FairFileHeader.h"
 
-#include "FairFileInfo.h"   // for FairFileInfo
+#include <TIterator.h>          // for TIterator
+#include <TList.h>              // for TList
+#include <TObjString.h>         // for TObjString
+#include <TObject.h>            // for TObject
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
 
-#include <TIterator.h>    // for TIterator
-#include <TList.h>        // for TList
-#include <TObjString.h>   // for TObjString
-#include <TObject.h>      // for TObject
+#include "FairFileInfo.h"       // for FairFileInfo
+
 class TFile;
 
 FairFileHeader::FairFileHeader()

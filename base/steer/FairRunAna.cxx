@@ -12,35 +12,34 @@
 
 #include "FairRunAna.h"
 
-#include "FairBaseParSet.h"       // for FairBaseParSet
-#include "FairEventHeader.h"      // for FairEventHeader
-#include "FairField.h"            // for FairField
-#include "FairFieldFactory.h"     // for FairFieldFactory
-#include "FairFileHeader.h"       // for FairFileHeader
-#include "FairFileSource.h"       // ONLY TEMPORARILY, FOR COMPABILITY
-#include "FairLogger.h"           // for FairLogger, MESSAGE_ORIGIN
-#include "FairMixedSource.h"      // ONLY TEMPORARILY, FOR COMPABILITY
-#include "FairParSet.h"           // for FairParSet
-#include "FairRootManager.h"      // for FairRootManager
-#include "FairRunIdGenerator.h"   // for FairRunIdGenerator
-#include "FairRuntimeDb.h"        // for FairRuntimeDb
-#include "FairTask.h"             // for FairTask
-#include "FairTrajFilter.h"       // for FairTrajFilter
-#include "signal.h"
+#include <TCollection.h>         // for TIter
+#include <TFile.h>               // for TFile, gFile
+#include <TGeoManager.h>         // for gGeoManager, TGeoManager
+#include <TKey.h>                // for TKey
+#include <TList.h>               // for TList
+#include <TObjArray.h>           // for TObjArray
+#include <TObject.h>             // for TObject
+#include <TROOT.h>               // for TROOT, gROOT
+#include <TSeqCollection.h>      // for TSeqCollection
+#include <TSystem.h>             // for TSystem, gSystem
+#include <stdlib.h>              // for exit
+#include <string.h>              // for strcmp
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <fairlogger/Logger.h>   // for LOG, Logger
+#include <sys/signal.h>          // for signal, SIGINT
+#include <iostream>              // for operator<<, basic_ostream, endl, cout
 
-#include <TCollection.h>      // for TIter
-#include <TFile.h>            // for TFile, gFile
-#include <TGeoManager.h>      // for gGeoManager, TGeoManager
-#include <TKey.h>             // for TKey
-#include <TList.h>            // for TList
-#include <TObjArray.h>        // for TObjArray
-#include <TObject.h>          // for TObject
-#include <TROOT.h>            // for TROOT, gROOT
-#include <TSeqCollection.h>   // for TSeqCollection
-#include <TSystem.h>          // for TSystem, gSystem
-#include <iostream>           // for operator<<, basic_ostream, etc
-#include <stdlib.h>           // for exit
-#include <string.h>           // for strcmp
+#include "FairBaseParSet.h"      // for FairBaseParSet
+#include "FairEventHeader.h"     // for FairEventHeader
+#include "FairField.h"           // for FairField
+#include "FairFieldFactory.h"    // for FairFieldFactory
+#include "FairFileHeader.h"      // for FairFileHeader
+#include "FairParSet.h"          // for FairParSet
+#include "FairRootManager.h"     // for FairRootManager
+#include "FairRunIdGenerator.h"  // for FairRunIdGenerator
+#include "FairRuntimeDb.h"       // for FairRuntimeDb
+#include "FairTask.h"            // for FairTask
+#include "FairTrajFilter.h"      // for FairTrajFilter
 
 using std::cout;
 using std::endl;

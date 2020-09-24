@@ -8,11 +8,16 @@
 #ifndef FAIRTIMESTAMP_H
 #define FAIRTIMESTAMP_H
 
-#include "FairMultiLinkedData_Interface.h"   // for FairMultiLinkedData
-
-#include <Rtypes.h>   // for Double_t, etc
+#include <Rtypes.h>                         // for THashConsistencyHolder
+#include <RtypesCore.h>                     // for Double_t, Bool_t, Int_t
 #include <iosfwd>     // for ostream
-#include <iostream>   // for ostream, cout
+#include <iostream>                         // for ostream, cout
+
+#include "FairMultiLinkedData_Interface.h"  // for FairMultiLinkedData_Inter...
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 namespace boost {
 namespace serialization {

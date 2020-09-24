@@ -15,9 +15,14 @@
 #ifndef PixelDigi_H_
 #define PixelDigi_H_
 
-#include "FairTimeStamp.h"   // for FairTimeStamp
+#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>     // for Int_t, Double_t
 
-#include <Rtypes.h>   // for PixelDigi::Class, ClassDef, PixelDigi::St...
+#include "FairTimeStamp.h"  // for FairTimeStamp
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class PixelDigi : public FairTimeStamp
 {

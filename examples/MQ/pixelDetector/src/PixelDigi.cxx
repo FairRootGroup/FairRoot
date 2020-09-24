@@ -13,6 +13,9 @@
  */
 
 #include "PixelDigi.h"
+
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 ClassImp(PixelDigi);
 
 PixelDigi::PixelDigi()

@@ -15,20 +15,23 @@
  * @since 28.02.05
  */
 
-#include "FairRootManager.h"   // for FairRootManager
-#include "FairRun.h"           // for FairRun
-#include "FairRunInfo.h"       // for FairRunInfo
-
-#include <Rtypes.h>    // for Bool_t, Double_t, UInt_t, etc
+#include <Rtypes.h>           // for THashConsistencyHolder, ClassDef
 #include <TString.h>   // for TString
+#include <RtypesCore.h>       // for Bool_t, Int_t, Double_t, UInt_t, kTRUE
+
+#include "FairRootManager.h"  // for FairRootManager
+#include "FairRun.h"          // for FairRun
+#include "FairRunInfo.h"      // for FairRunInfo
 
 class FairField;
 class TF1;
 class TFile;
-
 class FairSource;
 class FairFileSource;
 class FairMixedSource;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairRunAna : public FairRun
 {

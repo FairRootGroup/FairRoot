@@ -9,7 +9,14 @@
 #ifndef FAIR_BASEMCGENERATOR_H_
 #define FAIR_BASEMCGENERATOR_H_
 
-#include "FairGenerator.h"
+#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>     // for Double_t, Int_t, Bool_t
+
+#include "FairGenerator.h"  // for FairGenerator
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * abstract class for generators that use "macro input" to generate partcles

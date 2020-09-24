@@ -19,17 +19,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "FairParAsciiFileIo.h"
 
-#include "FairDetParIo.h"   // for FairDetParIo
-#include "FairLogger.h"
-#include "FairRuntimeDb.h"   // for FairRuntimeDb
+#include <TCollection.h>        // for TIter
+#include <TList.h>              // for TList, TListIter
+#include <TObjString.h>         // for TObjString
+#include <TString.h>            // for TString, operator<<
+#include <TSystem.h>            // for TSystem, gSystem
+#include <string.h>             // for strcmp
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for LOG, Logger
+#include <iostream>             // for cout, cerr
 
-#include <TCollection.h>   // for TIter
-#include <TList.h>         // for TList, TListIter
-#include <TObjString.h>    // for TObjString
-#include <TString.h>       // for TString, operator<<
-#include <TSystem.h>       // for TSystem, gSystem
-#include <iostream>        // for cout, cerr
-#include <string.h>        // for strcmp
+#include "FairDetParIo.h"       // for FairDetParIo
+#include "FairRuntimeDb.h"      // for FairRuntimeDb
 
 using std::cerr;
 using std::cout;

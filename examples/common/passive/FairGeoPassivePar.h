@@ -8,12 +8,16 @@
 #ifndef FAIRGEOPASSIVEPAR_H
 #define FAIRGEOPASSIVEPAR_H
 
-#include "FairParGenericSet.h"   // for FairParGenericSet
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>         // for Bool_t
 
-#include <Rtypes.h>   // for FairGeoPassivePar::Class, etc
+#include "FairParGenericSet.h"  // for FairParGenericSet
 
 class FairParamList;
 class TObjArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairGeoPassivePar : public FairParGenericSet
 {

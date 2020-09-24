@@ -8,10 +8,15 @@
 #ifndef FAIRTESTDETECTORHIT_H_
 #define FAIRTESTDETECTORHIT_H_
 
-#include "FairHit.h"   // for FairHit
+#include <Rtypes.h>                             // for THashConsistencyHolder
+#include <RtypesCore.h>                         // for Int_t
 
-#include <Rtypes.h>   // for FairTestDetectorHit::Class, etc
-#include <boost/serialization/base_object.hpp>
+#include "FairHit.h"                            // for FairHit
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
+
 namespace boost {
 namespace serialization {
 class access;

@@ -8,9 +8,10 @@
 #ifndef FAIRGEOINTERFACE_H
 #define FAIRGEOINTERFACE_H
 
-#include <Rtypes.h>    // for Bool_t, kFALSE, Int_t, etc
-#include <TObject.h>   // for TObject
-#include <TString.h>   // for TString
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TObject.h>     // for TObject
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Bool_t, kFALSE, Int_t
 
 class FairGeoIo;
 class FairGeoSet;
@@ -19,6 +20,9 @@ class FairGeoShapes;
 class FairGeoBuilder;
 class TObjArray;
 class TList;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 enum EHGeoDetPart
 {

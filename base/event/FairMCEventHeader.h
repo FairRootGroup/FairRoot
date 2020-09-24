@@ -14,9 +14,14 @@
 #ifndef FAIRMCEVENTHEADER_H
 #define FAIRMCEVENTHEADER_H 1
 
-#include <Rtypes.h>     // for Double_t, UInt_t, etc
-#include <TNamed.h>     // for TNamed
-#include <TVector3.h>   // for TVector3
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TNamed.h>      // for TNamed
+#include <TVector3.h>    // for TVector3
+#include <RtypesCore.h>  // for Double_t, Double32_t, UInt_t, Int_t, Bool_t
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMCEventHeader : public TNamed
 {

@@ -26,11 +26,13 @@
 
 #include "MRevBuffer.h"   // class definition
 
-#include <TSocket.h>      // for TSocket, etc
+#include <TSocket.h>            // for TSocket, kDefault
 #include <netinet/in.h>   // IWYU pragma: keep
 #include <signal.h>       // IWYU pragma: keep
 #include <time.h>         // IWYU pragma: keep
-#include <unistd.h>       // IWYU pragma: keep
+#include <unistd.h>             // for sleep
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for Logger, LOG
 
 #ifdef Linux
 #include <select.h>       // IWYU pragma: keep
@@ -38,17 +40,16 @@
 #else                     // AIX
 #include <strings.h>      // IWYU pragma: keep
 #include <sys/select.h>   // IWYU pragma: keep
-#include <sys/socket.h>   // IWYU pragma: keep
+#include <sys/socket.h>         // for recv
 #endif
 
-#include "ptrevcomm.h"     // communication structure
-#include "ptrevmbsdef.h"   // MBS data definitions
+#include "ptrevcomm.h"          // for srevComm, srevInfo, sptrevDummy
+#include "ptrevmbsdef.h"        // for sMbsSev101, sMbsBufFrag, sMbsEv101
+#include "i386/endian.h"        // for ntohl, htonl
 
 // IWYU pragma: no_include <stdio.h>
 // IWYU pragma: no_include <sys/_endian.h>
 // IWYU pragma: no_include <sys/signal.h>
-
-#include "FairLogger.h"
 
 ClassImp(MRevBuffer);
 ClassImp(REvent);

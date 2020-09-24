@@ -6,26 +6,28 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "FairBoxGenerator.h"
-#include "FairCave.h"
-#include "FairMQSimDevice.h"
-#include "FairModule.h"
-#include "FairOnlineSink.h"
-#include "FairParAsciiFileIo.h"
-#include "FairPrimaryGenerator.h"
-#include "Pixel.h"
-#include "PixelDigitize.h"
-#include "runFairMQDevice.h"
+#include <TObjArray.h>                                      // for TObjArray
+#include <TRandom.h>                                        // for TRandom
+#include <TString.h>                                        // for TString
+#include <TSystem.h>                                        // for TSystem
+#include <ProgOptionsFwd.h>                                 // for FairMQPro...
+#include <RtypesCore.h>                                     // for Int_t, kTRUE
+#include <cstdint>                                          // for int64_t
+#include <cstdlib>                                          // for getenv
+#include <stdexcept>                                        // for runtime_e...
+#include <string>                                           // for basic_string
+#include <iosfwd>                                           // for string
 
-#include <Rtypes.h>
-#include <TObjArray.h>
-#include <TRandom.h>
-#include <TString.h>
-#include <TSystem.h>
-#include <cstdint>
-#include <cstdlib>
-#include <stdexcept>
-#include <string>
+#include "FairBoxGenerator.h"                               // for FairBoxGe...
+#include "FairCave.h"                                       // for FairCave
+#include "FairMQSimDevice.h"                                // for FairMQSim...
+#include "FairModule.h"                                     // for FairModule
+#include "FairOnlineSink.h"                                 // for FairOnlin...
+#include "FairParAsciiFileIo.h"                             // for FairParAs...
+#include "FairPrimaryGenerator.h"                           // for FairPrima...
+#include "Pixel.h"                                          // for Pixel
+#include "PixelDigitize.h"                                  // for PixelDigi...
+#include "runFairMQDevice.h"                                // for FairMQDev...
 
 namespace bpo = boost::program_options;
 

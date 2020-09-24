@@ -7,14 +7,15 @@
  ********************************************************************************/
 #include "FairTutorialDet4MilleWriter.h"
 
-#include "FairLogger.h"            // for FairLogger, etc
-#include "FairRootManager.h"       // for FairRootManager
-#include "FairTrackParam.h"        // for FairTrackParam
-#include "FairTutorialDet4Hit.h"   // for FairTutorialDet4Hit
-#include "Mille.h"                 // for Mille
+#include <TClonesArray.h>         // for TClonesArray
+#include <TGenericClassInfo.h>    // for TGenericClassInfo
+#include <fairlogger/Logger.h>    // for LOG, Logger
+#include <set>                    // for set, set<>::iterator
 
-#include <TClonesArray.h>   // for TClonesArray
-#include <set>              // for set, set<>::iterator, etc
+#include "FairRootManager.h"      // for FairRootManager
+#include "FairTrackParam.h"       // for FairTrackParam
+#include "FairTutorialDet4Hit.h"  // for FairTutorialDet4Hit
+#include "Mille.h"                // for Mille
 
 FairTutorialDet4MilleWriter::FairTutorialDet4MilleWriter()
     : FairTask("FairTutorialDet4MilleWriter")

@@ -17,12 +17,16 @@
 #ifndef FAIRHITDRAW_H_
 #define FAIRHITDRAW_H_
 
-#include "FairBoxSetDraw.h"   // for FairBoxSetDraw
+#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
+#include <TVector3.h>        // for TVector3
+#include <RtypesCore.h>      // for Int_t
 
-#include <Rtypes.h>     // for FairHitDraw::Class, etc
-#include <TVector3.h>   // for TVector3
+#include "FairBoxSetDraw.h"  // for FairBoxSetDraw
 
 class TObject;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairHitDraw : public FairBoxSetDraw
 {

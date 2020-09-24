@@ -8,9 +8,15 @@
 #ifndef FAIRTUTPROPGEO_H
 #define FAIRTUTPROPGEO_H
 
-#include "FairGeoSet.h"   // for FairGeoSet
-#include "Rtypes.h"       // for FairTutPropGeo::Class, ClassDef, FairTutPropGeo::Streamer
-#include "TString.h"      // for TString
+#include <RtypesCore.h>  // for Int_t
+
+#include "FairGeoSet.h"  // for FairGeoSet
+#include "Rtypes.h"      // for THashConsistencyHolder, ClassDef
+#include "TString.h"     // for TString
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutPropGeo : public FairGeoSet
 {

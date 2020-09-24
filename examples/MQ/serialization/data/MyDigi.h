@@ -16,18 +16,23 @@
 #ifndef MYDIGIDATA_H
 #define MYDIGIDATA_H
 
-#include "FairTimeStamp.h"   // for FairTimeStamp
+#include <Rtypes.h>                             // for THashConsistencyHolder
+#include <RtypesCore.h>                         // for Int_t, Double_t
+#include <iosfwd>                               // for ostream
+#include <iostream>                             // for operator<<, basic_ost...
 
-#include <Rtypes.h>   // for Int_t, etc
-#include <iosfwd>     // for ostream
-#include <iostream>   // for operator<<, basic_ostream, etc
+#include "FairTimeStamp.h"                      // for FairTimeStamp
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 namespace boost {
 namespace serialization {
 class access;
 }
 }   // namespace boost
-#include <boost/serialization/base_object.hpp>
+#include <boost/serialization/base_object.hpp>  // for base_object
 
 class MyDigi : public FairTimeStamp
 {

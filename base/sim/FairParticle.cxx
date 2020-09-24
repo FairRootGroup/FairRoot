@@ -14,11 +14,12 @@
 
 #include "FairParticle.h"
 
-#include <TDatabasePDG.h>      // for TDatabasePDG
-#include <TMCParticleType.h>   // for TMCParticleType::kPTIon, etc
-#include <TParticle.h>         // for TParticle
-#include <TParticlePDG.h>      // for TParticlePDG
-#include <iostream>            // for operator<<, basic_ostream, etc
+#include <TDatabasePDG.h>       // for TDatabasePDG
+#include <TMCParticleType.h>    // for kPTIon, kPTHadron, TMCParticleType
+#include <TParticle.h>          // for TParticle
+#include <TParticlePDG.h>       // for TParticlePDG
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <iostream>             // for operator<<, basic_ostream, endl, cout
 
 using std::cout;
 using std::endl;

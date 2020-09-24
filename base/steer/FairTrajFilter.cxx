@@ -12,17 +12,19 @@
 
 #include "FairTrajFilter.h"
 
-#include "FairRootManager.h"   // for FairRootManager
+#include <TClonesArray.h>       // for TClonesArray
+#include <TError.h>             // for Fatal
+#include <TGeoBBox.h>           // for TGeoBBox
+#include <TGeoManager.h>        // for TGeoManager, gGeoManager
+#include <TGeoVolume.h>         // for TGeoVolume
+#include <TMath.h>              // for Pi, TwoPi, Log
+#include <TMathBase.h>          // for Abs
+#include <TParticle.h>          // for TParticle
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TObject.h>            // for TObject
+#include <iostream>             // for operator<<, endl, basic_ostream, cout
 
-#include <TClonesArray.h>   // for TClonesArray
-#include <TError.h>         // for Fatal
-#include <TGeoBBox.h>
-#include <TGeoManager.h>
-#include <TGeoVolume.h>
-#include <TMath.h>       // for Pi, TwoPi, Log
-#include <TMathBase.h>   // for Abs
-#include <TParticle.h>   // for TParticle
-#include <iostream>      // for operator<<, basic_ostream, etc
+#include "FairRootManager.h"    // for FairRootManager
 
 using namespace std;
 

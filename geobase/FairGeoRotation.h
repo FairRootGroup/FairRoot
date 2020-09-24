@@ -8,13 +8,17 @@
 #ifndef FAIRGEOROTATION_H
 #define FAIRGEOROTATION_H
 
-#include "FairGeoVector.h"   // for FairGeoVector
+#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
+#include <TObject.h>        // for TObject
+#include <RtypesCore.h>     // for Double_t, Int_t, Bool_t, Float_t, kFALSE
+#include <iostream>         // for operator<<, cout, ostream, basic_ostream
 
-#include <Rtypes.h>    // for Double_t, Int_t, Bool_t, etc
-#include <TObject.h>   // for TObject
-#include <iostream>    // for operator<<, cout, ostream, etc
+#include "FairGeoVector.h"  // for FairGeoVector
 
 class TRotMatrix;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * rotation matrix

@@ -15,10 +15,17 @@
 #ifndef PIXELDIGITIZE_H
 #define PIXELDIGITIZE_H 1
 
-#include "FairTask.h"
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Int_t, Double_t, Option_t
+
+#include "FairTask.h"    // for InitStatus, FairTask
 
 class TClonesArray;
 class PixelDigiPar;
+class TBuffer;
+class TClass;
+class TList;
+class TMemberInspector;
 
 class PixelDigitize : public FairTask
 {

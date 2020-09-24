@@ -7,13 +7,14 @@
  ********************************************************************************/
 #include "FairTutorialDet4ContFact.h"
 
-#include "FairRuntimeDb.h"            // for FairRuntimeDb
-#include "FairTutorialDet4GeoPar.h"   // for FairTutorialDet4GeoPar
-#include "FairTutorialDet4MisalignPar.h"
+#include <TList.h>                        // for TList
+#include <TString.h>                      // for TString
+#include <TGenericClassInfo.h>            // for TGenericClassInfo
+#include <cstring>                        // for strcmp
 
-#include <TList.h>     // for TList
-#include <TString.h>   // for TString
-#include <cstring>     // for strcmp
+#include "FairRuntimeDb.h"                // for FairRuntimeDb
+#include "FairTutorialDet4GeoPar.h"       // for FairTutorialDet4GeoPar
+#include "FairTutorialDet4MisalignPar.h"  // for FairTutorialDet4MisalignPar
 
 class FairParSet;
 

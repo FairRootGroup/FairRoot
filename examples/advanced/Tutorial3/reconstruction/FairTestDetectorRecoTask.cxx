@@ -7,15 +7,16 @@
  ********************************************************************************/
 #include "FairTestDetectorRecoTask.h"
 
-#include "FairLink.h"   // for FairLink
-#include "FairLogger.h"
-#include "FairRootManager.h"        // for FairRootManager
-#include "FairTestDetectorDigi.h"   // for FairTestDetectorDigi
-#include "FairTestDetectorHit.h"    // for FairTestDetectorHit
+#include <TClonesArray.h>          // for TClonesArray
+#include <TMath.h>                 // for Sqrt
+#include <TVector3.h>              // for TVector3
+#include <TGenericClassInfo.h>     // for TGenericClassInfo
+#include <fairlogger/Logger.h>     // for LOG
 
-#include <TClonesArray.h>   // for TClonesArray
-#include <TMath.h>          // for Sqrt
-#include <TVector3.h>       // for TVector3
+#include "FairLink.h"              // for FairLink
+#include "FairRootManager.h"       // for FairRootManager
+#include "FairTestDetectorDigi.h"  // for FairTestDetectorDigi
+#include "FairTestDetectorHit.h"   // for FairTestDetectorHit
 
 FairTestDetectorRecoTask::FairTestDetectorRecoTask()
     : FairTask()

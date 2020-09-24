@@ -12,26 +12,30 @@
 #ifndef FairEventManager_H
 #define FairEventManager_H
 
-#include "FairEveAnimationControl.h"
-#include "FairRunAna.h"   // for FairRunAna
-
-#include <Rtypes.h>             // for Float_t, Int_t, Bool_t, etc
-#include <TEveEventManager.h>   // for TEveEventManager
+#include <Rtypes.h>                   // for THashConsistencyHolder, ClassDef
+#include <TEveEventManager.h>         // for TEveEventManager
 #include <TEveProjectionAxes.h>
-#include <TGLViewer.h>
-#include <map>
+#include <TGLViewer.h>                // for TGLViewer, TGLViewer::ECameraType
+#include <RtypesCore.h>               // for Double_t, Int_t, Float_t, Bool_t
+#include <TString.h>                  // for TString
+#include <map>                        // for map
+
+#include "FairEveAnimationControl.h"  // for FairEveAnimationControl, FairEv...
+#include "FairRunAna.h"               // for FairRunAna
 
 class TVector3;
-
 class FairRootManager;   // does not work with streamer, reason unclear
 class FairTask;
 class FairXMLNode;
-
 class TEveProjectionManager;
 class TEveScene;
 class TEveViewer;
 class TGeoNode;
 class TGListTreeItem;
+class TBuffer;
+class TClass;
+class TEveProjectionAxes;
+class TMemberInspector;
 
 class FairEventManager : public TEveEventManager
 {

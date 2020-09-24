@@ -14,14 +14,18 @@
 #ifndef FAIR_PARTICLE_H
 #define FAIR_PARTICLE_H
 
-#include <Rtypes.h>            // for Int_t, Double_t, Bool_t, etc
-#include <TMCParticleType.h>   // for TMCParticleType
-#include <TObject.h>           // for TObject
-#include <TRef.h>              // for TRef
-#include <TRefArray.h>         // for TRefArray
-#include <TString.h>           // for TString
+#include <Rtypes.h>           // for THashConsistencyHolder, ClassDef
+#include <TMCParticleType.h>  // for TMCParticleType
+#include <TObject.h>          // for TObject
+#include <TRef.h>             // for TRef
+#include <TRefArray.h>        // for TRefArray
+#include <TString.h>          // for TString
+#include <RtypesCore.h>       // for Int_t, Double_t, Bool_t, kFALSE, Option_t
 
 class TParticle;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairParticle : public TObject
 {

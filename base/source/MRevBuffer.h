@@ -24,10 +24,14 @@
 #ifndef MRevBuffer_H
 #define MRevBuffer_H
 
-#include <Rtypes.h>    // for Int_t, ClassDef, etc
-#include <TObject.h>   // for TObject
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TObject.h>     // for TObject
+#include <RtypesCore.h>  // for Int_t, Short_t
 
 class TSocket;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class REvent : public TObject
 {

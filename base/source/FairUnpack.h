@@ -14,8 +14,13 @@
 #ifndef FAIRUNPACK_H
 #define FAIRUNPACK_H
 
-#include <Rtypes.h>   // for Int_t, Bool_t, etc
-#include <TObject.h>
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TObject.h>     // for TObject
+#include <RtypesCore.h>  // for Short_t, Bool_t, Int_t, kTRUE
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairUnpack : public TObject
 {

@@ -6,8 +6,10 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "Ex1Processor.h"
-#include "runFairMQDevice.h"
+#include <string>                                           // for operator+
+
+#include "Ex1Processor.h"                                   // for Ex1Processor
+#include "runFairMQDevice.h"                                // for FairMQDev...
 
 namespace bpo = boost::program_options;
 

@@ -16,15 +16,18 @@
 #ifndef __FAIRROOT__FairFileSource__
 #define __FAIRROOT__FairFileSource__
 
-#include "FairSource.h"
-
 #include <TArrayI.h>
-#include <TChain.h>
-#include <TFile.h>
+#include <TChain.h>      // for TChain
+#include <TFile.h>       // for TFile
 #include <TFolder.h>
-#include <TString.h>
-#include <list>
-#include <map>
+#include <TString.h>     // for TString
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Bool_t, Double_t, UInt_t, Int_t, kTRUE
+#include <list>          // for list
+#include <map>           // for map, multimap
+#include <typeinfo>      // for type_info
+
+#include "FairSource.h"  // for FairSource, Source_Type, kFILE
 
 class FairEventHeader;
 class FairFileHeader;
@@ -32,6 +35,13 @@ class FairMCEventHeader;
 class FairRuntimeDb;
 class TF1;
 class TTree;
+class TArrayI;
+class TBuffer;
+class TClass;
+class TFolder;
+class TMemberInspector;
+class TObjArray;
+class TObject;
 
 class FairFileSource : public FairSource
 {

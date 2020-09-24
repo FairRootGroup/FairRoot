@@ -16,10 +16,12 @@
 #ifndef FAIRMQPRIMARYGENERATORDEVICE_H_
 #define FAIRMQPRIMARYGENERATORDEVICE_H_
 
-#include <FairMQDevice.h>
-#include <cstdint>
+#include <FairMQDevice.h>   // for FairMQDevice
+#include <FairMQMessage.h>  // for FairMQMessagePtr
+#include <cstdint>          // for int64_t
 #include <string>
-#include <thread>
+#include <thread>           // for thread
+#include <iosfwd>           // for string
 
 class FairMCEventHeader;
 class FairPrimaryGenerator;

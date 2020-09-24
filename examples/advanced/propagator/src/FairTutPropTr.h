@@ -15,11 +15,18 @@
 #ifndef FAIRTUTGEANETR_H
 #define FAIRTUTGEANETR_H 1
 
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Option_t
+
 #include "FairPropagator.h"
-#include "FairTask.h"
+#include "FairTask.h"    // for FairTask, InitStatus
 
 class TClonesArray;
 class FairTutPropPoint;
+class FairPropagator;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutPropTr : public FairTask
 {

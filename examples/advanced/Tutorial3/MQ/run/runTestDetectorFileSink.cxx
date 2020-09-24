@@ -6,8 +6,26 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "FairTestDetectorFileSink.h"
-#include "runFairMQDevice.h"
+#include <functional>                                       // for __base
+#include <iosfwd>                                           // for string
+#include <string>                                           // for basic_string
+
+#include "FairTestDetectorFileSink.h"                       // for FairTestD...
+#include "runFairMQDevice.h"                                // for FairMQDev...
+#include "BoostSerializer.h"                                // for has_Boost...
+#include "FairTestDetectorHit.h"                            // for FairTestD...
+
+class TMessage;
+namespace TestDetectorFlat {
+struct HitPayload;
+}  // namespace TestDetectorFlat
+namespace TestDetectorPayload {
+class Hit;
+}  // namespace TestDetectorPayload
+namespace TestDetectorProto {
+class HitPayload;
+}  // namespace TestDetectorProto
+struct MsgPack;
 
 namespace bpo = boost::program_options;
 

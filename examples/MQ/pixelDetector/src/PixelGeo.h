@@ -8,10 +8,15 @@
 #ifndef PIXELGEO_H
 #define PIXELGEO_H
 
-#include "FairGeoSet.h"   // for FairGeoSet
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Int_t
 
-#include <Rtypes.h>    // for PixelGeo::Class, ClassDef, PixelGeo::Streamer
-#include <TString.h>   // for TString
+#include "FairGeoSet.h"  // for FairGeoSet
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class PixelGeo : public FairGeoSet
 {

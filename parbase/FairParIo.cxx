@@ -18,10 +18,11 @@
 
 #include "FairParIo.h"
 
-#include "FairDetParIo.h"   // for FairDetParIo
+#include <TCollection.h>        // for TIter
+#include <TList.h>              // for TList
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
 
-#include <TCollection.h>   // for TIter
-#include <TList.h>         // for TList
+#include "FairDetParIo.h"       // for FairDetParIo
 
 using namespace std;
 

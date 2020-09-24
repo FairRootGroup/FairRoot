@@ -17,11 +17,13 @@
 
 #include "FairGeoMedia.h"
 
-#include "FairGeoMedium.h"
-#include "FairLogger.h"
+#include <TList.h>              // for TList, TListIter
+#include <RtypesCore.h>         // for Int_t
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for LOG
+#include <iostream>             // for operator<<, char_traits, basic_ostream
 
-#include <TList.h>
-#include <iostream>
+#include "FairGeoMedium.h"      // for FairGeoMedium
 
 using std::cout;
 using std::endl;

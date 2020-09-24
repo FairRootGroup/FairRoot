@@ -11,21 +11,22 @@
 // -------------------------------------------------------------------------
 #include "FairTutorialDet4HitProducerIdealMisalign.h"
 
-#include "FairLogger.h"                   // for FairLogger, etc
+#include <TClonesArray.h>                 // for TClonesArray
+#include <TMath.h>                        // for Cos, Sin
+#include <TMathBase.h>                    // for Abs
+#include <TRandom.h>                      // for TRandom, gRandom
+#include <TVector3.h>                     // for TVector3
+#include <TGenericClassInfo.h>            // for TGenericClassInfo
+#include <fairlogger/Logger.h>            // for Logger, LOG
+
 #include "FairRootManager.h"              // for FairRootManager
 #include "FairRunAna.h"                   // for FairRunAna
 #include "FairRuntimeDb.h"                // for FairRuntimeDb
 #include "FairTutorialDet4GeoHandler.h"   // for FairTutorialDet4GeoHandler
-#include "FairTutorialDet4GeoPar.h"
-#include "FairTutorialDet4Hit.h"   // for FairTutorialDet4Hit
-#include "FairTutorialDet4MisalignPar.h"
-#include "FairTutorialDet4Point.h"   // for FairTutorialDet4Point
-
-#include <TClonesArray.h>   // for TClonesArray
-#include <TMath.h>          // for Cos, Sin
-#include <TMathBase.h>      // for Abs
-#include <TRandom.h>        // for TRandom, gRandom
-#include <TVector3.h>       // for TVector3
+#include "FairTutorialDet4GeoPar.h"       // for FairTutorialDet4GeoPar
+#include "FairTutorialDet4Hit.h"          // for FairTutorialDet4Hit
+#include "FairTutorialDet4MisalignPar.h"  // for FairTutorialDet4MisalignPar
+#include "FairTutorialDet4Point.h"        // for FairTutorialDet4Point
 
 FairTutorialDet4HitProducerIdealMisalign::FairTutorialDet4HitProducerIdealMisalign()
     : FairTask("Missallign Hit Producer for the TutorialDet")

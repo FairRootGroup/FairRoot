@@ -7,17 +7,18 @@
  ********************************************************************************/
 #include "FairRutherford.h"
 
-#include "FairDetectorList.h"       // for DetectorId::kFairRutherford
-#include "FairRootManager.h"        // for FairRootManager
-#include "FairRutherfordGeo.h"      // for FairRutherfordGeo
-#include "FairRutherfordGeoPar.h"   // for FairRutherfordGeoPar
-#include "FairRutherfordPoint.h"    // for FairRutherfordPoint
-#include "FairStack.h"              // for FairStack
-#include "FairVolume.h"             // for FairVolume
+#include <TClonesArray.h>          // for TClonesArray
+#include <TVirtualMC.h>            // for TVirtualMC
+#include <TVirtualMCStack.h>       // for TVirtualMCStack
+#include <TGenericClassInfo.h>     // for TGenericClassInfo
 
-#include <TClonesArray.h>      // for TClonesArray
-#include <TVirtualMC.h>        // for TVirtualMC
-#include <TVirtualMCStack.h>   // for TVirtualMCStack
+#include "FairDetectorList.h"      // for kFairRutherford
+#include "FairRootManager.h"       // for FairRootManager
+#include "FairRutherfordGeo.h"     // for FairRutherfordGeo
+#include "FairRutherfordGeoPar.h"  // for FairRutherfordGeoPar
+#include "FairRutherfordPoint.h"   // for FairRutherfordPoint
+#include "FairStack.h"             // for FairStack
+#include "FairVolume.h"            // for FairVolume
 
 FairRutherfordGeo* FairRutherford::fgGeo = nullptr;
 

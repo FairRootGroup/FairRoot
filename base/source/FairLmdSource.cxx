@@ -13,15 +13,17 @@
 
 #include "FairLmdSource.h"
 
-#include "FairLogger.h"
+#include <TIterator.h>          // for TIterator
+#include <TList.h>              // for TList
+#include <TObjString.h>         // for TObjString
+#include <TRegexp.h>            // for TRegexp
+#include <TSystem.h>            // for FileStat_t, TSystem, gSystem
+#include <TSystemDirectory.h>   // for TSystemDirectory
+#include <TSystemFile.h>        // for TSystemFile
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for Logger, LOG
 
-#include <TIterator.h>
-#include <TList.h>
-#include <TObjString.h>
-#include <TRegexp.h>
-#include <TSystem.h>
-#include <TSystemDirectory.h>
-#include <TSystemFile.h>
+#include "typedefs.h"           // for INTS4, CHARS
 
 FairLmdSource::FairLmdSource()
     : FairMbsSource()

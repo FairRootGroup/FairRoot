@@ -12,10 +12,14 @@
 #ifndef FAIRRADLENMANAGER_H
 #define FAIRRADLENMANAGER_H 1
 
-#include <Rtypes.h>           // for Float_t, Double_t, Int_t, etc
-#include <TLorentzVector.h>   // for TLorentzVector
+#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
+#include <TLorentzVector.h>  // for TLorentzVector
+#include <RtypesCore.h>      // for Float_t, Double_t, Int_t
 
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * @class FairRadLenManager

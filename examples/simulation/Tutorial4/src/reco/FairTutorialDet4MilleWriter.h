@@ -8,13 +8,17 @@
 #ifndef FAIRTUTORIALDET4MILLEWRITER_H
 #define FAIRTUTORIALDET4MILLEWRITER_H
 
-#include "FairTask.h"   // for InitStatus, FairTask
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Bool_t, Int_t, Option_t
 
-#include <Rtypes.h>   // for Option_t, Bool_t, etc
-#include <TString.h>
+#include "FairTask.h"    // for InitStatus, FairTask
 
 class Mille;
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutorialDet4MilleWriter : public FairTask
 {

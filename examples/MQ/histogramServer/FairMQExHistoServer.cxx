@@ -8,15 +8,15 @@
 
 #include "FairMQExHistoServer.h"
 
-#include "FairLogger.h"
-#include "FairMQExHistoCanvasDrawer.h"
-#include "RootSerializer.h"
+#include <TH1.h>                        // for TH1
+#include <TObject.h>                    // for TObject
+#include <TString.h>                    // for TString
+#include <chrono>                       // for milliseconds
+#include <__mutex_base>                 // for mutex, lock_guard
+#include <functional>                   // for __base
 
-#include <TH1.h>
-#include <TObject.h>
-#include <TString.h>
-#include <chrono>
-#include <mutex>
+#include "FairMQExHistoCanvasDrawer.h"  // for FairMQExHistoCanvasDrawer
+#include "RootSerializer.h"             // for RootSerializer
 
 std::mutex mtx;
 

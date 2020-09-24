@@ -8,11 +8,14 @@
 #ifndef FAIRTUTORIALDET2CONTFACT_H
 #define FAIRTUTORIALDET2CONTFACT_H
 
-#include "FairContFact.h"
+#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
 
-#include <Rtypes.h>
+#include "FairContFact.h"  // for FairContFact, FairContainer (ptr only)
 
 class FairParSet;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutorialDet2ContFact : public FairContFact
 {

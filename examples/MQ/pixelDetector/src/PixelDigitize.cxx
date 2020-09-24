@@ -14,24 +14,23 @@
 
 #include "PixelDigitize.h"
 
-#include "PixelDigi.h"
-#include "PixelDigiPar.h"
-#include "PixelPoint.h"
-
-// Includes from base
-#include "FairLogger.h"
-#include "FairRootManager.h"
-#include "FairRun.h"
-#include "FairRuntimeDb.h"
-
 // Includes from ROOT
-#include <TClonesArray.h>
-#include <TGeoBBox.h>
-#include <TGeoManager.h>
-#include <TGeoNode.h>
-#include <TGeoVolume.h>
-#include <TList.h>
-#include <TString.h>
+#include <TClonesArray.h>       // for TClonesArray
+#include <TGeoBBox.h>           // for TGeoBBox
+#include <TGeoManager.h>        // for TGeoManager, gGeoManager
+#include <TGeoNode.h>           // for TGeoNode
+#include <TGeoVolume.h>         // for TGeoVolume
+#include <TList.h>              // for TList
+#include <TString.h>            // for TString, Form
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for Logger, LOG
+
+#include "PixelDigi.h"          // for PixelDigi
+#include "PixelDigiPar.h"       // for PixelDigiPar
+#include "PixelPoint.h"         // for PixelPoint
+#include "FairRootManager.h"    // for FairRootManager
+#include "FairRun.h"            // for FairRun
+#include "FairRuntimeDb.h"      // for FairRuntimeDb
 
 PixelDigitize::PixelDigitize()
     : PixelDigitize("Pixel Digitizer", 0)

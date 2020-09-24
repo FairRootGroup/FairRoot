@@ -7,17 +7,18 @@
  ********************************************************************************/
 #include "FairTestDetectorTimeDigiTask.h"
 
-#include "FairLink.h"   // for FairLink
-#include "FairLogger.h"
-#include "FairRootManager.h"        // for FairRootManager
-#include "FairTestDetectorDigi.h"   // for FairTestDetectorDigi
-#include "FairTestDetectorDigiWriteoutBuffer.h"
-#include "FairTestDetectorPoint.h"   // for FairTestDetectorPoint
+#include <TClonesArray.h>                        // for TClonesArray
+#include <TMath.h>                               // for Sqrt
+#include <TRandom.h>                             // for TRandom, gRandom
+#include <TString.h>                             // for TString
+#include <TGenericClassInfo.h>                   // for TGenericClassInfo
+#include <fairlogger/Logger.h>                   // for LOG, Logger
 
-#include <TClonesArray.h>   // for TClonesArray
-#include <TMath.h>          // for Sqrt
-#include <TRandom.h>        // for TRandom, gRandom
-#include <TString.h>        // for TString
+#include "FairLink.h"                            // for FairLink
+#include "FairRootManager.h"                     // for FairRootManager
+#include "FairTestDetectorDigi.h"                // for FairTestDetectorDigi
+#include "FairTestDetectorDigiWriteoutBuffer.h"  // for FairTestDetectorDigi...
+#include "FairTestDetectorPoint.h"               // for FairTestDetectorPoint
 
 FairTestDetectorTimeDigiTask::FairTestDetectorTimeDigiTask()
     : FairTask()

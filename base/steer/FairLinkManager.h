@@ -1,12 +1,16 @@
 #ifndef FAIR_LINK_MANAGER_H
 #define FAIR_LINK_MANAGER_H
 
-#include <Rtypes.h>    // for Bool_t, Int_t, UInt_t, etc
-#include <TMCtls.h>    // for multi-threading
-#include <TObject.h>   // for TObject
-#include <set>         // for set of branch types to ignore
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TMCtls.h>      // for TMCThreadLocal
+#include <TObject.h>     // for TObject
+#include <RtypesCore.h>  // for Int_t, Bool_t
+#include <set>           // for set
 
 class FairLogger;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairLinkManager : public TObject
 {

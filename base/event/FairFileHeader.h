@@ -13,13 +13,17 @@
 #ifndef FAIRFILEHEADER_H
 #define FAIRFILEHEADER_H
 
-#include <Rtypes.h>    // for UInt_t, etc
-#include <TNamed.h>    // for TNamed
-#include <TString.h>   // for TString
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TNamed.h>      // for TNamed
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for UInt_t
 
 class FairFileInfo;
 class TFile;
 class TList;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  *  File Header Class

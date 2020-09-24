@@ -7,6 +7,8 @@
  ********************************************************************************/
 #include "FairMapPar.h"
 
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 FairMapPar::FairMapPar(const char* name, const char* title, const char* context)
     : FairParGenericSet(name, title, context)
     , fType(-1)

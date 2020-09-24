@@ -14,6 +14,9 @@
  */
 
 #include "MyDigi.h"
+
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 ClassImp(MyDigi);
 
 MyDigi::MyDigi()

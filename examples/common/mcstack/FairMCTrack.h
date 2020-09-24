@@ -23,15 +23,19 @@
 #ifndef FAIRMCTRACK_H
 #define FAIRMCTRACK_H 1
 
-#include "FairDetectorList.h"   // for DetectorId
+#include <Rtypes.h>            // for THashConsistencyHolder, ClassDef
+#include <TLorentzVector.h>    // for TLorentzVector
+#include <TMath.h>             // for Sqrt
+#include <TObject.h>           // for TObject
+#include <TVector3.h>          // for TVector3
+#include <RtypesCore.h>        // for Double_t, Int_t, Double32_t
 
-#include <Rtypes.h>           // for Double_t, Int_t, Double32_t, etc
-#include <TLorentzVector.h>   // for TLorentzVector
-#include <TMath.h>            // for Sqrt
-#include <TObject.h>          // for TObject
-#include <TVector3.h>         // for TVector3
+#include "FairDetectorList.h"  // for DetectorId
 
 class TParticle;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMCTrack : public TObject
 {

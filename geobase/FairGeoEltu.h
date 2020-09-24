@@ -8,14 +8,18 @@
 #ifndef FAIRGEOELTU_H
 #define FAIRGEOELTU_H
 
-#include "FairGeoBasicShape.h"   // for FairGeoBasicShape
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>         // for Bool_t, Int_t
+#include <iosfwd>               // for fstream
 
-#include <Rtypes.h>   // for FairGeoEltu::Class, Bool_t, etc
-#include <iosfwd>     // for fstream
+#include "FairGeoBasicShape.h"  // for FairGeoBasicShape
 
 class FairGeoTransform;
 class FairGeoVolume;
 class TArrayD;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * class for geometry shape ELTU

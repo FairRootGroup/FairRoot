@@ -14,18 +14,22 @@
 
 #include "FairMQSimDevice.h"
 
-#include "FairModule.h"
-#include "FairParSet.h"
-#include "FairPrimaryGenerator.h"
-#include "FairRunSim.h"
-#include "FairRuntimeDb.h"
+#include <TCollection.h>           // for TIter
+#include <TList.h>                 // for TList
+#include <TObjArray.h>             // for TObjArray
+#include <FairMQMessage.h>         // for FairMQMessage, FairMQMessagePtr
+#include <fairlogger/Logger.h>     // for Logger, LOG
+#include <cstdio>                  // for printf
+#include <memory>                  // for unique_ptr
+#include <string>                  // for allocator, operator+, stoi, to_string
 
-#include <FairMQDevice.h>
-#include <FairMQLogger.h>
-#include <TCollection.h>
-#include <TList.h>
-#include <TObjArray.h>
-#include <cstdio>   // printf
+#include "FairModule.h"            // for FairModule
+#include "FairParSet.h"            // for FairParSet
+#include "FairPrimaryGenerator.h"  // for FairPrimaryGenerator
+#include "FairRunSim.h"            // for FairRunSim
+#include "FairRuntimeDb.h"         // for FairRuntimeDb
+
+class FairTask;
 
 using namespace std;
 

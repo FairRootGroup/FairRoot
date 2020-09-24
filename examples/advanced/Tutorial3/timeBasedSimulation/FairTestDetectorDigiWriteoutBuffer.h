@@ -15,14 +15,18 @@
 #ifndef FairTestDetectorDigiWriteoutBuffer_H_
 #define FairTestDetectorDigiWriteoutBuffer_H_
 
-#include "FairTestDetectorDigi.h"   // for FairTestDetectorDigi
-#include "FairWriteoutBuffer.h"     // for FairWriteoutBuffer
+#include <Rtypes.h>                // for THashConsistencyHolder, ClassDef
+#include <TString.h>               // for TString
+#include <RtypesCore.h>            // for Bool_t
+#include <map>                     // for map
 
-#include <Rtypes.h>
-#include <TString.h>   // for TString
-#include <map>         // for map
+#include "FairTestDetectorDigi.h"  // for FairTestDetectorDigi
+#include "FairWriteoutBuffer.h"    // for FairWriteoutBuffer
 
 class FairTimeStamp;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTestDetectorDigiWriteoutBuffer : public FairWriteoutBuffer
 {

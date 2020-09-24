@@ -7,17 +7,18 @@
  ********************************************************************************/
 #include "FairTutorialDet2.h"
 
-#include "FairDetectorList.h"
-#include "FairRootManager.h"
-#include "FairStack.h"
-#include "FairTutorialDet2Geo.h"
-#include "FairTutorialDet2GeoPar.h"
-#include "FairTutorialDet2Point.h"
-#include "FairVolume.h"
+#include <TClonesArray.h>            // for TClonesArray
+#include <TVirtualMC.h>              // for TVirtualMC
+#include <TVirtualMCStack.h>         // for TVirtualMCStack
+#include <TGenericClassInfo.h>       // for TGenericClassInfo
 
-#include <TClonesArray.h>
-#include <TVirtualMC.h>
-#include <TVirtualMCStack.h>
+#include "FairDetectorList.h"        // for kTutDet
+#include "FairRootManager.h"         // for FairRootManager
+#include "FairStack.h"               // for FairStack
+#include "FairTutorialDet2Geo.h"     // for FairTutorialDet2Geo
+#include "FairTutorialDet2GeoPar.h"  // for FairTutorialDet2GeoPar
+#include "FairTutorialDet2Point.h"   // for FairTutorialDet2Point
+#include "FairVolume.h"              // for FairVolume
 
 #ifdef NDEBUG
 #undef NDEBUG

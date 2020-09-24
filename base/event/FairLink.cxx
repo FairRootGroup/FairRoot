@@ -14,7 +14,9 @@
 
 #include "FairLink.h"
 
-#include "FairRootManager.h"
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
+#include "FairRootManager.h"    // for FairRootManager
 
 ClassImp(FairLink);
 

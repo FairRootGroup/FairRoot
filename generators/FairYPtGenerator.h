@@ -11,8 +11,18 @@
 #ifndef FAIRYPTGENERATOR_H_
 #define FAIRYPTGENERATOR_H_
 
-#include "FairBaseMCGenerator.h"
+#include <Rtypes.h>               // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>           // for Double_t, Bool_t
+#include <TH2.h>                  // for TH2D
+
+#include "FairBaseMCGenerator.h"  // for FairBaseMCGenerator
 #include "TH2D.h"
+
+class FairGenerator;
+class FairPrimaryGenerator;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairYPtGenerator : public FairBaseMCGenerator
 {

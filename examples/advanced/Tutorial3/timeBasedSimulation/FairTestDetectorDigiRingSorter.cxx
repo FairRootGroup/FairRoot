@@ -14,7 +14,9 @@
 
 #include "FairTestDetectorDigiRingSorter.h"
 
-#include "FairTestDetectorDigi.h"   // for FairTestDetectorDigi
+#include <TGenericClassInfo.h>     // for TGenericClassInfo
+
+#include "FairTestDetectorDigi.h"  // for FairTestDetectorDigi
 
 class FairTimeStamp;
 

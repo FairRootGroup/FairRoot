@@ -8,11 +8,14 @@
 #ifndef FAIRBASECONTFACT_H
 #define FAIRBASECONTFACT_H
 
-#include "FairContFact.h"   // for FairContFact, etc
+#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
 
-#include <Rtypes.h>   // for FairBaseContFact::Class, etc
+#include "FairContFact.h"  // for FairContFact, FairContainer (ptr only)
 
 class FairParSet;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairBaseContFact : public FairContFact
 {

@@ -10,9 +10,10 @@
 //
 #include "FairFileInfo.h"
 
-#include <TFile.h>     // for TFile
-#include <TSystem.h>   // for TSystem, gSystem
-#include <stdio.h>     // for printf
+#include <TFile.h>              // for TFile
+#include <TSystem.h>            // for TSystem, gSystem
+#include <stdio.h>              // for printf
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
 
 //__________________________________________________________________________
 FairFileInfo::FairFileInfo()

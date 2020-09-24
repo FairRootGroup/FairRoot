@@ -8,13 +8,17 @@
 #ifndef FAIRGEOROOTBUILDER_H
 #define FAIRGEOROOTBUILDER_H
 
-#include "FairGeoBuilder.h"   // for FairGeoBuilder
+#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>      // for Int_t, Bool_t, Double_t
 
-#include <Rtypes.h>   // for FairGeoRootBuilder::Class, etc
+#include "FairGeoBuilder.h"  // for FairGeoBuilder
 
 class FairGeoMedium;
 class FairGeoNode;
 class TGeoManager;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * class to create geometry in ROOT

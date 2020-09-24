@@ -8,13 +8,14 @@
 
 #include "PixelContFact.h"
 
-#include "FairRuntimeDb.h"   // for FairRuntimeDb
-#include "PixelDigiPar.h"    // for PixelDigiPar
-#include "PixelGeoPar.h"     // for PixelGeoPar
+#include <TList.h>              // for TList
+#include <TString.h>            // for TString
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <cstring>              // for strcmp
 
-#include <TList.h>     // for TList
-#include <TString.h>   // for TString
-#include <cstring>     // for strcmp
+#include "FairRuntimeDb.h"      // for FairRuntimeDb
+#include "PixelDigiPar.h"       // for PixelDigiPar
+#include "PixelGeoPar.h"        // for PixelGeoPar
 
 class FairParSet;
 

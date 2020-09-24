@@ -6,6 +6,7 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairRutherfordPoint.h"
+
 #include <TGenericClassInfo.h>  // for TGenericClassInfo
 #include <iostream>             // for operator<<, basic_ostream, endl, cout
 

@@ -8,13 +8,16 @@
 #ifndef FAIRGEOMEDIA_H
 #define FAIRGEOMEDIA_H
 
-#include <Rtypes.h>    // for FairGeoMedia::Class, etc
-#include <TNamed.h>    // for TNamed
-#include <TString.h>   // for TString
-#include <iosfwd>      // for fstream
+#include <Rtypes.h>   // for THashConsistencyHolder, ClassDef
+#include <TNamed.h>   // for TNamed
+#include <TString.h>  // for TString
+#include <iosfwd>     // for fstream
 
 class FairGeoMedium;
 class TList;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * Class for materials and media

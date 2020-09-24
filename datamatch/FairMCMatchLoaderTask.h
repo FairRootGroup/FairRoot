@@ -19,12 +19,16 @@
 #ifndef FAIRMCMATCHLOADERTASK_H
 #define FAIRMCMATCHLOADERTASK_H
 
-#include "FairTask.h"   // for FairTask, InitStatus
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Option_t
 
-#include <Rtypes.h>   // for ClassDef
+#include "FairTask.h"    // for FairTask, InitStatus
 
 class FairMCMatch;
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMCMatchLoaderTask : public FairTask
 {

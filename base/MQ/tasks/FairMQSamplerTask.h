@@ -15,14 +15,20 @@
 #ifndef FAIRMQSAMPLERTASK_H_
 #define FAIRMQSAMPLERTASK_H_
 
+#include <FairMQMessage.h>  // for FairMQMessage (ptr only), FairMQMessagePtr
+#include <TClonesArray.h>
+#include <RtypesCore.h>     // for Long64_t, Option_t, Text_t
+#include <memory>           // for shared_ptr, unique_ptr
+#include <string>
+#include <iosfwd>           // for string
+
 #include "FairEventHeader.h"
 #include "FairMQTransportFactory.h"
-#include "FairTask.h"
+#include "FairTask.h"       // for FairTask, InitStatus
 
-#include <FairMQMessage.h>
-#include <TClonesArray.h>
-#include <memory>
-#include <string>
+class FairEventHeader;
+class FairMQTransportFactory;
+class TClonesArray;
 
 class FairMQSamplerTask : public FairTask
 {

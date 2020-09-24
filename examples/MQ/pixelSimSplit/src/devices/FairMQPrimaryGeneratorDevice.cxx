@@ -14,17 +14,23 @@
 
 #include "FairMQPrimaryGeneratorDevice.h"
 
-#include "FairMCEventHeader.h"
-#include "FairMCSplitEventHeader.h"
-#include "FairPrimaryGenerator.h"
-#include "FairStack.h"
-#include "RootSerializer.h"
+#include <FairMQMessage.h>                         // for FairMQMessagePtr
+#include <TClonesArray.h>                          // for TClonesArray
+#include <FairMQParts.h>                           // for FairMQParts
+#include <ProgOptions.h>                           // for ProgOptions
+#include <RtypesCore.h>                            // for Long64_t, UInt_t
+#include <fairlogger/Logger.h>                     // for LOG, Logger
+#include <boost/type_index/type_index_facade.hpp>  // for operator==
+#include <functional>                              // for __base
+#include <memory>                                  // for unique_ptr
+#include <string>                                  // for operator!=
+#include <type_traits>                             // for move
 
-#include <FairMQLogger.h>
-#include <FairMQMessage.h>
-#include <Rtypes.h>
-#include <TClonesArray.h>
-#include <utility>   // move
+#include "FairMCEventHeader.h"                     // for FairMCEventHeader
+#include "FairMCSplitEventHeader.h"                // for FairMCSplitEventHe...
+#include "FairPrimaryGenerator.h"                  // for FairPrimaryGenerator
+#include "FairStack.h"                             // for FairStack
+#include "RootSerializer.h"                        // for RootSerializer
 
 using namespace std;
 

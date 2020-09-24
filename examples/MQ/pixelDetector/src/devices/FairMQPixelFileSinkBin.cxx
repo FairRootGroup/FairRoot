@@ -14,19 +14,26 @@
 
 #include "FairMQPixelFileSinkBin.h"
 
-#include "FairEventHeader.h"
-#include "PixelHit.h"
-#include "PixelPayload.h"
+#include <TClonesArray.h>                          // for TClonesArray
+#include <TFile.h>                                 // for TFile
+#include <TFolder.h>                               // for TFolder
+#include <TList.h>                                 // for TList
+#include <TObjString.h>                            // for TObjString
+#include <TObject.h>                               // for TObject, TObject::...
+#include <TTree.h>                                 // for TTree
+#include <TVector3.h>                              // for TVector3
+#include <FairMQMessage.h>                         // for FairMQMessage, Fai...
+#include <FairMQParts.h>                           // for FairMQParts
+#include <ProgOptions.h>                           // for ProgOptions
+#include <fairlogger/Logger.h>                     // for Logger, LOG
+#include <boost/type_index/type_index_facade.hpp>  // for operator==
+#include <functional>                              // for __base
+#include <memory>                                  // for unique_ptr
+#include <string>                                  // for basic_string, oper...
 
-#include <FairMQLogger.h>
-#include <TClonesArray.h>
-#include <TFile.h>
-#include <TFolder.h>
-#include <TList.h>
-#include <TObjString.h>
-#include <TObject.h>
-#include <TTree.h>
-#include <TVector3.h>
+#include "FairEventHeader.h"                       // for FairEventHeader
+#include "PixelHit.h"                              // for PixelHit
+#include "PixelPayload.h"                          // for Hit, EventHeader
 
 using namespace std;
 

@@ -11,11 +11,12 @@
 // -------------------------------------------------------------------------
 #include "FairMCMatchLoaderTask.h"
 
-#include "FairMCMatch.h"       // for FairMCMatch
-#include "FairRootManager.h"   // for FairRootManager
+#include <TClonesArray.h>       // for TClonesArray
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <iostream>             // for operator<<, endl, basic_ostream, cout
 
-#include <TClonesArray.h>   // for TClonesArray
-#include <iostream>         // for operator<<, basic_ostream, etc
+#include "FairMCMatch.h"        // for FairMCMatch
+#include "FairRootManager.h"    // for FairRootManager
 
 FairMCMatchLoaderTask::FairMCMatchLoaderTask()
     : FairTask("Creates FairMCMatch")

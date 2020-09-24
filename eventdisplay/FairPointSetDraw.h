@@ -20,15 +20,19 @@
 #ifndef FAIRPOINTSETDRAW_H
 #define FAIRPOINTSETDRAW_H
 
-#include "FairTask.h"   // for FairTask, InitStatus
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Int_t, Color_t, Style_t, Option_t
 
-#include <Rtypes.h>   // for Int_t, Color_t, etc
+#include "FairTask.h"    // for FairTask, InitStatus
 
 class FairEventManager;
 class TClonesArray;
 class TEvePointSet;
 class TObject;
 class TVector3;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairPointSetDraw : public FairTask
 {

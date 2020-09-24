@@ -7,12 +7,14 @@
  ********************************************************************************/
 #include "FairTutPropContFact.h"
 
-#include "FairRuntimeDb.h"       // for FairRuntimeDb
-#include "FairTutPropGeoPar.h"   // for FairTutPropGeoPar
-#include "TList.h"               // for TList
-#include "TString.h"             // for TString
+#include <string.h>             // for strcmp
+#include <Rtypes.h>             // for ClassImp
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
 
-#include <string.h>   // for strcmp, NULL
+#include "FairRuntimeDb.h"      // for FairRuntimeDb
+#include "FairTutPropGeoPar.h"  // for FairTutPropGeoPar
+#include "TList.h"              // for TList
+#include "TString.h"            // for TString
 
 class FairParSet;
 

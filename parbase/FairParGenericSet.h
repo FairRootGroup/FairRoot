@@ -8,12 +8,16 @@
 #ifndef FAIRPARGENERICSET_H
 #define FAIRPARGENERICSET_H
 
-#include "FairParSet.h"   // for FairParSet
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Bool_t, UInt_t, Int_t, kFALSE
 
-#include <Rtypes.h>   // for Bool_t, etc
+#include "FairParSet.h"  // for FairParSet
 
 class FairParIo;
 class FairParamList;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairParGenericSet : public FairParSet
 {

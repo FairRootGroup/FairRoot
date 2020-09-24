@@ -11,13 +11,14 @@
 // -------------------------------------------------------------------------
 #include "FairConstField.h"
 
-#include "FairConstPar.h"    // for FairConstPar
-#include "FairLogger.h"      // for logging
-#include "FairRun.h"         // for FairRun
-#include "FairRuntimeDb.h"   // for FairRuntimeDb
+#include <TString.h>            // for operator<<, TString
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for Logger, LOG
+#include <iomanip>              // for setw, __iom_t6, setprecision, __iom_t5
 
-#include <TString.h>   // for operator<<, TString
-#include <iomanip>     // for operator<<, setw
+#include "FairConstPar.h"       // for FairConstPar
+#include "FairRun.h"            // for FairRun
+#include "FairRuntimeDb.h"      // for FairRuntimeDb
 
 using std::setprecision;
 using std::setw;

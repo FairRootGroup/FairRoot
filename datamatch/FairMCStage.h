@@ -15,11 +15,16 @@
 #ifndef FAIRMCSTAGE_H_
 #define FAIRMCSTAGE_H_
 
-#include "FairMCObject.h"   // for FairMCObject
-
-#include <Rtypes.h>   // for Bool_t, Double_t, etc
-#include <iostream>   // for ostream, basic_ostream, etc
+#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>    // for Bool_t, Double_t, Int_t, kFALSE
+#include <iostream>        // for operator<<, string, basic_ostream, ostream
 #include <string>     // for string, operator<<, etc
+
+#include "FairMCObject.h"  // for FairMCObject
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMCStage : public FairMCObject
 {

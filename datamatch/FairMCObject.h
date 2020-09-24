@@ -15,15 +15,20 @@
 #ifndef FAIRMCOBJECT_H_
 #define FAIRMCOBJECT_H_
 
-#include "FairLink.h"              // for FairLink
-#include "FairMCEntry.h"           // for FairMCEntry
-#include "FairMultiLinkedData.h"   // for FairMultiLinkedData
+#include <Rtypes.h>               // for THashConsistencyHolder, ClassDef
+#include <TObject.h>              // for TObject
+#include <RtypesCore.h>           // for Int_t
+#include <iostream>               // for ostream, operator<<, endl, basic_os...
+#include <utility>                // for pair
+#include <vector>                 // for vector, __vector_base<>::value_type
 
-#include <Rtypes.h>    // for Int_t, FairMCObject::Class, etc
-#include <TObject.h>   // for TObject
-#include <iostream>    // for ostream, etc
-#include <utility>     // for pair
-#include <vector>      // for vector
+#include "FairLink.h"             // for FairLink
+#include "FairMCEntry.h"          // for FairMCEntry
+#include "FairMultiLinkedData.h"  // for FairMultiLinkedData
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMCObject : public TObject
 {

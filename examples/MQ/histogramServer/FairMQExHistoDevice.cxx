@@ -7,11 +7,16 @@
  ********************************************************************************/
 #include "FairMQExHistoDevice.h"
 
-#include "RootSerializer.h"
+#include <TMath.h>           // for Cos, DegToRad, Sin
+#include <FairMQMessage.h>   // for FairMQMessagePtr
+#include <chrono>            // for milliseconds
+#include <thread>            // for sleep_for
+#include <memory>            // for unique_ptr
+#include <string>            // for basic_string
+#include <unordered_map>     // for unordered_map
+#include <utility>           // for pair
 
-#include <TMath.h>
-#include <chrono>
-#include <thread>
+#include "RootSerializer.h"  // for RootSerializer
 
 FairMQExHistoDevice::FairMQExHistoDevice()
     : FairMQDevice()

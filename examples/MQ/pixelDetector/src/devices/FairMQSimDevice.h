@@ -16,12 +16,14 @@
 #ifndef FAIRMQSIMDEVICE_H_
 #define FAIRMQSIMDEVICE_H_
 
-#include "FairMQRunDevice.h"
-
 #include <Rtypes.h>
-#include <TString.h>
-#include <cstdint>
+#include <TString.h>          // for TString
+#include <RtypesCore.h>       // for UInt_t
+#include <cstdint>            // for int64_t
 #include <string>
+#include <iosfwd>             // for string
+
+#include "FairMQRunDevice.h"  // for FairMQRunDevice
 
 class FairRunSim;
 class FairField;

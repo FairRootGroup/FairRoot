@@ -14,8 +14,7 @@
 
 #include "FairSink.h"
 
-#include <TFolder.h>
-#include <TTree.h>
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
 
 FairSink::FairSink()
     : fRunId(0)

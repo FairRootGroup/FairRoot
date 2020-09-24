@@ -6,14 +6,14 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "runFairMQDevice.h"
+#include <cstdint>                                          // for int64_t
+#include <string>                                           // for basic_string
+#include <vector>                                           // for vector
+#include <iosfwd>                                           // for string
 
+#include "runFairMQDevice.h"                                // for FairMQDev...
 // PixelDetector example
-#include "FairMQPixelSamplerBin.h"
-
-#include <cstdint>
-#include <string>
-#include <vector>
+#include "FairMQPixelSamplerBin.h"                          // for FairMQPix...
 
 namespace bpo = boost::program_options;
 

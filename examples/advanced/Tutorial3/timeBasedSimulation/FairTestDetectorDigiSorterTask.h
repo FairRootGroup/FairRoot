@@ -15,12 +15,16 @@
 #ifndef FairTestDetectorDigiSorterTask_H_
 #define FairTestDetectorDigiSorterTask_H_
 
-#include <FairRingSorterTask.h>   // for FairRingSorterTask
-#include <Rtypes.h>               // for Double_t, etc
-#include <TString.h>              // for TString
+#include <FairRingSorterTask.h>  // for FairRingSorterTask
+#include <Rtypes.h>              // for THashConsistencyHolder, ClassDef
+#include <TString.h>             // for TString
+#include <RtypesCore.h>          // for Double_t, Int_t
 
 class FairRingSorter;
 class FairTimeStamp;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTestDetectorDigiSorterTask : public FairRingSorterTask
 {

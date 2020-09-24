@@ -14,9 +14,16 @@
 
 #include "FairMQPixAltFileSinkBin.h"
 
-#include "PixelPayload.h"
+#include <FairMQMessage.h>                         // for FairMQMessage
+#include <FairMQParts.h>                           // for FairMQParts
+#include <ProgOptions.h>                           // for ProgOptions
+#include <fairlogger/Logger.h>                     // for LOG
+#include <boost/type_index/type_index_facade.hpp>  // for operator==
+#include <functional>                              // for __base
+#include <memory>                                  // for unique_ptr
+#include <string>                                  // for operator!=
 
-#include <FairMQLogger.h>
+#include "PixelPayload.h"                          // for Hit, EventHeader
 
 using namespace std;
 

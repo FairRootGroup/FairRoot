@@ -14,13 +14,15 @@
 
 #include "FairMultiLinkedData.h"
 
-#include "FairLinkManager.h"   // for FairLinkManager
-#include "FairMultiLinkedData_Interface.h"
-#include "FairRootManager.h"   // for FairRootManager
+#include <TClonesArray.h>                   // for TClonesArray
+#include <TGenericClassInfo.h>              // for TGenericClassInfo
+#include <algorithm>                        // for find, sort
+#include <iterator>                         // for begin, distance, end, next
+#include <iosfwd>                           // for ostream
 
-#include <TClonesArray.h>   // for TClonesArray
-#include <algorithm>        // for find
-#include <iterator>         // for distance
+#include "FairLinkManager.h"                // for FairLinkManager
+#include "FairMultiLinkedData_Interface.h"  // for FairMultiLinkedData_Inter...
+#include "FairRootManager.h"                // for FairRootManager
 
 ClassImp(FairMultiLinkedData);
 

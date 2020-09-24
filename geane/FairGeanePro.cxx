@@ -11,21 +11,25 @@
 //
 #include "FairGeanePro.h"
 
-#include "FairGeaneApplication.h"   // for FairGeaneApplication
-#include "FairGeaneUtil.h"          // for FairGeaneUtil
-#include "FairLogger.h"
-#include "FairTrackPar.h"    // for FairTrackPar
-#include "FairTrackParH.h"   // for FairTrackParH
-#include "FairTrackParP.h"   // for FairTrackParP
+#include <TDatabasePDG.h>          // for TDatabasePDG
+#include <TGeoTorus.h>             // for TGeoTorus
+#include <TMath.h>                 // for ACos, Cos
+#include <TMathBase.h>             // for Abs
+#include <TVector3.h>              // for TVector3, operator-, operator+
+#include <TVirtualMC.h>            // for TVirtualMC
+#include <TGeant3.h>               // for TGeant3, Ertrio_t
+#include <TGenericClassInfo.h>     // for TGenericClassInfo
+#include <TString.h>               // for TString
+#include <fairlogger/Logger.h>     // for Logger, LOG
+#include <stddef.h>                // for NULL
+#include <cmath>                   // for fabs, pow, sqrt
+#include <iostream>                // for string
 
-#include <TDatabasePDG.h>   // for TDatabasePDG
-#include <TGeoTorus.h>      // for TGeoTorus
-#include <TMath.h>          // for pow, ACos, Cos, sqrt
-#include <TMathBase.h>      // for Abs
-#include <TVector3.h>       // for TVector3, operator-, etc
-#include <TVirtualMC.h>     // for gMC
-#include <cmath>            // IWYU pragma: keep for fabs
-#include <iostream>         // for operator<<, basic_ostream, etc
+#include "FairGeaneApplication.h"  // for FairGeaneApplication
+#include "FairGeaneUtil.h"         // for FairGeaneUtil
+#include "FairTrackPar.h"          // for FairTrackPar
+#include "FairTrackParH.h"         // for FairTrackParH
+#include "FairTrackParP.h"         // for FairTrackParP
 // IWYU pragma: no_include <architecture/i386/math.h>
 
 // -----   Default constructor   -------------------------------------------

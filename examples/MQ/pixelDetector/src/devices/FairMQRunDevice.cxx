@@ -14,20 +14,29 @@
 
 #include "FairMQRunDevice.h"
 
-#include "FairOnlineSink.h"
-#include "FairRootManager.h"
-#include "RootSerializer.h"
+#include <FairMQMessage.h>      // for FairMQMessagePtr, FairMQMessage
+#include <TList.h>              // for TList
+#include <TObjString.h>         // for TObjString
+#include <FairMQParts.h>        // for FairMQParts
+#include <RtypesCore.h>         // for Int_t
+#include <TClonesArray.h>       // for TClonesArray
+#include <TObject.h>            // for TObject
+#include <TString.h>            // for TString, operator<<
+#include <fairlogger/Logger.h>  // for Logger, LOG
+#include <cstdio>               // for printf
+#include <__mutex_base>         // for mutex, unique_lock
+#include <memory>               // for unique_ptr
+#include <string>               // for allocator, basic_string, operator+
+#include <type_traits>          // for move
+#include <unordered_map>        // for unordered_map
+#include <utility>              // for pair
 
-#include <FairMQLogger.h>
-#include <FairMQMessage.h>
-#include <Rtypes.h>
-#include <TList.h>
-#include <TObjString.h>
-#include <cstdio>   // printf
+#include "FairOnlineSink.h"     // for FairOnlineSink
+#include "FairRootManager.h"    // for FairRootManager
+#include "RootSerializer.h"     // for RootSerializer
 
 using namespace std;
 
-#include <mutex>   // std::mutex
 std::mutex mtx;    // mutex for critical section
 
 void FairMQRunDevice::SendObject(TObject* obj, const std::string& chan)

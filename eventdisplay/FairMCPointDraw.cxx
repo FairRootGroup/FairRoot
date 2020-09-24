@@ -14,9 +14,10 @@
 
 #include "FairMCPointDraw.h"
 
-#include "FairMCPoint.h"   // for FairMCPoint
+#include <TVector3.h>           // for TVector3
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
 
-#include <TVector3.h>   // for TVector3
+#include "FairMCPoint.h"        // for FairMCPoint
 
 class TObject;
 

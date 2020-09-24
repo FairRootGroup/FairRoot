@@ -8,14 +8,18 @@
 #ifndef FAIRGENERICPARASCIIFILEIO_H
 #define FAIRGENERICPARASCIIFILEIO_H
 
-#include "FairDetParAsciiFileIo.h"   // for FairDetParAsciiFileIo
+#include <Rtypes.h>                 // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>             // for Int_t, Bool_t, Char_t, UChar_t
+#include <iosfwd>                   // for fstream
 
-#include <Rtypes.h>   // for Int_t, Bool_t, etc
-#include <iosfwd>     // for fstream
+#include "FairDetParAsciiFileIo.h"  // for FairDetParAsciiFileIo
 
 class FairParGenericSet;
 class FairParSet;
 class TString;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairGenericParAsciiFileIo : public FairDetParAsciiFileIo
 {

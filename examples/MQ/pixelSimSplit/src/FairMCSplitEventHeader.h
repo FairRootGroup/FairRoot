@@ -10,9 +10,14 @@
 #ifndef FAIRMCSPLITEVENTHEADER_H
 #define FAIRMCSPLITEVENTHEADER_H 1
 
-#include "FairMCEventHeader.h"
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>         // for UInt_t
 
-#include <Rtypes.h>
+#include "FairMCEventHeader.h"  // for FairMCEventHeader
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMCSplitEventHeader : public FairMCEventHeader
 {

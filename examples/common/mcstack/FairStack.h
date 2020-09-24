@@ -35,18 +35,23 @@
 #ifndef FAIRSTACK_H
 #define FAIRSTACK_H
 
-#include "FairDetectorList.h"   // for DetectorId
-#include "FairGenericStack.h"   // for FairGenericStack
+#include <Rtypes.h>            // for THashConsistencyHolder, ClassDef
+#include <TMCProcess.h>        // for TMCProcess
+#include <TParticle.h>         // for TParticle
+#include <RtypesCore.h>        // for Int_t, Double_t, Bool_t, kTRUE, Double...
+#include <TClonesArray.h>      // for TClonesArray
+#include <map>                 // for map, map<>::iterator
+#include <stack>               // for stack
+#include <utility>             // for pair
 
-#include <Rtypes.h>       // for Int_t, Double_t, Bool_t, etc
-#include <TMCProcess.h>   // for TMCProcess
-#include <TParticle.h>
-#include <map>       // for map, map<>::iterator
-#include <stack>     // for stack
-#include <utility>   // for pair
+#include "FairDetectorList.h"  // for DetectorId
+#include "FairGenericStack.h"  // for FairGenericStack
 
 class TClonesArray;
 class TRefArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairStack : public FairGenericStack
 {

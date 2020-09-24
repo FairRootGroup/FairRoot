@@ -34,24 +34,24 @@
 
 #include "FairGeoShapes.h"
 
-#include "FairGeoAssembly.h"
-#include "FairGeoBasicShape.h"
-#include "FairGeoBrik.h"
-#include "FairGeoCone.h"
-#include "FairGeoCons.h"
-#include "FairGeoEltu.h"
-#include "FairGeoPcon.h"
-#include "FairGeoPgon.h"
-#include "FairGeoSphe.h"
-#include "FairGeoTorus.h"
-#include "FairGeoTrap.h"
-#include "FairGeoTrd1.h"
-#include "FairGeoTube.h"
-#include "FairGeoTubs.h"
-#include "FairGeoVolume.h"
+#include <TList.h>              // for TList
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
 
-#include <TList.h>
-#include <fstream>   // for fstream
+#include "FairGeoAssembly.h"    // for FairGeoAssembly
+#include "FairGeoBasicShape.h"  // for FairGeoBasicShape
+#include "FairGeoBrik.h"        // for FairGeoBrik
+#include "FairGeoCone.h"        // for FairGeoCone
+#include "FairGeoCons.h"        // for FairGeoCons
+#include "FairGeoEltu.h"        // for FairGeoEltu
+#include "FairGeoPcon.h"        // for FairGeoPcon
+#include "FairGeoPgon.h"        // for FairGeoPgon
+#include "FairGeoSphe.h"        // for FairGeoSphe
+#include "FairGeoTorus.h"       // for FairGeoTorus
+#include "FairGeoTrap.h"        // for FairGeoTrap
+#include "FairGeoTrd1.h"        // for FairGeoTrd1
+#include "FairGeoTube.h"        // for FairGeoTube
+#include "FairGeoTubs.h"        // for FairGeoTubs
+#include "FairGeoVolume.h"      // for FairGeoVolume
 
 ClassImp(FairGeoShapes);
 

@@ -13,14 +13,18 @@
 #ifndef FAIR_TRAJ_FILTER_H
 #define FAIR_TRAJ_FILTER_H 1
 
-#include <Rtypes.h>      // for Double_t, Bool_t, Int_t, etc
-#include <TGeoTrack.h>   // IWYU pragma: keep needed by cint // TODO: is this still relevant for CINT?
-#include <TMCtls.h>      // for multi-threading
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TGeoTrack.h>   // for TGeoTrack (ptr only)
+#include <TMCtls.h>      // for TMCThreadLocal
 #include <TMath.h>       // for Pi, TwoPi
 #include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Double_t, Bool_t, Int_t, kTRUE
 
 class TClonesArray;
 class TParticle;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * @class FairTrajFilter

@@ -23,18 +23,22 @@ the tracking from the macro (M. Al-Turany)
 #ifndef FAIRPRIMARYGENERATOR_H
 #define FAIRPRIMARYGENERATOR_H
 
-#include "FairGenerator.h"   // for FairGenerator
+#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
+#include <TMCProcess.h>     // for kPPrimary, TMCProcess
+#include <TNamed.h>         // for TNamed
+#include <TObjArray.h>      // for TObjArray
+#include <TVector3.h>       // for TVector3
+#include <RtypesCore.h>     // for Double_t, Bool_t, Int_t, kTRUE
+#include <iostream>         // for operator<<, endl, basic_ostream, cout
 
-#include <Rtypes.h>   // for Double_t, Bool_t, Int_t, etc
-#include <TMCProcess.h>
-#include <TNamed.h>      // for TNamed
-#include <TObjArray.h>   // for TObjArray
-#include <TVector3.h>    // for TVector3
-#include <iostream>      // for cout
+#include "FairGenerator.h"  // for FairGenerator
 
 class FairGenericStack;
 class FairMCEventHeader;
 class TIterator;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairPrimaryGenerator : public TNamed
 {

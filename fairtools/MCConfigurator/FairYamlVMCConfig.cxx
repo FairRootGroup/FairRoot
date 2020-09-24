@@ -11,25 +11,31 @@
 // -------------------------------------------------------------------------
 #include "FairYamlVMCConfig.h"
 
-#include "FairFastSimRunConfiguration.h"
-#include "FairLogger.h"
-#include "FairRunSim.h"
-#include "FairSink.h"   // for FairSink
+#include <Rtypes.h>                         // for ClassImp
+#include <TGeant3.h>                        // for TGeant3
+#include <TGeant3TGeo.h>                    // for TGeant3TGeo
+#include <TGeant4.h>                        // for TGeant4
+#include <TObjString.h>                     // for TObjString
+#include <TObject.h>                        // for TObject, TObject::kSingleKey
+#include <TString.h>                        // for TString, operator+, opera...
+#include <TSystem.h>                        // for TSystem, gSystem
+#include <TVirtualMC.h>                     // for TVirtualMC
+#include <RtypesCore.h>                     // for Bool_t, kFALSE, kTRUE
+#include <TGenericClassInfo.h>              // for TGenericClassInfo
+#include <fairlogger/Logger.h>              // for LOG, Logger
+#include <yaml-cpp/node/detail/iterator.h>  // for iterator_base, iterator_b...
+#include <yaml-cpp/node/emit.h>             // for operator<<
+#include <yaml-cpp/node/iterator.h>         // for iterator_value
+#include <yaml-cpp/node/parse.h>            // for LoadFile
+#include <cstdlib>                          // for getenv
+#include <cstring>                          // for strcmp, strncmp
+#include <ostream>                          // for string, operator<<, ostri...
+#include <string>                           // for basic_string, char_traits
+#include <vector>                           // for vector
 
-#include <Rtypes.h>
-#include <TGeant3.h>
-#include <TGeant3TGeo.h>
-#include <TGeant4.h>
-#include <TObjString.h>   // for TObjString
-#include <TObject.h>      // for TObject, TObject::kSingleKey
-#include <TString.h>
-#include <TSystem.h>      // for TSystem, gSystem
-#include <TVirtualMC.h>   // for TVirtualMC
-#include <cstdlib>        // for getenv
-#include <cstring>        // for strcmp, strncmp
-#include <ostream>        // for operator<<, ostringstream
-#include <string>         // for string, basic_string, cha...
-#include <vector>         // for vector
+#include "FairFastSimRunConfiguration.h"    // for FairFastSimRunConfiguration
+#include "FairRunSim.h"                     // for FairRunSim
+#include "FairSink.h"                       // for FairSink
 
 FairYamlVMCConfig::FairYamlVMCConfig()
     : FairGenericVMCConfig()

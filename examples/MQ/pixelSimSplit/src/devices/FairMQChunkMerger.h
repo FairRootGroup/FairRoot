@@ -15,13 +15,15 @@
 #ifndef FAIRMQCHUNKMERGER_H_
 #define FAIRMQCHUNKMERGER_H_
 
-#include <FairMQDevice.h>
-#include <map>
+#include <FairMQDevice.h>  // for FairMQDevice
+#include <map>             // for multimap<>::iterator, map, multimap, multi...
 #include <string>
-#include <utility>   // pair
+#include <utility>         // for pair
+#include <iosfwd>          // for string
 
 class TObject;
 class FairMCSplitEventHeader;
+class FairMQParts;
 
 typedef std::multimap<std::pair<int, int>, std::pair<int, TObject*>> MultiMapDef;
 

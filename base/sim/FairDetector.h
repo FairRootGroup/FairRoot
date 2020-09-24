@@ -8,13 +8,17 @@
 #ifndef FAIRDETECTOR_H
 #define FAIRDETECTOR_H
 
-#include "FairModule.h"   // for FairModule
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Int_t, Bool_t
 
-#include <Rtypes.h>   // for Int_t, Bool_t, etc
+#include "FairModule.h"  // for FairModule
 
 class FairLogger;
 class FairVolume;
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * Base class for constructing detecors

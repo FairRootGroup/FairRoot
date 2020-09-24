@@ -15,11 +15,16 @@
 #ifndef BASE_FAIRLOGGER_H_
 #define BASE_FAIRLOGGER_H_
 
-#include <Rtypes.h>   // for bool, FairLogger::Class, etc
-#include <fairlogger/Logger.h>
-#include <stdarg.h>   // for va_list
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <fairlogger/Logger.h>  // for Logger, Severity, Severity::fatal
+#include <stdarg.h>             // for va_list
 #include <string>     // for operator<<
-#include <vector>     // for vector
+#include <vector>               // for vector
+#include <iosfwd>               // for string
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 #define MESSAGE_ORIGIN __FILE__, CONVERTTOSTRING(__LINE__), __FUNCTION__
 

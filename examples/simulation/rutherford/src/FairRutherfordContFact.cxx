@@ -7,12 +7,13 @@
  ********************************************************************************/
 #include "FairRutherfordContFact.h"
 
-#include "FairRuntimeDb.h"          // for FairRuntimeDb
-#include "FairRutherfordGeoPar.h"   // for FairRutherfordGeoPar
+#include <TList.h>                 // for TList
+#include <TString.h>               // for TString
+#include <TGenericClassInfo.h>     // for TGenericClassInfo
+#include <cstring>                 // for strcmp
 
-#include <TList.h>     // for TList
-#include <TString.h>   // for TString
-#include <cstring>     // for strcmp
+#include "FairRuntimeDb.h"         // for FairRuntimeDb
+#include "FairRutherfordGeoPar.h"  // for FairRutherfordGeoPar
 
 class FairParSet;
 

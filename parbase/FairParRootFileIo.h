@@ -8,12 +8,18 @@
 #ifndef FAIRPARROOTFILEIO_H
 #define FAIRPARROOTFILEIO_H
 
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TFile.h>       // for TFile
+#include <TNamed.h>      // for TNamed
+#include <RtypesCore.h>  // for Bool_t, Text_t, Int_t, Option_t, kFALSE
+#include <fstream>       // for fstream
+
 #include "FairParIo.h"   // for FairParIo
 
-#include <Rtypes.h>   // for Bool_t, Text_t, Int_t, etc
-#include <TFile.h>    // for TFile
-#include <TNamed.h>   // for TNamed
-#include <fstream>
+class TBuffer;
+class TClass;
+class TMemberInspector;
+
 using std::fstream;
 
 class FairRtdbRun;

@@ -14,7 +14,9 @@
 
 #include "FairMCEventHeader.h"
 
-#include "FairRootManager.h"
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
+#include "FairRootManager.h"    // for FairRootManager
 
 FairMCEventHeader::FairMCEventHeader()
     : TNamed("MCEvent", "MC")

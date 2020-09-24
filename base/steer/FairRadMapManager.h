@@ -11,11 +11,15 @@
 #ifndef FAIRRADMAPMANAGER_H
 #define FAIRRADMAPMANAGER_H 1
 
-#include <Rtypes.h>           // for Double_t, Float_t, Int_t, etc
-#include <TLorentzVector.h>   // for TLorentzVector
+#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
+#include <TLorentzVector.h>  // for TLorentzVector
+#include <RtypesCore.h>      // for Double_t, Float_t, Int_t
 
 class TClonesArray;
 class TMap;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * @class FairRadMapManager

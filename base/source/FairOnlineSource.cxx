@@ -15,7 +15,7 @@
 
 #include "FairOnlineSource.h"
 
-#include "FairLogger.h"
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
 
 FairOnlineSource::FairOnlineSource()
     : FairSource()

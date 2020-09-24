@@ -30,13 +30,15 @@
 /////////////////////////////////////////////////////////////
 #include "FairGeoTrd1.h"
 
+#include <TArrayD.h>            // for TArrayD
+#include <TMathBase.h>          // for Abs
+#include <TString.h>            // for TString
+#include <RtypesCore.h>         // for Double_t, Int_t
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 #include "FairGeoTransform.h"   // for FairGeoTransform
 #include "FairGeoVector.h"      // for FairGeoVector
 #include "FairGeoVolume.h"      // for FairGeoVolume
-
-#include <TArrayD.h>     // for TArrayD
-#include <TMathBase.h>   // for Abs
-#include <TString.h>     // for TString
 
 ClassImp(FairGeoTrd1);
 

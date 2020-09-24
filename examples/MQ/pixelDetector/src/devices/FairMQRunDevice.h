@@ -16,8 +16,9 @@
 #ifndef FAIRMQRUNDEVICE_H_
 #define FAIRMQRUNDEVICE_H_
 
-#include <FairMQDevice.h>
+#include <FairMQDevice.h>  // for FairMQDevice
 #include <string>
+#include <iosfwd>          // for string
 
 class TObject;
 

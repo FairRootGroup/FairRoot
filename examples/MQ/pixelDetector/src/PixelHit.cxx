@@ -14,6 +14,9 @@
 
 #include "PixelHit.h"
 
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TVector3.h>           // for TVector3
+
 PixelHit::PixelHit()
     : FairHit()
 {}

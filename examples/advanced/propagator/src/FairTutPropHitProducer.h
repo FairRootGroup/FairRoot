@@ -8,11 +8,16 @@
 #ifndef FAIRTTUTPROPHITPRODUCER_H_
 #define FAIRTTUTPROPHITPRODUCER_H_
 
-#include "FairTask.h"   // for InitStatus, FairTask
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Option_t
+#include <iosfwd>        // for string
 
-#include <Rtypes.h>   // for ClassDef
+#include "FairTask.h"    // for InitStatus, FairTask
 
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutPropHitProducer : public FairTask
 {

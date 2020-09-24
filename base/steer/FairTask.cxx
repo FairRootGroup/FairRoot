@@ -10,14 +10,16 @@
 
 #include "FairTask.h"
 
-#include "FairLogger.h"    // for FairLogger, MESSAGE_ORIGIN
-#include "FairMonitor.h"   // for FairMonitor
+#include <TCollection.h>        // for TIter
+#include <TList.h>              // for TList
+#include <TObject.h>            // for TObject
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fairlogger/Logger.h>  // for Logger, LOG
+#include <cstdio>               // for printf
+#include <utility>              // for pair
 
-#include <TCollection.h>   // for TIter
-#include <TList.h>         // for TList
-#include <TObject.h>       // for TObject
-#include <cstdio>          // printf
-#include <utility>         // pair
+#include "FairLogger.h"         // for FairLogger
+#include "FairMonitor.h"        // for FairMonitor
 
 FairTask::FairTask()
     : TTask()

@@ -15,17 +15,22 @@
 #ifndef PIXELTRACK_H_
 #define PIXELTRACK_H_
 
-#include "FairTimeStamp.h"   // for FairTimeStamp
+#include <Rtypes.h>                             // for THashConsistencyHolder
+#include <RtypesCore.h>                         // for Double_t, Int_t
 
-#include <Rtypes.h>   // for PixelTrack::Class, ClassDef, PixelTrack::...
+#include "FairTimeStamp.h"                      // for FairTimeStamp
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 namespace boost {
 namespace serialization {
 class access;
 }
 }   // namespace boost
-#include <boost/serialization/base_object.hpp>
-#include <vector>
+#include <boost/serialization/base_object.hpp>  // for base_object
+#include <vector>                               // for vector
 
 class PixelTrack : public FairTimeStamp
 {

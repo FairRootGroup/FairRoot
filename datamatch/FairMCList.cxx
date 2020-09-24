@@ -14,6 +14,8 @@
 
 #include "FairMCList.h"
 
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 ClassImp(FairMCList);
 
 FairMCList::FairMCList()

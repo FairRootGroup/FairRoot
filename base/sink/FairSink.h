@@ -15,16 +15,21 @@
 #ifndef FAIRSINK_H
 #define FAIRSINK_H
 
-#include <Rtypes.h>
-#include <TString.h>
-#include <map>        // map
-#include <memory>     // unique_ptr
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Int_t, Bool_t
+#include <map>           // for map
+#include <memory>        // for unique_ptr
 #include <string>     // string
-#include <typeinfo>   // type_info
+#include <typeinfo>      // for type_info
+#include <iosfwd>        // for string
 
 class TObject;
 class TFolder;
 class TTree;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 enum Sink_Type
 {

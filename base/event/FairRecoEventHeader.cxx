@@ -12,6 +12,8 @@
 
 #include "FairRecoEventHeader.h"
 
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 FairRecoEventHeader::FairRecoEventHeader()
     : fRunId(0)
     , fIdentifier(0)

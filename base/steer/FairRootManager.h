@@ -8,21 +8,25 @@
 #ifndef FAIR_ROOT_MANAGER_H
 #define FAIR_ROOT_MANAGER_H
 
-#include "FairLogger.h"
-#include "FairSink.h"
-#include "FairSource.h"
-
-#include <Rtypes.h>    // for Bool_t, Int_t, UInt_t, etc
-#include <TChain.h>    // for TChain
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <TChain.h>             // for TChain
 #include <TMCtls.h>    // for multi-threading
-#include <TObject.h>   // for TObject
-#include <TString.h>   // for TString, operator<
-#include <map>         // for map, multimap, etc
-#include <memory>
+#include <TObject.h>            // for TObject
+#include <TString.h>            // for TString, operator<
+#include <RtypesCore.h>         // for Int_t, Bool_t, Double_t, UInt_t, kTRUE
+#include <fairlogger/Logger.h>  // for LOG
+#include <map>                  // for map, __map_const_iterator, operator!=
+#include <memory>               // for unique_ptr
 #include <string>
-#include <type_traits>   // is_pointer, remove_pointer, is_const, remove...
-#include <typeinfo>
-#include <vector>
+#include <type_traits>          // for is_pointer, remove_pointer, is_const
+#include <typeinfo>             // for type_info
+#include <vector>               // for vector
+#include <iosfwd>               // for string
+#include <utility>              // for pair
+
+#include "FairLogger.h"
+#include "FairSink.h"           // for FairSink
+#include "FairSource.h"         // for FairSource
 
 class BinaryFunctor;
 class FairEventHeader;
@@ -41,6 +45,9 @@ class TList;
 class TNamed;
 class TRefArray;
 class TTree;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * I/O Manager class

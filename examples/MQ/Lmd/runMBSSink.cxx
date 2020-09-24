@@ -5,14 +5,17 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
 #include "BaseMQFileSink.h"
 #include "FairMBSRawItem.h"       // data type for the OutputPolicy
 #include "IOPolicy.h"             // fair::mq::policy::
 #include "RootOutFileManager.h"   // OutputPolicy
 #include "RootSerializer.h"       // RootSerializer
 #include "runFairMQDevice.h"
-
 #include <TClonesArray.h>   // data type for the InputPolicy
+
+
+struct RootSerializer;
 
 // InputPolicy - initialize input and deserialize message into it
 using RootDefaultInputPolicy =

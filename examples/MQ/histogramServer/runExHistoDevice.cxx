@@ -5,8 +5,17 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include "FairMQExHistoDevice.h"
-#include "runFairMQDevice.h"
+#include <ProgOptionsFwd.h>                  // for FairMQProgOptions
+#include <boost/program_options/errors.hpp>  // for program_options
+
+#include "FairMQExHistoDevice.h"             // for FairMQExHistoDevice
+#include "runFairMQDevice.h"                 // for FairMQDevicePtr, addCust...
+
+namespace boost {
+namespace program_options {
+class options_description;
+}  // namespace program_options
+}  // namespace boost
 
 namespace bpo = boost::program_options;
 

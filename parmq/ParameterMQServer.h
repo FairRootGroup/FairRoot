@@ -15,8 +15,10 @@
 #ifndef PARAMETERMQSERVER_H_
 #define PARAMETERMQSERVER_H_
 
-#include <FairMQDevice.h>
+#include <FairMQDevice.h>   // for FairMQDevice
+#include <FairMQMessage.h>  // for FairMQMessagePtr
 #include <string>
+#include <iosfwd>           // for string
 
 class FairRuntimeDb;
 

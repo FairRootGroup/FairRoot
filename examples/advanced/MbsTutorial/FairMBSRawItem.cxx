@@ -8,6 +8,8 @@
 
 #include "FairMBSRawItem.h"
 
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 FairMBSRawItem::FairMBSRawItem()
     : TObject()
     , fSam(0)

@@ -8,16 +8,17 @@
 #ifndef FAIRRUNSIM_H
 #define FAIRRUNSIM_H
 
-#include "FairIon.h"             // for FairIon
-#include "FairMCApplication.h"   // for FairMCApplication
-#include "FairParticle.h"        // for FairParticle
-#include "FairRun.h"             // for FairRun
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <TMCtls.h>             // for TMCThreadLocal
+#include <TObjArray.h>          // for TObjArray
+#include <TString.h>            // for TString
+#include <RtypesCore.h>         // for Bool_t, kTRUE, Double_t, Int_t
+#include <functional>           // for function
 
-#include <Rtypes.h>      // for Bool_t, Double_t, Int_t, etc
-#include <TMCtls.h>      // for multi-threading
-#include <TObjArray.h>   // for TObjArray
-#include <TString.h>     // for TString
-#include <functional>
+#include "FairIon.h"            // for FairIon
+#include "FairMCApplication.h"  // for FairMCApplication
+#include "FairParticle.h"       // for FairParticle
+#include "FairRun.h"            // for FairRun
 
 class FairField;
 class FairMCEventHeader;
@@ -25,6 +26,9 @@ class FairMesh;
 class FairModule;
 class FairPrimaryGenerator;
 class FairGenericVMCConfig;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * Configure the Simulation session

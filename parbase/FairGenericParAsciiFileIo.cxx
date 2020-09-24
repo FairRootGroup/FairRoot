@@ -18,16 +18,17 @@
 
 #include "FairGenericParAsciiFileIo.h"
 
-#include "FairParGenericSet.h"   // for FairParGenericSet
-#include "FairParSet.h"          // for FairParSet
-#include "FairParamList.h"       // for FairParamObj, FairParamList
+#include <TCollection.h>        // for TIter
+#include <THashTable.h>         // for THashTable
+#include <TString.h>            // for TString, operator<<
+#include <stdio.h>              // for printf, sscanf, NULL
+#include <string.h>             // for strcmp, strtok, memcpy
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <fstream>              // for operator<<, basic_ostream, char_traits
 
-#include <TCollection.h>   // for TIter
-#include <THashTable.h>    // for THashTable
-#include <TString.h>       // for TString, operator<<
-#include <fstream>         // for fstream
-#include <stdio.h>         // for printf, sscanf
-#include <string.h>        // for strcmp, memcpy, strtok, etc
+#include "FairParGenericSet.h"  // for FairParGenericSet
+#include "FairParSet.h"         // for FairParSet
+#include "FairParamList.h"      // for FairParamObj, FairParamList
 
 using std::ios;
 

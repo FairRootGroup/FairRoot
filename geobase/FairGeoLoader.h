@@ -16,11 +16,14 @@
 #ifndef FairGeoLOADER_H
 #define FairGeoLOADER_H
 
-#include <Rtypes.h>   // for FairGeoLoader::Class, etc
-#include <TNamed.h>   // for TNamed
+#include <Rtypes.h>  // for THashConsistencyHolder, ClassDef
+#include <TNamed.h>  // for TNamed
 
 class FairGeoInterface;
 class FairGeoBuilder;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 /**New Geometry Loader, this loader handel the Hades geometry description
  * @author Ilse koenig
  * @author M. Al-Turany*/

@@ -14,7 +14,9 @@
 
 #include "PixelTrack.h"
 
-#include "FairTimeStamp.h"
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
+#include "FairTimeStamp.h"      // for FairTimeStamp
 
 PixelTrack::PixelTrack()
     : FairTimeStamp()

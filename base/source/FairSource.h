@@ -15,13 +15,18 @@
 #ifndef FAIRSOURCE_H
 #define FAIRSOURCE_H
 
-#include "FairLogger.h"
-#include "TClass.h"
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <TObject.h>            // for TObject
+#include <RtypesCore.h>         // for Int_t, Bool_t, kFALSE, UInt_t
+#include <fairlogger/Logger.h>  // for Logger, LOG
+#include <typeinfo>             // for type_info
 
-#include <Rtypes.h>
-#include <TObject.h>
+#include "FairLogger.h"
+#include "TClass.h"             // for TClass
 
 class FairEventHeader;
+class TBuffer;
+class TMemberInspector;
 
 enum Source_Type
 {

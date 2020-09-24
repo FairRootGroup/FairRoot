@@ -16,9 +16,14 @@
 #ifndef FAIRMBSSOURCE_H
 #define FAIRMBSSOURCE_H
 
-#include "FairOnlineSource.h"
+#include <Rtypes.h>            // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>        // for Short_t, Int_t, Bool_t, UInt_t
 
-#include <Rtypes.h>
+#include "FairOnlineSource.h"  // for FairOnlineSource
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMbsSource : public FairOnlineSource
 {

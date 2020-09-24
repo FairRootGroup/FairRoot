@@ -8,16 +8,20 @@
 #ifndef FAIRGEOOLDASCIIIO_H
 #define FAIRGEOOLDASCIIIO_H
 
-#include "FairGeoIo.h"   // for FairGeoIo
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Bool_t, kFALSE, kTRUE, Double_t, Text_t
+#include <iosfwd>        // for fstream
 
-#include <Rtypes.h>    // for Bool_t, kFALSE, etc
-#include <TString.h>   // for TString
-#include <iosfwd>      // for fstream
+#include "FairGeoIo.h"   // for FairGeoIo
 
 class FairGeoInterface;
 class FairGeoMedia;
 class FairGeoNode;
 class FairGeoSet;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * Class for geometry I/O from ASCII file in FAIR format

@@ -1,8 +1,9 @@
 #ifndef FAIR_ALIGNMENTHANDLER_H
 #define FAIR_ALIGNMENTHANDLER_H
 
-#include <TGeoMatrix.h>
-#include <map>
+#include <TGeoMatrix.h>  // for TGeoHMatrix
+#include <map>           // for map
+#include <iosfwd>        // for string
 
 class FairAlignmentHandler
 {

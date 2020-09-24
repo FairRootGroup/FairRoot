@@ -11,10 +11,10 @@
 // -------------------------------------------------------------------------
 #include "FairFastSimRunConfiguration.h"
 
-#include "FairFastSimulation.h"
-#include "FairLogger.h"
+#include <TG4RunConfiguration.h>  // for TG4RunConfiguration
+#include <fairlogger/Logger.h>    // for LOG
 
-#include <TG4RunConfiguration.h>   // for TG4RunConfiguration
+#include "FairFastSimulation.h"   // for FairFastSimulation
 
 FairFastSimRunConfiguration::FairFastSimRunConfiguration(const TString& geometry,
                                                          const TString& physicsList,

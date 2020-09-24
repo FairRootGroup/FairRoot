@@ -18,17 +18,23 @@
 #ifndef FAIRGENERICSTACK_H
 #define FAIRGENERICSTACK_H
 
-#include <Rtypes.h>   // for Double_t, Int_t, etc
+#include <Rtypes.h>           // for THashConsistencyHolder, ClassDef
 #include <TClonesArray.h>
-#include <TMCProcess.h>        // for TMCProcess
-#include <TVirtualMCStack.h>   // for TVirtualMCStack
-#include <map>
-#include <tuple>
+#include <TMCProcess.h>       // for TMCProcess
+#include <TVirtualMCStack.h>  // for TVirtualMCStack
+#include <RtypesCore.h>       // for Double_t, Int_t
+#include <map>                // for map, map<>::iterator, operator!=, __map...
+#include <tuple>              // for make_tuple, tuple
+#include <utility>            // for pair
 
 class FairLogger;
 class TParticle;
 class TRefArray;
 class TIterator;
+class TBuffer;
+class TClass;
+class TClonesArray;
+class TMemberInspector;
 
 class FairGenericStack : public TVirtualMCStack
 {

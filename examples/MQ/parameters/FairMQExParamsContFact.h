@@ -8,10 +8,15 @@
 #ifndef FAIRMQEXPARAMSCONTFACT_H
 #define FAIRMQEXPARAMSCONTFACT_H
 
-#include "FairContFact.h"
+#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
+
+#include "FairContFact.h"  // for FairContFact, FairContainer (ptr only)
 
 class FairContainer;
 class FairParSet;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMQExParamsContFact : public FairContFact
 {

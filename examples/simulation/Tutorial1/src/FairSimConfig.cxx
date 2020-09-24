@@ -7,10 +7,11 @@
  ********************************************************************************/
 #include "FairSimConfig.h"
 
-#include "FairLogger.h"
-
-#include <iostream>
-#include <vector>
+#include <TGenericClassInfo.h>                              // for TGenericC...
+#include <fairlogger/Logger.h>                              // for LOG
+#include <iostream>                                         // for string, endl
+#include <vector>                                           // for vector
+#include <string>                                           // for operator+
 
 using namespace std;
 

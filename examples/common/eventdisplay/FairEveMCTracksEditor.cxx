@@ -16,13 +16,12 @@
 
 #include "FairEveMCTracksEditor.h"
 
-#include "FairEveCut.h"
-#include "FairEveMCTracks.h"
-#include "FairEveTracks.h"
+#include <TGButton.h>         // for TGTextButton
+#include <TGLayout.h>         // for TGLayoutHints, kLHintsExpandX, kLHintsR...
+#include <TObject.h>          // for TObject
 
-#include <TGButton.h>
-#include <TGLayout.h>
-#include <TGWindow.h>
+#include "FairEveCut.h"       // for FairEveMinMaxCut, FairEveBoolCut, FairE...
+#include "FairEveMCTracks.h"  // for FairEveMCTracks
 
 FairEveMCTracksEditor::FairEveMCTracksEditor(const TGWindow *p, Int_t width, Int_t height, UInt_t options, Pixel_t back)
     : TGedFrame(p, width, height, options | kVerticalFrame, back)

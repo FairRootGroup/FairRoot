@@ -10,6 +10,8 @@
 
 #include "FairGeoMatrix.h"
 
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 ////////////////////////////////////////////////////////
 // FairGeoMatrix
 //

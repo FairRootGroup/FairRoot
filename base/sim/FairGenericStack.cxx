@@ -11,15 +11,21 @@
 // -------------------------------------------------------------------------
 #include "FairGenericStack.h"
 
-#include "FairLogger.h"   // for FairLogger
+#include <TGeoManager.h>        // for TGeoManager, gGeoManager
+#include <TLorentzVector.h>     // for TLorentzVector
+#include <TMCProcess.h>         // for TMCProcess, kPPrimary
+#include <TRefArray.h>          // for TRefArray
+#include <TString.h>            // for operator<<, TString
+#include <TVirtualMC.h>         // for TVirtualMC
+#include <TClonesArray.h>       // for TClonesArray
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGeoNode.h>           // for TGeoNode
+#include <TGeoVolume.h>         // for TGeoVolume
+#include <TIterator.h>          // for TIterator
+#include <fairlogger/Logger.h>  // for Logger, LOG
+#include <cstring>              // for strcmp
 
-#include <TGeoManager.h>
-#include <TLorentzVector.h>
-#include <TMCProcess.h>
-#include <TRefArray.h>
-#include <TString.h>
-#include <TVirtualMC.h>
-#include <cstring>   // strcmp
+#include "FairLogger.h"         // for FairLogger
 
 FairGenericStack::FairGenericStack()
     : TVirtualMCStack()

@@ -7,10 +7,11 @@
  ********************************************************************************/
 #include "FairConstPar.h"
 
-#include "FairConstField.h"   // for FairConstField
-#include "FairParamList.h"    // for FairParamList
+#include <TString.h>            // for TString
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
 
-#include <TString.h>   // for TString
+#include "FairConstField.h"     // for FairConstField
+#include "FairParamList.h"      // for FairParamList
 
 class FairField;
 

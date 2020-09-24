@@ -16,15 +16,19 @@
 #ifndef FAIREVERECOTRACKS_H_
 #define FAIREVERECOTRACKS_H_
 
-#include "FairEveTracks.h"
-#include "FairTask.h"
+#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>     // for Bool_t, Int_t
 
-#include <Rtypes.h>
-#include <RtypesCore.h>
+#include "FairEveTracks.h"  // for FairEveTracks
+#include "FairTask.h"       // for InitStatus
 
 class FairRKPropagator;
 class FairTutPropTrack;
 class TDatabasePDG;
+class TBuffer;
+class TClass;
+class TClonesArray;
+class TMemberInspector;
 
 class FairEveRecoTracksExample : public FairEveTracks
 {

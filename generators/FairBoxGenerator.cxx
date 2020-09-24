@@ -28,16 +28,19 @@
 
 #include "FairBoxGenerator.h"
 
-#include "FairLogger.h"
-#include "FairPrimaryGenerator.h"
+#include <TDatabasePDG.h>          // for TDatabasePDG
+#include <TMath.h>                 // for DegToRad, Sqrt, Cos, Sin, ATan, Exp
+#include <TRandom.h>               // for TRandom, gRandom
+#include <TGenericClassInfo.h>     // for TGenericClassInfo
+#include <TMathBase.h>             // for Max, Min
+#include <TString.h>               // for Form
+#include <fairlogger/Logger.h>     // for LOG, Logger
+#include <cmath>                   // for cos, acos
 
-#include <TDatabasePDG.h>
-#include <TMath.h>
-#include <TNamed.h>
-#include <TParticlePDG.h>
-#include <TRandom.h>
-#include <cmath>    // for cos, acos
-#include <cstdio>   // for printf
+#include "FairPrimaryGenerator.h"  // for FairPrimaryGenerator
+
+class FairGenerator;
+class TParticlePDG;
 
 FairBoxGenerator::FairBoxGenerator()
     : FairBaseMCGenerator()

@@ -8,20 +8,23 @@
 #ifndef FAIRMODULE_H
 #define FAIRMODULE_H
 
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <TList.h>              // for TList (ptr only), TListIter
+#include <TNamed.h>             // for TNamed
+#include <TObjArray.h>          // for TObjArray
+#include <TString.h>            // for TString, operator!=
+#include <RtypesCore.h>         // for Int_t, Bool_t, kFALSE, Option_t
+#include <fairlogger/Logger.h>  // for LOG
+#include <string>        // for string
+#include <iosfwd>               // for string
+
 #include "FairGeoInterface.h"   // for FairGeoInterface
 #include "FairGeoLoader.h"      // for FairGeoLoader
 #include "FairGeoNode.h"        // for FairGeoNode
 #include "FairGeoVolume.h"      // for FairGeoVolume
 #include "FairLogger.h"
-#include "FairRun.h"         // for FairRun
-#include "FairRuntimeDb.h"   // for FairRuntimeDb
-
-#include <Rtypes.h>      // for Bool_t, Int_t, etc
-#include <TList.h>       // for TList (ptr only), TListIter
-#include <TNamed.h>      // for TNamed
-#include <TObjArray.h>   // for TObjArray
-#include <TString.h>     // for TString, operator!=
-#include <string>        // for string
+#include "FairRun.h"            // for FairRun
+#include "FairRuntimeDb.h"      // for FairRuntimeDb
 
 class FairVolumeList;
 class FairVolume;
@@ -31,6 +34,9 @@ class TGeoNode;
 class TGeoVolume;
 class TRefArray;
 class TVirtualMC;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * Base class for constructing all detecors and passive volumes

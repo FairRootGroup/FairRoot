@@ -13,9 +13,12 @@
 #ifndef FAIRFIELDFACTORY_H
 #define FAIRFIELDFACTORY_H
 
-#include <Rtypes.h>   // for FairFieldFactory::Class, etc
+#include <Rtypes.h>  // for THashConsistencyHolder, ClassDef
 
 class FairField;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairFieldFactory
 {

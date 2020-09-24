@@ -14,13 +14,14 @@
  ***************************************************************************/
 #include "FairGeoLoader.h"
 
-#include "FairGeoInterface.h"     // for FairGeoInterface
-#include "FairGeoRootBuilder.h"   // for FairGeoRootBuilder
+#include <TGeoManager.h>         // for TGeoManager
+#include <string.h>              // for strncmp
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <cstdlib>               // for NULL, exit
+#include <iostream>              // for operator<<, endl, basic_ostream, cout
 
-#include <TGeoManager.h>   // for TGeoManager
-#include <cstdlib>         // for NULL, exit
-#include <iostream>        // for cout, endl, operator<<, etc
-#include <string.h>        // for strncmp
+#include "FairGeoInterface.h"    // for FairGeoInterface
+#include "FairGeoRootBuilder.h"  // for FairGeoRootBuilder
 
 using std::cout;
 using std::endl;

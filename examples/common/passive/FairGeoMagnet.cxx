@@ -17,8 +17,9 @@
 
 #include "FairGeoMagnet.h"
 
-#include <TString.h>   // for TString
-#include <string.h>    // for strcpy
+#include <TString.h>            // for TString
+#include <string.h>             // for strcpy
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
 
 ClassImp(FairGeoMagnet);
 

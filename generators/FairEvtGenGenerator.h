@@ -81,13 +81,17 @@
 #ifndef FAIR_EVTGENGENERATOR_H
 #define FAIR_EVTGENGENERATOR_H
 
-#include "FairGenerator.h"   // for FairGenerator
+#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
+#include <stdio.h>          // for FILE
+#include <RtypesCore.h>     // for Bool_t, Char_t, Double_t
 
-#include <Rtypes.h>   // for FairEvtGenGenerator::Class, etc
-#include <stdio.h>    // for FILE
+#include "FairGenerator.h"  // for FairGenerator
 
 class FairPrimaryGenerator;
 class TF1;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairEvtGenGenerator : public FairGenerator
 {

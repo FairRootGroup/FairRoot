@@ -7,7 +7,9 @@
  ********************************************************************************/
 #include "FairTutorialDet4Geo.h"
 
-#include <stdio.h>   // for sprintf
+#include <stdio.h>              // for sprintf
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <string.h>             // for strcpy
 
 ClassImp(FairTutorialDet4Geo);
 

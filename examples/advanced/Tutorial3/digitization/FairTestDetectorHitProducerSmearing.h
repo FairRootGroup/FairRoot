@@ -8,11 +8,15 @@
 #ifndef FAIRTESTDETECTORHITPRODUCERSMEARING_H_
 #define FAIRTESTDETECTORHITPRODUCERSMEARING_H_
 
-#include "FairTask.h"   // for InitStatus, FairTask
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Option_t
 
-#include <Rtypes.h>   // for ClassDef
+#include "FairTask.h"    // for InitStatus, FairTask
 
 class TClonesArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTestDetectorHitProducerSmearing : public FairTask
 {

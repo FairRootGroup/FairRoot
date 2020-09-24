@@ -8,13 +8,18 @@
 #ifndef FAIR_VOLUME_H
 #define FAIR_VOLUME_H
 
-#include "FairDetector.h"
-#include "FairModule.h"
+#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
+#include <TNamed.h>        // for TNamed
+#include <TString.h>       // for TString
+#include <RtypesCore.h>    // for Int_t
 
-#include <Rtypes.h>    // for Int_t, FairVolume::Class, etc
-#include <TNamed.h>    // for TNamed
-#include <TString.h>   // for TString
+#include "FairDetector.h"  // for FairDetector
+#include "FairModule.h"    // for FairModule
+
 class FairGeoNode;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * This Object is only used for internal book keeping!

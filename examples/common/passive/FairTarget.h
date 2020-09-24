@@ -8,9 +8,13 @@
 #ifndef Target_H
 #define Target_H
 
-#include "FairModule.h"   // for FairModule
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
 
-#include <Rtypes.h>   // for FairTarget::Class, ClassDef, etc
+#include "FairModule.h"  // for FairModule
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTarget : public FairModule
 {

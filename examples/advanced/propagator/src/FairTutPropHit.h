@@ -8,10 +8,15 @@
 #ifndef FAIRTUTPROPHIT_H_
 #define FAIRTUTPROPHIT_H_
 
-#include "FairHit.h"   // for FairHit
+#include <Rtypes.h>                             // for THashConsistencyHolder
+#include <boost/serialization/base_object.hpp>  // for base_object
 
-#include <Rtypes.h>   // for FairTutPropHit::Class, etc
-#include <boost/serialization/base_object.hpp>
+#include "FairHit.h"                            // for FairHit
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
+
 namespace boost {
 namespace serialization {
 class access;

@@ -8,17 +8,22 @@
 #ifndef FAIRHIT_H
 #define FAIRHIT_H
 
-#include "FairTimeStamp.h"   // for FairTimeStamp
+#include <Rtypes.h>                             // for THashConsistencyHolder
+#include <TVector3.h>                           // for TVector3
+#include <RtypesCore.h>                         // for Double_t, Int_t, Doub...
 
-#include <Rtypes.h>     // for Double_t, Int_t, Double32_t, etc
-#include <TVector3.h>   // for TVector3
+#include "FairTimeStamp.h"                      // for FairTimeStamp
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 namespace boost {
 namespace serialization {
 class access;
 }
 }   // namespace boost
-#include <boost/serialization/base_object.hpp>
+#include <boost/serialization/base_object.hpp>  // for base_object
 
 /**
  * Abstract base class for reconstructed hits in the FAIR detectors.

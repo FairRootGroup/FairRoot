@@ -12,31 +12,32 @@
 
 #include "FairRunOnline.h"
 
-#include "FairBaseParSet.h"
-#include "FairEventHeader.h"
-#include "FairField.h"
-#include "FairFileHeader.h"
-#include "FairGeoParSet.h"
-#include "FairLogger.h"
-#include "FairParSet.h"   // for FairParSet
-#include "FairRootManager.h"
-#include "FairRunIdGenerator.h"
-#include "FairRuntimeDb.h"
-#include "FairSource.h"   // for FairSource, kONLINE
-#include "FairTask.h"
+#include <TCollection.h>         // for TIter
+#include <TGeoManager.h>         // for gGeoManager, TGeoManager
+#include <THttpServer.h>         // for THttpServer
+#include <TList.h>               // for TList
+#include <TObjArray.h>           // for TObjArray
+#include <TObjString.h>          // for TObjString
+#include <TObject.h>             // for TObject
+#include <TROOT.h>               // for TROOT, gROOT
+#include <TSystem.h>             // for TSystem, gSystem
+#include <stdlib.h>              // for exit
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <fairlogger/Logger.h>   // for LOG, Logger
+#include <sys/signal.h>          // for signal, SIGINT
+#include <iostream>              // for operator<<, basic_ostream, endl, cout
 
-#include <TCollection.h>   // for TIter
-#include <TGeoManager.h>
-#include <THttpServer.h>
-#include <TList.h>        // for TList
-#include <TObjArray.h>    // for TObjArray
-#include <TObjString.h>   // for TObjString
-#include <TObject.h>      // for TObject
-#include <TROOT.h>
-#include <TSystem.h>
-#include <iostream>
-#include <signal.h>
-#include <stdlib.h>
+#include "FairBaseParSet.h"      // for FairBaseParSet
+#include "FairEventHeader.h"     // for FairEventHeader
+#include "FairField.h"           // for FairField
+#include "FairFileHeader.h"      // for FairFileHeader
+#include "FairGeoParSet.h"       // for FairGeoParSet
+#include "FairParSet.h"          // for FairParSet
+#include "FairRootManager.h"     // for FairRootManager
+#include "FairRunIdGenerator.h"  // for FairRunIdGenerator
+#include "FairRuntimeDb.h"       // for FairRuntimeDb
+#include "FairSource.h"          // for FairSource, kONLINE
+#include "FairTask.h"            // for FairTask
 
 using std::cout;
 using std::endl;

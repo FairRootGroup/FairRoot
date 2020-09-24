@@ -8,12 +8,16 @@
 #ifndef FAIRTUTORIALDET4GEOPAR_H
 #define FAIRTUTORIALDET4GEOPAR_H
 
-#include "FairParGenericSet.h"   // for FairParGenericSet
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>         // for Bool_t
 
-#include <Rtypes.h>   // for ClassDef
+#include "FairParGenericSet.h"  // for FairParGenericSet
 
 class TObjArray;
 class FairParamList;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairTutorialDet4GeoPar : public FairParGenericSet
 {

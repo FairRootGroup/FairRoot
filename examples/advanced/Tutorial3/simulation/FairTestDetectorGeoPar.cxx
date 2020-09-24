@@ -7,9 +7,10 @@
  ********************************************************************************/
 #include "FairTestDetectorGeoPar.h"
 
-#include "FairParamList.h"   // for FairParamList
+#include <TObjArray.h>          // for TObjArray
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
 
-#include <TObjArray.h>   // for TObjArray
+#include "FairParamList.h"      // for FairParamList
 
 ClassImp(FairTestDetectorGeoPar);
 

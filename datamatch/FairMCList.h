@@ -15,9 +15,14 @@
 #ifndef FAIRMCLIST_H_
 #define FAIRMCLIST_H_
 
-#include <Rtypes.h>    // for Int_t, FairMCList::Class, etc
-#include <TObject.h>   // for TObject
-#include <vector>      // for vector
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TObject.h>     // for TObject
+#include <RtypesCore.h>  // for Int_t
+#include <vector>        // for vector
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMCList : public TObject
 {

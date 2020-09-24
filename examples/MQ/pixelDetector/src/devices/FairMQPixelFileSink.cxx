@@ -14,15 +14,21 @@
 
 #include "FairMQPixelFileSink.h"
 
-#include "RootSerializer.h"
+#include <TFile.h>                                 // for TFile
+#include <TObject.h>                               // for TObject
+#include <TTree.h>                                 // for TTree
+#include <FairMQMessage.h>                         // for FairMQMessage
+#include <FairMQParts.h>                           // for FairMQParts
+#include <ProgOptions.h>                           // for ProgOptions
+#include <fairlogger/Logger.h>                     // for LOG
+#include <boost/type_index/type_index_facade.hpp>  // for operator==
+#include <cstdlib>                                 // for getenv
+#include <memory>                                  // for unique_ptr
+#include <vector>                                  // for vector
+#include <functional>                              // for __base
+#include <string>                                  // for operator+, operator!=
 
-#include <FairMQLogger.h>
-#include <TFile.h>
-#include <TObject.h>
-#include <TTree.h>
-#include <cstdlib>
-#include <memory>
-#include <vector>
+#include "RootSerializer.h"                        // for RootSerializer
 
 using namespace std;
 

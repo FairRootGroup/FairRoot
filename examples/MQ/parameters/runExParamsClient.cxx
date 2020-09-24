@@ -6,8 +6,13 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "FairMQExParamsClient.h"
-#include "runFairMQDevice.h"
+#include <ProgOptionsFwd.h>                                 // for FairMQPro...
+#include <stdint.h>                                         // for uint64_t
+#include <iosfwd>                                           // for string
+#include <string>                                           // for basic_string
+
+#include "FairMQExParamsClient.h"                           // for FairMQExP...
+#include "runFairMQDevice.h"                                // for FairMQDev...
 
 namespace bpo = boost::program_options;
 

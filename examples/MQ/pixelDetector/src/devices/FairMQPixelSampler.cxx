@@ -14,18 +14,24 @@
 
 #include "FairMQPixelSampler.h"
 
-#include "FairFileSource.h"
-#include "FairRunAna.h"
-#include "FairSource.h"
-#include "RootSerializer.h"
+#include <FairMQMessage.h>                         // for FairMQMessage, Fai...
+#include <TClonesArray.h>                          // for TClonesArray
+#include <TObject.h>                               // for TObject
+#include <FairMQParts.h>                           // for FairMQParts
+#include <ProgOptions.h>                           // for ProgOptions
+#include <RtypesCore.h>                            // for Int_t, Long64_t
+#include <TString.h>                               // for TString
+#include <fairlogger/Logger.h>                     // for Logger, LOG
+#include <boost/type_index/type_index_facade.hpp>  // for operator==
+#include <cstring>                                 // for strcmp
+#include <memory>                                  // for unique_ptr
+#include <string>                                  // for operator!=, basic_...
+#include <type_traits>                             // for move
 
-#include <FairMQLogger.h>
-#include <FairMQMessage.h>
-#include <Rtypes.h>
-#include <TClonesArray.h>
-#include <TObject.h>
-#include <cstring>
-#include <utility>   // move
+#include "FairFileSource.h"                        // for FairFileSource
+#include "FairRunAna.h"                            // for FairRunAna
+#include "FairSource.h"                            // for FairSource
+#include "RootSerializer.h"                        // for RootSerializer
 
 using namespace std;
 

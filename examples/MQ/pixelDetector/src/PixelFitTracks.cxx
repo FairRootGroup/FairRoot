@@ -14,17 +14,19 @@
 
 #include "PixelFitTracks.h"
 
-#include "FairLogger.h"
-#include "FairRootManager.h"
-#include "FairRun.h"
-#include "FairRuntimeDb.h"
-#include "PixelDigiPar.h"
-#include "PixelHit.h"
-#include "PixelTrack.h"
+#include <TClonesArray.h>       // for TClonesArray
+#include <TList.h>              // for TList
+#include <TMath.h>              // for Sqrt
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TString.h>            // for TString
+#include <fairlogger/Logger.h>  // for Logger, LOG
 
-#include <TClonesArray.h>
-#include <TList.h>
-#include <TMath.h>
+#include "FairRootManager.h"    // for FairRootManager
+#include "FairRun.h"            // for FairRun
+#include "FairRuntimeDb.h"      // for FairRuntimeDb
+#include "PixelDigiPar.h"       // for PixelDigiPar
+#include "PixelHit.h"           // for PixelHit
+#include "PixelTrack.h"         // for PixelTrack
 
 PixelFitTracks::PixelFitTracks()
     : PixelFitTracks("Pixel Track Fitter", 0)

@@ -8,14 +8,15 @@
 
 #include "FairMBSTask.h"
 
-#include "FairMBSRawItem.h"
-#include "FairRootManager.h"
-#include "FairRunOnline.h"
+#include <TCanvas.h>            // for TCanvas
+#include <TClonesArray.h>       // for TClonesArray
+#include <TFolder.h>            // for TFolder
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TH1.h>                // for TH1F
 
-#include <TCanvas.h>
-#include <TClonesArray.h>
-#include <TFolder.h>
-#include <TH1F.h>
+#include "FairMBSRawItem.h"     // for FairMBSRawItem
+#include "FairRootManager.h"    // for FairRootManager
+#include "FairRunOnline.h"      // for FairRunOnline
 
 FairMBSTask::FairMBSTask(const char* name, Int_t iVerbose)
     : FairTask(name, iVerbose)

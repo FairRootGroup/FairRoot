@@ -15,13 +15,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "FairGeoMedium.h"
 
-#include <TString.h>   // for TString
-#include <cmath>       // for pow, log
+#include <TString.h>            // for TString
+#include <stdlib.h>             // for abs
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <cmath>                // for log, pow
 // IWYU pragma: no_include <architecture/i386/math.h>
-#include <climits>    // for INT_MAX
-#include <fstream>    // for fstream
-#include <iostream>   // for cout
-#include <stdlib.h>   // for abs
+#include <climits>              // for INT_MAX
+#include <iostream>             // for operator<<, basic_ostream, basic_istream
+#include <ostream>              // for basic_ostream::write
+#include <fstream>
 
 using std::cout;
 using std::log;

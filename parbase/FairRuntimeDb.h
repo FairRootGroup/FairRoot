@@ -8,16 +8,20 @@
 #ifndef FAIRRUNTIMEDB_H
 #define FAIRRUNTIMEDB_H
 
-#include <Rtypes.h>    // for Bool_t, Int_t, Text_t, etc
-#include <TList.h>     // for TList
-#include <TObject.h>   // for TObject
-#include <TString.h>   // for TString
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TList.h>       // for TList
+#include <TObject.h>     // for TObject
+#include <TString.h>     // for TString
+#include <RtypesCore.h>  // for Bool_t, Int_t, Text_t, kTRUE
 
 class FairContFact;
 class FairLogger;
 class FairParIo;
 class FairParSet;
 class FairRtdbRun;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 static TList contFactories;   //! list of container factories
 

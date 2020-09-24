@@ -17,16 +17,17 @@
 
 #include "FairGeoCave.h"
 
-#include "FairGeoBasicShape.h"   // for FairGeoBasicShape
-#include "FairGeoMedia.h"        // for FairGeoMedia
-#include "FairGeoMedium.h"       // for FairGeoMedium
-#include "FairGeoNode.h"         // for FairGeoNode, etc
-#include "FairGeoShapes.h"       // for FairGeoShapes
+#include <TList.h>              // for TList
+#include <string.h>             // for strcmp
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <iostream>             // for operator<<, basic_ostream, char_traits
+#include <fstream>              // for fstream
 
-#include <TList.h>    // for TList
-#include <fstream>    // for fstream
-#include <iostream>   // for cout
-#include <string.h>   // for strcmp
+#include "FairGeoBasicShape.h"  // for FairGeoBasicShape
+#include "FairGeoMedia.h"       // for FairGeoMedia
+#include "FairGeoMedium.h"      // for FairGeoMedium
+#include "FairGeoNode.h"        // for FairGeoNode, kFairGeoTopNode
+#include "FairGeoShapes.h"      // for FairGeoShapes
 
 using namespace std;
 ClassImp(FairGeoCave);

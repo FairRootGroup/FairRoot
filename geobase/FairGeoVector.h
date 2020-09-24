@@ -8,13 +8,18 @@
 #ifndef FAIRGEOVECTOR_H
 #define FAIRGEOVECTOR_H
 
-#include <Rtypes.h>      // for Double_t, Bool_t, Int_t, etc
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
 #include <TMath.h>       // for pow, floor, sqrt
 #include <TMathBase.h>   // for Abs
 #include <TObject.h>     // for TObject
-#include <cmath>
-#include <iostream>   // for operator<<, ostream, etc
-#include <stdio.h>    // for printf
+#include <stdio.h>       // for printf
+#include <RtypesCore.h>  // for Double_t, Bool_t, Int_t, kFALSE, kTRUE, Float_t
+#include <cmath>         // for pow, floor, sqrt
+#include <iostream>      // for operator<<, basic_ostream, ostream, istream
+
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairGeoVector : public TObject
 {

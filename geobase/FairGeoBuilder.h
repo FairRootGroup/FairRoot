@@ -8,11 +8,15 @@
 #ifndef FAIRGEOBUILDER_H
 #define FAIRGEOBUILDER_H
 
-#include <Rtypes.h>   // for Int_t, etc
-#include <TNamed.h>   // for TNamed
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <TNamed.h>      // for TNamed
+#include <RtypesCore.h>  // for Int_t, Bool_t
 
 class FairGeoNode;
 class FairGeoMedium;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * abstract base class for geometry builders

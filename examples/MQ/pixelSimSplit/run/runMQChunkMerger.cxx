@@ -1,7 +1,10 @@
-#include "runFairMQDevice.h"
 
+#include <iosfwd>                                           // for string
+#include <string>                                           // for basic_string
+
+#include "runFairMQDevice.h"                                // for FairMQDev...
 // MQRunSim
-#include "FairMQChunkMerger.h"
+#include "FairMQChunkMerger.h"                              // for FairMQChu...
 
 namespace bpo = boost::program_options;
 

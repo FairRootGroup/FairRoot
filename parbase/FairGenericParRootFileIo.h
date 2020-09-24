@@ -8,12 +8,16 @@
 #ifndef FAIRGENERICPARROOTFILEIO_H
 #define FAIRGENERICPARROOTFILEIO_H
 
-#include "FairDetParRootFileIo.h"   // for FairDetParRootFileIo
+#include <Rtypes.h>                // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>            // for Bool_t
 
-#include <Rtypes.h>   // for ClassDef macro
+#include "FairDetParRootFileIo.h"  // for FairDetParRootFileIo
 
 class FairParRootFile;
 class FairParSet;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairGenericParRootFileIo : public FairDetParRootFileIo
 {

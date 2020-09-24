@@ -15,12 +15,16 @@
 #ifndef FAIRMCPOINTDRAW_H_
 #define FAIRMCPOINTDRAW_H_
 
-#include "FairPointSetDraw.h"   // for FairPointSetDraw
+#include <Rtypes.h>            // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>        // for Color_t, Int_t, Style_t
 
-#include <Rtypes.h>   // for FairMCPointDraw::Class, etc
+#include "FairPointSetDraw.h"  // for FairPointSetDraw
 
 class TObject;
 class TVector3;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairMCPointDraw : public FairPointSetDraw
 {

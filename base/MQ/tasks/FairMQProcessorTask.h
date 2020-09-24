@@ -15,9 +15,13 @@
 #ifndef FAIRMQPROCESSORTASK_H_
 #define FAIRMQPROCESSORTASK_H_
 
-#include "FairTask.h"
-
 #include <FairMQMessage.h>
+#include <RtypesCore.h>  // for Option_t
+#include <memory>        // for unique_ptr
+
+#include "FairTask.h"    // for FairTask
+
+class FairMQMessage;
 
 class FairMQProcessorTask : public FairTask
 {

@@ -17,6 +17,8 @@
 
 #include "FairGeoBuilder.h"
 
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 ClassImp(FairGeoBuilder);
 
 FairGeoBuilder::FairGeoBuilder()

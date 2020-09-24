@@ -8,12 +8,16 @@
 #ifndef FAIRPARASCIFILEIIO_H
 #define FAIRPARASCIFILEIIO_H
 
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Bool_t, Text_t, kFALSE
+#include <fstream>       // for fstream, basic_filebuf
+
 #include "FairParIo.h"   // for FairParIo
 
-#include <Rtypes.h>   // for Bool_t, Text_t, etc
-#include <fstream>    // for fstream, etc
-
 class TList;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairParAsciiFileIo : public FairParIo
 {

@@ -30,15 +30,18 @@
 /////////////////////////////////////////////////////////////
 #include "FairGeoTrap.h"
 
+#include <TArrayD.h>            // for TArrayD
+#include <TMath.h>              // for ATan, Pi, Sqrt
+#include <TMathBase.h>          // for Abs
+#include <TString.h>            // for TString
+#include <RtypesCore.h>         // for Double_t, Int_t
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <math.h>               // for atan
+#include <iostream>             // for operator<<, basic_ostream, cout, ostream
+
 #include "FairGeoTransform.h"   // for FairGeoTransform
 #include "FairGeoVector.h"      // for FairGeoVector
 #include "FairGeoVolume.h"      // for FairGeoVolume
-
-#include <TArrayD.h>     // for TArrayD
-#include <TMath.h>       // for ATan, Pi, Sqrt, atan
-#include <TMathBase.h>   // for Abs
-#include <TString.h>     // for TString
-#include <iostream>      // for operator<<, cout, etc
 
 using std::cout;
 

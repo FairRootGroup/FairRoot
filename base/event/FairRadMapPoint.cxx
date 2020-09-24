@@ -11,6 +11,8 @@
 
 #include "FairRadMapPoint.h"
 
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+
 FairRadMapPoint::FairRadMapPoint()
     : FairMCPoint()
     , fPdg(0)

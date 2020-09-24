@@ -8,13 +8,15 @@
 #ifndef FAIRGEOSET_H
 #define FAIRGEOSET_H
 
-#include "FairGeoNode.h"
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <TList.h>        // for TList
+#include <TNamed.h>       // for TNamed
+#include <TString.h>      // for TString
+#include <RtypesCore.h>   // for Int_t, Bool_t, kFALSE
+#include <TObject.h>      // for TObject
+#include <iosfwd>         // for fstream
 
-#include <Rtypes.h>    // for Int_t, Bool_t, etc
-#include <TList.h>     // for TList
-#include <TNamed.h>    // for TNamed
-#include <TString.h>   // for TString
-#include <iosfwd>      // for fstream
+#include "FairGeoNode.h"  // for FairGeoNode
 
 // class FairGeoNode;
 class FairGeoShapes;
@@ -22,6 +24,9 @@ class FairGeoMedia;
 class FairGeoBuilder;
 class FairGeoTransform;
 class TArrayI;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 /**
  * Base class for geometry of detector parts

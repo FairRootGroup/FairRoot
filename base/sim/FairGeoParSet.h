@@ -8,19 +8,23 @@
 #ifndef FairGeoParSet_H
 #define FairGeoParSet_H
 
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <TGeoManager.h>        // for TGeoManager (ptr only)
+#include <RtypesCore.h>         // for Bool_t
+
 /**
  * Parameter class for Geometry stuff
  * @author M. Al-Turany
  * @version 1
  * @since 12.10.04
  */
-#include "FairParGenericSet.h"   // for FairParGenericSet
-
-#include <Rtypes.h>        // for Double_t, etc
-#include <TGeoManager.h>   // IWYU pragma: keep needed by cint
+#include "FairParGenericSet.h"  // for FairParGenericSet
 
 class FairParamList;
 class TObjArray;
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairGeoParSet : public FairParGenericSet
 {
