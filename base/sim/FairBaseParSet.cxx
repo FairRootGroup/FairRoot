@@ -12,11 +12,11 @@
 
 #include "FairBaseParSet.h"
 
-#include <TObjArray.h>             // for TObjArray
-#include <TGenericClassInfo.h>     // for TGenericClassInfo
+#include "FairParamList.h"          // for FairParamList
+#include "FairPrimaryGenerator.h"   // for FairPrimaryGenerator
 
-#include "FairParamList.h"         // for FairParamList
-#include "FairPrimaryGenerator.h"  // for FairPrimaryGenerator
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TObjArray.h>           // for TObjArray
 
 ClassImp(FairBaseParSet);
 

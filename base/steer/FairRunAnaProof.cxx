@@ -12,39 +12,39 @@
 
 #include "FairRunAnaProof.h"
 
-#include <TGeoManager.h>         // for gGeoManager, TGeoManager
-#include <TKey.h>                // for TKey
-#include <TProof.h>              // for TProof
-#include <TROOT.h>               // for TROOT, gROOT
+#include "FairBaseParSet.h"       // for FairBaseParSet
+#include "FairEventHeader.h"      // for FairEventHeader
+#include "FairFieldFactory.h"     // for FairFieldFactory
+#include "FairFileHeader.h"       // for FairFileHeader
+#include "FairFileSource.h"       // for FairFileSource
+#include "FairParIo.h"            // for FairParIo
+#include "FairParSet.h"           // for FairParSet
+#include "FairRootManager.h"      // for FairRootManager
+#include "FairRunIdGenerator.h"   // for FairRunIdGenerator
+#include "FairRuntimeDb.h"        // for FairRuntimeDb
+#include "FairSink.h"             // for FairSink
+#include "FairSource.h"           // for FairSource
+#include "FairTask.h"             // for FairTask
+#include "FairTrajFilter.h"       // for FairTrajFilter
+
 #include <TChain.h>              // for TChain
 #include <TCollection.h>         // for TIter
 #include <TFile.h>               // for TFile, gFile
 #include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TGeoManager.h>         // for gGeoManager, TGeoManager
+#include <TKey.h>                // for TKey
 #include <TList.h>               // for TList
 #include <TNamed.h>              // for TNamed
 #include <TObjArray.h>           // for TObjArray
 #include <TObject.h>             // for TObject
+#include <TProof.h>              // for TProof
+#include <TROOT.h>               // for TROOT, gROOT
 #include <TSeqCollection.h>      // for TSeqCollection
 #include <TSystem.h>             // for TSystem, gSystem
 #include <TTree.h>               // for TTree
 #include <fairlogger/Logger.h>   // for Logger, LOG
 #include <stdlib.h>              // for exit
 #include <string.h>              // for strcmp, strncmp
-
-#include "FairBaseParSet.h"      // for FairBaseParSet
-#include "FairEventHeader.h"     // for FairEventHeader
-#include "FairFieldFactory.h"    // for FairFieldFactory
-#include "FairFileHeader.h"      // for FairFileHeader
-#include "FairParIo.h"           // for FairParIo
-#include "FairRunIdGenerator.h"  // for FairRunIdGenerator
-#include "FairRuntimeDb.h"       // for FairRuntimeDb
-#include "FairSink.h"            // for FairSink
-#include "FairTask.h"            // for FairTask
-#include "FairTrajFilter.h"      // for FairTrajFilter
-#include "FairFileSource.h"      // for FairFileSource
-#include "FairParSet.h"          // for FairParSet
-#include "FairRootManager.h"     // for FairRootManager
-#include "FairSource.h"          // for FairSource
 
 FairRunAnaProof* FairRunAnaProof::fRAPInstance = 0;
 

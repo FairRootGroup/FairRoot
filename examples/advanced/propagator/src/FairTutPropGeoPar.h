@@ -8,13 +8,13 @@
 #ifndef FAIRTUTPROPGEOPAR_H
 #define FAIRTUTPROPGEOPAR_H
 
-#include <RtypesCore.h>         // for Bool_t
+#include "FairParGenericSet.h"   // for FairParGenericSet
+#include "Rtypes.h"              // for THashConsistencyHolder, ClassDef
 
-#include "FairParGenericSet.h"  // for FairParGenericSet
-#include "Rtypes.h"             // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t
 
-class FairParamList;             // lines 14-14
-class TObjArray;                 // lines 13-13
+class FairParamList;   // lines 14-14
+class TObjArray;       // lines 13-13
 class TBuffer;
 class TClass;
 class TMemberInspector;

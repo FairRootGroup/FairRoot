@@ -14,23 +14,23 @@
 
 #include "FairMQPrimaryGeneratorDevice.h"
 
-#include <FairMQMessage.h>                         // for FairMQMessagePtr
-#include <TClonesArray.h>                          // for TClonesArray
-#include <FairMQParts.h>                           // for FairMQParts
-#include <ProgOptions.h>                           // for ProgOptions
-#include <RtypesCore.h>                            // for Long64_t, UInt_t
-#include <fairlogger/Logger.h>                     // for LOG, Logger
-#include <boost/type_index/type_index_facade.hpp>  // for operator==
-#include <functional>                              // for __base
-#include <memory>                                  // for unique_ptr
-#include <string>                                  // for operator!=
-#include <type_traits>                             // for move
+#include "FairMCEventHeader.h"        // for FairMCEventHeader
+#include "FairMCSplitEventHeader.h"   // for FairMCSplitEventHe...
+#include "FairPrimaryGenerator.h"     // for FairPrimaryGenerator
+#include "FairStack.h"                // for FairStack
+#include "RootSerializer.h"           // for RootSerializer
 
-#include "FairMCEventHeader.h"                     // for FairMCEventHeader
-#include "FairMCSplitEventHeader.h"                // for FairMCSplitEventHe...
-#include "FairPrimaryGenerator.h"                  // for FairPrimaryGenerator
-#include "FairStack.h"                             // for FairStack
-#include "RootSerializer.h"                        // for RootSerializer
+#include <FairMQMessage.h>                          // for FairMQMessagePtr
+#include <FairMQParts.h>                            // for FairMQParts
+#include <ProgOptions.h>                            // for ProgOptions
+#include <RtypesCore.h>                             // for Long64_t, UInt_t
+#include <TClonesArray.h>                           // for TClonesArray
+#include <boost/type_index/type_index_facade.hpp>   // for operator==
+#include <fairlogger/Logger.h>                      // for LOG, Logger
+#include <functional>                               // for __base
+#include <memory>                                   // for unique_ptr
+#include <string>                                   // for operator!=
+#include <utility>                                  // for move
 
 using namespace std;
 

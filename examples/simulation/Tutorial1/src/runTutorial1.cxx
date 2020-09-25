@@ -5,10 +5,10 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include <fairlogger/Logger.h>               // for LOG
+#include "../macros/run_tutorial1_binary.C"   // for run_tutorial1_main
+#include "FairSimConfig.h"                    // for FairSimConfig
 
-#include "../macros/run_tutorial1_binary.C"  // for run_tutorial1_main
-#include "FairSimConfig.h"                   // for FairSimConfig
+#include <fairlogger/Logger.h>   // for LOG
 
 int main(int argc, char* argv[])
 {

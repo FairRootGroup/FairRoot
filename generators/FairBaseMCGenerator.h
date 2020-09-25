@@ -9,10 +9,10 @@
 #ifndef FAIR_BASEMCGENERATOR_H_
 #define FAIR_BASEMCGENERATOR_H_
 
-#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>     // for Double_t, Int_t, Bool_t
+#include "FairGenerator.h"   // for FairGenerator
 
-#include "FairGenerator.h"  // for FairGenerator
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Int_t, Bool_t
 
 class TBuffer;
 class TClass;

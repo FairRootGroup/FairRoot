@@ -13,11 +13,11 @@
 #ifndef FAIRMCPOINT_H
 #define FAIRMCPOINT_H
 
-#include <Rtypes.h>                         // for THashConsistencyHolder
-#include <TVector3.h>                       // for TVector3
-#include <RtypesCore.h>                     // for Double_t, Double32_t, Int_t
+#include "FairMultiLinkedData_Interface.h"   // for FairMultiLinkedData_Inter...
 
-#include "FairMultiLinkedData_Interface.h"  // for FairMultiLinkedData_Inter...
+#include <Rtypes.h>       // for THashConsistencyHolder
+#include <RtypesCore.h>   // for Double_t, Double32_t, Int_t
+#include <TVector3.h>     // for TVector3
 
 class TBuffer;
 class TClass;

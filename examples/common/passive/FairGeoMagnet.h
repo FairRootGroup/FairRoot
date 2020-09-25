@@ -8,10 +8,10 @@
 #ifndef FAIRGEOMAGNET_H
 #define FAIRGEOMAGNET_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Int_t
+#include "FairGeoSet.h"   // for FairGeoSet
 
-#include "FairGeoSet.h"  // for FairGeoSet
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t
 
 class TBuffer;
 class TClass;

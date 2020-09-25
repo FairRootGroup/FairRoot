@@ -17,11 +17,11 @@
 #ifndef FairMAPPAR_H
 #define FairMAPPAR_H 1
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
-#include <TString.h>            // for TString
-#include <RtypesCore.h>         // for Double_t, Int_t
+#include "FairParGenericSet.h"   // for FairParGenericSet
 
-#include "FairParGenericSet.h"  // for FairParGenericSet
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Int_t
+#include <TString.h>      // for TString
 
 class TBuffer;
 class TClass;

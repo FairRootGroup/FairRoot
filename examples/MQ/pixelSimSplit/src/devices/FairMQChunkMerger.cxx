@@ -14,23 +14,23 @@
 
 #include "FairMQChunkMerger.h"
 
-#include <TClonesArray.h>                          // for TClonesArray
-#include <TObject.h>                               // for TObject
-#include <FairMQMessage.h>                         // for FairMQMessagePtr
-#include <FairMQParts.h>                           // for FairMQParts
-#include <ProgOptions.h>                           // for ProgOptions
-#include <fairlogger/Logger.h>                     // for Logger, LOG
-#include <boost/type_index/type_index_facade.hpp>  // for operator==
-#include <cstring>                                 // for strcmp
-#include <vector>                                  // for vector
-#include <functional>                              // for __base
-#include <memory>                                  // for unique_ptr
-#include <type_traits>                             // for move
+#include "FairMCPoint.h"              // for FairMCPoint
+#include "FairMCSplitEventHeader.h"   // for FairMCSplitEventHe...
+#include "FairMCTrack.h"              // for FairMCTrack
+#include "RootSerializer.h"           // for RootSerializer
 
-#include "FairMCPoint.h"                           // for FairMCPoint
-#include "FairMCSplitEventHeader.h"                // for FairMCSplitEventHe...
-#include "FairMCTrack.h"                           // for FairMCTrack
-#include "RootSerializer.h"                        // for RootSerializer
+#include <FairMQMessage.h>                          // for FairMQMessagePtr
+#include <FairMQParts.h>                            // for FairMQParts
+#include <ProgOptions.h>                            // for ProgOptions
+#include <TClonesArray.h>                           // for TClonesArray
+#include <TObject.h>                                // for TObject
+#include <boost/type_index/type_index_facade.hpp>   // for operator==
+#include <cstring>                                  // for strcmp
+#include <fairlogger/Logger.h>                      // for Logger, LOG
+#include <functional>                               // for __base
+#include <memory>                                   // for unique_ptr
+#include <utility>                                  // for move
+#include <vector>                                   // for vector
 
 using namespace std;
 

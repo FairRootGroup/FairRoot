@@ -15,8 +15,8 @@
 #ifndef FAIRMQPIXALTFILESINKBIN_H_
 #define FAIRMQPIXALTFILESINKBIN_H_
 
-#include <FairMQDevice.h>  // for FairMQDevice
-#include <fstream>         // for string, ofstream
+#include <FairMQDevice.h>   // for FairMQDevice
+#include <fstream>          // for string, ofstream
 #include <string>
 
 class FairMQParts;

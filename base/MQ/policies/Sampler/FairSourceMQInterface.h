@@ -15,7 +15,7 @@
 
 #include <FairMQLogger.h>
 #include <functional>
-#include <type_traits>
+#include <utility>
 
 template<typename T, typename U>
 using enable_if_match = typename std::enable_if<std::is_same<T, U>::value, int>::type;

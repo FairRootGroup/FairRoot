@@ -5,6 +5,4 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-rootlogon()
-{
-}
+rootlogon() {}

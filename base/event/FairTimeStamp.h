@@ -8,12 +8,12 @@
 #ifndef FAIRTIMESTAMP_H
 #define FAIRTIMESTAMP_H
 
-#include <Rtypes.h>                         // for THashConsistencyHolder
-#include <RtypesCore.h>                     // for Double_t, Bool_t, Int_t
-#include <iosfwd>     // for ostream
-#include <iostream>                         // for ostream, cout
+#include "FairMultiLinkedData_Interface.h"   // for FairMultiLinkedData_Inter...
 
-#include "FairMultiLinkedData_Interface.h"  // for FairMultiLinkedData_Inter...
+#include <Rtypes.h>       // for THashConsistencyHolder
+#include <RtypesCore.h>   // for Double_t, Bool_t, Int_t
+#include <iosfwd>         // for ostream
+#include <iostream>       // for ostream, cout
 
 class TBuffer;
 class TClass;

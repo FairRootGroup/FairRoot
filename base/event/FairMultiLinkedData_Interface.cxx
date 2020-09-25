@@ -7,16 +7,13 @@
 
 #include "FairMultiLinkedData_Interface.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include "FairRootManager.h"   // for FairRootManager
 
-#include "FairRootManager.h"    // for FairRootManager
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 ClassImp(FairMultiLinkedData_Interface);
 
-FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(FairMultiLinkedData& links, Bool_t)
-{
-    SetLinks(links);
-}
+FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(FairMultiLinkedData& links, Bool_t) { SetLinks(links); }
 
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(TString dataType,
                                                              std::vector<Int_t> links,

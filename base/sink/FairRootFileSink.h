@@ -15,13 +15,13 @@
 #ifndef __FAIRROOT__FairRootFileSink__
 #define __FAIRROOT__FairRootFileSink__
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TFile.h>       // for TFile
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for Int_t, Bool_t
-#include <typeinfo>      // for type_info
+#include "FairSink.h"   // for FairSink, Sink_Type, kFILESINK
 
-#include "FairSink.h"    // for FairSink, Sink_Type, kFILESINK
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Bool_t
+#include <TFile.h>        // for TFile
+#include <TString.h>      // for TString
+#include <typeinfo>       // for type_info
 
 class FairEventHeader;
 class FairFileHeader;

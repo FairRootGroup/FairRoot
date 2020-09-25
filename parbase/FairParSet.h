@@ -8,10 +8,10 @@
 #ifndef FAIRPARSET_H
 #define FAIRPARSET_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TObject.h>     // for TObject
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for Bool_t, Int_t, kFALSE, kTRUE, UInt_t
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Int_t, kFALSE, kTRUE, UInt_t
+#include <TObject.h>      // for TObject
+#include <TString.h>      // for TString
 
 class FairLogger;
 class FairParIo;

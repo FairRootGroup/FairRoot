@@ -14,8 +14,8 @@
 
 #include "FairMQProcessorTask.h"
 
-#include <FairMQMessage.h>  // for FairMQMessage
-#include <type_traits>      // for move
+#include <FairMQMessage.h>   // for FairMQMessage
+#include <utility>           // for move
 
 FairMQProcessorTask::FairMQProcessorTask()
     : fPayload()

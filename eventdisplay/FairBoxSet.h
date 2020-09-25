@@ -24,11 +24,11 @@
 #ifndef FAIRBOXSET_H
 #define FAIRBOXSET_H
 
-#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
-#include <TEveBoxSet.h>      // for TEveBoxSet
-#include <RtypesCore.h>      // for Double_t
+#include "FairBoxSetDraw.h"   // for FairBoxSetDraw
 
-#include "FairBoxSetDraw.h"  // for FairBoxSetDraw
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t
+#include <TEveBoxSet.h>   // for TEveBoxSet
 
 class TBuffer;
 class TClass;

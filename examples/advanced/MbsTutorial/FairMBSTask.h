@@ -9,10 +9,10 @@
 #ifndef _FAIRMBS_TASK_
 #define _FAIRMBS_TASK_
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Int_t, Option_t
+#include "FairTask.h"   // for FairTask, InitStatus
 
-#include "FairTask.h"    // for FairTask, InitStatus
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Option_t
 
 class TClonesArray;
 class TH1F;

@@ -5,11 +5,11 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#include <memory>                              // for unique_ptr
+#include "FairMQExHistoCanvasDrawer.h"          // for FairMQExHistoCanvasDrawer
+#include "FairMQExHistoCanvasDrawerExample.h"   // for FairMQExHistoCanvasDra...
+#include "runExHistoServer.h"                   // for getCanvasDrawer
 
-#include "FairMQExHistoCanvasDrawerExample.h"  // for FairMQExHistoCanvasDra...
-#include "runExHistoServer.h"                  // for getCanvasDrawer
-#include "FairMQExHistoCanvasDrawer.h"         // for FairMQExHistoCanvasDrawer
+#include <memory>   // for unique_ptr
 
 std::unique_ptr<FairMQExHistoCanvasDrawer> getCanvasDrawer()
 {

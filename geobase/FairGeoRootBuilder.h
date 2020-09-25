@@ -8,10 +8,10 @@
 #ifndef FAIRGEOROOTBUILDER_H
 #define FAIRGEOROOTBUILDER_H
 
-#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>      // for Int_t, Bool_t, Double_t
+#include "FairGeoBuilder.h"   // for FairGeoBuilder
 
-#include "FairGeoBuilder.h"  // for FairGeoBuilder
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Bool_t, Double_t
 
 class FairGeoMedium;
 class FairGeoNode;

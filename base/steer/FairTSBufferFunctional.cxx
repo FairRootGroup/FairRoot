@@ -7,15 +7,15 @@
  ********************************************************************************/
 #include "FairTSBufferFunctional.h"
 
-#include <TBranch.h>            // for TBranch
-#include <TClass.h>             // for TClass
-#include <TClonesArray.h>       // for TClonesArray
-#include <TTree.h>              // for TTree
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include "FairLink.h"          // for FairLink
+#include "FairRootManager.h"   // for FairRootManager
+#include "FairTimeStamp.h"     // for FairTimeStamp
 
-#include "FairLink.h"           // for FairLink
-#include "FairRootManager.h"    // for FairRootManager
-#include "FairTimeStamp.h"      // for FairTimeStamp
+#include <TBranch.h>             // for TBranch
+#include <TClass.h>              // for TClass
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TTree.h>               // for TTree
 
 ClassImp(FairTSBufferFunctional);
 

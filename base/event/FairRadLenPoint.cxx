@@ -12,7 +12,7 @@
 
 #include "FairRadLenPoint.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 FairRadLenPoint::FairRadLenPoint()
     : FairMCPoint()

@@ -7,13 +7,12 @@
 
 #ifndef BOOSTSERIALIZER_H
 #define BOOSTSERIALIZER_H
-#include <boost/archive/binary_iarchive.hpp>   // input: a non-portable native binary archive
-#include <boost/archive/binary_oarchive.hpp>   // output: a non-portable native binary archive
-#include <boost/serialization/vector.hpp>
-
 #include <FairMQLogger.h>
 #include <FairMQMessage.h>
 #include <TClonesArray.h>
+#include <boost/archive/binary_iarchive.hpp>   // input: a non-portable native binary archive
+#include <boost/archive/binary_oarchive.hpp>   // output: a non-portable native binary archive
+#include <boost/serialization/vector.hpp>
 
 namespace boost {
 namespace serialization {
@@ -23,7 +22,7 @@ class access;
 #include <memory>
 #include <sstream>
 #include <string>
-#include <type_traits>
+#include <utility>
 #include <vector>
 
 namespace fair {

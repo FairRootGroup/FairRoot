@@ -15,12 +15,12 @@
 /////////////////////////////////////////////////////////////
 #include "FairParSet.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <fairlogger/Logger.h>  // for Logger, LOG
-#include <iostream>             // for operator<<, basic_ostream, ostream, cout
+#include "FairLogger.h"      // for FairLogger
+#include "FairRuntimeDb.h"   // for FairRuntimeDb
 
-#include "FairLogger.h"         // for FairLogger
-#include "FairRuntimeDb.h"      // for FairRuntimeDb
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <fairlogger/Logger.h>   // for Logger, LOG
+#include <iostream>              // for operator<<, basic_ostream, ostream, cout
 
 using std::cout;
 

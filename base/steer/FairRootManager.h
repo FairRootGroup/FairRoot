@@ -8,25 +8,25 @@
 #ifndef FAIR_ROOT_MANAGER_H
 #define FAIR_ROOT_MANAGER_H
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
-#include <TChain.h>             // for TChain
-#include <TMCtls.h>    // for multi-threading
-#include <TObject.h>            // for TObject
-#include <TString.h>            // for TString, operator<
-#include <RtypesCore.h>         // for Int_t, Bool_t, Double_t, UInt_t, kTRUE
-#include <fairlogger/Logger.h>  // for LOG
-#include <map>                  // for map, __map_const_iterator, operator!=
-#include <memory>               // for unique_ptr
-#include <string>
-#include <type_traits>          // for is_pointer, remove_pointer, is_const
-#include <typeinfo>             // for type_info
-#include <vector>               // for vector
-#include <iosfwd>               // for string
-#include <utility>              // for pair
-
 #include "FairLogger.h"
-#include "FairSink.h"           // for FairSink
-#include "FairSource.h"         // for FairSource
+#include "FairSink.h"     // for FairSink
+#include "FairSource.h"   // for FairSource
+
+#include <Rtypes.h>              // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>          // for Int_t, Bool_t, Double_t, UInt_t, kTRUE
+#include <TChain.h>              // for TChain
+#include <TMCtls.h>              // for multi-threading
+#include <TObject.h>             // for TObject
+#include <TString.h>             // for TString, operator<
+#include <fairlogger/Logger.h>   // for LOG
+#include <iosfwd>                // for string
+#include <map>                   // for map, __map_const_iterator, operator!=
+#include <memory>                // for unique_ptr
+#include <string>
+#include <typeinfo>   // for type_info
+#include <utility>    // for is_pointer, remove_pointer, is_const
+#include <utility>    // for pair
+#include <vector>     // for vector
 
 class BinaryFunctor;
 class FairEventHeader;

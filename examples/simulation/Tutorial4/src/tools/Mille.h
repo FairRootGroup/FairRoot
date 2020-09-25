@@ -8,7 +8,7 @@
 #ifndef MILLE_H
 #define MILLE_H
 
-#include <fstream>  // for ofstream
+#include <fstream>   // for ofstream
 
 /**
  * \class Mille
@@ -30,7 +30,7 @@
  *  (last update by $Author: flucke $)
  */
 
-#include <fstream>  // for ofstream
+#include <fstream>   // for ofstream
 #include <iostream>
 
 class Mille

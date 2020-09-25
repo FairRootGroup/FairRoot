@@ -23,14 +23,14 @@
 #ifndef FAIRMCTRACK_H
 #define FAIRMCTRACK_H 1
 
-#include <Rtypes.h>            // for THashConsistencyHolder, ClassDef
-#include <TLorentzVector.h>    // for TLorentzVector
-#include <TMath.h>             // for Sqrt
-#include <TObject.h>           // for TObject
-#include <TVector3.h>          // for TVector3
-#include <RtypesCore.h>        // for Double_t, Int_t, Double32_t
+#include "FairDetectorList.h"   // for DetectorId
 
-#include "FairDetectorList.h"  // for DetectorId
+#include <Rtypes.h>           // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>       // for Double_t, Int_t, Double32_t
+#include <TLorentzVector.h>   // for TLorentzVector
+#include <TMath.h>            // for Sqrt
+#include <TObject.h>          // for TObject
+#include <TVector3.h>         // for TVector3
 
 class TParticle;
 class TBuffer;

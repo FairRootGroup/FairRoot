@@ -11,12 +11,12 @@
 #ifndef FAIRYPTGENERATOR_H_
 #define FAIRYPTGENERATOR_H_
 
-#include <Rtypes.h>               // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>           // for Double_t, Bool_t
-#include <TH2.h>                  // for TH2D
-
-#include "FairBaseMCGenerator.h"  // for FairBaseMCGenerator
+#include "FairBaseMCGenerator.h"   // for FairBaseMCGenerator
 #include "TH2D.h"
+
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Bool_t
+#include <TH2.h>          // for TH2D
 
 class FairGenerator;
 class FairPrimaryGenerator;

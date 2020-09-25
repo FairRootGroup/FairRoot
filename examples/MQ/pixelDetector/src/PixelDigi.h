@@ -15,10 +15,10 @@
 #ifndef PixelDigi_H_
 #define PixelDigi_H_
 
-#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>     // for Int_t, Double_t
+#include "FairTimeStamp.h"   // for FairTimeStamp
 
-#include "FairTimeStamp.h"  // for FairTimeStamp
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Double_t
 
 class TBuffer;
 class TClass;

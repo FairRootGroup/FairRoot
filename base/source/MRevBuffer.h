@@ -24,9 +24,9 @@
 #ifndef MRevBuffer_H
 #define MRevBuffer_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TObject.h>     // for TObject
-#include <RtypesCore.h>  // for Int_t, Short_t
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Short_t
+#include <TObject.h>      // for TObject
 
 class TSocket;
 class TBuffer;

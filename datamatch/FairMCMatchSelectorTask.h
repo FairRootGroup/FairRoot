@@ -19,13 +19,13 @@
 #ifndef FAIRMCMATCHSELECTORTASK_H
 #define FAIRMCMATCHSELECTORTASK_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for Int_t, Float_t, Option_t
-#include <utility>       // for pair
-#include <vector>        // for vector
+#include "FairTask.h"   // for FairTask, InitStatus
 
-#include "FairTask.h"    // for FairTask, InitStatus
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Float_t, Option_t
+#include <TString.h>      // for TString
+#include <utility>        // for pair
+#include <vector>         // for vector
 
 class FairMCMatch;
 class TBuffer;

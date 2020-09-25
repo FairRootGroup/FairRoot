@@ -7,13 +7,6 @@
  ********************************************************************************/
 #include "Pixel.h"
 
-#include <TClonesArray.h>       // for TClonesArray
-#include <TString.h>            // for TString
-#include <TVirtualMC.h>         // for TVirtualMC
-#include <TVirtualMCStack.h>    // for TVirtualMCStack
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, endl, basic_ostream, cout
-
 #include "FairDetectorList.h"   // for kPixel
 #include "FairRootManager.h"    // for FairRootManager
 #include "FairRunSim.h"         // for FairRunSim
@@ -22,6 +15,13 @@
 #include "PixelGeo.h"           // for PixelGeo
 #include "PixelGeoPar.h"        // for PixelGeoPar
 #include "PixelPoint.h"         // for PixelPoint
+
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TString.h>             // for TString
+#include <TVirtualMC.h>          // for TVirtualMC
+#include <TVirtualMCStack.h>     // for TVirtualMCStack
+#include <iostream>              // for operator<<, endl, basic_ostream, cout
 
 class FairModule;
 

@@ -16,14 +16,14 @@
 /////////////////////////////////////////////////////////////
 #include "FairGeoPipe.h"
 
-#include <TList.h>              // for TList
-#include <TString.h>            // for TString
-#include <string.h>             // for strcpy
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-
 #include "FairGeoInterface.h"   // for FairGeoInterface
 #include "FairGeoLoader.h"      // for FairGeoLoader
 #include "FairGeoNode.h"        // for FairGeoNode
+
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TList.h>               // for TList
+#include <TString.h>             // for TString
+#include <string.h>              // for strcpy
 
 class FairGeoBuilder;
 class TObject;

@@ -14,13 +14,13 @@
 
 #include "FairTestDetectorDigiWriteoutBuffer.h"
 
-#include <TClonesArray.h>          // for TClonesArray
-#include <TGenericClassInfo.h>     // for TGenericClassInfo
-#include <fairlogger/Logger.h>     // for LOG, Logger
-#include <utility>                 // for pair
+#include "FairRootManager.h"        // for FairRootManager
+#include "FairTestDetectorDigi.h"   // for FairTestDetectorDigi
 
-#include "FairRootManager.h"       // for FairRootManager
-#include "FairTestDetectorDigi.h"  // for FairTestDetectorDigi
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <fairlogger/Logger.h>   // for LOG, Logger
+#include <utility>               // for pair
 
 ClassImp(FairTestDetectorDigiWriteoutBuffer);
 

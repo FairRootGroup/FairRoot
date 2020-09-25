@@ -8,10 +8,10 @@
 #ifndef FAIRTUTORIALDERT4HIT_H
 #define FAIRTUTORIALDET4HIT_H 1
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Int_t
+#include "FairHit.h"   // for FairHit
 
-#include "FairHit.h"     // for FairHit
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t
 
 class TVector3;
 class TBuffer;

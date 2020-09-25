@@ -8,11 +8,11 @@
 #ifndef FAIRGEOMATRIX_H
 #define FAIRGEOMATRIX_H
 
-#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
-#include <TObject.h>        // for TObject
-#include <RtypesCore.h>     // for Double_t, Int_t
+#include "FairGeoVector.h"   // for FairGeoVector
 
-#include "FairGeoVector.h"  // for FairGeoVector
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Int_t
+#include <TObject.h>      // for TObject
 
 class TBuffer;
 class TClass;

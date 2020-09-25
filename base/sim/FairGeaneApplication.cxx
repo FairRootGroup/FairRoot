@@ -12,11 +12,11 @@
 
 #include "FairGeaneApplication.h"
 
-#include <TVirtualMC.h>         // for TVirtualMC
-#include <stdio.h>              // for printf
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include "FairField.h"   // for FairField
 
-#include "FairField.h"          // for FairField
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TVirtualMC.h>          // for TVirtualMC
+#include <stdio.h>               // for printf
 
 FairGeaneApplication::FairGeaneApplication()
     : TVirtualMCApplication()

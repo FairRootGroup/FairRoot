@@ -15,14 +15,14 @@
 #ifndef FAIRSOURCE_H
 #define FAIRSOURCE_H
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
-#include <TObject.h>            // for TObject
-#include <RtypesCore.h>         // for Int_t, Bool_t, kFALSE, UInt_t
-#include <fairlogger/Logger.h>  // for Logger, LOG
-#include <typeinfo>             // for type_info
-
 #include "FairLogger.h"
-#include "TClass.h"             // for TClass
+#include "TClass.h"   // for TClass
+
+#include <Rtypes.h>              // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>          // for Int_t, Bool_t, kFALSE, UInt_t
+#include <TObject.h>             // for TObject
+#include <fairlogger/Logger.h>   // for Logger, LOG
+#include <typeinfo>              // for type_info
 
 class FairEventHeader;
 class TBuffer;

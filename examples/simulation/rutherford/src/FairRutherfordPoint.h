@@ -8,14 +8,14 @@
 #ifndef CBMRUTHERFORDPOINT_H
 #define CBMRUTHERFORDPOINT_H 1
 
+#include "FairMCPoint.h"   // for FairMCPoint
+
 #include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
 #include <RtypesCore.h>   // for Double_t, Double32_t, Int_t, Option_t
 #include <TVector3.h>     // for TVector3
-#include "FairMCPoint.h"  // for FairMCPoint
 class TBuffer;
 class TClass;
 class TMemberInspector;
-
 
 class FairRutherfordPoint : public FairMCPoint
 {

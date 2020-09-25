@@ -7,11 +7,11 @@
  ********************************************************************************/
 #include "FairTutPropGeo.h"
 
-#include <stdio.h>              // for sprintf
-#include <Rtypes.h>             // for ClassImp
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <TString.h>            // for TString
-#include <string.h>             // for strcpy
+#include <Rtypes.h>              // for ClassImp
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TString.h>             // for TString
+#include <stdio.h>               // for sprintf
+#include <string.h>              // for strcpy
 
 ClassImp(FairTutPropGeo);
 

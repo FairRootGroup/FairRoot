@@ -14,7 +14,7 @@
 
 #include "FairMCEntry.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 ClassImp(FairMCEntry);
 

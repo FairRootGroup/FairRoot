@@ -14,13 +14,13 @@
  *		Warsaw University of Technology, Faculty of Physics
  */
 
- #include "FairEveCut.h"
- #include <TGFrame.h>        // for TGGroupFrame, TGCompositeFrame, kFixedWidth
- #include <TGLabel.h>        // for TGLabel
- #include <TGLayout.h>       // for TGLayoutHints, kLHintsExpandX, kLHintsLeft
- #include <TGNumberEntry.h>  // for TGNumberEntry, TGNumberFormat, TGNumberFo...
- #include <TGedFrame.h>      // for TGedFrame
+#include "FairEveCut.h"
 
+#include <TGFrame.h>         // for TGGroupFrame, TGCompositeFrame, kFixedWidth
+#include <TGLabel.h>         // for TGLabel
+#include <TGLayout.h>        // for TGLayoutHints, kLHintsExpandX, kLHintsLeft
+#include <TGNumberEntry.h>   // for TGNumberEntry, TGNumberFormat, TGNumberFo...
+#include <TGedFrame.h>       // for TGedFrame
 
 FairEveCut::FairEveCut(TGedFrame *frame, TGCompositeFrame *tab, TString name, Int_t width)
     : fWidth(width)

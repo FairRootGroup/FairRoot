@@ -15,10 +15,10 @@
 #ifndef FAIRHITPOINTSETDRAW_H_
 #define FAIRHITPOINTSETDRAW_H_
 
-#include <Rtypes.h>            // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>        // for Color_t, Int_t, Style_t
+#include "FairPointSetDraw.h"   // for FairPointSetDraw
 
-#include "FairPointSetDraw.h"  // for FairPointSetDraw
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Color_t, Int_t, Style_t
 
 class TObject;
 class TVector3;

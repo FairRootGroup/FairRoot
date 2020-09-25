@@ -14,13 +14,15 @@
  *		Warsaw University of Technology, Faculty of Physics
  */
 
- #include "FairEveGeoTracksEditor.h"
- #include <TGButton.h>          // for TGTextButton
- #include <TGLayout.h>          // for TGLayoutHints, kLHintsExpandX, kLHints...
- #include <TObject.h>           // for TObject
- #include "FairEveCut.h"        // for FairEveMinMaxCut, FairEveBoolCut, Fair...
- #include "FairEveGeoTracks.h"  // for FairEveGeoTracks
- class TGWindow;
+#include "FairEveGeoTracksEditor.h"
+
+#include "FairEveCut.h"         // for FairEveMinMaxCut, FairEveBoolCut, Fair...
+#include "FairEveGeoTracks.h"   // for FairEveGeoTracks
+
+#include <TGButton.h>   // for TGTextButton
+#include <TGLayout.h>   // for TGLayoutHints, kLHintsExpandX, kLHints...
+#include <TObject.h>    // for TObject
+class TGWindow;
 
 FairEveGeoTracksEditor::FairEveGeoTracksEditor(const TGWindow *p,
                                                Int_t width,

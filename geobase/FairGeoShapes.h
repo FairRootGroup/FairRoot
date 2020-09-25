@@ -8,11 +8,11 @@
 #ifndef FAIRGEOSHAPES_H
 #define FAIRGEOSHAPES_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TObject.h>     // for TObject
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for Bool_t, Int_t
-#include <iosfwd>        // for fstream
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Int_t
+#include <TObject.h>      // for TObject
+#include <TString.h>      // for TString
+#include <iosfwd>         // for fstream
 
 class FairGeoVolume;
 class FairGeoBasicShape;

@@ -6,9 +6,9 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
- #include "FairPropagator.h"
- #include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include "FairPropagator.h"
 
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 FairPropagator::FairPropagator()
     : TNamed("FairPropagator", "Base class for propagators")

@@ -12,15 +12,15 @@
 #ifndef FAIRGEANEPRO_H
 #define FAIRGEANEPRO_H 1
 
-#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>      // for kTRUE
-#include <iosfwd>            // for string
-
 #include "FairLogger.h"
-#include "FairPropagator.h"  // for FairPropagator, PCAOutputStruct
-#include "TGeant3.h"         // for Ertrio_t
-#include "TString.h"         // for TString
-#include "TVector3.h"        // for TVector3
+#include "FairPropagator.h"   // for FairPropagator, PCAOutputStruct
+#include "TGeant3.h"          // for Ertrio_t
+#include "TString.h"          // for TString
+#include "TVector3.h"         // for TVector3
+
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for kTRUE
+#include <iosfwd>         // for string
 
 class FairTrackPar;
 class FairTrackParP;

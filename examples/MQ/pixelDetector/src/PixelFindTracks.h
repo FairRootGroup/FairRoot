@@ -15,10 +15,10 @@
 #ifndef PIXELFINDTRACKS_H
 #define PIXELFINDTRACKS_H 1
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Int_t, Option_t
+#include "FairTask.h"   // for InitStatus, FairTask
 
-#include "FairTask.h"    // for InitStatus, FairTask
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Option_t
 
 class TClonesArray;
 class TH2F;

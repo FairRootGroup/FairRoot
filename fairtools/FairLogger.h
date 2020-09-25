@@ -15,12 +15,12 @@
 #ifndef BASE_FAIRLOGGER_H_
 #define BASE_FAIRLOGGER_H_
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
-#include <fairlogger/Logger.h>  // for Logger, Severity, Severity::fatal
-#include <stdarg.h>             // for va_list
-#include <string>     // for operator<<
-#include <vector>               // for vector
-#include <iosfwd>               // for string
+#include <Rtypes.h>              // for THashConsistencyHolder, ClassDef
+#include <fairlogger/Logger.h>   // for Logger, Severity, Severity::fatal
+#include <iosfwd>                // for string
+#include <stdarg.h>              // for va_list
+#include <string>                // for operator<<
+#include <vector>                // for vector
 
 class TBuffer;
 class TClass;

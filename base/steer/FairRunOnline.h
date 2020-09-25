@@ -15,12 +15,12 @@
  * @since 28.02.05
  */
 
-#include <Rtypes.h>           // for THashConsistencyHolder, ClassDef
-#include <TString.h>          // for TString
-#include <RtypesCore.h>       // for Int_t, Bool_t, UInt_t, kTRUE
+#include "FairRootManager.h"   // for FairRootManager
+#include "FairRun.h"           // for FairRun
 
-#include "FairRootManager.h"  // for FairRootManager
-#include "FairRun.h"          // for FairRun
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Bool_t, UInt_t, kTRUE
+#include <TString.h>      // for TString
 
 class FairField;
 class FairSource;

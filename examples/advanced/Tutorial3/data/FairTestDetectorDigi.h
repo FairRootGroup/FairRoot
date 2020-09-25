@@ -15,14 +15,14 @@
 #ifndef FAIRTESTDETECTORDIGI_H_
 #define FAIRTESTDETECTORDIGI_H_
 
-#include <Rtypes.h>                             // for THashConsistencyHolder
-#include <RtypesCore.h>                         // for Int_t, Double_t
-#include <iosfwd>                               // for stringstream, ostream
-#include <iostream>                             // for operator<<, basic_ost...
-#include <sstream>
-#include <string>                               // for allocator, operator+
+#include "FairTimeStamp.h"   // for FairTimeStamp
 
-#include "FairTimeStamp.h"                      // for FairTimeStamp
+#include <Rtypes.h>       // for THashConsistencyHolder
+#include <RtypesCore.h>   // for Int_t, Double_t
+#include <iosfwd>         // for stringstream, ostream
+#include <iostream>       // for operator<<, basic_ost...
+#include <sstream>
+#include <string>   // for allocator, operator+
 
 class TBuffer;
 class TClass;

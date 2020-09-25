@@ -7,11 +7,11 @@
  ********************************************************************************/
 #include "FairTutPropGeoPar.h"
 
-#include <Rtypes.h>             // for ClassImp
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include "FairParamList.h"   // for FairParamList
+#include "TObjArray.h"       // for TObjArray
 
-#include "FairParamList.h"      // for FairParamList
-#include "TObjArray.h"          // for TObjArray
+#include <Rtypes.h>              // for ClassImp
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 ClassImp(FairTutPropGeoPar);
 

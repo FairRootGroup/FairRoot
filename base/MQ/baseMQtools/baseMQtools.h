@@ -12,7 +12,7 @@
 #include <iostream>
 #include <string>
 #include <tuple>
-#include <type_traits>
+#include <utility>
 
 // boost
 #include <boost/archive/text_iarchive.hpp>

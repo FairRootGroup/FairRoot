@@ -8,13 +8,13 @@
 #ifndef FAIRFASTSIMEXAMPLE2
 #define FAIRFASTSIMEXAMPLE2
 
-#include <Rtypes.h>               // for THashConsistencyHolder, ClassDef
-#include <TLorentzVector.h>       // for TLorentzVector
-#include <TVector3.h>             // for TVector3
-#include <RtypesCore.h>           // for Int_t, Double32_t, Double_t, Bool_t
-#include <iosfwd>                 // for string
+#include "FairFastSimDetector.h"   // for FairFastSimDetector
 
-#include "FairFastSimDetector.h"  // for FairFastSimDetector
+#include <Rtypes.h>           // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>       // for Int_t, Double32_t, Double_t, Bool_t
+#include <TLorentzVector.h>   // for TLorentzVector
+#include <TVector3.h>         // for TVector3
+#include <iosfwd>             // for string
 
 class FairTutorialDet1Point;
 class TClonesArray;

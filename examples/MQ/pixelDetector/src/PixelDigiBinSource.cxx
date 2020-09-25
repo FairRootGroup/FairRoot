@@ -15,15 +15,15 @@
 //
 #include "PixelDigiBinSource.h"
 
-#include <TClonesArray.h>       // for TClonesArray
-#include <TString.h>            // for TString
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <fairlogger/Logger.h>  // for Logger, LOG
-#include <cstring>              // for strcmp
-
 #include "FairRootManager.h"    // for FairRootManager
 #include "PixelDigi.h"          // for PixelDigi
 #include "PixelEventHeader.h"   // for PixelEventHeader
+
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TString.h>             // for TString
+#include <cstring>               // for strcmp
+#include <fairlogger/Logger.h>   // for Logger, LOG
 
 PixelDigiBinSource::PixelDigiBinSource(TString inputFileName)
     : FairSource()

@@ -21,9 +21,9 @@
 #ifndef FAIRION_H
 #define FAIRION_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TNamed.h>      // for TNamed
-#include <RtypesCore.h>  // for Int_t, Double_t
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Double_t
+#include <TNamed.h>       // for TNamed
 
 class FairLogger;
 class TBuffer;
@@ -96,13 +96,13 @@ class FairIon : public TNamed
     void SetMass(Double_t mass) { fMass = mass; }
 
   private:
-    static Int_t fgNIon;         //! /// Number of ions instantiated. One per generator.
-    Int_t fZ;                    /// Atomic number
-    Int_t fA;                    /// Atomic mass
-    Int_t fQ;                    /// Electric charge
-    Double_t fExcEnergy;         /// Excitation energy [GeV]
-    Double_t fMass;              /// Mass [GeV]
-    FairLogger* fLogger;         //! /// FairLogger
+    static Int_t fgNIon;   //! /// Number of ions instantiated. One per generator.
+    Int_t fZ;              /// Atomic number
+    Int_t fA;              /// Atomic mass
+    Int_t fQ;              /// Electric charge
+    Double_t fExcEnergy;   /// Excitation energy [GeV]
+    Double_t fMass;        /// Mass [GeV]
+    FairLogger* fLogger;   //! /// FairLogger
 
     FairIon(const FairIon&);
     FairIon& operator=(const FairIon&);

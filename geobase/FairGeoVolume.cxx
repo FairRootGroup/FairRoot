@@ -28,8 +28,8 @@
 /////////////////////////////////////////////////////////////
 #include "FairGeoVolume.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, basic_ostream, char_traits
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <iostream>              // for operator<<, basic_ostream, char_traits
 
 using std::cout;
 using std::endl;

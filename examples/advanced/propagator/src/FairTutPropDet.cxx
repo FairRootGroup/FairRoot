@@ -7,24 +7,24 @@
  ********************************************************************************/
 #include "FairTutPropDet.h"
 
-#include <stddef.h>             // for NULL
-#include <Rtypes.h>             // for ClassImp
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <TLorentzVector.h>     // for TLorentzVector
-#include <TVector3.h>           // for TVector3
-#include <iostream>             // for cout, endl, string
+#include "FairDetectorList.h"    // for kTutProp
+#include "FairRootManager.h"     // for FairRootManager
+#include "FairStack.h"           // for FairStack
+#include "FairTutPropGeo.h"      // for FairTutPropGeo
+#include "FairTutPropGeoPar.h"   // for FairTutPropGeoPar
+#include "FairTutPropPoint.h"    // for FairTutPropPoint
+#include "FairVolume.h"          // for FairVolume
+#include "TClonesArray.h"        // for TClonesArray
+#include "TString.h"             // for TString
+#include "TVirtualMC.h"          // for TVirtualMC
+#include "TVirtualMCStack.h"     // for TVirtualMCStack
 
-#include "FairDetectorList.h"   // for kTutProp
-#include "FairRootManager.h"    // for FairRootManager
-#include "FairStack.h"          // for FairStack
-#include "FairTutPropGeo.h"     // for FairTutPropGeo
-#include "FairTutPropGeoPar.h"  // for FairTutPropGeoPar
-#include "FairTutPropPoint.h"   // for FairTutPropPoint
-#include "FairVolume.h"         // for FairVolume
-#include "TClonesArray.h"       // for TClonesArray
-#include "TString.h"            // for TString
-#include "TVirtualMC.h"         // for TVirtualMC
-#include "TVirtualMCStack.h"    // for TVirtualMCStack
+#include <Rtypes.h>              // for ClassImp
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TLorentzVector.h>      // for TLorentzVector
+#include <TVector3.h>            // for TVector3
+#include <iostream>              // for cout, endl, string
+#include <stddef.h>              // for NULL
 
 using std::cout;
 using std::endl;

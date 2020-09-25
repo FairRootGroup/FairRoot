@@ -8,15 +8,15 @@
 #ifndef FAIRSIMCONFIG
 #define FAIRSIMCONFIG
 
-#include <Rtypes.h>                                       // for THashConsis...
-#include <TString.h>                                      // for TString
-#include <boost/program_options/errors.hpp>               // for program_opt...
-#include <boost/program_options/options_description.hpp>  // for options_des...
-#include <boost/program_options/variables_map.hpp>        // for variables_map
-#include <string>
-#include <iosfwd>                                         // for string
-
 #include "boost/program_options.hpp"
+
+#include <Rtypes.h>                                        // for THashConsis...
+#include <TString.h>                                       // for TString
+#include <boost/program_options/errors.hpp>                // for program_opt...
+#include <boost/program_options/options_description.hpp>   // for options_des...
+#include <boost/program_options/variables_map.hpp>         // for variables_map
+#include <iosfwd>                                          // for string
+#include <string>
 
 class TBuffer;
 class TClass;

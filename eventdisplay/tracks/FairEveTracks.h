@@ -16,18 +16,18 @@
 #ifndef FAIRTEVERACKS_H_
 #define FAIRTEVERACKS_H_
 
-#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>   // for Double_t, Bool_t, kFALSE, Color_t
-#include <TEveElement.h>  // for TEveElement
-#include <TNamed.h>       // for TNamed
-#include <TString.h>      // for TString
-#include "FairTask.h"     // for InitStatus
-class FairEventManager;  // lines 23-23
+#include "FairTask.h"   // for InitStatus
+
+#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>    // for Double_t, Bool_t, kFALSE, Color_t
+#include <TEveElement.h>   // for TEveElement
+#include <TNamed.h>        // for TNamed
+#include <TString.h>       // for TString
+class FairEventManager;    // lines 23-23
 class TBuffer;
 class TClass;
-class TEveTrackList;  // lines 24-24
+class TEveTrackList;   // lines 24-24
 class TMemberInspector;
-
 
 /**
  * base evelement that represents tracks

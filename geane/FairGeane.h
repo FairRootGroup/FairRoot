@@ -12,10 +12,10 @@
 #ifndef FAIRGeane_H
 #define FAIRGeane_H
 
+#include "FairTask.h"   // for FairTask, InitStatus
+
 #include <Rtypes.h>    // for THashConsistencyHolder, ClassDef
 #include <TString.h>   // for TString
-
-#include "FairTask.h"  // for FairTask, InitStatus
 
 class FairGeaneApplication;
 class FairField;

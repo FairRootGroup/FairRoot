@@ -12,7 +12,20 @@
 
 #include "FairRunOnline.h"
 
+#include "FairBaseParSet.h"       // for FairBaseParSet
+#include "FairEventHeader.h"      // for FairEventHeader
+#include "FairField.h"            // for FairField
+#include "FairFileHeader.h"       // for FairFileHeader
+#include "FairGeoParSet.h"        // for FairGeoParSet
+#include "FairParSet.h"           // for FairParSet
+#include "FairRootManager.h"      // for FairRootManager
+#include "FairRunIdGenerator.h"   // for FairRunIdGenerator
+#include "FairRuntimeDb.h"        // for FairRuntimeDb
+#include "FairSource.h"           // for FairSource, kONLINE
+#include "FairTask.h"             // for FairTask
+
 #include <TCollection.h>         // for TIter
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 #include <TGeoManager.h>         // for gGeoManager, TGeoManager
 #include <THttpServer.h>         // for THttpServer
 #include <TList.h>               // for TList
@@ -21,23 +34,10 @@
 #include <TObject.h>             // for TObject
 #include <TROOT.h>               // for TROOT, gROOT
 #include <TSystem.h>             // for TSystem, gSystem
-#include <stdlib.h>              // for exit
-#include <TGenericClassInfo.h>   // for TGenericClassInfo
 #include <fairlogger/Logger.h>   // for LOG, Logger
-#include <sys/signal.h>          // for signal, SIGINT
 #include <iostream>              // for operator<<, basic_ostream, endl, cout
-
-#include "FairBaseParSet.h"      // for FairBaseParSet
-#include "FairEventHeader.h"     // for FairEventHeader
-#include "FairField.h"           // for FairField
-#include "FairFileHeader.h"      // for FairFileHeader
-#include "FairGeoParSet.h"       // for FairGeoParSet
-#include "FairParSet.h"          // for FairParSet
-#include "FairRootManager.h"     // for FairRootManager
-#include "FairRunIdGenerator.h"  // for FairRunIdGenerator
-#include "FairRuntimeDb.h"       // for FairRuntimeDb
-#include "FairSource.h"          // for FairSource, kONLINE
-#include "FairTask.h"            // for FairTask
+#include <stdlib.h>              // for exit
+#include <sys/signal.h>          // for signal, SIGINT
 
 using std::cout;
 using std::endl;

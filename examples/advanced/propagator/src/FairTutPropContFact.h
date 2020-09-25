@@ -8,8 +8,8 @@
 #ifndef FAIRTUTPROPCONTFACT_H_
 #define FAIRTUTPROPCONTFACT_H_
 
-#include "FairContFact.h"  // for FairContFact, FairContainer (ptr only)
-#include "Rtypes.h"        // for THashConsistencyHolder, ClassDef
+#include "FairContFact.h"   // for FairContFact, FairContainer (ptr only)
+#include "Rtypes.h"         // for THashConsistencyHolder, ClassDef
 
 class FairParSet;
 class TBuffer;

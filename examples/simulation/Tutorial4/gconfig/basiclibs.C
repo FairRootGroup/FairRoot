@@ -9,6 +9,4 @@
 //
 // Macro for loading basic libraries used with both Geant3 and Geant4
 
-void basiclibs()
-{
-}
+void basiclibs() {}

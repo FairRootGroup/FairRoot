@@ -14,11 +14,11 @@
 
 #include "FairMCDataCrawler.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, endl, ostream, cout, basi...
+#include "FairLink.h"          // for FairLink, operator<<
+#include "FairRootManager.h"   // for FairRootManager
 
-#include "FairLink.h"           // for FairLink, operator<<
-#include "FairRootManager.h"    // for FairRootManager
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <iostream>              // for operator<<, endl, ostream, cout, basi...
 
 ClassImp(FairMCDataCrawler);
 

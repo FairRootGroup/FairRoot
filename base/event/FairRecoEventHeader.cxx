@@ -12,7 +12,7 @@
 
 #include "FairRecoEventHeader.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 FairRecoEventHeader::FairRecoEventHeader()
     : fRunId(0)

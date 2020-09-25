@@ -11,18 +11,18 @@
 // -------------------------------------------------------------------------
 #include "FairShieldGenerator.h"
 
-#include <TDatabasePDG.h>          // for TDatabasePDG
-#include <TParticlePDG.h>          // for TParticlePDG
-#include <TGenericClassInfo.h>     // for TGenericClassInfo
-#include <fairlogger/Logger.h>     // for Logger, LOG
-#include <climits>                 // for INT_MAX
-#include <cstdio>                  // for sprintf
-#include <fstream>                 // for basic_istream
-#include <utility>                 // for pair
+#include "FairIon.h"                // for FairIon
+#include "FairPrimaryGenerator.h"   // for FairPrimaryGenerator
+#include "FairRunSim.h"             // for FairRunSim
 
-#include "FairIon.h"               // for FairIon
-#include "FairPrimaryGenerator.h"  // for FairPrimaryGenerator
-#include "FairRunSim.h"            // for FairRunSim
+#include <TDatabasePDG.h>        // for TDatabasePDG
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TParticlePDG.h>        // for TParticlePDG
+#include <climits>               // for INT_MAX
+#include <cstdio>                // for sprintf
+#include <fairlogger/Logger.h>   // for Logger, LOG
+#include <fstream>               // for basic_istream
+#include <utility>               // for pair
 
 FairShieldGenerator::FairShieldGenerator()
     : FairGenerator()

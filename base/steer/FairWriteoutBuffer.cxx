@@ -14,13 +14,13 @@
 
 #include "FairWriteoutBuffer.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, basic_ostream, endl, ostream
-#include <iterator>             // for reverse_iterator
-#include <__tree>               // for __tree_const_iterator<>::__non_const_...
+#include "FairLogger.h"        // for FairLogger
+#include "FairRootManager.h"   // for FairRootManager
 
-#include "FairLogger.h"         // for FairLogger
-#include "FairRootManager.h"    // for FairRootManager
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <__tree>                // for __tree_const_iterator<>::__non_const_...
+#include <iostream>              // for operator<<, basic_ostream, endl, ostream
+#include <iterator>              // for reverse_iterator
 
 FairWriteoutBuffer::FairWriteoutBuffer(TString branchName, TString className, TString folderName, Bool_t persistance)
     : TObject()

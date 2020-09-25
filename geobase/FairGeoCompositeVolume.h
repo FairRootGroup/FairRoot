@@ -8,10 +8,10 @@
 #ifndef FAIRGEOCOMPOSITEVOLUME_H
 #define FAIRGEOCOMPOSITEVOLUME_H
 
-#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>     // for Int_t
+#include "FairGeoVolume.h"   // for FairGeoVolume
 
-#include "FairGeoVolume.h"  // for FairGeoVolume
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t
 
 class TObjArray;
 class TBuffer;

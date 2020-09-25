@@ -13,9 +13,9 @@
 #ifndef FAIREVENTHEADER_H
 #define FAIREVENTHEADER_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TNamed.h>      // for TNamed
-#include <RtypesCore.h>  // for Int_t, Double_t, UInt_t, kTRUE, Bool_t
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Double_t, UInt_t, kTRUE, Bool_t
+#include <TNamed.h>       // for TNamed
 
 class TBuffer;
 class TClass;

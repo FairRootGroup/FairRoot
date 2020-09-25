@@ -16,14 +16,14 @@
 #ifndef FAIRMQTRANSPORTDEVICE_H_
 #define FAIRMQTRANSPORTDEVICE_H_
 
-#include <Rtypes.h>
-#include <TString.h>          // for TString
-#include <RtypesCore.h>       // for UInt_t
-#include <cstdint>            // for int64_t
-#include <string>
-#include <iosfwd>             // for string
+#include "FairMQRunDevice.h"   // for FairMQRunDevice
 
-#include "FairMQRunDevice.h"  // for FairMQRunDevice
+#include <Rtypes.h>
+#include <RtypesCore.h>   // for UInt_t
+#include <TString.h>      // for TString
+#include <cstdint>        // for int64_t
+#include <iosfwd>         // for string
+#include <string>
 
 class FairMCSplitEventHeader;
 class FairRunSim;

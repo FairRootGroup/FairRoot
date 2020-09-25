@@ -13,6 +13,15 @@
 
 #include "FairAnaSelector.h"
 
+#include "FairFileSource.h"       // for FairFileSource
+#include "FairParAsciiFileIo.h"   // for FairParAsciiFileIo
+#include "FairParRootFileIo.h"    // for FairParRootFileIo
+#include "FairRootFileSink.h"     // for FairRootFileSink
+#include "FairRootManager.h"      // for FairRootManager
+#include "FairRunAnaProof.h"      // for FairRunAnaProof
+#include "FairRuntimeDb.h"        // for FairRuntimeDb
+#include "FairTask.h"             // for FairTask
+
 #include <TFile.h>               // for TFile
 #include <TList.h>               // for TList
 #include <TNamed.h>              // for TNamed
@@ -21,15 +30,6 @@
 #include <TProofServ.h>          // for TProofServ, gProofServ
 #include <TSystem.h>             // for TSystem, gSystem
 #include <fairlogger/Logger.h>   // for Logger, LOG
-
-#include "FairFileSource.h"      // for FairFileSource
-#include "FairParAsciiFileIo.h"  // for FairParAsciiFileIo
-#include "FairParRootFileIo.h"   // for FairParRootFileIo
-#include "FairRootFileSink.h"    // for FairRootFileSink
-#include "FairRootManager.h"     // for FairRootManager
-#include "FairRunAnaProof.h"     // for FairRunAnaProof
-#include "FairRuntimeDb.h"       // for FairRuntimeDb
-#include "FairTask.h"            // for FairTask
 
 void FairAnaSelector::Init(TTree* tree)
 {

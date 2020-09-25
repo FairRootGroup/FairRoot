@@ -7,19 +7,19 @@
  ********************************************************************************/
 #include "FairTutorialDet1.h"
 
-#include <TClonesArray.h>            // for TClonesArray
-#include <TVirtualMC.h>              // for TVirtualMC
-#include <TVirtualMCStack.h>         // for TVirtualMCStack
-#include <TGenericClassInfo.h>       // for TGenericClassInfo
-#include <fairlogger/Logger.h>       // for LOG
+#include "FairDetectorList.h"         // for kTutDet
+#include "FairRootManager.h"          // for FairRootManager
+#include "FairStack.h"                // for FairStack
+#include "FairTutorialDet1Geo.h"      // for FairTutorialDet1Geo
+#include "FairTutorialDet1GeoPar.h"   // for FairTutorialDet1GeoPar
+#include "FairTutorialDet1Point.h"    // for FairTutorialDet1Point
+#include "FairVolume.h"               // for FairVolume
 
-#include "FairDetectorList.h"        // for kTutDet
-#include "FairRootManager.h"         // for FairRootManager
-#include "FairStack.h"               // for FairStack
-#include "FairTutorialDet1Geo.h"     // for FairTutorialDet1Geo
-#include "FairTutorialDet1GeoPar.h"  // for FairTutorialDet1GeoPar
-#include "FairTutorialDet1Point.h"   // for FairTutorialDet1Point
-#include "FairVolume.h"              // for FairVolume
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TVirtualMC.h>          // for TVirtualMC
+#include <TVirtualMCStack.h>     // for TVirtualMCStack
+#include <fairlogger/Logger.h>   // for LOG
 
 FairTutorialDet1Geo* FairTutorialDet1::fgGeo = nullptr;
 

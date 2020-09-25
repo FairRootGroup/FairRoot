@@ -6,9 +6,8 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-
-#include "Ex2Processor.h"                                   // for Ex2Processor
-#include "runFairMQDevice.h"                                // for FairMQDev...
+#include "Ex2Processor.h"      // for Ex2Processor
+#include "runFairMQDevice.h"   // for FairMQDev...
 
 namespace bpo = boost::program_options;
 

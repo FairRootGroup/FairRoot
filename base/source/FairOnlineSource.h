@@ -16,12 +16,12 @@
 #ifndef FAIRONLINESOURCE_H
 #define FAIRONLINESOURCE_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TObjArray.h>   // for TObjArray
-#include <RtypesCore.h>  // for Bool_t, Int_t, UInt_t
+#include "FairSource.h"   // for FairSource, Source_Type, kONLINE
+#include "FairUnpack.h"   // for FairUnpack
 
-#include "FairSource.h"  // for FairSource, Source_Type, kONLINE
-#include "FairUnpack.h"  // for FairUnpack
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Int_t, UInt_t
+#include <TObjArray.h>    // for TObjArray
 
 class TBuffer;
 class TClass;

@@ -8,10 +8,10 @@
 #ifndef FAIRTUTORIALDET4STRAIGHTLINEFITTER_H
 #define FAIRTUTORIALDET4STRAIGHTLINEFITTER_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Int_t, Bool_t, Option_t
+#include "FairTask.h"   // for InitStatus, FairTask
 
-#include "FairTask.h"    // for InitStatus, FairTask
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Bool_t, Option_t
 
 class TClonesArray;
 class TBuffer;

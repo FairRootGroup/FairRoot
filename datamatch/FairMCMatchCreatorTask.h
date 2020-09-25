@@ -19,13 +19,13 @@
 #ifndef FAIRMCMATCHCREATORTASK_H
 #define FAIRMCMATCHCREATORTASK_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Bool_t, Int_t, Option_t
-#include <map>           // for map
-#include <string>     // for string
-#include <iosfwd>        // for string
+#include "FairTask.h"   // for InitStatus, FairTask
 
-#include "FairTask.h"    // for InitStatus, FairTask
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Int_t, Option_t
+#include <iosfwd>         // for string
+#include <map>            // for map
+#include <string>         // for string
 
 class FairMCMatch;
 class TClonesArray;

@@ -6,11 +6,12 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
- #include "FairEveTransparencyControl.h"
- #include <TGButton.h>          // for TGCheckButton
- #include <TGNumberEntry.h>     // for TGNumberEntry, TGNumberFormat, TGNumbe...
- #include "FairEventManager.h"  // for FairEventManager
+#include "FairEveTransparencyControl.h"
 
+#include "FairEventManager.h"   // for FairEventManager
+
+#include <TGButton.h>        // for TGCheckButton
+#include <TGNumberEntry.h>   // for TGNumberEntry, TGNumberFormat, TGNumbe...
 
 FairEveTransparencyControl::FairEveTransparencyControl(TGFrame const *parent, char const *label)
     : TGHorizontalFrame(parent)

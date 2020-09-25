@@ -8,10 +8,10 @@
 #ifndef Cave_H
 #define Cave_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Double_t
+#include "FairModule.h"   // for FairModule
 
-#include "FairModule.h"  // for FairModule
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t
 
 class TBuffer;
 class TClass;

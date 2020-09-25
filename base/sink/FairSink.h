@@ -15,14 +15,14 @@
 #ifndef FAIRSINK_H
 #define FAIRSINK_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for Int_t, Bool_t
-#include <map>           // for map
-#include <memory>        // for unique_ptr
-#include <string>     // string
-#include <typeinfo>      // for type_info
-#include <iosfwd>        // for string
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Bool_t
+#include <TString.h>      // for TString
+#include <iosfwd>         // for string
+#include <map>            // for map
+#include <memory>         // for unique_ptr
+#include <string>         // string
+#include <typeinfo>       // for type_info
 
 class TObject;
 class TFolder;

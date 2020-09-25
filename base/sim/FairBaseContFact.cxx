@@ -14,14 +14,14 @@
 
 #include "FairBaseContFact.h"
 
-#include <TList.h>              // for TList
-#include <TString.h>            // for TString
-#include <string.h>             // for strcmp
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include "FairBaseParSet.h"   // for FairBaseParSet
+#include "FairGeoParSet.h"    // for FairGeoParSet
+#include "FairRuntimeDb.h"    // for FairRuntimeDb
 
-#include "FairBaseParSet.h"     // for FairBaseParSet
-#include "FairGeoParSet.h"      // for FairGeoParSet
-#include "FairRuntimeDb.h"      // for FairRuntimeDb
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TList.h>               // for TList
+#include <TString.h>             // for TString
+#include <string.h>              // for strcmp
 
 class FairParSet;
 

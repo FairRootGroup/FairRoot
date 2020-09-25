@@ -8,11 +8,11 @@
 #ifndef FAIRTUTORIALDET4MILLEWRITER_H
 #define FAIRTUTORIALDET4MILLEWRITER_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for Bool_t, Int_t, Option_t
+#include "FairTask.h"   // for InitStatus, FairTask
 
-#include "FairTask.h"    // for InitStatus, FairTask
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Int_t, Option_t
+#include <TString.h>      // for TString
 
 class Mille;
 class TClonesArray;

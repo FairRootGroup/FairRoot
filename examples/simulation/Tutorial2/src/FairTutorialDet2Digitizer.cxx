@@ -7,15 +7,15 @@
  ********************************************************************************/
 #include "FairTutorialDet2Digitizer.h"
 
-#include <TClonesArray.h>             // for TClonesArray
-#include <TGenericClassInfo.h>        // for TGenericClassInfo
-#include <fairlogger/Logger.h>        // for LOG, Logger
+#include "FairRootManager.h"           // for FairRootManager
+#include "FairRunAna.h"                // for FairRunAna
+#include "FairRuntimeDb.h"             // for FairRuntimeDb
+#include "FairTutorialDet2DigiPar.h"   // for FairTutorialDet2DigiPar
+#include "FairTutorialDet2Point.h"     // for CustomClass
 
-#include "FairRootManager.h"          // for FairRootManager
-#include "FairRunAna.h"               // for FairRunAna
-#include "FairRuntimeDb.h"            // for FairRuntimeDb
-#include "FairTutorialDet2DigiPar.h"  // for FairTutorialDet2DigiPar
-#include "FairTutorialDet2Point.h"    // for CustomClass
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <fairlogger/Logger.h>   // for LOG, Logger
 
 FairTutorialDet2Digitizer::FairTutorialDet2Digitizer()
     : FairTask("TutorialDetDigitizer", 0)

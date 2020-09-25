@@ -11,10 +11,10 @@
 #ifndef FAIRFILEINFO_H
 #define FAIRFILEINFO_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TNamed.h>      // for TNamed
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for UInt_t, Option_t
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for UInt_t, Option_t
+#include <TNamed.h>       // for TNamed
+#include <TString.h>      // for TString
 
 class TFile;
 class TBuffer;

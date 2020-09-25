@@ -17,13 +17,13 @@
 /////////////////////////////////////////////////////////////
 #include "FairPassiveContFact.h"
 
-#include <TList.h>              // for TList
-#include <TString.h>            // for TString
-#include <string.h>             // for strcmp
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include "FairGeoPassivePar.h"   // for FairGeoPassivePar
+#include "FairRuntimeDb.h"       // for FairRuntimeDb
 
-#include "FairGeoPassivePar.h"  // for FairGeoPassivePar
-#include "FairRuntimeDb.h"      // for FairRuntimeDb
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TList.h>               // for TList
+#include <TString.h>             // for TString
+#include <string.h>              // for strcmp
 
 class FairParSet;
 

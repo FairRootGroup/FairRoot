@@ -15,9 +15,9 @@
 #ifndef FAIRMQPIXELFILESINK_H_
 #define FAIRMQPIXELFILESINK_H_
 
-#include <FairMQDevice.h>  // for FairMQDevice
+#include <FairMQDevice.h>   // for FairMQDevice
+#include <iosfwd>           // for string
 #include <string>
-#include <iosfwd>          // for string
 
 class TFile;
 class TObject;

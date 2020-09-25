@@ -8,10 +8,10 @@
 #ifndef FAIRFASTSIMDETECTOR_H
 #define FAIRFASTSIMDETECTOR_H
 
-#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>    // for Int_t, Bool_t
+#include "FairDetector.h"   // for FairDetector
 
-#include "FairDetector.h"  // for FairDetector
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Bool_t
 
 class FairVolume;
 class TClonesArray;

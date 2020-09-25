@@ -8,10 +8,10 @@
 #ifndef FairTestDetectorTimeRecoTask_H
 #define FairTestDetectorTimeRecoTask_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Double_t, Int_t, Option_t
+#include "FairTask.h"   // for FairTask, InitStatus
 
-#include "FairTask.h"    // for FairTask, InitStatus
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Int_t, Option_t
 
 class BinaryFunctor;
 class TClonesArray;

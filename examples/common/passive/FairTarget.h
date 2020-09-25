@@ -8,9 +8,9 @@
 #ifndef Target_H
 #define Target_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include "FairModule.h"   // for FairModule
 
-#include "FairModule.h"  // for FairModule
+#include <Rtypes.h>   // for THashConsistencyHolder, ClassDef
 
 class TBuffer;
 class TClass;

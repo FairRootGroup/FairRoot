@@ -13,11 +13,11 @@
 #ifndef FAIRTUTORIALDET2CUSTOMTASK_H
 #define FAIRTUTORIALDET2CUSTOMTASK_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Option_t
-#include <vector>        // for vector
+#include "FairTask.h"   // for FairTask, InitStatus
 
-#include "FairTask.h"    // for FairTask, InitStatus
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Option_t
+#include <vector>         // for vector
 
 class CustomClass;
 class TBuffer;

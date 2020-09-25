@@ -20,10 +20,10 @@
 #ifndef FAIRPOINTSETDRAW_H
 #define FAIRPOINTSETDRAW_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Int_t, Color_t, Style_t, Option_t
+#include "FairTask.h"   // for FairTask, InitStatus
 
-#include "FairTask.h"    // for FairTask, InitStatus
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Color_t, Style_t, Option_t
 
 class FairEventManager;
 class TClonesArray;

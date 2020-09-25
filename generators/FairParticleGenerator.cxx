@@ -11,11 +11,11 @@
 // -------------------------------------------------------------------------
 #include "FairParticleGenerator.h"
 
-#include <TGenericClassInfo.h>     // for TGenericClassInfo
-#include <TString.h>               // for Form
-#include <fairlogger/Logger.h>     // for LOG, Logger
+#include "FairPrimaryGenerator.h"   // for FairPrimaryGenerator
 
-#include "FairPrimaryGenerator.h"  // for FairPrimaryGenerator
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TString.h>             // for Form
+#include <fairlogger/Logger.h>   // for LOG, Logger
 
 FairParticleGenerator::FairParticleGenerator()
     : FairBaseMCGenerator()

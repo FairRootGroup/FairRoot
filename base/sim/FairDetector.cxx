@@ -12,26 +12,26 @@
 
 #include "FairDetector.h"
 
-#include <TFolder.h>            // for TFolder
-#include <TGeoManager.h>        // for TGeoManager, gGeoManager
-#include <TList.h>              // for TList
-#include <TObject.h>            // for TObject
-#include <TROOT.h>              // for TROOT, gROOT
-#include <TRefArray.h>          // for TRefArray
-#include <TString.h>            // for TString
-#include <TVirtualMC.h>         // for TVirtualMC, gMC
-#include <TCollection.h>        // for TIter
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <TGeoVolume.h>         // for TGeoVolume
-#include <TObjArray.h>          // for TObjArray
-#include <fairlogger/Logger.h>  // for LOG, Logger
-#include <iostream>             // for operator<<, endl, basic_ostream, cout
+#include "FairGeoNode.h"       // for FairGeoNode
+#include "FairLogger.h"        // for FairLogger
+#include "FairModule.h"        // for FairModule, FairModule::svList
+#include "FairRootManager.h"   // for FairRootManager
+#include "FairVolume.h"        // for FairVolume
 
-#include "FairGeoNode.h"        // for FairGeoNode
-#include "FairLogger.h"         // for FairLogger
-#include "FairModule.h"         // for FairModule, FairModule::svList
-#include "FairRootManager.h"    // for FairRootManager
-#include "FairVolume.h"         // for FairVolume
+#include <TCollection.h>         // for TIter
+#include <TFolder.h>             // for TFolder
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TGeoManager.h>         // for TGeoManager, gGeoManager
+#include <TGeoVolume.h>          // for TGeoVolume
+#include <TList.h>               // for TList
+#include <TObjArray.h>           // for TObjArray
+#include <TObject.h>             // for TObject
+#include <TROOT.h>               // for TROOT, gROOT
+#include <TRefArray.h>           // for TRefArray
+#include <TString.h>             // for TString
+#include <TVirtualMC.h>          // for TVirtualMC, gMC
+#include <fairlogger/Logger.h>   // for LOG, Logger
+#include <iostream>              // for operator<<, endl, basic_ostream, cout
 
 FairDetector::FairDetector(const char* Name, Bool_t Active, Int_t DetId)
     : FairModule(Name, "FAIR Detector", Active)

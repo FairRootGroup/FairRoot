@@ -14,11 +14,11 @@
 
 #include "FairMQSamplerTask.h"
 
-#include <TClonesArray.h>     // for TClonesArray
-#include <type_traits>        // for move
+#include "FairEventHeader.h"   // for FairEventHeader
+#include "FairRootManager.h"   // for FairRootManager
 
-#include "FairEventHeader.h"  // for FairEventHeader
-#include "FairRootManager.h"  // for FairRootManager
+#include <TClonesArray.h>   // for TClonesArray
+#include <utility>          // for move
 
 class FairMQTransportFactory;
 

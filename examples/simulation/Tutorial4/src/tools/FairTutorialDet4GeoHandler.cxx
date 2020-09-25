@@ -12,15 +12,15 @@
 
 #include "FairTutorialDet4GeoHandler.h"
 
-#include <TGeoBBox.h>           // for TGeoBBox
-#include <TGeoManager.h>        // for TGeoManager, gGeoManager
-#include <TGeoNode.h>           // for TGeoNode
-#include <TGeoVolume.h>         // for TGeoVolume
-#include <TVirtualMC.h>         // for TVirtualMC
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <fairlogger/Logger.h>  // for Logger, LOG
-#include <cstdio>               // for printf
-#include <iosfwd>               // for string
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TGeoBBox.h>            // for TGeoBBox
+#include <TGeoManager.h>         // for TGeoManager, gGeoManager
+#include <TGeoNode.h>            // for TGeoNode
+#include <TGeoVolume.h>          // for TGeoVolume
+#include <TVirtualMC.h>          // for TVirtualMC
+#include <cstdio>                // for printf
+#include <fairlogger/Logger.h>   // for Logger, LOG
+#include <iosfwd>                // for string
 
 FairTutorialDet4GeoHandler::FairTutorialDet4GeoHandler()
     : TObject()

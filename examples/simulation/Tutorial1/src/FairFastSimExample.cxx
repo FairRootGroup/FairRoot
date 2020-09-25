@@ -7,22 +7,22 @@
  ********************************************************************************/
 #include "FairFastSimExample.h"
 
-#include <TClonesArray.h>           // for TClonesArray
-#include <TGeoBBox.h>               // for TGeoBBox
-#include <TGeoManager.h>            // for TGeoManager, gGeoManager
-#include <TGeoMatrix.h>             // for TGeoCombiTrans, TGeoRotation
-#include <TGeoVolume.h>             // for TGeoVolume
-#include <TMCProcess.h>             // for kPHadronic
-#include <TVirtualMC.h>             // for TVirtualMC
-#include <TVirtualMCStack.h>        // for TVirtualMCStack
-#include <TGenericClassInfo.h>      // for TGenericClassInfo
-#include <string>                   // for operator==
+#include "FairDetector.h"            // for FairDetector
+#include "FairDetectorList.h"        // for kTutDet
+#include "FairRootManager.h"         // for FairRootManager
+#include "FairStack.h"               // for FairStack
+#include "FairTutorialDet1Point.h"   // for FairTutorialDet1Point
 
-#include "FairDetector.h"           // for FairDetector
-#include "FairDetectorList.h"       // for kTutDet
-#include "FairRootManager.h"        // for FairRootManager
-#include "FairStack.h"              // for FairStack
-#include "FairTutorialDet1Point.h"  // for FairTutorialDet1Point
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TGeoBBox.h>            // for TGeoBBox
+#include <TGeoManager.h>         // for TGeoManager, gGeoManager
+#include <TGeoMatrix.h>          // for TGeoCombiTrans, TGeoRotation
+#include <TGeoVolume.h>          // for TGeoVolume
+#include <TMCProcess.h>          // for kPHadronic
+#include <TVirtualMC.h>          // for TVirtualMC
+#include <TVirtualMCStack.h>     // for TVirtualMCStack
+#include <string>                // for operator==
 
 FairFastSimExample::FairFastSimExample()
     : FairFastSimDetector("TutorialDet", kTutDet)

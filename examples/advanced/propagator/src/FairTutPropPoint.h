@@ -8,10 +8,10 @@
 #ifndef FAIRTUTPROPPOINT_H
 #define FAIRTUTPROPPOINT_H 1
 
+#include "FairMCPoint.h"   // for FairMCPoint
+
 #include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
 #include <RtypesCore.h>   // for Double_t, Int_t, Option_t
-
-#include "FairMCPoint.h"  // for FairMCPoint
 
 class TVector3;
 class TBuffer;

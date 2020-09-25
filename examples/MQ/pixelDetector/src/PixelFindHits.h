@@ -15,10 +15,10 @@
 #ifndef PIXELFINDHITS_H
 #define PIXELFINDHITS_H 1
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Int_t, Double_t, Option_t
+#include "FairTask.h"   // for InitStatus, FairTask
 
-#include "FairTask.h"    // for InitStatus, FairTask
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Double_t, Option_t
 
 class TClonesArray;
 class PixelDigiPar;

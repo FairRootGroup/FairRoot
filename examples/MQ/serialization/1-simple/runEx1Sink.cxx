@@ -6,11 +6,11 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include <iosfwd>                                           // for string
-#include <string>                                           // for operator+
+#include "Ex1Sink.h"           // for Ex1Sink
+#include "runFairMQDevice.h"   // for FairMQDev...
 
-#include "Ex1Sink.h"                                        // for Ex1Sink
-#include "runFairMQDevice.h"                                // for FairMQDev...
+#include <iosfwd>   // for string
+#include <string>   // for operator+
 
 namespace bpo = boost::program_options;
 

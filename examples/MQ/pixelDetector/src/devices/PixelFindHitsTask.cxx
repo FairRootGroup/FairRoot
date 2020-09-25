@@ -14,21 +14,21 @@
 
 #include "PixelFindHitsTask.h"
 
-#include <TClonesArray.h>       // for TClonesArray
-#include <TGeoBBox.h>           // for TGeoBBox
-#include <TGeoManager.h>        // for TGeoManager
-#include <TGeoNode.h>           // for TGeoNode
-#include <TGeoVolume.h>         // for TGeoVolume
-#include <TList.h>              // for TList
-#include <TMath.h>              // for Sqrt
-#include <TString.h>            // for TString, Form
-#include <TVector3.h>           // for TVector3
-#include <fairlogger/Logger.h>  // for Logger, LOG
+#include "FairGeoParSet.h"   // for FairGeoParSet
+#include "PixelDigi.h"       // for PixelDigi
+#include "PixelDigiPar.h"    // for PixelDigiPar
+#include "PixelHit.h"        // for PixelHit
 
-#include "FairGeoParSet.h"      // for FairGeoParSet
-#include "PixelDigi.h"          // for PixelDigi
-#include "PixelDigiPar.h"       // for PixelDigiPar
-#include "PixelHit.h"           // for PixelHit
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGeoBBox.h>            // for TGeoBBox
+#include <TGeoManager.h>         // for TGeoManager
+#include <TGeoNode.h>            // for TGeoNode
+#include <TGeoVolume.h>          // for TGeoVolume
+#include <TList.h>               // for TList
+#include <TMath.h>               // for Sqrt
+#include <TString.h>             // for TString, Form
+#include <TVector3.h>            // for TVector3
+#include <fairlogger/Logger.h>   // for Logger, LOG
 
 PixelFindHitsTask::PixelFindHitsTask()
     : fGeoParSet(nullptr)

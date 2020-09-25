@@ -15,8 +15,8 @@
 #ifndef FairTestDetectorDigiRingSorter_H_
 #define FairTestDetectorDigiRingSorter_H_
 
-#include <FairRingSorter.h>  // for FairRingSorter
-#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
+#include <FairRingSorter.h>   // for FairRingSorter
+#include <Rtypes.h>           // for THashConsistencyHolder, ClassDef
 
 class FairTimeStamp;
 class TBuffer;

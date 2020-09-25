@@ -14,18 +14,15 @@
 
 #include "FairSystemInfo.h"
 
-#include <sys/resource.h>      // for getrusage, rusage, RUSAGE_SELF
-#include <mach/kern_return.h>  // for KERN_SUCCESS
-#include <mach/mach_init.h>    // for mach_task_self
-#include <mach/message.h>      // for mach_msg_type_number_t
-#include <mach/task.h>         // for task_info
-#include <mach/task_info.h>    // for mach_task_basic_info, MACH_TASK_BASIC_...
+#include <sys/resource.h>
+#include <unistd.h>
 
 #if defined(__APPLE__) && defined(__MACH__)
+#include <mach/mach.h>
 
 #elif defined(__linux__) || defined(__linux) || defined(linux) || defined(__gnu_linux__)
-#include <stdio.h>
 #include <limits>
+#include <stdio.h>
 
 #else
 #error "Unknown OS."

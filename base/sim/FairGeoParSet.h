@@ -8,9 +8,9 @@
 #ifndef FairGeoParSet_H
 #define FairGeoParSet_H
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
-#include <TGeoManager.h>        // for TGeoManager (ptr only)
-#include <RtypesCore.h>         // for Bool_t
+#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>    // for Bool_t
+#include <TGeoManager.h>   // for TGeoManager (ptr only)
 
 /**
  * Parameter class for Geometry stuff
@@ -18,7 +18,7 @@
  * @version 1
  * @since 12.10.04
  */
-#include "FairParGenericSet.h"  // for FairParGenericSet
+#include "FairParGenericSet.h"   // for FairParGenericSet
 
 class FairParamList;
 class TObjArray;

@@ -16,10 +16,10 @@
 #ifndef FairConstPAR_H
 #define FairConstPAR_H 1
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Double_t, Bool_t
+#include "FairMapPar.h"   // for FairMapPar
 
-#include "FairMapPar.h"  // for FairMapPar
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Bool_t
 
 class FairField;
 class FairParamList;

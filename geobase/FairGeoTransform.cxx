@@ -47,7 +47,7 @@
 
 #include "FairGeoTransform.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 //#include <iostream>
 //#include <iomanip>

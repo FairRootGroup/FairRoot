@@ -15,15 +15,16 @@
  */
 #ifndef FAIRMCTRACKSDRAW_H_
 #define FAIRMCTRACKSDRAW_H_
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Bool_t, Int_t, Option_t
-#include "FairTask.h"    // for FairTask, InitStatus
-class FairEveMCTracks;  // lines 21-21
-class FairEventManager;  // lines 22-22
-class FairMCTrack;  // lines 23-23
+#include "FairTask.h"   // for FairTask, InitStatus
+
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Int_t, Option_t
+class FairEveMCTracks;    // lines 21-21
+class FairEventManager;   // lines 22-22
+class FairMCTrack;        // lines 23-23
 class TBuffer;
 class TClass;
-class TEveTrackList;  // lines 24-24
+class TEveTrackList;   // lines 24-24
 class TMemberInspector;
 
 class FairMCTracksDraw : public FairTask

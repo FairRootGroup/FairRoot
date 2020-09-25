@@ -7,17 +7,17 @@
  ********************************************************************************/
 #include "FairTutorialDet2CustomTask.h"
 
-#include <TGenericClassInfo.h>      // for TGenericClassInfo
-#include <fairlogger/Logger.h>      // for LOG, Logger
+#include "FairRootManager.h"         // for FairRootManager
+#include "FairTutorialDet2Point.h"   // for CustomClass
 
-#include "FairRootManager.h"        // for FairRootManager
-#include "FairTutorialDet2Point.h"  // for CustomClass
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <fairlogger/Logger.h>   // for LOG, Logger
 
 // we include some unit testing here
 #ifdef NDEBUG
 #undef NDEBUG
 #endif
-#include <cassert>                  // for assert
+#include <cassert>   // for assert
 
 FairTutorialDet2CustomTask::FairTutorialDet2CustomTask()
     : FairTask("TutorialDetCustomTask", 0)

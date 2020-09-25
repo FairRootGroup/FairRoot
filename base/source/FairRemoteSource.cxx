@@ -12,11 +12,11 @@
 // -----------------------------------------------------------------------------
 #include "FairRemoteSource.h"
 
-#include <unistd.h>             // for usleep
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include "MRevBuffer.h"    // for MRevBuffer, REvent
+#include "ptrevmbsdef.h"   // for sMbsEv101
 
-#include "MRevBuffer.h"         // for MRevBuffer, REvent
-#include "ptrevmbsdef.h"        // for sMbsEv101
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <unistd.h>              // for usleep
 
 FairRemoteSource::FairRemoteSource(char* node)
     : FairMbsSource()

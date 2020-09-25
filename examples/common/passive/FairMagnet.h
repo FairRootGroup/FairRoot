@@ -8,12 +8,12 @@
 #ifndef MAGNET_H
 #define MAGNET_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Bool_t
-#include <string>     // for string
-#include <iosfwd>        // for string
+#include "FairModule.h"   // for FairModule
 
-#include "FairModule.h"  // for FairModule
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t
+#include <iosfwd>         // for string
+#include <string>         // for string
 
 class TBuffer;
 class TClass;

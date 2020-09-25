@@ -8,10 +8,10 @@
 #ifndef FAIRPARGENERICSET_H
 #define FAIRPARGENERICSET_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Bool_t, UInt_t, Int_t, kFALSE
+#include "FairParSet.h"   // for FairParSet
 
-#include "FairParSet.h"  // for FairParSet
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, UInt_t, Int_t, kFALSE
 
 class FairParIo;
 class FairParamList;

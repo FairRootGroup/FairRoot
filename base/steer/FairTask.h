@@ -21,13 +21,13 @@
 #ifndef FAIRTASK_H
 #define FAIRTASK_H
 
-#include <Rtypes.h>           // for THashConsistencyHolder, ClassDef
-#include <TString.h>          // for TString
-#include <TTask.h>            // for TTask
-#include <RtypesCore.h>       // for Bool_t, Int_t, Option_t, kTRUE
-#include <map>                // for map
+#include "FairRootManager.h"   // for FairRootManager
 
-#include "FairRootManager.h"  // for FairRootManager
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Int_t, Option_t, kTRUE
+#include <TString.h>      // for TString
+#include <TTask.h>        // for TTask
+#include <map>            // for map
 
 class FairLogger;
 class TBuffer;

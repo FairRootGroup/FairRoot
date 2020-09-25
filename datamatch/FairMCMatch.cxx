@@ -14,13 +14,13 @@
 
 #include "FairMCMatch.h"
 
-#include <TClonesArray.h>       // for TClonesArray
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, basic_ostream, endl, ostream
-#include <string>               // for char_traits
+#include "FairLink.h"          // for FairLink
+#include "FairRootManager.h"   // for FairRootManager
 
-#include "FairLink.h"           // for FairLink
-#include "FairRootManager.h"    // for FairRootManager
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <iostream>              // for operator<<, basic_ostream, endl, ostream
+#include <string>                // for char_traits
 
 ClassImp(FairMCMatch);
 

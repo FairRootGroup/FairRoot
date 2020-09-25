@@ -8,11 +8,11 @@
 #ifndef FAIRTUTORIALDET2GEO_H
 #define FAIRTUTORIALDET2GEO_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Int_t
-#include <TString.h>     // for TString
+#include "FairGeoSet.h"   // for FairGeoSet
 
-#include "FairGeoSet.h"  // for FairGeoSet
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t
+#include <TString.h>      // for TString
 
 class TBuffer;
 class TClass;

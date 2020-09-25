@@ -7,21 +7,21 @@
  ********************************************************************************/
 #include "FairTestDetector.h"
 
-#include <TClonesArray.h>            // for TClonesArray
-#include <TVirtualMC.h>              // for TVirtualMC
-#include <TVirtualMCStack.h>         // for TVirtualMCStack
-#include <TGenericClassInfo.h>       // for TGenericClassInfo
+#include "FairDetectorList.h"         // for kTutDet
+#include "FairLink.h"                 // for FairLink
+#include "FairRootManager.h"          // for FairRootManager
+#include "FairRun.h"                  // for FairRun
+#include "FairRuntimeDb.h"            // for FairRuntimeDb
+#include "FairStack.h"                // for FairStack
+#include "FairTestDetectorGeo.h"      // for FairTestDetectorGeo
+#include "FairTestDetectorGeoPar.h"   // for FairTestDetectorGeoPar
+#include "FairTestDetectorPoint.h"    // for FairTestDetectorPoint
+#include "FairVolume.h"               // for FairVolume
 
-#include "FairDetectorList.h"        // for kTutDet
-#include "FairLink.h"                // for FairLink
-#include "FairRootManager.h"         // for FairRootManager
-#include "FairRun.h"                 // for FairRun
-#include "FairRuntimeDb.h"           // for FairRuntimeDb
-#include "FairStack.h"               // for FairStack
-#include "FairTestDetectorGeo.h"     // for FairTestDetectorGeo
-#include "FairTestDetectorGeoPar.h"  // for FairTestDetectorGeoPar
-#include "FairTestDetectorPoint.h"   // for FairTestDetectorPoint
-#include "FairVolume.h"              // for FairVolume
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TVirtualMC.h>          // for TVirtualMC
+#include <TVirtualMCStack.h>     // for TVirtualMCStack
 
 FairTestDetector::FairTestDetector()
     : FairDetector("FairTestDetector", kTRUE, kTutDet)

@@ -13,7 +13,7 @@
 #ifndef FAIRFIELDFACTORY_H
 #define FAIRFIELDFACTORY_H
 
-#include <Rtypes.h>  // for THashConsistencyHolder, ClassDef
+#include <Rtypes.h>   // for THashConsistencyHolder, ClassDef
 
 class FairField;
 class TBuffer;

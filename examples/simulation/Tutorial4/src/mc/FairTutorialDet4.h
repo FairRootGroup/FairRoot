@@ -8,17 +8,17 @@
 #ifndef FAIRTUTORIALDET4_H
 #define FAIRTUTORIALDET4_H
 
-#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
-#include <TArrayD.h>         // for TArrayD
-#include <TClonesArray.h>
-#include <TLorentzVector.h>  // for TLorentzVector
-#include <TVector3.h>        // for TVector3
-#include <RtypesCore.h>      // for Bool_t, Int_t, Double32_t, Double_t
-#include <map>               // for map
-#include <string>
-#include <iosfwd>            // for string
+#include "FairDetector.h"   // for FairDetector
 
-#include "FairDetector.h"    // for FairDetector
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Int_t, Double32_t, Double_t
+#include <TArrayD.h>      // for TArrayD
+#include <TClonesArray.h>
+#include <TLorentzVector.h>   // for TLorentzVector
+#include <TVector3.h>         // for TVector3
+#include <iosfwd>             // for string
+#include <map>                // for map
+#include <string>
 
 class FairTutorialDet4Point;
 class FairTutorialDet4GeoHandler;

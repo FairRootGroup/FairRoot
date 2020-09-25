@@ -8,12 +8,12 @@
 #ifndef FAIRGEOROTATION_H
 #define FAIRGEOROTATION_H
 
-#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
-#include <TObject.h>        // for TObject
-#include <RtypesCore.h>     // for Double_t, Int_t, Bool_t, Float_t, kFALSE
-#include <iostream>         // for operator<<, cout, ostream, basic_ostream
+#include "FairGeoVector.h"   // for FairGeoVector
 
-#include "FairGeoVector.h"  // for FairGeoVector
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Int_t, Bool_t, Float_t, kFALSE
+#include <TObject.h>      // for TObject
+#include <iostream>       // for operator<<, cout, ostream, basic_ostream
 
 class TRotMatrix;
 class TBuffer;
@@ -43,8 +43,8 @@ class FairGeoRotation : public TObject
     inline FairGeoRotation& operator=(const FairGeoRotation&);
     inline Bool_t operator==(const FairGeoRotation&);
     inline Bool_t operator!=(const FairGeoRotation&);
-    inline FairGeoVector operator*(const FairGeoVector&)const;
-    inline FairGeoRotation operator*(const FairGeoRotation&)const;
+    inline FairGeoVector operator*(const FairGeoVector&) const;
+    inline FairGeoRotation operator*(const FairGeoRotation&) const;
     inline FairGeoRotation& operator*=(const FairGeoRotation&);
     inline FairGeoRotation& transform(const FairGeoRotation&);
     inline Bool_t isUnitMatrix();

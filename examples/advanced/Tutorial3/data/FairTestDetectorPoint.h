@@ -8,11 +8,11 @@
 #ifndef FAIRTESTDETECTORPOINT_H_
 #define FAIRTESTDETECTORPOINT_H_
 
-#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
-#include <TVector3.h>     // for TVector3
-#include <RtypesCore.h>   // for Double_t, Double32_t, Int_t, Option_t
+#include "FairMCPoint.h"   // for FairMCPoint
 
-#include "FairMCPoint.h"  // for FairMCPoint
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Double32_t, Int_t, Option_t
+#include <TVector3.h>     // for TVector3
 
 class TBuffer;
 class TClass;

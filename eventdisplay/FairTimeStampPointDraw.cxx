@@ -14,11 +14,11 @@
 
 #include "FairTimeStampPointDraw.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <stddef.h>             // for NULL
+#include "FairMCPoint.h"     // for FairMCPoint
+#include "FairTimeStamp.h"   // for FairTimeStamp
 
-#include "FairMCPoint.h"        // for FairMCPoint
-#include "FairTimeStamp.h"      // for FairTimeStamp
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <stddef.h>              // for NULL
 
 class TObject;
 

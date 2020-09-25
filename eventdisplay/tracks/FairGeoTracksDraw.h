@@ -16,11 +16,12 @@
 #ifndef FAIRGEOTRACKSDRAW_H_
 #define FAIRGEOTRACKSDRAW_H_
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Option_t
-#include "FairTask.h"    // for FairTask, InitStatus
-class FairEveGeoTracks;  // lines 21-21
-class FairEventManager;  // lines 22-22
+#include "FairTask.h"   // for FairTask, InitStatus
+
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Option_t
+class FairEveGeoTracks;   // lines 21-21
+class FairEventManager;   // lines 22-22
 class TBuffer;
 class TClass;
 class TMemberInspector;

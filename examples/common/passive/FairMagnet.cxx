@@ -9,12 +9,12 @@
 
 #include "FairMagnet.h"
 
-#include <TString.h>            // for TString
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, endl, basic_ostream, cout
+#include "FairGeoMagnet.h"       // for FairGeoMagnet
+#include "FairGeoPassivePar.h"   // for FairGeoPassivePar
 
-#include "FairGeoMagnet.h"      // for FairGeoMagnet
-#include "FairGeoPassivePar.h"  // for FairGeoPassivePar
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TString.h>             // for TString
+#include <iostream>              // for operator<<, endl, basic_ostream, cout
 
 FairMagnet::~FairMagnet() {}
 

@@ -12,7 +12,7 @@
 
 #include "FairVolume.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 FairVolume::FairVolume()
     : TNamed()

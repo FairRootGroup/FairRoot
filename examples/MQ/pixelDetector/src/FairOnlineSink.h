@@ -16,16 +16,16 @@
 #ifndef FAIRONLINESINK_H_
 #define FAIRONLINESINK_H_
 
-#include <Rtypes.h>
-#include <RtypesCore.h>  // for Int_t, Bool_t, kTRUE
-#include <string>
-#include <typeinfo>      // for type_info
-#include <map>           // for __map_const_iterator, operator!=, map
-#include <memory>        // for unique_ptr
-#include <type_traits>   // for is_pointer, remove_pointer
-#include <utility>       // for pair
+#include "FairSink.h"   // for FairSink::TypeAddressPair, FairSink, Sink_Type
 
-#include "FairSink.h"    // for FairSink::TypeAddressPair, FairSink, Sink_Type
+#include <Rtypes.h>
+#include <RtypesCore.h>   // for Int_t, Bool_t, kTRUE
+#include <map>            // for __map_const_iterator, operator!=, map
+#include <memory>         // for unique_ptr
+#include <string>
+#include <typeinfo>   // for type_info
+#include <utility>    // for is_pointer, remove_pointer
+#include <utility>    // for pair
 
 class FairEventHeader;
 class FairMQRunDevice;

@@ -30,11 +30,11 @@
 
 #include "FairEventBuilder.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, endl, basic_ostream, ostream
+#include "FairRootManager.h"   // for FairRootManager
+#include "FairTimeStamp.h"     // for FairTimeStamp
 
-#include "FairRootManager.h"    // for FairRootManager
-#include "FairTimeStamp.h"      // for FairTimeStamp
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <iostream>              // for operator<<, endl, basic_ostream, ostream
 
 FairEventBuilder::FairEventBuilder()
     : FairWriteoutBuffer()

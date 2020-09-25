@@ -12,12 +12,12 @@
 
 #include "FairTutorialDet2DigiPar.h"
 
-#include <TArrayF.h>            // for TArrayF
-#include <TString.h>            // for TString
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <fairlogger/Logger.h>  // for LOG, Logger
+#include "FairParamList.h"   // for FairParamList
 
-#include "FairParamList.h"      // for FairParamList
+#include <TArrayF.h>             // for TArrayF
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TString.h>             // for TString
+#include <fairlogger/Logger.h>   // for LOG, Logger
 
 FairTutorialDet2DigiPar::FairTutorialDet2DigiPar(const char* name, const char* title, const char* context)
     : FairParGenericSet(name, title, context)

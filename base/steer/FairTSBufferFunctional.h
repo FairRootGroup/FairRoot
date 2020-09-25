@@ -8,15 +8,15 @@
 #ifndef FairTSBufferFunctionalFunctional_H_
 #define FairTSBufferFunctionalFunctional_H_
 
-#include <Rtypes.h>           // for THashConsistencyHolder, ClassDef
-#include <TObject.h>          // for TObject
-#include <TString.h>          // for TString
-#include <RtypesCore.h>       // for Int_t, Bool_t, Double_t, kTRUE
-#include <functional>   // for binary_function
-#include <iostream>           // for operator<<, basic_ostream, endl, cout
-#include <__functional_base>  // for binary_function
+#include "FairTimeStamp.h"   // for FairTimeStamp
 
-#include "FairTimeStamp.h"    // for FairTimeStamp
+#include <Rtypes.h>            // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>        // for Int_t, Bool_t, Double_t, kTRUE
+#include <TObject.h>           // for TObject
+#include <TString.h>           // for TString
+#include <__functional_base>   // for binary_function
+#include <functional>          // for binary_function
+#include <iostream>            // for operator<<, basic_ostream, endl, cout
 
 class TBranch;
 class TClonesArray;

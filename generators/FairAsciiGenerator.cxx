@@ -11,12 +11,12 @@
 // -------------------------------------------------------------------------
 #include "FairAsciiGenerator.h"
 
-#include <TGenericClassInfo.h>     // for TGenericClassInfo
-#include <fairlogger/Logger.h>     // for Logger, LOG
-#include <climits>                 // for INT_MAX
-#include <fstream>                 // for basic_istream
+#include "FairPrimaryGenerator.h"   // for FairPrimaryGenerator
 
-#include "FairPrimaryGenerator.h"  // for FairPrimaryGenerator
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <climits>               // for INT_MAX
+#include <fairlogger/Logger.h>   // for Logger, LOG
+#include <fstream>               // for basic_istream
 
 FairAsciiGenerator::FairAsciiGenerator()
     : FairGenerator()

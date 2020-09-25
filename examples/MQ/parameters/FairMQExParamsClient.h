@@ -15,10 +15,10 @@
 #ifndef FAIRMQEXPARAMSCLIENT_H
 #define FAIRMQEXPARAMSCLIENT_H
 
-#include <FairMQDevice.h>  // for FairMQDevice
-#include <cstdint>         // for uint64_t
+#include <FairMQDevice.h>   // for FairMQDevice
+#include <cstdint>          // for uint64_t
+#include <iosfwd>           // for string
 #include <string>
-#include <iosfwd>          // for string
 
 class FairMQExParamsClient : public FairMQDevice
 {

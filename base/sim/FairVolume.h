@@ -8,13 +8,13 @@
 #ifndef FAIR_VOLUME_H
 #define FAIR_VOLUME_H
 
-#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
-#include <TNamed.h>        // for TNamed
-#include <TString.h>       // for TString
-#include <RtypesCore.h>    // for Int_t
+#include "FairDetector.h"   // for FairDetector
+#include "FairModule.h"     // for FairModule
 
-#include "FairDetector.h"  // for FairDetector
-#include "FairModule.h"    // for FairModule
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t
+#include <TNamed.h>       // for TNamed
+#include <TString.h>      // for TString
 
 class FairGeoNode;
 class TBuffer;

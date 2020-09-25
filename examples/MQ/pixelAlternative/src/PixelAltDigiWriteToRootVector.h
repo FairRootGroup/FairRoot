@@ -15,13 +15,13 @@
 #ifndef PIXELALTDIGIWRITETOROOTVECTOR_H
 #define PIXELALTDIGIWRITETOROOTVECTOR_H 1
 
-#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
-#include <TString.h>       // for TString
-#include <RtypesCore.h>    // for Int_t, Option_t
-#include <vector>          // for vector
+#include "FairTask.h"       // for InitStatus, FairTask
+#include "PixelPayload.h"   // for Digi, EventHeader (ptr only)
 
-#include "FairTask.h"      // for InitStatus, FairTask
-#include "PixelPayload.h"  // for Digi, EventHeader (ptr only)
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Option_t
+#include <TString.h>      // for TString
+#include <vector>         // for vector
 
 class TClonesArray;
 class TFile;

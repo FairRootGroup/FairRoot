@@ -15,12 +15,12 @@
 #ifndef FairRingSorter_H_
 #define FairRingSorter_H_
 
-#include <Rtypes.h>   // for THashConsistencyHolder, ClassDef
-#include <TObject.h>  // for TObject
-#include <iostream>   // for operator<<, basic_ostream, ostream, endl, cout
-#include <map>        // for multimap
-#include <utility>    // for pair
-#include <vector>     // for vector
+#include <Rtypes.h>    // for THashConsistencyHolder, ClassDef
+#include <TObject.h>   // for TObject
+#include <iostream>    // for operator<<, basic_ostream, ostream, endl, cout
+#include <map>         // for multimap
+#include <utility>     // for pair
+#include <vector>      // for vector
 
 class FairTimeStamp;
 class TBuffer;

@@ -15,11 +15,11 @@
 #ifndef FAIRMQCHUNKMERGER_H_
 #define FAIRMQCHUNKMERGER_H_
 
-#include <FairMQDevice.h>  // for FairMQDevice
-#include <map>             // for multimap<>::iterator, map, multimap, multi...
+#include <FairMQDevice.h>   // for FairMQDevice
+#include <iosfwd>           // for string
+#include <map>              // for multimap<>::iterator, map, multimap, multi...
 #include <string>
-#include <utility>         // for pair
-#include <iosfwd>          // for string
+#include <utility>   // for pair
 
 class TObject;
 class FairMCSplitEventHeader;

@@ -15,10 +15,10 @@
 #ifndef PIXELDIGIPAR_H
 #define PIXELDIGIPAR_H
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>         // for Double_t, Int_t, Bool_t, Option_t
+#include "FairParGenericSet.h"   // for FairParGenericSet
 
-#include "FairParGenericSet.h"  // for FairParGenericSet
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Int_t, Bool_t, Option_t
 
 class FairParamList;
 class TBuffer;

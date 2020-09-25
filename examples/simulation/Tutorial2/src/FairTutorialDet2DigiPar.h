@@ -13,11 +13,11 @@
 #ifndef FAIRTUTORIALDET2DIGIPAR_H
 #define FAIRTUTORIALDET2DIGIPAR_H
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
-#include <TArrayI.h>            // for TArrayI
-#include <RtypesCore.h>         // for Bool_t, Int_t
+#include "FairParGenericSet.h"   // for FairParGenericSet
 
-#include "FairParGenericSet.h"  // for FairParGenericSet
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Int_t
+#include <TArrayI.h>      // for TArrayI
 
 class FairParamList;
 class TArrayF;

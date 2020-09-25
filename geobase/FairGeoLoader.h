@@ -16,8 +16,8 @@
 #ifndef FairGeoLOADER_H
 #define FairGeoLOADER_H
 
-#include <Rtypes.h>  // for THashConsistencyHolder, ClassDef
-#include <TNamed.h>  // for TNamed
+#include <Rtypes.h>   // for THashConsistencyHolder, ClassDef
+#include <TNamed.h>   // for TNamed
 
 class FairGeoInterface;
 class FairGeoBuilder;

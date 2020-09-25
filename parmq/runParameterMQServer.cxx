@@ -12,9 +12,10 @@
  * @author D. Klein, A. Rybalchenko
  */
 
-#include <string>                                           // for basic_string
-#include "ParameterMQServer.h"                              // for Parameter...
-#include "runFairMQDevice.h"                                // for FairMQDev...
+#include "ParameterMQServer.h"   // for Parameter...
+#include "runFairMQDevice.h"     // for FairMQDev...
+
+#include <string>   // for basic_string
 
 namespace bpo = boost::program_options;
 

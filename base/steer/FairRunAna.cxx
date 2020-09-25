@@ -12,8 +12,21 @@
 
 #include "FairRunAna.h"
 
+#include "FairBaseParSet.h"       // for FairBaseParSet
+#include "FairEventHeader.h"      // for FairEventHeader
+#include "FairField.h"            // for FairField
+#include "FairFieldFactory.h"     // for FairFieldFactory
+#include "FairFileHeader.h"       // for FairFileHeader
+#include "FairParSet.h"           // for FairParSet
+#include "FairRootManager.h"      // for FairRootManager
+#include "FairRunIdGenerator.h"   // for FairRunIdGenerator
+#include "FairRuntimeDb.h"        // for FairRuntimeDb
+#include "FairTask.h"             // for FairTask
+#include "FairTrajFilter.h"       // for FairTrajFilter
+
 #include <TCollection.h>         // for TIter
 #include <TFile.h>               // for TFile, gFile
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 #include <TGeoManager.h>         // for gGeoManager, TGeoManager
 #include <TKey.h>                // for TKey
 #include <TList.h>               // for TList
@@ -22,24 +35,11 @@
 #include <TROOT.h>               // for TROOT, gROOT
 #include <TSeqCollection.h>      // for TSeqCollection
 #include <TSystem.h>             // for TSystem, gSystem
+#include <fairlogger/Logger.h>   // for LOG, Logger
+#include <iostream>              // for operator<<, basic_ostream, endl, cout
 #include <stdlib.h>              // for exit
 #include <string.h>              // for strcmp
-#include <TGenericClassInfo.h>   // for TGenericClassInfo
-#include <fairlogger/Logger.h>   // for LOG, Logger
 #include <sys/signal.h>          // for signal, SIGINT
-#include <iostream>              // for operator<<, basic_ostream, endl, cout
-
-#include "FairBaseParSet.h"      // for FairBaseParSet
-#include "FairEventHeader.h"     // for FairEventHeader
-#include "FairField.h"           // for FairField
-#include "FairFieldFactory.h"    // for FairFieldFactory
-#include "FairFileHeader.h"      // for FairFileHeader
-#include "FairParSet.h"          // for FairParSet
-#include "FairRootManager.h"     // for FairRootManager
-#include "FairRunIdGenerator.h"  // for FairRunIdGenerator
-#include "FairRuntimeDb.h"       // for FairRuntimeDb
-#include "FairTask.h"            // for FairTask
-#include "FairTrajFilter.h"      // for FairTrajFilter
 
 using std::cout;
 using std::endl;

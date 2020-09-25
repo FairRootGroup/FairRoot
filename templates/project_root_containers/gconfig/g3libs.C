@@ -8,6 +8,4 @@
 
 #include <iostream>
 
-void g3libs()
-{
-}
+void g3libs() {}

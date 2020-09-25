@@ -13,24 +13,26 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
- #include "FairEveMCTracks.h"
- #include <TClonesArray.h>       // for TClonesArray
- #include <TDatabasePDG.h>       // for TDatabasePDG
- #include <TEveManager.h>        // for TEveManager, gEve
- #include <TEveTrack.h>          // for TEveTrackList
- #include <TLorentzVector.h>     // for TLorentzVector
- #include <TParticle.h>          // for TParticle
- #include <TParticlePDG.h>       // for TParticlePDG
- #include <TString.h>            // for Form
- #include <TVector3.h>           // for TVector3
- #include <fairlogger/Logger.h>  // for LOG
- #include "FairEveTrack.h"       // for FairEveTrack
- #include "FairEventManager.h"   // for FairEventManager
- #include "FairField.h"          // for FairField
- #include "FairMCTrack.h"        // for FairMCTrack
- #include "FairRKPropagator.h"   // for FairRKPropagator
- #include "FairRootManager.h"    // for FairRootManager
- #include "FairRunAna.h"         // for FairRunAna
+#include "FairEveMCTracks.h"
+
+#include "FairEveTrack.h"       // for FairEveTrack
+#include "FairEventManager.h"   // for FairEventManager
+#include "FairField.h"          // for FairField
+#include "FairMCTrack.h"        // for FairMCTrack
+#include "FairRKPropagator.h"   // for FairRKPropagator
+#include "FairRootManager.h"    // for FairRootManager
+#include "FairRunAna.h"         // for FairRunAna
+
+#include <TClonesArray.h>        // for TClonesArray
+#include <TDatabasePDG.h>        // for TDatabasePDG
+#include <TEveManager.h>         // for TEveManager, gEve
+#include <TEveTrack.h>           // for TEveTrackList
+#include <TLorentzVector.h>      // for TLorentzVector
+#include <TParticle.h>           // for TParticle
+#include <TParticlePDG.h>        // for TParticlePDG
+#include <TString.h>             // for Form
+#include <TVector3.h>            // for TVector3
+#include <fairlogger/Logger.h>   // for LOG
 
 FairEveMCTracks::FairEveMCTracks()
     : FairEveTracks(kFALSE)

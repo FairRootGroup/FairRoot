@@ -12,10 +12,10 @@
 
 #include "FairVolumeList.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <fairlogger/Logger.h>  // for Logger, LOG
+#include "FairVolume.h"   // for FairVolume
 
-#include "FairVolume.h"         // for FairVolume
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <fairlogger/Logger.h>   // for Logger, LOG
 
 FairVolumeList::FairVolumeList()
     : TObject()

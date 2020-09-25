@@ -5,11 +5,11 @@
 
 #include "FairLinkManager.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <fairlogger/Logger.h>  // for LOG
+#include "FairLogger.h"   // for FairLogger
+#include "FairRun.h"      // for FairRun
 
-#include "FairLogger.h"         // for FairLogger
-#include "FairRun.h"            // for FairRun
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <fairlogger/Logger.h>   // for LOG
 
 TMCThreadLocal FairLinkManager* FairLinkManager::fgInstance = 0;
 

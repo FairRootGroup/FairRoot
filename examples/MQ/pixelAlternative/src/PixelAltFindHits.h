@@ -15,11 +15,11 @@
 #ifndef PIXELALTFINDHITS_H
 #define PIXELALTFINDHITS_H 1
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Int_t, Double_t, Option_t
-
-#include "FairTask.h"    // for InitStatus, FairTask
+#include "FairTask.h"   // for InitStatus, FairTask
 #include "PixelPayload.h"
+
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Double_t, Option_t
 
 class TClonesArray;
 class PixelDigiPar;
@@ -31,7 +31,7 @@ class TMemberInspector;
 namespace PixelPayload {
 class Digi;
 class Hit;
-}  // namespace PixelPayload
+}   // namespace PixelPayload
 
 class PixelAltFindHits : public FairTask
 {

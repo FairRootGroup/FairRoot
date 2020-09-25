@@ -8,10 +8,10 @@
 #ifndef FairTestDetectorTimeDigiTask_H
 #define FairTestDetectorTimeDigiTask_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Double_t, Bool_t, Int_t, Option_t, kTRUE
+#include "FairTask.h"   // for FairTask, InitStatus
 
-#include "FairTask.h"    // for FairTask, InitStatus
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Bool_t, Int_t, Option_t, kTRUE
 
 class TClonesArray;
 class FairTestDetectorDigiWriteoutBuffer;

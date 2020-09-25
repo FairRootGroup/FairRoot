@@ -13,19 +13,19 @@
 
 extern "C"
 {
-#include "f_evt.h"          // for s_evt_channel
+#include "f_evt.h"     // for s_evt_channel
+#include "s_bufhe.h"   // for s_bufhe
 #include "s_bufhe_swap.h"
 #include "s_filhe_swap.h"
-#include "s_bufhe.h"        // for s_bufhe
-#include "s_ve10_1.h"       // for s_ve10_1
-#include "s_ves10_1.h"      // for s_ves10_1
+#include "s_ve10_1.h"    // for s_ve10_1
+#include "s_ves10_1.h"   // for s_ves10_1
 }
 
-#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
-#include <TString.h>        // for TString
-#include <RtypesCore.h>     // for Bool_t, Int_t, UInt_t
+#include "FairMbsSource.h"   // for FairMbsSource
 
-#include "FairMbsSource.h"  // for FairMbsSource
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Int_t, UInt_t
+#include <TString.h>      // for TString
 
 class TBuffer;
 class TClass;

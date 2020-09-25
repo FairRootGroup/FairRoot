@@ -18,15 +18,15 @@
 
 #include "FairContFact.h"
 
-#include <TCollection.h>        // for TIter
-#include <TObjString.h>         // for TObjString
-#include <string.h>             // for strlen
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <fairlogger/Logger.h>  // for Logger, LOG
-#include <iostream>             // for operator<<, ostream, cout, basic_ostream
+#include "FairLogger.h"      // for FairLogger
+#include "FairRuntimeDb.h"   // for FairRuntimeDb
 
-#include "FairLogger.h"         // for FairLogger
-#include "FairRuntimeDb.h"      // for FairRuntimeDb
+#include <TCollection.h>         // for TIter
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TObjString.h>          // for TObjString
+#include <fairlogger/Logger.h>   // for Logger, LOG
+#include <iostream>              // for operator<<, ostream, cout, basic_ostream
+#include <string.h>              // for strlen
 
 using std::cout;
 

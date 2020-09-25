@@ -14,20 +14,20 @@
 
 #include "FairMQPixAltSamplerBin.h"
 
-#include <FairMQMessage.h>                         // for FairMQMessagePtr
-#include <TBranch.h>                               // for TBranch
-#include <TChain.h>                                // for TChain
-#include <FairMQParts.h>                           // for FairMQParts
-#include <ProgOptions.h>                           // for ProgOptions
-#include <fairlogger/Logger.h>                     // for Logger, LOG
-#include <boost/type_index/type_index_facade.hpp>  // for operator==
-#include <cstddef>                                 // for size_t
-#include <memory>                                  // for unique_ptr
-#include <new>                                     // for operator new
-#include <string>                                  // for operator!=, basic_...
-#include <type_traits>                             // for move
+#include "PixelPayload.h"   // for Digi, EventHeader
 
-#include "PixelPayload.h"                          // for Digi, EventHeader
+#include <FairMQMessage.h>                          // for FairMQMessagePtr
+#include <FairMQParts.h>                            // for FairMQParts
+#include <ProgOptions.h>                            // for ProgOptions
+#include <TBranch.h>                                // for TBranch
+#include <TChain.h>                                 // for TChain
+#include <boost/type_index/type_index_facade.hpp>   // for operator==
+#include <cstddef>                                  // for size_t
+#include <fairlogger/Logger.h>                      // for Logger, LOG
+#include <memory>                                   // for unique_ptr
+#include <new>                                      // for operator new
+#include <string>                                   // for operator!=, basic_...
+#include <utility>                                  // for move
 
 using namespace std;
 

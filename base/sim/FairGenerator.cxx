@@ -11,7 +11,7 @@
 
 #include "FairGenerator.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 FairGenerator::FairGenerator()
     : TNamed()

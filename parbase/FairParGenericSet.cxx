@@ -28,13 +28,13 @@
 ///////////////////////////////////////////////////////////////////////////
 #include "FairParGenericSet.h"
 
-#include <TString.h>            // for operator<<, TString
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, ostream, cout, basic_ostream
+#include "FairDetParIo.h"    // for FairDetParIo
+#include "FairParIo.h"       // for FairParIo
+#include "FairParamList.h"   // for FairParamList
 
-#include "FairDetParIo.h"       // for FairDetParIo
-#include "FairParIo.h"          // for FairParIo
-#include "FairParamList.h"      // for FairParamList
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TString.h>             // for operator<<, TString
+#include <iostream>              // for operator<<, ostream, cout, basic_ostream
 
 ClassImp(FairParGenericSet);
 

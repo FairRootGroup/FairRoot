@@ -24,11 +24,11 @@
 #ifndef FAIRBOXSETDRAW_H
 #define FAIRBOXSETDRAW_H
 
-#include <Rtypes.h>                  // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>              // for Double_t, Int_t, Bool_t, Option_t
+#include "FairTSBufferFunctional.h"   // for BinaryFunctor (ptr only)
+#include "FairTask.h"                 // for FairTask, InitStatus
 
-#include "FairTSBufferFunctional.h"  // for BinaryFunctor (ptr only)
-#include "FairTask.h"                // for FairTask, InitStatus
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Int_t, Bool_t, Option_t
 
 class FairBoxSet;
 class FairEventManager;

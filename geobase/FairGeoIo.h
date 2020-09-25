@@ -8,9 +8,9 @@
 #ifndef FAIRGEOIO_H
 #define FAIRGEOIO_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TObject.h>     // for TObject
-#include <RtypesCore.h>  // for Bool_t, Text_t
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Text_t
+#include <TObject.h>      // for TObject
 
 class FairGeoMedia;
 class FairGeoSet;

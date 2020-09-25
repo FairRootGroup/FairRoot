@@ -11,64 +11,64 @@
 // -------------------------------------------------------------------------
 #include "FairMCApplication.h"
 
-#include <TDatabasePDG.h>          // for TDatabasePDG
-#include <TFile.h>                 // for TFile
-#include <TGeoManager.h>           // for gGeoManager, TGeoManager
-#include <TGeoMedium.h>            // for TGeoMedium
-#include <TGeoNode.h>              // for TGeoNode
-#include <TGeoPhysicalNode.h>      // for TGeoPhysicalNode
-#include <TGeoTrack.h>             // for TGeoTrack
-#include <TGeoVolume.h>            // for TGeoVolume
-#include <TH2.h>                   // for TH2D
-#include <THashList.h>             // for THashList
-#include <TInterpreter.h>          // for TInterpreter, gInterpreter
-#include <TIterator.h>             // for TIterator
-#include <TList.h>                 // for TList, TListIter
-#include <TObjArray.h>             // for TObjArray
-#include <TObject.h>               // for TObject
-#include <TParticlePDG.h>          // for TParticlePDG
-#include <TROOT.h>                 // for TROOT, gROOT
-#include <TRefArray.h>             // for TRefArray
-#include <TSystem.h>               // for TSystem, gSystem
-#include <TVirtualMC.h>            // for TVirtualMC, gMC
-#include <TVirtualMCStack.h>       // for TVirtualMCStack
-#include <float.h>                 // for DBL_MAX
-#include <stdlib.h>                // for getenv, exit
-#include <TGenericClassInfo.h>     // for TGenericClassInfo
-#include <TGeoMatrix.h>            // for TGeoHMatrix
-#include <fairlogger/Logger.h>     // for Logger, LOG
-#include <utility>                 // for pair
-#include <__mutex_base>            // for mutex
+#include "FairDetector.h"           // for FairDetector
+#include "FairField.h"              // for FairField
+#include "FairGenericStack.h"       // for FairGenericStack
+#include "FairGeoInterface.h"       // for FairGeoInterface
+#include "FairGeoLoader.h"          // for FairGeoLoader
+#include "FairGeoMedia.h"           // for FairGeoMedia
+#include "FairGeoMedium.h"          // for FairGeoMedium
+#include "FairIon.h"                // for FairIon
+#include "FairMCEventHeader.h"      // for FairMCEventHeader
+#include "FairMesh.h"               // for FairMesh
+#include "FairModule.h"             // for FairModule, FairModule::svList
+#include "FairParticle.h"           // for FairParticle
+#include "FairPrimaryGenerator.h"   // for FairPrimaryGenerator
+#include "FairRadGridManager.h"     // for FairRadGridManager
+#include "FairRadLenManager.h"      // for FairRadLenManager
+#include "FairRadMapManager.h"      // for FairRadMapManager
+#include "FairRootManager.h"        // for FairRootManager
+#include "FairRun.h"                // for FairRun
+#include "FairRunInfo.h"            // for FairRunInfo
+#include "FairRunSim.h"             // for FairRunSim
+#include "FairRuntimeDb.h"          // for FairRuntimeDb
+#include "FairSink.h"               // for FairSink, kONLINESINK
+#include "FairTask.h"               // for FairTask
+#include "FairTrajFilter.h"         // for FairTrajFilter
+#include "FairVolume.h"             // for FairVolume
 
-#include "FairDetector.h"          // for FairDetector
-#include "FairField.h"             // for FairField
-#include "FairGenericStack.h"      // for FairGenericStack
-#include "FairGeoInterface.h"      // for FairGeoInterface
-#include "FairGeoLoader.h"         // for FairGeoLoader
-#include "FairGeoMedia.h"          // for FairGeoMedia
-#include "FairGeoMedium.h"         // for FairGeoMedium
-#include "FairIon.h"               // for FairIon
-#include "FairMCEventHeader.h"     // for FairMCEventHeader
-#include "FairMesh.h"              // for FairMesh
-#include "FairModule.h"            // for FairModule, FairModule::svList
-#include "FairParticle.h"          // for FairParticle
-#include "FairPrimaryGenerator.h"  // for FairPrimaryGenerator
-#include "FairRadGridManager.h"    // for FairRadGridManager
-#include "FairRadLenManager.h"     // for FairRadLenManager
-#include "FairRadMapManager.h"     // for FairRadMapManager
-#include "FairRootManager.h"       // for FairRootManager
-#include "FairRun.h"               // for FairRun
-#include "FairRunInfo.h"           // for FairRunInfo
-#include "FairRunSim.h"            // for FairRunSim
-#include "FairRuntimeDb.h"         // for FairRuntimeDb
-#include "FairTask.h"              // for FairTask
-#include "FairTrajFilter.h"        // for FairTrajFilter
-#include "FairVolume.h"            // for FairVolume
-#include "FairSink.h"              // for FairSink, kONLINESINK
+#include <TDatabasePDG.h>        // for TDatabasePDG
+#include <TFile.h>               // for TFile
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TGeoManager.h>         // for gGeoManager, TGeoManager
+#include <TGeoMatrix.h>          // for TGeoHMatrix
+#include <TGeoMedium.h>          // for TGeoMedium
+#include <TGeoNode.h>            // for TGeoNode
+#include <TGeoPhysicalNode.h>    // for TGeoPhysicalNode
+#include <TGeoTrack.h>           // for TGeoTrack
+#include <TGeoVolume.h>          // for TGeoVolume
+#include <TH2.h>                 // for TH2D
+#include <THashList.h>           // for THashList
+#include <TInterpreter.h>        // for TInterpreter, gInterpreter
+#include <TIterator.h>           // for TIterator
+#include <TList.h>               // for TList, TListIter
+#include <TObjArray.h>           // for TObjArray
+#include <TObject.h>             // for TObject
+#include <TParticlePDG.h>        // for TParticlePDG
+#include <TROOT.h>               // for TROOT, gROOT
+#include <TRefArray.h>           // for TRefArray
+#include <TSystem.h>             // for TSystem, gSystem
+#include <TVirtualMC.h>          // for TVirtualMC, gMC
+#include <TVirtualMCStack.h>     // for TVirtualMCStack
+#include <__mutex_base>          // for mutex
+#include <fairlogger/Logger.h>   // for Logger, LOG
+#include <float.h>               // for DBL_MAX
+#include <stdlib.h>              // for getenv, exit
+#include <utility>               // for pair
 
 class TParticle;
 
-std::mutex mtx;       // mutex for critical section
+std::mutex mtx;   // mutex for critical section
 
 using std::pair;
 

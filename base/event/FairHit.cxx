@@ -7,7 +7,7 @@
  ********************************************************************************/
 #include "FairHit.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 FairHit::FairHit()
     : FairTimeStamp()

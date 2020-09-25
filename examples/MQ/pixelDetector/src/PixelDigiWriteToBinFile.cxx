@@ -14,14 +14,14 @@
 
 #include "PixelDigiWriteToBinFile.h"
 
-#include <TClonesArray.h>       // for TClonesArray
-#include <TString.h>            // for TString, Form
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <fairlogger/Logger.h>  // for LOG, Logger
+#include "FairRootManager.h"   // for FairRootManager
 
-#include "FairRootManager.h"    // for FairRootManager
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TString.h>             // for TString, Form
+#include <fairlogger/Logger.h>   // for LOG, Logger
 // Includes from ROOT
-#include "PixelDigi.h"          // for PixelDigi
+#include "PixelDigi.h"   // for PixelDigi
 
 PixelDigiWriteToBinFile::PixelDigiWriteToBinFile()
     : PixelDigiWriteToBinFile("Pixel DigiWriter", 0)

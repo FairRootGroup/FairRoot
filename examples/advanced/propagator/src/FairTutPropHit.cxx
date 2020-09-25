@@ -7,8 +7,8 @@
  ********************************************************************************/
 #include "FairTutPropHit.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <TVector3.h>           // for TVector3
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TVector3.h>            // for TVector3
 
 FairTutPropHit::FairTutPropHit()
     : FairHit()

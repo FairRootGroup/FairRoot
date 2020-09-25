@@ -16,10 +16,10 @@
 #ifndef MYHITDATA_H
 #define MYHITDATA_H
 
-#include <Rtypes.h>                             // for THashConsistencyHolder
-#include <RtypesCore.h>                         // for Int_t, Double_t
+#include "FairHit.h"   // for FairHit
 
-#include "FairHit.h"                            // for FairHit
+#include <Rtypes.h>       // for THashConsistencyHolder
+#include <RtypesCore.h>   // for Int_t, Double_t
 
 class TBuffer;
 class TClass;
@@ -30,7 +30,7 @@ namespace serialization {
 class access;
 }
 }   // namespace boost
-#include <boost/serialization/base_object.hpp>  // for base_object
+#include <boost/serialization/base_object.hpp>   // for base_object
 
 class TVector3;
 

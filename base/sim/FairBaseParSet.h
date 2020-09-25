@@ -8,9 +8,9 @@
 #ifndef FAIRBASEPARSET_H
 #define FAIRBASEPARSET_H
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>    // for Double_t, UInt_t, Bool_t
 #include <TGeoManager.h>   // IWYU pragma: keep needed by cint
-#include <RtypesCore.h>         // for Double_t, UInt_t, Bool_t
 
 /**
  * Parameter class for run
@@ -18,7 +18,7 @@
  * @version 1
  * @since 12.10.04
  */
-#include "FairParGenericSet.h"  // for FairParGenericSet
+#include "FairParGenericSet.h"   // for FairParGenericSet
 
 class FairParamList;
 class FairPrimaryGenerator;

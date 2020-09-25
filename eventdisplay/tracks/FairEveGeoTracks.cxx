@@ -14,18 +14,20 @@
  *		Warsaw University of Technology, Faculty of Physics
  */
 
- #include "FairEveGeoTracks.h"
- #include <TClonesArray.h>      // for TClonesArray
- #include <TEveManager.h>       // for TEveManager, gEve
- #include <TEveTrack.h>         // for TEveTrackList
- #include <TGeoTrack.h>         // for TGeoTrack
- #include <TParticle.h>         // for TParticle
- #include <TString.h>           // for Form
- #include <TVector3.h>          // for TVector3
- #include <limits>              // for numeric_limits
- #include "FairEveTrack.h"      // for FairEveTrack
- #include "FairEventManager.h"  // for FairEventManager
- #include "FairRootManager.h"   // for FairRootManager
+#include "FairEveGeoTracks.h"
+
+#include "FairEveTrack.h"       // for FairEveTrack
+#include "FairEventManager.h"   // for FairEventManager
+#include "FairRootManager.h"    // for FairRootManager
+
+#include <TClonesArray.h>   // for TClonesArray
+#include <TEveManager.h>    // for TEveManager, gEve
+#include <TEveTrack.h>      // for TEveTrackList
+#include <TGeoTrack.h>      // for TGeoTrack
+#include <TParticle.h>      // for TParticle
+#include <TString.h>        // for Form
+#include <TVector3.h>       // for TVector3
+#include <limits>           // for numeric_limits
 
 FairEveGeoTracks::FairEveGeoTracks()
     : FairEveTracks()

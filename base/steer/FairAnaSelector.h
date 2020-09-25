@@ -14,14 +14,14 @@
 #ifndef FAIRANASELECTOR_H
 #define FAIRANASELECTOR_H
 
-#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
-#include <TSelector.h>      // for TSelector
-#include <TSelectorList.h>  // for TSelectorList
-#include <TString.h>        // for TString
-#include <TTree.h>          // for TTree
-#include <RtypesCore.h>     // for Int_t, Bool_t, Long64_t
-
 #include "FairLogger.h"   // for FairLogger, MESSAGE_ORIGIN
+
+#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>      // for Int_t, Bool_t, Long64_t
+#include <TSelector.h>       // for TSelector
+#include <TSelectorList.h>   // for TSelectorList
+#include <TString.h>         // for TString
+#include <TTree.h>           // for TTree
 
 class FairFileSource;
 class FairRunAnaProof;

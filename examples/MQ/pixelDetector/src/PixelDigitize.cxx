@@ -15,22 +15,22 @@
 #include "PixelDigitize.h"
 
 // Includes from ROOT
-#include <TClonesArray.h>       // for TClonesArray
-#include <TGeoBBox.h>           // for TGeoBBox
-#include <TGeoManager.h>        // for TGeoManager, gGeoManager
-#include <TGeoNode.h>           // for TGeoNode
-#include <TGeoVolume.h>         // for TGeoVolume
-#include <TList.h>              // for TList
-#include <TString.h>            // for TString, Form
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <fairlogger/Logger.h>  // for Logger, LOG
+#include "FairRootManager.h"   // for FairRootManager
+#include "FairRun.h"           // for FairRun
+#include "FairRuntimeDb.h"     // for FairRuntimeDb
+#include "PixelDigi.h"         // for PixelDigi
+#include "PixelDigiPar.h"      // for PixelDigiPar
+#include "PixelPoint.h"        // for PixelPoint
 
-#include "PixelDigi.h"          // for PixelDigi
-#include "PixelDigiPar.h"       // for PixelDigiPar
-#include "PixelPoint.h"         // for PixelPoint
-#include "FairRootManager.h"    // for FairRootManager
-#include "FairRun.h"            // for FairRun
-#include "FairRuntimeDb.h"      // for FairRuntimeDb
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TGeoBBox.h>            // for TGeoBBox
+#include <TGeoManager.h>         // for TGeoManager, gGeoManager
+#include <TGeoNode.h>            // for TGeoNode
+#include <TGeoVolume.h>          // for TGeoVolume
+#include <TList.h>               // for TList
+#include <TString.h>             // for TString, Form
+#include <fairlogger/Logger.h>   // for Logger, LOG
 
 PixelDigitize::PixelDigitize()
     : PixelDigitize("Pixel Digitizer", 0)

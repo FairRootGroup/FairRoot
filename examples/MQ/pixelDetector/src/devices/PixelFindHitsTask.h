@@ -16,7 +16,7 @@
 #define PIXELFINDHITSTASK_H
 
 #include <Rtypes.h>
-#include <RtypesCore.h>  // for Int_t, Double_t
+#include <RtypesCore.h>   // for Int_t, Double_t
 
 class TList;
 class TClonesArray;

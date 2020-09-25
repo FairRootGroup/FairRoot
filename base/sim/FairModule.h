@@ -8,23 +8,23 @@
 #ifndef FAIRMODULE_H
 #define FAIRMODULE_H
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
-#include <TList.h>              // for TList (ptr only), TListIter
-#include <TNamed.h>             // for TNamed
-#include <TObjArray.h>          // for TObjArray
-#include <TString.h>            // for TString, operator!=
-#include <RtypesCore.h>         // for Int_t, Bool_t, kFALSE, Option_t
-#include <fairlogger/Logger.h>  // for LOG
-#include <string>        // for string
-#include <iosfwd>               // for string
-
 #include "FairGeoInterface.h"   // for FairGeoInterface
 #include "FairGeoLoader.h"      // for FairGeoLoader
 #include "FairGeoNode.h"        // for FairGeoNode
 #include "FairGeoVolume.h"      // for FairGeoVolume
 #include "FairLogger.h"
-#include "FairRun.h"            // for FairRun
-#include "FairRuntimeDb.h"      // for FairRuntimeDb
+#include "FairRun.h"         // for FairRun
+#include "FairRuntimeDb.h"   // for FairRuntimeDb
+
+#include <Rtypes.h>              // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>          // for Int_t, Bool_t, kFALSE, Option_t
+#include <TList.h>               // for TList (ptr only), TListIter
+#include <TNamed.h>              // for TNamed
+#include <TObjArray.h>           // for TObjArray
+#include <TString.h>             // for TString, operator!=
+#include <fairlogger/Logger.h>   // for LOG
+#include <iosfwd>                // for string
+#include <string>                // for string
 
 class FairVolumeList;
 class FairVolume;

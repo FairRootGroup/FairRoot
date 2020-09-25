@@ -8,10 +8,10 @@
 #ifndef FAIRTESTDETECTORHIT_H_
 #define FAIRTESTDETECTORHIT_H_
 
-#include <Rtypes.h>                             // for THashConsistencyHolder
-#include <RtypesCore.h>                         // for Int_t
+#include "FairHit.h"   // for FairHit
 
-#include "FairHit.h"                            // for FairHit
+#include <Rtypes.h>       // for THashConsistencyHolder
+#include <RtypesCore.h>   // for Int_t
 
 class TBuffer;
 class TClass;

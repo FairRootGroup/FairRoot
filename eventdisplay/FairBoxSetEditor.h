@@ -24,15 +24,15 @@
 #ifndef FairBoxSetEditor_H
 #define FairBoxSetEditor_H
 
-#include <GuiTypes.h>       // for Pixel_t
-#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
-#include <TGFrame.h>        // for kChildFrame, TGVerticalFrame (ptr only)
-#include <TGNumberEntry.h>  // for TGNumberEntry
-#include <TGedFrame.h>      // for TGedFrame
-#include <TObject.h>        // for TObject
-#include <RtypesCore.h>     // for Int_t, UInt_t
+#include "FairBoxSet.h"   // for FairBoxSet
 
-#include "FairBoxSet.h"     // for FairBoxSet
+#include <GuiTypes.h>        // for Pixel_t
+#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>      // for Int_t, UInt_t
+#include <TGFrame.h>         // for kChildFrame, TGVerticalFrame (ptr only)
+#include <TGNumberEntry.h>   // for TGNumberEntry
+#include <TGedFrame.h>       // for TGedFrame
+#include <TObject.h>         // for TObject
 
 class TGWindow;
 class TBuffer;

@@ -17,9 +17,9 @@
 
 #include "FairGeoTarget.h"
 
-#include <TString.h>            // for TString
-#include <string.h>             // for strcpy
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TString.h>             // for TString
+#include <string.h>              // for strcpy
 
 ClassImp(FairGeoTarget);
 

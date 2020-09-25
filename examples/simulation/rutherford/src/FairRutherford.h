@@ -8,12 +8,12 @@
 #ifndef CBMRUTHERFORD_H
 #define CBMRUTHERFORD_H
 
-#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
-#include <TLorentzVector.h>  // for TLorentzVector
-#include <TVector3.h>        // for TVector3
-#include <RtypesCore.h>      // for Int_t, Double32_t, Double_t, Bool_t
+#include "FairDetector.h"   // for FairDetector
 
-#include "FairDetector.h"    // for FairDetector
+#include <Rtypes.h>           // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>       // for Int_t, Double32_t, Double_t, Bool_t
+#include <TLorentzVector.h>   // for TLorentzVector
+#include <TVector3.h>         // for TVector3
 
 class FairRutherfordPoint;
 class FairRutherfordGeo;

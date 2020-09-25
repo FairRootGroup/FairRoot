@@ -5,31 +5,32 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
- #include "FairEventManagerEditor.h"
- #include <RtypesCore.h>                  // for Double_t, Int_t, UInt_t, Bool_t
- #include <TChain.h>                      // for TChain
- #include <TEveManager.h>                 // for TEveManager, gEve
- #include <TFile.h>                       // for TFile
- #include <TGButton.h>                    // for TGTextButton, TGCheckButton
- #include <TGComboBox.h>                  // for TGComboBox
- #include <TGLabel.h>                     // for TGLabel
- #include <TGLayout.h>                    // for TGLayoutHints, kLHintsExpandX
- #include <TGNumberEntry.h>               // for TGNumberEntry, TGNumberFormat
- #include <TGenericClassInfo.h>           // for TGenericClassInfo
- #include <TGeoManager.h>                 // for TGeoManager, gGeoManager
- #include <TList.h>                       // for TObjLink, TList
- #include <TString.h>                     // for TString, Form
- #include <TSystem.h>                     // for TSystem, gSystem
- #include <memory>                        // for unique_ptr
- #include "FairEveAnimationControl.h"     // for FairEveAnimationControl, Fai...
- #include "FairEveTransparencyControl.h"  // for FairEveTransparencyControl
- #include "FairEventManager.h"            // for FairEventManager
- #include "FairRootManager.h"             // for FairRootManager
- #include "FairRunAna.h"                  // for FairRunAna
- #include "FairTask.h"                    // for FairTask
- class TGWindow;  // lines 36-36
- class TObject;  // lines 37-37
+#include "FairEventManagerEditor.h"
 
+#include "FairEveAnimationControl.h"      // for FairEveAnimationControl, Fai...
+#include "FairEveTransparencyControl.h"   // for FairEveTransparencyControl
+#include "FairEventManager.h"             // for FairEventManager
+#include "FairRootManager.h"              // for FairRootManager
+#include "FairRunAna.h"                   // for FairRunAna
+#include "FairTask.h"                     // for FairTask
+
+#include <RtypesCore.h>          // for Double_t, Int_t, UInt_t, Bool_t
+#include <TChain.h>              // for TChain
+#include <TEveManager.h>         // for TEveManager, gEve
+#include <TFile.h>               // for TFile
+#include <TGButton.h>            // for TGTextButton, TGCheckButton
+#include <TGComboBox.h>          // for TGComboBox
+#include <TGLabel.h>             // for TGLabel
+#include <TGLayout.h>            // for TGLayoutHints, kLHintsExpandX
+#include <TGNumberEntry.h>       // for TGNumberEntry, TGNumberFormat
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TGeoManager.h>         // for TGeoManager, gGeoManager
+#include <TList.h>               // for TObjLink, TList
+#include <TString.h>             // for TString, Form
+#include <TSystem.h>             // for TSystem, gSystem
+#include <memory>                // for unique_ptr
+class TGWindow;                  // lines 36-36
+class TObject;                   // lines 37-37
 
 #define MAXE 5000
 

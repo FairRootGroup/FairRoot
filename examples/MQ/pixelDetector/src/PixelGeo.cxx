@@ -7,9 +7,9 @@
  ********************************************************************************/
 #include "PixelGeo.h"
 
-#include <stdio.h>              // for sprintf
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <string.h>             // for strcpy
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <stdio.h>               // for sprintf
+#include <string.h>              // for strcpy
 
 ClassImp(PixelGeo);
 

@@ -8,10 +8,10 @@
 #ifndef FAIRGEOINTERFACE_H
 #define FAIRGEOINTERFACE_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TObject.h>     // for TObject
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for Bool_t, kFALSE, Int_t
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, kFALSE, Int_t
+#include <TObject.h>      // for TObject
+#include <TString.h>      // for TString
 
 class FairGeoIo;
 class FairGeoSet;

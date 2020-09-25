@@ -8,15 +8,15 @@
 #ifndef CBMRUTHERFORDGEOPAR_H
 #define CBMRUTHERFORDGEOPAR_H
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>         // for Bool_t
-#include "FairParGenericSet.h"  // for FairParGenericSet
-class FairParamList;  // lines 16-16
+#include "FairParGenericSet.h"   // for FairParGenericSet
+
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t
+class FairParamList;      // lines 16-16
 class TBuffer;
 class TClass;
 class TMemberInspector;
-class TObjArray;  // lines 15-15
-
+class TObjArray;   // lines 15-15
 
 class FairRutherfordGeoPar : public FairParGenericSet
 {

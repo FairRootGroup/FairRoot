@@ -14,31 +14,31 @@
  */
 
 // root
-#include <TApplication.h>                                   // for TApplication
-#include <TCanvas.h>                                        // for TCanvas
-#include <RooArgSet.h>                                      // for RooArgSet
-#include <RooConstVar.h>                                    // for RooConstVar
-#include <RooDataSet.h>                                     // for RooDataSet
-#include <RooGaussian.h>                                    // for RooGaussian
-#include <RooGlobalFunc.h>                                  // for RooConst
-#include <RooRealVar.h>                                     // for RooRealVar
-#include <RtypesCore.h>                                     // for Int_t
-#include <TH1.h>                                            // for TH1D
-#include <TH2.h>                                            // for TH2D
-#include <fairlogger/Logger.h>                              // for Logger, LOG
-#include <math.h>                                           // for round
-#include <iostream>                                         // for string, endl
-#include <memory>                                           // for unique_ptr
-#include <vector>                                           // for vector
-#include <exception>                                        // for exception
-#include <string>                                           // for basic_string
+#include <RooArgSet.h>           // for RooArgSet
+#include <RooConstVar.h>         // for RooConstVar
+#include <RooDataSet.h>          // for RooDataSet
+#include <RooGaussian.h>         // for RooGaussian
+#include <RooGlobalFunc.h>       // for RooConst
+#include <RooRealVar.h>          // for RooRealVar
+#include <RtypesCore.h>          // for Int_t
+#include <TApplication.h>        // for TApplication
+#include <TCanvas.h>             // for TCanvas
+#include <TH1.h>                 // for TH1D
+#include <TH2.h>                 // for TH2D
+#include <exception>             // for exception
+#include <fairlogger/Logger.h>   // for Logger, LOG
+#include <iostream>              // for string, endl
+#include <math.h>                // for round
+#include <memory>                // for unique_ptr
+#include <string>                // for basic_string
+#include <vector>                // for vector
 
 // FairRoot
-#include "RootOutFileManager.h"                             // for RootOutFi...
+#include "RootOutFileManager.h"   // for RootOutFi...
 // FairRoot - Tutorial 7
-#include "MyDigi.h"                                         // for MyDigi
-#include "MyPodData.h"                                      // for Digi
-#include "RooDataGenerator.h"                               // for RdmVarPar...
+#include "MyDigi.h"             // for MyDigi
+#include "MyPodData.h"          // for Digi
+#include "RooDataGenerator.h"   // for RdmVarPar...
 
 using namespace std;
 

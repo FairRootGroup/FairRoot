@@ -8,15 +8,15 @@
 #ifndef FAIRGEOSET_H
 #define FAIRGEOSET_H
 
+#include "FairGeoNode.h"   // for FairGeoNode
+
 #include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Bool_t, kFALSE
 #include <TList.h>        // for TList
 #include <TNamed.h>       // for TNamed
-#include <TString.h>      // for TString
-#include <RtypesCore.h>   // for Int_t, Bool_t, kFALSE
 #include <TObject.h>      // for TObject
+#include <TString.h>      // for TString
 #include <iosfwd>         // for fstream
-
-#include "FairGeoNode.h"  // for FairGeoNode
 
 // class FairGeoNode;
 class FairGeoShapes;

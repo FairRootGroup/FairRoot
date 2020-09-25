@@ -13,7 +13,7 @@
 
 #include "FairField.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 FairField::FairField()
     : TVirtualMagField("FAIR Magnetic Field")

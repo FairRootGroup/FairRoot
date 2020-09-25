@@ -15,13 +15,13 @@
  * @since 30.04.2013
  */
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TProof.h>
-#include <RtypesCore.h>  // for Int_t, Bool_t, Long64_t, kTRUE
-#include <TString.h>     // for TString
-
 #include "FairFileSource.h"   // FairRunAnaProof can only accept FairFileSource as source
-#include "FairRunAna.h"  // for FairRunAna
+#include "FairRunAna.h"       // for FairRunAna
+
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Bool_t, Long64_t, kTRUE
+#include <TProof.h>
+#include <TString.h>   // for TString
 
 class FairFileSource;
 class FairSource;

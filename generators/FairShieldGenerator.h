@@ -28,13 +28,13 @@
 #ifndef FAIRSHIELDGENERATOR_H
 #define FAIRSHIELDGENERATOR_H 1
 
-#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
-#include <TString.h>        // for TString
-#include <RtypesCore.h>     // for Bool_t, Char_t, Int_t
-#include <iosfwd>           // for ifstream
-#include <map>              // for map
+#include "FairGenerator.h"   // for FairGenerator
 
-#include "FairGenerator.h"  // for FairGenerator
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Char_t, Int_t
+#include <TString.h>      // for TString
+#include <iosfwd>         // for ifstream
+#include <map>            // for map
 
 class TDatabasePDG;
 class FairPrimaryGenerator;

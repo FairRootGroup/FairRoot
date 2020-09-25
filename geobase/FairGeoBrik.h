@@ -8,9 +8,9 @@
 #ifndef FAIRGEOBRIK_H
 #define FAIRGEOBRIK_H
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include "FairGeoBasicShape.h"   // for FairGeoBasicShape
 
-#include "FairGeoBasicShape.h"  // for FairGeoBasicShape
+#include <Rtypes.h>   // for THashConsistencyHolder, ClassDef
 
 class FairGeoTransform;
 class FairGeoVolume;

@@ -11,10 +11,11 @@
 // -------------------------------------------------------------------------
 
 #include "FairFastSimulation.h"
-#include <TG4VUserFastSimulation.h>  // for TG4VUserFastSimulation
-#include <fairlogger/Logger.h>       // for LOG
 
-#include "FairFastSimModel.h"        // for FairFastSimModel
+#include "FairFastSimModel.h"   // for FairFastSimModel
+
+#include <TG4VUserFastSimulation.h>   // for TG4VUserFastSimulation
+#include <fairlogger/Logger.h>        // for LOG
 
 FairFastSimulation::FairFastSimulation()
     : TG4VUserFastSimulation()

@@ -15,10 +15,10 @@
 #ifndef FAIRMQPIXELFILESINKBIN_H_
 #define FAIRMQPIXELFILESINKBIN_H_
 
-#include <FairMQDevice.h>  // for FairMQDevice
+#include <FairMQDevice.h>   // for FairMQDevice
+#include <iosfwd>           // for string
 #include <string>
-#include <vector>          // for vector
-#include <iosfwd>          // for string
+#include <vector>   // for vector
 
 class TFile;
 class TFolder;

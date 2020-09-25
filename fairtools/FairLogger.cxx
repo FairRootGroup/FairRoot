@@ -14,12 +14,12 @@
 
 #include "FairLogger.h"
 
-#include <TString.h>            // for TString, operator<<
-#include <TSystem.h>            // for gSystem, TSystem
-#include <stdio.h>              // for fclose, freopen, vsnprintf, stderr
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, endl, ostream, string
-#include <functional>           // for __base
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TString.h>             // for TString, operator<<
+#include <TSystem.h>             // for gSystem, TSystem
+#include <functional>            // for __base
+#include <iostream>              // for operator<<, endl, ostream, string
+#include <stdio.h>               // for fclose, freopen, vsnprintf, stderr
 
 FairLogger* FairLogger::instance = nullptr;
 

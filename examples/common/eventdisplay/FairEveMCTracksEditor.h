@@ -15,22 +15,21 @@
  */
 #ifndef FAIREVEMCTRACKSEDITOR_H_
 #define FAIREVEMCTRACKSEDITOR_H_
-#include <GuiTypes.h>    // for Pixel_t
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Int_t, UInt_t
-#include <TGFrame.h>     // for kChildFrame
-#include <TGedFrame.h>   // for TGedFrame
-#include <memory>        // for unique_ptr
-class FairEveBoolCut;  // lines 23-23
-class FairEveIntCut;  // lines 24-24
-class FairEveMCTracks;  // lines 25-25
-class FairEveMinMaxCut;  // lines 26-26
+#include <GuiTypes.h>     // for Pixel_t
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, UInt_t
+#include <TGFrame.h>      // for kChildFrame
+#include <TGedFrame.h>    // for TGedFrame
+#include <memory>         // for unique_ptr
+class FairEveBoolCut;     // lines 23-23
+class FairEveIntCut;      // lines 24-24
+class FairEveMCTracks;    // lines 25-25
+class FairEveMinMaxCut;   // lines 26-26
 class TBuffer;
 class TClass;
 class TGWindow;
 class TMemberInspector;
 class TObject;
-
 
 class FairEveMCTracksEditor : public TGedFrame
 {

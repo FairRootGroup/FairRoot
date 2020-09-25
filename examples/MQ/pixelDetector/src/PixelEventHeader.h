@@ -15,10 +15,10 @@
 #ifndef PIXELEVENTHEADER_H_
 #define PIXELEVENTHEADER_H_
 
-#include <Rtypes.h>                             // for THashConsistencyHolder
-#include <RtypesCore.h>                         // for Int_t
+#include "FairEventHeader.h"   // for FairEventHeader
 
-#include "FairEventHeader.h"                    // for FairEventHeader
+#include <Rtypes.h>       // for THashConsistencyHolder
+#include <RtypesCore.h>   // for Int_t
 
 class TBuffer;
 class TClass;
@@ -29,7 +29,7 @@ namespace serialization {
 class access;
 }
 }   // namespace boost
-#include <boost/serialization/base_object.hpp>  // for base_object
+#include <boost/serialization/base_object.hpp>   // for base_object
 
 class PixelEventHeader : public FairEventHeader
 {

@@ -12,7 +12,7 @@
 
 #include "FairBoxSet.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 FairBoxSet::FairBoxSet(FairBoxSetDraw* drawer, const char* name, const char* t)
     : TEveBoxSet(name, t)

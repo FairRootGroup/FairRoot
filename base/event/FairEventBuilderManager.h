@@ -31,13 +31,13 @@
 #ifndef FAIREVENTBUILDERMANAGER_H
 #define FAIREVENTBUILDERMANAGER_H 1
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Double_t, Int_t, Option_t
-#include <vector>        // for vector
-#include <utility>       // for pair
-
 #include "FairEventBuilder.h"
-#include "FairTask.h"    // for InitStatus, FairTask
+#include "FairTask.h"   // for InitStatus, FairTask
+
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Int_t, Option_t
+#include <utility>        // for pair
+#include <vector>         // for vector
 
 class TClonesArray;
 class FairEventBuilder;

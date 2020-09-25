@@ -12,13 +12,6 @@
 
 #include "FairRun.h"
 
-#include <TFile.h>              // for TFile
-#include <TList.h>              // for TList
-#include <TObject.h>            // for TObject
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <fairlogger/Logger.h>  // for LOG
-#include <cassert>              // for assert
-
 #include "FairEventHeader.h"    // for FairEventHeader
 #include "FairFileHeader.h"     // for FairFileHeader
 #include "FairLinkManager.h"    // for FairLinkManager
@@ -26,6 +19,13 @@
 #include "FairRootManager.h"    // for FairRootManager
 #include "FairRuntimeDb.h"      // for FairRuntimeDb
 #include "FairTask.h"           // for FairTask
+
+#include <TFile.h>               // for TFile
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TList.h>               // for TList
+#include <TObject.h>             // for TObject
+#include <cassert>               // for assert
+#include <fairlogger/Logger.h>   // for LOG
 
 TMCThreadLocal FairRun* FairRun::fRunInstance = 0;
 

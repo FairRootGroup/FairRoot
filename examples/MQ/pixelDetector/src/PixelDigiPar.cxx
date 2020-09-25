@@ -14,10 +14,10 @@
 
 #include "PixelDigiPar.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, endl, basic_ostream, cout
+#include "FairParamList.h"   // for FairParamList
 
-#include "FairParamList.h"      // for FairParamList
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <iostream>              // for operator<<, endl, basic_ostream, cout
 
 PixelDigiPar::PixelDigiPar(const char* name, const char* title, const char* context)
     : FairParGenericSet(name, title, context)

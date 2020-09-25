@@ -14,24 +14,24 @@
 
 #include "PixelFindHits.h"
 
-#include <TClonesArray.h>       // for TClonesArray
-#include <TGeoBBox.h>           // for TGeoBBox
-#include <TGeoManager.h>        // for TGeoManager, gGeoManager
-#include <TGeoNode.h>           // for TGeoNode
-#include <TGeoVolume.h>         // for TGeoVolume
-#include <TList.h>              // for TList
-#include <TMath.h>              // for Sqrt
-#include <TString.h>            // for TString, Form
-#include <TVector3.h>           // for TVector3
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <fairlogger/Logger.h>  // for Logger, LOG
+#include "FairRootManager.h"   // for FairRootManager
+#include "FairRun.h"           // for FairRun
+#include "FairRuntimeDb.h"     // for FairRuntimeDb
+#include "PixelDigi.h"         // for PixelDigi
+#include "PixelDigiPar.h"      // for PixelDigiPar
+#include "PixelHit.h"          // for PixelHit
 
-#include "FairRootManager.h"    // for FairRootManager
-#include "FairRun.h"            // for FairRun
-#include "FairRuntimeDb.h"      // for FairRuntimeDb
-#include "PixelDigi.h"          // for PixelDigi
-#include "PixelDigiPar.h"       // for PixelDigiPar
-#include "PixelHit.h"           // for PixelHit
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TGeoBBox.h>            // for TGeoBBox
+#include <TGeoManager.h>         // for TGeoManager, gGeoManager
+#include <TGeoNode.h>            // for TGeoNode
+#include <TGeoVolume.h>          // for TGeoVolume
+#include <TList.h>               // for TList
+#include <TMath.h>               // for Sqrt
+#include <TString.h>             // for TString, Form
+#include <TVector3.h>            // for TVector3
+#include <fairlogger/Logger.h>   // for Logger, LOG
 
 PixelFindHits::PixelFindHits()
     : PixelFindHits("Pixel Hit Finder", 0)

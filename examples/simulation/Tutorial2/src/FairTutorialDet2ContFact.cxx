@@ -7,14 +7,14 @@
  ********************************************************************************/
 #include "FairTutorialDet2ContFact.h"
 
-#include <TGenericClassInfo.h>        // for TGenericClassInfo
-#include <TList.h>                    // for TList
-#include <TString.h>                  // for TString
-#include <cstring>                    // for strcmp
+#include "FairRuntimeDb.h"             // for FairRuntimeDb
+#include "FairTutorialDet2DigiPar.h"   // for FairTutorialDet2DigiPar
+#include "FairTutorialDet2GeoPar.h"    // for FairTutorialDet2GeoPar
 
-#include "FairRuntimeDb.h"            // for FairRuntimeDb
-#include "FairTutorialDet2DigiPar.h"  // for FairTutorialDet2DigiPar
-#include "FairTutorialDet2GeoPar.h"   // for FairTutorialDet2GeoPar
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TList.h>               // for TList
+#include <TString.h>             // for TString
+#include <cstring>               // for strcmp
 
 ClassImp(FairTutorialDet2ContFact);
 

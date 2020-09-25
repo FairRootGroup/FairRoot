@@ -7,9 +7,9 @@
  ********************************************************************************/
 #include "FairTutPropPoint.h"
 
-#include <TVector3.h>           // for TVector3
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, basic_ostream, endl, cout
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TVector3.h>            // for TVector3
+#include <iostream>              // for operator<<, basic_ostream, endl, cout
 
 // -----   Default constructor   -------------------------------------------
 FairTutPropPoint::FairTutPropPoint()

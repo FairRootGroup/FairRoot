@@ -28,11 +28,11 @@
 #ifndef FAIR_ASCIIGENERATOR_H
 #define FAIR_ASCIIGENERATOR_H
 
-#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>     // for Bool_t, Char_t
-#include <iosfwd>           // for ifstream
+#include "FairGenerator.h"   // for FairGenerator
 
-#include "FairGenerator.h"  // for FairGenerator
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Char_t
+#include <iosfwd>         // for ifstream
 
 class FairPrimaryGenerator;
 class TBuffer;

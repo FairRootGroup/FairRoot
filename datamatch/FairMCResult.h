@@ -15,12 +15,12 @@
 #ifndef FAIRMCRESULT_H_
 #define FAIRMCRESULT_H_
 
-#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>    // for Int_t
-#include <iostream>        // for operator<<, basic_ostream, ostream, endl
+#include "FairMCEntry.h"    // for FairMCEntry
+#include "FairMCObject.h"   // for FairMCObject
 
-#include "FairMCEntry.h"   // for FairMCEntry
-#include "FairMCObject.h"  // for FairMCObject
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t
+#include <iostream>       // for operator<<, basic_ostream, ostream, endl
 
 class TBuffer;
 class TClass;

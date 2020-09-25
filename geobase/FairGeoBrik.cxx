@@ -22,14 +22,14 @@
 /////////////////////////////////////////////////////////////
 #include "FairGeoBrik.h"
 
-#include <TArrayD.h>            // for TArrayD
-#include <TString.h>            // for TString
-#include <RtypesCore.h>         // for Int_t
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-
 #include "FairGeoTransform.h"   // for FairGeoTransform
 #include "FairGeoVector.h"      // for FairGeoVector
 #include "FairGeoVolume.h"      // for FairGeoVolume
+
+#include <RtypesCore.h>          // for Int_t
+#include <TArrayD.h>             // for TArrayD
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TString.h>             // for TString
 
 ClassImp(FairGeoBrik);
 

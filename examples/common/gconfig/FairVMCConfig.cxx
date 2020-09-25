@@ -11,13 +11,13 @@
 // -------------------------------------------------------------------------
 #include "FairVMCConfig.h"
 
-#include <TVirtualMC.h>          // for TVirtualMC
-#include <Rtypes.h>              // for ClassImp
-#include <TGenericClassInfo.h>   // for TGenericClassInfo
-#include <yaml-cpp/node/impl.h>  // for Node::operator[], Node::as
-#include <yaml-cpp/node/node.h>  // for Node
+#include "FairStack.h"   // for FairStack
 
-#include "FairStack.h"           // for FairStack
+#include <Rtypes.h>               // for ClassImp
+#include <TGenericClassInfo.h>    // for TGenericClassInfo
+#include <TVirtualMC.h>           // for TVirtualMC
+#include <yaml-cpp/node/impl.h>   // for Node::operator[], Node::as
+#include <yaml-cpp/node/node.h>   // for Node
 
 FairVMCConfig::FairVMCConfig()
     : FairYamlVMCConfig()

@@ -9,9 +9,9 @@
 #ifndef FAIRMBSRAWITEM_H
 #define FAIRMBSRAWITEM_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TObject.h>     // for TObject
-#include <RtypesCore.h>  // for UShort_t
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for UShort_t
+#include <TObject.h>      // for TObject
 
 class TBuffer;
 class TClass;

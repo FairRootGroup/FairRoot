@@ -14,24 +14,24 @@
 
 #include "FairMQPixelSampler.h"
 
-#include <FairMQMessage.h>                         // for FairMQMessage, Fai...
-#include <TClonesArray.h>                          // for TClonesArray
-#include <TObject.h>                               // for TObject
-#include <FairMQParts.h>                           // for FairMQParts
-#include <ProgOptions.h>                           // for ProgOptions
-#include <RtypesCore.h>                            // for Int_t, Long64_t
-#include <TString.h>                               // for TString
-#include <fairlogger/Logger.h>                     // for Logger, LOG
-#include <boost/type_index/type_index_facade.hpp>  // for operator==
-#include <cstring>                                 // for strcmp
-#include <memory>                                  // for unique_ptr
-#include <string>                                  // for operator!=, basic_...
-#include <type_traits>                             // for move
+#include "FairFileSource.h"   // for FairFileSource
+#include "FairRunAna.h"       // for FairRunAna
+#include "FairSource.h"       // for FairSource
+#include "RootSerializer.h"   // for RootSerializer
 
-#include "FairFileSource.h"                        // for FairFileSource
-#include "FairRunAna.h"                            // for FairRunAna
-#include "FairSource.h"                            // for FairSource
-#include "RootSerializer.h"                        // for RootSerializer
+#include <FairMQMessage.h>                          // for FairMQMessage, Fai...
+#include <FairMQParts.h>                            // for FairMQParts
+#include <ProgOptions.h>                            // for ProgOptions
+#include <RtypesCore.h>                             // for Int_t, Long64_t
+#include <TClonesArray.h>                           // for TClonesArray
+#include <TObject.h>                                // for TObject
+#include <TString.h>                                // for TString
+#include <boost/type_index/type_index_facade.hpp>   // for operator==
+#include <cstring>                                  // for strcmp
+#include <fairlogger/Logger.h>                      // for Logger, LOG
+#include <memory>                                   // for unique_ptr
+#include <string>                                   // for operator!=, basic_...
+#include <utility>                                  // for move
 
 using namespace std;
 

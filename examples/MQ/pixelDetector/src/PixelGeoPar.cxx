@@ -7,10 +7,10 @@
  ********************************************************************************/
 #include "PixelGeoPar.h"
 
-#include <TObjArray.h>          // for TObjArray
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include "FairParamList.h"   // for FairParamList
 
-#include "FairParamList.h"      // for FairParamList
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TObjArray.h>           // for TObjArray
 
 ClassImp(PixelGeoPar);
 

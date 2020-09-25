@@ -18,12 +18,12 @@
 
 #include "FairDetParAsciiFileIo.h"
 
-#include <stdio.h>              // for printf, sprintf
-#include <string.h>             // for strlen, strncmp
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <fstream>              // for operator<<, basic_ostream, char_traits
+#include "FairParSet.h"   // for FairParSet
 
-#include "FairParSet.h"         // for FairParSet
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <fstream>               // for operator<<, basic_ostream, char_traits
+#include <stdio.h>               // for printf, sprintf
+#include <string.h>              // for strlen, strncmp
 
 using std::ios;
 

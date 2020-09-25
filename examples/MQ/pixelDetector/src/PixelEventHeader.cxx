@@ -14,7 +14,7 @@
 
 #include "PixelEventHeader.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 PixelEventHeader::PixelEventHeader()
     : FairEventHeader()

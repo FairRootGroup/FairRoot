@@ -8,13 +8,13 @@
 #ifndef FAIR_VOLUMELIST_H
 #define FAIR_VOLUMELIST_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TObjArray.h>   // for TObjArray
-#include <TObject.h>     // for TObject
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for Int_t
+#include "FairVolume.h"   // for FairVolume
 
-#include "FairVolume.h"  // for FairVolume
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t
+#include <TObjArray.h>    // for TObjArray
+#include <TObject.h>      // for TObject
+#include <TString.h>      // for TString
 
 class TBuffer;
 class TClass;

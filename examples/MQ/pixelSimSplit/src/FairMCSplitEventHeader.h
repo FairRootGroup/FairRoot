@@ -10,10 +10,10 @@
 #ifndef FAIRMCSPLITEVENTHEADER_H
 #define FAIRMCSPLITEVENTHEADER_H 1
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>         // for UInt_t
+#include "FairMCEventHeader.h"   // for FairMCEventHeader
 
-#include "FairMCEventHeader.h"  // for FairMCEventHeader
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for UInt_t
 
 class TBuffer;
 class TClass;

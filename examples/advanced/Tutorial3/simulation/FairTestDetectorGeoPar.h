@@ -8,10 +8,10 @@
 #ifndef FAIRTESTDETECTORGEOPAR_H_
 #define FAIRTESTDETECTORGEOPAR_H_
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>         // for Bool_t
+#include "FairParGenericSet.h"   // for FairParGenericSet
 
-#include "FairParGenericSet.h"  // for FairParGenericSet
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t
 
 class TObjArray;
 class FairParamList;

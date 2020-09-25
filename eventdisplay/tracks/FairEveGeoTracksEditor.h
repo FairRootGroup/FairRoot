@@ -16,22 +16,21 @@
 #ifndef FAIREVEGEOTRACKSEDITOR_H_
 #define FAIREVEGEOTRACKSEDITOR_H_
 
-#include <GuiTypes.h>    // for Pixel_t
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Int_t, UInt_t
-#include <TGFrame.h>     // for kChildFrame
-#include <TGedFrame.h>   // for TGedFrame
-#include <memory>        // for unique_ptr
-class FairEveBoolCut;  // lines 24-24
-class FairEveGeoTracks;  // lines 25-25
-class FairEveIntCut;  // lines 26-26
-class FairEveMinMaxCut;  // lines 27-27
+#include <GuiTypes.h>     // for Pixel_t
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, UInt_t
+#include <TGFrame.h>      // for kChildFrame
+#include <TGedFrame.h>    // for TGedFrame
+#include <memory>         // for unique_ptr
+class FairEveBoolCut;     // lines 24-24
+class FairEveGeoTracks;   // lines 25-25
+class FairEveIntCut;      // lines 26-26
+class FairEveMinMaxCut;   // lines 27-27
 class TBuffer;
 class TClass;
 class TGWindow;
 class TMemberInspector;
 class TObject;
-
 
 /**
  * editor of TGeoTracks in event display

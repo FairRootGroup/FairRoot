@@ -12,9 +12,8 @@
  * Created on January 15, 2015, 1:57 PM
  */
 
-
-#include "Ex2Sampler.h"                                     // for Ex2Sampler
-#include "runFairMQDevice.h"                                // for FairMQDev...
+#include "Ex2Sampler.h"        // for Ex2Sampler
+#include "runFairMQDevice.h"   // for FairMQDev...
 
 namespace bpo = boost::program_options;
 

@@ -14,16 +14,16 @@
 
 #ifndef FAIRPROPAGATOR_H
 #define FAIRPROPAGATOR_H
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for kTRUE
-#include <TNamed.h>      // for TNamed
-#include <TString.h>     // for TString
-#include <TVector3.h>    // for TVector3
-#include <iosfwd>        // for string
-#include <string>        // for basic_string
-class FairTrackPar;  // lines 22-22
-class FairTrackParH;  // lines 23-23
-class FairTrackParP;  // lines 24-24
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for kTRUE
+#include <TNamed.h>       // for TNamed
+#include <TString.h>      // for TString
+#include <TVector3.h>     // for TVector3
+#include <iosfwd>         // for string
+#include <string>         // for basic_string
+class FairTrackPar;       // lines 22-22
+class FairTrackParH;      // lines 23-23
+class FairTrackParP;      // lines 24-24
 class TBuffer;
 class TClass;
 class TMemberInspector;

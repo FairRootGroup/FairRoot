@@ -8,9 +8,9 @@
 #ifndef FAIRDETPARIO_H
 #define FAIRDETPARIO_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TNamed.h>      // for TNamed
-#include <RtypesCore.h>  // for Int_t, kFALSE, Bool_t
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, kFALSE, Bool_t
+#include <TNamed.h>       // for TNamed
 
 class FairParSet;
 class TBuffer;

@@ -7,18 +7,18 @@
  ********************************************************************************/
 #include "FairTutPropTrackFinder.h"
 
-#include <TClonesArray.h>       // for TClonesArray
-#include <TVector3.h>           // for TVector3
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <fairlogger/Logger.h>  // for LOG
-#include <map>                  // for map, __map_iterator, operator!=, map<...
-#include <utility>              // for pair, make_pair
-#include <vector>               // for vector
-
 #include "FairRootManager.h"    // for FairRootManager
+#include "FairTrackParP.h"      // for FairTrackParP
 #include "FairTutPropHit.h"     // for FairTutPropHit
 #include "FairTutPropTrack.h"   // for FairTutPropTrack
-#include "FairTrackParP.h"      // for FairTrackParP
+
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TVector3.h>            // for TVector3
+#include <fairlogger/Logger.h>   // for LOG
+#include <map>                   // for map, __map_iterator, operator!=, map<...
+#include <utility>               // for pair, make_pair
+#include <vector>                // for vector
 
 FairTutPropTrackFinder::FairTutPropTrackFinder()
     : FairTask("FairTutPropTrackFinder")
@@ -178,7 +178,6 @@ void FairTutPropTrackFinder::Exec(Option_t* /*option*/)
             trackCreated = true;
             break;
         }
-
     }
 }
 

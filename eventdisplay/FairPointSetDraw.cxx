@@ -11,18 +11,18 @@
 // -------------------------------------------------------------------------
 #include "FairPointSetDraw.h"
 
-#include <TClonesArray.h>       // for TClonesArray
-#include <TEveManager.h>        // for TEveManager, gEve
-#include <TEvePointSet.h>       // for TEvePointSet
-#include <TEveTreeTools.h>      // for TEvePointSelectorConsumer, TEvePointS...
-#include <TNamed.h>             // for TNamed
-#include <TString.h>            // for Form
-#include <TVector3.h>           // for TVector3
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, endl, basic_ostream, cout
-
 #include "FairEventManager.h"   // for FairEventManager
 #include "FairRootManager.h"    // for FairRootManager
+
+#include <TClonesArray.h>        // for TClonesArray
+#include <TEveManager.h>         // for TEveManager, gEve
+#include <TEvePointSet.h>        // for TEvePointSet
+#include <TEveTreeTools.h>       // for TEvePointSelectorConsumer, TEvePointS...
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TNamed.h>              // for TNamed
+#include <TString.h>             // for Form
+#include <TVector3.h>            // for TVector3
+#include <iostream>              // for operator<<, endl, basic_ostream, cout
 
 class TObject;
 

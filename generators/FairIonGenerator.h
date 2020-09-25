@@ -17,10 +17,10 @@
 #ifndef FAIRIONGENERATOR_H
 #define FAIRIONGENERATOR_H
 
-#include <Rtypes.h>               // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>           // for Double_t, Int_t, Bool_t, Char_t
+#include "FairBaseMCGenerator.h"   // for FairBaseMCGenerator
 
-#include "FairBaseMCGenerator.h"  // for FairBaseMCGenerator
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Int_t, Bool_t, Char_t
 
 class FairIon;
 class FairPrimaryGenerator;

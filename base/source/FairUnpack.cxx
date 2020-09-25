@@ -13,7 +13,7 @@
 
 #include "FairUnpack.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
 
 FairUnpack::FairUnpack(Short_t type, Short_t subType, Short_t procId, Short_t subCrate, Short_t control)
     : TObject()

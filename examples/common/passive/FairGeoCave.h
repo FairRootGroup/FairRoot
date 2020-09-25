@@ -8,12 +8,12 @@
 #ifndef FAIRGEOCAVE_H
 #define FAIRGEOCAVE_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for Bool_t, Int_t
-#include <iosfwd>        // for fstream
+#include "FairGeoSet.h"   // for FairGeoSet
 
-#include "FairGeoSet.h"  // for FairGeoSet
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Int_t
+#include <TString.h>      // for TString
+#include <iosfwd>         // for fstream
 
 class FairGeoMedia;
 class TBuffer;

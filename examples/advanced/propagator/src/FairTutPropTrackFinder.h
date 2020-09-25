@@ -8,11 +8,11 @@
 #ifndef FAIRTTUTPROPTRACKFINDER_H_
 #define FAIRTTUTPROPTRACKFINDER_H_
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Option_t
-#include <iosfwd>        // for string
+#include "FairTask.h"   // for InitStatus, FairTask
 
-#include "FairTask.h"    // for InitStatus, FairTask
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Option_t
+#include <iosfwd>         // for string
 
 class TClonesArray;
 class TBuffer;

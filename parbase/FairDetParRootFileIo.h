@@ -8,10 +8,10 @@
 #ifndef FAIRDETPARROOTFILEIO_H
 #define FAIRDETPARROOTFILEIO_H
 
-#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>    // for Int_t, Text_t, Bool_t
+#include "FairDetParIo.h"   // for FairDetParIo
 
-#include "FairDetParIo.h"  // for FairDetParIo
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Text_t, Bool_t
 
 class FairParRootFile;
 class FairParSet;

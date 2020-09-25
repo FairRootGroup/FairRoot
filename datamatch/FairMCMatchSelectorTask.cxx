@@ -11,13 +11,13 @@
 // -------------------------------------------------------------------------
 #include "FairMCMatchSelectorTask.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, endl, basic_ostream, ostream
+#include "FairMCMatch.h"       // for FairMCMatch
+#include "FairMCResult.h"      // for operator<<
+#include "FairMCStage.h"       // for FairMCStage
+#include "FairRootManager.h"   // for FairRootManager
 
-#include "FairMCMatch.h"        // for FairMCMatch
-#include "FairMCResult.h"       // for operator<<
-#include "FairMCStage.h"        // for FairMCStage
-#include "FairRootManager.h"    // for FairRootManager
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <iostream>              // for operator<<, endl, basic_ostream, ostream
 
 // -----   Default constructor   -------------------------------------------
 FairMCMatchSelectorTask::FairMCMatchSelectorTask()

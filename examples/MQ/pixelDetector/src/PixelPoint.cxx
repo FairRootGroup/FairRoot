@@ -7,8 +7,8 @@
  ********************************************************************************/
 #include "PixelPoint.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iostream>             // for operator<<, basic_ostream, endl, cout
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <iostream>              // for operator<<, basic_ostream, endl, cout
 
 using std::cout;
 using std::endl;

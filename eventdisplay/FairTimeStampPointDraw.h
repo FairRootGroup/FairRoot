@@ -15,11 +15,11 @@
 #ifndef FAIRTIMESTAMPPOINTDRAW_H_
 #define FAIRTIMESTAMPPOINTDRAW_H_
 
-#include <Rtypes.h>          // for THashConsistencyHolder, ClassDef
-#include <TVector3.h>        // for TVector3
-#include <RtypesCore.h>      // for Int_t
+#include "FairBoxSetDraw.h"   // for FairBoxSetDraw
 
-#include "FairBoxSetDraw.h"  // for FairBoxSetDraw
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t
+#include <TVector3.h>     // for TVector3
 
 class TObject;
 class TBuffer;

@@ -7,8 +7,8 @@
  ********************************************************************************/
 #include "FairTimeStamp.h"
 
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <iosfwd>               // for ostream
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <iosfwd>                // for ostream
 
 std::ostream& FairTimeStamp::PrintTimeInfo(std::ostream& out) const
 {

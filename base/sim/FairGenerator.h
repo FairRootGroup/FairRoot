@@ -23,9 +23,9 @@ which has to use the method FairPrimaryGenerator::AddTrack.
 #ifndef FAIRGENERATOR_H
 #define FAIRGENERATOR_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TNamed.h>      // for TNamed
-#include <RtypesCore.h>  // for Bool_t, kTRUE
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, kTRUE
+#include <TNamed.h>       // for TNamed
 
 class FairPrimaryGenerator;
 class TBuffer;

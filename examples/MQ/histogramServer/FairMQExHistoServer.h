@@ -8,18 +8,18 @@
 #ifndef FAIRMQEXHISTOSERVER
 #define FAIRMQEXHISTOSERVER
 
-#include <FairMQDevice.h>               // for FairMQDevice
-#include <THttpServer.h>                // for THttpServer
-#include <TObjArray.h>                  // for TObjArray
-#include <FairMQMessage.h>              // for FairMQMessagePtr
-#include <memory>                       // for unique_ptr
-#include <string>
-#include <thread>                       // for thread
-#include <utility>
-#include <iosfwd>                       // for string
-#include <type_traits>                  // for move
+#include "FairMQExHistoCanvasDrawer.h"   // for FairMQExHistoCanvasDrawer
 
-#include "FairMQExHistoCanvasDrawer.h"  // for FairMQExHistoCanvasDrawer
+#include <FairMQDevice.h>    // for FairMQDevice
+#include <FairMQMessage.h>   // for FairMQMessagePtr
+#include <THttpServer.h>     // for THttpServer
+#include <TObjArray.h>       // for TObjArray
+#include <iosfwd>            // for string
+#include <memory>            // for unique_ptr
+#include <string>
+#include <thread>   // for thread
+#include <utility>
+#include <utility>   // for move
 
 class FairMQExHistoServer : public FairMQDevice
 {

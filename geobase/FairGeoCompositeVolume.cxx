@@ -15,8 +15,8 @@
 /////////////////////////////////////////////////////////////
 #include "FairGeoCompositeVolume.h"
 
-#include <TObjArray.h>          // for TObjArray
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TObjArray.h>           // for TObjArray
 
 ClassImp(FairGeoCompositeVolume);
 

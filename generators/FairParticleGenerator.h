@@ -22,10 +22,10 @@
 #ifndef FAIR_PARTICLEGENERATOR_H
 #define FAIR_PARTICLEGENERATOR_H
 
-#include <Rtypes.h>               // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>           // for Double32_t, Int_t, Bool_t
+#include "FairBaseMCGenerator.h"   // for FairBaseMCGenerator
 
-#include "FairBaseMCGenerator.h"  // for FairBaseMCGenerator
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double32_t, Int_t, Bool_t
 
 class FairPrimaryGenerator;
 class TBuffer;

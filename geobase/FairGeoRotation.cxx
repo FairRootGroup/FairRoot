@@ -74,9 +74,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "FairGeoRotation.h"
 
-#include <TMath.h>              // for Cos, Sin
-#include <TRotMatrix.h>         // for TRotMatrix
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TMath.h>               // for Cos, Sin
+#include <TRotMatrix.h>          // for TRotMatrix
 
 ClassImp(FairGeoRotation);
 

@@ -8,12 +8,12 @@
 #ifndef FAIRGEOASCIIIO_H
 #define FAIRGEOASCIIIO_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for Bool_t, kTRUE, Text_t
-#include <iosfwd>        // for fstream
-
 #include "FairGeoIo.h"   // for FairGeoIo
+
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, kTRUE, Text_t
+#include <TString.h>      // for TString
+#include <iosfwd>         // for fstream
 
 class FairGeoSet;
 class FairGeoMedia;

@@ -13,11 +13,11 @@
 #ifndef FAIR_YAML_VMC_CONFIG_H
 #define FAIR_YAML_VMC_CONFIG_H
 
-#include <yaml-cpp/yaml.h>
-#include <yaml-cpp/node/impl.h>    // for Node::~Node
-#include <yaml-cpp/node/node.h>    // for Node
+#include "FairGenericVMCConfig.h"   // for FairGenericVMCConfig
 
-#include "FairGenericVMCConfig.h"  // for FairGenericVMCConfig
+#include <yaml-cpp/node/impl.h>   // for Node::~Node
+#include <yaml-cpp/node/node.h>   // for Node
+#include <yaml-cpp/yaml.h>
 
 class TString;
 

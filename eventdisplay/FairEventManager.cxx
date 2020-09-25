@@ -12,34 +12,34 @@
  **/
 #include "FairEventManager.h"
 
-#include <TDatabasePDG.h>           // for TDatabasePDG
-#include <TEveBrowser.h>            // for TEveBrowser
-#include <TEveGeoNode.h>            // for TEveGeoTopNode
-#include <TEveManager.h>            // for TEveManager, gEve
-#include <TEveProjectionManager.h>  // for TEveProjectionManager
-#include <TEveProjections.h>        // for TEveProjection, TEveProjection::k...
-#include <TEveScene.h>              // for TEveScene
-#include <TEveViewer.h>             // for TEveViewer, TEveViewerList
-#include <TEveWindow.h>             // for TEveWindowPack, TEveWindowSlot
-#include <TGFileDialog.h>           // for TGFileInfo, TGFileDialog, kFDSave
-#include <TGLCameraOverlay.h>       // for TGLCameraOverlay, TGLCameraOverla...
-#include <TGLClip.h>                // for TGLClip, TGLClip::kClipPlane, TGL...
-#include <TGLLightSet.h>            // for TGLLightSet, TGLLightSet::kLightLeft
-#include <TGLViewer.h>              // for TGLViewer, TGLViewer::ECameraType
-#include <TGeoBBox.h>               // for TGeoBBox
-#include <TGeoManager.h>            // for gGeoManager, TGeoManager
-#include <TGeoNode.h>               // for TGeoNode
-#include <TGeoVolume.h>             // for TGeoVolume
-#include <TVector3.h>               // for TVector3
-#include <TEveProjectionAxes.h>     // for TEveProjectionAxes
-#include <TGClient.h>               // for TGClient, gClient
-#include <TGenericClassInfo.h>      // for TGenericClassInfo
-#include <TGeoShape.h>              // for TGeoShape
-#include <float.h>                  // for DBL_MAX
+#include "FairRootManager.h"   // for FairRootManager
+#include "FairRunAna.h"        // for FairRunAna
+#include "FairXMLNode.h"       // for FairXMLNode, FairXMLAttrib, FairX...
 
-#include "FairRootManager.h"        // for FairRootManager
-#include "FairRunAna.h"             // for FairRunAna
-#include "FairXMLNode.h"            // for FairXMLNode, FairXMLAttrib, FairX...
+#include <TDatabasePDG.h>            // for TDatabasePDG
+#include <TEveBrowser.h>             // for TEveBrowser
+#include <TEveGeoNode.h>             // for TEveGeoTopNode
+#include <TEveManager.h>             // for TEveManager, gEve
+#include <TEveProjectionAxes.h>      // for TEveProjectionAxes
+#include <TEveProjectionManager.h>   // for TEveProjectionManager
+#include <TEveProjections.h>         // for TEveProjection, TEveProjection::k...
+#include <TEveScene.h>               // for TEveScene
+#include <TEveViewer.h>              // for TEveViewer, TEveViewerList
+#include <TEveWindow.h>              // for TEveWindowPack, TEveWindowSlot
+#include <TGClient.h>                // for TGClient, gClient
+#include <TGFileDialog.h>            // for TGFileInfo, TGFileDialog, kFDSave
+#include <TGLCameraOverlay.h>        // for TGLCameraOverlay, TGLCameraOverla...
+#include <TGLClip.h>                 // for TGLClip, TGLClip::kClipPlane, TGL...
+#include <TGLLightSet.h>             // for TGLLightSet, TGLLightSet::kLightLeft
+#include <TGLViewer.h>               // for TGLViewer, TGLViewer::ECameraType
+#include <TGenericClassInfo.h>       // for TGenericClassInfo
+#include <TGeoBBox.h>                // for TGeoBBox
+#include <TGeoManager.h>             // for gGeoManager, TGeoManager
+#include <TGeoNode.h>                // for TGeoNode
+#include <TGeoShape.h>               // for TGeoShape
+#include <TGeoVolume.h>              // for TGeoVolume
+#include <TVector3.h>                // for TVector3
+#include <float.h>                   // for DBL_MAX
 
 ClassImp(FairEventManager);
 

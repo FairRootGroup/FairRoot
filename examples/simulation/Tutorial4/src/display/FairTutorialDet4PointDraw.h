@@ -14,10 +14,10 @@
 #ifndef FAIRTUTORIALDET4POINTDRAW_H
 #define FAIRTUTORIALDET4POINTDRAW_H
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Color_t, Style_t, Bool_t, Option_t
+#include "FairTask.h"   // for FairTask, InitStatus
 
-#include "FairTask.h"    // for FairTask, InitStatus
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Color_t, Style_t, Bool_t, Option_t
 
 class FairTutorialDet4GeoPar;
 class FairTutorialDet4DigiPar;

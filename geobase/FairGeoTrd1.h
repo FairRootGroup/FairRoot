@@ -8,10 +8,10 @@
 #ifndef FAIRGEOTRD1_H
 #define FAIRGEOTRD1_H
 
-#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include "FairGeoBasicShape.h"   // for FairGeoBasicShape
+#include "FairGeoRotation.h"     // for FairGeoRotation
 
-#include "FairGeoBasicShape.h"  // for FairGeoBasicShape
-#include "FairGeoRotation.h"    // for FairGeoRotation
+#include <Rtypes.h>   // for THashConsistencyHolder, ClassDef
 
 class FairGeoTransform;
 class FairGeoVolume;

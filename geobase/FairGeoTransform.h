@@ -8,12 +8,12 @@
 #ifndef FAIRGEOTRANSFORM_H
 #define FAIRGEOTRANSFORM_H
 
-#include <Rtypes.h>           // for THashConsistencyHolder, ClassDef
-#include <TObject.h>          // for TObject
-#include <RtypesCore.h>       // for Double_t, Float_t
+#include "FairGeoRotation.h"   // for FairGeoRotation
+#include "FairGeoVector.h"     // for FairGeoVector
 
-#include "FairGeoRotation.h"  // for FairGeoRotation
-#include "FairGeoVector.h"    // for FairGeoVector
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Float_t
+#include <TObject.h>      // for TObject
 
 class TBuffer;
 class TClass;

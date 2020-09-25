@@ -15,12 +15,12 @@
 #ifndef PIXELDIGIWRITETOBINFILE_H
 #define PIXELDIGIWRITETOBINFILE_H 1
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for Int_t, Option_t
-#include <fstream>       // for ofstream
+#include "FairTask.h"   // for InitStatus, FairTask
 
-#include "FairTask.h"    // for InitStatus, FairTask
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Option_t
+#include <TString.h>      // for TString
+#include <fstream>        // for ofstream
 
 class TClonesArray;
 class TBuffer;

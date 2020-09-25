@@ -15,13 +15,13 @@
  */
 #include "FairEveAnimationControl.h"
 
-#include <TGButton.h>       // for TGTextButton
-#include <TGComboBox.h>     // for TGComboBox
-#include <TGFrame.h>        // for TGCompositeFrame, TGGroupFrame, kFixedWidth
-#include <TGLabel.h>        // for TGLabel
-#include <TGLayout.h>       // for TGLayoutHints, kLHintsExpandX, kLHintsLeft
-#include <TGNumberEntry.h>  // for TGNumberEntry, TGNumberFormat, TGNumberFo...
-#include <TGedFrame.h>      // for TGedFrame
+#include <TGButton.h>        // for TGTextButton
+#include <TGComboBox.h>      // for TGComboBox
+#include <TGFrame.h>         // for TGCompositeFrame, TGGroupFrame, kFixedWidth
+#include <TGLabel.h>         // for TGLabel
+#include <TGLayout.h>        // for TGLayoutHints, kLHintsExpandX, kLHintsLeft
+#include <TGNumberEntry.h>   // for TGNumberEntry, TGNumberFormat, TGNumberFo...
+#include <TGedFrame.h>       // for TGedFrame
 
 FairEveAnimationControl::FairEveAnimationControl(TGedFrame *frame,
                                                  TGCompositeFrame *tab,

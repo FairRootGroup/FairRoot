@@ -6,15 +6,15 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "runFairMQDevice.h"                 // for FairMQDevicePtr, addCust...
+#include "runFairMQDevice.h"   // for FairMQDevicePtr, addCust...
 // PixelDetector example
-#include "FairMQPixelMerger.h"               // for FairMQPixelMerger
+#include "FairMQPixelMerger.h"   // for FairMQPixelMerger
 
 namespace boost {
 namespace program_options {
 class options_description;
-}  // namespace program_options
-}  // namespace boost
+}   // namespace program_options
+}   // namespace boost
 
 namespace bpo = boost::program_options;
 

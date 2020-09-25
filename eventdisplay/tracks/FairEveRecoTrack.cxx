@@ -14,13 +14,15 @@
  *		Warsaw University of Technology, Faculty of Physics
  */
 
- #include "FairEveRecoTrack.h"
- #include <TEvePointSet.h>      // for TEvePointSet
- #include <TGeoTrack.h>         // for TGeoTrack
- #include <TMathBase.h>         // for Abs
- #include <TParticle.h>         // for TParticle
- #include "FairEveTrack.h"      // for FairEveTrack
- #include "FairEventManager.h"  // for FairEventManager
+#include "FairEveRecoTrack.h"
+
+#include "FairEveTrack.h"       // for FairEveTrack
+#include "FairEventManager.h"   // for FairEventManager
+
+#include <TEvePointSet.h>   // for TEvePointSet
+#include <TGeoTrack.h>      // for TGeoTrack
+#include <TMathBase.h>      // for Abs
+#include <TParticle.h>      // for TParticle
 
 FairEveRecoTrack::FairEveRecoTrack()
     : TEveCompound()

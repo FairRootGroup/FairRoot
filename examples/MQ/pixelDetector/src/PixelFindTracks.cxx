@@ -15,20 +15,20 @@
 #include "PixelFindTracks.h"
 
 // Includes from ROOT
-#include <TClonesArray.h>       // for TClonesArray
-#include <TH2.h>                // for TH2F
-#include <TList.h>              // for TList
-#include <TMathBase.h>          // for Abs
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
-#include <TString.h>            // for TString
-#include <fairlogger/Logger.h>  // for Logger, LOG
+#include "FairRootManager.h"   // for FairRootManager
+#include "FairRun.h"           // for FairRun
+#include "FairRuntimeDb.h"     // for FairRuntimeDb
+#include "PixelDigiPar.h"      // for PixelDigiPar
+#include "PixelHit.h"          // for PixelHit
+#include "PixelTrack.h"        // for PixelTrack
 
-#include "PixelDigiPar.h"       // for PixelDigiPar
-#include "PixelHit.h"           // for PixelHit
-#include "PixelTrack.h"         // for PixelTrack
-#include "FairRootManager.h"    // for FairRootManager
-#include "FairRun.h"            // for FairRun
-#include "FairRuntimeDb.h"      // for FairRuntimeDb
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TH2.h>                 // for TH2F
+#include <TList.h>               // for TList
+#include <TMathBase.h>           // for Abs
+#include <TString.h>             // for TString
+#include <fairlogger/Logger.h>   // for Logger, LOG
 
 PixelFindTracks::PixelFindTracks()
     : PixelFindTracks("Pixel Track Finder", 0)

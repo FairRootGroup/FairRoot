@@ -31,15 +31,15 @@
 #ifndef FAIREVENTBUILDER_H
 #define FAIREVENTBUILDER_H 1
 
-#include <Rtypes.h>              // for THashConsistencyHolder, ClassDef
-#include <TStopwatch.h>          // for TStopwatch
-#include <TString.h>             // for TString
-#include <RtypesCore.h>          // for Double_t, Int_t, Bool_t, Option_t
-#include <utility>               // for pair
-#include <vector>                // for vector
-
 #include "FairRecoEventHeader.h"
-#include "FairWriteoutBuffer.h"  // for FairWriteoutBuffer
+#include "FairWriteoutBuffer.h"   // for FairWriteoutBuffer
+
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Int_t, Bool_t, Option_t
+#include <TStopwatch.h>   // for TStopwatch
+#include <TString.h>      // for TString
+#include <utility>        // for pair
+#include <vector>         // for vector
 
 class TClonesArray;
 class FairRecoEventHeader;

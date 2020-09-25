@@ -16,12 +16,12 @@
 #ifndef PIXELDIGIBINSOURCE_H_
 #define PIXELDIGIBINSOURCE_H_
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for Int_t, Bool_t, kTRUE, UInt_t
-#include <fstream>       // for ifstream
+#include "FairSource.h"   // for FairSource, Source_Type, kFILE
 
-#include "FairSource.h"  // for FairSource, Source_Type, kFILE
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Bool_t, kTRUE, UInt_t
+#include <TString.h>      // for TString
+#include <fstream>        // for ifstream
 
 class TClonesArray;
 class TObject;

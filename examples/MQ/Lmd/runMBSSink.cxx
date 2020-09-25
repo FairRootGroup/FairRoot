@@ -12,8 +12,8 @@
 #include "RootOutFileManager.h"   // OutputPolicy
 #include "RootSerializer.h"       // RootSerializer
 #include "runFairMQDevice.h"
-#include <TClonesArray.h>   // data type for the InputPolicy
 
+#include <TClonesArray.h>   // data type for the InputPolicy
 
 struct RootSerializer;
 

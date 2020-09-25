@@ -15,16 +15,16 @@
 #ifndef FAIRMULTILINKEDDATA_H_
 #define FAIRMULTILINKEDDATA_H_
 
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <TObject.h>     // for TObject
-#include <TString.h>     // for TString
-#include <RtypesCore.h>  // for Int_t, Bool_t, kFALSE, Float_t, kTRUE, Double_t
-#include <iosfwd>      // for ostream
-#include <iostream>      // for operator<<, ostream, cout
-#include <set>           // for set
-#include <vector>        // for vector
+#include "FairLink.h"   // for FairLink, operator<<
 
-#include "FairLink.h"    // for FairLink, operator<<
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Int_t, Bool_t, kFALSE, Float_t, kTRUE, Double_t
+#include <TObject.h>      // for TObject
+#include <TString.h>      // for TString
+#include <iosfwd>         // for ostream
+#include <iostream>       // for operator<<, ostream, cout
+#include <set>            // for set
+#include <vector>         // for vector
 
 class TBuffer;
 class TClass;

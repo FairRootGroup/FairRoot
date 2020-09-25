@@ -17,8 +17,8 @@
 #define FAIREVEANIMATIONCONTROL_H_
 
 #include <GuiTypes.h>
-#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>  // for Double_t, Int_t
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Double_t, Int_t
 #include <TGButton.h>
 #include <TGComboBox.h>
 #include <TGDoubleSlider.h>
@@ -26,9 +26,9 @@
 #include <TGLabel.h>
 #include <TGNumberEntry.h>
 #include <TGedFrame.h>   // for TGedFrame
-#include <TObject.h>
 #include <TNamed.h>      // for TNamed
-#include <TString.h>     // for TString
+#include <TObject.h>
+#include <TString.h>   // for TString
 
 class TBuffer;
 class TClass;

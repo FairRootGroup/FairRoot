@@ -13,13 +13,15 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
- #include "FairEveTrack.h"
- #include <TEvePathMark.h>      // for TEvePathMark
- #include <TEveVector.h>        // for TEveVectorT, TEveVector
- #include <TMath.h>             // for IsNaN
- #include <TMathBase.h>         // for Abs
- #include <TVector3.h>          // for TVector3
- #include "FairEventManager.h"  // for FairEventManager
+#include "FairEveTrack.h"
+
+#include "FairEventManager.h"   // for FairEventManager
+
+#include <TEvePathMark.h>   // for TEvePathMark
+#include <TEveVector.h>     // for TEveVectorT, TEveVector
+#include <TMath.h>          // for IsNaN
+#include <TMathBase.h>      // for Abs
+#include <TVector3.h>       // for TVector3
 
 FairEveTrack::FairEveTrack()
     : TEveTrack()

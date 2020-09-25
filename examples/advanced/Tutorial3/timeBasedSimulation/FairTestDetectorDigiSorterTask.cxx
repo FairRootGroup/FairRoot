@@ -14,13 +14,13 @@
 
 #include "FairTestDetectorDigiSorterTask.h"
 
-#include <TClonesArray.h>                    // for TClonesArray
-#include <TGenericClassInfo.h>               // for TGenericClassInfo
-#include <fairlogger/Logger.h>               // for LOG
+#include "FairRootManager.h"                  // for FairRootManager
+#include "FairTestDetectorDigi.h"             // for FairTestDetectorDigi
+#include "FairTestDetectorDigiRingSorter.h"   // for FairTestDetectorDigiRing...
 
-#include "FairRootManager.h"                 // for FairRootManager
-#include "FairTestDetectorDigi.h"            // for FairTestDetectorDigi
-#include "FairTestDetectorDigiRingSorter.h"  // for FairTestDetectorDigiRing...
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <fairlogger/Logger.h>   // for LOG
 
 class FairRingSorter;
 class FairTimeStamp;

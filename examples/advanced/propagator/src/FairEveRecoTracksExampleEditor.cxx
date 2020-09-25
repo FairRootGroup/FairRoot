@@ -16,14 +16,14 @@
 
 #include "FairEveRecoTracksExampleEditor.h"
 
-#include <GuiTypes.h>                  // for Pixel_t
-#include <RtypesCore.h>                // for Double_t, Int_t, Bool_t, UInt_t
-#include <TGButton.h>                  // for TGTextButton
-#include <TGLayout.h>                  // for TGLayoutHints, kLHintsExpandX
-#include <TObject.h>                   // for TObject
+#include "FairEveCut.h"                 // for FairEveMinMaxCut, FairEveBoolCut
+#include "FairEveRecoTracksExample.h"   // for FairEveRecoTracksExample
 
-#include "FairEveCut.h"                // for FairEveMinMaxCut, FairEveBoolCut
-#include "FairEveRecoTracksExample.h"  // for FairEveRecoTracksExample
+#include <GuiTypes.h>     // for Pixel_t
+#include <RtypesCore.h>   // for Double_t, Int_t, Bool_t, UInt_t
+#include <TGButton.h>     // for TGTextButton
+#include <TGLayout.h>     // for TGLayoutHints, kLHintsExpandX
+#include <TObject.h>      // for TObject
 
 class TGWindow;
 

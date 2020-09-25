@@ -6,15 +6,14 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
+#include "PixelFindHits.h"     // for PixelFind...
+#include "runFairMQDevice.h"   // for FairMQDev...
 
-#include <string>                                           // for basic_string
-#include <functional>                                       // for __base
-#include <iosfwd>                                           // for string
-
-#include "PixelFindHits.h"                                  // for PixelFind...
-#include "runFairMQDevice.h"                                // for FairMQDev...
+#include <functional>   // for __base
+#include <iosfwd>       // for string
+#include <string>       // for basic_string
 // PixelDetector example
-#include "FairMQPixelTaskProcessorBin.h"                    // for FairMQPix...
+#include "FairMQPixelTaskProcessorBin.h"   // for FairMQPix...
 
 using HitFinder = FairMQPixelTaskProcessorBin<PixelFindHits>;
 

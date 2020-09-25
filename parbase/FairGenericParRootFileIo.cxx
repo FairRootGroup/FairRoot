@@ -17,8 +17,8 @@
 
 #include "FairGenericParRootFileIo.h"
 
-#include <TString.h>            // for TString
-#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TString.h>             // for TString
 
 class FairParSet;
 

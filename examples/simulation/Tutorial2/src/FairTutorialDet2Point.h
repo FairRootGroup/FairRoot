@@ -8,11 +8,11 @@
 #ifndef FAIRTUTORIALDET2POINT_H
 #define FAIRTUTORIALDET2POINT_H 1
 
-#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef, ClassDefNV
-#include <TVector3.h>     // for TVector3
-#include <RtypesCore.h>   // for Double_t, Int_t, Option_t
+#include "FairMCPoint.h"   // for FairMCPoint
 
-#include "FairMCPoint.h"  // for FairMCPoint
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef, ClassDefNV
+#include <RtypesCore.h>   // for Double_t, Int_t, Option_t
+#include <TVector3.h>     // for TVector3
 
 class TBuffer;
 class TClass;

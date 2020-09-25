@@ -8,12 +8,12 @@
 #ifndef FAIRDETPARASCIIFILEIO_H
 #define FAIRDETPARASCIIFILEIO_H
 
-#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
-#include <TString.h>       // for TString
-#include <RtypesCore.h>    // for Text_t, Bool_t, Int_t, Char_t
-#include <iosfwd>          // for fstream
+#include "FairDetParIo.h"   // for FairDetParIo
 
-#include "FairDetParIo.h"  // for FairDetParIo
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Text_t, Bool_t, Int_t, Char_t
+#include <TString.h>      // for TString
+#include <iosfwd>         // for fstream
 
 class FairParSet;
 class TBuffer;
