@@ -17,17 +17,16 @@
 #include "PixelDigitize.h"          // for PixelDigi...
 #include "runFairMQDevice.h"        // for FairMQDev...
 
-#include <ProgOptionsFwd.h>   // for FairMQPro...
-#include <RtypesCore.h>       // for Int_t, kTRUE
-#include <TObjArray.h>        // for TObjArray
-#include <TRandom.h>          // for TRandom
-#include <TString.h>          // for TString
-#include <TSystem.h>          // for TSystem
-#include <cstdint>            // for int64_t
-#include <cstdlib>            // for getenv
-#include <iosfwd>             // for string
-#include <stdexcept>          // for runtime_e...
-#include <string>             // for basic_string
+#include <RtypesCore.h>   // for Int_t, kTRUE
+#include <TObjArray.h>    // for TObjArray
+#include <TRandom.h>      // for TRandom
+#include <TString.h>      // for TString
+#include <TSystem.h>      // for TSystem
+#include <cstdint>        // for int64_t
+#include <cstdlib>        // for getenv
+#include <iosfwd>         // for string
+#include <stdexcept>      // for runtime_e...
+#include <string>         // for basic_string
 
 namespace bpo = boost::program_options;
 

@@ -16,14 +16,12 @@
 
 #include "PixelPayload.h"   // for Hit, EventHeader
 
-#include <FairMQMessage.h>                          // for FairMQMessage
-#include <FairMQParts.h>                            // for FairMQParts
-#include <ProgOptions.h>                            // for ProgOptions
-#include <boost/type_index/type_index_facade.hpp>   // for operator==
-#include <fairlogger/Logger.h>                      // for LOG
-#include <functional>                               // for __base
-#include <memory>                                   // for unique_ptr
-#include <string>                                   // for operator!=
+#include <FairMQMessage.h>       // for FairMQMessage
+#include <FairMQParts.h>         // for FairMQParts
+#include <fairlogger/Logger.h>   // for LOG
+#include <functional>            // for __base
+#include <memory>                // for unique_ptr
+#include <string>                // for operator!=
 
 using namespace std;
 

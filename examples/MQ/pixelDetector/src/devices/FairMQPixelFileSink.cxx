@@ -16,19 +16,17 @@
 
 #include "RootSerializer.h"   // for RootSerializer
 
-#include <FairMQMessage.h>                          // for FairMQMessage
-#include <FairMQParts.h>                            // for FairMQParts
-#include <ProgOptions.h>                            // for ProgOptions
-#include <TFile.h>                                  // for TFile
-#include <TObject.h>                                // for TObject
-#include <TTree.h>                                  // for TTree
-#include <boost/type_index/type_index_facade.hpp>   // for operator==
-#include <cstdlib>                                  // for getenv
-#include <fairlogger/Logger.h>                      // for LOG
-#include <functional>                               // for __base
-#include <memory>                                   // for unique_ptr
-#include <string>                                   // for operator+, operator!=
-#include <vector>                                   // for vector
+#include <FairMQMessage.h>       // for FairMQMessage
+#include <FairMQParts.h>         // for FairMQParts
+#include <TFile.h>               // for TFile
+#include <TObject.h>             // for TObject
+#include <TTree.h>               // for TTree
+#include <cstdlib>               // for getenv
+#include <fairlogger/Logger.h>   // for LOG
+#include <functional>            // for __base
+#include <memory>                // for unique_ptr
+#include <string>                // for operator+, operator!=
+#include <vector>                // for vector
 
 using namespace std;
 

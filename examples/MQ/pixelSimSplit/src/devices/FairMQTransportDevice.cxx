@@ -25,24 +25,22 @@
 #include "FairTask.h"                 // for FairTask
 #include "RootSerializer.h"           // for RootSerializer
 
-#include <FairMQMessage.h>                          // for FairMQMessagePtr
-#include <FairMQParts.h>                            // for FairMQParts
-#include <ProgOptions.h>                            // for ProgOptions
-#include <TClonesArray.h>                           // for TClonesArray
-#include <TCollection.h>                            // for TIter
-#include <TList.h>                                  // for TList
-#include <TObjArray.h>                              // for TObjArray
-#include <TObject.h>                                // for TObject
-#include <TVirtualMC.h>                             // for TVirtualMC
-#include <boost/type_index/type_index_facade.hpp>   // for operator==
-#include <cstring>                                  // for strcmp
-#include <dlfcn.h>                                  // for dlerror, dlclose
-#include <fairlogger/Logger.h>                      // for Logger, LOG
-#include <functional>                               // for __base
-#include <iostream>                                 // for string, operator<<
-#include <memory>                                   // for unique_ptr
-#include <string>                                   // for allocator, operator+
-#include <vector>                                   // for vector
+#include <FairMQMessage.h>       // for FairMQMessagePtr
+#include <FairMQParts.h>         // for FairMQParts
+#include <TClonesArray.h>        // for TClonesArray
+#include <TCollection.h>         // for TIter
+#include <TList.h>               // for TList
+#include <TObjArray.h>           // for TObjArray
+#include <TObject.h>             // for TObject
+#include <TVirtualMC.h>          // for TVirtualMC
+#include <cstring>               // for strcmp
+#include <dlfcn.h>               // for dlerror, dlclose
+#include <fairlogger/Logger.h>   // for Logger, LOG
+#include <functional>            // for __base
+#include <iostream>              // for string, operator<<
+#include <memory>                // for unique_ptr
+#include <string>                // for allocator, operator+
+#include <vector>                // for vector
 
 using namespace std;
 

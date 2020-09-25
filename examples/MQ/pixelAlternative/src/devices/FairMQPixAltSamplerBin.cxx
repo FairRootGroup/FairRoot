@@ -16,18 +16,16 @@
 
 #include "PixelPayload.h"   // for Digi, EventHeader
 
-#include <FairMQMessage.h>                          // for FairMQMessagePtr
-#include <FairMQParts.h>                            // for FairMQParts
-#include <ProgOptions.h>                            // for ProgOptions
-#include <TBranch.h>                                // for TBranch
-#include <TChain.h>                                 // for TChain
-#include <boost/type_index/type_index_facade.hpp>   // for operator==
-#include <cstddef>                                  // for size_t
-#include <fairlogger/Logger.h>                      // for Logger, LOG
-#include <memory>                                   // for unique_ptr
-#include <new>                                      // for operator new
-#include <string>                                   // for operator!=, basic_...
-#include <utility>                                  // for move
+#include <FairMQMessage.h>       // for FairMQMessagePtr
+#include <FairMQParts.h>         // for FairMQParts
+#include <TBranch.h>             // for TBranch
+#include <TChain.h>              // for TChain
+#include <cstddef>               // for size_t
+#include <fairlogger/Logger.h>   // for Logger, LOG
+#include <memory>                // for unique_ptr
+#include <new>                   // for operator new
+#include <string>                // for operator!=, basic_...
+#include <utility>               // for move
 
 using namespace std;
 

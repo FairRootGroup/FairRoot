@@ -20,20 +20,18 @@
 #include "PixelDigi.h"         // for PixelDigi
 #include "PixelPayload.h"      // for Digi, EventHeader
 
-#include <FairMQMessage.h>                          // for FairMQMessagePtr
-#include <FairMQParts.h>                            // for FairMQParts
-#include <ProgOptions.h>                            // for ProgOptions
-#include <RtypesCore.h>                             // for Int_t, Long64_t
-#include <TClonesArray.h>                           // for TClonesArray
-#include <TObject.h>                                // for TObject
-#include <TString.h>                                // for TString
-#include <boost/type_index/type_index_facade.hpp>   // for operator==
-#include <cstring>                                  // for strcmp, size_t
-#include <fairlogger/Logger.h>                      // for Logger, LOG
-#include <memory>                                   // for unique_ptr
-#include <new>                                      // for operator new
-#include <string>                                   // for operator!=, basic_...
-#include <utility>                                  // for move
+#include <FairMQMessage.h>       // for FairMQMessagePtr
+#include <FairMQParts.h>         // for FairMQParts
+#include <RtypesCore.h>          // for Int_t, Long64_t
+#include <TClonesArray.h>        // for TClonesArray
+#include <TObject.h>             // for TObject
+#include <TString.h>             // for TString
+#include <cstring>               // for strcmp, size_t
+#include <fairlogger/Logger.h>   // for Logger, LOG
+#include <memory>                // for unique_ptr
+#include <new>                   // for operator new
+#include <string>                // for operator!=, basic_...
+#include <utility>               // for move
 
 using namespace std;
 

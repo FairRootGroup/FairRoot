@@ -8,7 +8,6 @@
 #include "FairMQExHistoDevice.h"   // for FairMQExHistoDevice
 #include "runFairMQDevice.h"       // for FairMQDevicePtr, addCust...
 
-#include <ProgOptionsFwd.h>                   // for FairMQProgOptions
 #include <boost/program_options/errors.hpp>   // for program_options
 
 namespace boost {

@@ -43,7 +43,6 @@
 #include <sys/socket.h>   // for recv
 #endif
 
-#include "i386/endian.h"   // for ntohl, htonl
 #include "ptrevcomm.h"     // for srevComm, srevInfo, sptrevDummy
 #include "ptrevmbsdef.h"   // for sMbsSev101, sMbsBufFrag, sMbsEv101
 

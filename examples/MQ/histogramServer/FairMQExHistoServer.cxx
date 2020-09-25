@@ -11,12 +11,11 @@
 #include "FairMQExHistoCanvasDrawer.h"   // for FairMQExHistoCanvasDrawer
 #include "RootSerializer.h"              // for RootSerializer
 
-#include <TH1.h>          // for TH1
-#include <TObject.h>      // for TObject
-#include <TString.h>      // for TString
-#include <__mutex_base>   // for mutex, lock_guard
-#include <chrono>         // for milliseconds
-#include <functional>     // for __base
+#include <TH1.h>        // for TH1
+#include <TObject.h>    // for TObject
+#include <TString.h>    // for TString
+#include <chrono>       // for milliseconds
+#include <functional>   // for __base
 
 std::mutex mtx;
 

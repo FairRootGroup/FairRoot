@@ -25,14 +25,13 @@
 
 #include "FairRunIdGenerator.h"
 
-#include <stdint.h>               // for uint32_t, uint16_t, uint8_t
-#include <stdlib.h>               // for random, srandom
-#include <string.h>               // for memcpy
-#include <sys/_types/_uuid_t.h>   // for uuid_t
-#include <sys/errno.h>            // for errno, EAGAIN, EINTR
-#include <sys/fcntl.h>            // for open, O_RDONLY, O_NONBLOCK
-#include <sys/time.h>             // for timeval, gettimeofday
-#include <unistd.h>               // for getpid, getuid, read
+#include <stdint.h>      // for uint32_t, uint16_t, uint8_t
+#include <stdlib.h>      // for random, srandom
+#include <string.h>      // for memcpy
+#include <sys/errno.h>   // for errno, EAGAIN, EINTR
+#include <sys/fcntl.h>   // for open, O_RDONLY, O_NONBLOCK
+#include <sys/time.h>    // for timeval, gettimeofday
+#include <unistd.h>      // for getpid, getuid, read
 
 #define srand(x) srandom(x)
 #define rand() random()

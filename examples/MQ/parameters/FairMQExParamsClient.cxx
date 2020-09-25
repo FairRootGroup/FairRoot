@@ -17,14 +17,12 @@
 #include "FairMQExParamsParOne.h"   // for FairMQExParamsParOne
 #include "RootSerializer.h"         // for RootSerializer
 
-#include <FairMQMessage.h>                          // for FairMQMessagePtr
-#include <ProgOptions.h>                            // for ProgOptions
-#include <boost/type_index/type_index_facade.hpp>   // for operator==
-#include <chrono>                                   // for seconds
-#include <fairlogger/Logger.h>                      // for LOG, Logger
-#include <memory>                                   // for unique_ptr
-#include <string>                                   // for basic_string, allo...
-#include <thread>                                   // for sleep_for
+#include <FairMQMessage.h>       // for FairMQMessagePtr
+#include <chrono>                // for seconds
+#include <fairlogger/Logger.h>   // for LOG, Logger
+#include <memory>                // for unique_ptr
+#include <string>                // for basic_string, allo...
+#include <thread>                // for sleep_for
 
 using namespace std;
 

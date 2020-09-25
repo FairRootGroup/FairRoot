@@ -1,6 +1,5 @@
 #include "runFairMQDevice.h"   // for FairMQDev...
 
-#include <ProgOptionsFwd.h>      // for FairMQPro...
 #include <RtypesCore.h>          // for Int_t
 #include <TRandom.h>             // for TRandom
 #include <TString.h>             // for TString

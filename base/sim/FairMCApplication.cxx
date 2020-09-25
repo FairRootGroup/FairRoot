@@ -60,7 +60,6 @@
 #include <TSystem.h>             // for TSystem, gSystem
 #include <TVirtualMC.h>          // for TVirtualMC, gMC
 #include <TVirtualMCStack.h>     // for TVirtualMCStack
-#include <__mutex_base>          // for mutex
 #include <fairlogger/Logger.h>   // for Logger, LOG
 #include <float.h>               // for DBL_MAX
 #include <stdlib.h>              // for getenv, exit

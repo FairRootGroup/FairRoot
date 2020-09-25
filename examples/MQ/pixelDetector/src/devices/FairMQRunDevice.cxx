@@ -26,7 +26,6 @@
 #include <TObjString.h>          // for TObjString
 #include <TObject.h>             // for TObject
 #include <TString.h>             // for TString, operator<<
-#include <__mutex_base>          // for mutex, unique_lock
 #include <cstdio>                // for printf
 #include <fairlogger/Logger.h>   // for Logger, LOG
 #include <memory>                // for unique_ptr

@@ -26,7 +26,6 @@
 #include <TArrayI.h>             // for TArrayI
 #include <TGenericClassInfo.h>   // for TGenericClassInfo
 #include <TString.h>             // for TString, operator<<
-#include <_ctype.h>              // for isalpha
 #include <fstream>
 #include <iostream>   // for operator<<, char_traits, basic_ostream
 #include <string.h>   // for strcmp

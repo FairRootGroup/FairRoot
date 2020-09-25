@@ -9,10 +9,9 @@
 #include "FairMQExParamsClient.h"   // for FairMQExP...
 #include "runFairMQDevice.h"        // for FairMQDev...
 
-#include <ProgOptionsFwd.h>   // for FairMQPro...
-#include <iosfwd>             // for string
-#include <stdint.h>           // for uint64_t
-#include <string>             // for basic_string
+#include <iosfwd>     // for string
+#include <stdint.h>   // for uint64_t
+#include <string>     // for basic_string
 
 namespace bpo = boost::program_options;
 
