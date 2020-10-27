@@ -22,6 +22,7 @@ if(Geant4_FOUND AND Geant4_INCLUDE_DIRS AND Geant4_VERSION VERSION_LESS "10.6")
     endif()
   endforeach()
   if(TARGET CLHEP::CLHEP AND TARGET G4global AND Geant4_system_clhep_FOUND)
-    set_target_properties(G4global INTERFACE_LINK_LIBRARIES CLHEP::CLHEP)
+    set_property(TARGET G4global APPEND PROPERTY
+                 INTERFACE_LINK_LIBRARIES CLHEP::CLHEP)
   endif()
 endif()
