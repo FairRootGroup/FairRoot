@@ -35,11 +35,8 @@ set(splitmc_file_location ${CMAKE_CURRENT_BINARY_DIR})
 set(pixel_bin_dir ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector/run)
 set(fairroot_bin_dir ${CMAKE_BINARY_DIR}/bin)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/splitMC-topology_old.xml ${CMAKE_CURRENT_BINARY_DIR}/splitMC-topology_old.xml)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMC_old.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC_old.sh)
-
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/splitMC-topology.xml ${CMAKE_CURRENT_BINARY_DIR}/splitMC-topology.xml)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMC.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMC.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh @ONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMQ.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh)
 
 set(exe_dependencies
@@ -85,13 +82,8 @@ set_tests_properties(ex_MQ_pixel_split PROPERTIES
   PASS_REGULAR_EXPRESSION "Shell script finished successfully"
 )
 
-if(DDS_VERSION VERSION_LESS 3.0)
-  add_test(pixelSplitDDS ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC_old.sh)
-  set_tests_properties(pixelSplitDDS PROPERTIES
-    TIMEOUT ${maxTestTime}
-    PASS_REGULAR_EXPRESSION "Shell script finished successfully"
-  )
-else()
+if(DDS_VERSION VERSION_GREATER_EQUAL 3.0
+   AND FairMQ_VERSION VERSION_GREATER_EQUAL 1.4.13)
   add_test(pixelSplitDDS ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
   set_tests_properties(pixelSplitDDS PROPERTIES
     TIMEOUT ${maxTestTime}

@@ -32,12 +32,10 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/startFairMQPixelMerger.sh.in 
 if(DDS_FOUND)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/pixel-dds-topology.xml    ${CMAKE_CURRENT_BINARY_DIR}/pixel-dds-topology.xml)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/pixel-dds-simulation.xml  ${CMAKE_CURRENT_BINARY_DIR}/pixel-dds-simulation.xml)
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/pixel-dds-simulation_old.xml  ${CMAKE_CURRENT_BINARY_DIR}/pixel-dds-simulation_old.xml)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/pixel-dds-chain.xml       ${CMAKE_CURRENT_BINARY_DIR}/pixel-dds-chain.xml)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/controlDDS.sh.in          ${CMAKE_CURRENT_BINARY_DIR}/controlDDS.sh @ONLY)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/run_pixel_dds_chain.sh.in ${CMAKE_CURRENT_BINARY_DIR}/run_pixel_dds_chain.sh @ONLY)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-pixelSim.sh.in       ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim.sh @ONLY)
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-pixelSim_old.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim_old.sh @ONLY)
 endif()
 
 set(pixel_file_dir ${CMAKE_INSTALL_PREFIX}/${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelDetector)
@@ -53,12 +51,10 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/startFairMQPixelMerger.sh.in 
 if(DDS_FOUND)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/pixel-dds-topology.xml    ${CMAKE_CURRENT_BINARY_DIR}/pixel-dds-topology.xml_install)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/pixel-dds-simulation.xml  ${CMAKE_CURRENT_BINARY_DIR}/pixel-dds-simulation.xml_install)
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/pixel-dds-simulation_old.xml  ${CMAKE_CURRENT_BINARY_DIR}/pixel-dds-simulation_old.xml_install)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/pixel-dds-chain.xml       ${CMAKE_CURRENT_BINARY_DIR}/pixel-dds-chain.xml_install)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/controlDDS.sh.in          ${CMAKE_CURRENT_BINARY_DIR}/controlDDS.sh_install @ONLY)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/run_pixel_dds_chain.sh.in ${CMAKE_CURRENT_BINARY_DIR}/run_pixel_dds_chain.sh_install @ONLY)
   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-pixelSim.sh.in       ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim.sh_install @ONLY)
-  configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-pixelSim_old.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim_old.sh_install @ONLY)
 endif()
 
 set(PIXEL_INSTALL_BIN ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelDetector/bin)
@@ -72,12 +68,10 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixelMerger.sh_install     
 if(DDS_FOUND)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/pixel-dds-topology.xml_install   DESTINATION ${PIXEL_INSTALL_BIN} RENAME pixel-dds-topology.xml)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/pixel-dds-simulation.xml_install DESTINATION ${PIXEL_INSTALL_BIN} RENAME pixel-dds-simulation.xml)
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/pixel-dds-simulation_old.xml_install DESTINATION ${PIXEL_INSTALL_BIN} RENAME pixel-dds-simulation_old.xml)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/pixel-dds-chain.xml_install      DESTINATION ${PIXEL_INSTALL_BIN} RENAME pixel-dds-chain.xml)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/controlDDS.sh_install            DESTINATION ${PIXEL_INSTALL_BIN} RENAME controlDDS.sh)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/run_pixel_dds_chain.sh_install   DESTINATION ${PIXEL_INSTALL_BIN} RENAME run_pixel_dds_chain.sh)
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim.sh_install         DESTINATION ${PIXEL_INSTALL_BIN} RENAME test-pixelSim.sh)
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim_old.sh_install     DESTINATION ${PIXEL_INSTALL_BIN} RENAME test-pixelSim_old.sh)
 endif()
 
 set(exe_dependencies
@@ -125,14 +119,8 @@ install(TARGETS pixel-sampler pixel-processor pixel-sink pixel-sampler-bin pixel
 
 set(maxTestTime 100)
 
-if(DDS_VERSION VERSION_LESS 3.0)
-  add_test(ex_MQ_pixel_simulation ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim_old.sh)
-  set_tests_properties(ex_MQ_pixel_simulation PROPERTIES
-    DEPENDS ex_MQ_pixel_static
-    TIMEOUT ${maxTestTime}
-    PASS_REGULAR_EXPRESSION "Shell script finished successfully"
-  )
-else()
+if(DDS_VERSION VERSION_GREATER_EQUAL 3.0
+   AND FairMQ_VERSION VERSION_GREATER_EQUAL 1.4.13)
   add_test(ex_MQ_pixel_simulation ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim.sh)
   set_tests_properties(ex_MQ_pixel_simulation PROPERTIES
     DEPENDS ex_MQ_pixel_static
