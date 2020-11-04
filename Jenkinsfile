@@ -43,10 +43,17 @@ def jobMatrix(String prefix, String type, List specs, Closure callback) {
             sh 'env'
           } else {
             env = 'Dart.cfg'
-            sh """\
-              echo "export SIMPATH=\${SIMPATH_PREFIX}${fairsoft}" >> ${env}
-              echo "export FAIRSOFT_VERSION=${fairsoft}" >> ${env}
-            """
+            if (os =~ /MacOS/) {
+              sh """\
+                echo "export SIMPATH=\$(brew --prefix fairsoft@${fairsoft})" >> ${env}
+                echo "export FAIRSOFT_VERSION=${fairsoft}" >> ${env}
+              """
+            } else {
+              sh """\
+                echo "export SIMPATH=\${SIMPATH_PREFIX}${fairsoft}" >> ${env}
+                echo "export FAIRSOFT_VERSION=${fairsoft}" >> ${env}
+              """
+            }
 
             if (os =~ /Debian8/ && compiler =~ /gcc9/) {
               sh """\
@@ -56,9 +63,7 @@ def jobMatrix(String prefix, String type, List specs, Closure callback) {
               """
             }
 
-            if (os =~ /MacOS/) {
-              sh "echo \"export EXTRA_FLAGS=\\\"-DCMAKE_CXX_COMPILER=clang++;-DCMAKE_C_COMPILER=clang\\\"\" >> ${env}"
-            } else {
+            if (os =~ /Debian8/) {
               sh "echo \"export EXTRA_FLAGS=\\\"-DCMAKE_CXX_COMPILER=g++;-DCMAKE_C_COMPILER=gcc\\\"\" >> ${env}"
             }
 
@@ -98,10 +103,8 @@ pipeline{
             [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc9',            fairsoft: 'dev_mt'],
             [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc9',            fairsoft: 'jun19'],
             [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc9',            fairsoft: 'jun19_mt'],
-            [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleLLVM10.0.1', fairsoft: 'dev'],
-            [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleLLVM10.0.1', fairsoft: 'dev_mt'],
-            [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleLLVM10.0.1', fairsoft: 'jun19_patches'],
-            [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleLLVM10.0.1', fairsoft: 'jun19_patches_mt'],
+            [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleClang11.0',  fairsoft: '20.11'],
+            [os: 'MacOS10.15', arch: 'x86_64', compiler: 'AppleClang12.0',  fairsoft: '20.11'],
           ]) { spec, label, config ->
             sh "./Dart.sh alfa_ci ${config}"
           }
