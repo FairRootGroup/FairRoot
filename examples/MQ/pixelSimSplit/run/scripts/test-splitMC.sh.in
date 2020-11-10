@@ -1,28 +1,31 @@
 #!/bin/bash
 
-source @CMAKE_BINARY_DIR@/config.sh -p
+set -e
+
 
 NOFNEEDEDAGENTS=5
 
 export LC_ALL=C
+source @CMAKE_BINARY_DIR@/config.sh -p
 source @dds_location@/DDS_env.sh
 
 echo "***** expect dds version at least 3.0"
 dds-info --version
 
 echo "***** Start dds server"
-dds-session start &> dds-server.log
-
-cat dds-server.log
-export DDS_SESSION_ID=$(cat dds-server.log | grep "Default DDS session is set to" | awk '{print $NF}' )
+exec 5>&1
+output=$(dds-session start | tee >(cat - >&5))
+export DDS_SESSION_ID=$(echo ${output} | grep "DDS session ID: " | cut -d' ' -f4)
 
 if [ -z "$DDS_SESSION_ID" ]; then
     echo "DDS not started, quitting"
     exit
 fi
 
+trap "dds-session stop $DDS_SESSION_ID" EXIT
+
 echo "***** Create local cluster with $NOFNEEDEDAGENTS agents"
-dds-submit -s $DDS_SESSION_ID -r localhost --slots $NOFNEEDEDAGENTS &> dds-agents.log
+dds-submit -s $DDS_SESSION_ID -r localhost --slots $NOFNEEDEDAGENTS
 
 #wait 5 seconds to start agents
 COUNTER=0
@@ -41,15 +44,12 @@ NOFAGENTS=$(dds-info -s $DDS_SESSION_ID -n)
 echo $NOFAGENTS
 if [ $NOFAGENTS -lt $NOFNEEDEDAGENTS ]; then
     echo "Not enough agents. Exiting"
-    dds-session stop $DDS_SESSION_ID
-    exit
+    exit 1
 fi
 
 export FAIRMQ_DDS_TOPO_FILE=@splitmc_bin_location@/splitMC-topology.xml
 echo "***** Activate topology"
 dds-topology -s $DDS_SESSION_ID --activate $FAIRMQ_DDS_TOPO_FILE --disable-validation
-
-sleep 1
 
 fairmq-dds-command-ui -w "IDLE"
 fairmq-dds-command-ui -c i
@@ -64,23 +64,18 @@ echo "waiting for $sampler_string to transition RUNNING->READY"
 fairmq-dds-command-ui -w "RUNNING->READY" -p $sampler_string
 echo "...$sampler_string is READY, sending shutdown..."
 
-sleep 2
-
 echo "check dds states again"
 fairmq-dds-command-ui -c c
 echo "^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^"
 
 fairmq-dds-command-ui -c s
-sleep 1
 fairmq-dds-command-ui -c t
-sleep 1
 fairmq-dds-command-ui -c d
-sleep 1
 fairmq-dds-command-ui -c q
-sleep 1
 
 echo "***** Stop DDS"
 dds-session stop $DDS_SESSION_ID -f
+trap "" EXIT
 
 echo "***** Check the output file"
 ls -ltrh @splitmc_file_location@/DDS.simulation_TGeant3.data.$DDS_SESSION_ID.root
@@ -92,4 +87,5 @@ then
     echo "Shell script finished successfully.";
 else
     echo "Shell script failed."
+    exit 1
 fi
