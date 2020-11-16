@@ -13,24 +13,26 @@
  *		E-mail: daniel.wielanek@gmail.com
  *		Warsaw University of Technology, Faculty of Physics
  */
- #include "FairEveMCTracks.h"
- #include <TClonesArray.h>       // for TClonesArray
- #include <TDatabasePDG.h>       // for TDatabasePDG
- #include <TEveManager.h>        // for TEveManager, gEve
- #include <TEveTrack.h>          // for TEveTrackList
- #include <TLorentzVector.h>     // for TLorentzVector
- #include <TParticle.h>          // for TParticle
- #include <TParticlePDG.h>       // for TParticlePDG
- #include <TString.h>            // for Form
- #include <TVector3.h>           // for TVector3
- #include <fairlogger/Logger.h>  // for LOG
- #include "FairEveTrack.h"       // for FairEveTrack
- #include "FairEventManager.h"   // for FairEventManager
- #include "FairField.h"          // for FairField
- #include "FairMCTrack.h"        // for FairMCTrack
- #include "FairRKPropagator.h"   // for FairRKPropagator
- #include "FairRootManager.h"    // for FairRootManager
- #include "FairRunAna.h"         // for FairRunAna
+#include "FairEveMCTracks.h"
+
+#include "FairEveTrack.h"       // for FairEveTrack
+#include "FairEventManager.h"   // for FairEventManager
+#include "FairField.h"          // for FairField
+#include "FairMCTrack.h"        // for FairMCTrack
+#include "FairRKPropagator.h"   // for FairRKPropagator
+#include "FairRootManager.h"    // for FairRootManager
+#include "FairRunAna.h"         // for FairRunAna
+
+#include <TClonesArray.h>        // for TClonesArray
+#include <TDatabasePDG.h>        // for TDatabasePDG
+#include <TEveManager.h>         // for TEveManager, gEve
+#include <TEveTrack.h>           // for TEveTrackList
+#include <TLorentzVector.h>      // for TLorentzVector
+#include <TParticle.h>           // for TParticle
+#include <TParticlePDG.h>        // for TParticlePDG
+#include <TString.h>             // for Form
+#include <TVector3.h>            // for TVector3
+#include <fairlogger/Logger.h>   // for LOG
 
 FairEveMCTracks::FairEveMCTracks()
     : FairEveTracks(kFALSE)
@@ -83,6 +85,9 @@ Bool_t FairEveMCTracks::CheckCuts(FairMCTrack *tr)
 
 void FairEveMCTracks::DrawTrack(Int_t id)
 {
+    if (!fRK)
+        return;
+
     FairMCTrack *tr = (FairMCTrack *)fContainer->UncheckedAt(id);
     if (!CheckCuts(tr))
         return;
@@ -151,9 +156,9 @@ InitStatus FairEveMCTracks::Init()
     FairField *field = ana->GetField();
     if (field == nullptr) {
         LOG(ERROR) << "Lack of magnetic field map!";
-        field = new FairField();
+    } else {
+        fRK = new FairRKPropagator(field);
     }
-    fRK = new FairRKPropagator(field);
     fPDG = TDatabasePDG::Instance();
     return FairEveTracks::Init();
 }
