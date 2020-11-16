@@ -23,6 +23,7 @@
 #pragma link C++ class FairTestDetectorRecoTask+;
 #pragma link C++ class FairConstField+;
 #pragma link C++ class FairConstPar+;
+#pragma link C++ class FairConstFieldCreator+;
 #pragma link C++ class FairMapPar+;
 #pragma link C++ class FairTestDetectorDigiWriteoutBuffer+;
 #pragma link C++ class FairTestDetectorTimeDigiTask+;

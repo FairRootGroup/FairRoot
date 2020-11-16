@@ -22,6 +22,7 @@ set(sources
 
   simulation/FairConstField.cxx
   simulation/FairConstPar.cxx
+  simulation/FairConstFieldCreator.cxx
   simulation/FairMapPar.cxx
   simulation/FairTestDetector.cxx
   simulation/FairTestDetectorContFact.cxx
