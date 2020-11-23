@@ -41,27 +41,12 @@ echo 'treename=name_you_chose' > config/rootmanager.dat
 
 ### Step by Step installation
 
-1. Install [FairSoft](https://github.com/FairRootGroup/FairSoft/tree/dev)
-
-    we use here "fair_install" as a directory name, you can use what you want!
-    ```bash
-    mkdir ~/fair_install
-    cd ~/fair_install
-    #git clone https://github.com/FairRootGroup/FairSoft.git
-    git clone -b dev https://github.com/FairRootGroup/FairSoft.git
-    cd FairSoft/legacy
-    ./configure.sh
-    # 1) gcc (on Linux) 5) Clang (on OSX)
-    # 1) No Debug Info
-    # 2) Internet (install G4 files from internet)
-    # path: ~/fair_install/FairSoftInst
-    ```
-
+1. Install [FairSoft](https://github.com/FairRootGroup/FairSoft)
 
 2. Install [FairRoot](http://fairroot.gsi.de/?q=node/82)
 
     ```bash
-    # Set the shell variable SIMPATH to the installation directory
+    # Set the shell variable SIMPATH to the FairSoft installation directory
     export SIMPATH=~/fair_install/FairSoftInst
     [setenv SIMPATH ~/fair_install/FairSoftInst]
 
