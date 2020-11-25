@@ -74,7 +74,19 @@ InitStatus FairPointSetDraw::Init()
 
 void FairPointSetDraw::Exec(Option_t* /*option*/)
 {
+	Double_t timeOffset = 0.0;
     if (IsActive()) {
+        if (FairRunAna::Instance()->IsTimeStamp() && fEventTime != nullptr && fEventTime->size() > 0) {		///< find the matching event to a given time if timebased simulation is on
+            Double_t eventTime = FairRootManager::Instance()->GetEventTime();
+            timeOffset = eventTime;
+            auto lower = std::lower_bound(fEventTime->begin(), fEventTime->end(), eventTime + 0.01);
+            int i = std::distance(fEventTime->begin(), lower);
+            if (i == 0) {
+                fPointList->Delete();
+            } else {
+                fBranch->GetEvent(i - 1);
+            }
+        }
         Int_t npoints = fPointList->GetEntriesFast();
         Reset();
         TEvePointSet* q = new TEvePointSet(GetName(), npoints, TEvePointSelectorConsumer::kTVT_XYZ);
@@ -92,6 +104,8 @@ void FairPointSetDraw::Exec(Option_t* /*option*/)
                 TVector3 vec(GetVector(p));
                 if (checkTime) {
                     double time = GetTime(p);
+                    if (fUseTimeOffset == kTRUE)
+                    	time += timeOffset;							///< corrects a point time (with only time-of-flight) to event time + ToF to match with TimeLimits tmin, tmax
                     if (time > 0) {
                         if (time < tmin || time > tmax) {
                             continue;

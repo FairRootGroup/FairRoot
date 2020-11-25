@@ -106,7 +106,7 @@ void FairEventManagerEditor::Init()
                                       0,
                                       Entries);
     f->AddFrame(fCurrentEvent, new TGLayoutHints(kLHintsLeft, 1, 1, 1, 1));
-    fCurrentEvent->Connect("ValueSet(Long_t)", "FairEventManagerEditor", this, "SelectEvent()");
+    fCurrentEvent->Connect("ValueSet(Long_t)", "FairEventManagerEditor", this, "SelectSingleEvent()");
     title1->AddFrame(f);
 
     TGHorizontalFrame* f2 = new TGHorizontalFrame(title1);
@@ -118,7 +118,7 @@ void FairEventManagerEditor::Init()
 
     TGTextButton* fUpdate = new TGTextButton(title1, "Update");
     title1->AddFrame(fUpdate, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 5, 5, 1, 1));
-    fUpdate->Connect("Clicked()", "FairEventManagerEditor", this, "SelectEvent()");
+    fUpdate->Connect("Clicked()", "FairEventManagerEditor", this, "SelectSingleEvent()");
 
     fInfoFrame->AddFrame(title1, new TGLayoutHints(kLHintsTop, 0, 0, 2, 0));
 
@@ -163,10 +163,19 @@ void FairEventManagerEditor::Init()
     //  scene_conf->AddFrame(online_screenshot,new TGLayoutHints(kLHintsRight|kLHintsExpandX));
 }
 
+void FairEventManagerEditor::SelectSingleEvent()
+{
+	fManager->SetUseTimeOfEvent(kTRUE);
+	fManager->SetClearHandler(kTRUE);
+	SelectEvent();
+}
+
 void FairEventManagerEditor::SelectEvent()
 {
     fManager->GotoEvent(fCurrentEvent->GetIntNumber());
-    SetEventTimeLabel(FairRootManager::Instance()->GetEventTime());
+    SetEventNrLabel(fCurrentEvent->GetIntNumber());
+    std::cout << "FairEventManagerEditor::SelectEvent " << fCurrentEvent->GetIntNumber() << " time " << FairEventManager::Instance()->GetEvtTime() << std::endl;
+    SetEventTimeLabel(FairEventManager::Instance()->GetEvtTime());
 }
 
 void FairEventManagerEditor::SetEventTimeLabel(Double_t time)
@@ -184,6 +193,7 @@ void FairEventManagerEditor::StartAnimation()
 {
     switch (fAnimation->GetAnimationType()) {
         case FairEveAnimationControl::eAnimationType::kEventByEvent: {   // event by event
+        	FairEventManager::Instance()->SetUseTimeOfEvent(kTRUE);
             gSystem->mkdir("event_animations");
             FairEventManager::Instance()->SetTimeLimits(0, -1);   // disable drawing by timeslice
             Int_t start = (Int_t)fAnimation->GetMin();
@@ -199,6 +209,8 @@ void FairEventManagerEditor::StartAnimation()
         } break;
         case FairEveAnimationControl::eAnimationType::kTimeSlice: {   // timeslice
             gSystem->mkdir("timeslice_animations");
+            FairEventManager::Instance()->SetAnimatedTracks(kTRUE);
+        	FairEventManager::Instance()->SetUseTimeOfEvent(kFALSE);
             SelectEvent();
             Double_t start = (Double_t)fAnimation->GetMin();
             Double_t end = (Double_t)fAnimation->GetMax();
@@ -206,6 +218,8 @@ void FairEventManagerEditor::StartAnimation()
             if (step == 0) {
                 step = 1;
             }
+            Double_t tail = (Double_t)fAnimation->GetTail();
+
             Int_t no = 0;
             FairEveAnimationControl::eScreenshotType screen = fAnimation->GetScreenshotType();
             FairRunAna* ana = FairRunAna::Instance();
@@ -213,8 +227,29 @@ void FairEventManagerEditor::StartAnimation()
             TList* taskList = pMainTask->GetListOfTasks();
 
             Int_t ntask = ana->GetNTasks();
+            Bool_t runOnce = true;
             for (Double_t i = start; i < end; i += step) {
                 FairEventManager::Instance()->SetTimeLimits(start, i);
+            	if (runOnce == true){
+            		if (fAnimation->GetClearBuffer() == kTRUE || fAnimation->GetRunContinuous() == kFALSE)
+            			FairEventManager::Instance()->SetClearHandler(kTRUE);
+            		runOnce = false;
+            	} else {
+            		if (fAnimation->GetRunContinuous() == kFALSE){
+            			FairEventManager::Instance()->SetClearHandler(kTRUE);
+            		} else {
+            			FairEventManager::Instance()->SetClearHandler(kFALSE);
+            		}
+            	}
+            	Double_t lowerLimit = 0;
+            	if (tail < 0){
+            		lowerLimit = start;
+            	} else  {
+            		lowerLimit = i - tail;
+            	}
+            	FairEventManager::Instance()->SetEvtTime(i);
+                FairEventManager::Instance()->SetTimeLimits(lowerLimit, i);
+                SetEventTimeLabel(i);
                 TObjLink* lnk = taskList->FirstLink();
                 while (lnk) {
                     FairTask* pCurTask = (FairTask*)lnk->GetObject();

@@ -25,6 +25,7 @@
 #include "FairRun.h"                  // for FairRun
 #include "FairTSBufferFunctional.h"   // for FairTSBufferFunctional, etc
 #include "FairWriteoutBuffer.h"       // for FairWriteoutBuffer
+#include "FairFileSource.h"
 
 #include <TBranch.h>        // for TBranch
 #include <TClonesArray.h>   // for TClonesArray
@@ -455,11 +456,12 @@ Int_t FairRootManager::ReadEvent(Int_t i)
     fCurrentEntryNo = i;
 
     Int_t readEventResult = fSource->ReadEvent(i);
+    Double_t eventTime = ((FairFileSource*)fSource)->GetEventTime();
 
     fSource->FillEventHeader(fEventHeader);
     fCurrentTime = fEventHeader->GetEventTime();
 
-    LOG(debug) << "--Event number --- " << fCurrentEntryNo << " with time ---- " << fCurrentTime;
+    std::cout << "--Event number --- " << fCurrentEntryNo << " with time ---- " << fCurrentTime << " eventTime " << eventTime << std::endl;
 
     return readEventResult;
 }

@@ -25,6 +25,7 @@
 #include <TGFrame.h>
 #include <TGLabel.h>
 #include <TGNumberEntry.h>
+#include <TGButton.h>                    // for TGTextButton, TGCheckButton
 #include <TGedFrame.h>   // for TGedFrame
 #include <TObject.h>
 
@@ -38,8 +39,11 @@ class FairEveAnimationControl : public TNamed
     TGNumberEntry *fMin;
     TGNumberEntry *fMax;
     TGNumberEntry *fStep;
+    TGNumberEntry *fTail;
     TGComboBox *fComboOpt;
     TGComboBox *fTypeOpt;
+    TGCheckButton *fBtnRunContinuous;
+    TGCheckButton *fBtnClearBuffer;
 
   public:
     enum eAnimationType
@@ -76,9 +80,12 @@ class FairEveAnimationControl : public TNamed
     Double_t GetMin();
     Double_t GetMax();
     Double_t GetStep();
+    Double_t GetTail();
+    Bool_t   GetRunContinuous();
+    Bool_t   GetClearBuffer();
     virtual ~FairEveAnimationControl();
 
-    ClassDef(FairEveAnimationControl, 1)
+    ClassDef(FairEveAnimationControl, 2)
 };
 
 #endif /* FAIREVEANIMATIONCONTROL_H_ */

@@ -30,10 +30,12 @@ class FairHitPointSetDraw : public FairPointSetDraw
         : FairPointSetDraw(name, color, mstyle, iVerbose)
     {}
     virtual ~FairHitPointSetDraw();
+    virtual void SetUseTimeOffset(Bool_t val){fUseTimeOffset = val;};
 
   protected:
     TVector3 GetVector(TObject* obj);
     double GetTime(TObject* obj);
+
 
     ClassDef(FairHitPointSetDraw, 1);
 };

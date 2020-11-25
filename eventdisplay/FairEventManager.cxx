@@ -53,6 +53,8 @@ FairEventManager::FairEventManager()
     , fTimeMax(DBL_MAX)
     , fUseTimeOfEvent(kTRUE)
     , fTimeEvent(-1.)
+	, fAnimatedTracks(kFALSE)
+    , fClearHandler(kTRUE)
     , fRunAna(FairRunAna::Instance())
     , fEvent(0)
     , fRPhiPlane{0, 0, 10, 0}
