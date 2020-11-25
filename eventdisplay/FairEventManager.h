@@ -107,13 +107,17 @@ class FairEventManager : public TEveEventManager
     virtual void SetEvtMinEnergy(Float_t min) {}
     virtual void SetEvtTime(Float_t time) { fTimeEvent = time; }
     void SetUseTimeOfEvent(Bool_t val) { fUseTimeOfEvent = val; }
+    void SetAnimatedTracks(Bool_t val) { fAnimatedTracks = val; }
+    void SetClearHandler(Bool_t val) { fClearHandler = val; }
     virtual Float_t GetEvtMaxEnergy() { return 1E+9; }
     virtual Float_t GetEvtMinEnergy() { return 0; }
     virtual Float_t GetMaxEnergy() { return 1E+9; }
     virtual Float_t GetMinEnergy() { return 0; }
     TVector3 GetWorldSize() const;
-    Float_t GetEvtTime();
+    Float_t GetEvtTime();			///< current time in ns to display in the event display. Either set value or event time taken from FairRootManager. Controlled via fUseTimeOfEvent
     Bool_t GetUseTimeOfEvent() const { return fUseTimeOfEvent; }
+    Bool_t GetDrawAnimatedTracks() const { return fAnimatedTracks; }
+    Bool_t GetClearHandler() const { return fClearHandler; }
 
     /**
      *
@@ -147,6 +151,8 @@ class FairEventManager : public TEveEventManager
     Double_t fTimeMin, fTimeMax;                      //!
     Bool_t fUseTimeOfEvent;                           //!
     Double_t fTimeEvent;                              //!
+    Bool_t fAnimatedTracks;							  //!
+    Bool_t fClearHandler;							  //!
     FairRunAna *fRunAna;                              //!
     TGListTreeItem *fEvent;                           //!
     Double_t fRPhiPlane[4];                           //!

@@ -124,7 +124,32 @@ void FairEveGeoTracks::DrawAnimatedTrack(Int_t id)
 
 void FairEveGeoTracks::Repaint()
 {
-    Int_t nTracks = fContainer->GetEntriesFast();
+    Int_t nTracks = 0;
+	bool useGeoTrackHandler = false;
+    if (FairRunAna::Instance()->IsTimeStamp() && fEventTime != nullptr && fEventTime->size() > 0 && fBranch != nullptr) {
+        Double_t eventTime = FairEventManager::Instance()->GetEvtTime();
+        auto lower = std::lower_bound(fEventTime->begin(), fEventTime->end(), eventTime + 0.01);
+        int i = std::distance(fEventTime->begin(), lower);
+        LOG(debug) << "FairEveGeoTracks::Repaint " << eventTime << " lower " << *lower << " at index " << i;
+        LOG(debug) << "GetEvent " << i-1 << " time: " << fEventTime->at(i-1) << std::endl;
+        if (i == 0) {
+            fContainer->Clear();
+        } else {
+            fBranch->GetEvent(i - 1);
+            fCurrentEventTime = fEventTime->at(i-1);
+        }
+        if (FairEventManager::Instance()->GetClearHandler() == kTRUE){
+        	fGeoTrackHandler.Reset();
+        }
+        fGeoTrackHandler.FillTClonesArray(fContainer, fCurrentEventTime, eventTime);
+        useGeoTrackHandler = true;
+    }
+    Int_t nTracks = 0;
+    if (useGeoTrackHandler){
+    	nTracks = fGeoTrackHandler.GetGeoTracks().size();
+    } else {
+    	nTracks = fContainer->GetEntriesFast();
+    }
     RemoveElements();
     FairEventManager::Instance()->GetTimeLimits(fTMin, fTMax);
     if (fTMin > fTMax) {   // wrong time limits draw entire tracks

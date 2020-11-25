@@ -29,8 +29,11 @@ FairEveAnimationControl::FairEveAnimationControl(TGedFrame *frame,
     , fMin(nullptr)
     , fMax(nullptr)
     , fStep(nullptr)
+	, fTail(nullptr)
     , fComboOpt(nullptr)
     , fTypeOpt(nullptr)
+	, fBtnRunContinuous(nullptr)
+	, fBtnClearBuffer(nullptr)
 {
     SetName(name);
 }
@@ -51,7 +54,7 @@ void FairEveAnimationControl::Init()
     fTypeOpt = new TGComboBox(frame1);
     fTypeOpt->AddEntry("Event by Event", kEventByEvent);
     fTypeOpt->AddEntry("Timeslice", kTimeSlice);
-    fTypeOpt->AddEntry("Timestep", kTimeStep);
+//    fTypeOpt->AddEntry("Timestep", kTimeStep);
     fTypeOpt->Select(kEventByEvent);
     fTypeOpt->Resize(100, 20);
     frame1->AddFrame(fTypeOpt, new TGLayoutHints(kLHintsLeft | kLHintsExpandX));
@@ -93,6 +96,20 @@ void FairEveAnimationControl::Init()
     frame5->AddFrame(fStep, new TGLayoutHints(kLHintsRight | kLHintsExpandX));
     cuts->AddFrame(frame5, new TGLayoutHints(kLHintsLeft | kLHintsExpandX));
 
+    TGCompositeFrame *frame6 = new TGCompositeFrame(cuts, fWidth, 30, kHorizontalFrame | kFixedWidth);
+    TGLabel *gLabelTail = new TGLabel(frame6, "Tail:");
+    frame6->AddFrame(gLabelTail, new TGLayoutHints(kLHintsLeft | kLHintsExpandX, 1, 1, 2, 1));
+    fTail = new TGNumberEntry(frame6, 0, 6, -1, TGNumberFormat::kNESRealTwo);
+    fTail->SetNumber(-1.0);
+    frame6->AddFrame(fTail, new TGLayoutHints(kLHintsRight | kLHintsExpandX));
+    cuts->AddFrame(frame6, new TGLayoutHints(kLHintsLeft | kLHintsExpandX));
+
+    fBtnRunContinuous = new TGCheckButton(cuts, "Run Continuous");
+    cuts->AddFrame(fBtnRunContinuous, new TGLayoutHints(kLHintsLeft | kLHintsExpandX));
+
+    fBtnClearBuffer = new TGCheckButton(cuts, "Clear Buffer at Start");
+    cuts->AddFrame(fBtnClearBuffer, new TGLayoutHints(kLHintsLeft | kLHintsExpandX));
+
     fTab->AddFrame(cuts, new TGLayoutHints(kLHintsRight | kLHintsExpandX, 1, 1, 2, 1));
 }
 
@@ -105,6 +122,21 @@ Double_t FairEveAnimationControl::GetStep()
     if (fStep)
         return fStep->GetNumber();
     return 1;
+}
+
+Double_t FairEveAnimationControl::GetTail()
+{
+	return fTail->GetNumber();
+}
+
+Bool_t FairEveAnimationControl::GetRunContinuous()
+{
+	return fBtnRunContinuous->IsOn();
+}
+
+Bool_t FairEveAnimationControl::GetClearBuffer()
+{
+	return fBtnClearBuffer->IsOn();
 }
 
 FairEveAnimationControl::eScreenshotType FairEveAnimationControl::GetScreenshotType()

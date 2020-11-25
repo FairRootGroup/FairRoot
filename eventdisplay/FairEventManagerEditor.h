@@ -51,6 +51,7 @@ class FairEventManagerEditor : public TGedFrame
                            Pixel_t back = GetDefaultFrameBackground());
     virtual ~FairEventManagerEditor() {}
     void SetModel(TObject* obj);
+    virtual void SelectSingleEvent();
     virtual void SelectEvent();
     virtual void StartAnimation();
     virtual void Init();
