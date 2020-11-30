@@ -20,11 +20,13 @@
 #include <RtypesCore.h>     // for Bool_t, Int_t, Double_t
 #include "FairEveTracks.h"  // for FairEveTracks
 #include "FairTask.h"       // for InitStatus
+#include "FairGeoTrackHandler.h"
 class TBuffer;
 class TClass;
 class TClonesArray;
 class TGeoTrack;  // lines 22-22
 class TMemberInspector;
+class TBranch;
 
 /**
  * draw TGeoTracks
@@ -38,11 +40,15 @@ class FairEveGeoTracks : public FairEveTracks
     Bool_t fUsePdg;
     Int_t fPdgCut;
     Double_t fTMin, fTMax;
+    std::vector<double> const* fEventTime = nullptr;
+    TBranch* fBranch = nullptr;
+    FairGeoTrackHandler fGeoTrackHandler;
+    Double_t fCurrentEventTime;
 
   protected:
     Bool_t CheckCuts(TGeoTrack *tr);
     void DrawTrack(Int_t id);
-    void DrawAnimatedTrack(Int_t id);
+    void DrawAnimatedTrack(TGeoTrack* tr, double t0 = 0);
 
   public:
     FairEveGeoTracks();

@@ -27,6 +27,7 @@
  #include "FairRootManager.h"             // for FairRootManager
  #include "FairRunAna.h"                  // for FairRunAna
  #include "FairTask.h"                    // for FairTask
+#include <iostream>
  class TGWindow;  // lines 36-36
  class TObject;  // lines 37-37
 
@@ -173,9 +174,11 @@ void FairEventManagerEditor::SelectSingleEvent()
 void FairEventManagerEditor::SelectEvent()
 {
     fManager->GotoEvent(fCurrentEvent->GetIntNumber());
-    SetEventNrLabel(fCurrentEvent->GetIntNumber());
+//    SetEventNrLabel(fCurrentEvent->GetIntNumber());
     std::cout << "FairEventManagerEditor::SelectEvent " << fCurrentEvent->GetIntNumber() << " time " << FairEventManager::Instance()->GetEvtTime() << std::endl;
     SetEventTimeLabel(FairEventManager::Instance()->GetEvtTime());
+    FairEventManager::Instance()->SetEvtTimeText(FairEventManager::Instance()->GetEvtTime());
+    FairEventManager::Instance()->SetEvtNumberText(fCurrentEvent->GetIntNumber());
 }
 
 void FairEventManagerEditor::SetEventTimeLabel(Double_t time)
@@ -229,8 +232,7 @@ void FairEventManagerEditor::StartAnimation()
             Int_t ntask = ana->GetNTasks();
             Bool_t runOnce = true;
             for (Double_t i = start; i < end; i += step) {
-                FairEventManager::Instance()->SetTimeLimits(start, i);
-            	if (runOnce == true){
+                if (runOnce == true){			//Clear the buffer at the beginning of an animation run
             		if (fAnimation->GetClearBuffer() == kTRUE || fAnimation->GetRunContinuous() == kFALSE)
             			FairEventManager::Instance()->SetClearHandler(kTRUE);
             		runOnce = false;
@@ -250,6 +252,8 @@ void FairEventManagerEditor::StartAnimation()
             	FairEventManager::Instance()->SetEvtTime(i);
                 FairEventManager::Instance()->SetTimeLimits(lowerLimit, i);
                 SetEventTimeLabel(i);
+                FairEventManager::Instance()->SetEvtTimeText(FairEventManager::Instance()->GetEvtTime());
+
                 TObjLink* lnk = taskList->FirstLink();
                 while (lnk) {
                     FairTask* pCurTask = (FairTask*)lnk->GetObject();
@@ -260,37 +264,37 @@ void FairEventManagerEditor::StartAnimation()
                 fManager->MakeScreenshot(screen, Form("timeslice_animations/event_%i.png", no++));
             }
         } break;
-        case FairEveAnimationControl::eAnimationType::kTimeStep: {   // timeslice
-            gSystem->mkdir("timestep_animations");
-            SelectEvent();
-            Double_t start = (Double_t)fAnimation->GetMin();
-            Double_t end = (Double_t)fAnimation->GetMax();
-            Double_t step = (Double_t)fAnimation->GetStep();
-            if (step == 0) {
-                step = 1;
-            }
-            Int_t no = 0;
-            FairEveAnimationControl::eScreenshotType screen = fAnimation->GetScreenshotType();
-            FairRunAna* ana = FairRunAna::Instance();
-            FairTask* pMainTask = ana->GetMainTask();
-            TList* taskList = pMainTask->GetListOfTasks();
-
-            Int_t ntask = ana->GetNTasks();
-            FairEventManager::Instance()->SetUseTimeOfEvent(kFALSE);
-            for (Double_t i = start; i < end; i += step) {
-                FairEventManager::Instance()->SetEvtTime(i);
-                SetEventTimeLabel(i);
-                TObjLink* lnk = taskList->FirstLink();
-                while (lnk) {
-                    FairTask* pCurTask = (FairTask*)lnk->GetObject();
-                    pCurTask->ExecuteTask("");
-                    lnk = lnk->Next();
-                }
-                gEve->FullRedraw3D();
-                fManager->MakeScreenshot(screen, Form("timestep_animations/event_%i.png", no++));
-            }
-            FairEventManager::Instance()->SetUseTimeOfEvent(kTRUE);
-        } break;
+//        case FairEveAnimationControl::eAnimationType::kTimeStep: {   // timeslice
+//            gSystem->mkdir("timestep_animations");
+//            SelectEvent();
+//            Double_t start = (Double_t)fAnimation->GetMin();
+//            Double_t end = (Double_t)fAnimation->GetMax();
+//            Double_t step = (Double_t)fAnimation->GetStep();
+//            if (step == 0) {
+//                step = 1;
+//            }
+//            Int_t no = 0;
+//            FairEveAnimationControl::eScreenshotType screen = fAnimation->GetScreenshotType();
+//            FairRunAna* ana = FairRunAna::Instance();
+//            FairTask* pMainTask = ana->GetMainTask();
+//            TList* taskList = pMainTask->GetListOfTasks();
+//
+//            Int_t ntask = ana->GetNTasks();
+//            FairEventManager::Instance()->SetUseTimeOfEvent(kFALSE);
+//            for (Double_t i = start; i < end; i += step) {
+//                FairEventManager::Instance()->SetEvtTime(i);
+//                SetEventTimeLabel(i);
+//                TObjLink* lnk = taskList->FirstLink();
+//                while (lnk) {
+//                    FairTask* pCurTask = (FairTask*)lnk->GetObject();
+//                    pCurTask->ExecuteTask("");
+//                    lnk = lnk->Next();
+//                }
+//                gEve->FullRedraw3D();
+//                fManager->MakeScreenshot(screen, Form("timestep_animations/event_%i.png", no++));
+//            }
+//            FairEventManager::Instance()->SetUseTimeOfEvent(kTRUE);
+//        } break;
     }
 }
 
