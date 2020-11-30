@@ -25,11 +25,14 @@
 #include <TEveScene.h>
 #include <TEveViewer.h>
 #include <TEveWindow.h>   // for TEveWindowPack, TEveWindowSlot
+#include <TEveText.h>
+#include <TEveTrans.h>
 #include <TGFileDialog.h>
 #include <TGLCameraOverlay.h>
 #include <TGLClip.h>   // for TGLClip, TGLClip::kClipPlane, TGL...
 #include <TGLLightSet.h>
 #include <TGLViewer.h>
+#include <TGLFontManager.h>
 #include <TGeoBBox.h>
 #include <TGeoManager.h>   // for gGeoManager, TGeoManager
 #include <TGeoNode.h>
@@ -207,6 +210,22 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
     fMultiView->GetEveFrame()->HideAllDecorations();
     fMultiRPhiView->GetEveFrame()->HideAllDecorations();
     fMultiRhoZView->GetEveFrame()->HideAllDecorations();
+
+   fEventTimeText = new TEveText("Event Time: ");
+   fEventTimeText->SetMainColor(kOrange-2);
+   fEventTimeText->SetFontFile("ariali");
+   fEventTimeText->SetFontSize(20);
+   fEventTimeText->SetFontMode(TGLFont::kPixmap);
+   fEventTimeText->SetLighting(kTRUE);
+   gEve->AddElement(fEventTimeText);
+
+   fEventNumberText = new TEveText("Event Number: ");
+   fEventNumberText->SetMainColor(kOrange-2);
+   fEventNumberText->SetFontFile("ariali");
+   fEventNumberText->SetFontSize(20);
+   fEventNumberText->SetFontMode(TGLFont::kPixmap);
+   fEventNumberText->SetLighting(kTRUE);
+   gEve->AddElement(fEventNumberText);
 }
 
 void FairEventManager::UpdateEditor() {}
@@ -550,4 +569,19 @@ Float_t FairEventManager::GetEvtTime()
         fTimeEvent = FairRootManager::Instance()->GetEventTime();
     }
     return fTimeEvent;
+}
+
+void FairEventManager::SetEvtTimeText(Double_t time)
+{
+	TString stime;
+	stime.Form("%.2f", time);
+	stime += " ns";
+	fEventTimeText->SetText(stime);
+
+}
+
+void FairEventManager::SetEvtNumberText(Int_t evtNumber){
+//	TString text ="EvtNumber: ";
+//	text += evtNumber;
+//	fEventNumberText->SetText(text);
 }

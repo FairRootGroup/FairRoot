@@ -30,6 +30,7 @@ class FairXMLNode;
 class TEveProjectionManager;
 class TEveScene;
 class TEveViewer;
+class TEveText;
 class TGeoNode;
 class TGListTreeItem;
 
@@ -106,6 +107,8 @@ class FairEventManager : public TEveEventManager
     virtual void SetEvtMaxEnergy(Float_t max) {}
     virtual void SetEvtMinEnergy(Float_t min) {}
     virtual void SetEvtTime(Float_t time) { fTimeEvent = time; }
+    virtual void SetEvtTimeText(Double_t time);
+    virtual void SetEvtNumberText(Int_t evtNumber);
     void SetUseTimeOfEvent(Bool_t val) { fUseTimeOfEvent = val; }
     void SetAnimatedTracks(Bool_t val) { fAnimatedTracks = val; }
     void SetClearHandler(Bool_t val) { fClearHandler = val; }
@@ -170,6 +173,8 @@ class FairEventManager : public TEveEventManager
     TEveProjectionManager *fRhoZProjManager;          //!
     TEveProjectionAxes *fAxesPhi;                     //!
     TEveProjectionAxes *fAxesRho;                     //!
+    TEveText *fEventTimeText;						  //!
+	TEveText *fEventNumberText;						  //!
     TString fXMLConfig;
     std::map<int, int> fPDGToColor;
     void SetTransparencyForLayer(TGeoNode *node, Int_t depth, Char_t transparency);
