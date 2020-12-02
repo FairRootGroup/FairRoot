@@ -36,6 +36,7 @@ FairPointSetDraw::FairPointSetDraw()
     , fq(nullptr)
     , fColor(0)
     , fStyle(0)
+    , fBranch(nullptr)
 {}
 
 FairPointSetDraw::FairPointSetDraw(const char* name, Color_t color, Style_t mstyle, Int_t iVerbose)
@@ -46,6 +47,7 @@ FairPointSetDraw::FairPointSetDraw(const char* name, Color_t color, Style_t msty
     , fq(nullptr)
     , fColor(color)
     , fStyle(mstyle)
+    , fBranch(nullptr)
 {}
 
 InitStatus FairPointSetDraw::Init()
@@ -54,6 +56,9 @@ InitStatus FairPointSetDraw::Init()
         cout << "FairPointSetDraw::Init()" << endl;
     }
     FairRootManager* fManager = FairRootManager::Instance();
+    fBranch = fManager->GetInTree()->GetBranch(GetName());
+    fEventTime = fManager->InitObjectAs<std::vector<double> const*>("EventTimes");
+
     fPointList = static_cast<TClonesArray*>(fManager->GetObject(GetName()));
     if (fPointList == 0) {
         cout << "FairPointSetDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated " << endl;
@@ -74,9 +79,10 @@ InitStatus FairPointSetDraw::Init()
 
 void FairPointSetDraw::Exec(Option_t* /*option*/)
 {
-	Double_t timeOffset = 0.0;
+    Double_t timeOffset = 0.0;
     if (IsActive()) {
-        if (FairRunAna::Instance()->IsTimeStamp() && fEventTime != nullptr && fEventTime->size() > 0) {		///< find the matching event to a given time if timebased simulation is on
+        if (FairRunAna::Instance()->IsTimeStamp() && fEventTime != nullptr
+            && fEventTime->size() > 0) {   ///< find the matching event to a given time if timebased simulation is on
             Double_t eventTime = FairRootManager::Instance()->GetEventTime();
             timeOffset = eventTime;
             auto lower = std::lower_bound(fEventTime->begin(), fEventTime->end(), eventTime + 0.01);
@@ -105,7 +111,8 @@ void FairPointSetDraw::Exec(Option_t* /*option*/)
                 if (checkTime) {
                     double time = GetTime(p);
                     if (fUseTimeOffset == kTRUE)
-                    	time += timeOffset;							///< corrects a point time (with only time-of-flight) to event time + ToF to match with TimeLimits tmin, tmax
+                        time += timeOffset;   ///< corrects a point time (with only time-of-flight) to event time + ToF
+                                              ///< to match with TimeLimits tmin, tmax
                     if (time > 0) {
                         if (time < tmin || time > tmax) {
                             continue;
