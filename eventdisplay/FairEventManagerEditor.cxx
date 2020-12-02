@@ -5,32 +5,33 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
- #include "FairEventManagerEditor.h"
- #include <RtypesCore.h>                  // for Double_t, Int_t, UInt_t, Bool_t
- #include <TChain.h>                      // for TChain
- #include <TEveManager.h>                 // for TEveManager, gEve
- #include <TFile.h>                       // for TFile
- #include <TGButton.h>                    // for TGTextButton, TGCheckButton
- #include <TGComboBox.h>                  // for TGComboBox
- #include <TGLabel.h>                     // for TGLabel
- #include <TGLayout.h>                    // for TGLayoutHints, kLHintsExpandX
- #include <TGNumberEntry.h>               // for TGNumberEntry, TGNumberFormat
- #include <TGenericClassInfo.h>           // for TGenericClassInfo
- #include <TGeoManager.h>                 // for TGeoManager, gGeoManager
- #include <TList.h>                       // for TObjLink, TList
- #include <TString.h>                     // for TString, Form
- #include <TSystem.h>                     // for TSystem, gSystem
- #include <memory>                        // for unique_ptr
- #include "FairEveAnimationControl.h"     // for FairEveAnimationControl, Fai...
- #include "FairEveTransparencyControl.h"  // for FairEveTransparencyControl
- #include "FairEventManager.h"            // for FairEventManager
- #include "FairRootManager.h"             // for FairRootManager
- #include "FairRunAna.h"                  // for FairRunAna
- #include "FairTask.h"                    // for FairTask
-#include <iostream>
- class TGWindow;  // lines 36-36
- class TObject;  // lines 37-37
+#include "FairEventManagerEditor.h"
 
+#include "FairEveAnimationControl.h"      // for FairEveAnimationControl, Fai...
+#include "FairEveTransparencyControl.h"   // for FairEveTransparencyControl
+#include "FairEventManager.h"             // for FairEventManager
+#include "FairRootManager.h"              // for FairRootManager
+#include "FairRunAna.h"                   // for FairRunAna
+#include "FairTask.h"                     // for FairTask
+
+#include <RtypesCore.h>          // for Double_t, Int_t, UInt_t, Bool_t
+#include <TChain.h>              // for TChain
+#include <TEveManager.h>         // for TEveManager, gEve
+#include <TFile.h>               // for TFile
+#include <TGButton.h>            // for TGTextButton, TGCheckButton
+#include <TGComboBox.h>          // for TGComboBox
+#include <TGLabel.h>             // for TGLabel
+#include <TGLayout.h>            // for TGLayoutHints, kLHintsExpandX
+#include <TGNumberEntry.h>       // for TGNumberEntry, TGNumberFormat
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TGeoManager.h>         // for TGeoManager, gGeoManager
+#include <TList.h>               // for TObjLink, TList
+#include <TString.h>             // for TString, Form
+#include <TSystem.h>             // for TSystem, gSystem
+#include <iostream>
+#include <memory>   // for unique_ptr
+class TGWindow;     // lines 36-36
+class TObject;      // lines 37-37
 
 #define MAXE 5000
 
@@ -166,16 +167,17 @@ void FairEventManagerEditor::Init()
 
 void FairEventManagerEditor::SelectSingleEvent()
 {
-	fManager->SetUseTimeOfEvent(kTRUE);
-	fManager->SetClearHandler(kTRUE);
-	SelectEvent();
+    fManager->SetUseTimeOfEvent(kTRUE);
+    fManager->SetClearHandler(kTRUE);
+    SelectEvent();
 }
 
 void FairEventManagerEditor::SelectEvent()
 {
     fManager->GotoEvent(fCurrentEvent->GetIntNumber());
-//    SetEventNrLabel(fCurrentEvent->GetIntNumber());
-    std::cout << "FairEventManagerEditor::SelectEvent " << fCurrentEvent->GetIntNumber() << " time " << FairEventManager::Instance()->GetEvtTime() << std::endl;
+    //    SetEventNrLabel(fCurrentEvent->GetIntNumber());
+    std::cout << "FairEventManagerEditor::SelectEvent " << fCurrentEvent->GetIntNumber() << " time "
+              << FairEventManager::Instance()->GetEvtTime() << std::endl;
     SetEventTimeLabel(FairEventManager::Instance()->GetEvtTime());
     FairEventManager::Instance()->SetEvtTimeText(FairEventManager::Instance()->GetEvtTime());
     FairEventManager::Instance()->SetEvtNumberText(fCurrentEvent->GetIntNumber());
@@ -196,7 +198,8 @@ void FairEventManagerEditor::StartAnimation()
 {
     switch (fAnimation->GetAnimationType()) {
         case FairEveAnimationControl::eAnimationType::kEventByEvent: {   // event by event
-        	FairEventManager::Instance()->SetUseTimeOfEvent(kTRUE);
+            FairEventManager::Instance()->SetUseTimeOfEvent(kTRUE);
+            FairEventManager::Instance()->SetAnimatedTracks(kFALSE);
             gSystem->mkdir("event_animations");
             FairEventManager::Instance()->SetTimeLimits(0, -1);   // disable drawing by timeslice
             Int_t start = (Int_t)fAnimation->GetMin();
@@ -213,7 +216,7 @@ void FairEventManagerEditor::StartAnimation()
         case FairEveAnimationControl::eAnimationType::kTimeSlice: {   // timeslice
             gSystem->mkdir("timeslice_animations");
             FairEventManager::Instance()->SetAnimatedTracks(kTRUE);
-        	FairEventManager::Instance()->SetUseTimeOfEvent(kFALSE);
+            FairEventManager::Instance()->SetUseTimeOfEvent(kFALSE);
             SelectEvent();
             Double_t start = (Double_t)fAnimation->GetMin();
             Double_t end = (Double_t)fAnimation->GetMax();
@@ -232,24 +235,24 @@ void FairEventManagerEditor::StartAnimation()
             Int_t ntask = ana->GetNTasks();
             Bool_t runOnce = true;
             for (Double_t i = start; i < end; i += step) {
-                if (runOnce == true){			//Clear the buffer at the beginning of an animation run
-            		if (fAnimation->GetClearBuffer() == kTRUE || fAnimation->GetRunContinuous() == kFALSE)
-            			FairEventManager::Instance()->SetClearHandler(kTRUE);
-            		runOnce = false;
-            	} else {
-            		if (fAnimation->GetRunContinuous() == kFALSE){
-            			FairEventManager::Instance()->SetClearHandler(kTRUE);
-            		} else {
-            			FairEventManager::Instance()->SetClearHandler(kFALSE);
-            		}
-            	}
-            	Double_t lowerLimit = 0;
-            	if (tail < 0){
-            		lowerLimit = start;
-            	} else  {
-            		lowerLimit = i - tail;
-            	}
-            	FairEventManager::Instance()->SetEvtTime(i);
+                if (runOnce == true) {   // Clear the buffer at the beginning of an animation run
+                    if (fAnimation->GetClearBuffer() == kTRUE || fAnimation->GetRunContinuous() == kFALSE)
+                        FairEventManager::Instance()->SetClearHandler(kTRUE);
+                    runOnce = false;
+                } else {
+                    if (fAnimation->GetRunContinuous() == kFALSE) {
+                        FairEventManager::Instance()->SetClearHandler(kTRUE);
+                    } else {
+                        FairEventManager::Instance()->SetClearHandler(kFALSE);
+                    }
+                }
+                Double_t lowerLimit = 0;
+                if (tail < 0) {
+                    lowerLimit = start;
+                } else {
+                    lowerLimit = i - tail;
+                }
+                FairEventManager::Instance()->SetEvtTime(i);
                 FairEventManager::Instance()->SetTimeLimits(lowerLimit, i);
                 SetEventTimeLabel(i);
                 FairEventManager::Instance()->SetEvtTimeText(FairEventManager::Instance()->GetEvtTime());
@@ -264,37 +267,6 @@ void FairEventManagerEditor::StartAnimation()
                 fManager->MakeScreenshot(screen, Form("timeslice_animations/event_%i.png", no++));
             }
         } break;
-//        case FairEveAnimationControl::eAnimationType::kTimeStep: {   // timeslice
-//            gSystem->mkdir("timestep_animations");
-//            SelectEvent();
-//            Double_t start = (Double_t)fAnimation->GetMin();
-//            Double_t end = (Double_t)fAnimation->GetMax();
-//            Double_t step = (Double_t)fAnimation->GetStep();
-//            if (step == 0) {
-//                step = 1;
-//            }
-//            Int_t no = 0;
-//            FairEveAnimationControl::eScreenshotType screen = fAnimation->GetScreenshotType();
-//            FairRunAna* ana = FairRunAna::Instance();
-//            FairTask* pMainTask = ana->GetMainTask();
-//            TList* taskList = pMainTask->GetListOfTasks();
-//
-//            Int_t ntask = ana->GetNTasks();
-//            FairEventManager::Instance()->SetUseTimeOfEvent(kFALSE);
-//            for (Double_t i = start; i < end; i += step) {
-//                FairEventManager::Instance()->SetEvtTime(i);
-//                SetEventTimeLabel(i);
-//                TObjLink* lnk = taskList->FirstLink();
-//                while (lnk) {
-//                    FairTask* pCurTask = (FairTask*)lnk->GetObject();
-//                    pCurTask->ExecuteTask("");
-//                    lnk = lnk->Next();
-//                }
-//                gEve->FullRedraw3D();
-//                fManager->MakeScreenshot(screen, Form("timestep_animations/event_%i.png", no++));
-//            }
-//            FairEventManager::Instance()->SetUseTimeOfEvent(kTRUE);
-//        } break;
     }
 }
 

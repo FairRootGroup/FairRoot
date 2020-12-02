@@ -23,16 +23,16 @@
 #include <TEveProjectionManager.h>
 #include <TEveProjections.h>   // for TEveProjection, TEveProjection::k...
 #include <TEveScene.h>
-#include <TEveViewer.h>
-#include <TEveWindow.h>   // for TEveWindowPack, TEveWindowSlot
 #include <TEveText.h>
 #include <TEveTrans.h>
+#include <TEveViewer.h>
+#include <TEveWindow.h>   // for TEveWindowPack, TEveWindowSlot
 #include <TGFileDialog.h>
 #include <TGLCameraOverlay.h>
 #include <TGLClip.h>   // for TGLClip, TGLClip::kClipPlane, TGL...
+#include <TGLFontManager.h>
 #include <TGLLightSet.h>
 #include <TGLViewer.h>
-#include <TGLFontManager.h>
 #include <TGeoBBox.h>
 #include <TGeoManager.h>   // for gGeoManager, TGeoManager
 #include <TGeoNode.h>
@@ -56,7 +56,7 @@ FairEventManager::FairEventManager()
     , fTimeMax(DBL_MAX)
     , fUseTimeOfEvent(kTRUE)
     , fTimeEvent(-1.)
-	, fAnimatedTracks(kFALSE)
+    , fAnimatedTracks(kFALSE)
     , fClearHandler(kTRUE)
     , fRunAna(FairRunAna::Instance())
     , fEvent(0)
@@ -211,21 +211,25 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
     fMultiRPhiView->GetEveFrame()->HideAllDecorations();
     fMultiRhoZView->GetEveFrame()->HideAllDecorations();
 
-   fEventTimeText = new TEveText("Event Time: ");
-   fEventTimeText->SetMainColor(kOrange-2);
-   fEventTimeText->SetFontFile("ariali");
-   fEventTimeText->SetFontSize(20);
-   fEventTimeText->SetFontMode(TGLFont::kPixmap);
-   fEventTimeText->SetLighting(kTRUE);
-   gEve->AddElement(fEventTimeText);
+    fEventTimeText = new TEveText("Event Time: ");
+    fEventTimeText->PtrMainTrans()->SetPos(-100, 80, 0);
+    fEventTimeText->SetMainColor(kOrange - 2);
+    fEventTimeText->SetFontFile("ariali");
+    fEventTimeText->SetFontSize(20);
+    fEventTimeText->SetFontMode(TGLFont::kPixmap);
+    fEventTimeText->SetLighting(kTRUE);
+    fEventTimeText->SetRnrState(kFALSE);
+    gEve->AddElement(fEventTimeText);
 
-   fEventNumberText = new TEveText("Event Number: ");
-   fEventNumberText->SetMainColor(kOrange-2);
-   fEventNumberText->SetFontFile("ariali");
-   fEventNumberText->SetFontSize(20);
-   fEventNumberText->SetFontMode(TGLFont::kPixmap);
-   fEventNumberText->SetLighting(kTRUE);
-   gEve->AddElement(fEventNumberText);
+    fEventNumberText = new TEveText("Event Number: ");
+    fEventNumberText->PtrMainTrans()->SetPos(-100, 100, 0);
+    fEventNumberText->SetMainColor(kOrange - 2);
+    fEventNumberText->SetFontFile("ariali");
+    fEventNumberText->SetFontSize(20);
+    fEventNumberText->SetFontMode(TGLFont::kPixmap);
+    fEventNumberText->SetLighting(kTRUE);
+    fEventNumberText->SetRnrState(kFALSE);
+    gEve->AddElement(fEventNumberText);
 }
 
 void FairEventManager::UpdateEditor() {}
@@ -313,8 +317,8 @@ void FairEventManager::SetViewers(TEveViewer *RPhi, TEveViewer *RhoZ)
 {
     RPhi->GetGLViewer()->SetCurrentCamera(fRphiCam);
     // set clip plane and camera parameters
-    RPhi->GetGLViewer()->GetClipSet()->SetClipType(TGLClip::kClipPlane);
-    RPhi->GetGLViewer()->GetClipSet()->SetClipState(TGLClip::kClipPlane, fRPhiPlane);
+    // RPhi->GetGLViewer()->GetClipSet()->SetClipType(TGLClip::kClipPlane);
+    // RPhi->GetGLViewer()->GetClipSet()->SetClipState(TGLClip::kClipPlane, fRPhiPlane);
     RPhi->GetGLViewer()->GetCameraOverlay()->SetOrthographicMode(TGLCameraOverlay::kAxis);
     RPhi->GetGLViewer()->GetCameraOverlay()->SetShowOrthographic(kTRUE);
     // switch off left, right, top and bottom light sources
@@ -325,8 +329,8 @@ void FairEventManager::SetViewers(TEveViewer *RPhi, TEveViewer *RhoZ)
 
     RhoZ->GetGLViewer()->SetCurrentCamera(fRhoCam);
     // set clip plane and camera parameters
-    RhoZ->GetGLViewer()->GetClipSet()->SetClipType(TGLClip::kClipPlane);
-    RhoZ->GetGLViewer()->GetClipSet()->SetClipState(TGLClip::kClipPlane, fRhoZPlane);
+    // RhoZ->GetGLViewer()->GetClipSet()->SetClipType(TGLClip::kClipPlane);
+    // RhoZ->GetGLViewer()->GetClipSet()->SetClipState(TGLClip::kClipPlane, fRhoZPlane);
     RhoZ->GetGLViewer()->GetCameraOverlay()->SetOrthographicMode(TGLCameraOverlay::kAxis);
     RhoZ->GetGLViewer()->GetCameraOverlay()->SetShowOrthographic(kTRUE);
     // switch off left, right and front light sources
@@ -573,15 +577,15 @@ Float_t FairEventManager::GetEvtTime()
 
 void FairEventManager::SetEvtTimeText(Double_t time)
 {
-	TString stime;
-	stime.Form("%.2f", time);
-	stime += " ns";
-	fEventTimeText->SetText(stime);
-
+    TString stime;
+    stime.Form("%.2f", time);
+    stime += " ns";
+    fEventTimeText->SetText(stime);
 }
 
-void FairEventManager::SetEvtNumberText(Int_t evtNumber){
-//	TString text ="EvtNumber: ";
-//	text += evtNumber;
-//	fEventNumberText->SetText(text);
+void FairEventManager::SetEvtNumberText(Int_t evtNumber)
+{
+    TString text = "Event: ";
+    text += evtNumber;
+    fEventNumberText->SetText(text);
 }

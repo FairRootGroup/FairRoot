@@ -11,8 +11,9 @@
 // -------------------------------------------------------------------------
 #include "FairBoxSetDraw.h"
 
-#include "FairBoxSet.h"               // for FairBoxSet
-#include "FairEventManager.h"         // for FairEventManager
+#include "FairBoxSet.h"         // for FairBoxSet
+#include "FairEventManager.h"   // for FairEventManager
+#include "FairLogger.h"
 #include "FairRootManager.h"          // for FairRootManager
 #include "FairRunAna.h"               // for FairRunAna
 #include "FairTSBufferFunctional.h"   // for StopTime
@@ -68,25 +69,21 @@ FairBoxSetDraw::FairBoxSetDraw(const char* name, Int_t iVerbose)
 
 InitStatus FairBoxSetDraw::Init()
 {
-    if (fVerbose > 1) {
-        cout << "FairBoxSetDraw::Init()" << endl;
-    }
+    LOG(debug) << "FairBoxSetDraw::Init()";
+
     fManager = FairRootManager::Instance();
 
     fList = static_cast<TClonesArray*>(FairRootManager::Instance()->GetObject(GetName()));
     // std::cout << fList << std::endl;
     if (fList == 0) {
-        cout << "FairBoxSetDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated " << endl;
+        LOG(error) << "FairBoxSetDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated ";
         SetActive(kFALSE);
         return kERROR;
     }
-    if (fVerbose > 2) {
-        cout << "FairBoxSetDraw::Init() get track list" << fList << endl;
-    }
+    LOG(debug2) << "FairBoxSetDraw::Init() get track list" << fList;
     fEventManager = FairEventManager::Instance();
-    if (fVerbose > 2) {
-        cout << "FairBoxSetDraw::Init() get instance of FairEventManager " << endl;
-    }
+    LOG(debug2) << "FairBoxSetDraw::Init() get instance of FairEventManager";
+
     fq = 0;
 
     fStartFunctor = new StopTime();
@@ -108,9 +105,8 @@ void FairBoxSetDraw::Exec(Option_t* /*option*/)
             if (fUseEventTime) {
                 fStartTime = eventTime - fTimeWindowMinus;
             }
-            if (fVerbose > 1)
-                cout << "EventTime: " << eventTime << " TimeWindow: " << fStartTime << " - "
-                     << eventTime + fTimeWindowPlus << std::endl;
+            LOG(debug) << "EventTime: " << eventTime << " TimeWindow: " << fStartTime << " - "
+                       << eventTime + fTimeWindowPlus;
 
             fList = FairRootManager::Instance()->GetData(
                 GetName(),
@@ -121,9 +117,8 @@ void FairBoxSetDraw::Exec(Option_t* /*option*/)
         }
 
         // fList = (TClonesArray *)fManager->GetObject(GetName());
-        if (fVerbose > 1) {
-            std::cout << GetName() << " fList: " << fList->GetEntries() << std::endl;
-        }
+        LOG(debug) << GetName() << " fList: " << fList->GetEntries();
+
         double tmin = -1.;
         double tmax = -1.;
         FairEventManager::Instance()->GetTimeLimits(tmin, tmax);
@@ -151,10 +146,8 @@ void FairBoxSetDraw::AddBoxes(FairBoxSet* set, TObject* obj, Int_t i)
     TVector3 point = GetVector(obj);
     set->AddBox(point.X(), point.Y(), point.Z());
     set->DigitValue(GetValue(obj, i));
-    if (fVerbose > 2) {
-        cout << "FairBoxSetDraw::Init() Add point " << i << ": " << point.X() << " " << point.Y() << " " << point.Z()
-             << " " << endl;
-    }
+    LOG(debug2) << "FairBoxSetDraw::Init() Add point " << i << ": " << point.X() << " " << point.Y() << " " << point.Z()
+                << " ";
 }
 
 Int_t FairBoxSetDraw::GetValue(TObject* /*obj*/, Int_t i) { return i; }
