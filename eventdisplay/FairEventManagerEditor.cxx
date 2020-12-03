@@ -176,8 +176,8 @@ void FairEventManagerEditor::SelectEvent()
 {
     fManager->GotoEvent(fCurrentEvent->GetIntNumber());
     //    SetEventNrLabel(fCurrentEvent->GetIntNumber());
-    std::cout << "FairEventManagerEditor::SelectEvent " << fCurrentEvent->GetIntNumber() << " time "
-              << FairEventManager::Instance()->GetEvtTime() << std::endl;
+    // std::cout << "FairEventManagerEditor::SelectEvent " << fCurrentEvent->GetIntNumber() << " time "
+    //          << FairEventManager::Instance()->GetEvtTime() << std::endl;
     SetEventTimeLabel(FairEventManager::Instance()->GetEvtTime());
     FairEventManager::Instance()->SetEvtTimeText(FairEventManager::Instance()->GetEvtTime());
     FairEventManager::Instance()->SetEvtNumberText(fCurrentEvent->GetIntNumber());
@@ -253,6 +253,7 @@ void FairEventManagerEditor::StartAnimation()
                     lowerLimit = i - tail;
                 }
                 FairEventManager::Instance()->SetEvtTime(i);
+                // std::cout << "EventTime set to: " << i << std::endl;
                 FairEventManager::Instance()->SetTimeLimits(lowerLimit, i);
                 SetEventTimeLabel(i);
                 FairEventManager::Instance()->SetEvtTimeText(FairEventManager::Instance()->GetEvtTime());

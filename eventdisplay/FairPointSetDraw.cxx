@@ -52,25 +52,20 @@ FairPointSetDraw::FairPointSetDraw(const char* name, Color_t color, Style_t msty
 
 InitStatus FairPointSetDraw::Init()
 {
-    if (fVerbose > 1) {
-        cout << "FairPointSetDraw::Init()" << endl;
-    }
+    LOG(info) << "FairPointSetDraw::Init()";
+
     FairRootManager* fManager = FairRootManager::Instance();
     fBranch = fManager->GetInTree()->GetBranch(GetName());
     fEventTime = fManager->InitObjectAs<std::vector<double> const*>("EventTimes");
 
     fPointList = static_cast<TClonesArray*>(fManager->GetObject(GetName()));
     if (fPointList == 0) {
-        cout << "FairPointSetDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated " << endl;
+        LOG(warn) << "FairPointSetDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated ";
         SetActive(kFALSE);
     }
-    if (fVerbose > 2) {
-        cout << "FairPointSetDraw::Init() get track list" << fPointList << endl;
-    }
+
+    LOG(debug2) << "FairPointSetDraw::Init() get track list " << fPointList;
     fEventManager = FairEventManager::Instance();
-    if (fVerbose > 2) {
-        cout << "FairPointSetDraw::Init() get instance of FairEventManager " << endl;
-    }
     fq = 0;
 
     // gEve->AddElement(fq, fEventManager );
@@ -83,14 +78,14 @@ void FairPointSetDraw::Exec(Option_t* /*option*/)
     if (IsActive()) {
         if (FairRunAna::Instance()->IsTimeStamp() && fEventTime != nullptr
             && fEventTime->size() > 0) {   ///< find the matching event to a given time if timebased simulation is on
-            Double_t eventTime = FairRootManager::Instance()->GetEventTime();
-            timeOffset = eventTime;
-            auto lower = std::lower_bound(fEventTime->begin(), fEventTime->end(), eventTime + 0.01);
-            int i = std::distance(fEventTime->begin(), lower);
-            if (i == 0) {
+            Double_t simTime = fEventManager->GetEvtTime();
+            auto lower = std::lower_bound(fEventTime->begin(), fEventTime->end(), simTime + 0.01);
+            int currentEvent = std::distance(fEventTime->begin(), lower) - 1;
+            if (currentEvent == -1) {
                 fPointList->Delete();
             } else {
-                fBranch->GetEvent(i - 1);
+                fBranch->GetEvent(currentEvent);
+                timeOffset = fEventTime->at(currentEvent);
             }
         }
         Int_t npoints = fPointList->GetEntriesFast();
@@ -103,7 +98,8 @@ void FairPointSetDraw::Exec(Option_t* /*option*/)
         double tmin, tmax;
         FairEventManager::Instance()->GetTimeLimits(tmin, tmax);
         bool checkTime = tmin < tmax;
-        // std::cout << "fPointList: " << fPointList << " " << fPointList->GetEntries() << std::endl;
+        // std::cout << "FairPointSetDraw::Exec time offset " << timeOffset << " tmin " << tmin << " tmax " << tmax
+        //                  << std::endl;
         for (Int_t i = 0; i < npoints; ++i) {
             TObject* p = static_cast<TObject*>(fPointList->At(i));
             if (p != 0) {
@@ -111,13 +107,16 @@ void FairPointSetDraw::Exec(Option_t* /*option*/)
                 if (checkTime) {
                     double time = GetTime(p);
                     if (fUseTimeOffset == kTRUE)
-                        time += timeOffset;   ///< corrects a point time (with only time-of-flight) to event time + ToF
-                                              ///< to match with TimeLimits tmin, tmax
+                        time += timeOffset;   ///< corrects a point time (with only time-of-flight) to event time +
+                                              ///< ToF to match with TimeLimits tmin, tmax
+                    // std::cout << i << " time: " << time;
                     if (time > 0) {
                         if (time < tmin || time > tmax) {
+                            // std::cout << " no match" << std::endl;
                             continue;
                         }
                     }
+                    // std::cout << " match" << std::endl;
                 }
                 q->SetNextPoint(vec.X(), vec.Y(), vec.Z());
                 q->SetPointId(GetValue(p, i));
