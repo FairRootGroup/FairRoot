@@ -21,6 +21,8 @@ set(sources
   FairMCPointDraw.cxx
   FairPointSetDraw.cxx
   FairTimeStampPointDraw.cxx
+  FairTimebasedMCPointDraw.cxx
+  FairTimebasedMCHitDraw.cxx
   FairXMLNode.cxx
   gui/FairEveAnimationControl.cxx
   gui/FairEveCut.cxx
@@ -33,6 +35,7 @@ set(sources
   tracks/FairEveTracks.cxx
   tracks/FairGeoTracksDraw.cxx
   tracks/FairGeoTrackHandler.cxx
+  tracks/FairTimebasedDataHandlerT.cxx
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)

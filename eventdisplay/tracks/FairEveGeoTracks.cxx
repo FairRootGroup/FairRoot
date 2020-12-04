@@ -159,8 +159,9 @@ void FairEveGeoTracks::Repaint()
             LOG(debug) << "FairEveGeoTracks::Repaint " << simTime << " lower " << *lower << " at index "
                        << evtIndex + 1;
             LOG(debug) << "GetEvent " << evtIndex << " time: " << fEventTime->at(evtIndex) << std::endl;
-            std::cout << "FairEveGeoTracks::Repaint " << simTime << " lower " << *lower << " at index " << evtIndex + 1;
-            std::cout << "GetEvent " << evtIndex << " time: " << fEventTime->at(evtIndex) << std::endl;
+            //            std::cout << "FairEveGeoTracks::Repaint " << simTime << " lower " << *lower << " at index " <<
+            //            evtIndex + 1; std::cout << "GetEvent " << evtIndex << " time: " << fEventTime->at(evtIndex) <<
+            //            std::endl;
         }
         if (evtIndex < 0) {
             fContainer->Clear();
@@ -177,7 +178,7 @@ void FairEveGeoTracks::Repaint()
     }
     Int_t nTracks = 0;
     if (useGeoTrackHandler) {
-        nTracks = fGeoTrackHandler.GetGeoTracks().size();
+        nTracks = fGeoTrackHandler.GetData().size();
     } else {
         nTracks = fContainer->GetEntriesFast();
     }
@@ -192,8 +193,8 @@ void FairEveGeoTracks::Repaint()
             TGeoTrack *track;
             double t0 = .0;
             if (useGeoTrackHandler) {
-                track = fGeoTrackHandler.GetGeoTracks()[iTrack].first;
-                t0 = fGeoTrackHandler.GetGeoTracks()[iTrack].second;
+                track = fGeoTrackHandler.GetData()[iTrack].first;
+                t0 = fGeoTrackHandler.GetData()[iTrack].second;
             } else {
                 track = (TGeoTrack *)fContainer->At(iTrack);
             }

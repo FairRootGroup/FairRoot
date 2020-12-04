@@ -54,23 +54,21 @@ class FairPointSetDraw : public FairTask
     virtual void SetUseTimeOffset(Bool_t val) { fUseTimeOffset = val; };
 
   protected:
-    virtual TVector3 GetVector(TObject* obj) = 0;
-    virtual TObject* GetValue(TObject* obj, Int_t i);
-    virtual double GetTime(TObject* obj) { return -1; };
+    virtual void GetData() = 0;
+    virtual Int_t GetNPoints() = 0;
+    virtual TVector3 GetVector(Int_t index) = 0;
+    //    virtual TObject* GetValue(TObject* obj, Int_t i);
+    virtual double GetTime(Int_t index) { return -1; };
 
     Int_t fVerbose;   //  Verbosity level
     virtual void SetParContainers();
     virtual InitStatus Init();
     /** Action after each event**/
     virtual void Finish();
-    TClonesArray* fPointList;                          //!
-    FairEventManager* fEventManager;                   //!
-    TEvePointSet* fq;                                  //!
-    Color_t fColor;                                    //!
-    Style_t fStyle;                                    //!
-    TBranch* fBranch;                                  //!
-    std::vector<double> const* fEventTime = nullptr;   //!
-    Bool_t fUseTimeOffset = kTRUE;                     //!
+    TEvePointSet* fq;                //!
+    Color_t fColor;                  //!
+    Style_t fStyle;                  //!
+    Bool_t fUseTimeOffset = kTRUE;   //!
 
   private:
     FairPointSetDraw(const FairPointSetDraw&);
