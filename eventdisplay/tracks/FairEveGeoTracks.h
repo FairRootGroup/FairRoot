@@ -16,15 +16,15 @@
 #ifndef FAIREVEGEOTRACKS_H_
 #define FAIREVEGEOTRACKS_H_
 
-#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>     // for Bool_t, Int_t, Double_t
-#include "FairEveTracks.h"  // for FairEveTracks
-#include "FairTask.h"       // for InitStatus
-#include "FairGeoTrackHandler.h"
+#include <FairTimebasedDataHandlerT.h>
+#include "FairEveTracks.h"   // for FairEveTracks
+#include "FairTask.h"        // for InitStatus
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Int_t, Double_t
 class TBuffer;
 class TClass;
 class TClonesArray;
-class TGeoTrack;  // lines 22-22
+class TGeoTrack;   // lines 22-22
 class TMemberInspector;
 class TBranch;
 
@@ -34,7 +34,7 @@ class TBranch;
 
 class FairEveGeoTracks : public FairEveTracks
 {
-    TClonesArray *fContainer;
+    TClonesArray* fContainer;
     Bool_t fShowPrimary;
     Bool_t fShowSecondary;
     Bool_t fUsePdg;
@@ -42,11 +42,12 @@ class FairEveGeoTracks : public FairEveTracks
     Double_t fTMin, fTMax;
     std::vector<double> const* fEventTime = nullptr;
     TBranch* fBranch = nullptr;
-    FairGeoTrackHandler fGeoTrackHandler;
+    FairTimebasedDataHandlerT<TGeoTrack> fGeoTrackHandler;
+    // FairGeoTrackHandler fGeoTrackHandler;
     Double_t fCurrentEventTime;
 
   protected:
-    Bool_t CheckCuts(TGeoTrack *tr);
+    Bool_t CheckCuts(TGeoTrack* tr);
     void DrawTrack(Int_t id);
     void DrawAnimatedTrack(TGeoTrack* tr, double t0 = 0);
 

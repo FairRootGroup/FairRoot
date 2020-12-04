@@ -21,6 +21,8 @@
 #pragma link C++ class FairHitPointSetDraw;
 #pragma link C++ class FairMCPointDraw;
 #pragma link C++ class FairTimeStampPointDraw;
+#pragma link C++ class FairTimebasedMCPointDraw;
+#pragma link C++ class FairTimebasedMCHitDraw;
 #pragma link C++ class FairXMLNode;
 #pragma link C++ class FairXMLAttrib;
 #pragma link C++ class FairXMLFile;

@@ -552,7 +552,7 @@ void FairEventManager::MakeScreenshot(FairEveAnimationControl::eScreenshotType p
         } break;
         case FairEveAnimationControl::eScreenshotType::kAll: {
             TString filename_path = filename(0, filename.Last('.'));
-            TString filename_ext = filename(filename.Last('.'), 4);
+            TString filename_ext = filename(filename.Last('.') + 1, 3);
             TString filename3d = Form("%s_3d.%s", filename_path.Data(), filename_ext.Data());
             TString filenameRphi = Form("%s_XY.%s", filename_path.Data(), filename_ext.Data());
             TString filenameRhoz = Form("%s_Z.%s", filename_path.Data(), filename_ext.Data());

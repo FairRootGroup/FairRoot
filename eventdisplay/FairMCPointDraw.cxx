@@ -16,9 +16,9 @@
 
 #include "FairMCPoint.h"   // for FairMCPoint
 
+#include <TClonesArray.h>
+#include <TObject.h>
 #include <TVector3.h>   // for TVector3
-
-class TObject;
 
 FairMCPointDraw::FairMCPointDraw()
 {
@@ -30,15 +30,28 @@ FairMCPointDraw::~FairMCPointDraw()
     // TODO Auto-generated destructor stub
 }
 
-TVector3 FairMCPointDraw::GetVector(TObject* obj)
+InitStatus FairMCPointDraw::Init()
 {
+    FairRootManager* man = FairRootManager::Instance();
+    fPointList = static_cast<TClonesArray*>(man->GetObject(GetName()));
+    if (fPointList == 0) {
+        LOG(warn) << "FairMCPoint::Init()  branch " << GetName() << " Not found! Task will be deactivated ";
+        SetActive(kFALSE);
+    }
+
+    LOG(debug2) << "FairPointSetDraw::Init() get track list " << fPointList;
+
+    FairPointSetDraw::Init();
+    return kSUCCESS;
+}
+
+Int_t FairMCPointDraw::GetNPoints() { return fPointList->GetEntriesFast(); }
+
+TVector3 FairMCPointDraw::GetVector(Int_t index)
+{
+    TObject* obj = fPointList->At(index);
     FairMCPoint* p = static_cast<FairMCPoint*>(obj);
     return TVector3(p->GetX(), p->GetY(), p->GetZ());
 }
 
-double FairMCPointDraw::GetTime(TObject* obj)
-{
-    FairMCPoint* p = static_cast<FairMCPoint*>(obj);
-    return p->GetTime();
-}
 ClassImp(FairMCPointDraw);

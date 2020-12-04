@@ -13,28 +13,28 @@
 
 class TClonesArray;
 
-class FairGeoTrackHandler {
-public:
-	FairGeoTrackHandler():fHoldTime(10.0){};
-	virtual ~FairGeoTrackHandler(){
-		Reset();
-	};
+class FairGeoTrackHandler
+{
+  public:
+    FairGeoTrackHandler()
+        : fHoldTime(10.0){};
+    virtual ~FairGeoTrackHandler() { Reset(); };
 
-	void FillTClonesArray(TClonesArray* geoArray, int evtIndex, double t0Event, double t0Current);
-	std::vector<std::pair<TGeoTrack*, double>>& GetGeoTracks() {return fTrackVector;};
-	void SetHoldTime(double time){ fHoldTime = time; };
-	void Reset();
+    void FillTClonesArray(TClonesArray* geoArray, int evtIndex, double t0Event, double t0Current);
+    std::vector<std::pair<TGeoTrack*, double>>& GetData() { return fTrackVector; };
+    void SetHoldTime(double time) { fHoldTime = time; };
+    void Reset();
 
-protected:
-	void RemoveOldTracks(double newT0Time);
+  protected:
+    void RemoveOldTracks(double newT0Time);
 
-private:
-	std::vector<std::pair<TGeoTrack*, double> > fTrackVector; //! GeoTrack and event T0 time
-	std::vector<int> fEventsFilledInBuffer;
+  private:
+    std::vector<std::pair<TGeoTrack*, double>> fTrackVector;   //! GeoTrack and event T0 time
+    std::vector<int> fEventsFilledInBuffer;
 
-	double fHoldTime; //! Time in ns a track is kept in the array after last points time
+    double fHoldTime;   //! Time in ns a track is kept in the array after last points time
 
-	//TClonesArray* fTGeoArray;
+    // TClonesArray* fTGeoArray;
 };
 
 #endif /* EVENTDISPLAY_FAIRGEOTRACKHANDLER_H_ */
