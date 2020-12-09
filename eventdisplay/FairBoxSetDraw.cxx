@@ -14,8 +14,9 @@
 #include "FairBoxSet.h"         // for FairBoxSet
 #include "FairEventManager.h"   // for FairEventManager
 #include "FairLogger.h"
-#include "FairRootManager.h"          // for FairRootManager
-#include "FairRunAna.h"               // for FairRunAna
+#include "FairRootManager.h"   // for FairRootManager
+#include "FairRunAna.h"        // for FairRunAna
+#include "FairTCASource.h"
 #include "FairTSBufferFunctional.h"   // for StopTime
 #include "FairTimeStamp.h"            // for FairTimeStamp
 
@@ -34,60 +35,46 @@ Double_t fX, fY, fZ;
 FairBoxSetDraw::FairBoxSetDraw()
     : FairTask("FairBoxSetDraw", 0)
     , fVerbose(0)
-    , fList(nullptr)
     , fEventManager(nullptr)
-    , fManager(nullptr)
     , fq(nullptr)
     , fX(0.3)
     , fY(0.3)
     , fZ(0.3)
     , fTimeWindowPlus(0.)
     , fTimeWindowMinus(0.)
-    , fStartTime(0.)
-    , fUseEventTime(kTRUE)
-    , fStartFunctor()
-    , fStopFunctor()
 {}
 
-FairBoxSetDraw::FairBoxSetDraw(const char* name, Int_t iVerbose)
+FairBoxSetDraw::FairBoxSetDraw(const char* name, FairDataSourceI* dataSource, Int_t iVerbose)
     : FairTask(name, iVerbose)
     , fVerbose(iVerbose)
-    , fList(nullptr)
     , fEventManager(nullptr)
-    , fManager(nullptr)
     , fq(nullptr)
     , fX(0.3)
     , fY(0.3)
     , fZ(0.3)
     , fTimeWindowPlus(0.)
     , fTimeWindowMinus(0.)
-    , fStartTime(0.)
-    , fUseEventTime(kTRUE)
-    , fStartFunctor()
-    , fStopFunctor()
+    , fDataSource(dataSource)
 {}
 
 InitStatus FairBoxSetDraw::Init()
 {
     LOG(debug) << "FairBoxSetDraw::Init()";
 
-    fManager = FairRootManager::Instance();
-
-    fList = static_cast<TClonesArray*>(FairRootManager::Instance()->GetObject(GetName()));
+    if (fDataSource == nullptr) {
+        fDataSource = new FairTCASource(GetName());
+    }
     // std::cout << fList << std::endl;
-    if (fList == 0) {
+
+    if (fDataSource->Init() != kSUCCESS) {
         LOG(error) << "FairBoxSetDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated ";
         SetActive(kFALSE);
         return kERROR;
     }
-    LOG(debug2) << "FairBoxSetDraw::Init() get track list" << fList;
+
     fEventManager = FairEventManager::Instance();
-    LOG(debug2) << "FairBoxSetDraw::Init() get instance of FairEventManager";
 
     fq = 0;
-
-    fStartFunctor = new StopTime();
-    fStopFunctor = new StopTime();
 
     return kSUCCESS;
 }
@@ -99,35 +86,20 @@ void FairBoxSetDraw::Exec(Option_t* /*option*/)
         Reset();
         //  cout<<  "FairBoxSetDraw::Init() Exec! " << fList->GetEntriesFast() << endl;
         CreateBoxSet();
-        if (FairRunAna::Instance()->IsTimeStamp()) {
-            fList->Clear();
-            Double_t eventTime = FairEventManager::Instance()->GetEvtTime();
-            if (fUseEventTime) {
-                fStartTime = eventTime - fTimeWindowMinus;
-            }
-            LOG(debug) << "EventTime: " << eventTime << " TimeWindow: " << fStartTime << " - "
-                       << eventTime + fTimeWindowPlus;
-
-            fList = FairRootManager::Instance()->GetData(
-                GetName(),
-                fStartFunctor,
-                fStartTime,
-                fStopFunctor,
-                eventTime + fTimeWindowPlus);   // FairRootManager::Instance()->GetEventTime() +
+        if (FairEventManager::Instance()->GetClearHandler() == kTRUE) {
+            fDataSource->Reset();
         }
-
-        // fList = (TClonesArray *)fManager->GetObject(GetName());
-        LOG(debug) << GetName() << " fList: " << fList->GetEntries();
+        fDataSource->RetrieveData(fEventManager->GetEvtTime());
 
         double tmin = -1.;
         double tmax = -1.;
         FairEventManager::Instance()->GetTimeLimits(tmin, tmax);
         bool checkTime = tmin < tmax;
 
-        for (Int_t i = 0; i < fList->GetEntriesFast(); ++i) {
-            p = fList->At(i);
+        for (Int_t i = 0; i < fDataSource->GetNData(); ++i) {
+            p = fDataSource->GetData(i);
             if (checkTime) {
-                double time = GetTime(p);
+                double time = fDataSource->GetTime(i);
                 if (time + fTimeWindowMinus > 0) {
                     if (time + fTimeWindowMinus < tmin || time - fTimeWindowPlus > tmax) {
                         continue;

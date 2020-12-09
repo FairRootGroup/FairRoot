@@ -20,20 +20,14 @@ class TObject;
 
 FairHitDraw::FairHitDraw() {}
 
-FairHitDraw::FairHitDraw(const char* name, Int_t iVerbose)
-    : FairBoxSetDraw(name, iVerbose)
+FairHitDraw::FairHitDraw(const char* name, FairDataSourceI* dataSource, Int_t iVerbose)
+    : FairBoxSetDraw(name, dataSource, iVerbose)
 {}
 
 TVector3 FairHitDraw::GetVector(TObject* obj)
 {
     FairHit* hit = static_cast<FairHit*>(obj);
     return TVector3(hit->GetX(), hit->GetY(), hit->GetZ());
-}
-
-double FairHitDraw::GetTime(TObject* obj)
-{
-    FairHit* hit = static_cast<FairHit*>(obj);
-    return hit->GetTimeStamp();
 }
 
 ClassImp(FairHitDraw);

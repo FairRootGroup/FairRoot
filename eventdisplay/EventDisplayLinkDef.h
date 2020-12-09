@@ -20,9 +20,6 @@
 #pragma link C++ class FairBoxSetEditor;
 #pragma link C++ class FairHitPointSetDraw;
 #pragma link C++ class FairMCPointDraw;
-#pragma link C++ class FairTimeStampPointDraw;
-#pragma link C++ class FairTimebasedMCPointDraw;
-#pragma link C++ class FairTimebasedMCHitDraw;
 #pragma link C++ class FairXMLNode;
 #pragma link C++ class FairXMLAttrib;
 #pragma link C++ class FairXMLFile;
@@ -39,5 +36,11 @@
 #pragma link C++ class FairGeoTracksDraw;
 #pragma link C++ class FairEveAnimationControl;
 #pragma link C++ class FairEveTransparencyControl;
+#pragma link C++ class FairDataSourceI;
+#pragma link C++ class FairTCASource;
+#pragma link C++ class FairTimebasedSource;
+#pragma link C++ class FairTimebasedMCSource;
+#pragma link C++ class FairTimebasedMCHitSource;
+#pragma link C++ class FairGetEventTimeTask + ;
 
 #endif
