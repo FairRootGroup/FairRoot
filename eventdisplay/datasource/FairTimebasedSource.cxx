@@ -24,4 +24,5 @@ void FairTimebasedSource::RetrieveData(double time)
 {
     fCArray = FairRootManager::Instance()->GetData(
         fBranchName, fStartFunctor, time - fTimeWindowMinus, fStopFunctor, time + fTimeWindowPlus);
+    FairDataSourceI::RetrieveData(time);
 }
