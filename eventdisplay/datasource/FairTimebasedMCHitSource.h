@@ -1,6 +1,8 @@
 /*
  * FairTimebasedMCHitSource.h
  *
+ * \brief Combines event based FairHits (with relative times) with absolute event times.
+ *
  *  Created on: 07.12.2020
  *      Author: tstockmanns
  */
@@ -18,11 +20,16 @@ class FairTimebasedMCHitSource : public FairDataSourceI
 {
   public:
     FairTimebasedMCHitSource();
-    FairTimebasedMCHitSource(TString branchName)
-        : FairDataSourceI(branchName){};
+    FairTimebasedMCHitSource(TString branchName, double holdTime = 10.0)
+        : FairDataSourceI(branchName)
+        , fDataHandler(holdTime){};
     virtual ~FairTimebasedMCHitSource();
 
     virtual InitStatus Init();
+    /**
+     * Deletes data which is older than time + holdTime and adds new data from input TClonesArray
+     * \param time Absolute time in ns which determines which data is deleted and which new event is read in
+     */
     virtual void RetrieveData(double time);
     virtual int GetNData() { return fDataHandler.GetData().size(); };
     virtual TObject* GetData(int index) { return fDataHandler.GetData()[index].first; }
@@ -31,6 +38,7 @@ class FairTimebasedMCHitSource : public FairDataSourceI
         return (fDataHandler.GetData()[index].first->GetTimeStamp() + fDataHandler.GetData()[index].second);
     };
     virtual void Reset() { fDataHandler.Reset(); };
+    void SetHoldTime(double time) { fDataHandler.SetHoldTime(time); }
 
   private:
     TBranch* fBranch = nullptr;                        //!

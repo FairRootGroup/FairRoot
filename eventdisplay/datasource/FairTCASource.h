@@ -1,5 +1,8 @@
-/*
+/**
  * FairTCASource.h
+ *
+ * \brief Handles a TClonesArray as input object. No timebased operations are done and the TClonesArray is handled as it
+ * 		  is received by the FairRootManager
  *
  *  Created on: 07.12.2020
  *      Author: tstockmanns

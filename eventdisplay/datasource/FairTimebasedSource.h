@@ -1,5 +1,7 @@
-/*
+/**
  * FairTimebasedSource.h
+ *
+ * \brief Handles timebased data via the GetData method. A time window has to be given in which the data is received.
  *
  *  Created on: 07.12.2020
  *      Author: tstockmanns
@@ -31,8 +33,8 @@ class FairTimebasedSource : public FairDataSourceI
   private:
     BinaryFunctor* fStartFunctor{new StopTime()};   //!
     BinaryFunctor* fStopFunctor{new StopTime()};    //!
-    Double_t fTimeWindowPlus{-1.0};                 //!
-    Double_t fTimeWindowMinus{-1.0};                //!
+    Double_t fTimeWindowPlus{-1.0};                 //!< time window in ns data is taken before the event time
+    Double_t fTimeWindowMinus{-1.0};                //!< time window in ns data is taken after the event time
 
     ClassDef(FairTimebasedSource, 1);
 };
