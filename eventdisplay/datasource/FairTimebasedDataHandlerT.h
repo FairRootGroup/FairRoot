@@ -70,6 +70,24 @@ inline void FairTimebasedDataHandlerT<T>::Reset()
     fLastEventInBuffer = -1;
 }
 
+template<class T>
+inline void FairTimebasedDataHandlerT<T>::RemoveOldTracks(double newT0Time)
+{
+    if (fDataVector.size() > 0) {
+        fDataVector.erase(std::remove_if(fDataVector.begin(),
+                                         fDataVector.end(),
+                                         [&](std::pair<T*, double> const& track) {
+                                             double t = track.first->GetTime();   // relative time of hit in ns
+                                             if ((t + track.second) < (newT0Time - fHoldTime)) {
+                                                 delete (track.first);
+                                                 return true;
+                                             } else
+                                                 return false;
+                                         }),
+                          fDataVector.end());
+    }
+}
+
 template<>
 inline void FairTimebasedDataHandlerT<TGeoTrack>::RemoveOldTracks(double newT0Time)
 {
