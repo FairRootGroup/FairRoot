@@ -24,11 +24,10 @@
 
 #include <Rtypes.h>   // for Int_t, Color_t, etc
 
-class FairEventManager;
-class TClonesArray;
 class TEvePointSet;
 class TObject;
 class TVector3;
+class FairDataSourceI;
 
 class FairPointSetDraw : public FairTask
 {
@@ -41,6 +40,7 @@ class FairPointSetDraw : public FairTask
      *@param iVerbose    Verbosity level
      **/
     FairPointSetDraw(const char* name, Color_t color, Style_t mstyle, Int_t iVerbose = 1);
+    FairPointSetDraw(const char* name, FairDataSourceI* dataSource, Color_t color, Style_t mstyle, Int_t iVerbose = 1);
 
     /** Destructor **/
     virtual ~FairPointSetDraw();
@@ -53,12 +53,11 @@ class FairPointSetDraw : public FairTask
 
     virtual void SetUseTimeOffset(Bool_t val) { fUseTimeOffset = val; };
 
+    virtual void SetDataSource(FairDataSourceI* source) { fDataSource = source; }
+
   protected:
-    virtual void GetData() = 0;
-    virtual Int_t GetNPoints() = 0;
-    virtual TVector3 GetVector(Int_t index) = 0;
+    virtual TVector3 GetVector(TObject* obj) = 0;
     //    virtual TObject* GetValue(TObject* obj, Int_t i);
-    virtual double GetTime(Int_t index) { return -1; };
 
     Int_t fVerbose;   //  Verbosity level
     virtual void SetParContainers();
@@ -73,6 +72,7 @@ class FairPointSetDraw : public FairTask
   private:
     FairPointSetDraw(const FairPointSetDraw&);
     FairPointSetDraw& operator=(const FairPointSetDraw&);
+    FairDataSourceI* fDataSource = nullptr;
 
     ClassDef(FairPointSetDraw, 1);
 };

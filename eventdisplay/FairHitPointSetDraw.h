@@ -29,19 +29,19 @@ class FairHitPointSetDraw : public FairPointSetDraw
     FairHitPointSetDraw(const char* name, Color_t color, Style_t mstyle, Int_t iVerbose = 1)
         : FairPointSetDraw(name, color, mstyle, iVerbose)
     {}
+    FairHitPointSetDraw(const char* name,
+                        FairDataSourceI* dataSource,
+                        Color_t color,
+                        Style_t mstyle,
+                        Int_t iVerbose = 1)
+        : FairPointSetDraw(name, dataSource, color, mstyle, iVerbose)
+    {}
     virtual ~FairHitPointSetDraw();
-    virtual void SetUseTimeOffset(Bool_t val) { fUseTimeOffset = val; };
 
   protected:
-    virtual InitStatus Init();
-    void GetData(){};
-    Int_t GetNPoints();
-    TVector3 GetVector(Int_t index);
-    double GetTime(Int_t index);
+    TVector3 GetVector(TObject* obj);
 
   private:
-    TClonesArray* fPointList = nullptr;   //!
-
     ClassDef(FairHitPointSetDraw, 2);
 };
 
