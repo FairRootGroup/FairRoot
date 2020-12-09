@@ -22,17 +22,10 @@
 
 FairGetEventTimeTask::FairGetEventTimeTask()
     : FairTask("Pnd Get Event Time")
-    , fRunOnce(true)
     , fEventTime(new std::vector<double>)
 {}
 
 FairGetEventTimeTask::~FairGetEventTimeTask() {}
-
-void FairGetEventTimeTask::SetParContainers()
-{
-    // FairRuntimeDb* rtdb = FairRunAna::Instance()->GetRuntimeDb(); //[R.K. 01/2017] unused variable?
-    //  fSttParameters = (PndGeoSttPar*) rtdb->getContainer("PndGeoSttPar");
-}
 
 InitStatus FairGetEventTimeTask::ReInit()
 {
@@ -56,12 +49,15 @@ InitStatus FairGetEventTimeTask::Init()
 
     ioman->RegisterAny("EventTimes", fEventTime, kFALSE);
 
-    LOG(debug) << "-I- FairGetEventTimeTask: Initialisation successfull #Times: " << fEventTimeCopy.size();
+    LOG(debug) << "-I- FairGetEventTimeTask: Initialization successful #Times: " << fEventTimeCopy.size();
     return kSUCCESS;
 }
 
 // -----   Public method Exec   --------------------------------------------
-void FairGetEventTimeTask::Exec(Option_t *) { *fEventTime = fEventTimeCopy; }
+void FairGetEventTimeTask::Exec(Option_t *)
+{
+    *fEventTime = fEventTimeCopy;   // todo Check if a faster way exists to preserve the data between events
+}
 
 void FairGetEventTimeTask::FinishEvent()
 {

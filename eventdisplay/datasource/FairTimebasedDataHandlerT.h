@@ -1,6 +1,9 @@
 /*
  * FairTimebasedDataHandlerT.h
  *
+ * \brief Container class which combines data with a relative time information with an absolute event time
+ *
+ *
  *  Created on: 30.10.2020
  *      Author: tstockmanns
  */
@@ -23,17 +26,32 @@ template<class T>
 class FairTimebasedDataHandlerT
 {
   public:
-    FairTimebasedDataHandlerT()
-        : fHoldTime(10.0){};
+    FairTimebasedDataHandlerT(double holdTime = 10.0)
+        : fHoldTime(holdTime){};
     virtual ~FairTimebasedDataHandlerT() { Reset(); };
 
+    /**
+     * Removes old data from the container and adds new data from the input TClonesArray and combines it with the event
+     * time \param inputArray : TClonesArray which holds the input data (stored class has to be of type FairHit
+     * FairMCPoint or has a GetTime() method) \param evtIndex : event number determines if the TClonesArray is already
+     * in the array or needs to be filled into it \param t0Event : event time in ns which is added to the relative time
+     * of the data objects \param t0Current : current simulated time in ns which determines which data is removed from
+     * the container
+     */
     void FillTClonesArray(TClonesArray* inputArray, int evtIndex, double t0Event, double t0Current);
     std::vector<std::pair<T*, double>>& GetData() { return fDataVector; };
+    /**
+     * Determines how long data is kept in the container
+     */
     void SetHoldTime(double time) { fHoldTime = time; };
     void Reset();
 
   protected:
-    void RemoveOldTracks(double newT0Time);
+    /**
+     * Removes data which fulfills the condition (obj. relative time + event time + hold time < newT0Time)
+     * \param currentTime : time in ns which determines the events to be removed
+     */
+    void RemoveOldTracks(double currentTime);
 
   private:
     std::vector<std::pair<T*, double>> fDataVector;   //! GeoTrack and event T0 time
@@ -71,14 +89,14 @@ inline void FairTimebasedDataHandlerT<T>::Reset()
 }
 
 template<class T>
-inline void FairTimebasedDataHandlerT<T>::RemoveOldTracks(double newT0Time)
+inline void FairTimebasedDataHandlerT<T>::RemoveOldTracks(double currentTime)
 {
     if (fDataVector.size() > 0) {
         fDataVector.erase(std::remove_if(fDataVector.begin(),
                                          fDataVector.end(),
                                          [&](std::pair<T*, double> const& track) {
                                              double t = track.first->GetTime();   // relative time of hit in ns
-                                             if ((t + track.second) < (newT0Time - fHoldTime)) {
+                                             if ((t + track.second) < (currentTime - fHoldTime)) {
                                                  delete (track.first);
                                                  return true;
                                              } else
@@ -89,7 +107,7 @@ inline void FairTimebasedDataHandlerT<T>::RemoveOldTracks(double newT0Time)
 }
 
 template<>
-inline void FairTimebasedDataHandlerT<TGeoTrack>::RemoveOldTracks(double newT0Time)
+inline void FairTimebasedDataHandlerT<TGeoTrack>::RemoveOldTracks(double currentTime)
 {
     if (fDataVector.size() > 0) {
         fDataVector.erase(std::remove_if(fDataVector.begin(),
@@ -97,7 +115,7 @@ inline void FairTimebasedDataHandlerT<TGeoTrack>::RemoveOldTracks(double newT0Ti
                                          [&](std::pair<TGeoTrack*, double> const& track) {
                                              Double_t x, y, z, t;
                                              track.first->GetLastPoint(x, y, z, t);
-                                             if (((t * 1e9) + track.second) < (newT0Time - fHoldTime)) {
+                                             if (((t * 1e9) + track.second) < (currentTime - fHoldTime)) {
                                                  delete (track.first);
                                                  return true;
                                              } else
@@ -108,14 +126,14 @@ inline void FairTimebasedDataHandlerT<TGeoTrack>::RemoveOldTracks(double newT0Ti
 }
 
 template<>
-inline void FairTimebasedDataHandlerT<FairMCPoint>::RemoveOldTracks(double newT0Time)
+inline void FairTimebasedDataHandlerT<FairMCPoint>::RemoveOldTracks(double currentTime)
 {
     if (fDataVector.size() > 0) {
         fDataVector.erase(std::remove_if(fDataVector.begin(),
                                          fDataVector.end(),
                                          [&](std::pair<FairMCPoint*, double> const& track) {
                                              Double_t t = track.first->GetTime();
-                                             if (((t) + track.second) < (newT0Time - fHoldTime)) {
+                                             if (((t) + track.second) < (currentTime - fHoldTime)) {
                                                  delete (track.first);
                                                  return true;
                                              } else
@@ -126,14 +144,14 @@ inline void FairTimebasedDataHandlerT<FairMCPoint>::RemoveOldTracks(double newT0
 }
 
 template<>
-inline void FairTimebasedDataHandlerT<FairHit>::RemoveOldTracks(double newT0Time)
+inline void FairTimebasedDataHandlerT<FairHit>::RemoveOldTracks(double currentTime)
 {
     if (fDataVector.size() > 0) {
         fDataVector.erase(std::remove_if(fDataVector.begin(),
                                          fDataVector.end(),
                                          [&](std::pair<FairHit*, double> const& track) {
                                              Double_t t = track.first->GetTimeStamp();
-                                             if (((t) + track.second) < (newT0Time - fHoldTime)) {
+                                             if (((t) + track.second) < (currentTime - fHoldTime)) {
                                                  delete (track.first);
                                                  return true;
                                              } else

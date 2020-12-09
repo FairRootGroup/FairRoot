@@ -1,6 +1,17 @@
 #ifndef FairGetEventTimeTask_H_
 #define FairGetEventTimeTask_H_
 
+/**
+ * FairTimebasedMCSource.h
+ *
+ * \brief Reads in the event times stored in the event headers of each event in the Init() of the task and provides this
+ * data as a transient vector
+ *
+ *  Created on: 07.12.2020
+ *
+ *      Author: tstockmanns
+ */
+
 #include "FairEventHeader.h"
 #include "FairTask.h"
 #include "TClonesArray.h"
@@ -14,7 +25,6 @@ class FairGetEventTimeTask : public FairTask
     virtual ~FairGetEventTimeTask();
 
     /** Virtual method Init **/
-    virtual void SetParContainers();
     virtual InitStatus Init();
     virtual InitStatus ReInit();
 
@@ -28,7 +38,6 @@ class FairGetEventTimeTask : public FairTask
 
     std::vector<double>* fEventTime = nullptr;
     std::vector<double> fEventTimeCopy;
-    bool fRunOnce;
 
     void Register();
     void Reset();
