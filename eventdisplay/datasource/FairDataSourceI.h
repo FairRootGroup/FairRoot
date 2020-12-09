@@ -13,6 +13,7 @@
 #include <TClonesArray.h>
 #include <TObject.h>
 #include <TString.h>
+#include <fairlogger/Logger.h>
 
 class FairDataSourceI : public TObject
 {
@@ -23,7 +24,10 @@ class FairDataSourceI : public TObject
     virtual ~FairDataSourceI();
 
     virtual InitStatus Init();
-    virtual void RetrieveData(double time) = 0;
+    virtual void RetrieveData(double time)
+    {
+        LOG(debug) << "Retrieving Data for " << fBranchName << " for time " << time << " ns - nData = " << GetNData();
+    }
     virtual int GetNData() = 0;
     virtual TObject* GetData(int index) = 0;
     virtual double GetTime(int index) { return -1.0; };

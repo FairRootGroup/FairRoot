@@ -21,7 +21,6 @@ class FairTCASource : public FairDataSourceI
         : FairDataSourceI(branchName){};
     virtual ~FairTCASource();
 
-    virtual void RetrieveData(double time){};
     virtual int GetNData() { return fCArray->GetEntries(); };
     virtual TObject* GetData(int index) { return fCArray->At(index); }
     virtual double GetTime(int index)

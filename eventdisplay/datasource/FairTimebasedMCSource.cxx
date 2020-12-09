@@ -56,4 +56,5 @@ void FairTimebasedMCSource::RetrieveData(double time)
         currentEventTime = fEventTime->at(evtIndex);
         fDataHandler.FillTClonesArray(fCArray, evtIndex, currentEventTime, simTime);
     }
+    FairDataSourceI::RetrieveData(time);
 }
