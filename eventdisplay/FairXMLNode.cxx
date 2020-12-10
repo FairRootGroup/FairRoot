@@ -13,6 +13,7 @@
 #include <TXMLAttr.h>       // for TXMLAttr
 #include <TXMLDocument.h>   // for TXMLDocument
 #include <TXMLNode.h>
+#include <fairlogger/Logger.h>
 #include <iostream>
 
 FairXMLNode::FairXMLNode(TString name, TString value)
@@ -84,7 +85,7 @@ void FairXMLNode::AddAttrib(FairXMLAttrib* attrib)
 {
     TString new_atr = attrib->GetName();
     if (GetAttrib(new_atr) != nullptr) {
-        std::cout << "FairXMLNode::AddAttrib Can't have two attributes with the same name!" << std::endl;
+        LOG(error) << "FairXMLNode::AddAttrib Can't have two attributes with the same name!";
         return;
     }
     fAttrib.AddLast(attrib);
@@ -154,7 +155,7 @@ void FairXMLFile::Close()
 {
     if (fOverwrite) {
         if (!fRootNode) {
-            std::cout << "FairXMLFile::Close() No root node!" << std::endl;
+            LOG(error) << "FairXMLFile::Close() No root node!";
             return;
         }
         TXMLEngine engine;

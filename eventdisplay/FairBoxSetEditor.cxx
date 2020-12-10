@@ -12,6 +12,7 @@
 #include <TGLabel.h>         // for TGLabel
 #include <TGLayout.h>        // for TGLayoutHints, etc
 #include <TGNumberEntry.h>   // for TGNumberEntry, etc
+#include <fairlogger/Logger.h>
 
 class TGWindow;
 
@@ -32,7 +33,7 @@ FairBoxSetEditor::FairBoxSetEditor(const TGWindow* p, Int_t width, Int_t height,
     , fObject(nullptr)
     , fM(nullptr)
 {
-    std::cout << "FairBoxSetEditor called!" << std::endl;
+    LOG(info) << "FairBoxSetEditor called!";
     Init();
 }
 
@@ -82,8 +83,8 @@ void FairBoxSetEditor::Init()
 
 void FairBoxSetEditor::TimeWindow()
 {
-    std::cout << "FairBoxSetEditor::TimeWindowPlus " << fTimeWindowPlus->GetNumber() << std::endl;
-    std::cout << "FairBoxSetEditor::TimeWindowMinus " << fTimeWindowMinus->GetNumber() << std::endl;
+    LOG(debug) << "FairBoxSetEditor::TimeWindowPlus " << fTimeWindowPlus->GetNumber();
+    LOG(debug) << "FairBoxSetEditor::TimeWindowMinus " << fTimeWindowMinus->GetNumber();
     fM->SetTimeWindowPlus(fTimeWindowPlus->GetNumber());
     fM->SetTimeWindowMinus(fTimeWindowMinus->GetNumber());
     FairEventManager* man = FairEventManager::Instance();
