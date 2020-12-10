@@ -15,8 +15,9 @@
 // Class that takes care of Root IO.
 #include "FairRootManager.h"
 
-#include "FairEventHeader.h"          // for FairEventHeader
-#include "FairFileHeader.h"           // for FairFileHeader
+#include "FairEventHeader.h"   // for FairEventHeader
+#include "FairFileHeader.h"    // for FairFileHeader
+#include "FairFileSource.h"
 #include "FairLink.h"                 // for FairLink
 #include "FairLinkManager.h"          // for FairLinkManager
 #include "FairLogger.h"               // for FairLogger, MESSAGE_ORIGIN
@@ -25,7 +26,6 @@
 #include "FairRun.h"                  // for FairRun
 #include "FairTSBufferFunctional.h"   // for FairTSBufferFunctional, etc
 #include "FairWriteoutBuffer.h"       // for FairWriteoutBuffer
-#include "FairFileSource.h"
 
 #include <TBranch.h>        // for TBranch
 #include <TClonesArray.h>   // for TClonesArray
@@ -461,7 +461,8 @@ Int_t FairRootManager::ReadEvent(Int_t i)
     fSource->FillEventHeader(fEventHeader);
     fCurrentTime = fEventHeader->GetEventTime();
 
-    std::cout << "--Event number --- " << fCurrentEntryNo << " with time ---- " << fCurrentTime << " eventTime " << eventTime << std::endl;
+    LOG(debug) << "--Event number --- " << fCurrentEntryNo << " with t0 time ---- " << eventTime << " at time "
+               << fCurrentTime;
 
     return readEventResult;
 }
