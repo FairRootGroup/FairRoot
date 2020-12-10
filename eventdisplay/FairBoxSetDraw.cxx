@@ -26,9 +26,6 @@
 #include <TVector3.h>      // for TVector3
 #include <iostream>        // for operator<<, basic_ostream, etc
 
-using std::cout;
-using std::endl;
-
 FairBoxSet* fq;   //!
 Double_t fX, fY, fZ;
 
@@ -64,7 +61,6 @@ InitStatus FairBoxSetDraw::Init()
     if (fDataSource == nullptr) {
         fDataSource = new FairTCASource(GetName());
     }
-    // std::cout << fList << std::endl;
 
     if (fDataSource->Init() != kSUCCESS) {
         LOG(error) << "FairBoxSetDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated ";

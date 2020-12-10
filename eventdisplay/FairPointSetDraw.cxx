@@ -27,9 +27,6 @@
 
 class TObject;
 
-using std::cout;
-using std::endl;
-
 FairPointSetDraw::FairPointSetDraw()
     : FairTask("FairPointSetDraw", 0)
     , fVerbose(0)
@@ -105,11 +102,9 @@ void FairPointSetDraw::Exec(Option_t* /*option*/)
                                           ///< ToF to match with TimeLimits tmin, tmax
                 if (time > 0) {
                     if (time < tmin || time > tmax) {
-                        // std::cout << " no match" << std::endl;
                         continue;
                     }
                 }
-                // std::cout << " match" << std::endl;
             }
             q->SetNextPoint(vec.X(), vec.Y(), vec.Z());
             // q->SetPointId(GetValue(p, i));

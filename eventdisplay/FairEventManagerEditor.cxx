@@ -175,9 +175,6 @@ void FairEventManagerEditor::SelectSingleEvent()
 void FairEventManagerEditor::SelectEvent()
 {
     fManager->GotoEvent(fCurrentEvent->GetIntNumber());
-    //    SetEventNrLabel(fCurrentEvent->GetIntNumber());
-    // std::cout << "FairEventManagerEditor::SelectEvent " << fCurrentEvent->GetIntNumber() << " time "
-    //          << FairEventManager::Instance()->GetEvtTime() << std::endl;
     SetEventTimeLabel(FairEventManager::Instance()->GetEvtTime());
     FairEventManager::Instance()->SetEvtTimeText(FairEventManager::Instance()->GetEvtTime());
     FairEventManager::Instance()->SetEvtNumberText(fCurrentEvent->GetIntNumber());
