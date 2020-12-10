@@ -1,8 +1,8 @@
 /*
  * FairGeoTrackHandler.h
  *
- *  Created on: 30.10.2020
- *      Author: tstockmanns
+ * \data 30.10.2020
+ * \author Tobias Stockmanns <t.stockmanns@fz-juelich.de>
  */
 
 #ifndef EVENTDISPLAY_FAIRGEOTRACKHANDLER_H_

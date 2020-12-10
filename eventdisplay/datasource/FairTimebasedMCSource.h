@@ -3,8 +3,8 @@
  *
  * \brief Combines event based FairMCPoints with absolute event times.
  *
- *  Created on: 07.12.2020
- *      Author: tstockmanns
+ * \date 07.12.2020
+ * \author Tobias Stockmanns <t.stockmanns@fz-juelich.de>
  */
 
 #ifndef EVENTDISPLAY_FAIRTIMEBASEDMCSOURCE_H_
@@ -28,9 +28,9 @@ class FairTimebasedMCSource : public FairDataSourceI
     virtual InitStatus Init();
     /**
      * Deletes data which is older than time + holdTime and adds new data from input TClonesArray
-     * \param time Absolute time in ns which determines which data is deleted and which new event is read in
+     * \param simTime Absolute time in ns which determines which data is deleted and which new event is read in
      */
-    virtual void RetrieveData(double time);
+    virtual void RetrieveData(double simTime);
     virtual int GetNData() { return fDataHandler.GetData().size(); };
     virtual TObject* GetData(int index) { return fDataHandler.GetData()[index].first; }
     virtual double GetTime(int index)

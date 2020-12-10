@@ -3,8 +3,8 @@
  *
  * \brief Handles timebased data via the GetData method. A time window has to be given in which the data is received.
  *
- *  Created on: 07.12.2020
- *      Author: tstockmanns
+ * \date 07.12.2020
+ * \author Tobias Stockmanns <t.stockmanns@fz-juelich.de>
  */
 
 #ifndef EVENTDISPLAY_FAIRTIMEBASEDSOURCE_H_

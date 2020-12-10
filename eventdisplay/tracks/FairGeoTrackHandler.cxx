@@ -2,7 +2,7 @@
  * FairGeoTrackHandler.cxx
  *
  *  Created on: 26.11.2020
- *      Author: tstockmanns
+ * \author Tobias Stockmanns <t.stockmanns@fz-juelich.de>
  */
 
 #include <algorithm>

@@ -20,7 +20,7 @@ set(sources
   FairHitPointSetDraw.cxx
   FairMCPointDraw.cxx
   FairPointSetDraw.cxx
-  FairGetEventTimeTask.cxx
+  FairGetEventTime.cxx
   datasource/FairDataSourceI.cxx
   datasource/FairTCASource.cxx
   datasource/FairTimebasedSource.cxx

@@ -3,8 +3,8 @@
  *
  * \brief Combines event based FairHits (with relative times) with absolute event times.
  *
- *  Created on: 07.12.2020
- *      Author: tstockmanns
+ * \date 07.12.2020
+ * \author Tobias Stockmanns <t.stockmanns@fz-juelich.de>
  */
 
 #ifndef EVENTDISPLAY_FAIRTIMEBASEDMCHITSOURCE_H_

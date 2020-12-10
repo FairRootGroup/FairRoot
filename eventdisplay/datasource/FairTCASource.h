@@ -4,8 +4,8 @@
  * \brief Handles a TClonesArray as input object. No timebased operations are done and the TClonesArray is handled as it
  * 		  is received by the FairRootManager
  *
- *  Created on: 07.12.2020
- *      Author: tstockmanns
+ * \date 07.12.2020
+ * \author Tobias Stockmanns <t.stockmanns@fz-juelich.de>
  */
 
 #ifndef EVENTDISPLAY_FAIRTCASOURCE_H_
