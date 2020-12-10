@@ -21,9 +21,6 @@
 #include <TVector3.h>   // for TVector3
 #include <fairlogger/Logger.h>
 
-using std::cout;
-using std::endl;
-
 FairHitPointSetDraw::FairHitPointSetDraw()
 {
     // TODO Auto-generated constructor stub
