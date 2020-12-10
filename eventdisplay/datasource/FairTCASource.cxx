@@ -1,8 +1,8 @@
 /*
  * FairTCASource.cxx
  *
- *  Created on: 07.12.2020
- *      Author: tstockmanns
+ * \date 07.12.2020
+ * \author Tobias Stockmanns <t.stockmanns@fz-juelich.de>
  */
 
 #include <FairRootManager.h>

@@ -4,8 +4,8 @@
  * \brief Container class which combines data with a relative time information with an absolute event time
  *
  *
- *  Created on: 30.10.2020
- *      Author: tstockmanns
+ * \date 30.10.2020
+ * \author Tobias Stockmanns <t.stockmanns@fz-juelich.de>
  */
 
 #ifndef EVENTDISPLAY_FAIRTIMEBASEDDATAHANDLERT_H_

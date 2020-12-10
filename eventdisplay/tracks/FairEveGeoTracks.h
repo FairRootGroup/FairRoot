@@ -16,9 +16,10 @@
 #ifndef FAIREVEGEOTRACKS_H_
 #define FAIREVEGEOTRACKS_H_
 
-#include <FairTimebasedDataHandlerT.h>
 #include "FairEveTracks.h"   // for FairEveTracks
 #include "FairTask.h"        // for InitStatus
+
+#include <FairTimebasedDataHandlerT.h>
 #include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
 #include <RtypesCore.h>   // for Bool_t, Int_t, Double_t
 class TBuffer;
@@ -40,11 +41,8 @@ class FairEveGeoTracks : public FairEveTracks
     Bool_t fUsePdg;
     Int_t fPdgCut;
     Double_t fTMin, fTMax;
-    std::vector<double> const* fEventTime = nullptr;
     TBranch* fBranch = nullptr;
     FairTimebasedDataHandlerT<TGeoTrack> fGeoTrackHandler;
-    // FairGeoTrackHandler fGeoTrackHandler;
-    Double_t fCurrentEventTime;
 
   protected:
     Bool_t CheckCuts(TGeoTrack* tr);

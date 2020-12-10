@@ -4,8 +4,8 @@
  * \brief Abstract interface class to handle different input data for event and timebased data
  *
  *
- *  Created on: 07.12.2020
- *      Author: tstockmanns
+ * \date 07.12.2020
+ * \author Tobias Stockmanns <t.stockmanns@fz-juelich.de>
  */
 
 #ifndef EVENTDISPLAY_FAIRDATASOURCEI_H_

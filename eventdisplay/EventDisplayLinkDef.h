@@ -41,6 +41,6 @@
 #pragma link C++ class FairTimebasedSource;
 #pragma link C++ class FairTimebasedMCSource;
 #pragma link C++ class FairTimebasedMCHitSource;
-#pragma link C++ class FairGetEventTimeTask + ;
+#pragma link C++ class FairGetEventTime + ;
 
 #endif

@@ -18,7 +18,8 @@
 
 #include "FairEveTrack.h"       // for FairEveTrack
 #include "FairEventManager.h"   // for FairEventManager
-#include "FairRootManager.h"    // for FairRootManager
+#include "FairGetEventTime.h"
+#include "FairRootManager.h"   // for FairRootManager
 
 #include <TBranch.h>
 #include <TClonesArray.h>   // for TClonesArray
@@ -40,7 +41,6 @@ FairEveGeoTracks::FairEveGeoTracks()
     , fPdgCut(0)
     , fTMin(0)
     , fTMax(std::numeric_limits<Double_t>::max())
-    , fCurrentEventTime(-1.0)
 {
     SetElementNameTitle("FairGeoTracks", "FairGeoTracks");
 }
@@ -51,8 +51,8 @@ InitStatus FairEveGeoTracks::Init()
     fContainer = (TClonesArray *)mngr->GetObject("GeoTracks");
     if (fContainer == nullptr)
         return kFATAL;
-    fEventTime = mngr->InitObjectAs<std::vector<double> const *>("EventTimes");
     fBranch = mngr->GetInTree()->GetBranch("GeoTracks");
+    FairGetEventTime::Instance().Init();
     return FairEveTracks::Init();
 }
 
@@ -150,30 +150,20 @@ void FairEveGeoTracks::DrawAnimatedTrack(TGeoTrack *tr, double t0)
 void FairEveGeoTracks::Repaint()
 {
     bool useGeoTrackHandler = false;
-    if (FairRunAna::Instance()->IsTimeStamp() && fEventTime != nullptr && fEventTime->size() > 0
-        && fBranch != nullptr) {
+    if (FairRunAna::Instance()->IsTimeStamp() && fBranch != nullptr) {
         Double_t simTime = FairEventManager::Instance()->GetEvtTime();
-        auto lower = std::lower_bound(fEventTime->begin(), fEventTime->end(), simTime + 0.01);
-        int evtIndex = std::distance(fEventTime->begin(), lower) - 1;
-        if (evtIndex > -1) {
-            LOG(debug) << "FairEveGeoTracks::Repaint " << simTime << " lower " << *lower << " at index "
-                       << evtIndex + 1;
-            LOG(debug) << "GetEvent " << evtIndex << " time: " << fEventTime->at(evtIndex) << std::endl;
-            //            std::cout << "FairEveGeoTracks::Repaint " << simTime << " lower " << *lower << " at index " <<
-            //            evtIndex + 1; std::cout << "GetEvent " << evtIndex << " time: " << fEventTime->at(evtIndex) <<
-            //            std::endl;
-        }
-        if (evtIndex < 0) {
+        std::pair<int, double> evt = FairGetEventTime::Instance().GetEvent(simTime);
+
+        if (evt.first < 0) {
             fContainer->Clear();
         } else {
-            fBranch->GetEvent(evtIndex);
-            fCurrentEventTime = fEventTime->at(evtIndex);
+            fBranch->GetEvent(evt.first);
         }
         if (FairEventManager::Instance()->GetClearHandler() == kTRUE) {
             fGeoTrackHandler.Reset();
         }
-        if (evtIndex > -1)
-            fGeoTrackHandler.FillTClonesArray(fContainer, evtIndex, fCurrentEventTime, simTime);
+        if (evt.first > -1)
+            fGeoTrackHandler.FillTClonesArray(fContainer, evt.first, evt.second, simTime);
         useGeoTrackHandler = true;
     }
     Int_t nTracks = 0;
