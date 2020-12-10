@@ -17,7 +17,8 @@ FairTimebasedSource::FairTimebasedSource()
 
 FairTimebasedSource::~FairTimebasedSource()
 {
-    // TODO Auto-generated destructor stub
+    delete (fStartFunctor);
+    delete (fStopFunctor);
 }
 
 void FairTimebasedSource::RetrieveData(double time)
