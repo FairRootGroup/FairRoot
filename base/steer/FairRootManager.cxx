@@ -456,13 +456,11 @@ Int_t FairRootManager::ReadEvent(Int_t i)
     fCurrentEntryNo = i;
 
     Int_t readEventResult = fSource->ReadEvent(i);
-    Double_t eventTime = ((FairFileSource*)fSource)->GetEventTime();
 
     fSource->FillEventHeader(fEventHeader);
     fCurrentTime = fEventHeader->GetEventTime();
 
-    LOG(debug) << "--Event number --- " << fCurrentEntryNo << " with t0 time ---- " << eventTime << " at time "
-               << fCurrentTime;
+    LOG(debug) << "--Event number --- " << fCurrentEntryNo << " with t0 time ---- " << fCurrentTime;
 
     return readEventResult;
 }
