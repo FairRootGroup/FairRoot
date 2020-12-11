@@ -10,6 +10,7 @@
 #include "TClonesArray.h"
 
 #include <algorithm>
+#include <fairlogger/Logger.h>
 #include <iostream>
 #include <utility>
 
