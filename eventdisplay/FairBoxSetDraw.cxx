@@ -32,26 +32,18 @@ Double_t fX, fY, fZ;
 FairBoxSetDraw::FairBoxSetDraw()
     : FairTask("FairBoxSetDraw", 0)
     , fVerbose(0)
-    , fEventManager(nullptr)
-    , fq(nullptr)
-    , fX(0.3)
-    , fY(0.3)
-    , fZ(0.3)
-    , fTimeWindowPlus(0.)
-    , fTimeWindowMinus(0.)
 {}
 
 FairBoxSetDraw::FairBoxSetDraw(const char* name, FairDataSourceI* dataSource, Int_t iVerbose)
     : FairTask(name, iVerbose)
     , fVerbose(iVerbose)
-    , fEventManager(nullptr)
-    , fq(nullptr)
-    , fX(0.3)
-    , fY(0.3)
-    , fZ(0.3)
-    , fTimeWindowPlus(0.)
-    , fTimeWindowMinus(0.)
     , fDataSource(dataSource)
+{}
+
+FairBoxSetDraw::FairBoxSetDraw(const char* name, Int_t iVerbose)
+    : FairTask(name, iVerbose)
+    , fVerbose(iVerbose)
+    , fDataSource(nullptr)
 {}
 
 InitStatus FairBoxSetDraw::Init()

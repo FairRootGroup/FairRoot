@@ -37,10 +37,22 @@ class FairPointSetDraw : public FairTask
 
     /** Standard constructor
      *@param name        Name of task
+     *@param dataSource  Input data container for data to be displayed
+     *@param color		 Color of points
+     *@param mstyle		 Style of points
      *@param iVerbose    Verbosity level
      **/
-    FairPointSetDraw(const char* name, Color_t color, Style_t mstyle, Int_t iVerbose = 1);
     FairPointSetDraw(const char* name, FairDataSourceI* dataSource, Color_t color, Style_t mstyle, Int_t iVerbose = 1);
+
+    /** Legacy constructor
+     *  Input data source will be set to nullptr which implicitly activates the read in via TClonesArray branch
+     *@param name        Name of task
+     *@param color		 Color of points
+     *@param mstyle		 Style of points
+     *@param iVerbose    Verbosity level
+     **/
+
+    FairPointSetDraw(const char* name, Color_t color, Style_t mstyle, Int_t iVerbose = 1);
 
     /** Destructor **/
     virtual ~FairPointSetDraw();
@@ -64,7 +76,7 @@ class FairPointSetDraw : public FairTask
     virtual InitStatus Init();
     /** Action after each event**/
     virtual void Finish();
-    TEvePointSet* fq;                //!
+    TEvePointSet* fq = nullptr;      //!
     Color_t fColor;                  //!
     Style_t fStyle;                  //!
     Bool_t fUseTimeOffset = kTRUE;   //!
