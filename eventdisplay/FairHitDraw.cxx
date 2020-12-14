@@ -24,6 +24,10 @@ FairHitDraw::FairHitDraw(const char* name, FairDataSourceI* dataSource, Int_t iV
     : FairBoxSetDraw(name, dataSource, iVerbose)
 {}
 
+FairHitDraw::FairHitDraw(const char* name, Int_t iVerbose)
+    : FairBoxSetDraw(name, iVerbose)
+{}
+
 TVector3 FairHitDraw::GetVector(TObject* obj)
 {
     FairHit* hit = static_cast<FairHit*>(obj);

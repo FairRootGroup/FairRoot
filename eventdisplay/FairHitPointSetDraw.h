@@ -15,6 +15,7 @@
 #ifndef FAIRHITPOINTSETDRAW_H_
 #define FAIRHITPOINTSETDRAW_H_
 
+#include "FairDataSourceI.h"
 #include "FairPointSetDraw.h"   // for FairPointSetDraw
 
 #include <Rtypes.h>   // for FairHitPointSetDraw::Class, etc
