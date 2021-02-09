@@ -27,7 +27,7 @@ class FairFastSimDetector : public FairDetector
 
     virtual void Initialize() = 0;
 
-    virtual Bool_t ProcessHits(FairVolume* vol = 0) final;
+    virtual void ProcessHits() final;
 
     virtual void EndOfEvent() {}
 

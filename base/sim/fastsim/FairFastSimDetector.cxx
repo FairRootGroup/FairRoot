@@ -59,11 +59,9 @@ void FairFastSimDetector::ConstructGeometry()
     }
 }
 
-Bool_t FairFastSimDetector::ProcessHits(FairVolume*)
+void FairFastSimDetector::ProcessHits()
 {
     FastSimProcessParticle();
-
-    return kTRUE;
 }
 
 ClassImp(FairFastSimDetector);

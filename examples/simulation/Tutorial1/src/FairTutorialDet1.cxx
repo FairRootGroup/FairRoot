@@ -7,8 +7,8 @@
  ********************************************************************************/
 #include "FairTutorialDet1.h"
 
-#include "FairDetectorList.h"         // for DetectorId::kTutDet
-#include "FairLogger.h"               // for logging
+#include "FairDetectorList.h"   // for DetectorId::kTutDet
+#include "FairLogger.h"
 #include "FairRootManager.h"          // for FairRootManager
 #include "FairStack.h"                // for FairStack
 #include "FairTutorialDet1Geo.h"      // for FairTutorialDet1Geo
@@ -75,7 +75,7 @@ void FairTutorialDet1::Initialize()
 */
 }
 
-Bool_t FairTutorialDet1::ProcessHits(FairVolume* vol)
+void FairTutorialDet1::ProcessHits()
 {
     /** This method is called from the MC stepping */
 
@@ -96,9 +96,10 @@ Bool_t FairTutorialDet1::ProcessHits(FairVolume* vol)
     if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
         || TVirtualMC::GetMC()->IsTrackDisappeared()) {
         fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
-        fVolumeID = vol->getMCid();
+        Int_t copyNo = 0;
+        fVolumeID = TVirtualMC::GetMC()->CurrentVolID(copyNo);
         if (fELoss == 0.) {
-            return kFALSE;
+            return;
         }
         AddHit(fTrackID,
                fVolumeID,
@@ -112,11 +113,15 @@ Bool_t FairTutorialDet1::ProcessHits(FairVolume* vol)
         FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
         stack->AddPoint(kTutDet);
     }
-
-    return kTRUE;
 }
 
-void FairTutorialDet1::EndOfEvent() { fFairTutorialDet1PointCollection->Clear(); }
+void FairTutorialDet1::EndOfEvent()
+{
+
+    LOG(info) << "FairTutorialDet1 : " << fFairTutorialDet1PointCollection->GetEntriesFast() << " points registered.";
+
+    fFairTutorialDet1PointCollection->Clear();
+}
 
 void FairTutorialDet1::Register()
 {
@@ -151,8 +156,8 @@ Bool_t FairTutorialDet1::IsSensitive(const std::string& name)
 void FairTutorialDet1::ConstructGeometry()
 {
     /** If you are using the standard ASCII input for the geometry
-      just copy this and use it for your detector, otherwise you can
-      implement here you own way of constructing the geometry. */
+        just copy this and use it for your detector, otherwise you can
+        implement here you own way of constructing the geometry. */
 
     ConstructASCIIGeometry<FairTutorialDet1Geo, FairTutorialDet1GeoPar>(fgGeo, "FairTutorialDet1GeoPar");
 }

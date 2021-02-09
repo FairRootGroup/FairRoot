@@ -47,7 +47,7 @@ class FairDetector : public FairModule
     /**
       this method is called for each step during simulation (see FairMCApplication::Stepping())
     */
-    virtual Bool_t ProcessHits(FairVolume* v = 0) = 0;
+    virtual void ProcessHits()=0;
     /**
       this is called at the end of an event after the call to tree fill in the FairRootManager
     */
