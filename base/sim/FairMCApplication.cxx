@@ -657,7 +657,7 @@ void FairMCApplication::Stepping()
     // Work around for Fluka VMC, which does not call
     // MCApplication::PreTrack()
     static Int_t TrackId = 0;
-    if (fMcVersion == 2 || fMC->GetStack()->GetCurrentTrackNumber() != TrackId) {
+    if (fMcVersion == 2 && fMC->GetStack()->GetCurrentTrackNumber() != TrackId) {
         PreTrack();
         TrackId = fMC->GetStack()->GetCurrentTrackNumber();
     }
