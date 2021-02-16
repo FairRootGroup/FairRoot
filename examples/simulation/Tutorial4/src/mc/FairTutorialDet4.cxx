@@ -293,7 +293,7 @@ std::map<std::string, TGeoHMatrix> FairTutorialDet4::getMisalignmentMatrices()
         TGeoCombiTrans localdelta = *(new TGeoCombiTrans(dx, dy, dz, rrot));
         TGeoHMatrix ldm = TGeoHMatrix(localdelta);
 
-        std::string thisPath(volPath);
+        std::string thisPath(volPath.Data());
         matrices[thisPath] = ldm;
     }
 
@@ -329,7 +329,7 @@ void FairTutorialDet4::RegisterAlignmentMatrices()
             TGeoCombiTrans localdelta = *(new TGeoCombiTrans(dx, dy, dz, rrot));
             TGeoHMatrix ldm = TGeoHMatrix(localdelta);
 
-            std::string thisPath(volPath);
+            std::string thisPath(volPath.Data());
             matrices[thisPath] = ldm;
         }
 
