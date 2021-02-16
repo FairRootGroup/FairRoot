@@ -16,7 +16,10 @@
 
 #include <TROOT.h>
 
-FairGenericVMCConfig::FairGenericVMCConfig() {}
+FairGenericVMCConfig::FairGenericVMCConfig()
+    : fPostInitFlag(false)
+    , fPostInitName("g4ConfigPostInit.C")
+{}
 
 FairGenericVMCConfig::~FairGenericVMCConfig() {}
 
@@ -164,6 +167,62 @@ void FairGenericVMCConfig::Setup(const char* mcEngine)
 
     gROOT->LoadMacro(cuts);
     gROOT->ProcessLine("SetCuts()");
+}
+
+void FairGenericVMCConfig::SetupPostInit(const char* mcEngine)
+{
+    if (!fPostInitFlag) {
+        LOG(info) << "FairGenericVMCConfig::SetupPostInit() OFF.";
+        return;
+    }
+
+    LOG(warning) << "FairGenericVMCConfig::SetupPostInit() Using " << fPostInitName << " macro DEPRACATED.";
+    LOG(warning) << "Check FairRoot/examples/common/gconfig/ for current YAML implementation.";
+
+    TString work = getenv("VMCWORKDIR");
+    TString work_config = work + "/gconfig/";
+    work_config.ReplaceAll("//", "/");
+
+    TString config_dir = getenv("CONFIG_DIR");
+    config_dir.ReplaceAll("//", "/");
+
+    Bool_t AbsPath = kFALSE;
+
+    TString ConfigMacro;
+    //----------------------------------------------Geant4 Config PostInit-----------------------------------------
+    if (strcmp(mcEngine, "TGeant4") == 0) {
+        TString g4Macro;
+        if (fPostInitName.empty()) {
+            g4Macro = "g4ConfigPostInit.C";
+            fPostInitName = g4Macro;
+        } else {
+            if (fPostInitName.find("/") != std::string::npos) {
+                AbsPath = kTRUE;
+            }
+            g4Macro = fPostInitName;
+            LOG(info) << "---------------User config is used: " << g4Macro.Data();
+        }
+        if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(), g4Macro)) != TString("")) {
+            LOG(info) << "---User path for Configuration (" << fPostInitName << ".C) is used: " << config_dir.Data();
+            ConfigMacro = g4Macro;
+        } else {
+            if (AbsPath) {
+                ConfigMacro = fPostInitName;
+            } else {
+                ConfigMacro = work_config + fPostInitName;
+            }
+        }
+        //----------------------------------------------Geant3 Config PostInit-----------------------------------------
+    } else if (strcmp(mcEngine, "TGeant3") == 0) {
+        //----------------------------------------------Fluka Config PostInit-----------------------------------------
+    } else if (strcmp(mcEngine, "TFluka") == 0) {
+    }
+    //--------------------------------------Now load the Config------------------------------------
+    if (ConfigMacro.Length() > 0) {
+        LOG(info) << " SetupPostInit -> \"" << ConfigMacro.Data() << "\"";
+        gROOT->LoadMacro(ConfigMacro.Data());
+        gROOT->ProcessLine("ConfigPostInit()");
+    }
 }
 
 ClassImp(FairGenericVMCConfig);

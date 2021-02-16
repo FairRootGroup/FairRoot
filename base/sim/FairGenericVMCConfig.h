@@ -10,6 +10,8 @@
 // -----            Created 2019.02.19 by R. Karabowicz                -----
 // -------------------------------------------------------------------------
 
+#include <string>   // for string
+
 #ifndef FAIR_GENERIC_VMC_CONFIG_H
 #define FAIR_GENERIC_VMC_CONFIG_H
 
@@ -20,6 +22,17 @@ class FairGenericVMCConfig
     virtual ~FairGenericVMCConfig();
 
     virtual void Setup(const char* mcEngine);
+    virtual void SetupPostInit(const char* mcEngine);
+
+    virtual void UsePostInitConfig(bool useC = true, const char* stringC = "g4ConfigPostInit.C")
+    {
+        fPostInitFlag = useC;
+        fPostInitName = stringC;
+    }
+
+  protected:
+    bool fPostInitFlag;
+    std::string fPostInitName;
 };
 
 #endif

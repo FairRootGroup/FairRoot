@@ -33,16 +33,20 @@
 
 FairYamlVMCConfig::FairYamlVMCConfig()
     : FairGenericVMCConfig()
-{}
+    , fMCEngine("")
+{
+    UsePostInitConfig();
+}
 
 void FairYamlVMCConfig::Setup(const char* mcEngine)
 {
+    fMCEngine = mcEngine;
     if (!((strcmp(mcEngine, "TGeant4") == 0) || (strcmp(mcEngine, "TGeant3") == 0))) {
         LOG(fatal) << "FairYamlVMCConfig::Setup() Engine \"" << mcEngine << "\" unknown!";
     }
 
-    TString yamlFileName = ObtainYamlFileName(mcEngine);
-    fYamlConfig = YAML::LoadFile(yamlFileName.Data());
+    string yamlFileName = ObtainYamlFileName(mcEngine);
+    fYamlConfig = YAML::LoadFile(yamlFileName);
 
     if (strcmp(mcEngine, "TGeant4") == 0) {
         SetupGeant4();
@@ -53,6 +57,63 @@ void FairYamlVMCConfig::Setup(const char* mcEngine)
     SetCuts();
 
     StoreYamlInfo();
+}
+
+void FairYamlVMCConfig::SetupPostInit(const char* mcEngine)
+{
+    if ( !fPostInitFlag ) {
+        LOG(info) << "FairYamlVMCConfig::SetupPostInit() OFF." << fPostInitName;
+        return;
+    }
+
+    if (!((strcmp(mcEngine, "TGeant4") == 0))) {
+        LOG(fatal) << "FairYamlVMCConfig::SetupPostInit() only valid for TGeant4.";
+    }
+
+    TString work = getenv("VMCWORKDIR");
+    TString work_config = work + "/gconfig/";
+    work_config.ReplaceAll("//", "/");
+
+    TString config_dir = getenv("CONFIG_DIR");
+    config_dir.ReplaceAll("//", "/");
+
+    Bool_t AbsPath = kFALSE;
+
+    TString ConfigMacro;
+    TString g4Macro;
+    if (fPostInitName.empty()) {
+        g4Macro = "g4ConfigPostInit.C";
+        fPostInitName = g4Macro;
+    } else {
+        if (fPostInitName.find("/")!=std::string::npos) {
+            AbsPath = kTRUE;
+        }
+        g4Macro = fPostInitName;
+        LOG(info) << "---------------User config is used: " << g4Macro.Data();
+    }
+    if (!AbsPath && TString(gSystem->FindFile(config_dir.Data(), g4Macro)) != TString("")) {
+        LOG(info) << "---User path for Configuration (" << fPostInitName << ") is used: " << config_dir.Data();
+        ConfigMacro = g4Macro;
+    } else {
+        if (AbsPath) {
+            ConfigMacro = fPostInitName;
+        } else {
+            ConfigMacro = work_config + fPostInitName;
+        }
+    }
+
+    fYamlConfigPostInit = YAML::LoadFile(ConfigMacro.Data());
+
+    if (fYamlConfigPostInit["Geant4_PostInit_Commands"]) {
+        std::vector<std::string> g4commands = fYamlConfigPostInit["Geant4_PostInit_Commands"].as<std::vector<std::string>>();
+        for ( const auto& value: g4commands ) {
+            LOG(info) << " execute command \"" << value << "\"";
+            TGeant4* geant4 = dynamic_cast<TGeant4*>(TVirtualMC::GetMC());
+            geant4->ProcessGeantCommand(value.data());
+        }
+    }
+
+    LOG(info) << "got info from " << fPostInitName;
 }
 
 void FairYamlVMCConfig::SetupGeant3()
@@ -131,6 +192,18 @@ void FairYamlVMCConfig::SetupGeant4()
 
     TGeant4* geant4 = new TGeant4("TGeant4", "The Geant4 Monte Carlo", runConfiguration);
 
+    if (fYamlConfig["Geant4_MaxNStep"]) {
+        LOG(info) << " execute SetMaxNStep (" << fYamlConfig["Geant4_MaxNStep"].as<int>() << ")";
+        geant4->SetMaxNStep(fYamlConfig["Geant4_MaxNStep"].as<int>());
+    }
+    if (fYamlConfig["Geant4_Commands"]) {
+        std::vector<std::string> g4commands = fYamlConfig["Geant4_Commands"].as<std::vector<std::string>>();
+        for ( const auto& value: g4commands ) {
+            LOG(info) << " execute command \"" << value << "\"";
+            geant4->ProcessGeantCommand(value.data());
+        }
+    }
+
     LOG(info) << geant4->GetName() << " MonteCarlo engine created!.";
 }
 
@@ -156,7 +229,7 @@ void FairYamlVMCConfig::SetCuts()
     }
 }
 
-TString FairYamlVMCConfig::ObtainYamlFileName(const char* mcEngine)
+string FairYamlVMCConfig::ObtainYamlFileName(const char* mcEngine)
 {
     TString lUserConfig = FairRunSim::Instance()->GetUserConfig();
 
@@ -198,13 +271,13 @@ TString FairYamlVMCConfig::ObtainYamlFileName(const char* mcEngine)
             configFileWithPath = work_config + lUserConfig;
         }
     }
-    return configFileWithPath;
+    return configFileWithPath.Data();
 }
 
 void FairYamlVMCConfig::StoreYamlInfo()
 {
     std::ostringstream nodestring;
-    nodestring << "TGeant3\n";
+    nodestring << fMCEngine << "\n";
     nodestring << fYamlConfig;
     nodestring << "\n";
     TObjString* configObject = new TObjString(nodestring.str().c_str());

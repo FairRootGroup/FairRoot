@@ -5,21 +5,22 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
- #include "FairRKPropagator.h"
- #include <TGenericClassInfo.h>  // for TGenericClassInfo
- #include <TParticlePDG.h>       // for TParticlePDG
- #include <fairlogger/Logger.h>  // for LOG
- #include <math.h>               // for sqrt
- #include <stdio.h>              // for printf
- #include <stdlib.h>             // for abs
- #include "FairField.h"          // for FairField
- #include "FairTrackParH.h"      // for FairTrackParH
- #include "FairTrackParP.h"      // for FairTrackParP
- #include "TDatabasePDG.h"       // for TDatabasePDG
- #include "TMath.h"              // for Sqrt
- #include "TMathBase.h"          // for Abs
- #include "TVector3.h"           // for TVector3, operator-, operator*
+#include "FairRKPropagator.h"
 
+#include "FairField.h"       // for FairField
+#include "FairTrackParH.h"   // for FairTrackParH
+#include "FairTrackParP.h"   // for FairTrackParP
+#include "TDatabasePDG.h"    // for TDatabasePDG
+#include "TMath.h"           // for Sqrt
+#include "TMathBase.h"       // for Abs
+#include "TVector3.h"        // for TVector3, operator-, operator*
+
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TParticlePDG.h>        // for TParticlePDG
+#include <fairlogger/Logger.h>   // for LOG
+#include <math.h>                // for sqrt
+#include <stdio.h>               // for printf
+#include <stdlib.h>              // for abs
 
 ClassImp(FairRKPropagator);
 

@@ -172,6 +172,11 @@ class FairRunSim : public FairRun
         fSimSetup = f;
         fUseSimSetupFunction = true;
     }
+    void SetSimSetupPostInit(std::function<void()> f)
+    {
+        fSimSetupPostInit = f;
+        fUseSimSetupPostInitFunction = true;
+    }
 
     void SetSimulationConfig(FairGenericVMCConfig* tconf) { fSimulationConfig = tconf; }
     FairGenericVMCConfig* GetSimulationConfig() { return fSimulationConfig; }
@@ -221,6 +226,9 @@ class FairRunSim : public FairRun
     std::function<void()> fSimSetup;   //!                          /** A user provided function to do sim setup /
                                        //!                          instead of using macros **/
     bool fUseSimSetupFunction = false;
+    std::function<void()> fSimSetupPostInit;   //!                          /** A user provided function to do sim setup
+                                               //!                          / instead of using macros **/
+    bool fUseSimSetupPostInitFunction = false;
     FairGenericVMCConfig* fSimulationConfig;   //!                 /** Simulation configuration */
 
     ClassDef(FairRunSim, 2);
