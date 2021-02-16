@@ -15,9 +15,10 @@
 
 #include "FairGenericVMCConfig.h"
 
+#include <string>
 #include <yaml-cpp/yaml.h>
 
-class TString;
+using namespace std;
 
 class FairYamlVMCConfig : public FairGenericVMCConfig
 {
@@ -26,10 +27,19 @@ class FairYamlVMCConfig : public FairGenericVMCConfig
     virtual ~FairYamlVMCConfig() {}
 
     virtual void Setup(const char* mcEngine);
+    virtual void SetupPostInit(const char* mcEngine);
+
+    virtual void UsePostInitConfig(bool useC = true, const char* stringC = "g4ConfigPostInit.yaml") {
+        fPostInitFlag = useC;
+        fPostInitName = stringC;
+    }
+
 
   private:
-    TString ObtainYamlFileName(const char* mcEngine);
+    string ObtainYamlFileName(const char* mcEngine);
     void StoreYamlInfo();
+
+    string fMCEngine;
 
   protected:
     void SetupGeant3();
@@ -38,6 +48,7 @@ class FairYamlVMCConfig : public FairGenericVMCConfig
     void SetCuts();
 
     YAML::Node fYamlConfig;
+    YAML::Node fYamlConfigPostInit;
 };
 
 #endif
