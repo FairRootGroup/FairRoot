@@ -106,23 +106,6 @@ include(CheckCompiler)
 #Check the compiler and set the compile and link flags
 Check_Compiler()
 
-# Check also if FairSoft has been compiled with C++11 or C++14 support
-# If FairSoft is used the compiler flags provided by fairsoft-config
-# are added to the variable CMAKE_CXX_FLAGS.
-# If alibuild is used the compiler flags are passed on the command line
-# and are also added to CMAKE_CXX_FLAGS.
-# So check if CMAKE_CXX_FLAGS has the compiler flags -std=c++11 or -std=c++14
-String(FIND "${CMAKE_CXX_FLAGS}" "-std=c++11" POS_C++11)
-If(${POS_C++11} EQUAL -1)
-  String(FIND "${CMAKE_CXX_FLAGS}" "-std=c++14" POS_C++11)
-  If(${POS_C++11} EQUAL -1)
-    String(FIND "${CMAKE_CXX_FLAGS}" "-std=c++17" POS_C++11)
-    If(${POS_C++11} EQUAL -1)
-      Message(FATAL_ERROR "FairSoft wasn't compiled with c++11, c++14 or c++17 support. Please recompile FairSoft with a compiler which supports at least c++11.")
-    EndIf()
-  EndIf()
-EndIf()
-
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 
 Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are used." OFF)
@@ -293,18 +276,6 @@ Generate_Version_Info()
 
 # Set some useful variables
 SetBasicVariables()
-
-# Check C++11 availability
-if(NOT CMAKE_CXX_FLAGS)
-  message(STATUS "No C++11 support found.")
-else()
-  string(FIND " ${CMAKE_CXX_FLAGS} " "-std=c++11" POS_C++11)
-  if(POS_C++11)
-    message(STATUS "C++11 support found.")
-  else()
-    message(STATUS "No C++11 support found.")
-  endif()
-endif()
 
 # Recurse into the given subdirectories.  This does not actually
 # cause another cmake executable to run.  The same process will walk through
