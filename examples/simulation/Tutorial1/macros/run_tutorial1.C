@@ -5,7 +5,10 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_tutorial1(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT = true)
+void run_tutorial1(Int_t nEvents = 10,
+                   TString mcEngine = "TGeant3",
+                   Bool_t isMT = true,
+                   Bool_t loadPostInitConfig = false)
 {
 
     TString dir = getenv("VMCWORKDIR");
@@ -63,7 +66,8 @@ void run_tutorial1(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT
     FairRunSim* run = new FairRunSim();
     run->SetName(mcEngine);   // Transport engine
     FairGenericVMCConfig* config = new FairGenericVMCConfig();
-    //config->UsePostInitConfig();
+    if (loadPostInitConfig)
+        config->UsePostInitConfig();
     run->SetSimulationConfig(config);
     run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
     run->SetSink(new FairRootFileSink(outFile));   // Output file
