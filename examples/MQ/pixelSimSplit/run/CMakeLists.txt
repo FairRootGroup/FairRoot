@@ -82,8 +82,8 @@ set_tests_properties(ex_MQ_pixel_split PROPERTIES
   PASS_REGULAR_EXPRESSION "Shell script finished successfully"
 )
 
-if(DDS_VERSION VERSION_GREATER_EQUAL 3.0
-   AND FairMQ_VERSION VERSION_GREATER_EQUAL 1.4.13)
+if(DDS_VERSION VERSION_GREATER_EQUAL 3.5
+   AND FairMQ_VERSION VERSION_GREATER_EQUAL 1.4.23)
   add_test(pixelSplitDDS ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
   set_tests_properties(pixelSplitDDS PROPERTIES
     TIMEOUT ${maxTestTime}

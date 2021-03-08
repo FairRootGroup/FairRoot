@@ -119,8 +119,8 @@ install(TARGETS pixel-sampler pixel-processor pixel-sink pixel-sampler-bin pixel
 
 set(maxTestTime 100)
 
-if(DDS_VERSION VERSION_GREATER_EQUAL 3.0
-   AND FairMQ_VERSION VERSION_GREATER_EQUAL 1.4.13)
+if(DDS_VERSION VERSION_GREATER_EQUAL 3.5
+   AND FairMQ_VERSION VERSION_GREATER_EQUAL 1.4.23)
   add_test(ex_MQ_pixel_simulation ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim.sh)
   set_tests_properties(ex_MQ_pixel_simulation PROPERTIES
     DEPENDS ex_MQ_pixel_static
