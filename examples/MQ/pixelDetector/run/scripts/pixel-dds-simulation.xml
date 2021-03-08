@@ -1,34 +1,34 @@
-<topology id="ExampleDDS">
+<topology @dds_name_tag@="ExampleDDS">
 
-    <property id="data#all#" />
-    <property id="updateChannel" />
+    <property @dds_name_tag@="fmqchan_data#all#" />
+    <property @dds_name_tag@="fmqchan_updateChannel" />
 
-    <decltask id="Sampler">
-      <exe reachable="true">@pixel_bin_dir@/pixel-sim --config-key sampler --channel-config name=data#all#,type=push,method=connect --channel-config name=updateChannel,type=req,method=connect --severity DEBUG --nof-events 100000 --transport-name TGeant3 --id sampler_%taskIndex% --random-seed 0 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+    <decltask @dds_name_tag@="Sampler">
+      <exe reachable="true">@pixel_bin_dir@/pixel-sim --config-key sampler --channel-config name=data#all#,type=push,method=connect --channel-config name=updateChannel,type=req,method=connect --severity DEBUG --nof-events 1000 --transport-name TGeant3 --id sampler_%taskIndex% --random-seed 0 -P dds --color false</exe>
         <properties>
-          <id access="read">data#all#</id>
-	  <id access="read">updateChannel</id>
+          <@dds_name_tag@ access="read">fmqchan_data#all#</@dds_name_tag@>
+	  <@dds_name_tag@ access="read">fmqchan_updateChannel</@dds_name_tag@>
         </properties>
     </decltask>
 
-    <decltask id="Sink">
-      <exe reachable="true">@pixel_bin_dir@/pixel-sink --in-channel data#all# --severity DEBUG --id sink1 --channel-config name=data#all#,type=pull,method=bind --class-name FairMCEventHeader --branch-name MCEventHeader. --class-name "TClonesArray(PixelPoint)" --branch-name PixelPoint --class-name "TClonesArray(FairMCTrack)" --branch-name MCTrack --file-name @pixel_file_dir@/macros/DDS.simulation_TGeant3.data.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+    <decltask @dds_name_tag@="Sink">
+      <exe reachable="true">@pixel_bin_dir@/pixel-sink --in-channel data#all# --severity DEBUG --id sink1 --channel-config name=data#all#,type=pull,method=bind --file-name @pixel_file_dir@/DDS.simulation_TGeant3.data.root -P dds --color false</exe>
         <properties>
-            <id access="write">data#all#</id>
+            <@dds_name_tag@ access="write">fmqchan_data#all#</@dds_name_tag@>
         </properties>
     </decltask>
 
-    <decltask id="ParamServer">
-      <exe reachable="true">@fairroot_bin_dir@/parmq-server zeromq --id parmq-server --channel-config name=updateChannel,type=rep,method=bind --severity DEBUG --update-channel-name updateChannel --output-name @pixel_file_dir@/macros/DDS.simulation_TGeant3.pars.root -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --color false</exe>
+    <decltask @dds_name_tag@="ParamServer">
+      <exe reachable="true">@fairroot_bin_dir@/parmq-server zeromq --id parmq-server --channel-config name=updateChannel,type=rep,method=bind --severity DEBUG --update-channel-name updateChannel --output-name @pixel_file_dir@/DDS.simulation_TGeant3.pars.root -P dds --color false</exe>
         <properties>
-            <id access="write">updateChannel</id>
+            <@dds_name_tag@ access="write">fmqchan_updateChannel</@dds_name_tag@>
         </properties>
     </decltask>
 
-    <main id="main">
+    <main @dds_name_tag@="main">
         <task>Sink</task>
         <task>ParamServer</task>
-        <group id="SamplerGroup" n="5">
+        <group @dds_name_tag@="SamplerGroup" n="3">
             <task>Sampler</task>
         </group>
     </main>

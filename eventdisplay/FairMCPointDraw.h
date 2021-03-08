@@ -28,12 +28,15 @@ class FairMCPointDraw : public FairPointSetDraw
     FairMCPointDraw();
     FairMCPointDraw(const char* name, Color_t color, Style_t mstyle, Int_t iVerbose = 1)
         : FairPointSetDraw(name, color, mstyle, iVerbose){};
+    FairMCPointDraw(const char* name, FairDataSourceI* dataSource, Color_t color, Style_t mstyle, Int_t iVerbose = 1)
+        : FairPointSetDraw(name, dataSource, color, mstyle, iVerbose){};
     virtual ~FairMCPointDraw();
 
   protected:
     TVector3 GetVector(TObject* obj);
 
-    ClassDef(FairMCPointDraw, 1);
+  private:
+    ClassDef(FairMCPointDraw, 3);
 };
 
 #endif /* FAIRMCPOINTDRAW_H_ */

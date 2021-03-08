@@ -23,15 +23,21 @@
 #include <TEveProjectionManager.h>
 #include <TEveProjections.h>   // for TEveProjection, TEveProjection::k...
 #include <TEveScene.h>
+#include <TEveText.h>
+#include <TEveTrans.h>
 #include <TEveViewer.h>
 #include <TEveWindow.h>   // for TEveWindowPack, TEveWindowSlot
+#include <TGFileDialog.h>
 #include <TGLCameraOverlay.h>
 #include <TGLClip.h>   // for TGLClip, TGLClip::kClipPlane, TGL...
+#include <TGLFontManager.h>
 #include <TGLLightSet.h>
 #include <TGLViewer.h>
+#include <TGeoBBox.h>
 #include <TGeoManager.h>   // for gGeoManager, TGeoManager
 #include <TGeoNode.h>
 #include <TGeoVolume.h>   // for TGeoVolume
+#include <TVector3.h>
 
 ClassImp(FairEventManager);
 
@@ -43,14 +49,17 @@ FairEventManager::FairEventManager()
     : TEveEventManager("FairEventManager", "")
     , fRootManager(FairRootManager::Instance())
     , fEntry(0)
+    , fWorldSizeX(2000)
+    , fWorldSizeY(2000)
+    , fWorldSizeZ(2000)
+    , fTimeMin(0)
+    , fTimeMax(DBL_MAX)
+    , fUseTimeOfEvent(kTRUE)
+    , fTimeEvent(-1.)
+    , fAnimatedTracks(kFALSE)
+    , fClearHandler(kTRUE)
     , fRunAna(FairRunAna::Instance())
     , fEvent(0)
-    , fPriOnly(kFALSE)
-    , fCurrentPDG(0)
-    , fMinEnergy(0)
-    , fMaxEnergy(25)
-    , fEvtMinEnergy(0)
-    , fEvtMaxEnergy(10)
     , fRPhiPlane{0, 0, 10, 0}
     , fRhoZPlane{-1, 0, 0, 0}
     , fRphiCam(TGLViewer::kCameraOrthoXOY)
@@ -107,9 +116,9 @@ FairEventManager::FairEventManager()
     fPDGToColor[3122] = 35;        //  Lambda
     fPDGToColor[24] = 36;          // W+
     fPDGToColor[3222] = 37;        // Sigma+
-    fPDGToColor[-24] = 38;         //	W-
+    fPDGToColor[-24] = 38;         //  W-
     fPDGToColor[3212] = 39;        // Sigma0
-    fPDGToColor[23] = 40;          //	Z
+    fPDGToColor[23] = 40;          //  Z
     fPDGToColor[3112] = 41;        // Sigma -
     fPDGToColor[3322] = 42;        // Xi0
     fPDGToColor[3312] = 43;        // Xi-
@@ -129,6 +138,12 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
         return;
     TGeoNode *N = gGeoManager->GetTopNode();
     TEveGeoTopNode *TNod = new TEveGeoTopNode(gGeoManager, N, visopt, vislvl, maxvisnds);
+    TGeoBBox *box = dynamic_cast<TGeoBBox *>(gGeoManager->GetTopNode()->GetVolume()->GetShape());
+    if (box) {
+        fWorldSizeX = box->GetDX();
+        fWorldSizeY = box->GetDY();
+        fWorldSizeZ = box->GetDZ();
+    }
     if (!fXMLConfig.EqualTo(""))
         LoadXMLSettings();
     gEve->AddGlobalElement(TNod);
@@ -195,6 +210,26 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
     fMultiView->GetEveFrame()->HideAllDecorations();
     fMultiRPhiView->GetEveFrame()->HideAllDecorations();
     fMultiRhoZView->GetEveFrame()->HideAllDecorations();
+
+    fEventTimeText = new TEveText("Event Time: ");
+    fEventTimeText->PtrMainTrans()->SetPos(-100, 80, 0);
+    fEventTimeText->SetMainColor(kOrange - 2);
+    fEventTimeText->SetFontFile("ariali");
+    fEventTimeText->SetFontSize(20);
+    fEventTimeText->SetFontMode(TGLFont::kPixmap);
+    fEventTimeText->SetLighting(kTRUE);
+    fEventTimeText->SetRnrState(kFALSE);
+    gEve->AddElement(fEventTimeText);
+
+    fEventNumberText = new TEveText("Event Number: ");
+    fEventNumberText->PtrMainTrans()->SetPos(-100, 100, 0);
+    fEventNumberText->SetMainColor(kOrange - 2);
+    fEventNumberText->SetFontFile("ariali");
+    fEventNumberText->SetFontSize(20);
+    fEventNumberText->SetFontMode(TGLFont::kPixmap);
+    fEventNumberText->SetLighting(kTRUE);
+    fEventNumberText->SetRnrState(kFALSE);
+    gEve->AddElement(fEventNumberText);
 }
 
 void FairEventManager::UpdateEditor() {}
@@ -206,18 +241,24 @@ void FairEventManager::Open() {}
 void FairEventManager::GotoEvent(Int_t event)
 {
     fEntry = event;
+    fTimeMin = 0;
+    fTimeMax = DBL_MAX;
     fRunAna->Run(static_cast<Long64_t>(event));
 }
 
 void FairEventManager::NextEvent()
 {
     fEntry += 1;
+    fTimeMin = 0;
+    fTimeMax = DBL_MAX;
     fRunAna->Run(static_cast<Long64_t>(fEntry));
 }
 
 void FairEventManager::PrevEvent()
 {
     fEntry -= 1;
+    fTimeMin = 0;
+    fTimeMax = DBL_MAX;
     fRunAna->Run(static_cast<Long64_t>(fEntry));
 }
 
@@ -270,12 +311,14 @@ void FairEventManager::AddParticlesToPdgDataBase(Int_t /*pdg*/)
         pdgDB->AddParticle("FeedbackPhoton", "FeedbackPhoton", 0, kFALSE, 0, 0, "Special", 50000051);
 }
 
+TVector3 FairEventManager::GetWorldSize() const { return TVector3(fWorldSizeX, fWorldSizeY, fWorldSizeZ); }
+
 void FairEventManager::SetViewers(TEveViewer *RPhi, TEveViewer *RhoZ)
 {
     RPhi->GetGLViewer()->SetCurrentCamera(fRphiCam);
     // set clip plane and camera parameters
-    RPhi->GetGLViewer()->GetClipSet()->SetClipType(TGLClip::kClipPlane);
-    RPhi->GetGLViewer()->GetClipSet()->SetClipState(TGLClip::kClipPlane, fRPhiPlane);
+    // RPhi->GetGLViewer()->GetClipSet()->SetClipType(TGLClip::kClipPlane);
+    // RPhi->GetGLViewer()->GetClipSet()->SetClipState(TGLClip::kClipPlane, fRPhiPlane);
     RPhi->GetGLViewer()->GetCameraOverlay()->SetOrthographicMode(TGLCameraOverlay::kAxis);
     RPhi->GetGLViewer()->GetCameraOverlay()->SetShowOrthographic(kTRUE);
     // switch off left, right, top and bottom light sources
@@ -286,8 +329,8 @@ void FairEventManager::SetViewers(TEveViewer *RPhi, TEveViewer *RhoZ)
 
     RhoZ->GetGLViewer()->SetCurrentCamera(fRhoCam);
     // set clip plane and camera parameters
-    RhoZ->GetGLViewer()->GetClipSet()->SetClipType(TGLClip::kClipPlane);
-    RhoZ->GetGLViewer()->GetClipSet()->SetClipState(TGLClip::kClipPlane, fRhoZPlane);
+    // RhoZ->GetGLViewer()->GetClipSet()->SetClipType(TGLClip::kClipPlane);
+    // RhoZ->GetGLViewer()->GetClipSet()->SetClipState(TGLClip::kClipPlane, fRhoZPlane);
     RhoZ->GetGLViewer()->GetCameraOverlay()->SetOrthographicMode(TGLCameraOverlay::kAxis);
     RhoZ->GetGLViewer()->GetCameraOverlay()->SetShowOrthographic(kTRUE);
     // switch off left, right and front light sources
@@ -441,4 +484,108 @@ Int_t FairEventManager::StringToColor(TString color) const
     } else {
         return color.Atoi();
     }
+}
+
+void FairEventManager::SetTransparency(Bool_t use_xml, Int_t trans)
+{
+    if (use_xml == kFALSE) {   // high transparency
+        Int_t vis_level = gGeoManager->GetVisLevel();
+        TGeoNode *top = gGeoManager->GetTopNode();
+        SetTransparencyForLayer(top, vis_level, trans);
+    } else {   // normal transparency
+        if (fXMLConfig != "") {
+            LoadXMLSettings();
+        } else {
+            Int_t vis_level = gGeoManager->GetVisLevel();
+            TGeoNode *top = gGeoManager->GetTopNode();
+            SetTransparencyForLayer(top, vis_level, 0);
+        }
+    }
+    if (gEve->GetGlobalScene()->GetRnrState()) {
+        gEve->GetGlobalScene()->SetRnrState(kFALSE);
+        gEve->GetGlobalScene()->SetRnrState(kTRUE);
+        gEve->Redraw3D();
+    }
+}
+
+void FairEventManager::SwitchBackground(Bool_t light) { gEve->GetViewers()->SwitchColorSet(); }
+
+void FairEventManager::SetTransparencyForLayer(TGeoNode *node, Int_t depth, Char_t transparency)
+{
+    node->GetVolume()->SetTransparency(transparency);
+    if (depth <= 0)
+        return;
+    for (int i = 0; i < node->GetNdaughters(); i++) {
+        TGeoNode *dau = node->GetDaughter(i);
+        SetTransparencyForLayer(dau, depth - 1, transparency);
+    }
+}
+
+void FairEventManager::MakeScreenshot(FairEveAnimationControl::eScreenshotType proj, TString path)
+{
+    TString filename;
+    if (path == "") {
+        const char *filetypes[] = {"PNG", "*.png", "JPG", "*.jpg", 0, 0};
+        TGFileInfo fi;
+        fi.fFileTypes = filetypes;
+        fi.fIniDir = StrDup(".");
+        new TGFileDialog(gClient->GetRoot(), gEve->GetMainWindow(), kFDSave, &fi);
+        if (fi.fFilename == nullptr)
+            return;
+        filename = fi.fFilename;
+    } else {
+        filename = path;
+    }
+    switch (proj) {
+        case FairEveAnimationControl::eScreenshotType::k3D: {
+            gEve->GetDefaultGLViewer()->SavePicture(filename);
+        } break;
+        case FairEveAnimationControl::eScreenshotType::kXY: {
+            TEveViewer *view = GetRPhiView();
+            TGLViewer *gl = view->GetGLViewer();
+            gl->SavePicture(filename);
+        } break;
+        case FairEveAnimationControl::eScreenshotType::kZ: {
+            TEveViewer *view = GetRhoZView();
+            TGLViewer *gl = view->GetGLViewer();
+            gl->SavePicture(filename);
+        } break;
+        case FairEveAnimationControl::eScreenshotType::kAll: {
+            TString filename_path = filename(0, filename.Last('.'));
+            TString filename_ext = filename(filename.Last('.') + 1, 3);
+            TString filename3d = Form("%s_3d.%s", filename_path.Data(), filename_ext.Data());
+            TString filenameRphi = Form("%s_XY.%s", filename_path.Data(), filename_ext.Data());
+            TString filenameRhoz = Form("%s_Z.%s", filename_path.Data(), filename_ext.Data());
+            gEve->GetDefaultGLViewer()->SavePicture(filename3d);
+            TEveViewer *view = GetRPhiView();
+            TGLViewer *gl = view->GetGLViewer();
+            gl->SavePicture(filenameRphi);
+            view = GetRhoZView();
+            gl = view->GetGLViewer();
+            gl->SavePicture(filenameRhoz);
+        } break;
+    }
+}
+
+Float_t FairEventManager::GetEvtTime()
+{
+    if (fUseTimeOfEvent == kTRUE) {
+        fTimeEvent = FairRootManager::Instance()->GetEventTime();
+    }
+    return fTimeEvent;
+}
+
+void FairEventManager::SetEvtTimeText(Double_t time)
+{
+    TString stime;
+    stime.Form("%.2f", time);
+    stime += " ns";
+    fEventTimeText->SetText(stime);
+}
+
+void FairEventManager::SetEvtNumberText(Int_t evtNumber)
+{
+    TString text = "Event: ";
+    text += evtNumber;
+    fEventNumberText->SetText(text);
 }

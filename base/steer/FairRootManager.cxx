@@ -15,8 +15,9 @@
 // Class that takes care of Root IO.
 #include "FairRootManager.h"
 
-#include "FairEventHeader.h"          // for FairEventHeader
-#include "FairFileHeader.h"           // for FairFileHeader
+#include "FairEventHeader.h"   // for FairEventHeader
+#include "FairFileHeader.h"    // for FairFileHeader
+#include "FairFileSource.h"
 #include "FairLink.h"                 // for FairLink
 #include "FairLinkManager.h"          // for FairLinkManager
 #include "FairLogger.h"               // for FairLogger, MESSAGE_ORIGIN
@@ -459,7 +460,7 @@ Int_t FairRootManager::ReadEvent(Int_t i)
     fSource->FillEventHeader(fEventHeader);
     fCurrentTime = fEventHeader->GetEventTime();
 
-    LOG(debug) << "--Event number --- " << fCurrentEntryNo << " with time ---- " << fCurrentTime;
+    LOG(debug) << "--Event number --- " << fCurrentEntryNo << " with t0 time ---- " << fCurrentTime;
 
     return readEventResult;
 }

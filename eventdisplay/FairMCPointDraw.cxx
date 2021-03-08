@@ -16,9 +16,9 @@
 
 #include "FairMCPoint.h"   // for FairMCPoint
 
+#include <TClonesArray.h>
+#include <TObject.h>
 #include <TVector3.h>   // for TVector3
-
-class TObject;
 
 FairMCPointDraw::FairMCPointDraw()
 {

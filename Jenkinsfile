@@ -1,89 +1,73 @@
 #!groovy
 
-def specToLabel(Map spec) {
-  return "${spec.os}-${spec.arch}-${spec.compiler}-FairSoft_${spec.fairsoft}"
-}
-
-def jobMatrix(String prefix, String type, List specs, Closure callback) {
+def jobMatrix(String prefix, String type, List specs) {
   def nodes = [:]
   for (spec in specs) {
-    def label = specToLabel(spec)
-    def os = spec.os
-    def compiler = spec.compiler
-    def fairsoft = spec.fairsoft
-    def job = label
-    if (spec.containsKey('check')) {
-      job = spec.check
+    def job = ''
+    switch(type) {
+      case 'build':
+        job = "${spec.os}-${spec.ver}-${spec.arch}-${spec.compiler}-fairsoft-${spec.fairsoft}"
+        break
+      case 'check':
+        job = spec.check
+        break
     }
-    nodes["${type}/${job}"] = {
-      node(label) {
-        githubNotify(context: "${prefix}/${type}/${job}", description: 'Building ...', status: 'PENDING')
+    def label = "${type}/${job}"
+    def selector = "${spec.os}-${spec.ver}-${spec.arch}"
+    def fairsoft = spec.fairsoft
+    def os = spec.os
+    def ver = spec.ver
+    def arch = spec.arch
+    def check = spec.check
+
+    nodes[label] = {
+      node(selector) {
+        githubNotify(context: "${prefix}/${label}", description: 'Building ...', status: 'PENDING')
         try {
           deleteDir()
           checkout scm
 
-          def env = ''
-          if (spec.containsKey('check')) {
-            env = 'env.sh'
-            if (os =~ /Debian8/) {
-              sh """\
-                echo "#!/bin/bash" >> ${env}
-                echo ". /etc/profile.d/modules.sh" >> ${env}
-                echo "module use /cvmfs/it.gsi.de/modulefiles" >> ${env}
-                echo "module load cmake" >> ${env}
-                echo "module load compiler/gcc/9.1.0" >> ${env}
-              """
-            }
-            sh """\
-              echo "export SIMPATH=\${SIMPATH_PREFIX}${fairsoft}" >> ${env}
-              echo "export LABEL='\${JOB_BASE_NAME} ${spec.check}'" >> ${env}
-              echo "export FAIRROOT_FORMAT_BASE=origin/\${CHANGE_TARGET}" >> ${env}
-              echo "export PATH=\${CHECKS_PREFIX}${spec.check}/bin:\\\$PATH" >> ${env}
-            """
-            sh 'env'
-          } else {
-            env = 'Dart.cfg'
-            if (os =~ /MacOS/) {
-              sh """\
-                echo "export SIMPATH=\$(brew --prefix fairsoft@${fairsoft})" >> ${env}
-                echo "export FAIRSOFT_VERSION=${fairsoft}" >> ${env}
-              """
-            } else {
-              sh """\
-                echo "export SIMPATH=\${SIMPATH_PREFIX}${fairsoft}" >> ${env}
-                echo "export FAIRSOFT_VERSION=${fairsoft}" >> ${env}
-              """
-            }
-
-            if (os =~ /Debian8/ && compiler =~ /gcc9/) {
-              sh """\
-                echo ". /etc/profile.d/modules.sh" >> ${env}
-                echo "module use /cvmfs/it.gsi.de/modulefiles" >> ${env}
-                echo "module load compiler/gcc/9.1.0" >> ${env}
-              """
-            }
-
-            if (os =~ /Debian8/) {
-              sh "echo \"export EXTRA_FLAGS=\\\"-DCMAKE_CXX_COMPILER=g++;-DCMAKE_C_COMPILER=gcc\\\"\" >> ${env}"
-            }
-
-            sh """\
-              echo "export BUILDDIR=\${PWD}/build" >> ${env}
-              echo "export SOURCEDIR=\${PWD}" >> ${env}
-              echo "export PATH=\\\$SIMPATH/bin:\\\$PATH" >> ${env}
-              echo "export GIT_BRANCH=\${JOB_BASE_NAME}" >> ${env}
-              echo "echo \\\$PATH" >> ${env}
-            """
+          def jobscript = 'job.sh'
+          def ctestcmd = "ctest -S FairRoot_${type}_test.cmake -V --output-on-failure"
+          sh "echo \"set -e\" >> ${jobscript}"
+          if (type == 'check') {
+            ctestcmd = "ctest -S FairRoot_${check}_test.cmake -VV"
+            sh "echo \"export FAIRROOT_FORMAT_BASE=origin/\${CHANGE_TARGET}\" >> ${jobscript}"
           }
-          sh "cat ${env}"
-
-          callback.call(spec, job, env)
+          if (selector =~ /^macos/) {
+            sh "echo \"export SIMPATH=\$(brew --prefix fairsoft@${fairsoft})\" >> ${jobscript}"
+          } else if (selector =~/^gsi-debian/ && ver == '8') {
+            sh "echo \"export SIMPATH=/cvmfs/fairsoft.gsi.de/debian8/fairsoft/${fairsoft}\" >> ${jobscript}"
+          } else {
+            sh "echo \"export SIMPATH=/fairsoft/${fairsoft}\" >> ${jobscript}"
+          }
+          sh "echo \"export LABEL=\\\"\${JOB_BASE_NAME} ${label}\\\"\" >> ${jobscript}"
+          if (selector =~ /^macos/) {
+            sh "echo \"${ctestcmd}\" >> ${jobscript}"
+            sh "cat ${jobscript}"
+            sh "bash ${jobscript}"
+          } else {
+            def containercmd = "singularity exec -B/shared ${env.SINGULARITY_CONTAINER_ROOT}/fairroot/${os}.${ver}.sif bash -l -c \\\"${ctestcmd}\\\""
+            if (selector =~/^gsi-debian/ && ver == '8') {
+              containercmd = "singularity exec -B/shared,/cvmfs ${env.SINGULARITY_CONTAINER_ROOT}/fairroot/${os}.${ver}.sif bash -l -c \\\"spack load gcc@8; spack load cmake arch=${arch}; ${ctestcmd}\\\""
+            }
+            sh """\
+              echo \"echo \\\"*** Job started at .......: \\\$(date -R)\\\"\" >> ${jobscript}
+              echo \"echo \\\"*** Job ID ...............: \\\${SLURM_JOB_ID}\\\"\" >> ${jobscript}
+              echo \"echo \\\"*** Compute node .........: \\\$(hostname -f)\\\"\" >> ${jobscript}
+              echo \"unset http_proxy\" >> ${jobscript}
+              echo \"unset HTTP_PROXY\" >> ${jobscript}
+              echo \"${containercmd}\" >> ${jobscript}
+            """
+            sh "cat ${jobscript}"
+            sh "./slurm-submit.sh \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
+          }
 
           deleteDir()
-          githubNotify(context: "${prefix}/${type}/${job}", description: 'Success', status: 'SUCCESS')
+          githubNotify(context: "${prefix}/${label}", description: 'Success', status: 'SUCCESS')
         } catch (e) {
           deleteDir()
-          githubNotify(context: "${prefix}/${type}/${job}", description: 'Error', status: 'ERROR')
+          githubNotify(context: "${prefix}/${label}", description: 'Error', status: 'ERROR')
           throw e
         }
       }
@@ -99,20 +83,20 @@ pipeline{
       steps{
         script {
           def builds = jobMatrix('alfa-ci', 'build', [
-            [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc9',            fairsoft: 'dev'],
-            [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc9',            fairsoft: 'dev_mt'],
-            [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc9',            fairsoft: 'jun19'],
-            [os: 'Debian8',    arch: 'x86_64', compiler: 'gcc9',            fairsoft: 'jun19_mt'],
-            [os: 'MacOS10.14', arch: 'x86_64', compiler: 'AppleClang11.0',  fairsoft: '20.11'],
-            [os: 'MacOS10.15', arch: 'x86_64', compiler: 'AppleClang12.0',  fairsoft: '20.11'],
-          ]) { spec, label, config ->
-            sh "./Dart.sh alfa_ci ${config}"
-          }
+            [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'nov20_patches'],
+            [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'nov20_patches_mt'],
+            [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'nov20_patches'],
+            [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'nov20_patches_mt'],
+            [os: 'gsi-debian', ver: '8',     arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'nov20'],
+            [os: 'macos',      ver: '10.15', arch: 'x86_64', compiler: 'apple-clang-11',  fairsoft: '20.11'],
+            [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-12',  fairsoft: '20.11'],
+          ])
 
-          def checks = jobMatrix('alfa-ci', 'check', [
-            [os: 'Debian8', arch: 'x86_64', compiler: 'gcc9', fairsoft: 'dev', check: 'format'],
-          ]) { spec, check, env ->
-            sh ". ./${env} && ctest -S FairRoot_${check}_test.cmake -VV"
+          def checks = [:]
+          if (env.CHANGE_ID != null) { // only run checks for PRs
+            checks = jobMatrix('alfa-ci', 'check', [
+              [os: 'debian', ver: '10', arch: 'x86_64', check: 'format', fairsoft: 'nov20_patches'],
+            ])
           }
 
           parallel(checks + builds)

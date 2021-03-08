@@ -54,6 +54,8 @@ class FairMQTransportDevice : public FairMQRunDevice
     void SetSink(FairSink* sink) { fSink = sink; }
     // ------ ---------- -------- ------
 
+    void InitializeRun();
+
     void SetParamUpdateChannelName(TString tString) { fUpdateChannelName = tString; }
 
     void RunInPullMode(bool tb = true) { fRunConditional = !tb; };
@@ -75,6 +77,7 @@ class FairMQTransportDevice : public FairMQRunDevice
     std::string fUpdateChannelName;
 
     bool fRunConditional;   // if true run ConditionalRun, if false run TransportData
+    bool fRunInitialized;   // false, set to true after initialization in the run stage (!)
 
     TVirtualMC* fVMC;
     FairGenericStack* fStack;

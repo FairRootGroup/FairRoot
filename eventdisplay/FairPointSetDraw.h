@@ -24,11 +24,10 @@
 
 #include <Rtypes.h>   // for Int_t, Color_t, etc
 
-class FairEventManager;
-class TClonesArray;
 class TEvePointSet;
 class TObject;
 class TVector3;
+class FairDataSourceI;
 
 class FairPointSetDraw : public FairTask
 {
@@ -38,8 +37,21 @@ class FairPointSetDraw : public FairTask
 
     /** Standard constructor
      *@param name        Name of task
+     *@param dataSource  Input data container for data to be displayed
+     *@param color		 Color of points
+     *@param mstyle		 Style of points
      *@param iVerbose    Verbosity level
      **/
+    FairPointSetDraw(const char* name, FairDataSourceI* dataSource, Color_t color, Style_t mstyle, Int_t iVerbose = 1);
+
+    /** Legacy constructor
+     *  Input data source will be set to nullptr which implicitly activates the read in via TClonesArray branch
+     *@param name        Name of task
+     *@param color		 Color of points
+     *@param mstyle		 Style of points
+     *@param iVerbose    Verbosity level
+     **/
+
     FairPointSetDraw(const char* name, Color_t color, Style_t mstyle, Int_t iVerbose = 1);
 
     /** Destructor **/
@@ -51,24 +63,28 @@ class FairPointSetDraw : public FairTask
     virtual void Exec(Option_t* option);
     void Reset();
 
+    virtual void SetUseTimeOffset(Bool_t val) { fUseTimeOffset = val; };
+
+    virtual void SetDataSource(FairDataSourceI* source) { fDataSource = source; }
+
   protected:
     virtual TVector3 GetVector(TObject* obj) = 0;
-    virtual TObject* GetValue(TObject* obj, Int_t i);
+    //    virtual TObject* GetValue(TObject* obj, Int_t i);
 
     Int_t fVerbose;   //  Verbosity level
     virtual void SetParContainers();
     virtual InitStatus Init();
     /** Action after each event**/
     virtual void Finish();
-    TClonesArray* fPointList;          //!
-    FairEventManager* fEventManager;   //!
-    TEvePointSet* fq;                  //!
-    Color_t fColor;                    //!
-    Style_t fStyle;                    //!
+    TEvePointSet* fq = nullptr;      //!
+    Color_t fColor;                  //!
+    Style_t fStyle;                  //!
+    Bool_t fUseTimeOffset = kTRUE;   //!
 
   private:
     FairPointSetDraw(const FairPointSetDraw&);
     FairPointSetDraw& operator=(const FairPointSetDraw&);
+    FairDataSourceI* fDataSource = nullptr;
 
     ClassDef(FairPointSetDraw, 1);
 };

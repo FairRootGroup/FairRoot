@@ -19,11 +19,26 @@ set(sources
   FairHitDraw.cxx
   FairHitPointSetDraw.cxx
   FairMCPointDraw.cxx
-  FairMCTracks.cxx
-  FairMCTracksEditor.cxx
   FairPointSetDraw.cxx
-  FairTimeStampPointDraw.cxx
+  FairGetEventTime.cxx
+  datasource/FairDataSourceI.cxx
+  datasource/FairTCASource.cxx
+  datasource/FairTimebasedSource.cxx
+  datasource/FairTimebasedMCSource.cxx
+  datasource/FairTimebasedMCHitSource.cxx
+  datasource/FairTimebasedDataHandlerT.cxx
   FairXMLNode.cxx
+  gui/FairEveAnimationControl.cxx
+  gui/FairEveCut.cxx
+  gui/FairEveTransparencyControl.cxx
+  tracks/FairEveGeoTracks.cxx
+  tracks/FairEveGeoTracksEditor.cxx
+  tracks/FairEveRecoTrack.cxx
+  tracks/FairEveRecoTrackList.cxx
+  tracks/FairEveTrack.cxx
+  tracks/FairEveTracks.cxx
+  tracks/FairGeoTracksDraw.cxx
+  tracks/FairGeoTrackHandler.cxx
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
@@ -34,6 +49,9 @@ set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/tracks
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/gui
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/datasource
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
   # TODO: DELETE ME ONCE USING root targets
@@ -59,6 +77,7 @@ target_link_libraries(${target} PUBLIC
   Physics     # TVector3
   RGL         # TGLViewer, TGLCameraOverlay, TGLClip, TGLLightSet
   Tree        # TChain
+  RIO
   XMLIO       # TXMLEngine
   XMLParser   # TXMLNode, TXMLAttr, TDOMParser
 )

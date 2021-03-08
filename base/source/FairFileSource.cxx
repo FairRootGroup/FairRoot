@@ -804,7 +804,7 @@ void FairFileSource::ReadBranchEvent(const char* BrName, Int_t Entry)
 
 void FairFileSource::FillEventHeader(FairEventHeader* feh)
 {
-    feh->SetEventTime(fEventTime);
+    feh->SetEventTime(GetEventTime());
     if (fEvtHeader) {
         feh->SetRunId(fEvtHeader->GetRunId());
         feh->SetMCEntryNumber(fEvtHeader->GetMCEntryNumber());

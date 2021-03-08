@@ -9,6 +9,7 @@
 #ifndef FAIRTUTPROPTRACK_H_
 #define FAIRTUTPROPTRACK_H_
 
+#include "TObject.h"
 #include "FairTrackParP.h"
 #include "TObject.h"
 #include "TRef.h"

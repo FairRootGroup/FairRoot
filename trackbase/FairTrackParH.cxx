@@ -15,16 +15,15 @@
 // and the covariance matrix. Or using position and momentum in LAB referance.
 
 #include "FairTrackParH.h"
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TMath.h>              // for Sqrt, Sin, Cos, ASin, ATan2, Tan
+#include <TMathBase.h>          // for Abs, Sign
+#include <cmath>                // for pow, fabs, sqrt
+#include <iomanip>              // for operator<<, setprecision
+#include <iostream>             // for operator<<, basic_ostream, endl, cout
+#include "FairGeaneUtil.h"      // for FairGeaneUtil
+#include "FairTrackParP.h"      // for FairTrackParP
 
-#include "FairGeaneUtil.h"   // for FairGeaneUtil
-#include "FairTrackParP.h"   // for FairTrackParP
-
-#include <TMath.h>       // for pow, Sqrt, sqrt, Sin, Cos, etc
-#include <TMathBase.h>   // for Abs, Sign
-#include <cmath>         // IWYU pragma: keep for fabs
-#include <iomanip>
-#include <iostream>   // for operator<<, basic_ostream, etc
-// IWYU pragma: no_include <architecture/i386/math.h>
 
 using std::cout;
 using std::endl;

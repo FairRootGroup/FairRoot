@@ -15,6 +15,7 @@
 #ifndef FAIRHITPOINTSETDRAW_H_
 #define FAIRHITPOINTSETDRAW_H_
 
+#include "FairDataSourceI.h"
 #include "FairPointSetDraw.h"   // for FairPointSetDraw
 
 #include <Rtypes.h>   // for FairHitPointSetDraw::Class, etc
@@ -29,12 +30,20 @@ class FairHitPointSetDraw : public FairPointSetDraw
     FairHitPointSetDraw(const char* name, Color_t color, Style_t mstyle, Int_t iVerbose = 1)
         : FairPointSetDraw(name, color, mstyle, iVerbose)
     {}
+    FairHitPointSetDraw(const char* name,
+                        FairDataSourceI* dataSource,
+                        Color_t color,
+                        Style_t mstyle,
+                        Int_t iVerbose = 1)
+        : FairPointSetDraw(name, dataSource, color, mstyle, iVerbose)
+    {}
     virtual ~FairHitPointSetDraw();
 
   protected:
     TVector3 GetVector(TObject* obj);
 
-    ClassDef(FairHitPointSetDraw, 1);
+  private:
+    ClassDef(FairHitPointSetDraw, 2);
 };
 
 #endif /* FAIRHITPOINTSETDRAW_H_ */

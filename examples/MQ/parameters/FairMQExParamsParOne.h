@@ -8,11 +8,14 @@
 #ifndef FAIRMQEXPARAMSPARONE_H_
 #define FAIRMQEXPARAMSPARONE_H_
 
-#include "FairParGenericSet.h"
+#include <Rtypes.h>             // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>         // for Int_t, Bool_t
+#include "FairParGenericSet.h"  // for FairParGenericSet
+class FairParamList;  // lines 15-15
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
-#include <Rtypes.h>
-
-class FairParamList;
 
 class FairMQExParamsParOne : public FairParGenericSet
 {

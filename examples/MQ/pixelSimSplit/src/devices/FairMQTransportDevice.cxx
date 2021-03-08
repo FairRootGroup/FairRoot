@@ -45,6 +45,7 @@ FairMQTransportDevice::FairMQTransportDevice()
     , fTransportDeviceId(0)
     , fGeneratorChannelName("primariesChannel")
     , fRunConditional(false)
+    , fRunInitialized(false)
     , fVMC(nullptr)
     , fStack(nullptr)
     , fMCApplication(nullptr)
@@ -135,9 +136,13 @@ void FairMQTransportDevice::InitTask()
         ExternCreateDetector();
 
         // close the library
-        cout << "NOT closing library...\n";
+        LOG(info) << "NOT closing library...";
         //    dlclose(handle);
     }
+}
+
+void FairMQTransportDevice::InitializeRun()
+{
 
     // -----   Negotiate the run number   -------------------------------------
     // -----      via the fUpdateChannelName   --------------------------------
@@ -154,12 +159,12 @@ void FairMQTransportDevice::InitTask()
     if (Send(req, fUpdateChannelName) > 0) {
         if (Receive(rep, fUpdateChannelName) > 0) {
             std::string repString = string(static_cast<char*>(rep->GetData()), rep->GetSize());
-            LOG(INFO) << " -> " << repString.data();
+            LOG(info) << " -> " << repString.data();
             fRunId = stoi(repString);
             fMCSplitEventHeader->SetRunID(fRunId);
             repString = repString.substr(repString.find_first_of('_') + 1, repString.length());
             fTransportDeviceId = stoi(repString);
-            LOG(INFO) << "runId = " << fRunId << "  ///  fTransportDeviceId = " << fTransportDeviceId;
+            LOG(info) << "runId = " << fRunId << "  ///  fTransportDeviceId = " << fTransportDeviceId;
         }
     }
 
@@ -182,12 +187,19 @@ void FairMQTransportDevice::InitTask()
     fStack->Register();
     //  fRunSim->Run(0);
     UpdateParameterServer();
-    LOG(INFO) << "end of FairMQTransportDevice::InitTask() run id = " << fRunSim->GetMCEventHeader()->GetRunID();
-    LOG(INFO) << " name/title/classname = " << fRunSim->GetMCEventHeader()->GetName() << "/"
+    LOG(info) << "end of FairMQTransportDevice::InitTask() run id = " << fRunSim->GetMCEventHeader()->GetRunID();
+    LOG(info) << " name/title/classname = " << fRunSim->GetMCEventHeader()->GetName() << "/"
               << fRunSim->GetMCEventHeader()->GetTitle() << "/" << fRunSim->GetMCEventHeader()->ClassName();
+
+    fRunInitialized = true;
 }
 
-void FairMQTransportDevice::PreRun() {}
+void FairMQTransportDevice::PreRun()
+{
+    if (!fRunInitialized) {
+        InitializeRun();
+    }
+}
 
 bool FairMQTransportDevice::ConditionalRun()
 {

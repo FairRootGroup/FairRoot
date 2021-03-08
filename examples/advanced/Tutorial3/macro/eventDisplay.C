@@ -5,7 +5,7 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-eventDisplay(TString mcEngine = "TGeant3")
+void eventDisplay(TString mcEngine = "TGeant3")
 {
     //-----User Settings:-----------------------------------------------
     TString InputFile = "data/testrun_" + mcEngine + ".root";
@@ -28,7 +28,7 @@ eventDisplay(TString mcEngine = "TGeant3")
     FairEventManager *fMan = new FairEventManager();
 
     //----------------------Traks and points -------------------------------------
-    FairMCTracks *Track = new FairMCTracks("Monte-Carlo Tracks");
+    FairMCTracksDraw *Track = new FairMCTracksDraw();
     FairMCPointDraw *TorinoDetectorPoints = new FairMCPointDraw("FairTestDetectorPoint", kRed, kFullSquare);
     //  FairHitDraw     *ToyHits   = new FairHitDraw("ToyHit");
 

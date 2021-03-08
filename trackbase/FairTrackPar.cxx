@@ -10,12 +10,11 @@
 // -------------------------------------------------------------------------
 
 #include "FairTrackPar.h"
-
-#include "FairField.h"
-#include "FairLogger.h"
-#include "FairRunAna.h"   // for GetFieldValue
-
-#include <TMath.h>
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <TMath.h>              // for Sqrt
+#include <fairlogger/Logger.h>  // for Logger, LOG
+#include "FairField.h"          // for FairField
+#include "FairRunAna.h"         // for FairRunAna
 
 using namespace std;
 

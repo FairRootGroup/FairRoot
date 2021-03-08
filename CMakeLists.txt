@@ -14,13 +14,13 @@
 
 # Check if cmake has the required version
 CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0 FATAL_ERROR)
-cmake_policy(VERSION 3.11...3.17)
+cmake_policy(VERSION 3.11...3.19)
 
 set(CMAKE_INSTALL_MESSAGE LAZY)
 # Set project version
 SET(FAIRROOT_MAJOR_VERSION 18)
-SET(FAIRROOT_MINOR_VERSION 4)
-SET(FAIRROOT_PATCH_VERSION 2)
+SET(FAIRROOT_MINOR_VERSION 6)
+SET(FAIRROOT_PATCH_VERSION 0)
 
 if(APPLE)
   if(NOT DEFINED CMAKE_C_COMPILER)
@@ -105,23 +105,6 @@ include(CheckCompiler)
 
 #Check the compiler and set the compile and link flags
 Check_Compiler()
-
-# Check also if FairSoft has been compiled with C++11 or C++14 support
-# If FairSoft is used the compiler flags provided by fairsoft-config
-# are added to the variable CMAKE_CXX_FLAGS.
-# If alibuild is used the compiler flags are passed on the command line
-# and are also added to CMAKE_CXX_FLAGS.
-# So check if CMAKE_CXX_FLAGS has the compiler flags -std=c++11 or -std=c++14
-String(FIND "${CMAKE_CXX_FLAGS}" "-std=c++11" POS_C++11)
-If(${POS_C++11} EQUAL -1)
-  String(FIND "${CMAKE_CXX_FLAGS}" "-std=c++14" POS_C++11)
-  If(${POS_C++11} EQUAL -1)
-    String(FIND "${CMAKE_CXX_FLAGS}" "-std=c++17" POS_C++11)
-    If(${POS_C++11} EQUAL -1)
-      Message(FATAL_ERROR "FairSoft wasn't compiled with c++11, c++14 or c++17 support. Please recompile FairSoft with a compiler which supports at least c++11.")
-    EndIf()
-  EndIf()
-EndIf()
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 
@@ -294,18 +277,6 @@ Generate_Version_Info()
 # Set some useful variables
 SetBasicVariables()
 
-# Check C++11 availability
-if(NOT CMAKE_CXX_FLAGS)
-  message(STATUS "No C++11 support found.")
-else()
-  string(FIND " ${CMAKE_CXX_FLAGS} " "-std=c++11" POS_C++11)
-  if(POS_C++11)
-    message(STATUS "C++11 support found.")
-  else()
-    message(STATUS "No C++11 support found.")
-  endif()
-endif()
-
 # Recurse into the given subdirectories.  This does not actually
 # cause another cmake executable to run.  The same process will walk through
 # the project's entire directory structure.
@@ -462,7 +433,11 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
   foreach(dep IN LISTS PROJECT_PACKAGE_DEPENDENCIES)
     if(${dep}_VERSION)
       if(${dep} STREQUAL DDS)
-        set(version_str "${BGreen}${${dep}_MAJOR_VERSION}.${${dep}_MINOR_VERSION}${CR}")
+        if(DDS_VERSION)
+          set(version_str "${BGreen}${${dep}_VERSION}${CR}")
+        else()
+          set(version_str "${BGreen}${${dep}_MAJOR_VERSION}.${${dep}_MINOR_VERSION}${CR}")
+        endif()
       elseif(${dep} STREQUAL Boost)
         if(Boost_VERSION_MAJOR)
           set(version_str "${BGreen}${${dep}_VERSION_MAJOR}.${${dep}_VERSION_MINOR}${CR}")
@@ -550,6 +525,8 @@ if(PROJECT_PACKAGE_DEPENDENCIES)
         get_target_property(flatbuffers_include flatbuffers::flatbuffers_shared INTERFACE_INCLUDE_DIRECTORIES)
       endif()
       get_filename_component(prefix ${flatbuffers_include}/.. ABSOLUTE)
+    elseif(${dep} STREQUAL DDS)
+      set(prefix ${DDS_INSTALL_PREFIX})
     endif()
 
     message(STATUS "  ${BWhite}${dep_padded}${CR}${version_padded}${prefix}")

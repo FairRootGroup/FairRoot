@@ -1,57 +1,57 @@
-<topology id="ExampleDDS">
+<topology @dds_name_tag@="ExampleDDS">
 
-    <property id="primariesChannel" />
-    <property id="data#all#" />
-    <property id="dataOut" />
-    <property id="updateChannel" />
-    <property id="ackChannel" />
+    <property @dds_name_tag@="fmqchan_primariesChannel" />
+    <property @dds_name_tag@="fmqchan_data#all#" />
+    <property @dds_name_tag@="fmqchan_dataOut" />
+    <property @dds_name_tag@="fmqchan_updateChannel" />
+    <property @dds_name_tag@="fmqchan_ackChannel" />
 
-    <decltask id="Generator">
-      <exe reachable="true">@splitmc_bin_location@/pixel-sim-gen --id splitMC-gen --channel-config name=primariesChannel,type=push,method=bind --running-mode pp --severity INFO --nof-events 100 --chunk-size 10 --ack-channel ackChannel --channel-config name=ackChannel,type=pull,method=bind,rateLogging=1 -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
+    <decltask @dds_name_tag@="Generator">
+      <exe reachable="true">@splitmc_bin_location@/pixel-sim-gen --id splitMC-gen --channel-config name=primariesChannel,type=push,method=bind --running-mode pp --severity INFO --nof-events 100 --chunk-size 10 --ack-channel ackChannel --channel-config name=ackChannel,type=pull,method=bind,rateLogging=1 -P dds --color false</exe>
         <properties>
-          <id access="write">primariesChannel</id>
-          <id access="write">ackChannel</id>
+          <@dds_name_tag@ access="write">fmqchan_primariesChannel</@dds_name_tag@>
+          <@dds_name_tag@ access="write">fmqchan_ackChannel</@dds_name_tag@>
         </properties>
     </decltask>
 
-    <decltask id="Transporter">
-      <exe reachable="true">@splitmc_bin_location@/pixel-sim-transport --config-key splitMC-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect --channel-config name=primariesChannel,type=pull,method=connect --channel-config name=data#all#,type=push,method=connect --transport-name TGeant3 --running-mode pp --severity INFO --detector-library @CMAKE_BINARY_DIR@/lib/libPixel.@example_library_extension@ -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
+    <decltask @dds_name_tag@="Transporter">
+      <exe reachable="true">@splitmc_bin_location@/pixel-sim-transport --config-key splitMC-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect --channel-config name=primariesChannel,type=pull,method=connect --channel-config name=data#all#,type=push,method=connect --transport-name TGeant3 --running-mode pp --severity INFO --detector-library @CMAKE_BINARY_DIR@/lib/libExPixel.@example_library_extension@ -P dds --color false</exe>
         <properties>
-          <id access="read">primariesChannel</id>
-          <id access="read">data#all#</id>
-	  <id access="read">updateChannel</id>
+          <@dds_name_tag@ access="read">fmqchan_primariesChannel</@dds_name_tag@>
+          <@dds_name_tag@ access="read">fmqchan_data#all#</@dds_name_tag@>
+	  <@dds_name_tag@ access="read">fmqchan_updateChannel</@dds_name_tag@>
         </properties>
     </decltask>
 
-    <decltask id="Merger">
-      <exe reachable="true">@splitmc_bin_location@/pixel-sim-chunk-merger --id splitMC-merger --in-channel data#all# --channel-config name=data#all#,type=pull,method=bind --out-channel dataOut --channel-config name=dataOut,type=push,method=bind --transport zeromq --severity INFO -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
+    <decltask @dds_name_tag@="Merger">
+      <exe reachable="true">@splitmc_bin_location@/pixel-sim-chunk-merger --id splitMC-merger --in-channel data#all# --channel-config name=data#all#,type=pull,method=bind --out-channel dataOut --channel-config name=dataOut,type=push,method=bind --transport zeromq --severity INFO -P dds --color false</exe>
         <properties>
-          <id access="write">data#all#</id>
-          <id access="write">dataOut</id>
+          <@dds_name_tag@ access="write">fmqchan_data#all#</@dds_name_tag@>
+          <@dds_name_tag@ access="write">fmqchan_dataOut</@dds_name_tag@>
         </properties>
     </decltask>
 
-    <decltask id="Sink">
-      <exe reachable="true">@pixel_bin_dir@/pixel-sink --id splitMC-sink --in-channel dataOut --severity INFO --channel-config name=dataOut,type=pull,method=connect --file-name @splitmc_file_location@/DDS.simulation_TGeant3.data.root --ack-channel ackChannel --channel-config name=ackChannel,type=push,method=connect,rateLogging=1 -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
+    <decltask @dds_name_tag@="Sink">
+      <exe reachable="true">@pixel_bin_dir@/pixel-sink --id splitMC-sink --in-channel dataOut --severity INFO --channel-config name=dataOut,type=pull,method=connect --file-name @splitmc_file_location@/DDS.simulation_TGeant3.data.root --ack-channel ackChannel --channel-config name=ackChannel,type=push,method=connect,rateLogging=1 -P dds --color false</exe>
         <properties>
-          <id access="read">dataOut</id>
-          <id access="read">ackChannel</id>
+          <@dds_name_tag@ access="read">fmqchan_dataOut</@dds_name_tag@>
+          <@dds_name_tag@ access="read">fmqchan_ackChannel</@dds_name_tag@>
         </properties>
     </decltask>
 
-    <decltask id="ParamServer">
-      <exe reachable="true">@fairroot_bin_dir@/parmq-server zeromq --id splitMC-parmq-server --channel-config name=updateChannel,type=rep,method=bind --severity INFO --update-channel-name updateChannel --output-name @splitmc_file_location@/DDS.simulation_TGeant3.pars.root -S "&lt;@FairMQ_LIBDIR@" -P dds --color false</exe>
+    <decltask @dds_name_tag@="ParamServer">
+      <exe reachable="true">@fairroot_bin_dir@/parmq-server zeromq --id splitMC-parmq-server --channel-config name=updateChannel,type=rep,method=bind --severity INFO --update-channel-name updateChannel --output-name @splitmc_file_location@/DDS.simulation_TGeant3.pars.root -P dds --color false</exe>
         <properties>
-            <id access="write">updateChannel</id>
+            <@dds_name_tag@ access="write">fmqchan_updateChannel</@dds_name_tag@>
         </properties>
     </decltask>
 
-    <main id="main">
+    <main @dds_name_tag@="main">
         <task>Generator</task>
         <task>Merger</task>
         <task>Sink</task>
         <task>ParamServer</task>
-        <group id="TransporterGroup" n="1">
+        <group @dds_name_tag@="TransporterGroup" n="1">
             <task>Transporter</task>
         </group>
     </main>

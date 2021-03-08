@@ -53,6 +53,12 @@ foreach(mcEngine IN ITEMS TGeant3 TGeant4)
   )
 endforeach()
 
+add_test(ex_tutorial1_PostInitConfig ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1.sh 1 \"TGeant4\" false true)
+set_tests_properties(ex_tutorial1_PostInitConfig PROPERTIES
+  TIMEOUT ${maxTestTime}
+  PASS_REGULAR_EXPRESSION "Loading Geant4 PostInit Config."
+)
+
 install(FILES run_tutorial1_mesh.C run_tutorial1_pythia6.C run_tutorial1_pythia8.C run_tutorial1_urqmd.C run_tutorial1.C
   DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/simulation/Tutorial1
 )

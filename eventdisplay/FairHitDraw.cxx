@@ -20,6 +20,10 @@ class TObject;
 
 FairHitDraw::FairHitDraw() {}
 
+FairHitDraw::FairHitDraw(const char* name, FairDataSourceI* dataSource, Int_t iVerbose)
+    : FairBoxSetDraw(name, dataSource, iVerbose)
+{}
+
 FairHitDraw::FairHitDraw(const char* name, Int_t iVerbose)
     : FairBoxSetDraw(name, iVerbose)
 {}

@@ -16,11 +16,10 @@
 
 #include "FairHit.h"   // for FairHit
 
+#include <TClonesArray.h>
+#include <TObject.h>
 #include <TVector3.h>   // for TVector3
-#include <iostream>     // for operator<<, basic_ostream, etc
-
-using std::cout;
-using std::endl;
+#include <fairlogger/Logger.h>
 
 FairHitPointSetDraw::FairHitPointSetDraw()
 {
@@ -35,9 +34,8 @@ FairHitPointSetDraw::~FairHitPointSetDraw()
 TVector3 FairHitPointSetDraw::GetVector(TObject* obj)
 {
     FairHit* p = static_cast<FairHit*>(obj);
-    if (fVerbose > 1) {
-        cout << "-I- FairHitPointSetDraw::GetVector: " << p->GetX() << " " << p->GetY() << " " << p->GetZ() << endl;
-    }
+    LOG(debug) << "-I- FairHitPointSetDraw::GetVector: " << p->GetX() << " " << p->GetY() << " " << p->GetZ();
+
     return TVector3(p->GetX(), p->GetY(), p->GetZ());
 }
 

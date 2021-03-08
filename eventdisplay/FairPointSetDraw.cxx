@@ -11,8 +11,10 @@
 // -------------------------------------------------------------------------
 #include "FairPointSetDraw.h"
 
+#include "FairDataSourceI.h"
 #include "FairEventManager.h"   // for FairEventManager
 #include "FairRootManager.h"    // for FairRootManager
+#include "FairTCASource.h"
 
 #include <TClonesArray.h>    // for TClonesArray
 #include <TEveManager.h>     // for TEveManager, gEve
@@ -25,14 +27,9 @@
 
 class TObject;
 
-using std::cout;
-using std::endl;
-
 FairPointSetDraw::FairPointSetDraw()
     : FairTask("FairPointSetDraw", 0)
     , fVerbose(0)
-    , fPointList(nullptr)
-    , fEventManager(nullptr)
     , fq(nullptr)
     , fColor(0)
     , fStyle(0)
@@ -41,55 +38,76 @@ FairPointSetDraw::FairPointSetDraw()
 FairPointSetDraw::FairPointSetDraw(const char* name, Color_t color, Style_t mstyle, Int_t iVerbose)
     : FairTask(name, iVerbose)
     , fVerbose(iVerbose)
-    , fPointList(nullptr)
-    , fEventManager(nullptr)
     , fq(nullptr)
     , fColor(color)
     , fStyle(mstyle)
 {}
 
+FairPointSetDraw::FairPointSetDraw(const char* name,
+                                   FairDataSourceI* dataSource,
+                                   Color_t color,
+                                   Style_t mstyle,
+                                   Int_t iVerbose)
+    : FairTask(name, iVerbose)
+    , fVerbose(iVerbose)
+    , fq(nullptr)
+    , fColor(color)
+    , fStyle(mstyle)
+    , fDataSource(dataSource)
+{}
+
 InitStatus FairPointSetDraw::Init()
 {
-    if (fVerbose > 1) {
-        cout << "FairPointSetDraw::Init()" << endl;
-    }
-    FairRootManager* fManager = FairRootManager::Instance();
-    fPointList = static_cast<TClonesArray*>(fManager->GetObject(GetName()));
-    if (fPointList == 0) {
-        cout << "FairPointSetDraw::Init()  branch " << GetName() << " Not found! Task will be deactivated " << endl;
-        SetActive(kFALSE);
-    }
-    if (fVerbose > 2) {
-        cout << "FairPointSetDraw::Init() get track list" << fPointList << endl;
-    }
-    fEventManager = FairEventManager::Instance();
-    if (fVerbose > 2) {
-        cout << "FairPointSetDraw::Init() get instance of FairEventManager " << endl;
-    }
+    LOG(info) << "FairPointSetDraw::Init()";
     fq = 0;
 
+    if (fDataSource == nullptr) {
+        fDataSource = new FairTCASource(GetName());
+    }
+    if (fDataSource->Init() != kSUCCESS) {
+        LOG(error) << "FairPointSetDraw::Init() branch " << GetName() << " not found!";
+        SetActive(kFALSE);
+        return kERROR;
+    }
     // gEve->AddElement(fq, fEventManager );
     return kSUCCESS;
 }
 
 void FairPointSetDraw::Exec(Option_t* /*option*/)
 {
+    Double_t timeOffset = 0.0;
     if (IsActive()) {
-        Int_t npoints = fPointList->GetEntriesFast();
+        if (FairEventManager::Instance()->GetClearHandler() == kTRUE) {
+            fDataSource->Reset();
+        }
+        fDataSource->RetrieveData(FairEventManager::Instance()->GetEvtTime());
+        Int_t npoints = fDataSource->GetNData();
         Reset();
         TEvePointSet* q = new TEvePointSet(GetName(), npoints, TEvePointSelectorConsumer::kTVT_XYZ);
         q->SetOwnIds(kTRUE);
         q->SetMarkerColor(fColor);
         q->SetMarkerSize(1.5);
         q->SetMarkerStyle(fStyle);
-        // std::cout << "fPointList: " << fPointList << " " << fPointList->GetEntries() << std::endl;
+        double tmin, tmax;
+        FairEventManager::Instance()->GetTimeLimits(tmin, tmax);
+        bool checkTime = tmin < tmax;
+
         for (Int_t i = 0; i < npoints; ++i) {
-            TObject* p = static_cast<TObject*>(fPointList->At(i));
-            if (p != 0) {
-                TVector3 vec(GetVector(p));
-                q->SetNextPoint(vec.X(), vec.Y(), vec.Z());
-                q->SetPointId(GetValue(p, i));
+
+            TVector3 vec(GetVector(fDataSource->GetData(i)));
+            if (checkTime) {
+                double time = fDataSource->GetTime(i);
+                if (fUseTimeOffset == kTRUE && time > -1.0)
+                    time += timeOffset;   ///< corrects a point time (with only time-of-flight) to event time +
+                                          ///< ToF to match with TimeLimits tmin, tmax
+                if (time > 0) {
+                    if (time < tmin || time > tmax) {
+                        continue;
+                    }
+                }
             }
+            q->SetNextPoint(vec.X(), vec.Y(), vec.Z());
+            // q->SetPointId(GetValue(p, i));
         }
         gEve->AddElement(q);
         gEve->Redraw3D(kFALSE);
@@ -97,9 +115,9 @@ void FairPointSetDraw::Exec(Option_t* /*option*/)
     }
 }
 
-TObject* FairPointSetDraw::GetValue(TObject* /*obj*/, Int_t i) { return new TNamed(Form("Point %d", i), ""); }
+// TObject* FairPointSetDraw::GetValue(TObject* /*obj*/, Int_t i) { return new TNamed(Form("Point %d", i), ""); }
 
-FairPointSetDraw::~FairPointSetDraw() {}
+FairPointSetDraw::~FairPointSetDraw() { delete (fDataSource); }
 
 void FairPointSetDraw::SetParContainers() {}
 
@@ -110,7 +128,7 @@ void FairPointSetDraw::Reset()
 {
     if (fq != 0) {
         fq->Reset();
-        gEve->RemoveElement(fq, fEventManager);
+        gEve->RemoveElement(fq, FairEventManager::Instance());
     }
 }
 

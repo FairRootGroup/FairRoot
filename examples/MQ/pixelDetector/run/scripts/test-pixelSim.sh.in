@@ -1,0 +1,85 @@
+#!/bin/bash
+
+set -e
+
+NOFNEEDEDAGENTS=5
+
+export LC_ALL=C
+source @CMAKE_BINARY_DIR@/config.sh -p
+source @dds_location@/DDS_env.sh
+
+echo "***** expect dds version at least 3.5"
+dds-info --version
+
+echo "***** Start dds server"
+exec 5>&1
+output=$(dds-session start | tee >(cat - >&5))
+export DDS_SESSION_ID=$(echo ${output} | grep "DDS session ID: " | cut -d' ' -f4)
+
+if [ -z "$DDS_SESSION_ID" ]; then
+    echo "DDS not started, quitting"
+    exit
+fi
+
+trap "dds-session stop $DDS_SESSION_ID" EXIT
+
+echo "***** Create local cluster with $NOFNEEDEDAGENTS agents"
+dds-submit -s $DDS_SESSION_ID -r localhost --slots $NOFNEEDEDAGENTS
+
+echo "***** Wait for $NOFNEEDEDAGENTS idle agents"
+dds-info --idle-count --wait $NOFNEEDEDAGENTS
+
+echo "***** Print number of idle agents available"
+NOFAGENTS=$(dds-info -s $DDS_SESSION_ID -n)
+echo $NOFAGENTS
+if [ $NOFAGENTS -lt $NOFNEEDEDAGENTS ]; then
+    echo "Not enough agents. Exiting"
+    exit 1
+fi
+
+export FAIRMQ_DDS_TOPO_FILE=@pixel_bin_dir@/pixel-dds-simulation.xml
+echo "***** Activate topology"
+dds-topology -s $DDS_SESSION_ID --activate $FAIRMQ_DDS_TOPO_FILE --disable-validation
+
+echo "***** Wait for $NOFNEEDEDAGENTS executing agents"
+dds-info --executing-count --wait $NOFNEEDEDAGENTS
+
+fairmq-dds-command-ui -w "IDLE"
+fairmq-dds-command-ui -c i
+fairmq-dds-command-ui -c k
+fairmq-dds-command-ui -c b
+fairmq-dds-command-ui -c x
+fairmq-dds-command-ui -c j
+fairmq-dds-command-ui -c r
+
+sampler_string="main/SamplerGroup.*"
+echo "waiting for $sampler_string to transition RUNNING->READY"
+fairmq-dds-command-ui -w "RUNNING->READY" -p $sampler_string
+echo "...$sampler_string are READY, sending shutdown..."
+
+echo "check dds states again"
+fairmq-dds-command-ui -c c
+echo "^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^"
+
+fairmq-dds-command-ui -c s
+fairmq-dds-command-ui -c t
+fairmq-dds-command-ui -c d
+fairmq-dds-command-ui -c q
+
+echo "***** Stop DDS"
+dds-session stop $DDS_SESSION_ID -f
+trap "" EXIT
+
+echo "***** Check the output file"
+ls -ltrh @pixel_file_dir@/DDS.simulation_TGeant3.data.$DDS_SESSION_ID.root
+OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @pixel_file_dir@/DDS.simulation_TGeant3.data.$DDS_SESSION_ID.root | tail -1)"
+echo "There are $OUTPUT_EVENTS events in the output file."
+
+if (( $OUTPUT_EVENTS == $((NOFNEEDEDAGENTS - 2))*1000 ));
+then
+    echo "Shell script finished successfully.";
+else
+    echo "Shell script failed."
+    exit 1
+fi
+

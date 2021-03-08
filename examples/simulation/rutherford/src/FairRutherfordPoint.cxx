@@ -6,11 +6,11 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "FairRutherfordPoint.h"
+#include <TGenericClassInfo.h>  // for TGenericClassInfo
+#include <iostream>             // for operator<<, basic_ostream, endl, cout
 
-#include <iostream>   // for operator<<, basic_ostream, etc
 
-using std::cout;
-using std::endl;
+using namespace std;
 
 FairRutherfordPoint::FairRutherfordPoint()
     : FairMCPoint()

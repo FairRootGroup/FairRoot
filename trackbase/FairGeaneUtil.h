@@ -7,10 +7,13 @@
  ********************************************************************************/
 #ifndef FAIRGEANEUTIL_H
 #define FAIRGEANEUTIL_H
-
-#include <Rtypes.h>     // for Double_t, Int_t, etc
-#include <TObject.h>    // for TObject
-#include <TVector3.h>   // for TVector3
+#include <Rtypes.h>      // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>  // for Double_t, Int_t
+#include <TObject.h>     // for TObject
+#include <TVector3.h>    // for TVector3
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 class FairGeaneUtil : public TObject
 {

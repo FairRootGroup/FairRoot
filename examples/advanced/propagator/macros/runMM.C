@@ -74,7 +74,8 @@ int runMM(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = fals
     FairBoxGenerator* pionBoxGen = new FairBoxGenerator(211, 2);
 
     pionBoxGen->SetThetaRange(0, 30);
-    pionBoxGen->SetPRange(1., 3.);
+    pionBoxGen->SetPRange(1.,3.);
+
     pionBoxGen->SetPhiRange(0., 360.);   // 10.,10. when looking for PCA
     pionBoxGen->SetDebug(kTRUE);
 
@@ -83,7 +84,7 @@ int runMM(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = fals
     FairBoxGenerator* muonBoxGen = new FairBoxGenerator(13, 2);
 
     muonBoxGen->SetThetaRange(0, 30);
-    muonBoxGen->SetPRange(1., 3.);
+    muonBoxGen->SetPRange(1.,3.);
     muonBoxGen->SetPhiRange(0., 360.);   // 10.,10. when looking for PCA
     muonBoxGen->SetDebug(kTRUE);
 

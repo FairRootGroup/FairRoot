@@ -14,12 +14,17 @@
 
 #ifndef RKPropagator
 #define RKPropagator
+#include "FairPropagator.h"   // for FairPropagator, PCAOutputStruct
 
-#include "FairPropagator.h"
-
-class FairField;
-class FairTrackParP;
-class TVector3;
+#include <Rtypes.h>     // for THashConsistencyHolder, ClassDef
+#include <TVector3.h>   // for TVector3
+#include <iosfwd>       // for string
+class FairField;        // lines 20-20
+class FairTrackParH;
+class FairTrackParP;   // lines 21-21
+class TBuffer;
+class TClass;
+class TMemberInspector;
 
 enum PropagationFlag
 {

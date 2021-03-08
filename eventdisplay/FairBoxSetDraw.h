@@ -24,6 +24,7 @@
 #ifndef FAIRBOXSETDRAW_H
 #define FAIRBOXSETDRAW_H
 
+#include "FairDataSourceI.h"
 #include "FairTSBufferFunctional.h"   // IWYU pragma: keep needed for cint
 #include "FairTask.h"                 // for FairTask, InitStatus
 
@@ -43,6 +44,14 @@ class FairBoxSetDraw : public FairTask
     FairBoxSetDraw();
 
     /** Standard constructor
+     *@param name        Name of task
+     *@param dataSource  Input source of the data to be displayed
+     *@param iVerbose    Verbosity level
+     **/
+    FairBoxSetDraw(const char* name, FairDataSourceI* dataSource, Int_t iVerbose = 1);
+
+    /** Legacy constructor
+     *  Sets the input dataSource to nullptr which sets it to read in TClonesArray
      *@param name        Name of task
      *@param iVerbose    Verbosity level
      **/
@@ -65,8 +74,8 @@ class FairBoxSetDraw : public FairTask
 
     virtual void SetTimeWindowMinus(Double_t val);
     virtual void SetTimeWindowPlus(Double_t val);
-    virtual void SetStartTime(Double_t val) { fStartTime = val; }
-    virtual void UseEventTimeAsStartTime(Bool_t val = kTRUE) { fUseEventTime = val; }
+    //    virtual void SetStartTime(Double_t val) { fStartTime = val; }
+    //    virtual void UseEventTimeAsStartTime(Bool_t val = kTRUE) { fUseEventTime = val; }
 
     /** Executed task **/
     virtual void Exec(Option_t* option);
@@ -86,22 +95,19 @@ class FairBoxSetDraw : public FairTask
     virtual Int_t GetValue(TObject* obj, Int_t i);
     virtual void AddBoxes(FairBoxSet* set, TObject* obj, Int_t i = 0);
 
-    TClonesArray* fList;               //!
-    FairEventManager* fEventManager;   //!
-    FairRootManager* fManager;
-    FairBoxSet* fq;   //!
-    Double_t fX, fY, fZ;
+    FairEventManager* fEventManager = nullptr;   //!
+    FairBoxSet* fq = nullptr;                    //!
+    Double_t fX{0.3};
+    Double_t fY{0.3};
+    Double_t fZ{0.3};
 
-    Double_t fTimeWindowPlus;
-    Double_t fTimeWindowMinus;
-    Double_t fStartTime;
-    Bool_t fUseEventTime;
+    Double_t fTimeWindowPlus{0.};
+    Double_t fTimeWindowMinus{0.};
+    FairDataSourceI* fDataSource = nullptr;
 
   private:
     FairBoxSetDraw(const FairBoxSetDraw&);
     FairBoxSetDraw& operator=(const FairBoxSetDraw&);
-    BinaryFunctor* fStartFunctor;
-    BinaryFunctor* fStopFunctor;
 
     ClassDef(FairBoxSetDraw, 1);
 };

@@ -31,12 +31,21 @@ class FairHitDraw : public FairBoxSetDraw
 
     /** Standard constructor
      *@param name        Name of task
+     *@param dataSource  Input container for data to be displayed
+     *@param iVerbose    Verbosity level
+     **/
+    FairHitDraw(const char* name, FairDataSourceI* dataSource, Int_t iVerbose = 1);
+
+    /** Legacy constructor
+     *@param name        Name of task
+     *@param dataSource  Input container for data to be displayed
      *@param iVerbose    Verbosity level
      **/
     FairHitDraw(const char* name, Int_t iVerbose = 1);
 
   protected:
     TVector3 GetVector(TObject* obj);
+    double GetTime(TObject* obj);
 
     ClassDef(FairHitDraw, 1);
 };

@@ -19,6 +19,9 @@ set(sources
   FairTutPropHitProducer.cxx
   FairTutPropTrack.cxx
   FairTutPropTrackFinder.cxx
+  FairEveRecoTracksExample.cxx
+  FairEveRecoTracksExampleEditor.cxx
+  FairRecoTracksDraw.cxx
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
@@ -32,6 +35,7 @@ target_compile_definitions(${target} PUBLIC ${defs})
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
   # TODO: DELETE ME ONCE USING root targets
@@ -50,7 +54,9 @@ target_link_libraries(${target} PUBLIC
   FairRoot::ExMCStack
   FairRoot::ParBase # FairRuntimeDb, FairContFact, FairParamList
   FairRoot::TrkBase # FairPropagator
+  FairRoot::EventDisplay
 
+  Eve
   Core # Rtypes
   MathCore # TRandom
   Physics # TVector3, TLorentzVector

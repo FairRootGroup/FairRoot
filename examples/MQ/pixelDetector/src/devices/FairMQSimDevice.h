@@ -54,17 +54,21 @@ class FairMQSimDevice : public FairMQRunDevice
     void SetSink(FairSink* sink) { fSink = sink; }
     // ------ ---------- -------- ------
 
+    void InitializeRun();
+
     virtual void SendBranches();
 
   protected:
     virtual void InitTask();
-    virtual void PreRun() {}
+    virtual void PreRun();
     virtual void PostRun() {}
     virtual bool ConditionalRun();
 
   private:
     UInt_t fSimDeviceId;
     std::string fUpdateChannelName;
+
+    bool fRunInitialized;   // false, set to true after initialization in the run stage (!)
 
     FairRunSim* fRunSim;
     // ------ FairRunSim settings ------
