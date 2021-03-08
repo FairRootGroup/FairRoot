@@ -9,7 +9,7 @@ export LC_ALL=C
 source @CMAKE_BINARY_DIR@/config.sh -p
 source @dds_location@/DDS_env.sh
 
-echo "***** expect dds version at least 3.0"
+echo "***** expect dds version at least 3.5"
 dds-info --version
 
 echo "***** Start dds server"
@@ -27,17 +27,8 @@ trap "dds-session stop $DDS_SESSION_ID" EXIT
 echo "***** Create local cluster with $NOFNEEDEDAGENTS agents"
 dds-submit -s $DDS_SESSION_ID -r localhost --slots $NOFNEEDEDAGENTS
 
-#wait 5 seconds to start agents
-COUNTER=0
-LOOPING=1
-until [ $LOOPING -eq 0 ]; do
-    sleep 1;
-    echo "waiting $COUNTER seconds to start $NOFNEEDEDAGENTS agents ";
-    ((COUNTER++));
-    if [ $COUNTER -ge 5 ]; then LOOPING=0; fi
-    if dds-info -s $DDS_SESSION_ID -n | grep -m 1 "$NOFNEEDEDAGENTS"; then LOOPING=0; fi
-    : ;
-done
+echo "***** Wait for $NOFNEEDEDAGENTS idle agents"
+dds-info --idle-count --wait $NOFNEEDEDAGENTS
 
 echo "***** Print number of agents available"
 NOFAGENTS=$(dds-info -s $DDS_SESSION_ID -n)
@@ -51,6 +42,9 @@ export FAIRMQ_DDS_TOPO_FILE=@splitmc_bin_location@/splitMC-topology.xml
 echo "***** Activate topology"
 dds-topology -s $DDS_SESSION_ID --activate $FAIRMQ_DDS_TOPO_FILE --disable-validation
 
+echo "***** Wait for $NOFNEEDEDAGENTS executing agents"
+dds-info --executing-count --wait $NOFNEEDEDAGENTS
+
 fairmq-dds-command-ui -w "IDLE"
 fairmq-dds-command-ui -c i
 fairmq-dds-command-ui -c k
@@ -60,7 +54,7 @@ fairmq-dds-command-ui -c j
 fairmq-dds-command-ui -c r
 
 sampler_string="main/Generator.*"
-echo "waiting for $sampler_string to transition RUNNING->READY" 
+echo "waiting for $sampler_string to transition RUNNING->READY"
 fairmq-dds-command-ui -w "RUNNING->READY" -p $sampler_string
 echo "...$sampler_string is READY, sending shutdown..."
 

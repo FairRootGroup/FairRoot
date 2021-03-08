@@ -41,7 +41,7 @@ FairMQPixelFileSink::FairMQPixelFileSink()
     , fOutputObjects(new TObject*[1000])
 {}
 
-void FairMQPixelFileSink::Init()
+void FairMQPixelFileSink::InitTask()
 {
     fFileName = fConfig->GetValue<std::string>("file-name");
     fInputChannelName = fConfig->GetValue<std::string>("in-channel");
@@ -98,17 +98,26 @@ bool FairMQPixelFileSink::StoreData(FairMQParts& parts, int /*index*/)
     return true;
 }
 
-FairMQPixelFileSink::~FairMQPixelFileSink()
+void FairMQPixelFileSink::ResetTask()
 {
     if (fTree) {
         fTree->Write();
-        delete fTree;
     }
 
     if (fOutFile) {
         if (fOutFile->IsOpen()) {
             fOutFile->Close();
         }
+    }
+}
+
+FairMQPixelFileSink::~FairMQPixelFileSink()
+{
+    if (fTree) {
+        delete fTree;
+    }
+
+    if (fOutFile) {
         delete fOutFile;
     }
 }

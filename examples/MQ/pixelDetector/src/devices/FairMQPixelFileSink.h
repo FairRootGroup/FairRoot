@@ -36,7 +36,8 @@ class FairMQPixelFileSink : public FairMQDevice
 
   protected:
     bool StoreData(FairMQParts&, int);
-    virtual void Init();
+    void InitTask() override;
+    void ResetTask() override;
 
   private:
     std::string fInputChannelName;
