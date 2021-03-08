@@ -17,5 +17,6 @@ var classFairTutPropDet =
     [ "ProcessHits", "d7/d04/classFairTutPropDet.html#afc483d7efd6e7eebbaf9ecebdb7426d5", null ],
     [ "Register", "d7/d04/classFairTutPropDet.html#aa5e2d0a54b02a84eb0233fd6b2033717", null ],
     [ "Reset", "d7/d04/classFairTutPropDet.html#a8828e138e58b45725af237a77352c7ae", null ],
+    [ "SetPointsArrayName", "d7/d04/classFairTutPropDet.html#a1269bc3b8062ded0216ccf24547488c1", null ],
     [ "SetSpecialPhysicsCuts", "d7/d04/classFairTutPropDet.html#a1eb97d67927bba106425379f4210ac4d", null ]
 ];

@@ -13,5 +13,6 @@ var classFairOnlineSource =
     [ "ReInitUnpackers", "d9/dfa/classFairOnlineSource.html#af49faaa4f8aa87b524147ec571d4fe2b", null ],
     [ "Reset", "d9/dfa/classFairOnlineSource.html#a7cd8d0565f93b245d85f55ca7f09a185", null ],
     [ "SetParUnpackers", "d9/dfa/classFairOnlineSource.html#a9b13da14500687c12a9907d9c4a0d580", null ],
+    [ "SpecifyRunId", "d9/dfa/classFairOnlineSource.html#a5c04a5b351173d6abf1260df23a9245c", null ],
     [ "fUnpackers", "d9/dfa/classFairOnlineSource.html#a8749d1583e1bb83b0b7b7ae8112774b7", null ]
 ];

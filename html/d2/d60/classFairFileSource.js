@@ -44,5 +44,6 @@ var classFairFileSource =
     [ "SetFileHeader", "d2/d60/classFairFileSource.html#a85436fe85f2ede74c216932bfa270fee", null ],
     [ "SetInputFile", "d2/d60/classFairFileSource.html#a8c1910df452c228a2c152dc19c7f339a", null ],
     [ "SetInTree", "d2/d60/classFairFileSource.html#a184ca3073c97ea80735d0c3f467608c7", null ],
-    [ "SetParUnpackers", "d2/d60/classFairFileSource.html#a0adad7c0035ea4ad6a928f363ffb99d0", null ]
+    [ "SetParUnpackers", "d2/d60/classFairFileSource.html#a0adad7c0035ea4ad6a928f363ffb99d0", null ],
+    [ "SpecifyRunId", "d2/d60/classFairFileSource.html#aa75d04356de43ae36cb7b6d89f5c56e2", null ]
 ];

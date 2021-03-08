@@ -1,3 +1,134 @@
+var NAVTREE =
+[
+  [ "FairRoot", "index.html", [
+    [ "Alignment Module in FairRoot", "da/d21/md__tmp_turany_FairRoot_alignment_readme.html", null ],
+    [ "event", "d6/dea/md__tmp_turany_FairRoot_base_event_README.html", null ],
+    [ "field", "d6/d9c/md__tmp_turany_FairRoot_base_field_README.html", null ],
+    [ "Message Queue", "d9/d6f/md__tmp_turany_FairRoot_base_MQ_README.html", null ],
+    [ "base", "de/d34/md__tmp_turany_FairRoot_base_README.html", null ],
+    [ "sim", "dd/ded/md__tmp_turany_FairRoot_base_sim_README.html", null ],
+    [ "source", "d8/dd2/md__tmp_turany_FairRoot_base_source_README.html", null ],
+    [ "steer", "da/d9c/md__tmp_turany_FairRoot_base_steer_README.html", null ],
+    [ "cmake", "d9/d80/md__tmp_turany_FairRoot_cmake_README.html", null ],
+    [ "datamatch", "dd/d48/md__tmp_turany_FairRoot_datamatch_README.html", null ],
+    [ "Generating Doxygen documentation", "d4/d1f/md__tmp_turany_FairRoot_doxygen_README.html", null ],
+    [ "eventdisplay", "d4/daf/md__tmp_turany_FairRoot_eventdisplay_README.html", null ],
+    [ "MBS Tutorial", "d8/db0/md__tmp_turany_FairRoot_examples_advanced_MbsTutorial_README.html", null ],
+    [ "Advanced examples", "d7/d15/md__tmp_turany_FairRoot_examples_advanced_README.html", null ],
+    [ "Tutorial 3 - Message Queue part", "d6/d9a/md__tmp_turany_FairRoot_examples_advanced_Tutorial3_MQ_README.html", null ],
+    [ "Data Format", "d5/da0/md__tmp_turany_FairRoot_examples_advanced_Tutorial3_MQ_run_README.html", null ],
+    [ "Tutorial3", "da/da1/md__tmp_turany_FairRoot_examples_advanced_Tutorial3_README.html", null ],
+    [ "common", "dd/d62/md__tmp_turany_FairRoot_examples_common_README.html", null ],
+    [ "MQ tutorial : Lmd Sampler", "df/ded/md__tmp_turany_FairRoot_examples_MQ_Lmd_README.html", null ],
+    [ "Example 7: Communicating with ParameterMQServer", "d5/d23/md__tmp_turany_FairRoot_examples_MQ_parameters_README.html", null ],
+    [ "Move from root to FairMQ continued", "d3/dec/md__tmp_turany_FairRoot_examples_MQ_pixelAlternative_README.html", null ],
+    [ "Move from root to FairMQ", "de/d2a/md__tmp_turany_FairRoot_examples_MQ_pixelDetector_README.html", null ],
+    [ "MC simulations in FairMQ", "db/d27/md__tmp_turany_FairRoot_examples_MQ_pixelSimSplit_README.html", null ],
+    [ "FairMQ Examples", "dd/d56/md__tmp_turany_FairRoot_examples_MQ_README.html", null ],
+    [ "Serialization Examples", "d2/d09/md__tmp_turany_FairRoot_examples_MQ_serialization_README.html", null ],
+    [ "Examples", "de/dc1/md__tmp_turany_FairRoot_examples_README.html", null ],
+    [ "Examples", "d8/d11/md__tmp_turany_FairRoot_examples_simulation_README.html", null ],
+    [ "Tutorial1:", "d8/d85/md__tmp_turany_FairRoot_examples_simulation_Tutorial1_README.html", null ],
+    [ "Tutorial2", "d7/d27/md__tmp_turany_FairRoot_examples_simulation_Tutorial2_README.html", null ],
+    [ "Tutorial4", "da/d5d/md__tmp_turany_FairRoot_examples_simulation_Tutorial4_README.html", null ],
+    [ "MC Step Logger", "df/d68/md__tmp_turany_FairRoot_fairtools_MCStepLogger_README.html", null ],
+    [ "fairtools", "df/d93/md__tmp_turany_FairRoot_fairtools_README.html", null ],
+    [ "geane", "d5/d62/md__tmp_turany_FairRoot_geane_README.html", null ],
+    [ "generators", "d3/d81/md__tmp_turany_FairRoot_generators_README.html", null ],
+    [ "geobase", "d8/d6a/md__tmp_turany_FairRoot_geobase_README.html", null ],
+    [ "MbsAPI", "d2/d79/md__tmp_turany_FairRoot_MbsAPI_README.html", null ],
+    [ "parbase", "da/d0a/md__tmp_turany_FairRoot_parbase_README.html", null ],
+    [ "ParameterMQServer", "d2/ddd/md__tmp_turany_FairRoot_parmq_README.html", null ],
+    [ "FairRoot [![license](https://alfa-ci.gsi.de/shields/badge/license-LGPL--3.0-orange.svg)](COPYRIGHT) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/639125056b554837b9fd996fb197f833)](https://www.codacy.com/app/FairRootGroup/FairRoot?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=FairRootGroup/FairRoot&amp;utm_campaign=Badge_Grade)", "d1/d41/md__tmp_turany_FairRoot_README.html", null ],
+    [ "scripts", "d2/d5f/md__tmp_turany_FairRoot_scripts_README.html", null ],
+    [ "templates", "d4/d20/md__tmp_turany_FairRoot_templates_README.html", null ],
+    [ "test", "d0/d16/md__tmp_turany_FairRoot_test_README.html", null ],
+    [ "trackbase", "df/d12/md__tmp_turany_FairRoot_trackbase_README.html", null ],
+    [ "Namespaces", null, [
+      [ "Namespace List", "namespaces.html", "namespaces" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ],
+        [ "Typedefs", "namespacemembers_type.html", null ]
+      ] ]
+    ] ],
+    [ "Classes", null, [
+      [ "Class List", "annotated.html", "annotated" ],
+      [ "Class Index", "classes.html", null ],
+      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
+      [ "Class Members", "functions.html", [
+        [ "All", "functions.html", "functions_dup" ],
+        [ "Functions", "functions_func.html", "functions_func" ],
+        [ "Variables", "functions_vars.html", "functions_vars" ],
+        [ "Typedefs", "functions_type.html", null ],
+        [ "Enumerations", "functions_enum.html", null ],
+        [ "Enumerator", "functions_eval.html", null ],
+        [ "Related Functions", "functions_rela.html", null ]
+      ] ]
+    ] ],
+    [ "Files", null, [
+      [ "File List", "files.html", "files" ],
+      [ "File Members", "globals.html", [
+        [ "All", "globals.html", "globals_dup" ],
+        [ "Functions", "globals_func.html", "globals_func" ],
+        [ "Variables", "globals_vars.html", null ],
+        [ "Typedefs", "globals_type.html", null ],
+        [ "Enumerations", "globals_enum.html", null ],
+        [ "Enumerator", "globals_eval.html", null ],
+        [ "Macros", "globals_defs.html", null ]
+      ] ]
+    ] ]
+  ] ]
+];
+
+var NAVTREEINDEX =
+[
+"annotated.html",
+"d0/d6c/classFairRootManager.html#ad59b2f98ad0e9380e6a3784be46f61b9",
+"d0/dc6/classFairGeoTrd1.html#a65b221781bd07d65b75979870fc764a9",
+"d1/d4c/classFairMagnet.html#a3a4a99cb1b87e786397d0dd2b5b32a74",
+"d1/dae/structs__ves10__1.html#ab31b7ec769ae7fe0c27a7bbb8f06aca4",
+"d2/d33/FairMQFileSource_8h.html",
+"d2/d64/classFairSource.html",
+"d2/dcc/classFairMapPar.html#a6b5f7d54ec8c8d8c43818f8c4085b982",
+"d3/d41/classFairGeoVector.html#aead825fa42e5b6eeba7d31a272ea7e18",
+"d3/dc1/classBoostDataSaver.html#a6776392a22327615ff68a6c02ab16476",
+"d4/d4c/runGenerateData_8cxx.html#a63c02de4231f2dc26e01bb21503212c9",
+"d4/dc7/classFairDoubleHit.html#a064c30304a328c23171079bea2a79e4a",
+"d5/d2d/FairGeoInterface_8cxx.html",
+"d5/d7b/classFairGeoMedium.html#acac171b183d82fc6905f00d35ac0e644",
+"d6/d03/FairFastSimDetector_8cxx_source.html",
+"d6/d55/project__root__containers_2field_2MyFieldCreator_8h.html",
+"d6/db9/classFairGeoTube.html#afadaf58cbc890b0bccda0e42347b2dda",
+"d7/d15/classFairSimConfig.html#a2eb42cce5c89e656f059dc27b01e1851",
+"d7/d6f/classFairRuntimeDb.html#acc4019cfce6cab163790f14203acc44f",
+"d7/df0/structsMbsBufHead.html#ae7bd9d5e4823cee3ed43c3dea62a1bd6",
+"d8/d90/FairSimConfig_8cxx.html",
+"d8/def/classFairMCApplication.html#a6175dda8e75f2f7c2b4c08ec55dbcf2e",
+"d9/d36/classNewDetector.html#aa4f3cdef197713943f30092719f7cafd",
+"d9/d92/classFairMesh.html#a8c08a45c48150b5f971307c3e87c51bb",
+"d9/dfd/classPixelDigiPar.html#a12c9e5f46fe0ccce9be902c09e290a4b",
+"da/d6a/classFairRootFileSink.html#a5c0d02a39e6443bdd721bd9c09971a82",
+"db/d29/sMbs_8h.html#af8cc7d3d48a89a3b758713e6e4088a3e",
+"db/da1/classFairLogger.html#ab4eff0ffbca92b689ef74d6e7b06b290",
+"dc/d09/classFairBoxSetEditor.html#aa1b136ea23ee067607d7590fcc7c56bf",
+"dc/d59/FairMCApplication_8h.html",
+"dc/ded/classPixelAltDigiWriteToRootVector.html",
+"dd/d62/classFairEveIntCut.html",
+"dd/db7/classPixelPayload_1_1Track.html#ab3d06cad7cf241325b2aafe71742fbf8",
+"dd/df8/NewDetector__stl__containers_2NewDetectorContFact_8cxx.html",
+"de/d34/classFairMQSimDevice.html#a8bfd2944551c9554c4e5dd6740272f00",
+"de/d9f/classFairTestDetectorPoint.html#a3ef01851bf241f3120db7cf80a2d8a29",
+"de/df3/FairMQSimDevice_8cxx.html",
+"df/d4f/classFairRadGridManager.html#a7bd0ee7650d76a84668ce37ff1e6816b",
+"df/dbd/classFairHit.html#aecad1f81334595485352bc1f0480208b",
+"dir_282962854d98f6f6a246cca923d7f343.html"
+];
+
+var SYNCONMSG = 'click to disable panel synchronisation';
+var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronisation';
+var SYNCOFFMSG = 'click to enable panel synchronisation';
 var navTreeSubIndices = new Array();
 
 function getData(varName)
@@ -18,21 +149,6 @@ function stripPath2(uri)
   var s = uri.substring(i+1);
   var m = uri.substring(0,i+1).match(/\/d\w\/d\w\w\/$/);
   return m ? uri.substring(i-6) : s;
-}
-
-function hashValue()
-{
-  return $(location).attr('hash').substring(1).replace(/[^\w\-]/g,'');
-}
-
-function hashUrl()
-{
-  return '#'+hashValue();
-}
-
-function pathName()
-{
-  return $(location).attr('pathname').replace(/[^-A-Za-z0-9+&@#/%?=~_|!:,.;\(\)]/g, '');
 }
 
 function localStorageSupported()
@@ -57,7 +173,7 @@ function deleteLink()
 {
   if (localStorageSupported()) {
     window.localStorage.setItem('navpath','');
-  }
+  } 
 }
 
 function cachedLink()
@@ -105,7 +221,7 @@ function createIndent(o,domNode,node,level)
     node.expandToggle.onclick = function() {
       if (node.expanded) {
         $(node.getChildrenUL()).slideUp("fast");
-        node.plus_img.src = node.relpath+"arrowright.png";
+        node.plus_img.src = node.relpath+"ftv2pnode.png";
         node.expanded = false;
       } else {
         expandNode(o, node, false, false);
@@ -113,13 +229,13 @@ function createIndent(o,domNode,node,level)
     }
     node.expandToggle.appendChild(imgNode);
     domNode.appendChild(node.expandToggle);
-    imgNode.src = node.relpath+"arrowright.png";
+    imgNode.src = node.relpath+"ftv2pnode.png";
   } else {
     var span = document.createElement("span");
     span.style.display = 'inline-block';
     span.style.width   = 16*(level+1)+'px';
     span.style.height  = '22px';
-    span.innerHTML = '&#160;';
+    span.innerHTML = '&nbsp;';
     domNode.appendChild(span);
   } 
 }
@@ -129,13 +245,11 @@ var animationInProgress = false;
 function gotoAnchor(anchor,aname,updateLocation)
 {
   var pos, docContent = $('#doc-content');
-  var ancParent = $(anchor.parent());
-  if (ancParent.hasClass('memItemLeft') ||
-      ancParent.hasClass('fieldname') ||
-      ancParent.hasClass('fieldtype') ||
-      ancParent.is(':header'))
+  if (anchor.parent().attr('class')=='memItemLeft' ||
+      anchor.parent().attr('class')=='fieldtype' ||
+      anchor.parent().is(':header')) 
   {
-    pos = ancParent.position().top;
+    pos = anchor.parent().position().top;
   } else if (anchor.position()) {
     pos = anchor.position().top;
   }
@@ -193,7 +307,7 @@ function newNode(o, po, text, link, childrenData, lastNode)
     a.className = stripPath(link.replace('#',':'));
     if (link.indexOf('#')!=-1) {
       var aname = '#'+link.split('#')[1];
-      var srcPage = stripPath(pathName());
+      var srcPage = stripPath($(location).attr('pathname'));
       var targetPage = stripPath(link.split('#')[0]);
       a.href = srcPage!=targetPage ? url : "javascript:void(0)"; 
       a.onclick = function(){
@@ -269,9 +383,9 @@ function expandNode(o, node, imm, showRoot)
         $(node.getChildrenUL()).slideDown("fast");
       }
       if (node.isLast) {
-        node.plus_img.src = node.relpath+"arrowdown.png";
+        node.plus_img.src = node.relpath+"ftv2mlastnode.png";
       } else {
-        node.plus_img.src = node.relpath+"arrowdown.png";
+        node.plus_img.src = node.relpath+"ftv2mnode.png";
       }
       node.expanded = true;
     }
@@ -287,13 +401,14 @@ function glowEffect(n,duration)
 
 function highlightAnchor()
 {
-  var aname = hashUrl();
+  var aname = $(location).attr('hash');
   var anchor = $(aname);
   if (anchor.parent().attr('class')=='memItemLeft'){
-    var rows = $('.memberdecls tr[class$="'+hashValue()+'"]');
+    var rows = $('.memberdecls tr[class$="'+
+               window.location.hash.substring(1)+'"]');
     glowEffect(rows.children(),300); // member without details
-  } else if (anchor.parent().attr('class')=='fieldname'){
-    glowEffect(anchor.parent().parent(),1000); // enum value
+  } else if (anchor.parents().slice(2).prop('tagName')=='TR') {
+    glowEffect(anchor.parents('div.memitem'),1000); // enum value
   } else if (anchor.parent().attr('class')=='fieldtype'){
     glowEffect(anchor.parent().parent(),1000); // struct field
   } else if (anchor.parent().is(":header")) {
@@ -308,7 +423,7 @@ function selectAndHighlight(hash,n)
 {
   var a;
   if (hash) {
-    var link=stripPath(pathName())+':'+hash.substring(1);
+    var link=stripPath($(location).attr('pathname'))+':'+hash.substring(1);
     a=$('.item a[class$="'+link+'"]');
   }
   if (a && a.length) {
@@ -341,7 +456,11 @@ function showNode(o, node, index, hash)
         getNode(o, node);
       }
       $(node.getChildrenUL()).css({'display':'block'});
-      node.plus_img.src = node.relpath+"arrowdown.png";
+      if (node.isLast) {
+        node.plus_img.src = node.relpath+"ftv2mlastnode.png";
+      } else {
+        node.plus_img.src = node.relpath+"ftv2mnode.png";
+      }
       node.expanded = true;
       var n = node.children[o.breadcrumbs[index]];
       if (index+1<o.breadcrumbs.length) {
@@ -415,13 +534,14 @@ function navTo(o,root,hash,relpath)
   if (link) {
     var parts = link.split('#');
     root = parts[0];
-    if (parts.length>1) hash = '#'+parts[1].replace(/[^\w\-]/g,'');
+    if (parts.length>1) hash = '#'+parts[1];
     else hash='';
   }
   if (hash.match(/^#l\d+$/)) {
     var anchor=$('a[name='+hash.substring(1)+']');
     glowEffect(anchor.parent(),1000); // line number
     hash=''; // strip line number anchors
+    //root=root.replace(/_source\./,'.'); // source link to doc link
   }
   var url=root+hash;
   var i=-1;
@@ -455,7 +575,7 @@ function toggleSyncButton(relpath)
   if (navSync.hasClass('sync')) {
     navSync.removeClass('sync');
     showSyncOff(navSync,relpath);
-    storeLink(stripPath2(pathName())+hashUrl());
+    storeLink(stripPath2($(location).attr('pathname'))+$(location).attr('hash'));
   } else {
     navSync.addClass('sync');
     showSyncOn(navSync,relpath);
@@ -479,7 +599,7 @@ function initNavTree(toroot,relpath)
   o.node.expanded = false;
   o.node.isLast = true;
   o.node.plus_img = document.createElement("img");
-  o.node.plus_img.src = relpath+"arrowright.png";
+  o.node.plus_img.src = relpath+"ftv2pnode.png";
   o.node.plus_img.width = 16;
   o.node.plus_img.height = 22;
 
@@ -495,7 +615,7 @@ function initNavTree(toroot,relpath)
   }
 
   $(window).load(function(){
-    navTo(o,toroot,hashUrl(),relpath);
+    navTo(o,toroot,window.location.hash,relpath);
     showRoot();
   });
 
@@ -503,20 +623,21 @@ function initNavTree(toroot,relpath)
      if (window.location.hash && window.location.hash.length>1){
        var a;
        if ($(location).attr('hash')){
-         var clslink=stripPath(pathName())+':'+hashValue();
-         a=$('.item a[class$="'+clslink.replace(/</g,'\\3c ')+'"]');
+         var clslink=stripPath($(location).attr('pathname'))+':'+
+                               $(location).attr('hash').substring(1);
+         a=$('.item a[class$="'+clslink+'"]');
        }
        if (a==null || !$(a).parent().parent().hasClass('selected')){
          $('.item').removeClass('selected');
          $('.item').removeAttr('id');
        }
-       var link=stripPath2(pathName());
-       navTo(o,link,hashUrl(),relpath);
+       var link=stripPath2($(location).attr('pathname'));
+       navTo(o,link,$(location).attr('hash'),relpath);
      } else if (!animationInProgress) {
        $('#doc-content').scrollTop(0);
        $('.item').removeClass('selected');
        $('.item').removeAttr('id');
-       navTo(o,toroot,hashUrl(),relpath);
+       navTo(o,toroot,window.location.hash,relpath);
      }
   })
 }

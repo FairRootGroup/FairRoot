@@ -21,17 +21,12 @@ var hierarchy =
     [ "BinaryBaseClassSerializer< TPayload >", "db/d30/classBinaryBaseClassSerializer.html", null ],
     [ "BoostDataSaver< TPayload, TArchiveIn, TArchiveOut >", "d3/dc1/classBoostDataSaver.html", null ],
     [ "BoostSerializer< DataType >", "da/de1/classBoostSerializer.html", null ],
-    [ "cbmsim", "d5/d6f/classcbmsim.html", null ],
     [ "CustomClass", "db/d94/classCustomClass.html", null ],
     [ "cv_string", "db/d39/structcv__string.html", null ],
     [ "Deserializer", null, [
       [ "fair::mq::policy::InputPolicy< Deserializer, Data, PassType, AllocatorType, InitializerType, DeleterType >", "d0/d97/classfair_1_1mq_1_1policy_1_1InputPolicy.html", null ]
     ] ],
     [ "PixelPayload::Digi", "d7/d71/classPixelPayload_1_1Digi.html", null ],
-    [ "TestDetectorFlat::DigiBuilder", "d1/d8e/structTestDetectorFlat_1_1DigiBuilder.html", null ],
-    [ "TestDetectorProto::DigiDefaultTypeInternal", "d0/d19/classTestDetectorProto_1_1DigiDefaultTypeInternal.html", null ],
-    [ "TestDetectorFlat::DigiPayloadBuilder", "d1/d01/structTestDetectorFlat_1_1DigiPayloadBuilder.html", null ],
-    [ "TestDetectorProto::DigiPayloadDefaultTypeInternal", "d6/dd7/classTestDetectorProto_1_1DigiPayloadDefaultTypeInternal.html", null ],
     [ "fair::mq::policy::EmptyCreator", "d0/d1e/structfair_1_1mq_1_1policy_1_1EmptyCreator.html", null ],
     [ "fair::mq::policy::EmptyDeleter", "d9/dff/structfair_1_1mq_1_1policy_1_1EmptyDeleter.html", null ],
     [ "fair::mq::policy::EmptyInitializer", "d9/d0e/structfair_1_1mq_1_1policy_1_1EmptyInitializer.html", null ],
@@ -40,6 +35,7 @@ var hierarchy =
     [ "FairAlignmentHandler", "dd/d20/classFairAlignmentHandler.html", null ],
     [ "FairCaptureOutputNew", "d3/d29/classFairCaptureOutputNew.html", null ],
     [ "FairFieldFactory", "db/dea/classFairFieldFactory.html", [
+      [ "FairConstFieldCreator", "d6/dcb/classFairConstFieldCreator.html", null ],
       [ "MyFieldCreator", "dc/dd1/classMyFieldCreator.html", null ],
       [ "MyFieldCreator", "dc/dd1/classMyFieldCreator.html", null ]
     ] ],
@@ -48,6 +44,7 @@ var hierarchy =
         [ "FairVMCConfig", "da/d4f/classFairVMCConfig.html", null ]
       ] ]
     ] ],
+    [ "FairGeoTrackHandler", "db/dc1/classFairGeoTrackHandler.html", null ],
     [ "FairLink", "d6/da5/classFairLink.html", null ],
     [ "FairLogger", "db/da1/classFairLogger.html", null ],
     [ "FairMQDevice", null, [
@@ -98,6 +95,10 @@ var hierarchy =
     ] ],
     [ "FairSystemInfo", "d2/dc5/classFairSystemInfo.html", null ],
     [ "FairTestOutputHandler", "d1/d88/classFairTestOutputHandler.html", null ],
+    [ "FairTimebasedDataHandlerT< T >", "d3/d89/classFairTimebasedDataHandlerT.html", null ],
+    [ "FairTimebasedDataHandlerT< FairHit >", "d3/d89/classFairTimebasedDataHandlerT.html", null ],
+    [ "FairTimebasedDataHandlerT< FairMCPoint >", "d3/d89/classFairTimebasedDataHandlerT.html", null ],
+    [ "FairTimebasedDataHandlerT< TGeoTrack >", "d3/d89/classFairTimebasedDataHandlerT.html", null ],
     [ "FairTrajFilter", "dc/d50/classFairTrajFilter.html", null ],
     [ "false_type", null, [
       [ "baseMQ::tools::resolve::details::has_InitTClonesArray< T, Sig, typename >", "d5/db3/structbaseMQ_1_1tools_1_1resolve_1_1details_1_1has__InitTClonesArray.html", null ],
@@ -110,28 +111,10 @@ var hierarchy =
     [ "fair::base::serialization::has_BoostSerialization< typename, T >", "d2/df4/structfair_1_1base_1_1serialization_1_1has__BoostSerialization.html", null ],
     [ "fair::base::serialization::has_BoostSerialization< C, Ret(Args...)>", "dc/d58/structfair_1_1base_1_1serialization_1_1has__BoostSerialization_3_01C_00_01Ret_07Args_8_8_8_08_4.html", null ],
     [ "PixelPayload::Hit", "d3/d18/classPixelPayload_1_1Hit.html", null ],
-    [ "TestDetectorFlat::HitBuilder", "df/dc0/structTestDetectorFlat_1_1HitBuilder.html", null ],
-    [ "TestDetectorProto::HitDefaultTypeInternal", "db/d93/classTestDetectorProto_1_1HitDefaultTypeInternal.html", null ],
-    [ "TestDetectorFlat::HitPayloadBuilder", "db/dec/structTestDetectorFlat_1_1HitPayloadBuilder.html", null ],
-    [ "TestDetectorProto::HitPayloadDefaultTypeInternal", "d5/d3c/classTestDetectorProto_1_1HitPayloadDefaultTypeInternal.html", null ],
     [ "InputPolicy", null, [
       [ "BaseMQFileSink< InputPolicy, OutputPolicy >", "d4/daf/classBaseMQFileSink.html", null ]
     ] ],
     [ "baseMQ::tools::int_< size_t >", "da/d23/structbaseMQ_1_1tools_1_1int__.html", null ],
-    [ "Message", null, [
-      [ "TestDetectorProto::Digi", "dd/de2/classTestDetectorProto_1_1Digi.html", null ],
-      [ "TestDetectorProto::Digi", "dd/de2/classTestDetectorProto_1_1Digi.html", null ],
-      [ "TestDetectorProto::Digi", "dd/de2/classTestDetectorProto_1_1Digi.html", null ],
-      [ "TestDetectorProto::DigiPayload", "da/d41/classTestDetectorProto_1_1DigiPayload.html", null ],
-      [ "TestDetectorProto::DigiPayload", "da/d41/classTestDetectorProto_1_1DigiPayload.html", null ],
-      [ "TestDetectorProto::DigiPayload", "da/d41/classTestDetectorProto_1_1DigiPayload.html", null ],
-      [ "TestDetectorProto::Hit", "db/d78/classTestDetectorProto_1_1Hit.html", null ],
-      [ "TestDetectorProto::Hit", "db/d78/classTestDetectorProto_1_1Hit.html", null ],
-      [ "TestDetectorProto::Hit", "db/d78/classTestDetectorProto_1_1Hit.html", null ],
-      [ "TestDetectorProto::HitPayload", "d6/de6/classTestDetectorProto_1_1HitPayload.html", null ],
-      [ "TestDetectorProto::HitPayload", "d6/de6/classTestDetectorProto_1_1HitPayload.html", null ],
-      [ "TestDetectorProto::HitPayload", "d6/de6/classTestDetectorProto_1_1HitPayload.html", null ]
-    ] ],
     [ "Mille", "df/db2/classMille.html", null ],
     [ "MultiVariatePDF", "d9/d6d/classMultiVariatePDF.html", null ],
     [ "fair::mq::policy::NullptrCreator", "d9/db9/structfair_1_1mq_1_1policy_1_1NullptrCreator.html", null ],
@@ -196,23 +179,7 @@ var hierarchy =
     [ "sptrevDummy", "d7/d5d/structsptrevDummy.html", null ],
     [ "srevComm", "dc/dc2/structsrevComm.html", null ],
     [ "srevInfo", "dd/d98/structsrevInfo.html", null ],
-    [ "protobuf_FairTestDetectorPayload_2eproto::StaticDescriptorInitializer", "d8/d5a/structprotobuf__FairTestDetectorPayload__2eproto_1_1StaticDescriptorInitializer.html", null ],
     [ "StepLogger", "de/d1b/classStepLogger.html", null ],
-    [ "Table", null, [
-      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
-      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
-      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
-      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
-      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
-      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
-      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
-      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
-      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
-      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
-      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ],
-      [ "TestDetectorFlat::FLATBUFFERS_FINAL_CLASS", "d7/db6/structTestDetectorFlat_1_1FLATBUFFERS__FINAL__CLASS.html", null ]
-    ] ],
-    [ "protobuf_FairTestDetectorPayload_2eproto::TableStruct", "d1/dbe/structprotobuf__FairTestDetectorPayload__2eproto_1_1TableStruct.html", null ],
     [ "Test", null, [
       [ "_TestFairLoggerBase< testing::Test >", "db/df0/class__TestFairLoggerBase.html", [
         [ "FairToolsTest", "d9/d32/classFairToolsTest.html", null ],
@@ -237,8 +204,24 @@ var hierarchy =
     [ "TEveBoxSet", null, [
       [ "FairBoxSet", "d2/d63/classFairBoxSet.html", null ]
     ] ],
+    [ "TEveCompound", null, [
+      [ "FairEveRecoTrack", "df/d45/classFairEveRecoTrack.html", null ]
+    ] ],
+    [ "TEveElement", null, [
+      [ "FairEveTracks", "d4/db4/classFairEveTracks.html", [
+        [ "FairEveGeoTracks", "d9/d0c/classFairEveGeoTracks.html", null ],
+        [ "FairEveMCTracks", "dd/dce/classFairEveMCTracks.html", null ],
+        [ "FairEveRecoTracksExample", "d9/d3b/classFairEveRecoTracksExample.html", null ]
+      ] ]
+    ] ],
     [ "TEveEventManager", null, [
       [ "FairEventManager", "d9/da4/classFairEventManager.html", null ]
+    ] ],
+    [ "TEveTrack", null, [
+      [ "FairEveTrack", "d5/daa/classFairEveTrack.html", null ]
+    ] ],
+    [ "TEveTrackList", null, [
+      [ "FairEveRecoTrackList", "db/d9a/classFairEveRecoTrackList.html", null ]
     ] ],
     [ "TFile", null, [
       [ "FairParamList::FairParamTFile", "de/dbe/classFairParamList_1_1FairParamTFile.html", null ]
@@ -251,16 +234,21 @@ var hierarchy =
     ] ],
     [ "TGedFrame", null, [
       [ "FairBoxSetEditor", "dc/d09/classFairBoxSetEditor.html", null ],
+      [ "FairEveGeoTracksEditor", "df/de5/classFairEveGeoTracksEditor.html", null ],
+      [ "FairEveMCTracksEditor", "d3/dc5/classFairEveMCTracksEditor.html", null ],
       [ "FairEventManagerEditor", "d9/d53/classFairEventManagerEditor.html", null ],
-      [ "FairMCTracksEditor", "df/d36/classFairMCTracksEditor.html", null ]
+      [ "FairEveRecoTracksExampleEditor", "d7/d93/classFairEveRecoTracksExampleEditor.html", null ]
     ] ],
-    [ "MyPodData::TimeStamp", "db/d2a/classMyPodData_1_1TimeStamp.html", [
-      [ "MyPodData::Digi", "dd/de4/classMyPodData_1_1Digi.html", null ],
-      [ "MyPodData::Hit", "d0/d8a/classMyPodData_1_1Hit.html", null ]
+    [ "TGHorizontalFrame", null, [
+      [ "FairEveTransparencyControl", "dd/d33/classFairEveTransparencyControl.html", null ]
     ] ],
     [ "TestDetectorPayload::TimeStamp", "de/d8c/classTestDetectorPayload_1_1TimeStamp.html", [
       [ "TestDetectorPayload::Digi", "d5/d78/classTestDetectorPayload_1_1Digi.html", null ],
       [ "TestDetectorPayload::Hit", "d2/da6/classTestDetectorPayload_1_1Hit.html", null ]
+    ] ],
+    [ "MyPodData::TimeStamp", "db/d2a/classMyPodData_1_1TimeStamp.html", [
+      [ "MyPodData::Digi", "dd/de4/classMyPodData_1_1Digi.html", null ],
+      [ "MyPodData::Hit", "d0/d8a/classMyPodData_1_1Hit.html", null ]
     ] ],
     [ "TMessage", null, [
       [ "FairTMessage", "d8/d0f/classFairTMessage.html", null ]
@@ -293,9 +281,11 @@ var hierarchy =
           [ "FairGenericParRootFileIo", "db/d29/classFairGenericParRootFileIo.html", null ]
         ] ]
       ] ],
+      [ "FairEveAnimationControl", "db/dc5/classFairEveAnimationControl.html", null ],
       [ "FairEventHeader", "dd/db6/classFairEventHeader.html", [
         [ "PixelEventHeader", "d4/df4/classPixelEventHeader.html", null ]
       ] ],
+      [ "FairEveTracks", "d4/db4/classFairEveTracks.html", null ],
       [ "FairFileHeader", "d5/dc2/classFairFileHeader.html", null ],
       [ "FairFileInfo", "d3/d2c/classFairFileInfo.html", null ],
       [ "FairGenerator", "df/d40/classFairGenerator.html", [
@@ -416,6 +406,17 @@ var hierarchy =
       [ "FairXMLNode", "dd/dc3/classFairXMLNode.html", null ]
     ] ],
     [ "TObject", null, [
+      [ "FairDataSourceI", "d1/d7a/classFairDataSourceI.html", [
+        [ "FairTCASource", "d8/d29/classFairTCASource.html", null ],
+        [ "FairTimebasedMCHitSource", "dc/d12/classFairTimebasedMCHitSource.html", null ],
+        [ "FairTimebasedMCSource", "d7/d0e/classFairTimebasedMCSource.html", null ],
+        [ "FairTimebasedSource", "da/dcf/classFairTimebasedSource.html", null ]
+      ] ],
+      [ "FairEveCut", "d5/d64/classFairEveCut.html", [
+        [ "FairEveBoolCut", "d2/dd0/classFairEveBoolCut.html", null ],
+        [ "FairEveIntCut", "dd/d62/classFairEveIntCut.html", null ],
+        [ "FairEveMinMaxCut", "d7/de4/classFairEveMinMaxCut.html", null ]
+      ] ],
       [ "FairGeaneUtil", "df/dfb/classFairGeaneUtil.html", null ],
       [ "FairGeoInterface", "dc/dc3/classFairGeoInterface.html", null ],
       [ "FairGeoIo", "d3/d1b/classFairGeoIo.html", [
@@ -427,6 +428,7 @@ var hierarchy =
       [ "FairGeoShapes", "d4/db5/classFairGeoShapes.html", null ],
       [ "FairGeoTransform", "d1/d7a/classFairGeoTransform.html", null ],
       [ "FairGeoVector", "d3/d41/classFairGeoVector.html", null ],
+      [ "FairGetEventTime", "d2/def/classFairGetEventTime.html", null ],
       [ "FairLinkManager", "de/d00/classFairLinkManager.html", null ],
       [ "FairMBSRawItem", "d9/d6d/classFairMBSRawItem.html", null ],
       [ "FairMCDataCrawler", "d1/d69/classFairMCDataCrawler.html", null ],
@@ -459,6 +461,7 @@ var hierarchy =
           [ "FairHit", "df/dbd/classFairHit.html", [
             [ "FairTestDetectorHit", "d9/db6/classFairTestDetectorHit.html", null ],
             [ "FairTutorialDet4Hit", "d3/da6/classFairTutorialDet4Hit.html", null ],
+            [ "FairTutPropHit", "de/d79/classFairTutPropHit.html", null ],
             [ "MyHit", "d8/de0/classMyHit.html", null ],
             [ "PixelHit", "da/db2/classPixelHit.html", null ]
           ] ],
@@ -529,6 +532,7 @@ var hierarchy =
       [ "FairTrackParam", "d6/d94/classFairTrackParam.html", null ],
       [ "FairTSBufferFunctional", "d8/d08/classFairTSBufferFunctional.html", null ],
       [ "FairTutorialDet4GeoHandler", "d6/dc1/classFairTutorialDet4GeoHandler.html", null ],
+      [ "FairTutPropTrack", "d9/d71/classFairTutPropTrack.html", null ],
       [ "FairUnpack", "d2/db4/classFairUnpack.html", [
         [ "FairMBSUnpack", "de/db5/classFairMBSUnpack.html", null ],
         [ "FairMBSUnpacker", "d2/d87/classFairMBSUnpacker.html", null ]
@@ -561,16 +565,16 @@ var hierarchy =
     [ "TTask", null, [
       [ "FairTask", "d2/d9e/classFairTask.html", [
         [ "FairBoxSetDraw", "d2/d33/classFairBoxSetDraw.html", [
-          [ "FairHitDraw", "d1/d42/classFairHitDraw.html", null ],
-          [ "FairTimeStampPointDraw", "d3/d52/classFairTimeStampPointDraw.html", null ]
+          [ "FairHitDraw", "d1/d42/classFairHitDraw.html", null ]
         ] ],
         [ "FairEventBuilderManager", "d7/d4f/classFairEventBuilderManager.html", null ],
         [ "FairGeane", "df/d0b/classFairGeane.html", null ],
+        [ "FairGeoTracksDraw", "d6/d5a/classFairGeoTracksDraw.html", null ],
         [ "FairMBSTask", "d0/d94/classFairMBSTask.html", null ],
         [ "FairMCMatchCreatorTask", "d9/d4c/classFairMCMatchCreatorTask.html", null ],
         [ "FairMCMatchLoaderTask", "d1/de3/classFairMCMatchLoaderTask.html", null ],
         [ "FairMCMatchSelectorTask", "de/de8/classFairMCMatchSelectorTask.html", null ],
-        [ "FairMCTracks", "da/d7c/classFairMCTracks.html", null ],
+        [ "FairMCTracksDraw", "d5/d0f/classFairMCTracksDraw.html", null ],
         [ "FairMQProcessorTask", "d5/d02/classFairMQProcessorTask.html", [
           [ "FairTestDetectorMQRecoTask< TIn, TOut, TPayloadIn, TPayloadOut >", "d2/d61/classFairTestDetectorMQRecoTask.html", null ]
         ] ],
@@ -582,6 +586,7 @@ var hierarchy =
           [ "FairMCPointDraw", "df/de7/classFairMCPointDraw.html", null ]
         ] ],
         [ "FairPrintFairLinks", "d8/d72/classFairPrintFairLinks.html", null ],
+        [ "FairRecoTracksDraw", "dc/d85/classFairRecoTracksDraw.html", null ],
         [ "FairRingSorterTask", "d5/df8/classFairRingSorterTask.html", [
           [ "FairTestDetectorDigiSorterTask", "db/db0/classFairTestDetectorDigiSorterTask.html", null ],
           [ "MySorterTask", "db/d06/classMySorterTask.html", null ]
@@ -597,7 +602,9 @@ var hierarchy =
         [ "FairTutorialDet4MilleWriter", "dd/d28/classFairTutorialDet4MilleWriter.html", null ],
         [ "FairTutorialDet4PointDraw", "d7/d66/classFairTutorialDet4PointDraw.html", null ],
         [ "FairTutorialDet4StraightLineFitter", "d9/d93/classFairTutorialDet4StraightLineFitter.html", null ],
+        [ "FairTutPropHitProducer", "d7/d7d/classFairTutPropHitProducer.html", null ],
         [ "FairTutPropTr", "db/d50/classFairTutPropTr.html", null ],
+        [ "FairTutPropTrackFinder", "df/d65/classFairTutPropTrackFinder.html", null ],
         [ "NewTask", "dc/d2e/classNewTask.html", null ],
         [ "PixelAltDigiWriteToRootVector", "dc/ded/classPixelAltDigiWriteToRootVector.html", null ],
         [ "PixelAltFindHits", "dc/d25/classPixelAltFindHits.html", null ],

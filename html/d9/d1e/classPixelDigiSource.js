@@ -13,5 +13,6 @@ var classPixelDigiSource =
     [ "ReInitUnpackers", "d9/d1e/classPixelDigiSource.html#ad599082e8a6bf18077fa483c33c02a23", null ],
     [ "Reset", "d9/d1e/classPixelDigiSource.html#acd08ad57c96f58a5a60483c6222fa75a", null ],
     [ "SetInputFileName", "d9/d1e/classPixelDigiSource.html#abf7e89fee4b9a06da4c0dc336e775ea8", null ],
-    [ "SetParUnpackers", "d9/d1e/classPixelDigiSource.html#a414b2ffcb7a25cddd07ed2cf38c60029", null ]
+    [ "SetParUnpackers", "d9/d1e/classPixelDigiSource.html#a414b2ffcb7a25cddd07ed2cf38c60029", null ],
+    [ "SpecifyRunId", "d9/d1e/classPixelDigiSource.html#a7100b0ff7fb7d2ead208eba6ba0f1d61", null ]
 ];

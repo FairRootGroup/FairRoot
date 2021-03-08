@@ -13,5 +13,6 @@ var classPixelDigiBinSource =
     [ "ReInitUnpackers", "d5/d0a/classPixelDigiBinSource.html#ac2ba8bc980d518756aa40cf991bcb4fc", null ],
     [ "Reset", "d5/d0a/classPixelDigiBinSource.html#a0e1ed3726e2dcca896fe4ca43591f0e2", null ],
     [ "SetInputFileName", "d5/d0a/classPixelDigiBinSource.html#aa074516b871a8cfc68baa792b803ed9a", null ],
-    [ "SetParUnpackers", "d5/d0a/classPixelDigiBinSource.html#a1a19145c1d290f5b28ae815160dbd99e", null ]
+    [ "SetParUnpackers", "d5/d0a/classPixelDigiBinSource.html#a1a19145c1d290f5b28ae815160dbd99e", null ],
+    [ "SpecifyRunId", "d5/d0a/classPixelDigiBinSource.html#a68f89d95eab69c98f8a40200c57c2b73", null ]
 ];

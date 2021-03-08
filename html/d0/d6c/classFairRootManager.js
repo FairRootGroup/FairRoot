@@ -69,6 +69,7 @@ var classFairRootManager =
     [ "SetSource", "d0/d6c/classFairRootManager.html#a16f20a588b53a8decf1bdb975b1d1337", null ],
     [ "SetTimeBasedBranchNameList", "d0/d6c/classFairRootManager.html#ac62c0ba365070d5e513b1fa36d880538", null ],
     [ "SetUseFairLinks", "d0/d6c/classFairRootManager.html#a42cf79baad38a3934d8b4b55c07b15fe", null ],
+    [ "SpecifyRunId", "d0/d6c/classFairRootManager.html#a1c0cabc1033f71c97a24fb19a31a6eb7", null ],
     [ "StoreAllWriteoutBufferData", "d0/d6c/classFairRootManager.html#af6bb592d8d67107bfee4fa658de7bf92", null ],
     [ "StoreWriteoutBufferData", "d0/d6c/classFairRootManager.html#a80dcdc5fa2189b26718f281e92478ffb", null ],
     [ "TerminateAllTSBuffer", "d0/d6c/classFairRootManager.html#aaf7c01259c5de382a5dda2895b4621ec", null ],

@@ -40,6 +40,7 @@ var classFairRunSim =
     [ "SetRadLenRegister", "dd/dbc/classFairRunSim.html#a1a2ad3183be911000db47073fd9262a1", null ],
     [ "SetRadMapRegister", "dd/dbc/classFairRunSim.html#ac02718cd6ad26a5c8192ba921eba9ba9", null ],
     [ "SetSimSetup", "dd/dbc/classFairRunSim.html#a5c2960e68f075b7ac8beef2ad82f4161", null ],
+    [ "SetSimSetupPostInit", "dd/dbc/classFairRunSim.html#ab43c8577ce84134fc0db84e321f0ba4b", null ],
     [ "SetSimulationConfig", "dd/dbc/classFairRunSim.html#aba131fc5edb48a0280bc0ff6b98b06db", null ],
     [ "SetStoreTraj", "dd/dbc/classFairRunSim.html#a50787369c8f9383ca804e72b204879ad", null ],
     [ "SetTrackingDebugMode", "dd/dbc/classFairRunSim.html#a8fb4f27a69ba85f380ee7a71e1212d67", null ],
@@ -68,6 +69,7 @@ var classFairRunSim =
     [ "fRadLength", "dd/dbc/classFairRunSim.html#a8a955476eca771085d7aaf6e08fb7b69", null ],
     [ "fRadMap", "dd/dbc/classFairRunSim.html#ac12107685d46eb902c4214a3fb0a3f75", null ],
     [ "fSimSetup", "dd/dbc/classFairRunSim.html#a42546520e857b25147893ca942638b90", null ],
+    [ "fSimSetupPostInit", "dd/dbc/classFairRunSim.html#a002fa08b60b76b6b2cdbdf2f4055b074", null ],
     [ "fSimulationConfig", "dd/dbc/classFairRunSim.html#a999df3bdc1627009cc8f4a4e31d1d7b4", null ],
     [ "fStoreTraj", "dd/dbc/classFairRunSim.html#ab12da00235d1bca3ecf88b4722c22c14", null ],
     [ "fUseBeamMom", "dd/dbc/classFairRunSim.html#a1fb96bbdc9197425890542803c7fb0f6", null ],
@@ -76,6 +78,7 @@ var classFairRunSim =
     [ "fUserDecay", "dd/dbc/classFairRunSim.html#aba7fd8646e7d7d71c2e655d5a9426e9d", null ],
     [ "fUserDecayConfig", "dd/dbc/classFairRunSim.html#aa22a04ea5861fd644385133dba00d57b", null ],
     [ "fUseSimSetupFunction", "dd/dbc/classFairRunSim.html#a019b2097c3744cf8f5d438be9d20acd3", null ],
+    [ "fUseSimSetupPostInitFunction", "dd/dbc/classFairRunSim.html#a6571b9be7cc248c4e667afe1357f2026", null ],
     [ "ListOfModules", "dd/dbc/classFairRunSim.html#af3789994742d27faa0a809c3431fd023", null ],
     [ "MatFname", "dd/dbc/classFairRunSim.html#a1ce5635d69680f90256b5083042819a0", null ]
 ];

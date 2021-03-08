@@ -20,5 +20,6 @@ var classFairSource =
     [ "Reset", "d2/d64/classFairSource.html#a63c51d30839938c043b60288cd0cbd7b", null ],
     [ "SetParUnpackers", "d2/d64/classFairSource.html#abd50a32bf16028f3cdedb3d7894868e5", null ],
     [ "SetRunId", "d2/d64/classFairSource.html#ad5fb0a56ae3552d9f07b0650094a6985", null ],
+    [ "SpecifyRunId", "d2/d64/classFairSource.html#a5cd77deb1458e52c33a49f5de6b496a7", null ],
     [ "fRunId", "d2/d64/classFairSource.html#a9753dba56ab84187bcc688869af13585", null ]
 ];

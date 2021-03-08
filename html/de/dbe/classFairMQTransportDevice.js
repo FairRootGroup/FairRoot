@@ -4,6 +4,7 @@ var classFairMQTransportDevice =
     [ "~FairMQTransportDevice", "de/dbe/classFairMQTransportDevice.html#a9412ee5d8f1dcaa156c6359a23a1c96e", null ],
     [ "ConditionalRun", "de/dbe/classFairMQTransportDevice.html#ac37ab4aab7f7c6dd37015f2827d7baa7", null ],
     [ "Init", "de/dbe/classFairMQTransportDevice.html#a82f8ad906bb0fa93c53db90ccc9b73d9", null ],
+    [ "InitializeRun", "de/dbe/classFairMQTransportDevice.html#a3f940599156084bdb256bbdbaba43465", null ],
     [ "InitTask", "de/dbe/classFairMQTransportDevice.html#a0d1616f9c08b2ff8fcc3213c9f1ba99f", null ],
     [ "PostRun", "de/dbe/classFairMQTransportDevice.html#ac2c8c6ff104d990798d04ce0d346cd90", null ],
     [ "PreRun", "de/dbe/classFairMQTransportDevice.html#adb704d2646a87c4cb32df6b71435e7d5", null ],

@@ -8,6 +8,7 @@ var classFairIon =
     [ "GetMass", "df/df5/classFairIon.html#a5d692906b13efe97cf66fa9c2131f642", null ],
     [ "GetQ", "df/df5/classFairIon.html#a00b05bfd0970cb0ca2a5191b4e144791", null ],
     [ "GetZ", "df/df5/classFairIon.html#aa6a0740d5d93a6b53a39f25f166ebbfb", null ],
+    [ "SetA", "df/df5/classFairIon.html#a395031a5cf846961db1b018de366e230", null ],
     [ "SetExcEnergy", "df/df5/classFairIon.html#aa288b32ff368d32d6f5f00ad59a55488", null ],
     [ "SetMass", "df/df5/classFairIon.html#a1539a6a0e9eba946f40155a45381ce55", null ],
     [ "SetParams", "df/df5/classFairIon.html#aac0b1f96cf5c7aeb73ed63aebbaa4761", null ]

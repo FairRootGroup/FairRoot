@@ -5,6 +5,7 @@ var classFairMixedSource =
     [ "FairMixedSource", "d4/d52/classFairMixedSource.html#a49e4c61f8735c81f8d129b8262ab46fe", null ],
     [ "~FairMixedSource", "d4/d52/classFairMixedSource.html#aa9c485ebda575489a673667f59ae8a7c", null ],
     [ "ActivateObject", "d4/d52/classFairMixedSource.html#af279d318e006e8e7fc3fa7ea324cc1fe", null ],
+    [ "ActivateObjectAny", "d4/d52/classFairMixedSource.html#a00abe9b9ccf198eed411d29eb8d1877e", null ],
     [ "AddBackgroundFile", "d4/d52/classFairMixedSource.html#aefec2841c98bb2d146178e65acaac3de", null ],
     [ "AddSignalFile", "d4/d52/classFairMixedSource.html#af8e2714695bc6b2293ef7caa049a043c", null ],
     [ "BGWindowWidthNo", "d4/d52/classFairMixedSource.html#a67a8735bc13468a2e7a77c55a34753e3", null ],
@@ -42,5 +43,7 @@ var classFairMixedSource =
     [ "SetEvtHeaderNew", "d4/d52/classFairMixedSource.html#a5f70ccd3c1e1163ab76bea36f5d8aa97", null ],
     [ "SetFileHeader", "d4/d52/classFairMixedSource.html#afecc0899f575365eb87d30a816cfcba1", null ],
     [ "SetParUnpackers", "d4/d52/classFairMixedSource.html#a7b3d394a1dbbb2432ffafd87bfbb6b2e", null ],
-    [ "SetSignalFile", "d4/d52/classFairMixedSource.html#aac80aa724908110bd255854d827039dc", null ]
+    [ "SetSignalFile", "d4/d52/classFairMixedSource.html#aac80aa724908110bd255854d827039dc", null ],
+    [ "UseRunIdFromBG", "d4/d52/classFairMixedSource.html#a2b6473ffcebd21dc2ba3b48d6337416b", null ],
+    [ "UseRunIdfromSG", "d4/d52/classFairMixedSource.html#afeffe3c0f655c05fa99b71f91d98c201", null ]
 ];

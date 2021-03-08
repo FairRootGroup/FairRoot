@@ -13,6 +13,7 @@ var classFairLmdSource =
     [ "OpenNextFile", "d0/dd5/classFairLmdSource.html#a8810acd12b558fa96046dc0eae569f0e", null ],
     [ "operator=", "d0/dd5/classFairLmdSource.html#a8908440ae5a336b80644f4c65cc2a4c7", null ],
     [ "ReadEvent", "d0/dd5/classFairLmdSource.html#a80fa499d439bfb0c7f3ee4ef2580b6a8", null ],
+    [ "SpecifyRunId", "d0/dd5/classFairLmdSource.html#a53ddc3f9461204ee9d41a70b7ac62027", null ],
     [ "fCurrentEvent", "d0/dd5/classFairLmdSource.html#a62fcb45eab40e02dab69a73f994e060e", null ],
     [ "fCurrentFile", "d0/dd5/classFairLmdSource.html#a71bf2a007a9e13986ad7a30bb8cab50a", null ],
     [ "fFileNames", "d0/dd5/classFairLmdSource.html#abc99eab5ac42aad22e6f5fd866a102ed", null ],
