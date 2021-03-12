@@ -296,10 +296,12 @@ void FairRunSim::SetMCConfig()
 
     fApp->InitMC("foo", "bar");
 
-    if (fUseSimSetupFunction) {
+    if (fUseSimSetupPostInitFunction) {
         fSimSetupPostInit();
     } else {
-        fSimulationConfig->SetupPostInit(GetName());
+        if (fSimulationConfig != nullptr) {
+            fSimulationConfig->SetupPostInit(GetName());
+        }
     }
 }
 
