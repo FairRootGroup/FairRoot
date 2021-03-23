@@ -61,7 +61,7 @@ void FairYamlVMCConfig::Setup(const char* mcEngine)
 
 void FairYamlVMCConfig::SetupPostInit(const char* mcEngine)
 {
-    if ( !fPostInitFlag ) {
+    if (!fPostInitFlag) {
         LOG(info) << "FairYamlVMCConfig::SetupPostInit() OFF." << fPostInitName;
         return;
     }
@@ -85,7 +85,7 @@ void FairYamlVMCConfig::SetupPostInit(const char* mcEngine)
         g4Macro = "g4ConfigPostInit.C";
         fPostInitName = g4Macro;
     } else {
-        if (fPostInitName.find("/")!=std::string::npos) {
+        if (fPostInitName.find("/") != std::string::npos) {
             AbsPath = kTRUE;
         }
         g4Macro = fPostInitName;
@@ -105,8 +105,9 @@ void FairYamlVMCConfig::SetupPostInit(const char* mcEngine)
     fYamlConfigPostInit = YAML::LoadFile(ConfigMacro.Data());
 
     if (fYamlConfigPostInit["Geant4_PostInit_Commands"]) {
-        std::vector<std::string> g4commands = fYamlConfigPostInit["Geant4_PostInit_Commands"].as<std::vector<std::string>>();
-        for ( const auto& value: g4commands ) {
+        std::vector<std::string> g4commands =
+            fYamlConfigPostInit["Geant4_PostInit_Commands"].as<std::vector<std::string>>();
+        for (const auto& value : g4commands) {
             LOG(info) << " execute command \"" << value << "\"";
             TGeant4* geant4 = dynamic_cast<TGeant4*>(TVirtualMC::GetMC());
             geant4->ProcessGeantCommand(value.data());
@@ -190,6 +191,10 @@ void FairYamlVMCConfig::SetupGeant4()
                                         specialStacking,
                                         mtMode);
 
+    if (fYamlConfig["FairFastSim_UseFastSim"]) {
+        runConfiguration->UseFastSim(fYamlConfig["FairFastSim_UseFastSim"].as<bool>());
+    }
+
     TGeant4* geant4 = new TGeant4("TGeant4", "The Geant4 Monte Carlo", runConfiguration);
 
     if (fYamlConfig["Geant4_MaxNStep"]) {
@@ -198,7 +203,7 @@ void FairYamlVMCConfig::SetupGeant4()
     }
     if (fYamlConfig["Geant4_Commands"]) {
         std::vector<std::string> g4commands = fYamlConfig["Geant4_Commands"].as<std::vector<std::string>>();
-        for ( const auto& value: g4commands ) {
+        for (const auto& value : g4commands) {
             LOG(info) << " execute command \"" << value << "\"";
             geant4->ProcessGeantCommand(value.data());
         }

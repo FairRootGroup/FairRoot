@@ -22,6 +22,7 @@ FairFastSimRunConfiguration::FairFastSimRunConfiguration(const TString& geometry
                                                          const bool specialStacking,
                                                          const bool isMT)
     : TG4RunConfiguration(geometry, physicsList, specialProcess, specialStacking, isMT)
+    , fUseFastSim(false)
 {
     /// Standard constructor
     /// \param geometry        Selection of geometry option
@@ -40,6 +41,9 @@ FairFastSimRunConfiguration::~FairFastSimRunConfiguration()
 
 TG4VUserFastSimulation* FairFastSimRunConfiguration::CreateUserFastSimulation()
 {
-    LOG(info) << "Going to create FairFastSimulation";
-    return new FairFastSimulation();
+    if (fUseFastSim) {
+        LOG(info) << "Going to create FairFastSimulation";
+        return new FairFastSimulation();
+    }
+    return 0;
 }
