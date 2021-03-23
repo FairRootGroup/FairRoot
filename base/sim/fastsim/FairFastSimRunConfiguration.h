@@ -27,6 +27,11 @@ class FairFastSimRunConfiguration : public TG4RunConfiguration
 
     // methods
     virtual TG4VUserFastSimulation* CreateUserFastSimulation();
+
+    void UseFastSim(bool flag = true) { fUseFastSim = flag; }
+
+  private:
+    bool fUseFastSim;
 };
 
 #endif   // FAIR_FASTSIM_RUN_CONFIGURATION_H

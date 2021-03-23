@@ -1,3 +1,4 @@
+FairFastSim_UseFastSim:  true
 Geant4_UserGeometry:     "geomRoot"
 Geant4_PhysicsList:      "QGSP_BERT_EMV"
 Geant4_SpecialProcess:   "stepLimiter+specialCuts+specialControls"
