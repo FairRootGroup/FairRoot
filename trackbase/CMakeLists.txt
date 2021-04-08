@@ -40,10 +40,10 @@ target_link_libraries(${target} PUBLIC
   FairRoot::FairTools
   FairRoot::Base # FairRunAna, FairField
 
-  Core
-  Physics
-  MathCore
-  Matrix
+  ROOT::Core
+  ROOT::Physics
+  ROOT::MathCore
+  ROOT::Matrix
 )
 
 fairroot_target_root_dictionary(${target}

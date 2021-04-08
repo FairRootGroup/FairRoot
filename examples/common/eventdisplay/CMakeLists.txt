@@ -38,8 +38,9 @@ target_link_libraries(${target} PUBLIC
   FairRoot::EventDisplay
   FairRoot::ExMCStack
   FairRoot::TrkBase
-  Core
-  Eve
+
+  ROOT::Core
+  ROOT::Eve
 )
 
 fairroot_target_root_dictionary(${target}

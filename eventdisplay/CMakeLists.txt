@@ -66,20 +66,20 @@ target_link_libraries(${target} PUBLIC
   FairRoot::FairTools
   FairRoot::Base # FairRootManager, FairRunAna, FairTSBufferFunctional, FairTimeStamp, FairEventManager
 
-  Core
-  EG          # TDatabasePDG
-  Eve         # TEveBoxSet
-  Ged         # TGedFrame
-  Geom        # TGeoManager, TGeoNode, TGeoVolume
-  GeomPainter # TGeoTrack
-  Gui         # TGFrame, TGNumberEntry, TGWindow
-  MathCore    # TMathBase
-  Physics     # TVector3
-  RGL         # TGLViewer, TGLCameraOverlay, TGLClip, TGLLightSet
-  Tree        # TChain
-  RIO
-  XMLIO       # TXMLEngine
-  XMLParser   # TXMLNode, TXMLAttr, TDOMParser
+  ROOT::Core
+  ROOT::EG          # TDatabasePDG
+  ROOT::Eve         # TEveBoxSet
+  ROOT::Ged         # TGedFrame
+  ROOT::Geom        # TGeoManager, TGeoNode, TGeoVolume
+  ROOT::GeomPainter # TGeoTrack
+  ROOT::Gui         # TGFrame, TGNumberEntry, TGWindow
+  ROOT::MathCore    # TMathBase
+  ROOT::Physics     # TVector3
+  ROOT::RGL         # TGLViewer, TGLCameraOverlay, TGLClip, TGLLightSet
+  ROOT::Tree        # TChain
+  ROOT::RIO
+  ROOT::XMLIO       # TXMLEngine
+  ROOT::XMLParser   # TXMLNode, TXMLAttr, TDOMParser
 )
 
 fairroot_target_root_dictionary(${target}

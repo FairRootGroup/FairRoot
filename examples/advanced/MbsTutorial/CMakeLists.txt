@@ -38,7 +38,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base
   FairRoot::FairTools # FairLogger
 
-  Core
+  ROOT::Core
 )
 
 fairroot_target_root_dictionary(${target}

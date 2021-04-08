@@ -44,8 +44,8 @@ target_link_libraries(${target} PUBLIC
   FairRoot::ExMCStack
   FairRoot::ParBase # FairContFact
 
-  Core
-  Physics
+  ROOT::Core
+  ROOT::Physics
   ${VMCLIB}
 )
 

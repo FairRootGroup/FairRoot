@@ -51,12 +51,12 @@ target_link_libraries(${target} PUBLIC
   FairRoot::ExPixel
   FairMQ::FairMQ
 
-  Tree
-  RIO # TFile
-  Core
-  MathCore # Sqrt
-  Physics # TVector3
-  Geom # TGeo...
+  ROOT::Tree
+  ROOT::RIO # TFile
+  ROOT::Core
+  ROOT::MathCore # Sqrt
+  ROOT::Physics # TVector3
+  ROOT::Geom # TGeo...
 )
 
 fairroot_target_root_dictionary(${target}

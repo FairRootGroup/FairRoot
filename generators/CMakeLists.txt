@@ -42,11 +42,11 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairPrimaryGenerator, FairGenerator, FairIon, FairParticle, FairRunSim
   FairRoot::FairTools
 
-  Core
-  EG
-  MathCore
-  Hist
-  Physics
+  ROOT::Core
+  ROOT::EG
+  ROOT::MathCore
+  ROOT::Hist
+  ROOT::Physics
 )
 
 fairroot_target_root_dictionary(${target}

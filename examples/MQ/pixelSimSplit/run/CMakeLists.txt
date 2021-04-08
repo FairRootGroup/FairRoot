@@ -53,8 +53,8 @@ target_link_libraries(pixel-sim-gen PRIVATE
   ${exe_dependencies}
   FairRoot::Base # FairModule, FairPrimaryGenerator
   FairRoot::Gen # FairBoxGenerator
-  Core # TSystem
-  MathCore # TRandom
+  ROOT::Core # TSystem
+  ROOT::MathCore # TRandom
 )
 target_link_directories(pixel-sim-gen PRIVATE ${ROOT_LIBRARY_DIR})
 
@@ -65,8 +65,8 @@ target_link_libraries(pixel-sim-transport PRIVATE
   FairRoot::ParBase # FairParAsciiFileIo
   FairRoot::ExPassive # FairCave
   FairRoot::ExPixel
-  Core # TSystem
-  MathCore # TRandom
+  ROOT::Core # TSystem
+  ROOT::MathCore # TRandom
 )
 target_link_directories(pixel-sim-transport PRIVATE ${ROOT_LIBRARY_DIR})
 

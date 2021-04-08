@@ -39,7 +39,7 @@ target_link_libraries(${target} PUBLIC
   geant4vmc
   yaml-cpp
 
-  Core
+  ROOT::Core
   ${VMCLIB}
 )
 

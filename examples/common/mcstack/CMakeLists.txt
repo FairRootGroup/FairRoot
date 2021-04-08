@@ -39,10 +39,10 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::FairTools # FairLogger
 
-  Core
-  Physics # TLorentzVector, TVector3
-  MathCore # TMath
-  EG # TDatabasePDG, TParticle
+  ROOT::Core
+  ROOT::Physics # TLorentzVector, TVector3
+  ROOT::MathCore # TMath
+  ROOT::EG # TDatabasePDG, TParticle
   ${VMCLIB} # TMCProcess
 )
 

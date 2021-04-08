@@ -64,10 +64,10 @@ target_link_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::FairTools
 
-  Core
-  MathCore
-  Geom
-  Graf3d # TRotMatrix
+  ROOT::Core
+  ROOT::MathCore
+  ROOT::Geom
+  ROOT::Graf3d # TRotMatrix
 )
 
 fairroot_target_root_dictionary(${target}

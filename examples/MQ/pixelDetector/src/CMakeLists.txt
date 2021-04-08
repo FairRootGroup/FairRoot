@@ -85,13 +85,13 @@ target_link_libraries(${target} PUBLIC
 
   FairMQ::FairMQ
 
-  Core
-  MathCore
-  RIO
-  Tree
-  Physics
-  Geom
-  Hist
+  ROOT::Core
+  ROOT::MathCore
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::Physics
+  ROOT::Geom
+  ROOT::Hist
   ${VMCLIB}
 )
 

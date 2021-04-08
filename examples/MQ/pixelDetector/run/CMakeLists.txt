@@ -108,8 +108,8 @@ target_link_libraries(pixel-sim PRIVATE
   FairRoot::Gen # FairBoxGenerator
   FairRoot::ParBase # FairParAsciiFileIo
   FairRoot::ExPassive # FairCave
-  Core # TSystem
-  MathCore # TRandom
+  ROOT::Core # TSystem
+  ROOT::MathCore # TRandom
 )
 target_link_directories(pixel-sim PRIVATE ${ROOT_LIBRARY_DIR})
 

@@ -43,7 +43,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::ParBase
   FairMQ::FairMQ
 
-  Core
+  ROOT::Core
 )
 
 fairroot_target_root_dictionary(${target}

@@ -65,13 +65,13 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Gen
   $<$<BOOL:${ROOT_HAS_OPENGL}>:FairRoot::EventDisplay>
 
-  Core
-  Physics
-  Geom
+  ROOT::Core
+  ROOT::Physics
+  ROOT::Geom
   ${VMCLIB}
-  MathCore
-  Hist
-  $<$<BOOL:${ROOT_HAS_OPENGL}>:Eve>
+  ROOT::MathCore
+  ROOT::Hist
+  $<$<BOOL:${ROOT_HAS_OPENGL}>:ROOT::Eve>
 )
 
 fairroot_target_root_dictionary(${target}

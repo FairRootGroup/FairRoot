@@ -38,8 +38,8 @@ target_link_libraries(${target} PUBLIC
 
   FairMQ::FairMQ
 
-  Core
-  Geom
+  ROOT::Core
+  ROOT::Geom
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
