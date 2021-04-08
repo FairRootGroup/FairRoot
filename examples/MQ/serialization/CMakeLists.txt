@@ -27,9 +27,6 @@ target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/data>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/data_generator>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-
-  # TODO: DELETE ME ONCE USING root targets
-  ${ROOT_INCLUDE_DIR}
 )
 
 target_link_libraries(${target} PUBLIC

@@ -38,7 +38,7 @@ endfunction(Format)
 
 Find_Program(ROOT_CINT_EXECUTABLE
   NAMES rootcint
-  PATHS ${ROOT_BINARY_DIR}
+  PATHS ${ROOT_BINDIR}
   NO_DEFAULT_PATH
   )
 

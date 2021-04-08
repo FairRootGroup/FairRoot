@@ -10,7 +10,6 @@
 # The extension is already found.  Any number of sources could be listed here.
 
 set(INCLUDE_DIRECTORIES
-${ROOT_INCLUDE_DIR} 
 #put here all directories where header files are located
 ${BASE_INCLUDE_DIRECTORIES}
 #${CMAKE_SOURCE_DIR}/<directory which contains the DetectorList>
