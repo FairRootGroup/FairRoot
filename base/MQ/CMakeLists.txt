@@ -47,9 +47,6 @@ target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/policies/Storage>
   $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/MbsAPI>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-
-  # TODO: DELETE ME ONCE USING root targets
-  ${ROOT_INCLUDE_DIR} # TClonesArray, TMessage, etc
 )
 
 target_link_libraries(${target} PUBLIC
