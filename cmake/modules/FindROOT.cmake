@@ -38,8 +38,6 @@
 #   ROOT_VERSION_NUMBER      A unique version number which is calculated from
 #                            major, minor and patch version found
 #
-#   ROOT_CINT_EXECUTABLE     The rootcint executable.
-#
 #   RLIBMAP_EXECUTABLE       The rlibmap executable.
 
 #Message(STATUS "Looking for Root...")
@@ -138,6 +136,19 @@ If(ROOT_FOUND)
   else()
     set(ROOT_vmc_FOUND yes)
   endif()
+  message(STATUS "ROOT_vmc_FOUND: ${ROOT_vmc_FOUND}")
+
+  Execute_Process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --has-gdml
+                  OUTPUT_VARIABLE ROOT_gdml_FOUND
+                 )
+  String(STRIP ${ROOT_gdml_FOUND} ROOT_gdml_FOUND)
+  message(STATUS "ROOT_gdml_FOUND: ${ROOT_gdml_FOUND}")
+
+  Execute_Process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --has-opengl
+                  OUTPUT_VARIABLE ROOT_opengl_FOUND
+                 )
+  String(STRIP ${ROOT_opengl_FOUND} ROOT_opengl_FOUND)
+  message(STATUS "ROOT_opengl_FOUND: ${ROOT_opengl_FOUND}")
 
   # Make variables changeble to the advanced user
   Mark_As_Advanced(ROOT_LIBRARY_DIR ROOT_INCLUDE_DIR ROOT_DEFINITIONS)
@@ -154,12 +165,6 @@ If(ROOT_FOUND)
   #
   #######################################
 
-  Find_Program(ROOT_CINT_EXECUTABLE
-    NAMES rootcint
-    PATHS ${ROOT_BINARY_DIR}
-    NO_DEFAULT_PATH
-    )
-
   Find_Program(RLIBMAP_EXECUTABLE
     NAMES rlibmap
     PATHS ${ROOT_BINARY_DIR}
@@ -171,8 +176,6 @@ If(ROOT_FOUND)
     HINTS ${ROOT_BINARY_DIR}
     NO_DEFAULT_PATH
   )
-
-    Include(ROOTMacros)
 
   # Aliases for imported VMC packages ROOT dependencies
   foreach(_root_dep VMC Core RIO Tree Rint Physics MathCore Thread Geom EG Gpad Hist RHTTP Proof Net Matrix GeomPainter Graf3d Graf RooFit RooFitCore XMLParser XMLIO Eve RGL Gui Ged Gdml)

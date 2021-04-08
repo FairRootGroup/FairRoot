@@ -134,12 +134,12 @@ target_link_libraries(${target} PUBLIC
   ROOT::RIO
   ROOT::Tree
   ${VMCLIB}
-  $<$<BOOL:${ROOT_GDML_FOUND}>:ROOT::Gdml>
+  $<$<BOOL:${ROOT_gdml_FOUND}>:ROOT::Gdml>
 )
 
 target_compile_definitions(${target} PRIVATE
   $<$<BOOL:${BUILD_MBS}>:BUILD_MBS>
-  $<$<BOOL:${ROOT_GDML_FOUND}>:ROOT_HAS_GDML>
+  $<$<BOOL:${ROOT_gdml_FOUND}>:ROOT_HAS_GDML>
   # $<$<PLATFORM_ID:Linux>:Linux>
 )
 
