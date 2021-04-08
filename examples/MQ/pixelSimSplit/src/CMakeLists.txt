@@ -53,7 +53,7 @@ target_link_libraries(${target} PUBLIC
 
   FairMQ::FairMQ
 
-  Core
+  ROOT::Core
   ${VMCLIB}
 )
 

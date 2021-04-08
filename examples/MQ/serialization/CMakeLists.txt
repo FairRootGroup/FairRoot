@@ -45,12 +45,12 @@ target_link_libraries(${target} PUBLIC
   FairMQ::FairMQ
   Boost::serialization
 
-  Core
-  MathCore
-  RIO
-  Tree
-  RooFit
-  RooFitCore
+  ROOT::Core
+  ROOT::MathCore
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::RooFit
+  ROOT::RooFitCore
 )
 
 fairroot_target_root_dictionary(${target}

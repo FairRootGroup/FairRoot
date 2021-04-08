@@ -67,10 +67,10 @@ target_link_libraries(${target} PUBLIC
   Boost::serialization
   Boost::filesystem
 
-  Net # TMessage
-  Core # Rtypes, TClonesArray
-  RIO # TFile
-  Tree # TTree
+  ROOT::Net # TMessage
+  ROOT::Core # Rtypes, TClonesArray
+  ROOT::RIO # TFile
+  ROOT::Tree # TTree
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})

@@ -37,12 +37,12 @@ target_link_libraries(${target} PUBLIC
 
   geant321
 
-  Core
-  EG
-  Geom
+  ROOT::Core
+  ROOT::EG
+  ROOT::Geom
   ${VMCLIB}
-  Physics
-  MathCore
+  ROOT::Physics
+  ROOT::MathCore
 )
 
 fairroot_target_root_dictionary(${target}

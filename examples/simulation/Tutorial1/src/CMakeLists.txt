@@ -48,9 +48,9 @@ target_link_libraries(${target} PUBLIC
 
   Boost::program_options
 
-  Core
-  Physics
-  Geom
+  ROOT::Core
+  ROOT::Physics
+  ROOT::Geom
   ${VMCLIB}
 )
 

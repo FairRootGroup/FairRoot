@@ -27,10 +27,10 @@ target_link_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::Base
 
-  Core
-  Tree
-  Hist
-  RIO
+  ROOT::Core
+  ROOT::Tree
+  ROOT::Hist
+  ROOT::RIO
   ${VMCLIB}
 )
 

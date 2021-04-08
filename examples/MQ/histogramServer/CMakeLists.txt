@@ -40,11 +40,11 @@ target_link_libraries(${target} PUBLIC
   FairRoot::ParBase
   FairMQ::FairMQ
 
-  Core
-  Gpad
-  Hist
-  MathCore
-  RHTTP
+  ROOT::Core
+  ROOT::Gpad
+  ROOT::Hist
+  ROOT::MathCore
+  ROOT::RHTTP
 )
 
 fairroot_target_root_dictionary(${target}

@@ -56,12 +56,12 @@ target_link_libraries(${target} PUBLIC
   FairRoot::TrkBase # FairPropagator
   FairRoot::EventDisplay
 
-  Eve
-  Core # Rtypes
-  MathCore # TRandom
-  Physics # TVector3, TLorentzVector
-  RIO # TFile
-  Tree # TTree
+  ROOT::Eve
+  ROOT::Core # Rtypes
+  ROOT::MathCore # TRandom
+  ROOT::Physics # TVector3, TLorentzVector
+  ROOT::RIO # TFile
+  ROOT::Tree # TTree
 )
 
 fairroot_target_root_dictionary(${target}

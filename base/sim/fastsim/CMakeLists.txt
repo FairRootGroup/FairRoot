@@ -48,11 +48,11 @@ target_link_libraries(${target} PUBLIC
   ${targetG4processes}
   geant4vmc
 
-  Geom # TGeoManager
-  Core # Rtypes
+  ROOT::Geom # TGeoManager
+  ROOT::Core # Rtypes
   ${VMCLIB} # TVirtualMC
-  EG # TParticle
-  Physics # TVector
+  ROOT::EG # TParticle
+  ROOT::Physics # TVector
 )
 
 fairroot_target_root_dictionary(${target}

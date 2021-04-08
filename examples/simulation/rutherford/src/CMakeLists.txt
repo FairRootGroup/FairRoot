@@ -41,8 +41,8 @@ target_link_libraries(${target} PUBLIC
   FairRoot::GeoBase
   FairRoot::ParBase
 
-  Core
-  Physics
+  ROOT::Core
+  ROOT::Physics
   ${VMCLIB}
 )
 

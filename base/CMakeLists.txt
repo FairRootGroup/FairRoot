@@ -120,21 +120,21 @@ target_link_libraries(${target} PUBLIC
   Boost::serialization
   $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
 
-  RHTTP # THttpServer
-  Core
-  EG
-  Geom
-  GeomPainter # TGeoTrack
-  Hist
-  MathCore
-  Matrix
-  Net # TSocket
-  Physics
-  Proof
-  RIO
-  Tree
+  ROOT::RHTTP # THttpServer
+  ROOT::Core
+  ROOT::EG
+  ROOT::Geom
+  ROOT::GeomPainter # TGeoTrack
+  ROOT::Hist
+  ROOT::MathCore
+  ROOT::Matrix
+  ROOT::Net # TSocket
+  ROOT::Physics
+  ROOT::Proof
+  ROOT::RIO
+  ROOT::Tree
   ${VMCLIB}
-  $<$<BOOL:${ROOT_GDML_FOUND}>:Gdml>
+  $<$<BOOL:${ROOT_GDML_FOUND}>:ROOT::Gdml>
 )
 
 target_compile_definitions(${target} PRIVATE

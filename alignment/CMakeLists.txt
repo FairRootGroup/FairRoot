@@ -33,7 +33,7 @@ target_link_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::FairTools
 
-  Geom
+  ROOT::Geom
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})

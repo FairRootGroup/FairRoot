@@ -149,12 +149,10 @@ function(fairroot_target_root_dictionary target)
   target_sources(${target} PRIVATE ${dictionaryFile})
 
   get_property(libs TARGET ${target} PROPERTY INTERFACE_LINK_LIBRARIES)
-  if(NOT RIO IN_LIST libs)
-  # if(NOT ROOT::RIO IN_LIST libs)
+  if(NOT ROOT::RIO IN_LIST libs)
     # add ROOT::IO if not already there as a target that has a Root dictionary
     # has to depend on ... Root
-    target_link_libraries(${target} PUBLIC RIO)
-    # target_link_libraries(${target} PUBLIC ROOT::RIO)
+    target_link_libraries(${target} PUBLIC ROOT::RIO)
   endif()
 
   # Get the list of include directories that will be required to compile the

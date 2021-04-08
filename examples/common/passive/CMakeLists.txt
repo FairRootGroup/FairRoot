@@ -44,8 +44,8 @@ target_link_libraries(${target} PUBLIC
   FairRoot::GeoBase
   FairRoot::ParBase
 
-  Geom
-  Core
+  ROOT::Geom
+  ROOT::Core
 )
 
 fairroot_target_root_dictionary(${target}
