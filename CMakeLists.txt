@@ -162,7 +162,16 @@ if(SIMPATH)
 endif()
 
 # FairRoot only supports ROOT6, so check which version is available
-find_package2(PUBLIC ROOT  VERSION 6.10.00  REQUIRED)
+list(APPEND required_root_components RIO)
+if(BUILD_SIM)
+  list(APPEND required_root_components pythia6 pythia8)
+endif()
+list(APPEND optional_root_components opengl)
+list(APPEND optional_root_components gdml vmc)
+find_package2(PUBLIC ROOT REQUIRED
+  VERSION 6.18.00
+  COMPONENTS ${required_root_components}
+  OPTIONAL_COMPONENTS ${optional_root_components})
 include(ROOTMacros)
 if(ROOT_vmc_FOUND)
   set(VMCLIB ROOT::VMC)

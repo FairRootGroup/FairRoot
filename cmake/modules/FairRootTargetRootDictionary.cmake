@@ -132,7 +132,7 @@ function(fairroot_target_root_dictionary target)
     OUTPUT ${dictionaryFile} ${pcmFile} ${rootmapFile}
     VERBATIM
     COMMAND ${CMAKE_COMMAND} -E env "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$ENV{LD_LIBRARY_PATH}"
-      ${ROOT_CINT_EXECUTABLE}
+      $<TARGET_FILE:ROOT::rootcling>
       -f ${dictionaryFile}
       -inlineInputHeader
       -rmf ${rootmapFile}
