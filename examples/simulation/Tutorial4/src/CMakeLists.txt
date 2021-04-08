@@ -27,7 +27,7 @@ set(sources
   tools/Mille.cc
 )
 
-if(${ROOT_HAS_OPENGL})
+if(ROOT_opengl_FOUND)
   list(APPEND sources
     display/FairTutorialDet4PointDraw.cxx
   )
@@ -59,7 +59,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::GeoBase
   FairRoot::ParBase
   FairRoot::Gen
-  $<$<BOOL:${ROOT_HAS_OPENGL}>:FairRoot::EventDisplay>
+  $<$<BOOL:${ROOT_opengl_FOUND}>:FairRoot::EventDisplay>
 
   ROOT::Core
   ROOT::Physics
@@ -67,7 +67,7 @@ target_link_libraries(${target} PUBLIC
   ${VMCLIB}
   ROOT::MathCore
   ROOT::Hist
-  $<$<BOOL:${ROOT_HAS_OPENGL}>:ROOT::Eve>
+  $<$<BOOL:${ROOT_opengl_FOUND}>:ROOT::Eve>
 )
 
 fairroot_target_root_dictionary(${target}

@@ -35,6 +35,13 @@ endfunction(Format)
   #       Macros for building ROOT dictionary
   #
   ###########################################
+
+Find_Program(ROOT_CINT_EXECUTABLE
+  NAMES rootcint
+  PATHS ${ROOT_BINARY_DIR}
+  NO_DEFAULT_PATH
+  )
+
 Macro(ROOT_GENERATE_DICTIONARY)
 
   # Macro to switch between the old implementation with parameters

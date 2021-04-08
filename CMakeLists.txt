@@ -163,6 +163,7 @@ endif()
 
 # FairRoot only supports ROOT6, so check which version is available
 find_package2(PUBLIC ROOT  VERSION 6.10.00  REQUIRED)
+include(ROOTMacros)
 if(ROOT_vmc_FOUND)
   set(VMCLIB ROOT::VMC)
 else()
@@ -292,14 +293,10 @@ If(Geant3_FOUND)
  add_subdirectory(trackbase)
 EndIf ()
 
-execute_process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --has-opengl OUTPUT_VARIABLE
-    ROOT_HAS_OPENGL_VAR)
-if(${ROOT_HAS_OPENGL_VAR} MATCHES "yes")
+if(ROOT_opengl_FOUND)
   add_subdirectory(eventdisplay)
-  Set(ROOT_HAS_OPENGL TRUE)
 else()
   message(STATUS "eventdisplay will not be built, because ROOT has no opengl support.")
-  Set(ROOT_HAS_OPENGL FALSE)
 endif()
 
 add_subdirectory(MbsAPI)
