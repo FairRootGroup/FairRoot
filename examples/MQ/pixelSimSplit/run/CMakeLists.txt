@@ -53,10 +53,10 @@ target_link_libraries(pixel-sim-gen PRIVATE
   ${exe_dependencies}
   FairRoot::Base # FairModule, FairPrimaryGenerator
   FairRoot::Gen # FairBoxGenerator
+
   ROOT::Core # TSystem
   ROOT::MathCore # TRandom
 )
-target_link_directories(pixel-sim-gen PRIVATE ${ROOT_LIBRARY_DIR})
 
 add_executable(pixel-sim-transport runMQTrans.cxx)
 target_link_libraries(pixel-sim-transport PRIVATE
@@ -65,10 +65,10 @@ target_link_libraries(pixel-sim-transport PRIVATE
   FairRoot::ParBase # FairParAsciiFileIo
   FairRoot::ExPassive # FairCave
   FairRoot::ExPixel
+
   ROOT::Core # TSystem
   ROOT::MathCore # TRandom
 )
-target_link_directories(pixel-sim-transport PRIVATE ${ROOT_LIBRARY_DIR})
 
 install(TARGETS pixel-sim-chunk-merger pixel-sim-gen pixel-sim-transport
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelSimSplit/bin

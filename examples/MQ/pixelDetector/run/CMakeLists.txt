@@ -108,10 +108,10 @@ target_link_libraries(pixel-sim PRIVATE
   FairRoot::Gen # FairBoxGenerator
   FairRoot::ParBase # FairParAsciiFileIo
   FairRoot::ExPassive # FairCave
+
   ROOT::Core # TSystem
   ROOT::MathCore # TRandom
 )
-target_link_directories(pixel-sim PRIVATE ${ROOT_LIBRARY_DIR})
 
 install(TARGETS pixel-sampler pixel-processor pixel-sink pixel-sampler-bin pixel-processor-bin pixel-sink-bin pixel-merger pixel-sim
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelDetector/bin

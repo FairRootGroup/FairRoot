@@ -29,10 +29,6 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
-)
-
 # Geant4 uses namespace since 10.5
 if(${Geant4_VERSION} VERSION_LESS "10.6")
   set(targetG4processes G4processes)

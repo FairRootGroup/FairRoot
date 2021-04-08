@@ -11,7 +11,6 @@ include_directories( ${INCLUDE_DIRECTORIES})
 include_directories(${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
 
 )
