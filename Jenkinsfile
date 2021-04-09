@@ -41,6 +41,9 @@ def jobMatrix(String prefix, String type, List specs) {
           } else {
             sh "echo \"export SIMPATH=/fairsoft/${fairsoft}\" >> ${jobscript}"
           }
+          if (selector =~ /^macos-10\.15/) {
+            sh "echo \"export SDKROOT=\$(xcrun --show-sdk-path)\" >> ${jobscript}"
+          }
           sh "echo \"export LABEL=\\\"\${JOB_BASE_NAME} ${label}\\\"\" >> ${jobscript}"
           if (selector =~ /^macos/) {
             sh "echo \"${ctestcmd}\" >> ${jobscript}"
@@ -85,11 +88,21 @@ pipeline{
           def builds = jobMatrix('alfa-ci', 'build', [
             [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'nov20_patches'],
             [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'nov20_patches_mt'],
+            [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'apr21_patches'],
+            [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'apr21_patches_mt'],
             [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'nov20_patches'],
             [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'nov20_patches_mt'],
+            [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches'],
+            [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches_mt'],
+            [os: 'ubuntu',     ver: '20.04', arch: 'x86_64', compiler: 'gcc-9',           fairsoft: 'apr21_patches'],
+            [os: 'ubuntu',     ver: '20.04', arch: 'x86_64', compiler: 'gcc-9',           fairsoft: 'apr21_patches_mt'],
+            [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches'],
+            [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches_mt'],
             [os: 'gsi-debian', ver: '8',     arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'nov20'],
-            [os: 'macos',      ver: '10.15', arch: 'x86_64', compiler: 'apple-clang-11',  fairsoft: '20.11'],
-            [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-12',  fairsoft: '20.11'],
+            // [os: 'macos',      ver: '10.15', arch: 'x86_64', compiler: 'apple-clang-11',  fairsoft: '20.11'],
+            // [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-12',  fairsoft: '20.11'],
+            [os: 'macos',      ver: '10.15', arch: 'x86_64', compiler: 'apple-clang-11',  fairsoft: '21.4'],
+            [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-12',  fairsoft: '21.4'],
           ])
 
           def checks = [:]
