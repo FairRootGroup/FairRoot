@@ -48,9 +48,14 @@ ctest_configure(OPTIONS ${options})
 
 ctest_build(FLAGS "-j${NCPUS}")
 
+unset(repeat)
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.17)
+  set(repeat REPEAT UNTIL_PASS:5)
+endif()
 ctest_test(BUILD "${CTEST_BINARY_DIRECTORY}"
            PARALLEL_LEVEL 1
            SCHEDULE_RANDOM ON
+           ${repeat}
            RETURN_VALUE _ctest_test_ret_val)
 
 ctest_submit()
