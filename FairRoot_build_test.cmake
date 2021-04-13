@@ -41,12 +41,15 @@ endif()
 
 ctest_start(Continuous)
 
+get_filename_component(test_install_prefix "${CTEST_BINARY_DIRECTORY}/install"
+                       ABSOLUTE)
 list(APPEND options
   "-DDISABLE_COLOR=ON"
+  "-DCMAKE_INSTALL_PREFIX:PATH=${test_install_prefix}"
 )
-ctest_configure(OPTIONS ${options})
+ctest_configure(OPTIONS "${options}")
 
-ctest_build(FLAGS "-j${NCPUS}")
+ctest_build(FLAGS "-j${NCPUS}" TARGET install)
 
 unset(repeat)
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.17)
