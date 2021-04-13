@@ -103,13 +103,15 @@ install(TARGETS
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/serialization/bin
 )
 
-add_test(ex_MQ_serialization1 ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx1.sh)
+add_test(NAME ex_MQ_serialization1
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx1.sh)
 set_tests_properties(ex_MQ_serialization1 PROPERTIES
   TIMEOUT "30"
   PASS_REGULAR_EXPRESSION "Received 100 and sent 100 messages!"
 )
 
-add_test(ex_MQ_serialization2 ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx2.sh)
+add_test(NAME ex_MQ_serialization2
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx2.sh)
 set_tests_properties(ex_MQ_serialization2 PROPERTIES
   DEPENDS ex_MQ_serialization1
   TIMEOUT "30"

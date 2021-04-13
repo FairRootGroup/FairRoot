@@ -49,7 +49,8 @@ install(FILES unpack_mbs.C DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/advan
 
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/unpack_mbs.C)
 
-add_test(ex_unpack_mbs ${CMAKE_CURRENT_BINARY_DIR}/unpack_mbs.sh)
+add_test(NAME ex_unpack_mbs
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/unpack_mbs.sh)
 set_tests_properties(ex_unpack_mbs PROPERTIES
   TIMEOUT "30"
   PASS_REGULAR_EXPRESSION "Macro finished successfully"

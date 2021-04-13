@@ -121,7 +121,8 @@ set(maxTestTime 100)
 
 if(DDS_VERSION VERSION_GREATER_EQUAL 3.5
    AND FairMQ_VERSION VERSION_GREATER_EQUAL 1.4.23)
-  add_test(ex_MQ_pixel_simulation ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim.sh)
+  add_test(NAME ex_MQ_pixel_simulation
+           COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim.sh)
   set_tests_properties(ex_MQ_pixel_simulation PROPERTIES
     DEPENDS ex_MQ_pixel_static
     TIMEOUT ${maxTestTime}
@@ -129,7 +130,8 @@ if(DDS_VERSION VERSION_GREATER_EQUAL 3.5
 )
 endif()
 
-add_test(ex_MQ_pixel_static ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixel.sh --work-dir ${CMAKE_CURRENT_BINARY_DIR}/../ -p 3 --command static --force-kill true)
+add_test(NAME ex_MQ_pixel_static
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixel.sh --work-dir ${CMAKE_CURRENT_BINARY_DIR}/../ -p 3 --command static --force-kill true)
 set_tests_properties(ex_MQ_pixel_static PROPERTIES
   DEPENDS ex_pixel_digi_to_bin_TGeant3
   TIMEOUT ${maxTestTime}
