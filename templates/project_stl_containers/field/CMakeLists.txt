@@ -26,8 +26,9 @@ MyFieldPar.cxx
 set(LINKDEF FieldLinkDef.h)
 Set(LIBRARY_NAME Field)
 Set(DEPENDENCIES
-    Base 
+    Base ParBase
+    FairLogger::FairLogger
+    ROOT::Core
 )
 
 GENERATE_LIBRARY()
-
