@@ -28,6 +28,8 @@ MyPassiveContFact.cxx
 Set(HEADERS )
 Set(LINKDEF PassiveLinkDef.h)
 Set(LIBRARY_NAME Passive)
-Set(DEPENDENCIES Base GeoBase ParBase Geom Core)
+Set(DEPENDENCIES Base GeoBase ParBase
+    FairLogger::FairLogger
+    ROOT::Geom ROOT::Core)
 
 GENERATE_LIBRARY()

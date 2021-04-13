@@ -39,7 +39,10 @@ NewDetectorPoint.cxx
 Set(LINKDEF NewDetectorLinkDef.h)
 Set(LIBRARY_NAME NewDetector)
 Set(DEPENDENCIES
-    Base
+    MyProjData
+    Base GeoBase ParBase
+    FairLogger::FairLogger
+    ${VMCLIB}
 )
 
 GENERATE_LIBRARY()
