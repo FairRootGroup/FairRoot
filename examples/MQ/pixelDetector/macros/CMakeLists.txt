@@ -12,21 +12,24 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_digiToBin.C)
 
 set(maxTestTime 30)
 
-add_test(ex_pixel_sim_TGeant3 ${CMAKE_CURRENT_BINARY_DIR}/run_sim.sh 10000 \"TGeant3\")
+add_test(NAME ex_pixel_sim_TGeant3
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_sim.sh 10000 \"TGeant3\")
 math(EXPR testTime 4*${maxTestTime})
 set_tests_properties(ex_pixel_sim_TGeant3 PROPERTIES
   TIMEOUT ${testTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
 )
 
-add_test(ex_pixel_digi_TGeant3 ${CMAKE_CURRENT_BINARY_DIR}/run_digi.sh \"TGeant3\")
+add_test(NAME ex_pixel_digi_TGeant3
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_digi.sh \"TGeant3\")
 set_tests_properties(ex_pixel_digi_TGeant3 PROPERTIES
   DEPENDS ex_pixel_sim_TGeant3
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
 )
 
-add_test(ex_pixel_digi_to_bin_TGeant3 ${CMAKE_CURRENT_BINARY_DIR}/run_digiToBin.sh 0 \"TGeant3\")
+add_test(NAME ex_pixel_digi_to_bin_TGeant3
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_digiToBin.sh 0 \"TGeant3\")
 set_tests_properties(ex_pixel_digi_to_bin_TGeant3 PROPERTIES
   DEPENDS ex_pixel_digi_TGeant3
   TIMEOUT ${maxTestTime}

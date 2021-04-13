@@ -76,7 +76,8 @@ install(TARGETS pixel-sim-chunk-merger pixel-sim-gen pixel-sim-transport
 
 set(maxTestTime 90)
 
-add_test(ex_MQ_pixel_split ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh)
+add_test(NAME ex_MQ_pixel_split
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh)
 set_tests_properties(ex_MQ_pixel_split PROPERTIES
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Shell script finished successfully"
@@ -84,7 +85,8 @@ set_tests_properties(ex_MQ_pixel_split PROPERTIES
 
 if(DDS_VERSION VERSION_GREATER_EQUAL 3.5
    AND FairMQ_VERSION VERSION_GREATER_EQUAL 1.4.23)
-  add_test(pixelSplitDDS ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
+  add_test(NAME pixelSplitDDS
+           COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh)
   set_tests_properties(pixelSplitDDS PROPERTIES
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Shell script finished successfully"
