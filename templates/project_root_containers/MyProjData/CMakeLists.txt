@@ -24,7 +24,6 @@ MyProjMCTrack.cxx
 Set(HEADERS )
 Set(LINKDEF MCStackLinkDef.h)
 Set(LIBRARY_NAME MyProjData)
-Set(DEPENDENCIES Base EG Physics Core)
+Set(DEPENDENCIES Base FairLogger::FairLogger ${VMCLIB} ROOT::EG ROOT::Physics ROOT::Core)
 
 GENERATE_LIBRARY()
-
