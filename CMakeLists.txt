@@ -354,6 +354,7 @@ if(BUILD_UNITTESTS)
   add_subdirectory(test)
 endif()
 
+add_subdirectory(cmake)
 
 install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
   DESTINATION bin
@@ -371,9 +372,6 @@ install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
 )
 install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
   DESTINATION bin
-)
-install(DIRECTORY cmake
-  DESTINATION ${PROJECT_INSTALL_DATADIR}
 )
 
 find_package(Git)
