@@ -38,8 +38,9 @@ FIND_PATH(FAIRROOT_LIBRARY_DIR NAMES libBase.so libBase.dylib PATHS
   NO_DEFAULT_PATH
 )
 
-FIND_PATH(FAIRROOT_CMAKEMOD_DIR NAMES CMakeLists.txt  PATHS
-   ${FAIRROOTPATH}/share/fairbase/cmake
+FIND_PATH(FAIRROOT_CMAKEMOD_DIR
+  NAMES modules/FindFairRoot.cmake modules/ROOTMacros.cmake
+  PATHS ${FAIRROOTPATH}/share/fairbase/cmake
   NO_DEFAULT_PATH
 )
 
