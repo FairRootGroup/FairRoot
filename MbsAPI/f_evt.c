@@ -1350,12 +1350,7 @@ INTS4 f_evt_put_open(CHARS* pc_file,
         exit(2);
     }
 
-    size_t len = strlen(pc_file);
-    if (len < sizeof(c_file)) {
-        strncpy(c_file, pc_file, len);
-    } else {
-        strncpy(c_file, pc_file, sizeof(c_file) - 1);
-    }
+    snprintf(c_file, sizeof(c_file), "%s", pc_file);
     if (strlen(c_file) < 5) {
         strcat(c_file, ".lmd");
     } else {
@@ -1393,13 +1388,7 @@ INTS4 f_evt_put_open(CHARS* pc_file,
             strcpy(ps_file_head->filhe_file, c_file);
             char* username = getenv("USER");
             if (username) {
-                size_t len = strlen(username);
-                // maximum length for user array in s_filhe is 30
-                if (len < sizeof(ps_file_head->filhe_user)) {
-                    strncpy(ps_file_head->filhe_user, username, len); /* user name */
-                } else {
-                    strncpy(ps_file_head->filhe_user, username, sizeof(ps_file_head->filhe_user) - 1); /* user name */
-                }
+                snprintf(ps_file_head->filhe_user, sizeof(ps_file_head->filhe_user), "%s", username);
             }
             ps_file_head->filhe_user_l = strlen(ps_file_head->filhe_user);
 
