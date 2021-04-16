@@ -182,7 +182,7 @@ void FairRunOnline::Init()
         return;
     }
     LOG(info) << "FairRunOnline::InitContainers: event header at " << fEvtHeader;
-    fRootManager->Register("EventHeader.", "Event", fEvtHeader, kTRUE);
+    fRootManager->Register("EventHeader.", "Event", fEvtHeader, (nullptr != fRootManager->GetSink()));
     fEvtHeader->SetRunId(fRunId);
 
     fRootManager->GetSource()->InitUnpackers();
