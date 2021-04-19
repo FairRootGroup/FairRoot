@@ -291,7 +291,9 @@ else()
   Set(ROOT_HAS_OPENGL FALSE)
 endif()
 
-add_subdirectory(MbsAPI)
+if(BUILD_MBS)
+  add_subdirectory(MbsAPI)
+endif()
 add_subdirectory(datamatch)
 
 add_subdirectory(templates)
