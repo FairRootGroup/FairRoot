@@ -308,7 +308,9 @@ else()
   message(STATUS "eventdisplay will not be built, because ROOT has no opengl support.")
 endif()
 
-add_subdirectory(MbsAPI)
+if(BUILD_MBS)
+  add_subdirectory(MbsAPI)
+endif()
 add_subdirectory(datamatch)
 
 add_subdirectory(templates)
