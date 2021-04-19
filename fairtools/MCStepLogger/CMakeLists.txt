@@ -28,6 +28,8 @@ target_link_libraries(${target} PUBLIC
   ROOT::Hist
   ROOT::RIO
   ${VMCLIB}
+
+  ${CMAKE_DL_LIBS}
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
