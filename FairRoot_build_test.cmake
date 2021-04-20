@@ -46,6 +46,7 @@ get_filename_component(test_install_prefix "${CTEST_BINARY_DIRECTORY}/install"
 list(APPEND options
   "-DDISABLE_COLOR=ON"
   "-DCMAKE_INSTALL_PREFIX:PATH=${test_install_prefix}"
+  "-DBUILD_MBS=ON"
 )
 ctest_configure(OPTIONS "${options}")
 
