@@ -15,14 +15,12 @@
 
 FIND_PATH(HEPMC_INCLUDE_DIR NAMES HepMC/HepMCDefs.h PATHS
   ${HEPMC_DIR}/include
-  ${AlFa_DIR}/include
   ${SIMPATH}/include/
   NO_DEFAULT_PATH
 )
 
 FIND_PATH(HEPMC_LIB_DIR  NAMES libHepMC.so libHepMC.dylib PATHS
   ${HEPMC_DIR}/lib
-  ${AlFa_DIR}/lib
   ${SIMPATH}/lib
   NO_DEFAULT_PATH
 )
