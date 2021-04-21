@@ -46,3 +46,9 @@ if(FairMQ_FOUND AND Boost_FOUND)
   endif()
   add_subdirectory(MQ/histogramServer)
 endif()
+
+install(DIRECTORY
+  common/gconfig
+  common/geometry
+  DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/common
+)

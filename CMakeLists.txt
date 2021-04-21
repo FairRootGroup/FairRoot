@@ -348,13 +348,6 @@ if(BUILD_UNITTESTS)
   add_subdirectory(test)
 endif()
 
-if(BUILD_EXAMPLES)
-  install(DIRECTORY
-    examples/common/gconfig
-    examples/common/geometry
-    DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/common
-  )
-endif(BUILD_EXAMPLES)
 
 install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
   DESTINATION bin
