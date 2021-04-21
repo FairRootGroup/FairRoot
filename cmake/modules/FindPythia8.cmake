@@ -16,11 +16,8 @@
 ################################################################################
 
 set(_pythia8dirs
-    ${PYTHIA8}
-    $ENV{PYTHIA8}
     ${PYTHIA8_DIR}
     $ENV{PYTHIA8_DIR}
-    $ENV{PYTHIA_ROOT}
     ${SIMPATH}
     ${SIMPATH}/generators
     /usr
@@ -45,7 +42,7 @@ find_library(PYTHIA8_LIBRARY
              DOC "Specify the Pythia8 library here.")
 
 find_path(PYTHIA8_LIB_DIR  NAMES libpythia8.so libpythia8.dylib PATHS
-               $ENV{PYTHIA_ROOT}/lib
+               $ENV{PYTHIA8_DIR}/lib
                ${PYTHIA8_DIR}/lib
                ${SIMPATH}/lib
                ${SIMPATH}/generators/lib
