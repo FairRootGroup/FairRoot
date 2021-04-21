@@ -349,36 +349,6 @@ IF(FAIRROOT_FOUND)
   Set(ROOT_INCLUDE_PATH
       ${FAIRROOT_INCLUDE_DIR}
      )
-
-ELSE(FAIRROOT_FOUND)
-  Set(BASE_INCLUDE_DIRECTORIES
-    ${CMAKE_SOURCE_DIR}/logger
-    ${CMAKE_SOURCE_DIR}/fairtools
-    ${CMAKE_SOURCE_DIR}/geobase
-    ${CMAKE_SOURCE_DIR}/parbase
-    ${CMAKE_SOURCE_DIR}/base
-    ${CMAKE_SOURCE_DIR}/base/steer
-    ${CMAKE_SOURCE_DIR}/base/event
-    ${CMAKE_SOURCE_DIR}/base/field
-    ${CMAKE_SOURCE_DIR}/base/sim
-    ${CMAKE_SOURCE_DIR}/base/sink
-    ${CMAKE_SOURCE_DIR}/base/source
-    ${CMAKE_SOURCE_DIR}/dbase
-    ${CMAKE_SOURCE_DIR}/dbase/dbInterface
-    ${CMAKE_SOURCE_DIR}/dbase/dbValidation
-    ${CMAKE_SOURCE_DIR}/dbase/dbUtils
-    ${CMAKE_SOURCE_DIR}/input/db
-    ${CMAKE_SOURCE_DIR}/dbase/dbInput
-    ${CMAKE_SOURCE_DIR}/dbase/dbIO
-    ${CMAKE_SOURCE_DIR}/alignment
-  )
-  Set(SYSTEM_INCLUDE_DIRECTORIES
-    ${ROOT_INCLUDE_DIR}
-    ${Boost_INCLUDE_DIRS}
-  )
-  Set(ROOT_INCLUDE_PATH
-      ${BASE_INCLUDE_DIRECTORIES}
-  )
 ENDIF(FAIRROOT_FOUND)
 
 IF(FAIRROOT_FOUND)
@@ -388,8 +358,10 @@ ELSE(FAIRROOT_FOUND)
 ENDIF(FAIRROOT_FOUND)
 Set(LD_LIBRARY_PATH  ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
 
-include_directories(${BASE_INCLUDE_DIRECTORIES})
-include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+if(FAIRROOT_FOUND)
+  include_directories(${BASE_INCLUDE_DIRECTORIES})
+  include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+endif()
 
 EndMacro (SetBasicVariables)
 
