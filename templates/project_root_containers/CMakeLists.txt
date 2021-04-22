@@ -40,6 +40,7 @@ find_package(FairRoot)
 
 # Load some basic macros which are needed later on
 include(FairMacros)
+include(FairFindPackage2)
 include(WriteConfigFile)
 include(CTest)
 include(CheckCompiler)
