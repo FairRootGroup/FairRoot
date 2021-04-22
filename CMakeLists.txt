@@ -98,6 +98,7 @@ If(NOT _HAS_CXX11_FLAG)
 EndIf()
 
 # Load some basic macros which are needed later on
+include(FairFindPackage2)
 include(FairMacros)
 include(WriteConfigFile)
 include(Dart)
