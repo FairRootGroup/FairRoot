@@ -16,6 +16,14 @@ project(MYPROJ)
 #In case you need Fortran
 #ENABLE_LANGUAGE(Fortran)
 
+find_package(FairCMakeModules 0.1 QUIET)
+if(NOT FairCMakeModules_FOUND)
+  message(WARNING "Could not find FairCMakeModules, falling back to local copy. "
+          "It is recommended to install https://github.com/FairRootGroup/FairCMakeModules")
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/fallback")
+endif()
+include(FairFindPackage2)
+
 # Check for needed environment variables
 IF(NOT DEFINED ENV{FAIRROOTPATH})
   MESSAGE(FATAL_ERROR "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again.")
@@ -36,11 +44,10 @@ SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
 
 Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
 
-find_package(FairRoot)
+find_package2(PUBLIC FairRoot)
 
 # Load some basic macros which are needed later on
 include(FairMacros)
-include(FairFindPackage2)
 include(WriteConfigFile)
 include(CTest)
 include(CheckCompiler)

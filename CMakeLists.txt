@@ -98,6 +98,12 @@ If(NOT _HAS_CXX11_FLAG)
 EndIf()
 
 # Load some basic macros which are needed later on
+find_package(FairCMakeModules 0.1 QUIET)
+if(NOT FairCMakeModules_FOUND)
+  message(WARNING "Could not find FairCMakeModules, falling back to local copy. "
+          "It is recommended to install https://github.com/FairRootGroup/FairCMakeModules")
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/fallback")
+endif()
 include(FairFindPackage2)
 include(FairMacros)
 include(WriteConfigFile)
