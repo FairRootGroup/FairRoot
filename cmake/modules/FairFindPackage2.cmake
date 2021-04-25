@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2018-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -15,10 +15,11 @@
 #
 # Wrapper around CMake's native find_package command to add some features and bookkeeping.
 #
-# The qualifier (PRIVATE|PUBLIC|INTERFACE) to the package to populate
+# The qualifier (PRIVATE|PUBLIC|INTERFACE|BUNDLED) to the package to populate
 # the variables PROJECT_[INTERFACE]_<pkgname>_([VERSION]|[COMPONENTS]|PACKAGE_DEPENDENCIES)
 # accordingly. This bookkeeping information is used to print our dependency found summary
-# table and to generate a part of our CMake package.
+# table and to generate a part of our CMake package. BUNDLED decays to PUBLIC if the variable
+# <pkgname>_BUNDLED is false and to PRIVATE otherwise.
 #
 # When a dependending package is listed with ADD_REQUIREMENTS_OF the variables
 # <dep_pkgname>_<pkgname>_VERSION|COMPONENTS are looked up to and added to the native
@@ -75,25 +76,36 @@ macro(find_package2 qualifier pkgname)
     find_package(${pkgname} ${__version__} QUIET ${ARGS_UNPARSED_ARGUMENTS})
   endif()
 
+  if(${qualifier} STREQUAL BUNDLED)
+    if(${pkgname}_BUNDLED)
+      set(__qualifier__ PRIVATE)
+    else()
+      set(__qualifier__ PUBLIC)
+    endif()
+  else()
+    set(__qualifier__ ${qualifier})
+  endif()
+
   if(${pkgname}_FOUND)
-    if(${qualifier} STREQUAL PRIVATE)
+    if(${__qualifier__} STREQUAL PRIVATE)
       set(PROJECT_${pkgname}_VERSION ${__version__})
       set(PROJECT_${pkgname}_COMPONENTS ${__components__})
       set(PROJECT_PACKAGE_DEPENDENCIES ${PROJECT_PACKAGE_DEPENDENCIES} ${pkgname})
-    elseif(${qualifier} STREQUAL PUBLIC)
+    elseif(${__qualifier__} STREQUAL PUBLIC)
       set(PROJECT_${pkgname}_VERSION ${__version__})
       set(PROJECT_${pkgname}_COMPONENTS ${__components__})
       set(PROJECT_PACKAGE_DEPENDENCIES ${PROJECT_PACKAGE_DEPENDENCIES} ${pkgname})
       set(PROJECT_INTERFACE_${pkgname}_VERSION ${__version__})
       set(PROJECT_INTERFACE_${pkgname}_COMPONENTS ${__components__})
       set(PROJECT_INTERFACE_PACKAGE_DEPENDENCIES ${PROJECT_INTERFACE_PACKAGE_DEPENDENCIES} ${pkgname})
-    elseif(${qualifier} STREQUAL INTERFACE)
+    elseif(${__qualifier__} STREQUAL INTERFACE)
       set(PROJECT_INTERFACE_${pkgname}_VERSION ${__version__})
       set(PROJECT_INTERFACE_${pkgname}_COMPONENTS ${__components__})
       set(PROJECT_INTERFACE_PACKAGE_DEPENDENCIES ${PROJECT_INTERFACE_PACKAGE_DEPENDENCIES} ${pkgname})
     endif()
   endif()
 
+  unset(__qualifier__)
   unset(__version__)
   unset(__components__)
   unset(__required_versions__)
