@@ -15,8 +15,7 @@ set(sources
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
 add_library(${target} SHARED ${sources} ${headers})
-add_library(FairRoot::${target} ALIAS ${target})
-set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+fairroot_library_settings(${target})
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
