@@ -92,12 +92,6 @@ Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
 include(CheckCXX11Features)
 include(CheckSymbolExists)
 
-# FairRoot only uses C++11 or later, so we need an compiler which supports C++11
-# Check if the used compiler support C++11. If not stop with an error message
-If(NOT _HAS_CXX11_FLAG)
-  Message(FATAL_ERROR "The used C++ compiler (${CMAKE_CXX_COMPILER}) does not support C++11. CbmRoot can only be compiled with compilers supporting C++11. Please install such a compiler.")
-EndIf()
-
 # Load some basic macros which are needed later on
 find_package(FairCMakeModules 0.1 QUIET)
 if(NOT FairCMakeModules_FOUND)
@@ -106,6 +100,7 @@ if(NOT FairCMakeModules_FOUND)
   list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/fallback")
 endif()
 include(FairFindPackage2)
+include(FairRootTargets)
 include(FairRootSummary)
 include(FairMacros)
 include(WriteConfigFile)
