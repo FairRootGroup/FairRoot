@@ -397,10 +397,10 @@ WRITE_CONFIG_FILE(config.sh_install)
 WRITE_CONFIG_FILE(config.csh_install)
 
 # Summary ######################################################################
+fairroot_summary_header()
+fairroot_summary_install_prefix()
 fairroot_summary_global_cxx_flags_standard()
 fairroot_summary_build_types()
-
-################################################################################
 fairroot_summary_package_dependencies()
 fairroot_summary_components()
 
