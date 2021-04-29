@@ -181,6 +181,9 @@ find_package2(PUBLIC ROOT REQUIRED
   COMPONENTS ${required_root_components}
   OPTIONAL_COMPONENTS ${optional_root_components})
 include(ROOTMacros)
+
+fairroot_check_root_cxxstd_compatibility()
+
 if(ROOT_vmc_FOUND)
   set(VMCLIB ROOT::VMC)
 else()
