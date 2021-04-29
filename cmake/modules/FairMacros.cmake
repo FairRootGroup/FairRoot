@@ -402,3 +402,23 @@ check_required_components(${PROJECT_NAME})
 set(PACKAGE_COMPONENTS ${PACKAGE_COMPONENTS} PARENT_SCOPE)
 endfunction()
 ################################################################################
+
+function(fairroot_check_root_cxxstd_compatibility)
+  if(NOT CMAKE_CXX_STANDARD)
+    return()
+  endif()
+  if(ROOT_cxx${CMAKE_CXX_STANDARD}_FOUND)
+    return()
+  endif()
+  if(NOT TARGET ROOT::Core)
+    message(WARNING "ROOT::Core target not found, can't check CXX standard")
+    return()
+  endif()
+  get_property(compile_features TARGET ROOT::Core
+               PROPERTY INTERFACE_COMPILE_FEATURES)
+  if("cxx_std_${CMAKE_CXX_STANDARD}" IN_LIST compile_features)
+    return()
+  endif()
+  message(WARNING "CXX Standard ${CMAKE_CXX_STANDARD} not found "
+          "in compile features of ROOT: ${compile_features}")
+endfunction()
