@@ -28,4 +28,4 @@ target_link_libraries(${target} PUBLIC
   ${CMAKE_DL_LIBS}
 )
 
-install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+fairroot_install_exported(TARGETS ${target})

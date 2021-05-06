@@ -64,5 +64,5 @@ target_link_libraries(${target} PUBLIC
   ROOT::Tree # TTree
 )
 
-install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+fairroot_install_exported(TARGETS ${target})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

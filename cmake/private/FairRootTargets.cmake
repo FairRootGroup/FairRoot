@@ -36,3 +36,16 @@ function(fairroot_library_settings target)
   add_library(FairRoot::${target} ALIAS ${target})
   set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 endfunction()
+
+
+set(PROJECT_EXPORT_SET FairRootTargets)
+
+
+function(fairroot_install_exported)
+  cmake_parse_arguments(PARSE_ARGV 0 ARGS "" "" "TARGETS")
+  install(TARGETS ${ARGS_TARGETS}
+    EXPORT ${PROJECT_EXPORT_SET}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    ARCHIVE DESTINATION ${PROJECT_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+endfunction()
