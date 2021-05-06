@@ -11,3 +11,5 @@
 set_and_check(@PROJECT_NAME@_PREFIX "@PACKAGE_CMAKE_INSTALL_PREFIX@")
 
 check_required_components(@PROJECT_NAME@)
+
+include(@PACKAGE_PACKAGE_INSTALL_DESTINATION@/@PROJECT_NAME@Targets.cmake)
