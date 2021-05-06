@@ -101,6 +101,7 @@ if(NOT FairCMakeModules_FOUND)
 endif()
 include(FairFindPackage2)
 include(FairRootTargets)
+include(FairRootPackage)
 include(FairRootSummary)
 include(FairMacros)
 include(WriteConfigFile)
@@ -406,6 +407,8 @@ SET(VMCWORKDIR ${CMAKE_INSTALL_PREFIX}/share/fairbase/examples)
 SET(ROOT_INCLUDE_PATH ${CMAKE_INSTALL_PREFIX}/include)
 WRITE_CONFIG_FILE(config.sh_install)
 WRITE_CONFIG_FILE(config.csh_install)
+
+install_cmake_package()
 
 # Summary ######################################################################
 fairroot_summary_header()
