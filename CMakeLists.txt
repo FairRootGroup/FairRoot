@@ -261,7 +261,7 @@ endif()
 find_package2(PUBLIC Boost
   VERSION 1.67
   COMPONENTS ${boost_dependencies}
-  ADD_REQUIREMENTS_OF FairMQ
+  ADD_REQUIREMENTS_OF FairMQ FairLogger
 )
 
 If (Boost_FOUND)
