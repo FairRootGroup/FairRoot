@@ -10,6 +10,8 @@ include(CMakePackageConfigHelpers)
 
 # Configure/Install CMake package
 function(install_cmake_package)
+  fair_generate_package_dependencies()
+
   set(PACKAGE_INSTALL_DESTINATION
     ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION})
   if(PROJECT_EXPORT_SET)
