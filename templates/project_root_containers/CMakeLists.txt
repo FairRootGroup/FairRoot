@@ -118,10 +118,6 @@ Find_Package2(PUBLIC VGM)
 find_package2(PUBLIC Geant4VMC)
 find_package(HEPMC)
 
-
-
-Set(Boost_NO_SYSTEM_PATHS TRUE)
-Set(Boost_NO_BOOST_CMAKE TRUE)
 If(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
   set(BOOST_ROOT ${SIMPATH})
   set(GSL_DIR ${SIMPATH})
@@ -130,12 +126,25 @@ Else(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
   set(GSL_DIR ${SIMPATH}/basics/gsl)
 EndIf(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
 
-Unset(Boost_INCLUDE_DIR CACHE)
-Unset(Boost_LIBRARY_DIRS CACHE)
+if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
+  Set(Boost_NO_SYSTEM_PATHS TRUE)
+endif()
+if(NOT DEFINED Boost_NO_BOOST_CMAKE AND CMAKE_VERSION VERSION_LESS 3.15)
+  Set(Boost_NO_BOOST_CMAKE TRUE)
+endif()
+if(Boost_NO_BOOST_CMAKE)
+  # If an older version of boost is found both of the variables below are
+  # cached and in a second cmake run, a good boost version is found even
+  # if the version is to old.
+  # To overcome this problem both variables are cleared before checking
+  # for boost.
+  Unset(Boost_INCLUDE_DIR CACHE)
+  Unset(Boost_LIBRARY_DIRS CACHE)
+endif()
 
 find_package2(PUBLIC Boost
-  VERSION 1.67 ${FairMQ_Boost_VERSION}
-  COMPONENTS thread system timer program_options random filesystem chrono exception regex serialization log log_setup atomic date_time signals ${FairMQ_Boost_COMPONENTS}
+  VERSION 1.67
+  ADD_REQUIREMENTS_OF FairRoot FairMQ FairLogger
 )
 
 If (Boost_FOUND)
