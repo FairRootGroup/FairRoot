@@ -18,6 +18,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     find_package(FairCMakeModules 0.2 REQUIRED)
     include(FairFindPackage2)
     ```
+* Dropped Color Codes and `pad()`
+  * Use `FairFormattedOutput` from FairCMakeModules
+  * Note that `fair_pad` needs the width argument to be incremented by 1,
+    and the COLOR option takes no argument.
 * Dropped `CheckCXX11Features`
   * FairRoot assumes a recent compiler that fully supports C++11.
   * Remove the following things from your `CMakeLists.txt`:
