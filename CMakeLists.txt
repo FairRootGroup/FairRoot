@@ -110,6 +110,7 @@ endif()
 # Load some basic macros which are needed later on
 find_package(FairCMakeModules 0.2 QUIET REQUIRED)
 include(FairFindPackage2)
+include(FairFormattedOutput)
 include(FairSummary)
 include(FairRootTargets)
 include(FairRootPackage)
