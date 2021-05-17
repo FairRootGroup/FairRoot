@@ -331,9 +331,14 @@ EndMacro (Generate_Version_Info)
 
 Macro (SetBasicVariables)
 IF(FAIRROOT_FOUND)
+  if(TARGET fmt::fmt)
+    get_target_property(FMT_INCLUDE_DIR fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
+  endif()
   Set(BASE_INCLUDE_DIRECTORIES
     ${FAIRROOT_INCLUDE_DIR}
     ${VMC_INCLUDE_DIRS}
+    ${FairLogger_INCDIR}
+    ${FMT_INCLUDE_DIR}
   )
   Set(SYSTEM_INCLUDE_DIRECTORIES
     ${Boost_INCLUDE_DIRS}
