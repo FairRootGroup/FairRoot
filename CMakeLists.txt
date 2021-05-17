@@ -190,14 +190,9 @@ endif()
 find_package2(PUBLIC FairLogger  VERSION 1.2.0 REQUIRED)
 
 foreach(dep IN LISTS FairLogger_PACKAGE_DEPENDENCIES)
-if(NOT dep STREQUAL "Boost")
-  find_package2(PUBLIC ${dep} REQUIRED VERSION ${FairLogger_${dep}_VERSION})
-  set(PROJECT_${dep}_VERSION ${FairLogger_${dep}_VERSION})
-  if(dep STREQUAL "fmt") # handling of external fmt installation
-    get_target_property(FMT_INCLUDE_DIR fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
-    set(FairLogger_INCDIR ${FairLogger_INCDIR} ${FMT_INCLUDE_DIR})
+  if(NOT dep STREQUAL "Boost")
+    find_package2(PUBLIC ${dep} REQUIRED ADD_REQUIREMENTS_OF FairLogger)
   endif()
-endif()
 endforeach()
 
 find_package2(PUBLIC Pythia6)
