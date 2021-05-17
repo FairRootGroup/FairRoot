@@ -177,19 +177,6 @@ else()
   find_package2(PUBLIC VMC REQUIRED)
   set(VMCLIB VMCLibrary)
 endif()
-find_package2(PUBLIC FairLogger  VERSION 1.2.0 REQUIRED)
-
-foreach(dep IN LISTS FairLogger_PACKAGE_DEPENDENCIES)
-if(NOT dep STREQUAL "Boost")
-  find_package2(PUBLIC ${dep} REQUIRED VERSION ${FairLogger_${dep}_VERSION})
-  set(PROJECT_${dep}_VERSION ${FairLogger_${dep}_VERSION})
-  if(dep STREQUAL "fmt") # handling of external fmt installation
-    get_target_property(FMT_INCLUDE_DIR fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
-    set(FairLogger_INCDIR ${FairLogger_INCDIR} ${FMT_INCLUDE_DIR})
-  endif()
-endif()
-endforeach()
-
 find_package2(PUBLIC Pythia6)
 find_package2(PUBLIC Pythia8)
 find_package2(PUBLIC Protobuf)
@@ -212,6 +199,7 @@ endif()
 
 find_package2(PUBLIC FairMQ VERSION 1.4.0)
 find_package2(PUBLIC DDS)
+find_package2(PUBLIC FairLogger VERSION 1.2.0 REQUIRED)
 
 if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
   Set(Boost_NO_SYSTEM_PATHS TRUE)
@@ -238,7 +226,6 @@ endif()
 find_package2(PUBLIC Boost
   VERSION 1.67
   COMPONENTS ${boost_dependencies}
-  ADD_REQUIREMENTS_OF FairMQ FairLogger
 )
 
 If (Boost_FOUND)
@@ -342,6 +329,8 @@ if(BUILD_UNITTESTS)
   message(STATUS "Building the unit tests.")
   add_subdirectory(test)
 endif()
+
+find_package2_implicit_dependencies()
 
 add_subdirectory(cmake)
 

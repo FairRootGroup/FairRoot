@@ -102,19 +102,13 @@ else()
   set(VMCLIB VMCLibrary)
 endif()
 find_package2(PUBLIC FairLogger  VERSION 1.2.0 REQUIRED)
-foreach(dep IN LISTS FairLogger_PACKAGE_DEPENDENCIES)
-  if(NOT dep STREQUAL "Boost")
-    find_package2(PUBLIC ${dep} REQUIRED VERSION ${FairLogger_${dep}_VERSION})
-    set(PROJECT_${dep}_VERSION ${FairLogger_${dep}_VERSION})
-  endif()
-endforeach()
 find_package2(PUBLIC Pythia6)
 find_package2(PUBLIC Pythia8)
 find_package2(PUBLIC Geant3)
 find_package2(PUBLIC Geant4)
 Find_Package2(PUBLIC VGM)
 find_package2(PUBLIC Geant4VMC)
-find_package(HEPMC)
+find_package2(PUBLIC HEPMC)
 
 if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
   Set(Boost_NO_SYSTEM_PATHS TRUE)
@@ -134,7 +128,6 @@ endif()
 
 find_package2(PUBLIC Boost
   VERSION 1.67
-  ADD_REQUIREMENTS_OF FairRoot FairMQ FairLogger
 )
 
 If (Boost_FOUND)
@@ -142,6 +135,8 @@ If (Boost_FOUND)
 Else (Boost_FOUND)
   Set(Boost_Avail 0)
 EndIf (Boost_FOUND)
+
+find_package2_implicit_dependencies()
 
 # set a variable which should be used in all CMakeLists.txt
 # Defines all basic include directories from fairbase
