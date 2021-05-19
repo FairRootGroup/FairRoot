@@ -29,19 +29,16 @@ MESSAGE(STATUS "Setting FairRoot environment:")
 
 FIND_PATH(FAIRROOT_INCLUDE_DIR NAMES FairRun.h PATHS
   ${FAIRROOTPATH}/include
-  NO_DEFAULT_PATH
 )
 
 FIND_PATH(FAIRROOT_LIBRARY_DIR NAMES libBase.so libBase.dylib PATHS
    ${FAIRROOTPATH}/lib
    ${FAIRROOTPATH}/lib64
-  NO_DEFAULT_PATH
 )
 
 FIND_PATH(FAIRROOT_CMAKEMOD_DIR
   NAMES modules/FindFairRoot.cmake modules/ROOTMacros.cmake
   PATHS ${FAIRROOTPATH}/share/fairbase/cmake
-  NO_DEFAULT_PATH
 )
 
 # look for exported FairMQ targets and include them
