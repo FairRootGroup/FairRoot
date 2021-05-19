@@ -42,11 +42,11 @@ find_library(PYTHIA8_LIBRARY
              DOC "Specify the Pythia8 library here.")
 
 find_path(PYTHIA8_LIB_DIR  NAMES libpythia8.so libpythia8.dylib PATHS
-               $ENV{PYTHIA8_DIR}/lib
-               ${PYTHIA8_DIR}/lib
-               ${SIMPATH}/lib
-               ${SIMPATH}/generators/lib
-               NO_DEFAULT_PATH
+               $ENV{PYTHIA8_DIR}
+               ${PYTHIA8_DIR}
+               ${SIMPATH}
+               ${SIMPATH}/generators
+               PATH_SUFFIXES lib
              )
 
 find_library(PYTHIA8_hepmcinterface_LIBRARY
