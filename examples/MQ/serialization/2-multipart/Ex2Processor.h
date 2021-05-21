@@ -17,22 +17,11 @@ class Ex2Processor : public FairMQDevice
     Ex2Processor()
         : fInput(nullptr)
         , fOutput(nullptr)
-        , fNumMsgs(0)
     {}
 
-    Ex2Processor(const Ex2Processor&);
-    Ex2Processor& operator=(const Ex2Processor&);
+    void Init() override { fOutput = new TClonesArray("MyHit"); }
 
-    virtual ~Ex2Processor() {}
-
-  protected:
-    virtual void Init()
-    {
-        fNumMsgs = fConfig->GetValue<int>("num-msgs");
-        fOutput = new TClonesArray("MyHit");
-    }
-
-    virtual void Run()
+    void Run() override
     {
         int receivedMsgs = 0;
         int sentMsgs = 0;
@@ -55,13 +44,8 @@ class Ex2Processor : public FairMQDevice
 
                 BoostSerializer<Ex2Header>().Serialize(*(partsOut.At(0)), *header);
                 BoostSerializer<MyHit>().Serialize(*(partsOut.At(1)), fOutput);
-                Send(partsOut, "data2");
-                sentMsgs++;
-
-                if (fNumMsgs != 0) {
-                    if (receivedMsgs == fNumMsgs) {
-                        break;
-                    }
+                if (Send(partsOut, "data2") >= 0) {
+                    sentMsgs++;
                 }
             }
         }
@@ -91,7 +75,6 @@ class Ex2Processor : public FairMQDevice
   private:
     TClonesArray* fInput;
     TClonesArray* fOutput;
-    int fNumMsgs;
 };
 
 #endif
