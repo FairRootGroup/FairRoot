@@ -14,42 +14,21 @@ class Ex1Sink : public FairMQDevice
   public:
     Ex1Sink()
         : fInput(nullptr)
-        , fFileName()
         , fOutFile(nullptr)
-        , fTree(nullptr)
+        , fTree("SerializationEx1", "Test output")
         , fNumMsgs(0)
     {}
 
-    Ex1Sink(const Ex1Sink&);
-    Ex1Sink& operator=(const Ex1Sink&);
-
-    virtual ~Ex1Sink()
-    {
-        if (fTree) {
-            fTree->Write("", TObject::kOverwrite);
-            delete fTree;
-        }
-
-        if (fOutFile) {
-            if (fOutFile->IsOpen()) {
-                fOutFile->Close();
-            }
-            delete fOutFile;
-        }
-    }
-
-  protected:
-    virtual void Init()
+    void Init() override
     {
         fNumMsgs = fConfig->GetValue<int>("num-msgs");
         fFileName = fConfig->GetValue<std::string>("output-file");
         fOutFile = TFile::Open(fFileName.c_str(), "RECREATE");
         fInput = new TClonesArray("MyHit");
-        fTree = new TTree("SerializationEx1", "Test output");
-        fTree->Branch("MyHit", "TClonesArray", &fInput);
+        fTree.Branch("MyHit", "TClonesArray", &fInput);
     }
 
-    virtual void Run()
+    void Run() override
     {
         int receivedMsgs = 0;
         while (!NewStatePending()) {
@@ -57,8 +36,8 @@ class Ex1Sink : public FairMQDevice
             if (Receive(msg, "data2") > 0) {
                 Deserialize<RootSerializer>(*msg, fInput);
                 receivedMsgs++;
-                fTree->SetBranchAddress("MyHit", &fInput);
-                fTree->Fill();
+                fTree.SetBranchAddress("MyHit", &fInput);
+                fTree.Fill();
 
                 if (fNumMsgs != 0) {
                     if (receivedMsgs == fNumMsgs) {
@@ -67,14 +46,31 @@ class Ex1Sink : public FairMQDevice
                 }
             }
         }
+
         LOG(info) << "Received " << receivedMsgs << " messages!";
+    }
+
+    void Reset() override
+    {
+        fTree.Write("", TObject::kOverwrite);
+
+        if (fOutFile) {
+            if (fOutFile->IsOpen()) {
+                fOutFile->Close();
+            }
+            delete fOutFile;
+        }
+
+        if (fInput) {
+            delete fInput;
+        }
     }
 
   private:
     TClonesArray* fInput;
     std::string fFileName;
     TFile* fOutFile;
-    TTree* fTree;
+    TTree fTree;
     int fNumMsgs;
 };
 
