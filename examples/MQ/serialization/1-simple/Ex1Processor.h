@@ -13,48 +13,33 @@
 class Ex1Processor : public FairMQDevice
 {
   public:
-    Ex1Processor()
-        : fNumMsgs(0)
-    {}
+    Ex1Processor() {}
 
-    Ex1Processor(const Ex1Processor&);
-    Ex1Processor& operator=(const Ex1Processor&);
-
-    virtual ~Ex1Processor() {}
-
-  protected:
-    virtual void Init() { fNumMsgs = fConfig->GetValue<int>("num-msgs"); }
-
-    virtual void Run()
+    void Run() override
     {
         int receivedMsgs = 0;
         int sentMsgs = 0;
 
         while (!NewStatePending()) {
-            /// RECEIVE ///
+            // Receive
             FairMQMessagePtr msgIn(NewMessageFor("data1", 0));
             if (Receive(msgIn, "data1") > 0) {
                 receivedMsgs++;
 
-                /// DESERIALIZE ///
+                // Deserialize
                 std::unique_ptr<TClonesArray> digis(nullptr);
                 Deserialize<RootSerializer>(*msgIn, digis);
 
-                /// COMPUTE ///
+                // Compute
                 TClonesArray hits = FindHits(*digis);
 
-                /// SERIALIZE ///
+                // Serialize
                 FairMQMessagePtr msgOut(NewMessageFor("data2", 0));
                 Serialize<RootSerializer>(*msgOut, &hits);
 
-                /// SEND ///
-                Send(msgOut, "data2");
-                sentMsgs++;
-
-                if (fNumMsgs != 0) {
-                    if (receivedMsgs == fNumMsgs) {
-                        break;
-                    }
+                // Send
+                if (Send(msgOut, "data2") >= 0) {
+                    sentMsgs++;
                 }
             }
         }
@@ -83,9 +68,6 @@ class Ex1Processor : public FairMQDevice
 
         return hits;
     }
-
-  private:
-    int fNumMsgs;
 };
 
 #endif   // EX1PROCESSOR_H

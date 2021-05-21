@@ -9,6 +9,8 @@
 #include <TClonesArray.h>
 #include <TFile.h>
 #include <TTree.h>
+#include <chrono>
+#include <thread>
 
 class Ex1Sampler : public FairMQDevice
 {
@@ -16,23 +18,10 @@ class Ex1Sampler : public FairMQDevice
     Ex1Sampler()
         : fInput(nullptr)
         , fTree(nullptr)
-        , fFileName()
         , fInputFile(nullptr)
     {}
 
-    Ex1Sampler(const Ex1Sampler&);
-    Ex1Sampler& operator=(const Ex1Sampler&);
-
-    virtual ~Ex1Sampler()
-    {
-        if (fInputFile) {
-            fInputFile->Close();
-            delete fInputFile;
-        }
-    }
-
-  protected:
-    virtual void Init()
+    void Init() override
     {
         fFileName = fConfig->GetValue<std::string>("input-file");
         fInputFile = TFile::Open(fFileName.c_str(), "READ");
@@ -48,7 +37,7 @@ class Ex1Sampler : public FairMQDevice
         }
     }
 
-    virtual void Run()
+    void Run() override
     {
         uint64_t sentMsgs = 0;
         const uint64_t numEvents = fTree->GetEntries();
@@ -58,14 +47,28 @@ class Ex1Sampler : public FairMQDevice
             FairMQMessagePtr msg(NewMessage());
             fTree->GetEntry(i);
             Serialize<RootSerializer>(*msg, fInput);
-            Send(msg, "data1");
-            sentMsgs++;
+            if (Send(msg, "data1") >= 0) {
+                sentMsgs++;
+            }
             if (NewStatePending()) {
                 break;
             }
         }
 
         LOG(info) << "Sent " << sentMsgs << " messages!";
+
+        // stay in the Running state until a transition to Ready is requested
+        while (!NewStatePending()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+    }
+
+    void Reset()
+    {
+        if (fInputFile) {
+            fInputFile->Close();
+            delete fInputFile;
+        }
     }
 
   private:
