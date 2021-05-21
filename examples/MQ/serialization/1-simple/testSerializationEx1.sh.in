@@ -7,15 +7,14 @@ trap 'kill -TERM $GENERATE_PID; kill -TERM $SAMPLER_PID; kill -TERM $PROCESSOR1_
 INPUTFILE="@CMAKE_CURRENT_BINARY_DIR@/data_io/testinput1.root"
 OUTPUTFILE="@CMAKE_CURRENT_BINARY_DIR@/data_io/outputEx1Test.root"
 
-########################## start dummy data generator
 GENERATE="ex-serialization-generate-data"
 GENERATE+=" --output-file $INPUTFILE"
 GENERATE+=" --tree cbmsim"
 @CMAKE_CURRENT_BINARY_DIR@/$GENERATE &
 GENERATE_PID=$!
+
 wait $GENERATE_PID
 
-########################## start SAMPLER
 SAMPLER="ex-serialization1-sampler"
 SAMPLER+=" --id sampler1"
 SAMPLER+=" --channel-config name=data1,type=push,method=bind,address=tcp://localhost:1565"
@@ -26,32 +25,31 @@ SAMPLER+=" --verbosity veryhigh"
 @CMAKE_CURRENT_BINARY_DIR@/$SAMPLER &
 SAMPLER_PID=$!
 
-########################## start FILESINK
-FILESINK="ex-serialization1-sink"
-FILESINK+=" --id sink1"
-FILESINK+=" --channel-config name=data2,type=pull,method=bind,address=tcp://localhost:1566"
-FILESINK+=" --color false"
-FILESINK+=" --control static"
-FILESINK+=" --num-msgs 100"
-FILESINK+=" --output-file $OUTPUTFILE"
-FILESINK+=" --verbosity veryhigh"
-@CMAKE_CURRENT_BINARY_DIR@/$FILESINK &
-FILESINK_PID=$!
-
-sleep 2
-
-########################## start PROCESSOR
 PROCESSOR1="ex-serialization1-processor"
 PROCESSOR1+=" --id processor1"
 PROCESSOR1+=" --channel-config name=data1,type=pull,method=connect,address=tcp://localhost:1565"
 PROCESSOR1+="                  name=data2,type=push,method=connect,address=tcp://localhost:1566"
 PROCESSOR1+=" --color false"
 PROCESSOR1+=" --control static"
-PROCESSOR1+=" --num-msgs 100"
 PROCESSOR1+=" --verbosity veryhigh"
 @CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR1 &
 PROCESSOR1_PID=$!
 
+FILESINK="ex-serialization1-sink"
+FILESINK+=" --id sink1"
+FILESINK+=" --channel-config name=data2,type=pull,method=bind,address=tcp://localhost:1566"
+FILESINK+=" --color false"
+FILESINK+=" --control static"
+FILESINK+=" --output-file $OUTPUTFILE"
+FILESINK+=" --num-msgs 100"
+FILESINK+=" --verbosity veryhigh"
+@CMAKE_CURRENT_BINARY_DIR@/$FILESINK &
+FILESINK_PID=$!
+
+wait $FILESINK_PID
+
+kill -SIGINT $SAMPLER_PID
+kill -SIGINT $PROCESSOR1_PID
+
 wait $SAMPLER_PID
 wait $PROCESSOR1_PID
-wait $FILESINK_PID
