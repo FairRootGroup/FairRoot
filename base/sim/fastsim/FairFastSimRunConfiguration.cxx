@@ -45,5 +45,5 @@ TG4VUserFastSimulation* FairFastSimRunConfiguration::CreateUserFastSimulation()
         LOG(info) << "Going to create FairFastSimulation";
         return new FairFastSimulation();
     }
-    return 0;
+    return nullptr;
 }

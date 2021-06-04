@@ -184,16 +184,20 @@ void FairYamlVMCConfig::SetupGeant4()
         //        LOG(info) << "Setting Geant4 multithreaded to " << (mtMode?"true":"false");
     }
 
-    FairFastSimRunConfiguration* runConfiguration =
-        new FairFastSimRunConfiguration(fYamlConfig["Geant4_UserGeometry"].as<std::string>(),
-                                        fYamlConfig["Geant4_PhysicsList"].as<std::string>(),
-                                        fYamlConfig["Geant4_SpecialProcess"].as<std::string>(),
-                                        specialStacking,
-                                        mtMode);
+    TG4RunConfiguration* runConfiguration;
 
-    if (fYamlConfig["FairFastSim_UseFastSim"]) {
-        runConfiguration->UseFastSim(fYamlConfig["FairFastSim_UseFastSim"].as<bool>());
-    }
+    if (fYamlConfig["FairFastSim_UseFastSim"] && true == fYamlConfig["FairFastSim_UseFastSim"].as<Bool_t>())
+        runConfiguration = new FairFastSimRunConfiguration(fYamlConfig["Geant4_UserGeometry"].as<std::string>(),
+                                                           fYamlConfig["Geant4_PhysicsList"].as<std::string>(),
+                                                           fYamlConfig["Geant4_SpecialProcess"].as<std::string>(),
+                                                           specialStacking,
+                                                           mtMode);
+    else
+        runConfiguration = new TG4RunConfiguration(fYamlConfig["Geant4_UserGeometry"].as<std::string>(),
+                                                   fYamlConfig["Geant4_PhysicsList"].as<std::string>(),
+                                                   fYamlConfig["Geant4_SpecialProcess"].as<std::string>(),
+                                                   specialStacking,
+                                                   mtMode);
 
     TGeant4* geant4 = new TGeant4("TGeant4", "The Geant4 Monte Carlo", runConfiguration);
 
