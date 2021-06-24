@@ -8,6 +8,5 @@
 install(DIRECTORY
   modules
   scripts
-  checks
   DESTINATION ${PROJECT_INSTALL_DATADIR}/cmake
 )
