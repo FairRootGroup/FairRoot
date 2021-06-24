@@ -19,6 +19,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     include(FairFindPackage2)
     ```
   * FairRoot 19 has an internal fallback. We will likely remove that fallback in 19.2.
+* Dropped `CheckCXX11Features`
+  * FairRoot assumes a recent compiler that fully supports C++11.
+  * Remove the following things from your `CMakeLists.txt`:
+    * ```cmake
+      Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")`
+      ```
+    * ```cmake
+      include(CheckCXX11Features)`
+      ```
+    * ```cmake
+      IF(HAS_CXX11_SHAREDPOINTER)
+        Add_Definitions(-DHAS_SHAREDPOINTER)
+      ENDIF(HAS_CXX11_SHAREDPOINTER)
+      ```
+  * If your C++ code depends on `HAS_SHAREDPOINTER` being set, rewrite it accordingly.
+  * If any of your CMake code depends on `HAS_CXX11_*` being set, rewrite it accordingly.
+  * If your code has specific C++ needs, consider CMake's `target_compile_features()`.
 
 ### Deprecated
 * Deprecating MbsAPI
