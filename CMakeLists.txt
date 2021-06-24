@@ -85,11 +85,6 @@ endif()
 
 SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/examples)
 
-# Check if the compiler support specific C++11 features
-# Up to now this is only a check since the code does not use
-# any of the features of the new standard
-Set(CheckSrcDir "${CMAKE_SOURCE_DIR}/cmake/checks")
-include(CheckCXX11Features)
 include(CheckSymbolExists)
 
 # Load some basic macros which are needed later on
