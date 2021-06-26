@@ -51,7 +51,7 @@ echo 'treename=name_you_chose' > config/rootmanager.dat
     [setenv SIMPATH ~/fair_install/FairSoftInst]
 
     cd ~/fair_install
-    git clone -b dev https://github.com/FairRootGroup/FairRoot.git
+    git clone -b master https://github.com/FairRootGroup/FairRoot.git
     cd FairRoot
     mkdir build
     cd build
