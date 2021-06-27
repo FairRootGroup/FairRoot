@@ -16,14 +16,6 @@ project(MYPROJ)
 #In case you need Fortran
 #ENABLE_LANGUAGE(Fortran)
 
-find_package(FairCMakeModules 0.1 QUIET)
-if(NOT FairCMakeModules_FOUND)
-  message(WARNING "Could not find FairCMakeModules, falling back to local copy. "
-          "It is recommended to install https://github.com/FairRootGroup/FairCMakeModules")
-  list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/fallback")
-endif()
-include(FairFindPackage2)
-
 # Check for needed environment variables
 IF(NOT DEFINED ENV{FAIRROOTPATH})
   MESSAGE(FATAL_ERROR "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again.")
@@ -39,8 +31,13 @@ SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 # is checked
   set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules"  ${CMAKE_MODULE_PATH})
-  set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules_old"  ${CMAKE_MODULE_PATH})
   set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
+if(SIMPATH)
+  set(CMAKE_PREFIX_PATH ${SIMPATH} ${CMAKE_PREFIX_PATH})
+endif()
+
+find_package(FairCMakeModules 0.2 QUIET REQUIRED)
+include(FairFindPackage2)
 
 find_package2(PUBLIC FairRoot)
 
@@ -93,7 +90,6 @@ ENDIF(NOT UNIX)
 # mandatory
 
 if(SIMPATH)
-  set(CMAKE_PREFIX_PATH ${SIMPATH} ${CMAKE_PREFIX_PATH})
   set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${SIMPATH}/lib)
 endif()
 

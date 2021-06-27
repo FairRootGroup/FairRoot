@@ -87,26 +87,6 @@ SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/examples)
 
 include(CheckSymbolExists)
 
-# Load some basic macros which are needed later on
-find_package(FairCMakeModules 0.1 QUIET)
-if(NOT FairCMakeModules_FOUND)
-  message(WARNING "Could not find FairCMakeModules, falling back to local copy. "
-          "It is recommended to install https://github.com/FairRootGroup/FairCMakeModules")
-  list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/fallback")
-endif()
-include(FairFindPackage2)
-include(FairRootTargets)
-include(FairRootPackage)
-include(FairRootSummary)
-include(FairMacros)
-include(WriteConfigFile)
-include(Dart)
-include(CheckCompiler)
-
-#Check the compiler and set the compile and link flags
-Check_Compiler()
-
-set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 
 Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are used." OFF)
 
@@ -118,6 +98,41 @@ If(USE_PATH_INFO)
     Set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
   EndIf (APPLE)
 EndIf(USE_PATH_INFO)
+
+#Check the compiler and set the compile and link flags
+#Also sets FAIRSOFT_CONFIG
+include(CheckCompiler)
+Check_Compiler()
+
+#Check if necessary environment variables are set
+#If not stop execution unless modular build is activated
+#Option(FAIRROOT_MODULAR_BUILD "Modular build without environment variables" OFF)
+#IF(NOT FAIRROOT_MODULAR_BUILD)
+If(FAIRSOFT_CONFIG)
+  IF(NOT DEFINED ENV{SIMPATH})
+    MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.")
+  ENDIF(NOT DEFINED ENV{SIMPATH})
+  STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
+  SET(SIMPATH $ENV{SIMPATH})
+endif()
+
+if(SIMPATH)
+  set(CMAKE_PREFIX_PATH ${SIMPATH} ${CMAKE_PREFIX_PATH})
+  set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${SIMPATH}/lib)
+endif()
+
+# Load some basic macros which are needed later on
+find_package(FairCMakeModules 0.2 QUIET REQUIRED)
+include(FairFindPackage2)
+include(FairRootTargets)
+include(FairRootPackage)
+include(FairRootSummary)
+include(FairMacros)
+include(WriteConfigFile)
+include(Dart)
+
+set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
+
 
 # Check if the user wants to build the project in the source
 # directory and if the install directory is different from the build
@@ -132,18 +147,6 @@ IF(NOT UNIX)
 ENDIF(NOT UNIX)
 
 
-#Check if necessary environment variables are set
-#If not stop execution unless modular build is activated
-#Option(FAIRROOT_MODULAR_BUILD "Modular build without environment variables" OFF)
-#IF(NOT FAIRROOT_MODULAR_BUILD)
-If(FAIRSOFT_CONFIG)
-  IF(NOT DEFINED ENV{SIMPATH})
-    MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.")
-  ENDIF(NOT DEFINED ENV{SIMPATH})
-  STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
-  SET(SIMPATH $ENV{SIMPATH})
-endif()
-
 # Set option(s)
 option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
 option(BUILD_MBS "Build MBS" OFF)
@@ -152,11 +155,6 @@ option(BUILD_MBS "Build MBS" OFF)
 # REQUIRED means that cmake will stop if this packages are not found
 # For example the framework can run without GEANT4, but ROOT is
 # mandatory
-
-if(SIMPATH)
-  set(CMAKE_PREFIX_PATH ${SIMPATH} ${CMAKE_PREFIX_PATH})
-  set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${SIMPATH}/lib)
-endif()
 
 # FairRoot only supports ROOT6, so check which version is available
 list(APPEND required_root_components RIO)
