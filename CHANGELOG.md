@@ -45,5 +45,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   * It is disabled by default in this release.
   * It can still be enabled with `-DBUILD_MBS=ON`.
 
+### Other Notable Changes
+* `fairsoft-config` isn't searched for and not needed any more.
+
 ### Example Changes in Experiment Repos
 * https://github.com/R3BRootGroup/R3BRoot/pull/413
