@@ -95,6 +95,7 @@ endif()
 
 find_package2(PUBLIC ROOT REQUIRED)
 include(ROOTMacros)
+fairroot_check_root_cxxstd_compatibility()
 if(ROOT_vmc_FOUND)
   set(VMCLIB ROOT::VMC)
 else()
