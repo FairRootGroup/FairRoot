@@ -100,24 +100,12 @@ If(USE_PATH_INFO)
 EndIf(USE_PATH_INFO)
 
 #Check the compiler and set the compile and link flags
-#Also sets FAIRSOFT_CONFIG
 include(CheckCompiler)
 Check_Compiler()
 
-#Check if necessary environment variables are set
-#If not stop execution unless modular build is activated
-#Option(FAIRROOT_MODULAR_BUILD "Modular build without environment variables" OFF)
-#IF(NOT FAIRROOT_MODULAR_BUILD)
-If(FAIRSOFT_CONFIG)
-  IF(NOT DEFINED ENV{SIMPATH})
-    MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.")
-  ENDIF(NOT DEFINED ENV{SIMPATH})
-  STRING(REGEX MATCHALL "[^:]+" PATH $ENV{PATH})
-  SET(SIMPATH $ENV{SIMPATH})
-endif()
-
-if(SIMPATH)
-  set(CMAKE_PREFIX_PATH ${SIMPATH} ${CMAKE_PREFIX_PATH})
+if(DEFINED ENV{SIMPATH})
+  set(SIMPATH $ENV{SIMPATH})
+  list(PREPEND CMAKE_PREFIX_PATH ${SIMPATH})
   set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${SIMPATH}/lib)
 endif()
 
