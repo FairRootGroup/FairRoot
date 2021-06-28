@@ -46,6 +46,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   * It can still be enabled with `-DBUILD_MBS=ON`.
 
 ### Other Notable Changes
+* Consider calling `fairroot_check_root_cxxstd_compatibility()`
+  in your `CMakeLists.txt`.
 * `fairsoft-config` isn't searched for and not needed any more.
 
 ### Example Changes in Experiment Repos
