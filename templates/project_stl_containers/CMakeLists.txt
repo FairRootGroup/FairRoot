@@ -38,6 +38,7 @@ endif()
 
 find_package(FairCMakeModules 0.2 QUIET REQUIRED)
 include(FairFindPackage2)
+include(FairSummary)
 
 find_package2(PUBLIC FairRoot)
 
@@ -181,28 +182,8 @@ configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake
                ${CMAKE_BINARY_DIR}/CTestCustom.cmake
               )
 # Summary ######################################################################
-if(CMAKE_CXX_FLAGS)
-  message(STATUS "  ")
-  message(STATUS "  ${Cyan}GLOBAL CXX FLAGS${CR}  ${BGreen}${CMAKE_CXX_FLAGS}${CR}")
-endif()
-if(CMAKE_CONFIGURATION_TYPES)
-  message(STATUS "  ")
-  message(STATUS "  ${Cyan}BUILD TYPE         CXX FLAGS${CR}")
-  string(TOUPPER "${CMAKE_BUILD_TYPE}" selected_type)
-  foreach(type IN LISTS CMAKE_CONFIGURATION_TYPES)
-   string(TOUPPER "${type}" type_upper)
-   if(type_upper STREQUAL selected_type)
-     pad("${type}" 18 " " type_padded)
-     message(STATUS "${BGreen}* ${type_padded}${CMAKE_CXX_FLAGS_${type_upper}}${CR}")
-   else()
-     pad("${type}" 18 " " type_padded)
-     message(STATUS "  ${BWhite}${type_padded}${CR}${CMAKE_CXX_FLAGS_${type_upper}}")
-   endif()
-   unset(type_padded)
-   unset(type_upper)
- endforeach()
-message(STATUS "  ")
-message(STATUS "  (Change the build type with ${BMagenta}-DCMAKE_BUILD_TYPE=...${CR})")
-endif()
+fair_summary_global_cxx_flags_standard()
+fair_summary_build_types()
+fair_summary_package_dependencies()
 
    ################################################################################
