@@ -108,6 +108,7 @@ endif()
 # Load some basic macros which are needed later on
 find_package(FairCMakeModules 0.2 QUIET REQUIRED)
 include(FairFindPackage2)
+include(FairSummary)
 include(FairRootTargets)
 include(FairRootPackage)
 include(FairRootSummary)
@@ -371,8 +372,8 @@ install_cmake_package()
 # Summary ######################################################################
 fairroot_summary_header()
 fairroot_summary_install_prefix()
-fairroot_summary_global_cxx_flags_standard()
-fairroot_summary_build_types()
+fair_summary_global_cxx_flags_standard()
+fair_summary_build_types()
 fairroot_summary_package_dependencies()
 fairroot_summary_components()
 
