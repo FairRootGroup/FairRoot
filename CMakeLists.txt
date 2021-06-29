@@ -99,10 +99,6 @@ If(USE_PATH_INFO)
   EndIf (APPLE)
 EndIf(USE_PATH_INFO)
 
-#Check the compiler and set the compile and link flags
-include(CheckCompiler)
-Check_Compiler()
-
 if(DEFINED ENV{SIMPATH})
   set(SIMPATH $ENV{SIMPATH})
   list(PREPEND CMAKE_PREFIX_PATH ${SIMPATH})
@@ -118,6 +114,7 @@ include(FairRootSummary)
 include(FairMacros)
 include(WriteConfigFile)
 include(Dart)
+include(CheckCompiler)
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 
@@ -156,6 +153,9 @@ find_package2(PUBLIC ROOT REQUIRED
   COMPONENTS ${required_root_components}
   OPTIONAL_COMPONENTS ${optional_root_components})
 include(ROOTMacros)
+
+#Check the compiler and set the compile and link flags
+Check_Compiler()
 
 fairroot_check_root_cxxstd_compatibility()
 
