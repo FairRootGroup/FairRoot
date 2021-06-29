@@ -62,3 +62,10 @@ else(FAIRROOT_INCLUDE_DIR AND FAIRROOT_LIBRARY_DIR)
    MESSAGE(FATAL_ERROR "FairRoot installation not found")
 endif (FAIRROOT_INCLUDE_DIR AND FAIRROOT_LIBRARY_DIR)
 
+# recursive config mode find_package to
+# get some package variables
+list(PREPEND CMAKE_PREFIX_PATH "${FAIRROOTPATH}")
+find_package(FairRoot CONFIG)
+
+message(STATUS "  FairRoot Version           : ${FairRoot_VERSION}")
+message(STATUS "  FairRoot CXX Standard      : ${FairRoot_CXX_STANDARD}")
