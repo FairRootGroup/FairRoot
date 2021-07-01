@@ -161,12 +161,6 @@ MACRO (WRITE_CONFIG_FILE filename)
   CONVERT_LIST_TO_STRING(${PATH})
   Set(MY_PATH ${output})
 
-  # If(FAIRSOFT_EXTERN)
-    # Set(PYTHIA8DATA "${SIMPATH}/share/pythia8/xmldoc")
-  # Else(FAIRSOFT_EXTERN)
-    # Set(PYTHIA8DATA "${SIMPATH}/generators/pythia8/xmldoc")
-  # EndIf(FAIRSOFT_EXTERN)
-
   CONVERT_LIST_TO_STRING($ENV{NEW_CLASSPATH})
   Set(MY_CLASSPATH ${output})
 
