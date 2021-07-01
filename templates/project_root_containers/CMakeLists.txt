@@ -87,10 +87,6 @@ IF(NOT UNIX)
   MESSAGE(FATAL_ERROR "You're not on an UNIX system. The project was up to now only tested on UNIX systems, so we break here. If you want to go on please edit the CMakeLists.txt in the source directory.")
 ENDIF(NOT UNIX)
 
-# Check if the external packages are installed into a separate install
-# directory
-CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
-
 # searches for needed packages
 # REQUIRED means that cmake will stop if this packages are not found
 # For example the framework can run without GEANT4, but ROOT is
@@ -123,14 +119,6 @@ find_package2(PUBLIC Geant4)
 Find_Package2(PUBLIC VGM)
 find_package2(PUBLIC Geant4VMC)
 find_package(HEPMC)
-
-If(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
-  set(BOOST_ROOT ${SIMPATH})
-  set(GSL_DIR ${SIMPATH})
-Else(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
-  set(BOOST_ROOT ${SIMPATH}/basics/boost)
-  set(GSL_DIR ${SIMPATH}/basics/gsl)
-EndIf(${ROOT_LIBRARY_DIR} MATCHES /lib/root)
 
 if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
   Set(Boost_NO_SYSTEM_PATHS TRUE)
