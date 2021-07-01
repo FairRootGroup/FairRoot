@@ -24,6 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   * If your C++ code depends on `HAS_SHAREDPOINTER` being set, rewrite it accordingly.
   * If any of your CMake code depends on `HAS_CXX11_*` being set, rewrite it accordingly.
   * If your code has specific C++ needs, consider CMake's `target_compile_features()`.
+* Dropped `CHECK_EXTERNAL_PACKAGE_INSTALL_DIR`
+  * Just remove it from your `CMakeLists.txt`.
 
 ### Deprecated
 * Deprecating MbsAPI

@@ -209,13 +209,6 @@ MACRO (CHECK_INSTALL_DIRECTORY)
 EndMacro (CHECK_INSTALL_DIRECTORY)
 ################################################################################
 
-MACRO(CHECK_EXTERNAL_PACKAGE_INSTALL_DIR)
-  If(IS_DIRECTORY ${SIMPATH}/bin)
-    Set(FAIRSOFT_EXTERN TRUE)
-  Else(IS_DIRECTORY ${SIMPATH}/bin)
-    Set(FAIRSOFT_EXTERN FALSE)
-  EndIf(IS_DIRECTORY ${SIMPATH}/bin)
-EndMacro(CHECK_EXTERNAL_PACKAGE_INSTALL_DIR)
 MACRO(UNIQUE var_name list)
 ################################################################################
 # Make the given list have only one instance of each unique element and

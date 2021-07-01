@@ -137,10 +137,6 @@ If(FAIRSOFT_CONFIG)
   SET(SIMPATH $ENV{SIMPATH})
 endif()
 
-# Check if the external packages are installed into a separate install
-# directory
-CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
-
 # Set option(s)
 option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
 
@@ -197,14 +193,6 @@ endif()
 
 find_package2(PUBLIC FairMQ VERSION 1.4.0)
 find_package2(PUBLIC DDS)
-
-If(FAIRSOFT_EXTERN)
-  set(BOOST_ROOT ${SIMPATH})
-  set(GSL_DIR ${SIMPATH})
-Else(FAIRSOFT_EXTERN)
-  set(BOOST_ROOT ${SIMPATH}/basics/boost)
-  set(GSL_DIR ${SIMPATH}/basics/gsl)
-EndIf(FAIRSOFT_EXTERN)
 
 if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
   Set(Boost_NO_SYSTEM_PATHS TRUE)
