@@ -16,7 +16,6 @@
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 cmake_policy(VERSION 3.15...3.20)
 
-set(CMAKE_INSTALL_MESSAGE LAZY)
 # Set project version
 SET(FAIRROOT_MAJOR_VERSION 19)
 SET(FAIRROOT_MINOR_VERSION 0)
@@ -81,6 +80,9 @@ endif()
 # Set a default if not specified by the user
 if(NOT DEFINED BUILD_SHARED_LIBS)
   set(BUILD_SHARED_LIBS ON)
+endif()
+if(NOT DEFINED CMAKE_INSTALL_MESSAGE)
+  set(CMAKE_INSTALL_MESSAGE LAZY)
 endif()
 
 SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/examples)
