@@ -11,7 +11,7 @@ cmake_policy(VERSION 3.11...3.14)
 
 # Set name of our project to “MYPROJ". Has to be done
 # after check of cmake version since this is a new feature
-project(MYPROJ)
+project(MYPROJ VERSION 1.0.0)
 
 #In case you need Fortran
 #ENABLE_LANGUAGE(Fortran)
@@ -143,15 +143,9 @@ EndIf (Boost_FOUND)
 # Defines all basic include directories from fairbase
 SetBasicVariables()
 
-# Set the library version in the main CMakeLists.txt
-SET(FAIRROOT_MAJOR_VERSION 0)
-SET(FAIRROOT_MINOR_VERSION 0)
-SET(FAIRROOT_PATCH_VERSION 0)
-SET(FAIRROOT_VERSION "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION}")
-
 set(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
-  VERSION "${FAIRROOT_VERSION}"
-  SOVERSION "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}"
+  VERSION "${PROJECT_VERSION}"
+  SOVERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}"
 )
 set(PROJECT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
