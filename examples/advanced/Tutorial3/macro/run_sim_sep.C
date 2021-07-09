@@ -23,6 +23,7 @@ void run_sim_sep(Int_t fileId, Int_t nEvents = 1000, TString mcEngine = "TGeant3
     // ------------------------
 
     fRun->SetName(mcEngine);
+    fRun->SetSimulationConfig(new FairVMCConfig());
 
     TString outfile = Form("data/testrun_%s_f%d.root", mcEngine.Data(), fileId);
     TString outparam = Form("data/testpar_%s_f%d.root", mcEngine.Data(), fileId);

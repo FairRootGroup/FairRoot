@@ -1,0 +1,40 @@
+Geant4_UserGeometry:     "geomRoot"
+Geant4_PhysicsList:      "QGSP_BERT_EMV"
+Geant4_SpecialProcess:   "stepLimiter+specialCuts+specialControls"
+Geant4_SpecialStacking:  false
+Geant4_Multithreaded:    false
+
+Geant4_MaxNStep:         10000    #default is 30000
+Geant4_Commands:
+ - /cuts/setHighEdge 100 GeV
+ - /tracking/verbose 0
+
+MonteCarlo_Process:
+    PAIR:         1        #pair production
+    COMP:         1        #Compton scattering
+    PHOT:         1        #photo electric effect
+    PFIS:         0        #photofission
+    DRAY:         1        #delta-ray
+    ANNI:         1        #annihilation
+    BREM:         1        #bremsstrahlung
+    HADR:         1        #hadronic process
+    MUNU:         1        #muon nuclear interaction
+    DCAY:         1        #decay
+    LOSS:         1        #energy loss
+    MULS:         1        #multiple scattering
+
+MonteCarlo_Cut:
+    CUTGAM:       1.0E-3   #gammas (GeV)
+    CUTELE:       1.0E-3   #electrons (GeV)
+    CUTNEU:       1.0E-3   #neutral hadrons (GeV)
+    CUTHAD:       1.0E-3   #charged hadrons (GeV)
+    CUTMUO:       1.0E-3   #muons (GeV)
+    BCUTE:        1.0E-3   #electron bremsstrahlung (GeV)
+    BCUTM:        1.0E-3   #muon and hadron bremsstrahlung (GeV)
+    DCUTE:        1.0E-3   #delta-rays by electrons (GeV)
+    DCUTM:        1.0E-3   #delta-rays by muons (GeV)
+    PPCUTM:       1.0E-3   #direct pair production by muons (GeV)
+    TOFMAX:       1.E10    #time of flight cut in seconds
+
+FairStack_StoreSecondaries: true
+FairStack_MinPoints:        0

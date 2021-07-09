@@ -46,6 +46,7 @@ void run_tutorial1_urqmd(Int_t nEvents = 2, TString mcEngine = "TGeant3")
     // -----   Create simulation run   ----------------------------------------
     FairRunSim* run = new FairRunSim();
     run->SetName(mcEngine);                        // Transport engine
+    run->SetSimulationConfig(new FairVMCConfig());
     run->SetSink(new FairRootFileSink(outFile));   // Output file
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------

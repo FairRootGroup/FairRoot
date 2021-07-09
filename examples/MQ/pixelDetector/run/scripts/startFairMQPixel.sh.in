@@ -18,7 +18,7 @@ WORKDIR="@pixel_file_dir@"
 
 FORCEKILL=false
 COMMAND="interactive"
-MAXRUNNINGTIME=100
+MAXRUNNINGTIME=60
 DATESTRING=`date +%Y%m%d_%H%M%S`
 
 while [[ $# > 1 ]]
@@ -194,6 +194,8 @@ if [ "$COMMAND" == "static" ]; then
         fi
     fi
 
+    echo "Start devices"
+    
     $SERVER &> server_$DATESTRING.out.log &
     SERVER_PID=$!
 
@@ -208,6 +210,21 @@ if [ "$COMMAND" == "static" ]; then
 
     $FILESINK &> fileSink_$DATESTRING.out.log &
     FILESINK_PID=$!
+
+    sleep 1
+
+    echo "Devices Running"
+    echo "SERVER================================"
+    cat server_$DATESTRING.out.log
+    echo "SAMPLER================================"
+    cat sampler_$DATESTRING.out.log
+    for (( i=0 ; i<$NOFPROCESSORS ; i++ ))
+    do
+        cat processor${i}_$DATESTRING.out.log
+    done
+    echo "SINK================================"
+    cat fileSink_$DATESTRING.out.log
+    echo "===================================="
 
     RUN_STRING="Running"
 
@@ -236,20 +253,25 @@ if [ "$COMMAND" == "static" ]; then
     SAMPLERRUNNING=0
     for ((isec = 0 ; isec < MAXRUNNINGTIME ; isec++ ));
     do
+        echo "checking sampler $SAMPLER_PID"
         CHECK_SAMPLER="$(kill -0 $SAMPLER_PID &> /dev/null && echo $RUN_STRING)";
         if [ "$CHECK_SAMPLER" != "$RUN_STRING" ];
         then
 	    break;
         fi
 
+        echo "checking server $SERVER_PID"
         SERVER_INFO="$(ps -o %cpu -o rss $SERVER_PID | tail -1)"
+        echo "checking sampler $SAMPLER_PID"
         SAMPLER_INFO="$(ps -o %cpu -o rss $SAMPLER_PID | tail -1)"
         printf   "| %5s %6s | %5s %6s |" $SERVER_INFO $SAMPLER_INFO
         for (( iproc=0 ; iproc<$NOFPROCESSORS ; iproc++ ))
         do
+            echo "checking processor ${APROCESSOR_PID[iproc]}"
             APROCESSOR_INFO="$(ps -o %cpu -o rss ${APROCESSOR_PID[iproc]} | tail -1)"
             printf " %5s %6s |" $APROCESSOR_INFO;
         done
+        echo "checking sink $FILESINK_PID"
         FILESINK_INFO="$(ps -o %cpu -o rss $FILESINK_PID | tail -1)"
         printf   " %5s %6s |\r" $FILESINK_INFO
         sleep 1
@@ -261,6 +283,17 @@ if [ "$COMMAND" == "static" ]; then
     printf "_\n"
 
     echo "Jobs finished in $isec seconds."
+
+    echo "SERVER================================" 
+    cat server_$DATESTRING.out.log
+    echo "SAMPLER================================"
+    cat sampler_$DATESTRING.out.log
+    for (( i=0 ; i<$NOFPROCESSORS ; i++ ))
+    do
+        cat processor${i}_$DATESTRING.out.log
+    done
+    echo "SINK================================"
+    cat fileSink_$DATESTRING.out.log
 
     sleep 2;
 

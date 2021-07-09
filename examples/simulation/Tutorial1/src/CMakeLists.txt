@@ -35,6 +35,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::FairTools # FairLogger
   FairRoot::FairFastSim
   FairRoot::ParBase
+  FairRoot::ExGConfig
   FairRoot::ExPassive
   FairRoot::ExMCStack
   FairRoot::Gen

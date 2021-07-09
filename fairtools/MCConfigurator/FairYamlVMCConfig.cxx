@@ -35,7 +35,6 @@ FairYamlVMCConfig::FairYamlVMCConfig()
     : FairGenericVMCConfig()
     , fMCEngine("")
 {
-    UsePostInitConfig();
 }
 
 void FairYamlVMCConfig::Setup(const char* mcEngine)
@@ -69,6 +68,7 @@ void FairYamlVMCConfig::SetupPostInit(const char* mcEngine)
     if (!((strcmp(mcEngine, "TGeant4") == 0))) {
         LOG(fatal) << "FairYamlVMCConfig::SetupPostInit() only valid for TGeant4.";
     }
+    LOG(info) << "Loading Geant4 PostInit Config." << endl;
 
     TString work = getenv("VMCWORKDIR");
     TString work_config = work + "/gconfig/";

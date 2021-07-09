@@ -50,6 +50,7 @@ void run_background(Int_t nEvents = 130)
     // -----   Create simulation run   ----------------------------------------
     FairRunSim* run = new FairRunSim();
     run->SetName("TGeant3");                       // Transport engine
+    run->SetSimulationConfig(new FairVMCConfig());
     run->SetSink(new FairRootFileSink(outFile));   // Output file
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------

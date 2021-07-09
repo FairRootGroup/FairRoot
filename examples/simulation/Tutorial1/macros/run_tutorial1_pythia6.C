@@ -64,6 +64,7 @@ void run_tutorial1_pythia6(Int_t nEvents = 10, TString mcEngine = "TGeant3")
     // -----   Create simulation run   ----------------------------------------
     FairRunSim* run = new FairRunSim();
     run->SetName(mcEngine);                        // Transport engine
+    run->SetSimulationConfig(new FairVMCConfig());
     run->SetSink(new FairRootFileSink(outFile));   // Output file
     run->SetPythiaDecayer(pythia6Config);          // Define Pythia6 as decayer
 

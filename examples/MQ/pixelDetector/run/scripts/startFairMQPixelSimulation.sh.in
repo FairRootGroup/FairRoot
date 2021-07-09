@@ -270,6 +270,9 @@ if [ "$COMMAND" == "static" ]; then
 	    ALLSAMPLERSRUNNING=0
 	    for (( isimul=0 ; isimul<$NOFSIMULS ; isimul++ ))
 	    do
+                echo "**********************************"
+                cat sampler${isimul}_$DATESTRING.out.log 
+                echo "**********************************"
 		CHECK_SAMPLER="$(kill -0 ${SAMPLER_PID[isimul]} &> /dev/null && echo $RUN_STRING)";
 		if [ "$CHECK_SAMPLER" == "$RUN_STRING" ];
 		then

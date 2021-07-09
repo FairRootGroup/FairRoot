@@ -65,7 +65,7 @@ void run_tutorial1(Int_t nEvents = 10,
     // -----   Create simulation run   ----------------------------------------
     FairRunSim* run = new FairRunSim();
     run->SetName(mcEngine);   // Transport engine
-    FairGenericVMCConfig* config = new FairGenericVMCConfig();
+    FairVMCConfig* config = new FairVMCConfig();
     if (loadPostInitConfig)
         config->UsePostInitConfig();
     run->SetSimulationConfig(config);

@@ -19,6 +19,7 @@
 #include "FairPrimaryGenerator.h"
 #include "FairRunSim.h"
 #include "FairRuntimeDb.h"
+#include "FairVMCConfig.h"
 
 #include <FairMQDevice.h>
 #include <FairMQLogger.h>
@@ -63,7 +64,7 @@ void FairMQSimDevice::InitTask()
     }
 
     fRunSim->SetName(fTransportName.data());
-    //  fRunSim->SetSimulationConfig(new FairVMCConfig());
+    fRunSim->SetSimulationConfig(new FairVMCConfig());
     fRunSim->SetIsMT(kFALSE);
 
     if (fUserConfig.Length() > 0)
