@@ -34,9 +34,9 @@ find_path(PYTHIA8_INCLUDE_DIR
           DOC "Specify the directory containing Pythia.h.")
 
 if(PYTHIA8_INCLUDE_DIR MATCHES "include$")
-  get_filename_component(PYTHIA8_PREFIX ${PYTHIA8_INCLUDE_DIR}/.. ABSOLUTE)
+  get_filename_component(Pythia8_PREFIX ${PYTHIA8_INCLUDE_DIR}/.. ABSOLUTE)
 elseif()
-  get_filename_component(PYTHIA8_PREFIX ${PYTHIA8_INCLUDE_DIR}/../.. ABSOLUTE)
+  get_filename_component(Pythia8_PREFIX ${PYTHIA8_INCLUDE_DIR}/../.. ABSOLUTE)
 endif()
 
 find_library(PYTHIA8_LIBRARY
@@ -68,8 +68,8 @@ find_library(PYTHIA8_lhapdfdummy_LIBRARY
 find_path(PYTHIA8DATA
   NAMES MainProgramSettings.xml
   HINTS
-  ${PYTHIA8_PREFIX}/share/Pythia8/xmldoc
-  ${PYTHIA8_PREFIX}/share/pythia8/xmldoc)
+  ${Pythia8_PREFIX}/share/Pythia8/xmldoc
+  ${Pythia8_PREFIX}/share/pythia8/xmldoc)
 
 foreach(_lib PYTHIA8_LIBRARY PYTHIA8_hepmcinterface_LIBRARY PYTHIA8_lhapdfdummy_LIBRARY)
   if(${_lib})
@@ -77,6 +77,19 @@ foreach(_lib PYTHIA8_LIBRARY PYTHIA8_hepmcinterface_LIBRARY PYTHIA8_lhapdfdummy_
   endif()
 endforeach()
 set(PYTHIA8_INCLUDE_DIRS ${PYTHIA8_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIR}/Pythia8 )
+
+find_file(Pythia8_VERSION_FILE
+  NAMES Pythia.h pythia.h
+  HINTS ${PYTHIA8_INCLUDE_DIR} ${PYTHIA8_INCLUDE_DIR}/Pythia8 ${PYTHIA8_INCLUDE_DIR}/pythia8)
+
+if(Pythia8_VERSION_FILE)
+  file(READ "${Pythia8_VERSION_FILE}" __version_raw)
+  string(REGEX MATCH "#define PYTHIA_VERSION ([0-9\.]+)"
+    __version_raw "${__version_raw}"
+  )
+  set(Pythia8_VERSION "${CMAKE_MATCH_1}")
+  unset(__version_raw)
+endif()
 
 # handle the QUIETLY and REQUIRED arguments and set PYTHIA8_FOUND to TRUE if
 # all listed variables are TRUE
