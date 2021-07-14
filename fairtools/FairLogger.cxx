@@ -19,10 +19,19 @@
 #include <iostream>    // for cout, cerr
 #include <stdio.h>     // for fclose, freopen, remove, etc
 
+#include <stdio.h>        // perror
+#include <sys/time.h>  
+#include <sys/resource.h> // setrlimit
+#include <signal.h>       // signal
+#include <stdlib.h>       // abort
+
+
 FairLogger* FairLogger::instance = nullptr;
 
 const char FairLogger::endl = ' ';
 const char FairLogger::flush = ' ';
+
+
 
 FairLogger::FairLogger()
     : fLogFileName()
@@ -175,6 +184,24 @@ bool FairLogger::IsLogNeeded(fair::Severity severity) { return fair::Logger::Log
 
 bool FairLogger::IsLogNeeded(FairLogLevel level) { return fair::Logger::Logging(ConvertLogLevelToString(level)); }
 
+static int dump()
+{
+  struct rlimit rlim= {RLIM_INFINITY, RLIM_INFINITY};
+  if (setrlimit(RLIMIT_CORE, &rlim)) // enable core dumps for process
+    {
+       perror("setrlimit failed (core files disabled by hard limit?)");
+      return 1;
+    }
+  if (signal(SIGABRT, SIG_DFL)==SIG_ERR) // unhijack sighandler from root
+    {
+      perror("signal failed");
+      return 2;
+    }
+  abort();   // bye bye
+  return 42; // unreachable
+}
+
+
 void FairLogger::LogFatalMessage()
 {
     // Since Fatal indicates a fatal error it is maybe usefull to have
@@ -184,20 +211,9 @@ void FairLogger::LogFatalMessage()
     // Fatal also indicates a problem which is so severe that the process should
     // not go on, so the process is aborted.
 
-    if (gSystem) {
-        TString corefile = "core_dump_";
-        int pid = gSystem->GetPid();
-        corefile += pid;
-
-        std::cerr << "For later analysis we write a core dump to " << corefile << std::endl;
-
-        if (freopen(corefile, "w", stderr)) {
-            gSystem->StackTrace();
-            fclose(stderr);
-        }
-    }
-
-    throw fair::FatalException("Fatal error occured. Exiting...");
+  std::cerr << "For later analysis we are trying to write a core dump." << std::endl;
+  dump();
+  throw fair::FatalException("Fatal error occured. Exiting...");
 }
 
 ClassImp(FairLogger);
