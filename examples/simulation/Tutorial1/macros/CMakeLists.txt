@@ -6,7 +6,6 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/load_all_libs.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial1_mesh.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial1_pythia6.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial1_pythia8.C)
@@ -14,13 +13,6 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial1_urqmd.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial1.C)
 
 set(maxTestTime 60)
-
-add_test(NAME load_all_libs
-         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/load_all_libs.sh)
-set_tests_properties(load_all_libs PROPERTIES
-  TIMEOUT ${maxTestTime}
-  PASS_REGULAR_EXPRESSION "Macro finished succesfully"
-)
 
 foreach(mcEngine IN ITEMS TGeant3 TGeant4)
   add_test(NAME ex_sim_tutorial1_mesh_${mcEngine}
@@ -69,5 +61,3 @@ set_tests_properties(ex_tutorial1_PostInitConfig PROPERTIES
 install(FILES run_tutorial1_mesh.C run_tutorial1_pythia6.C run_tutorial1_pythia8.C run_tutorial1_urqmd.C run_tutorial1.C
   DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/simulation/Tutorial1
 )
-
-
