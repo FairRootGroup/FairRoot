@@ -482,7 +482,12 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
                 }
                 break;   // End of Ascii IO
             default:     // Unknown IO
-                Error("writeContainer()", "Unknown output file type.");
+                if (cont->hasChanged()) {
+                    cv = findOutputVersion(cont);
+                    if (cv == 0) {
+                        cont->write(output);
+                    }
+                }
                 break;
         }
     }
@@ -790,7 +795,7 @@ Bool_t FairRuntimeDb::setOutput(FairParIo* op)
             isRootFileOutput = kTRUE;
         } else if (strcmp(output->IsA()->GetName(), "FairParTSQLIo") == 0) {
             ioType = RootTSQLOutput;
-        } else {   // ASCII
+        } else if (strcmp(output->IsA()->GetName(), "FairParAsciiFileIo") == 0) {
             ioType = AsciiFileOutput;
         }
         return kTRUE;
