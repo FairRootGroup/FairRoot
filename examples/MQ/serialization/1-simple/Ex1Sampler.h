@@ -63,7 +63,7 @@ class Ex1Sampler : public FairMQDevice
         }
     }
 
-    void Reset()
+    void Reset() override
     {
         if (fInputFile) {
             fInputFile->Close();
