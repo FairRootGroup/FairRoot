@@ -71,7 +71,7 @@ class Ex1Sampler : public fair::mq::Device
         }
     }
 
-    void Reset()
+    void Reset() override
     {
         if (fInputFile) {
             fInputFile->Close();
