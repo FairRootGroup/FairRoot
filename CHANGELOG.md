@@ -41,6 +41,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   * If your code has specific C++ needs, consider CMake's `target_compile_features()`.
 * Dropped `CHECK_EXTERNAL_PACKAGE_INSTALL_DIR`
   * Just remove it from your `CMakeLists.txt`.
+* Dropped `USE_PATH_INFO` CMake option. It was an anti-pattern. Don't use it!
 
 ### Deprecated
 * Deprecating MbsAPI
