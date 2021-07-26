@@ -106,17 +106,6 @@ Check_Compiler()
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 
-Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are used." OFF)
-
-If(USE_PATH_INFO)
-  Set(PATH $ENV{PATH})
-  If (APPLE)
-    Set(LD_LIBRARY_PATH $ENV{DYLD_LIBRARY_PATH})
-  Else (APPLE)
-    Set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
-  EndIf (APPLE)
-EndIf(USE_PATH_INFO)
-
 # Check if the user wants to build the project in the source
 # directory and if the install directory is different from the build
 # directory
