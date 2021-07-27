@@ -425,79 +425,42 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
 
 //////////// With DB modification (FIXME FIXME) //////
 #if (USE_DB_METHOD > 0)
-Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtdbRun* refRun)
+Bool_t FairRuntimeDb::writeContainer(FairParSet* container, FairRtdbRun* run, FairRtdbRun* refRun)
 {
     // std::cout << "\n -I FairRuntimeDB Using DB mode \n";
     // writes a container to the output if the containers has changed
     // The output might be suppressed if the changes is due an initialisation from a
     //   ROOT file which serves also as output or if it was already written
-    const Text_t* c = cont->GetName();
-    LOG(debug) << "RuntimeDb: write container: " << cont->GetName();
-    FairParVersion* vers = run->getParVersion(c);
-    Bool_t rc = kTRUE;
-    Int_t cv = 0;
+    const Text_t* containerName = container->GetName();
+    const Text_t* outputName = output->GetName();
+    LOG(debug) << "RuntimeDb: write container: " << containerName;
+
+    FairParVersion* vers = run->getParVersion(containerName);
+    Int_t containerVersion = 0;
     if (getOutput() && output->check() && output->isAutoWritable()) {
-        switch (ioType) {
-            case RootFileOutput:   // RootFile
-                if (cont->hasChanged()) {
-                    cv = findOutputVersion(cont);
-                    if (cv == 0) {
-                        cv = cont->write(output);
-                        if (cv > 0) {
-                            LOG(info) << "***  " << c << " written to ROOT file   version: " << cv;
-                        } else if (cv == -1) {
-                            return kFALSE;
-                        }
-                        // -1 indicates and error during write
-                        // 0 is allowed for all containers which have no write function
-                    }
-                    vers->setRootVersion(cv);
-                } else {
-                    if (vers->getRootVersion() == 0) {
-                        cv = findOutputVersion(cont);
-                        vers->setRootVersion(cv);
-                    }
-                }
-                break;             // End of rootfile IO
-            case RootTSQLOutput:   // TSQL
-                if (cont->hasChanged()) {
-                    cv = findOutputVersion(cont);
-                    if (cv == 0) {
-                        // std::cout << "-I- FairRuntimeDB: SQL write() called 1 = "<< cont->GetName() << "\n";
-                        cont->print();
-                        /*Int_t test = */
-                        cont->write(output);
-                        // std::cout << "-I- FairRuntimeDB: SQL write() called 2 =  \n";
-                    }
-                }
-                break;              // End of TSQL IO
-            case AsciiFileOutput:   // might be Ascii I/O
-                if (cont->hasChanged()) {
-                    cv = cont->write(output);
-                    if (cv < 0) {
-                        return kFALSE;
-                    }
-                    cout << "***  " << c << " written to output" << '\n';
-                    vers->setRootVersion(cv);
-                }
-                break;   // End of Ascii IO
-            default:     // Unknown IO
-                Error("writeContainer()", "Unknown output file type.");
-                break;
+        if (container->hasChanged()) {
+            containerVersion = container->write(output);
+            if (containerVersion == -1) {
+                return kFALSE;
+            }
+
+            LOG(info) << "***  " << containerName << " written to output: " << outputName
+                      << " with version: " << containerVersion;
+            vers->setRootVersion(containerVersion);
         }
     }
-    vers->setInputVersion(cont->getInputVersion(1), 1);
-    vers->setInputVersion(cont->getInputVersion(2), 2);
-    cont->setChanged(kFALSE);
+    vers->setInputVersion(container->getInputVersion(1), 1);
+    vers->setInputVersion(container->getInputVersion(2), 2);
+    container->setChanged(kFALSE);
     if (refRun) {
-        FairParVersion* refVers = refRun->getParVersion(c);
+        FairParVersion* refVers = refRun->getParVersion(containerName);
         if (refVers) {
-            refVers->setInputVersion(cont->getInputVersion(1), 1);
-            refVers->setInputVersion(cont->getInputVersion(2), 2);
-            refVers->setRootVersion(cv);
+            refVers->setInputVersion(container->getInputVersion(1), 1);
+            refVers->setInputVersion(container->getInputVersion(2), 2);
+            refVers->setRootVersion(containerVersion);
         }
     }
-    return rc;
+    return kTRUE;
 }
 #endif
 ////////////////////////////////////////
