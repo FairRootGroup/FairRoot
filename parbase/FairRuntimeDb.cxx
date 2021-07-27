@@ -74,7 +74,6 @@ FairRuntimeDb::FairRuntimeDb(void)
     , versionsChanged(kFALSE)
     , isRootFileOutput(kFALSE)
     , fLogger(FairLogger::GetLogger())
-    , ioType(UNKNOWN_Type)
 {
     gRtdb = this;
 }
@@ -749,12 +748,7 @@ Bool_t FairRuntimeDb::setOutput(FairParIo* op)
     if (output->check() == kTRUE) {
         resetOutputVersions();
         if (strcmp(output->IsA()->GetName(), "FairParRootFileIo") == 0) {
-            ioType = RootFileOutput;
             isRootFileOutput = kTRUE;
-        } else if (strcmp(output->IsA()->GetName(), "FairParTSQLIo") == 0) {
-            ioType = RootTSQLOutput;
-        } else {   // ASCII
-            ioType = AsciiFileOutput;
         }
         return kTRUE;
     } else {
@@ -852,11 +846,6 @@ void FairRuntimeDb::activateParIo(FairParIo* io)
                 new FairGenericParAsciiFileIo((static_cast<FairParAsciiFileIo*>(io))->getFile());
             io->setDetParIo(pn);
         }
-        // else if(strcmp(ioName,"FairParTSQLIo") == 0) {
-        //  std::cout << "\n\n\n\t TSQL versie is called en nu de rest \n\n";
-        //  FairDetParTSQLIo* pn = new FairGenericParTSQLIo();
-        //  io->setDetParIo(pn);
-        //}
     }
     TIter next(&contFactories);
     FairContFact* fact;

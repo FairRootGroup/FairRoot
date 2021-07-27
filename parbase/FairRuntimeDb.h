@@ -40,18 +40,6 @@ class FairRuntimeDb : public TObject
     /** Fair Logger */
     FairLogger* fLogger;   //!
 
-    /**
-     * Select which IO type to use.
-     */
-    typedef enum
-    {
-        UNKNOWN_Type = 0,
-        AsciiFileOutput = 1,   // Ascii in-out-put
-        RootFileOutput = 2,    // Root Files
-        RootTSQLOutput = 3     // Use a TSQL db
-    } ParamIOType;
-    ParamIOType ioType;   // IO Type
-
   public:
     static FairRuntimeDb* instance(void);
     ~FairRuntimeDb(void);
