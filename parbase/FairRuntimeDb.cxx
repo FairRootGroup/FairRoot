@@ -18,10 +18,8 @@
 #include "FairContFact.h"            // for FairContFact
 #include "FairDetParAsciiFileIo.h"   // for FairDetParAsciiFileIo
 #include "FairDetParRootFileIo.h"    // for FairDetParRootFileIo
-//#include "FairDetParTSQLIo.h"           // for FairDetParTSQLIo
 #include "FairGenericParAsciiFileIo.h"   // for FairGenericParAsciiFileIo
 #include "FairGenericParRootFileIo.h"    // for FairGenericParRootFileIo
-//#include "FairGenericParTSQLIo.h"       // for FairGenericParTSQLIo
 #include "FairLogger.h"           // for FairLogger, MESSAGE_ORIGIN
 #include "FairParAsciiFileIo.h"   // for FairParAsciiFileIo
 #include "FairParIo.h"            // for FairParIo
@@ -43,11 +41,6 @@ using std::cout;
 using std::endl;
 using std::ios;
 using std::setw;
-
-/// DEBUG DEBUG Temporary define
-// 0 = use original code; 1 = use new code
-#define USE_DB_METHOD 1
-/////////////////////////////////
 
 ClassImp(FairRuntimeDb);
 
@@ -362,71 +355,8 @@ Int_t FairRuntimeDb::findOutputVersion(FairParSet* cont)
     return 0;
 }
 
-//////// Original version ////////
-#if (USE_DB_METHOD == 0)
-Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtdbRun* refRun)
-{
-    // writes a container to the output if the containers has changed
-    // The output might be suppressed if the changes is due an initialisation from a
-    //   ROOT file which serves also as output or if it was already written
-    const Text_t* c = cont->GetName();
-    LOG(debug) << "RuntimeDb: write container: " << cont->GetName();
-    FairParVersion* vers = run->getParVersion(c);
-    Bool_t rc = kTRUE;
-    Int_t cv = 0;
-    if (getOutput() && output->check() && output->isAutoWritable()) {
-        cout << " CHECK OUTPUT DONE " << endl;
-        if (isRootFileOutput) {
-            if (cont->hasChanged()) {
-                cv = findOutputVersion(cont);
-                if (cv == 0) {
-                    cv = cont->write(output);
-                    if (cv > 0) {
-                        LOG(info) << "***  " << c << " written to ROOT file   version: " << cv;
-                    } else if (cv == -1) {
-                        return kFALSE;
-                    }
-                    // -1 indicates and error during write
-                    // 0 is allowed for all containers which have no write function
-                }
-                vers->setRootVersion(cv);
-            } else {
-                if (vers->getRootVersion() == 0) {
-                    cv = findOutputVersion(cont);
-                    vers->setRootVersion(cv);
-                }
-            }
-        } else {   // might be Ascii I/O
-            if (cont->hasChanged()) {
-                cv = cont->write(output);
-                if (cv < 0) {
-                    return kFALSE;
-                }
-                cout << "***  " << c << " written to output" << '\n';
-                vers->setRootVersion(cv);
-            }
-        }
-    }
-    vers->setInputVersion(cont->getInputVersion(1), 1);
-    vers->setInputVersion(cont->getInputVersion(2), 2);
-    cont->setChanged(kFALSE);
-    if (refRun) {
-        FairParVersion* refVers = refRun->getParVersion(c);
-        if (refVers) {
-            refVers->setInputVersion(cont->getInputVersion(1), 1);
-            refVers->setInputVersion(cont->getInputVersion(2), 2);
-            refVers->setRootVersion(cv);
-        }
-    }
-    return rc;
-}
-#endif
-
-//////////// With DB modification (FIXME FIXME) //////
-#if (USE_DB_METHOD > 0)
 Bool_t FairRuntimeDb::writeContainer(FairParSet* container, FairRtdbRun* run, FairRtdbRun* refRun)
 {
-    // std::cout << "\n -I FairRuntimeDB Using DB mode \n";
     // writes a container to the output if the containers has changed
     // The output might be suppressed if the changes is due an initialisation from a
     //   ROOT file which serves also as output or if it was already written
@@ -461,8 +391,6 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* container, FairRtdbRun* run, Fa
     }
     return kTRUE;
 }
-#endif
-////////////////////////////////////////
 
 Bool_t FairRuntimeDb::initContainers(Int_t runId, Int_t refId, const Text_t* fileName)
 {
@@ -721,8 +649,7 @@ Bool_t FairRuntimeDb::setSecondInput(FairParIo* inp2)
     }
     return kFALSE;
 }
-//////// Original version ////////
-#if (USE_DB_METHOD == 0)
+
 Bool_t FairRuntimeDb::setOutput(FairParIo* op)
 {
     // sets the output pointer
@@ -738,26 +665,7 @@ Bool_t FairRuntimeDb::setOutput(FairParIo* op)
     }
     return kFALSE;
 }
-#endif
-////// With DB modifications (FIXME FIXME)/////
-#if (USE_DB_METHOD > 0)
-Bool_t FairRuntimeDb::setOutput(FairParIo* op)
-{
-    // sets the output pointer
-    output = op;
-    if (output->check() == kTRUE) {
-        resetOutputVersions();
-        if (strcmp(output->IsA()->GetName(), "FairParRootFileIo") == 0) {
-            isRootFileOutput = kTRUE;
-        }
-        return kTRUE;
-    } else {
-        Error("setOutput(FairParIo*)", "no connection to output");
-    }
-    return kFALSE;
-}
-#endif
-/////////////////////////////////
+
 FairParIo* FairRuntimeDb::getFirstInput()
 {
     // return a pointer to the first input
