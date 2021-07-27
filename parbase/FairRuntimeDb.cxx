@@ -361,12 +361,12 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* container, FairRtdbRun* run, Fa
     // The output might be suppressed if the changes is due an initialisation from a
     //   ROOT file which serves also as output or if it was already written
     const Text_t* containerName = container->GetName();
-    const Text_t* outputName = output->GetName();
     LOG(debug) << "RuntimeDb: write container: " << containerName;
 
     FairParVersion* vers = run->getParVersion(containerName);
     Int_t containerVersion = 0;
     if (getOutput() && output->check() && output->isAutoWritable()) {
+        const Text_t* outputName = output->GetName();
         if (container->hasChanged()) {
             containerVersion = container->write(output);
             if (containerVersion == -1) {
