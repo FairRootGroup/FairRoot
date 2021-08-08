@@ -12,15 +12,12 @@ if ( "$same_system" == "1" ) then
 		setenv Geant4VMC_INCLUDE_DIRS "@Geant4VMC_INCLUDE_DIRS@"
 		setenv Geant4VMC_LIBRARY_DIR "@Geant4VMC_LIBRARY_DIR@"
 		setenv Geant4VMC_MACRO_DIR "@Geant4VMC_MACRO_DIR@"
-		setenv PLUTO_LIBRARY_DIR "@PLUTO_LIBRARY_DIR@"
-		setenv PLUTO_INCLUDE_DIR "@PLUTO_INCLUDE_DIR@"
 		setenv PYTHIA6_LIBRARY_DIR "@PYTHIA6_LIBRARY_DIR@"
 		setenv Geant3_INCLUDE_DIRS "@Geant3_INCLUDE_DIRS@"
 		setenv G3SYS "@G3SYS@"
 		setenv Geant3_LIBRARY_DIR "@Geant3_LIBRARY_DIR@"
 		setenv USE_VGM "1"
 		setenv PYTHIA8DATA "@PYTHIA8DATA@"
-		setenv CLASSPATH "@MY_CLASSPATH@"
 
 		@Geant4Data_Variables_csh@
 
