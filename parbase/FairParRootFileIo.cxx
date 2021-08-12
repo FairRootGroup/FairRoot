@@ -37,6 +37,10 @@
 #include <TString.h>       // for TString, Form
 #include <iostream>        // for operator<<, basic_ostream, etc
 
+#include <stdlib.h> // free, mkstemps
+#include <unistd.h> // close
+#include <string.h> // strncpy
+
 using std::cerr;
 using std::cout;
 using std::endl;
@@ -147,31 +151,29 @@ Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option, const Text
 
 Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option, const Text_t* ftitle, Int_t compress)
 {
-    TDatime currentDate;
-    TString newParFileName = "";
-    TFile* newParFile = 0;
-
+    char fname[100];
+    strncpy(fname, "/tmp/allParams_XXXXXX.root", 100);
+    int fd=mkstemps(fname, 5);
+    if (fd==-1)
+      throw std::runtime_error("mkstemps failed!");
+    ::close(fd);
+    TFile* newParFile = TFile::Open(fname, "RECREATE");
+    // if the above call is subject to race conditions, there is little we can do about it.
+    if (!newParFile)
+      throw std::runtime_error(std::string("TFile::Open(\"")
+                               +fname
+                               +"\", \"RECREATE\") failed.");
     TObjString* string;
+    // string is a horrible name for a variable :-/
     TListIter myIter(fnamelist);
-
     TKey* inpKey;
-
     TFile* inFile;
 
-    Int_t nofFiles = 0;
     while ((string = static_cast<TObjString*>(myIter.Next()))) {
         inFile = TFile::Open(string->GetString().Data());
         if (!inFile) {
             cout << "-W- File \"" << string->GetString().Data() << "\" does not exist" << endl;
             continue;
-        }
-
-        if (nofFiles == 0) {
-            newParFileName = string->GetString();
-            newParFileName.Replace(newParFileName.Last('/') + 1, newParFileName.Length(), "");
-            newParFileName =
-                Form("%sallParams_%d_%06d.root", newParFileName.Data(), currentDate.GetDate(), currentDate.GetTime());
-            newParFile = TFile::Open(newParFileName.Data(), "RECREATE");
         }
 
         TList* inputKeys = static_cast<TList*>(inFile->GetListOfKeys());
@@ -184,17 +186,9 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option, const T
             tempObj->Write();
         }
         inFile->Close();
-
-        nofFiles++;
     }
-    if (newParFile != 0) {
-        newParFile->Close();
-    } else {
-        std::cout << "****NO file to close file = \"" << std::endl;
-    }
-    std::cout << "**** merged file = \"" << newParFileName.Data() << "\"" << std::endl;
-
-    return this->open(newParFileName, option, ftitle, compress);
+    std::cout << "**** merged file = \"" << fname << "\"" << std::endl;    
+    return this->open(fname, option, ftitle, compress);
 }
 
 Bool_t FairParRootFileIo::open(TFile* f)
