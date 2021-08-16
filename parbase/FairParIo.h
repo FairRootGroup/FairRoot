@@ -61,7 +61,7 @@ class FairParIo : public TObject
     FairParIo(const FairParIo&);
     FairParIo& operator=(const FairParIo&);
 
-    ClassDef(FairParIo, 0);   // Base class for all parameter I/Os
+    ClassDefOverride(FairParIo, 0);   // Base class for all parameter I/Os
 };
 
 #endif /* !FAIRPARIO_H */

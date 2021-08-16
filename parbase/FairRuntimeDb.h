@@ -112,7 +112,7 @@ class FairRuntimeDb : public TObject
     FairRuntimeDb& operator=(const FairRuntimeDb&) { return *this; }
     Bool_t initContainers(void);
 
-    ClassDef(FairRuntimeDb, 0);   // Class for runtime database
+    ClassDefOverride(FairRuntimeDb, 0);   // Class for runtime database
 };
 
 #endif /* !FAIRRUNTIMEDB_H */

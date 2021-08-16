@@ -34,7 +34,7 @@ class FairDetParIo : public TNamed
     // writes parameter container to output
     virtual Int_t write(FairParSet*) { return kFALSE; }
 
-    ClassDef(FairDetParIo, 0);   // Base class for detector parameter IO
+    ClassDefOverride(FairDetParIo, 0);   // Base class for detector parameter IO
 };
 
 #endif /* !HDETPARIO_H */

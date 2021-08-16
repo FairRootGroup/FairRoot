@@ -22,7 +22,6 @@ class FairDetParAsciiFileIo : public FairDetParIo
     TString fHeader;       //! header of container output in file
     TString sepLine;       //! comment line
     std::fstream* pFile;   //! pointer to ascii file
-    // virtual Bool_t write(HDetector*) {return kTRUE;}
     Bool_t findContainer(const Text_t* name);
     Bool_t checkAllFound(Int_t*, Int_t);
     void writeHeader(const Text_t*,
@@ -31,24 +30,16 @@ class FairDetParAsciiFileIo : public FairDetParIo
                      const Text_t* description = "");
     void writeComment(FairParSet*);
     void readComment(const Char_t*, FairParSet*);
-    // Bool_t readLabPositions(const Text_t*,HDetGeomPar*,Int_t*,Int_t,Int_t);
-    // Bool_t readVolumes(const Text_t*,HDetGeomPar*);
-    // void readTransform(HGeomTransform&);
-    // Bool_t readVolume(HGeomVolume*,HGeomShapes*,Text_t*);
-    // void writeTransform(const HGeomTransform&);
-    // void writeVolume(HGeomVolume*,HGeomShapes*);
 
   public:
     FairDetParAsciiFileIo(std::fstream* f);
     virtual ~FairDetParAsciiFileIo() {}
-    // Bool_t read(HDetGeomPar*,Int_t*);
-    // Int_t writeFile(HDetGeomPar*);
 
   private:
     FairDetParAsciiFileIo& operator=(const FairDetParAsciiFileIo&);
     FairDetParAsciiFileIo(const FairDetParAsciiFileIo&);
 
-    ClassDef(FairDetParAsciiFileIo, 0);   // Class for detector parameter I/O from ascii file
+    ClassDefOverride(FairDetParAsciiFileIo, 0);   // Class for detector parameter I/O from ascii file
 };
 
 #endif /* !FAIRDETPARASCIIFILEIO_H */
