@@ -1,15 +1,22 @@
 #! /bin/bash
 
+if [ $# != 2 ]
+then
+	echo "*** Please call like: $0 LABEL JOBSH"
+	exit 1
+fi
+
 label="$1"
 jobsh="$2"
 
 if [ -z "$ALFACI_SLURM_CPUS" ]
 then
-	ALFACI_SLURM_CPUS=32
+	# ALFACI_SLURM_CPUS=20
+	:
 fi
 if [ -z "$ALFACI_SLURM_EXTRA_OPTS" ]
 then
-	ALFACI_SLURM_EXTRA_OPTS="--hint=compute_bound"
+	ALFACI_SLURM_EXTRA_OPTS="--exclusive --cpu-bind=no"
 fi
 if [ -z "$ALFACI_SLURM_TIMEOUT" ]
 then
@@ -23,15 +30,24 @@ fi
 echo "*** Slurm request options :"
 echo "***   Working directory ..: $PWD"
 echo "***   Queue ..............: $ALFACI_SLURM_QUEUE"
-echo "***   CPUs ...............: $ALFACI_SLURM_CPUS"
+if [ -n "$ALFACI_SLURM_CPUS" ]
+then
+	echo "***   CPUs ...............: $ALFACI_SLURM_CPUS"
+fi
 echo "***   Wall Time ..........: $ALFACI_SLURM_TIMEOUT min"
 echo "***   Job Name ...........: ${label}"
 echo "***   Extra Options ......: ${ALFACI_SLURM_EXTRA_OPTS}"
+
+srun_cmdline_opts="-p $ALFACI_SLURM_QUEUE -n 1 -N 1 -t $ALFACI_SLURM_TIMEOUT"
+if [ -n "$ALFACI_SLURM_CPUS" ]
+then
+	srun_cmdline_opts="$srun_cmdline_opts -c $ALFACI_SLURM_CPUS"
+fi
+
 echo "*** Submitting job at ....: $(date -R)"
 (
 	set -x
-	srun -p $ALFACI_SLURM_QUEUE -c $ALFACI_SLURM_CPUS -n 1 \
-		-t $ALFACI_SLURM_TIMEOUT \
+	srun $srun_cmdline_opts \
 		--job-name="${label}" \
 		${ALFACI_SLURM_EXTRA_OPTS} \
 		bash "${jobsh}"
