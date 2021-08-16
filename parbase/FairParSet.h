@@ -35,8 +35,8 @@ class FairParSet : public TObject
     FairParSet(const char* name = "", const char* title = "", const char* context = "", Bool_t owner = kFALSE);
     virtual ~FairParSet() {}
 
-    virtual const char* GetName() const { return static_cast<const char*>(fName.Data()); }
-    virtual const char* GetTitle() const { return static_cast<const char*>(fTitle.Data()); }
+    const char* GetName() const override { return static_cast<const char*>(fName.Data()); }
+    const char* GetTitle() const override { return static_cast<const char*>(fTitle.Data()); }
 
     virtual Bool_t init();
     virtual Bool_t init(FairParIo*) { return kFALSE; }
@@ -86,13 +86,16 @@ class FairParSet : public TObject
         description = r.getDescription();
     }
 
+    // TODO These two methods are not used in FairRoot at all.
+    // They probably should be marked deprecated (or final, or = delete)
+    // and later removed.
     virtual void fill(UInt_t){};
     virtual void store(UInt_t){};
 
     FairParSet& operator=(const FairParSet&);
     FairParSet(const FairParSet&);
 
-    ClassDef(FairParSet, 2);   // Base class for all parameter containers
+    ClassDefOverride(FairParSet, 2);   // Base class for all parameter containers
 };
 
 #endif /* !FAIRPARSET_H */

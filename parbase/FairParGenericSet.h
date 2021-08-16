@@ -26,18 +26,14 @@ class FairParGenericSet : public FairParSet
     virtual Bool_t getParams(FairParamList*) = 0;
     virtual void printParams();
 
-    Bool_t init(FairParIo* inp);
-    Int_t write(FairParIo* output);
-
-    // DB add on
-    void fill(UInt_t){};
-    void store(UInt_t){};
+    Bool_t init(FairParIo* inp) override;
+    Int_t write(FairParIo* output) override;
 
   protected:
     FairParGenericSet()
         : FairParSet()
     {}
-    ClassDef(FairParGenericSet, 1);   // Base class for generic-style parameter containers
+    ClassDefOverride(FairParGenericSet, 1);   // Base class for generic-style parameter containers
 };
 
 #endif /* !FAIRPARGENERICSET_H */

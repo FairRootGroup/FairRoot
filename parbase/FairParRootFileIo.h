@@ -45,7 +45,7 @@ class FairParRootFile : public TNamed
     FairParRootFile(const FairParRootFile&);
     FairParRootFile& operator=(const FairParRootFile&);
 
-    ClassDef(FairParRootFile, 0);   // ROOT file for Parameter I/O
+    ClassDefOverride(FairParRootFile, 0);   // ROOT file for Parameter I/O
 };
 
 class FairParRootFileIo : public FairParIo
@@ -60,12 +60,12 @@ class FairParRootFileIo : public FairParIo
     ~FairParRootFileIo();
     Bool_t open(const Text_t* fname, Option_t* option = "READ", const Text_t* ftitle = "", Int_t compress = 1);
     Bool_t open(const TList* fnamelist, Option_t* option = "READ", const Text_t* ftitle = "", Int_t compress = 1);
-    void close();
-    void print();
+    void close() override;
+    void print() override;
     FairParRootFile* getParRootFile();
-    void readVersions(FairRtdbRun*);
+    void readVersions(FairRtdbRun*) override;
     TList* getKeys();
-    Bool_t check()
+    Bool_t check() override
     {
         // returns kTRUE if file is open
         if (file) {
@@ -74,7 +74,7 @@ class FairParRootFileIo : public FairParIo
             return kFALSE;
         }
     }
-    void cd()
+    void cd() override
     {
         // sets the global ROOT file pointer gFile
         if (file) {
@@ -91,7 +91,7 @@ class FairParRootFileIo : public FairParIo
     FairParRootFileIo(const FairParRootFileIo&);
     FairParRootFileIo& operator=(const FairParRootFileIo&);
 
-    ClassDef(FairParRootFileIo, 0);   // Parameter I/O from ROOT files
+    ClassDefOverride(FairParRootFileIo, 0);   // Parameter I/O from ROOT files
 };
 
 #endif /* !FAIRPARROOTFILEIO_H */
