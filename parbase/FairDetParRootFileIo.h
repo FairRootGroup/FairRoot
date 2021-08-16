@@ -25,8 +25,7 @@ class FairDetParRootFileIo : public FairDetParIo
     FairDetParRootFileIo(FairParRootFile* f);
     virtual ~FairDetParRootFileIo() {}
     virtual Bool_t read(FairParSet*);
-    Int_t write(FairParSet*);
-    // Bool_t read(HDetGeomPar*,Int_t*);
+    Int_t write(FairParSet*) override;
 
   protected:
     Int_t findInputVersion(Text_t* contName);
@@ -37,7 +36,7 @@ class FairDetParRootFileIo : public FairDetParIo
     FairDetParRootFileIo(const FairDetParRootFileIo&);
     FairDetParRootFileIo& operator=(const FairDetParRootFileIo&);
 
-    ClassDef(FairDetParRootFileIo, 0);   // detector base class for parameter I/O from ROOT file
+    ClassDefOverride(FairDetParRootFileIo, 0);   // detector base class for parameter I/O from ROOT file
 };
 
 #endif /* !FAIRDETPARROOTFILEIO_H */

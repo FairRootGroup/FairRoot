@@ -42,7 +42,7 @@ class FairContainer : public TNamed
     void print();
     TString getConcatName();
     const char* getContext();
-    ClassDef(FairContainer, 0);   // class for list elements in class FairContFact
+    ClassDefOverride(FairContainer, 0);   // class for list elements in class FairContFact
 };
 
 class FairContFact : public TNamed
@@ -66,7 +66,7 @@ class FairContFact : public TNamed
     }
     /** Fair Logger */
     FairLogger* fLogger;         //!
-    ClassDef(FairContFact, 0);   // base class of all factories for parameter containers
+    ClassDefOverride(FairContFact, 0);   // base class of all factories for parameter containers
 
   private:
     FairContFact(const FairContFact&);

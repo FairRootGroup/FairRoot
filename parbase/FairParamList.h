@@ -75,7 +75,7 @@ class FairParamObj : public TNamed
     FairParamObj& operator=(const FairParamObj&);
 
     // Class for binary parameter object (name + binary array)
-    ClassDef(FairParamObj, 0);
+    ClassDefOverride(FairParamObj, 0);
 };
 
 class FairParamList : public TObject
@@ -141,7 +141,7 @@ class FairParamList : public TObject
     FairParamList& operator=(const FairParamList&);
 
     // Class for lists of parameters (of type FairParamObj)
-    ClassDef(FairParamList, 4);
+    ClassDefOverride(FairParamList, 4);
 };
 
 #endif /* !FAIRPARAMLIST_H */

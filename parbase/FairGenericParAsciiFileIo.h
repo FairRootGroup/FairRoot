@@ -22,12 +22,12 @@ class FairGenericParAsciiFileIo : public FairDetParAsciiFileIo
   public:
     FairGenericParAsciiFileIo(std::fstream* f = 0);
     ~FairGenericParAsciiFileIo() {}
-    Bool_t init(FairParSet*);
-    Int_t write(FairParSet*);
+    Bool_t init(FairParSet*) override;
+    Int_t write(FairParSet*) override;
 
   private:
-    ClassDef(FairGenericParAsciiFileIo,
-             0)   // I/O from Ascii file for parameter containers derived from FairParGenericSet
+    ClassDefOverride(FairGenericParAsciiFileIo,
+                     0)   // I/O from Ascii file for parameter containers derived from FairParGenericSet
         Bool_t readGenericSet(FairParGenericSet* pPar);
     Int_t writeGenericSet(FairParGenericSet* pPar);
 

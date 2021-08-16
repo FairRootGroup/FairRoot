@@ -365,7 +365,6 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
     const Text_t* c = cont->GetName();
     LOG(debug) << "RuntimeDb: write container: " << cont->GetName();
     FairParVersion* vers = run->getParVersion(c);
-    Bool_t rc = kTRUE;
     Int_t cv = 0;
     if (getOutput() && output->check() && output->isAutoWritable()) {
         switch (ioType) {
@@ -433,7 +432,7 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
             refVers->setRootVersion(cv);
         }
     }
-    return rc;
+    return kTRUE;
 }
 
 Bool_t FairRuntimeDb::initContainers(Int_t runId, Int_t refId, const Text_t* fileName)
