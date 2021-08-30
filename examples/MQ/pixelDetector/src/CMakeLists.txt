@@ -57,6 +57,7 @@ list(APPEND headers
 add_library(${target} SHARED ${sources} ${no_dict_sources} ${headers} ${no_dict_headers})
 add_library(FairRoot::${target} ALIAS ${target})
 set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+set_property(TARGET ${target} PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -71,6 +72,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Gen # FairBoxGenerator
   FairRoot::GeoBase
   FairRoot::ParBase # FairParGenericSet
+  FairRoot::ExGConfig
   FairRoot::ExMCStack
   FairRoot::ExPassive # FairCave
   FairRoot::FairMQ
@@ -84,6 +86,7 @@ target_link_libraries(${target} PUBLIC
   ROOT::Physics
   ROOT::Geom
   ROOT::Hist
+
   ${VMCLIB}
 )
 

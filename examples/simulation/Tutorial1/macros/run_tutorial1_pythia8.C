@@ -68,6 +68,7 @@ void run_tutorial1_pythia8(Int_t nEvents = 10, TString mcEngine = "TGeant3")
     // -----   Create simulation run   ----------------------------------------
     FairRunSim* run = new FairRunSim();
     run->SetName(mcEngine);                        // Transport engine
+    run->SetSimulationConfig(new FairVMCConfig());
     run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     run->SetPythiaDecayer(pythia8Config);          // Define Pythia8 as decayer
 

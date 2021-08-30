@@ -65,6 +65,7 @@ void run_tutorial1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
     // -----   Create simulation run   ----------------------------------------
     FairRunSim* run = new FairRunSim();
     run->SetName(mcEngine);                        // Transport engine
+    run->SetSimulationConfig(new FairVMCConfig());
     run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------

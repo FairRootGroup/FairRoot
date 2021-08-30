@@ -43,7 +43,7 @@ int runMM(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = fals
     // -----   Create simulation run   ----------------------------------------
     FairRunSim* run = new FairRunSim();
     run->SetName(mcEngine);   // Transport engine
-    //  run->SetSimulationConfig(new FairVMCConfig());
+    run->SetSimulationConfig(new FairVMCConfig());
     run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
     run->SetSink(new FairRootFileSink(outFile));   // Output file
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
