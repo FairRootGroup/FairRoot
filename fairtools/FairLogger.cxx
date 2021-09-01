@@ -14,6 +14,7 @@
 
 #include "FairLogger.h"
 
+#include <TEnv.h>      // for gEnv
 #include <TString.h>   // for TString, operator==, etc
 #include <TSystem.h>   // for gSystem, TSystem
 #include <iostream>    // for cout, cerr
@@ -184,12 +185,12 @@ void FairLogger::LogFatalMessage()
     // Fatal also indicates a problem which is so severe that the process should
     // not go on, so the process is aborted.
 
-    if (gSystem) {
+    if (gSystem && gEnv && gEnv->GetValue("Root.Stacktrace", 1)) {
         TString corefile = "core_dump_";
         int pid = gSystem->GetPid();
         corefile += pid;
 
-        std::cerr << "For later analysis we write a core dump to " << corefile << std::endl;
+        std::cerr << "For later analysis we write a stack trace to " << corefile << std::endl;
 
         if (freopen(corefile, "w", stderr)) {
             gSystem->StackTrace();
