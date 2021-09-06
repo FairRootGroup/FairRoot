@@ -520,7 +520,6 @@ Bool_t FairRootManager::ReadNextEvent(Double_t)
 
 TObject* FairRootManager::GetObject(const char* BrName)
 {
-    fReqBrNames.emplace_back(BrName);
     /**Get Data object by name*/
     TObject* Obj = nullptr;
     LOG(debug2) << " Try to find if the object " << BrName << " is already activated by another task or call";
