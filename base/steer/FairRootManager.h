@@ -90,8 +90,6 @@ class FairRootManager : public TObject
 
     /**Return a TList of TObjString of branch names available in this session*/
     TList* GetBranchNameList() { return fBranchNameList; }
-    /**Return the vector of branch names that were requested by tasks as input*/
-    const std::vector<std::string>& GetReqBranchNames() const { return fReqBrNames; }
 
     /**  Get the Object (container) for the given branch name,
          this method can be used to access the data of
@@ -363,8 +361,6 @@ class FairRootManager : public TObject
     Int_t fBranchSeqId;
     /**List of branch names as TObjString*/
     TList* fBranchNameList;   //!
-    /**Vector of (not necessarily unique) branch names requested per GetObject / InitObjectAs */
-    std::vector<std::string> fReqBrNames;   //!
 
     /**The branch ID for the special (required) MCTrack branch**/
     Int_t fMCTrackBranchId;   //!
@@ -421,7 +417,7 @@ class FairRootManager : public TObject
     // data members
     Int_t fId;   // This manager ID
 
-    ClassDef(FairRootManager, 12);
+    ClassDef(FairRootManager, 13);
 };
 
 // FIXME: move to source since we can make it non-template dependent
@@ -506,9 +502,6 @@ TPtr FairRootManager::InitObjectAs(const char* brname)
     }
     // add into branch list
     AddMemoryBranchAny<T>(brname, addr);
-    // register as a **requested** branch
-    // (duplications are explicitely allowed)
-    fReqBrNames.emplace_back(brname);
 
     // NOTE: ideally we would do proper resource management for addr and *addr
     // since the FairRootManager becomes owner of these pointers/instances; Unfortunately this
