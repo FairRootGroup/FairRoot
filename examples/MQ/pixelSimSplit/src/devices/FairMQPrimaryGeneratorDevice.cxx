@@ -105,11 +105,11 @@ bool FairMQPrimaryGeneratorDevice::GenerateAndSendData()
     }
 
     FairMQMessagePtr messEH(NewMessage());
-    Serialize<RootSerializer>(*messEH, meh);
+    RootSerializer().Serialize(*messEH, meh);
     parts.AddPart(std::move(messEH));
 
     FairMQMessagePtr mess(NewMessage());
-    Serialize<RootSerializer>(*mess, prims);
+    RootSerializer().Serialize(*mess, prims);
     parts.AddPart(std::move(mess));
 
     //    LOG(INFO) << "sending event " << fEventCounter << ", chunk starts at " << fChunkPointer;

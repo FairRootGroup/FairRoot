@@ -105,7 +105,7 @@ bool FairMQPixelSampler::ConditionalRun()
 
     for (int iobj = 0; iobj < fNObjects; iobj++) {
         FairMQMessagePtr mess(NewMessage());
-        Serialize<RootSerializer>(*mess, fInputObjects[iobj]);
+        RootSerializer().Serialize(*mess, fInputObjects[iobj]);
         parts.AddPart(std::move(mess));
     }
 

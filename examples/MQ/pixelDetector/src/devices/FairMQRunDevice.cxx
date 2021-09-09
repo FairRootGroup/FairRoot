@@ -33,7 +33,7 @@ std::mutex mtx;    // mutex for critical section
 void FairMQRunDevice::SendObject(TObject* obj, const std::string& chan)
 {
     FairMQMessagePtr mess(NewMessage());
-    Serialize<RootSerializer>(*mess, obj);
+    RootSerializer().Serialize(*mess, obj);
 
     FairMQMessagePtr rep(NewMessage());
 
@@ -80,7 +80,7 @@ void FairMQRunDevice::SendBranches()
                             LOG(debug) << "FairMQRunDevice::SendBranches() the track array has "
                                        << ((TClonesArray*)(objClone))->GetEntries() << " entries.";
                             FairMQMessagePtr mess(NewMessage());
-                            Serialize<RootSerializer>(*mess, objClone);
+                            RootSerializer().Serialize(*mess, objClone);
                             parts.AddPart(std::move(mess));
                             LOG(debug) << "channel >" << mi.first.data() << "< --> >" << ObjStr->GetString().Data()
                                        << "<";
@@ -95,7 +95,7 @@ void FairMQRunDevice::SendBranches()
                     if (object) {
                         TObject* objClone = object->Clone();
                         FairMQMessagePtr mess(NewMessage());
-                        Serialize<RootSerializer>(*mess, objClone);
+                        RootSerializer().Serialize(*mess, objClone);
                         parts.AddPart(std::move(mess));
                         LOG(debug) << "channel >" << mi.first.data() << "< --> >" << ObjStr->GetString().Data() << "<";
                     } else {

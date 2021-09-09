@@ -52,7 +52,7 @@ bool FairMQExHistoDevice::ConditionalRun()
     fh_histo4.Fill(x, y);
 
     FairMQMessagePtr message(NewMessage());
-    Serialize<RootSerializer>(*message, &fArrayHisto);
+    RootSerializer().Serialize(*message, &fArrayHisto);
 
     for (auto& channel : fChannels) {
         Send(message, channel.first.data());
