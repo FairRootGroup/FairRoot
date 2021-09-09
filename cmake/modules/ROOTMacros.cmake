@@ -217,47 +217,6 @@ MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
 ENDMACRO (GENERATE_ROOT_TEST_SCRIPT)
 
 
-Macro(ROOT_GENERATE_ROOTMAP)
-
-  # All Arguments needed for this new version of the macro are defined
-  # in the parent scope, namely in the CMakeLists.txt of the submodule
-  if (DEFINED LINKDEF)
-    foreach(l ${LINKDEF})
-      If( IS_ABSOLUTE ${l})
-        Set(Int_LINKDEF ${Int_LINKDEF} ${l})
-      Else( IS_ABSOLUTE ${l})
-        Set(Int_LINKDEF ${Int_LINKDEF} ${CMAKE_CURRENT_SOURCE_DIR}/${l})
-      EndIf( IS_ABSOLUTE ${l})
-    endforeach()
-
-    foreach(d ${DEPENDENCIES})
-      get_filename_component(_ext ${d} EXT)
-      If(NOT _ext MATCHES a$)
-        if(_ext)
-          set(Int_DEPENDENCIES ${Int_DEPENDENCIES} ${d})
-        else()
-          set(Int_DEPENDENCIES ${Int_DEPENDENCIES} lib${d}.so)
-        endif()
-      Else()
-        Message("Found Static library with extension ${_ext}")
-      EndIf()
-    endforeach()
-
-    set(Int_LIB ${LIBRARY_NAME})
-    set(Int_OUTFILE ${LIBRARY_OUTPUT_PATH}/lib${Int_LIB}.rootmap)
-
-    add_custom_command(OUTPUT ${Int_OUTFILE}
-                       COMMAND ${RLIBMAP_EXECUTABLE} -o ${Int_OUTFILE} -l ${Int_LIB}
-                               -d ${Int_DEPENDENCIES} -c ${Int_LINKDEF}
-                       DEPENDS ${Int_LINKDEF} ${RLIBMAP_EXECUTABLE} )
-    add_custom_target( lib${Int_LIB}.rootmap ALL DEPENDS  ${Int_OUTFILE})
-    set_target_properties(lib${Int_LIB}.rootmap PROPERTIES FOLDER RootMaps )
-    #---Install the rootmap file------------------------------------
-    #install(FILES ${Int_OUTFILE} DESTINATION lib COMPONENT libraries)
-    install(FILES ${Int_OUTFILE} DESTINATION lib)
-  endif(DEFINED LINKDEF)
-EndMacro(ROOT_GENERATE_ROOTMAP)
-
 Macro(GENERATE_LIBRARY)
 
   # TODO: remove this backwards-compatibility check when no longer needed
@@ -307,11 +266,6 @@ Macro(GENERATE_LIBRARY)
        PROPERTIES COMPILE_FLAGS "-Wno-old-style-cast"
     )
   EndIf(LINKDEF)
-
-
-  If (ROOT_FOUND_VERSION LESS 59999)
-    ROOT_GENERATE_ROOTMAP()
-  EndIf()
 
   set(Int_DEPENDENCIES)
   foreach(d ${DEPENDENCIES})
