@@ -6,5 +6,12 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-add_subdirectory(testlib)
-add_Subdirectory(fairtools)
+set(dependencies
+  FairRoot::FairTools
+  GTest::GTest
+  GTest::Main
+)
+
+add_executable(FairLoggerFatal FairLoggerFatal.cxx)
+target_link_libraries(FairLoggerFatal ${dependencies})
+add_test(NAME FairLoggerFatal COMMAND ${CMAKE_CURRENT_BINARY_DIR}/FairLoggerFatal)
