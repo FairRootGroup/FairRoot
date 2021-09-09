@@ -75,7 +75,7 @@ bool FairMQPixelFileSink::StoreData(FairMQParts& parts, int /*index*/)
 
     for (int ipart = 0; ipart < parts.Size(); ipart++) {
         fOutputObjects[ipart] = nullptr;
-        Deserialize<RootSerializer>(*parts.At(ipart), fOutputObjects[ipart]);
+        RootSerializer().Deserialize(*parts.At(ipart), fOutputObjects[ipart]);
         tempObjects.push_back(fOutputObjects[ipart]);
         if (creatingTree)
             fTree->Branch(tempObjects.back()->GetName(), tempObjects.back()->ClassName(), &fOutputObjects[ipart]);

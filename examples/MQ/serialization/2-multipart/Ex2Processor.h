@@ -42,8 +42,8 @@ class Ex2Processor : public FairMQDevice
 
             if (Receive(partsIn, "data1") > 0) {
                 Ex2Header* header = nullptr;
-                Deserialize<SerializerEx2>(*(partsIn.At(0)), header);
-                Deserialize<RootSerializer>(*(partsIn.At(1)), fInput);
+                SerializerEx2().Deserialize(*(partsIn.At(0)), header);
+                RootSerializer().Deserialize(*(partsIn.At(1)), fInput);
 
                 receivedMsgs++;
 
@@ -53,8 +53,8 @@ class Ex2Processor : public FairMQDevice
                 partsOut.AddPart(std::move(partsIn.At(0)));
                 partsOut.AddPart(NewMessage());
 
-                Serialize<BoostSerializer<Ex2Header>>(*(partsOut.At(0)), *header);
-                Serialize<BoostSerializer<MyHit>>(*(partsOut.At(1)), fOutput);
+                BoostSerializer<Ex2Header>().Serialize(*(partsOut.At(0)), *header);
+                BoostSerializer<MyHit>().Serialize(*(partsOut.At(1)), fOutput);
                 Send(partsOut, "data2");
                 sentMsgs++;
 

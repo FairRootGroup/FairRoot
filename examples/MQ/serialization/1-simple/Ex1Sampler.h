@@ -57,7 +57,7 @@ class Ex1Sampler : public FairMQDevice
         for (uint64_t i = 0; i < numEvents; i++) {
             FairMQMessagePtr msg(NewMessage());
             fTree->GetEntry(i);
-            Serialize<RootSerializer>(*msg, fInput);
+            RootSerializer().Serialize(*msg, fInput);
             Send(msg, "data1");
             sentMsgs++;
             if (NewStatePending()) {

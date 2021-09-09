@@ -214,7 +214,7 @@ bool FairMQTransportDevice::ConditionalRun()
 // bool FairMQTransportDevice::TransportData(FairMQMessagePtr& mPtr, int /*index*/)
 // {
 //     TClonesArray* chunk = nullptr;
-//     Deserialize<RootSerializer>(*mPtr, chunk);
+//     RootSerializer().Deserialize(*mPtr, chunk);
 //     fStack->SetParticleArray(chunk);
 //     fVMC->ProcessRun(1);
 
@@ -227,7 +227,7 @@ bool FairMQTransportDevice::TransportData(FairMQParts& mParts, int /*index*/)
     FairMCSplitEventHeader* meh = nullptr;
     for (int ipart = 0; ipart < mParts.Size(); ipart++) {
         TObject* obj = nullptr;
-        Deserialize<RootSerializer>(*mParts.At(ipart), obj);
+        RootSerializer().Deserialize(*mParts.At(ipart), obj);
         if (strcmp(obj->GetName(), "MCEvent") == 0)
             meh = dynamic_cast<FairMCSplitEventHeader*>(obj);
         else if (strcmp(obj->GetName(), "TParticles") == 0)
