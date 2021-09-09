@@ -42,6 +42,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * Dropped `CHECK_EXTERNAL_PACKAGE_INSTALL_DIR`
   * Just remove it from your `CMakeLists.txt`.
 * Dropped `USE_PATH_INFO` CMake option. It was an anti-pattern. Don't use it!
+* Dropped `ROOT_GENERATE_ROOTMAP`. It was used on ROOT 5.x.
+  * Rewrite your build system, if you still use it.
 
 ### Deprecated
 * Deprecating MbsAPI
