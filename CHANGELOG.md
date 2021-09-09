@@ -8,20 +8,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Breaking Changes
 * We have moved away from our custom ROOT find module, and now use the native cmake package of ROOT.
-  * This means, that all library depedencies of the type `Core` are either not working at all, or might not work as expected. Please upgrade all of them to be like `ROOT::Core` .
-  * This also means, that you need to add an `include(ROOTMacros)` after your `find_package2(? ROOT ?)`.
-  * `ROOT_VERSION_NUMBER` is gone. Use `ROOT_VERSION` (which is the dotted version number) and VERSION_GREATER/etc now.
-* `find_package2` has been externalized into [FairCMakeModules](https://github.com/FairRootGroup/FairCMakeModules) and is not any more installed together with FairRoot
-  * Please highly consider installing FairCMakeModules as a dependency of FairRoot and for your own usage. FairSoft will ship it soon.
-  * After installation, it should be as easy as this in your own code:
+  * This means, that all library dependencies of the type `Core` are either not working at all, or might not work as expected. Please upgrade all of them to be like `ROOT::Core` .
+  * This also means, that you need to add an `include(ROOTMacros)` after your `find_package2(... ROOT ...)`.
+  * `ROOT_VERSION_NUMBER` is gone. Use `ROOT_VERSION` (which is the dotted version number) and `VERSION_GREATER`/etc now.
+* Many CMake related tools have been externalized into
+  [FairCMakeModules](https://github.com/FairRootGroup/FairCMakeModules)
+  and partly rewritten
+  * You need to install it before installing FairRoot. FairSoft provides it.
+  * `find_package2` has moved to `FairFindPackage2`.
+    To use it in your code, perform something like this:
     ```cmake
-    find_package(FairCMakeModules 0.2 REQUIRED)
+    find_package(FairCMakeModules 1.0 REQUIRED)
     include(FairFindPackage2)
     ```
-* Dropped Color Codes and `pad()`
-  * Use `FairFormattedOutput` from FairCMakeModules
-  * Note that `fair_pad` needs the width argument to be incremented by 1,
-    and the COLOR option takes no argument.
+  * Dropped Color Codes and `pad()`
+    * Use `FairFormattedOutput` from FairCMakeModules
+    * Note that `fair_pad` needs the width argument to be incremented by 1,
+      and the COLOR option takes no argument.
 * Dropped `CheckCXX11Features`
   * FairRoot assumes a recent compiler that fully supports C++11.
   * Remove the following things from your `CMakeLists.txt`:
@@ -29,7 +32,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
       Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")`
       ```
     * ```cmake
-      include(CheckCXX11Features)`
+      include(CheckCXX11Features)
       ```
     * ```cmake
       IF(HAS_CXX11_SHAREDPOINTER)
