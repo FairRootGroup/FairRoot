@@ -74,7 +74,7 @@ class FairMQPixelTaskProcessor : public FairMQDevice
         std::vector<TObject*> tempObjects;
         for (int ipart = 0; ipart < parts.Size(); ipart++) {
             TObject* obj = nullptr;
-            Deserialize<RootSerializer>(*parts.At(ipart), obj);
+            RootSerializer().Deserialize(*parts.At(ipart), obj);
             tempObjects.push_back(obj);
             // LOG(trace) << "got TObject with name \"" << tempObjects[ipart]->GetName() << "\".";
             if (strcmp(tempObjects.back()->GetName(), "EventHeader.") == 0) {
@@ -121,17 +121,17 @@ class FairMQPixelTaskProcessor : public FairMQDevice
 
         if (fEventHeader) {
             FairMQMessagePtr mess(NewMessage());
-            Serialize<RootSerializer>(*mess, fEventHeader);
+            RootSerializer().Serialize(*mess, fEventHeader);
             partsOut.AddPart(std::move(mess));
         } else if (fMCEventHeader) {
             FairMQMessagePtr mess(NewMessage());
-            Serialize<RootSerializer>(*mess, fMCEventHeader);
+            RootSerializer().Serialize(*mess, fMCEventHeader);
             partsOut.AddPart(std::move(mess));
         }
 
         for (int iobj = 0; iobj < fOutput->GetEntries(); iobj++) {
             FairMQMessagePtr mess(NewMessage());
-            Serialize<RootSerializer>(*mess, fOutput->At(iobj));
+            RootSerializer().Serialize(*mess, fOutput->At(iobj));
             partsOut.AddPart(std::move(mess));
         }
 
@@ -210,7 +210,7 @@ class FairMQPixelTaskProcessor : public FairMQDevice
         if (Send(req, fParamChannelName) > 0) {
             if (Receive(rep, fParamChannelName) > 0) {
                 thisPar = nullptr;
-                Deserialize<RootSerializer>(*rep, thisPar);
+                RootSerializer().Deserialize(*rep, thisPar);
                 LOG(info) << "Received parameter" << paramName << " from the server (" << thisPar << ")";
                 return thisPar;
             }

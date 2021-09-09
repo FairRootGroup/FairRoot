@@ -63,7 +63,7 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
     std::vector<TClonesArray*> tcaVector;
     for (int ipart = 0; ipart < parts.Size(); ++ipart) {
         TObject* tempObject = nullptr;
-        Deserialize<RootSerializer>(*parts.At(ipart), tempObject);
+        RootSerializer().Deserialize(*parts.At(ipart), tempObject);
 
         //        LOG(INFO) << "Got object " << tempObject->ClassName() << " named " << tempObject->GetName();
         if (strcmp(tempObject->GetName(), "MCEventHeader.") == 0) {
@@ -175,12 +175,12 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
         fMCSplitEventHeader->SetChunkStart(0);
 
         FairMQMessagePtr messEH(NewMessage());
-        Serialize<RootSerializer>(*messEH, fMCSplitEventHeader);
+        RootSerializer().Serialize(*messEH, fMCSplitEventHeader);
         partsOut.AddPart(std::move(messEH));
 
         for (int iarray = 0; iarray < tcaVector.size(); ++iarray) {
             FairMQMessagePtr mess(NewMessage());
-            Serialize<RootSerializer>(*mess, tcaVector[iarray]);
+            RootSerializer().Serialize(*mess, tcaVector[iarray]);
             partsOut.AddPart(std::move(mess));
         }
         // LOG(info) << "created output message with " << partsOut.Size() << " parts.";

@@ -17,7 +17,7 @@ void FairTestDetectorFileSink<TIn, TPayloadIn>::InitTask()
     OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
 
-        Deserialize<BoostSerializer<TIn>>(*msg, fOutput);
+        BoostSerializer<TIn>().Deserialize(*msg, fOutput);
 
         if (fOutput->IsEmpty()) {
             LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
