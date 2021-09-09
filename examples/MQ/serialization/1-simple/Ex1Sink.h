@@ -34,7 +34,7 @@ class Ex1Sink : public FairMQDevice
         while (!NewStatePending()) {
             FairMQMessagePtr msg(NewMessage());
             if (Receive(msg, "data2") > 0) {
-                Deserialize<RootSerializer>(*msg, fInput);
+                RootSerializer().Deserialize(*msg, fInput);
                 receivedMsgs++;
                 fTree.SetBranchAddress("MyHit", &fInput);
                 fTree.Fill();
