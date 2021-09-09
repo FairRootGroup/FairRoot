@@ -141,7 +141,7 @@ bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
         par->print();
 
         FairMQMessagePtr rep(NewMessage());
-        Serialize<RootSerializer>(*rep, par);
+        RootSerializer().Serialize(*rep, par);
 
         if (Send(rep, fRequestChannelName, 0) < 0) {
             LOG(ERROR) << "failed sending reply";
@@ -182,7 +182,7 @@ bool ParameterMQServer::ProcessUpdate(FairMQMessagePtr& update, int /*index*/)
     } else {
         // get the run id coded in the description of FairParSet
         FairParGenericSet* newPar = nullptr;
-        Deserialize<RootSerializer>(*update, newPar);
+        RootSerializer().Deserialize(*update, newPar);
         std::string parDescr = std::string(newPar->getDescription());
         uint runId = 0;
         if (parDescr.find("RUNID") != std::string::npos) {
