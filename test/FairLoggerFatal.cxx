@@ -1,8 +1,10 @@
-#include "_TestFairLoggerNew.h"
+#include "FairLogger.h"
 
-TEST(FairToolsTestFatal, TestFatalError)
+#include "gtest/gtest.h"
+
+TEST(FairLoggerTest, TestFatalError)
 {
-    gLogger->SetScreenStreamToCerr(true);
+    FairLogger::GetLogger();
     ASSERT_THROW(LOG(fatal) << "This is a fatal problem", fair::FatalException);
     // TODO: check if cored dump is written to file
 }
