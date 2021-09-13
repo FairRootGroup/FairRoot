@@ -1059,7 +1059,7 @@ void FairRootManager::UpdateFileName(TString& fileName)
 
 TFile* FairRootManager::GetOutFile()
 {
-    LOG(WARNING) << "FairRootManager::GetOutFile() deprecated. Use separate file to store additional data.";
+    LOG(warning) << "FairRootManager::GetOutFile() deprecated. Use separate file to store additional data.";
     auto sink = GetSink();
     assert(sink->GetSinkType() == kFILESINK);
     auto rootFileSink = static_cast<FairRootFileSink*>(sink);
@@ -1068,7 +1068,7 @@ TFile* FairRootManager::GetOutFile()
 
 TTree* FairRootManager::GetOutTree()
 {
-    LOG(WARNING) << "FairRootManager::GetOutTree() deprecated. Use separate file to store additional data.";
+    LOG(warning) << "FairRootManager::GetOutTree() deprecated. Use separate file to store additional data.";
     auto sink = GetSink();
     assert(sink->GetSinkType() == kFILESINK);
     auto rootFileSink = static_cast<FairRootFileSink*>(sink);
