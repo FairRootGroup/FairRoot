@@ -334,7 +334,7 @@ void FairStack::Print(Option_t*) const
     LOG(info) << "FairStack: Number of primaries        = " << fNPrimaries;
     LOG(info) << "              Total number of particles  = " << fNParticles;
     LOG(info) << "              Number of tracks in output = " << fNTracks;
-    if (gLogger->IsLogNeeded(fair::Severity::DEBUG1)) {
+    if (gLogger->IsLogNeeded(fair::Severity::debug1)) {
         for (Int_t iTrack = 0; iTrack < fNTracks; iTrack++) {
             (static_cast<FairMCTrack*>(fTracks->At(iTrack))->Print(iTrack));
         }

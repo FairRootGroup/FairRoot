@@ -57,10 +57,10 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
     auto run = std::unique_ptr<FairMQTransportDevice>(new FairMQTransportDevice());
     run->RunInPullMode(true);
     if (config.GetValue<std::string>("running-mode") == "rr") {
-        LOG(INFO) << "Going to request data.";
+        LOG(info) << "Going to request data.";
         run->RunInPullMode(false);
     } else {
-        LOG(INFO) << "Going to pull data.";
+        LOG(info) << "Going to pull data.";
     }
 
     //  TString outputfilename = Form("outputfile_%d.root",(int)(getpid()));

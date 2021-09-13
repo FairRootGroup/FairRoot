@@ -144,15 +144,15 @@ bool ParameterMQServer::ProcessRequest(fair::mq::MessagePtr& req, int /*index*/)
         RootSerializer().Serialize(*rep, par);
 
         if (Send(rep, fRequestChannelName, 0) < 0) {
-            LOG(ERROR) << "failed sending reply";
+            LOG(error) << "failed sending reply";
             return false;
         }
     } else {
-        LOG(ERROR) << "Parameter uninitialized! Sending empty message back";
+        LOG(error) << "Parameter uninitialized! Sending empty message back";
         // Send an empty message back to keep the REQ/REP cycle
         auto rep(NewMessage());
         if (Send(rep, fRequestChannelName, 0) < 0) {
-            LOG(ERROR) << "failed sending reply";
+            LOG(error) << "failed sending reply";
             return false;
         }
     }

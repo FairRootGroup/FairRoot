@@ -296,7 +296,7 @@ void FairMonitor::PrintTask(TTask* tempTask, Int_t taskLevel) const
             printString.Insert(0, "[\033[43m");
         else
             printString.Insert(0, "[\033[41m");
-        LOG(INFO) << printString.Data();
+        LOG(info) << printString.Data();
     }
 
     TList* subTaskList = tempTask->GetListOfTasks();
