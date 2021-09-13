@@ -50,14 +50,14 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     primGen->AddGenerator(boxGen);
 
     FairMQPrimaryGeneratorDevice* mqDevice = new FairMQPrimaryGeneratorDevice();
-    LOG(INFO) << "Going to generate " << config.GetValue<int64_t>("nof-events") << " events.";
+    LOG(info) << "Going to generate " << config.GetValue<int64_t>("nof-events") << " events.";
     mqDevice->SetChunkSize(config.GetValue<int64_t>("chunk-size"));
     mqDevice->RunInPushMode(true);
     if (config.GetValue<std::string>("running-mode") == "rr") {
-        LOG(INFO) << "Going to reply with data.";
+        LOG(info) << "Going to reply with data.";
         mqDevice->RunInPushMode(false);
     } else {
-        LOG(INFO) << "Going to push data.";
+        LOG(info) << "Going to push data.";
     }
 
     mqDevice->SetNofEvents(config.GetValue<int64_t>("nof-events"));

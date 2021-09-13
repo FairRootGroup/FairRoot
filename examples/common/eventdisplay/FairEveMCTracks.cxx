@@ -155,7 +155,7 @@ InitStatus FairEveMCTracks::Init()
     FairRunAna *ana = FairRunAna::Instance();
     FairField *field = ana->GetField();
     if (field == nullptr) {
-        LOG(ERROR) << "Lack of magnetic field map!";
+        LOG(error) << "Lack of magnetic field map!";
     } else {
         fRK = new FairRKPropagator(field);
     }
