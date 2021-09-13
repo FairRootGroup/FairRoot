@@ -197,23 +197,23 @@ InitStatus FairEveRecoTracksExample::Init()
     FairRootManager *mngr = FairRootManager::Instance();
     fContainerReco = (TClonesArray *)mngr->GetObject("FairTutPropTracks");
     if (fContainerReco == nullptr) {
-        LOG(ERROR) << "Reco traks not found";
+        LOG(error) << "Reco traks not found";
         return kFATAL;
     }
     fHits1 = (TClonesArray *)mngr->GetObject("FairTutPropHits");
     fHits2 = (TClonesArray *)mngr->GetObject("FairTutPropHits2");
     if (fHits1 == nullptr || fHits2 == nullptr) {
-        LOG(ERROR) << "Hits not found";
+        LOG(error) << "Hits not found";
         return kFATAL;
     }
     fContainerSim = (TClonesArray *)mngr->GetObject("MCTrack");
     if (fContainerSim == nullptr) {
-        LOG(WARNING) << "No branch with MC tracks";
+        LOG(warning) << "No branch with MC tracks";
     }
     FairRunAna *ana = FairRunAna::Instance();
     FairField *field = ana->GetField();
     if (field == nullptr) {
-        LOG(ERROR) << "Lack of magnetic field map!";
+        LOG(error) << "Lack of magnetic field map!";
         field = new FairField();
     }
     fRK = new FairRKPropagator(field);
