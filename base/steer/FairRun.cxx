@@ -139,7 +139,7 @@ Bool_t FairRun::GetWriteRunInfoFile()
 
 void FairRun::SetOutputFile(const char* fname)
 {
-    LOG(WARNING) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
+    LOG(warning) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
     fSink = new FairRootFileSink(fname);
     if (fRootManager)
         fRootManager->SetSink(fSink);
@@ -148,7 +148,7 @@ void FairRun::SetOutputFile(const char* fname)
 
 void FairRun::SetOutputFile(TFile* f)
 {
-    LOG(WARNING) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
+    LOG(warning) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
     fSink = new FairRootFileSink(f);
     if (fRootManager)
         fRootManager->SetSink(fSink);
@@ -158,7 +158,7 @@ void FairRun::SetOutputFile(TFile* f)
 
 void FairRun::SetOutputFileName(const TString& name)
 {
-    LOG(WARNING) << "FairRun::SetOutputFileName() deprecated. Use FairRootFileSink.";
+    LOG(warning) << "FairRun::SetOutputFileName() deprecated. Use FairRootFileSink.";
     fSink = new FairRootFileSink(name);
     if (fRootManager)
         fRootManager->SetSink(fSink);
@@ -167,7 +167,7 @@ void FairRun::SetOutputFileName(const TString& name)
 
 TFile* FairRun::GetOutputFile()
 {
-    LOG(WARNING) << "FairRun::GetOutputFile() deprecated. Use separate file to store additional data.";
+    LOG(warning) << "FairRun::GetOutputFile() deprecated. Use separate file to store additional data.";
     auto sink = GetSink();
     assert(sink->GetSinkType() == kFILESINK);
     auto rootFileSink = static_cast<FairRootFileSink*>(sink);
