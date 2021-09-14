@@ -34,7 +34,6 @@ class FairYamlVMCConfig : public FairGenericVMCConfig
         fPostInitName = stringC;
     }
 
-
   private:
     string ObtainYamlFileName(const char* mcEngine);
     void StoreYamlInfo();
@@ -49,6 +48,8 @@ class FairYamlVMCConfig : public FairGenericVMCConfig
 
     YAML::Node fYamlConfig;
     YAML::Node fYamlConfigPostInit;
+
+    static constexpr bool fUseFastSimDefault = false;
 };
 
 #endif
