@@ -27,6 +27,7 @@
 #include <TVirtualMC.h>   // for TVirtualMC
 #include <cstdlib>        // for getenv
 #include <cstring>        // for strcmp, strncmp
+#include <memory>         // for unique_ptr
 #include <ostream>        // for operator<<, ostringstream
 #include <string>         // for string, basic_string, cha...
 #include <vector>         // for vector
@@ -165,12 +166,18 @@ void FairYamlVMCConfig::SetupGeant4()
     if (!fYamlConfig["Geant4_UserGeometry"]) {
         LOG(fatal) << "User geometry not provided";
     }
+    auto const g4UserGeometry(fYamlConfig["Geant4_UserGeometry"].as<std::string>());
+
     if (!fYamlConfig["Geant4_PhysicsList"]) {
         LOG(fatal) << "Physics list not provided";
     }
+    auto const g4PhysicsList(fYamlConfig["Geant4_PhysicsList"].as<std::string>());
+
     if (!fYamlConfig["Geant4_SpecialProcess"]) {
         LOG(fatal) << "Special processy not provided";
     }
+    auto const g4SpecialProcess(fYamlConfig["Geant4_SpecialProcess"].as<std::string>());
+
     bool specialStacking = false;
     if (fYamlConfig["Geant4_SpecialStacking"]) {
         //        LOG(info) << "Special stacking used";
@@ -183,14 +190,18 @@ void FairYamlVMCConfig::SetupGeant4()
         //        LOG(info) << "Setting Geant4 multithreaded to " << (mtMode?"true":"false");
     }
 
-    FairFastSimRunConfiguration* runConfiguration =
-        new FairFastSimRunConfiguration(fYamlConfig["Geant4_UserGeometry"].as<std::string>(),
-                                        fYamlConfig["Geant4_PhysicsList"].as<std::string>(),
-                                        fYamlConfig["Geant4_SpecialProcess"].as<std::string>(),
-                                        specialStacking,
-                                        mtMode);
+    auto const useFastSim(fYamlConfig["UseFastSim"] ? fYamlConfig["UseFastSim"].as<bool>() : fUseFastSimDefault);
+    std::unique_ptr<TG4RunConfiguration> runConfiguration;
+    if (useFastSim) {
+        runConfiguration = std::make_unique<FairFastSimRunConfiguration>(
+            g4UserGeometry, g4PhysicsList, g4SpecialProcess, specialStacking, mtMode);
+    } else {
+        runConfiguration = std::make_unique<TG4RunConfiguration>(
+            g4UserGeometry, g4PhysicsList, g4SpecialProcess, specialStacking, mtMode);
+    }
 
-    TGeant4* geant4 = new TGeant4("TGeant4", "The Geant4 Monte Carlo", runConfiguration);
+    // Instantiate a singleton like object, "leaking" it is the current API
+    TGeant4* geant4 = new TGeant4("TGeant4", "The Geant4 Monte Carlo", runConfiguration.release());
 
     if (fYamlConfig["Geant4_MaxNStep"]) {
         LOG(info) << " execute SetMaxNStep (" << fYamlConfig["Geant4_MaxNStep"].as<int>() << ")";
@@ -198,7 +209,7 @@ void FairYamlVMCConfig::SetupGeant4()
     }
     if (fYamlConfig["Geant4_Commands"]) {
         std::vector<std::string> g4commands = fYamlConfig["Geant4_Commands"].as<std::vector<std::string>>();
-        for ( const auto& value: g4commands ) {
+        for (const auto& value : g4commands) {
             LOG(info) << " execute command \"" << value << "\"";
             geant4->ProcessGeantCommand(value.data());
         }

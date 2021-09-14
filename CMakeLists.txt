@@ -1,5 +1,5 @@
  ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ # Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             #
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -20,6 +20,8 @@ cmake_policy(VERSION 3.15...3.20)
 SET(FAIRROOT_MAJOR_VERSION 19)
 SET(FAIRROOT_MINOR_VERSION 0)
 SET(FAIRROOT_PATCH_VERSION 0)
+
+set(PROJECT_MIN_CXX_STANDARD 14)
 
 if(APPLE)
   if(NOT DEFINED CMAKE_C_COMPILER)
