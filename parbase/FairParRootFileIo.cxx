@@ -36,6 +36,7 @@
 #include <TObject.h>       // for TObject
 #include <TString.h>       // for TString, Form
 #include <iostream>        // for operator<<, basic_ostream, etc
+#include <memory>          // for std::unique_ptr
 
 using std::cerr;
 using std::cout;
@@ -149,49 +150,40 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option, const T
 {
     TDatime currentDate;
     TString newParFileName = "";
-    TFile* newParFile = 0;
+    std::unique_ptr<TFile> newParFile;
 
     TObjString* string;
     TListIter myIter(fnamelist);
-
-    TKey* inpKey;
-
-    TFile* inFile;
-
-    Int_t nofFiles = 0;
     while ((string = static_cast<TObjString*>(myIter.Next()))) {
-        inFile = TFile::Open(string->GetString().Data());
+        std::unique_ptr<TFile> inFile(TFile::Open(string->GetString().Data()));
         if (!inFile) {
             cout << "-W- File \"" << string->GetString().Data() << "\" does not exist" << endl;
             continue;
         }
 
-        if (nofFiles == 0) {
+        if (!newParFile) {
             newParFileName = string->GetString();
             newParFileName.Replace(newParFileName.Last('/') + 1, newParFileName.Length(), "");
             newParFileName =
                 Form("%sallParams_%d_%06d.root", newParFileName.Data(), currentDate.GetDate(), currentDate.GetTime());
-            newParFile = TFile::Open(newParFileName.Data(), "RECREATE");
+            newParFile.reset(TFile::Open(newParFileName.Data(), "RECREATE"));
         }
 
         TList* inputKeys = static_cast<TList*>(inFile->GetListOfKeys());
 
         TListIter keyIter(inputKeys);
+        TKey* inpKey;
         while ((inpKey = static_cast<TKey*>(keyIter.Next()))) {
             TObject* tempObj = inFile->Get(inpKey->GetName());
 
             newParFile->cd();
             tempObj->Write();
         }
-        inFile->Close();
+    }
 
-        nofFiles++;
-    }
-    if (newParFile != 0) {
-        newParFile->Close();
-    } else {
-        std::cout << "****NO file to close file = \"" << std::endl;
-    }
+    // Close (and delete object) so that this->open has a clean file
+    newParFile.reset();
+
     std::cout << "**** merged file = \"" << newParFileName.Data() << "\"" << std::endl;
 
     return this->open(newParFileName, option, ftitle, compress);
