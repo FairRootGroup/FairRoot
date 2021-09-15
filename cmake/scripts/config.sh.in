@@ -28,21 +28,7 @@ if [ $same_system -eq 1 ]; then
 	export VMCWORKDIR="@VMCWORKDIR@"
 	export FAIRLIBDIR="@FAIRLIBDIR@"
 	export PYTHONPATH="@MY_PYTHONPATH@"
-	case $1 in
-		-a | --append )
-			export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:"@MY_DYLD_LIBRARY_PATH@"
-			export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"@MY_LD_LIBRARY_PATH@"
-			export PATH=$PATH:"@MY_PATH@"
-			;;
-		-p | --prepend )
-			export DYLD_LIBRARY_PATH="@MY_DYLD_LIBRARY_PATH@":$DYLD_LIBRARY_PATH
-			export LD_LIBRARY_PATH="@MY_LD_LIBRARY_PATH@":$LD_LIBRARY_PATH
-			export PATH="@MY_PATH@":$PATH
-			;;
-		* )
-			export DYLD_LIBRARY_PATH="@MY_DYLD_LIBRARY_PATH@"
-			export LD_LIBRARY_PATH="@MY_LD_LIBRARY_PATH@"
-			export PATH="@MY_PATH@"
-			;;
-	esac
+	export DYLD_LIBRARY_PATH="@MY_DYLD_LIBRARY_PATH@":$DYLD_LIBRARY_PATH
+	export LD_LIBRARY_PATH="@MY_LD_LIBRARY_PATH@":$LD_LIBRARY_PATH
+	export PATH="@MY_PATH@":$PATH
 fi

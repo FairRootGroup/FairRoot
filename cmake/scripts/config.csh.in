@@ -29,22 +29,7 @@ if ( "$same_system" == "1" ) then
 	setenv VMCWORKDIR "@VMCWORKDIR@"
 	setenv FAIRLIBDIR "@FAIRLIBDIR@"
 	setenv PYTHONPATH "@MY_PYTHONPATH@"
-	switch( $1 )
-		case '-a' :
-			setenv DYLD_LIBRARY_PATH $DYLD_LIBRARY_PATH:"@MY_DYLD_LIBRARY_PATH@"
-			setenv LD_LIBRARY_PATH $LD_LIBRARY_PATH:"@MY_LD_LIBRARY_PATH@"
-			setenv PATH $PATH:"@MY_PATH@"
-			breaksw
-		case '-p' :
-			setenv DYLD_LIBRARY_PATH="@MY_DYLD_LIBRARY_PATH@":$DYLD_LIBRARY_PATH
-			setenv LD_LIBRARY_PATH="@MY_LD_LIBRARY_PATH@":$LD_LIBRARY_PATH
-			setenv PATH="@MY_PATH@":$PATH
-			echo "hello"
-			breaksw
-		case * :
-			setenv DYLD_LIBRARY_PATH="@MY_DYLD_LIBRARY_PATH@"
-			setenv LD_LIBRARY_PATH="@MY_LD_LIBRARY_PATH@"
-			setenv PATH="@MY_PATH@"
-			breaksw
-	endsw
+	setenv DYLD_LIBRARY_PATH="@MY_DYLD_LIBRARY_PATH@":$DYLD_LIBRARY_PATH
+	setenv LD_LIBRARY_PATH="@MY_LD_LIBRARY_PATH@":$LD_LIBRARY_PATH
+	setenv PATH="@MY_PATH@":$PATH
 endif
