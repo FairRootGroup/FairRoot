@@ -325,21 +325,21 @@ endif()
 add_subdirectory(cmake)
 
 install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
-  DESTINATION bin
+  DESTINATION ${CMAKE_INSTALL_BINDIR}
   RENAME FairRootConfig.sh
 )
 install(FILES ${CMAKE_BINARY_DIR}/check_system.sh
-  DESTINATION bin
+  DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}
 )
 install(FILES ${CMAKE_BINARY_DIR}/FairVersion.h
   DESTINATION include
 )
 install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
-  DESTINATION bin
+  DESTINATION ${CMAKE_INSTALL_BINDIR}
   RENAME FairRootConfig.csh
 )
 install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
-  DESTINATION bin
+  DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}
 )
 
 find_package(Git)

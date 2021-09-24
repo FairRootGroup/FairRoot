@@ -2,7 +2,7 @@
 
 setenv Linux_Flavour_ "@_linux_flavour@"
 setenv System_ "@_system@"
-. @_BINDIR@/check_system.csh
+. @_EXECDIR@/check_system.csh
 if ( "$same_system" == "1" ) then
 	setenv SIMPATH "@SIMPATH@"
 	setenv ROOTSYS "@ROOTSYS@"
