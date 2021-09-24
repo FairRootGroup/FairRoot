@@ -231,58 +231,7 @@ MACRO(REMOVE_FROM_LIST var_name list1 list2)
   SET(${var_name} ${filter_tmp})
 ENDMACRO(REMOVE_FROM_LIST)
 ################################################################################
-MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME)
 
-  get_filename_component(path_name ${SCRIPT_FULL_NAME} PATH)
-  get_filename_component(file_extension ${SCRIPT_FULL_NAME} EXT)
-  get_filename_component(file_name ${SCRIPT_FULL_NAME} NAME_WE)
-  set(shell_script_name "${file_name}.sh")
-
-  if(${ARGC} GREATER 1)
-    set(new_path ${ARGV1})
-  Else()
-    string(REPLACE ${PROJECT_SOURCE_DIR}
-           ${PROJECT_BINARY_DIR} new_path ${path_name}
-          )
-  EndIf()
-  CONVERT_LIST_TO_STRING(${LD_LIBRARY_PATH})
-  set(MY_LD_LIBRARY_PATH ${output})
-  set(my_script_name ${SCRIPT_FULL_NAME})
-  Write_Geant4Data_Variables_sh()
-  IF(FAIRROOT_FOUND)
-    configure_file(${FAIRROOT_CMAKEMOD_DIR}/scripts/set_env.sh.in
-                   ${new_path}/${shell_script_name}
-                  )
-  ELSE(FAIRROOT_FOUND)
-    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/set_env.sh.in
-                   ${new_path}/${shell_script_name}
-                  )
-  ENDIF(FAIRROOT_FOUND)
-  EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}" OUTPUT_VARIABLE tmp)
-ENDMACRO (GENERATE_TEST_SCRIPT)
-################################################################################
-
-Macro(Generate_Exe_Script _Path _ExeName)
-
-  Message("PATH: ${_Path}")
-  Message("ExeName: ${_ExeName}")
-  set(shell_script_name "${_ExeName}.sh")
-  Message("shell_script_name: ${shell_script_name}")
-
-  string(REPLACE ${PROJECT_SOURCE_DIR}
-         ${PROJECT_BINARY_DIR} new_path ${_Path}
-        )
-
-  set(my_exe_name ${EXECUTABLE_OUTPUT_PATH}/${_ExeName})
-  Write_Geant4Data_Variables_sh()
-  configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/run_binary.sh.in
-                   ${new_path}/${shell_script_name}
-                  )
-
-  EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}" OUTPUT_VARIABLE tmp )
-
-EndMacro(Generate_Exe_Script)
-################################################################################
 
 Macro (Generate_Version_Info)
 IF(FAIRROOT_FOUND)

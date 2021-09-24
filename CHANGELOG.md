@@ -47,6 +47,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * Dropped `USE_PATH_INFO` CMake option. It was an anti-pattern. Don't use it!
 * Dropped `ROOT_GENERATE_ROOTMAP`. It was used on ROOT 5.x.
   * Rewrite your build system, if you still use it.
+* Dropped `Generate_Exe_Script`, and `GENERATE_TEST_SCRIPT`
+  * `Generate_Exe_Script` was never meant for external use.
+  * `GENERATE_TEST_SCRIPT` can be replaced by much simpler, and more
+    flexible local code by users.
+  * Replace with a local template, `configure_file`, and `execute_process()`
+  * In your template consider using `source @FairRoot_BINDIR/FairRootConfig.sh`
 
 ### Deprecated
 * Deprecating MbsAPI
