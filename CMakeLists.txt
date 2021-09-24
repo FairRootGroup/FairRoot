@@ -47,7 +47,6 @@ include(GNUInstallDirs)
 include(FairRootTargetRootDictionary)
 
 # Define install dirs
-set(PROJECT_INSTALL_BINDIR ${CMAKE_INSTALL_BINDIR})
 set(PROJECT_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR})
 set(PROJECT_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/fairbase) # TODO: change 'fairbase' to ${PROJECT_NAME_LOWER}
 
