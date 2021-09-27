@@ -30,13 +30,37 @@ class FairParRootFile : public TNamed
     FairRtdbRun* getRun() { return run; }
     void readVersions(FairRtdbRun*);
 
-    Bool_t IsOpen() { return RootFile->IsOpen(); }
-    void cd() { RootFile->cd(); }
-    Bool_t IsWritable() { return RootFile->IsWritable(); }
+    Bool_t IsOpen() { return RootFile && (RootFile->IsOpen()); }
+    void cd()
+    {
+        if (RootFile) {
+            RootFile->cd();
+        }
+    }
+    Bool_t IsWritable() { return RootFile && RootFile->IsWritable(); }
 
-    TKey* GetKey(Text_t* t) { return RootFile->GetKey(t); }
-    TList* GetListOfKeys() { return RootFile->GetListOfKeys(); }
-    void Close() { RootFile->Close(); }
+    TKey* GetKey(const Text_t* t)
+    {
+        if (RootFile) {
+            return RootFile->GetKey(t);
+        } else {
+            return nullptr;
+        }
+    }
+    TList* GetListOfKeys()
+    {
+        if (RootFile) {
+            return RootFile->GetListOfKeys();
+        } else {
+            return nullptr;
+        }
+    }
+    void Close()
+    {
+        if (RootFile) {
+            RootFile->Close();
+        }
+    }
 
   protected:
     TFile* RootFile;
