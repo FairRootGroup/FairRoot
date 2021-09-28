@@ -25,7 +25,6 @@
 #include <TChainElement.h>
 #include <TClass.h>
 #include <TCollection.h>   // for TIter
-#include <TF1.h>
 #include <TFolder.h>
 #include <TList.h>
 #include <TObjArray.h>
@@ -79,7 +78,6 @@ FairFileSource::FairFileSource(TFile* f, const char* Title, UInt_t)
     , fBeamTime(-1.)
     , fGapTime(-1.)
     , fEventMeanTime(0.)
-    , fTimeProb(0)
     , fCheckFileLayout(kTRUE)
 {
     if (fRootFile->IsZombie()) {
@@ -121,7 +119,6 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
     , fBeamTime(-1.)
     , fGapTime(-1.)
     , fEventMeanTime(0.)
-    , fTimeProb(0)
     , fCheckFileLayout(kTRUE)
 {
     fRootFile = TFile::Open(RootFileName->Data());
@@ -164,7 +161,6 @@ FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UI
     , fBeamTime(-1.)
     , fGapTime(-1.)
     , fEventMeanTime(0.)
-    , fTimeProb(0)
     , fCheckFileLayout(kTRUE)
 {
     fRootFile = TFile::Open(RootFileName.Data());
@@ -682,15 +678,7 @@ Int_t FairFileSource::CheckMaxEventNo(Int_t EvtEnd)
 void FairFileSource::SetEventMeanTime(Double_t mean)
 {
     fEventMeanTime = mean;
-    /*
-    TString form="(1/";
-    form+= mean;
-    form+=")*exp(-x/";
-    form+=mean;
-    form+=")";
-    fTimeProb= new TF1("TimeProb.", form.Data(), 0., mean*10);
-    */
-    fTimeProb = new TF1("TimeProb", "(1/[0])*exp(-x/[0])", 0., mean * 10);
+    fTimeProb = std::make_unique<TF1>("TimeProb", "(1/[0])*exp(-x/[0])", 0., mean * 10);
     fTimeProb->SetParameter(0, mean);
     fTimeProb->GetRandom();
     fEventTimeInMCHeader = kFALSE;
@@ -698,6 +686,8 @@ void FairFileSource::SetEventMeanTime(Double_t mean)
 
 void FairFileSource::SetEventTimeInterval(Double_t min, Double_t max)
 {
+    // disable fTimeProb for the uniform distribution
+    fTimeProb.reset();
     fEventTimeMin = min;
     fEventTimeMax = max;
     fEventMeanTime = (fEventTimeMin + fEventTimeMax) / 2;
@@ -731,7 +721,7 @@ void FairFileSource::SetEventTime()
 Double_t FairFileSource::GetDeltaEventTime()
 {
     Double_t deltaTime = 0;
-    if (fTimeProb != 0) {
+    if (fTimeProb) {
         deltaTime = fTimeProb->GetRandom();
         LOG(debug) << "Time set via sampling method : " << deltaTime;
     } else {
