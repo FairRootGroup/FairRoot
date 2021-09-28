@@ -24,6 +24,7 @@
 #include <TFile.h>
 #include <list>
 #include <map>
+#include <memory>
 
 class FairEventHeader;
 class FairFileHeader;
@@ -214,7 +215,7 @@ class FairMixedSource : public FairSource
     /** EventMean time used (P(t)=1/fEventMeanTime*Exp(-t/fEventMeanTime) */
     Double_t fEventMeanTime;   //!
     /** used to generate random numbers for event time; */
-    TF1* fTimeProb;   //!
+    std::unique_ptr<TF1> fTimeProb;   //!
 
     /**holds the SB ratio by number*/
     std::map<UInt_t, Double_t> fSignalBGN;   //!

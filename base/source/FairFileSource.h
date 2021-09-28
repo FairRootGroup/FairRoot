@@ -20,17 +20,18 @@
 
 #include <TArrayI.h>
 #include <TChain.h>
+#include <TF1.h>
 #include <TFile.h>
 #include <TFolder.h>
 #include <TString.h>
 #include <list>
 #include <map>
+#include <memory>
 
 class FairEventHeader;
 class FairFileHeader;
 class FairMCEventHeader;
 class FairRuntimeDb;
-class TF1;
 class TTree;
 
 class FairFileSource : public FairSource
@@ -192,10 +193,10 @@ class FairFileSource : public FairSource
     /** EventMean time used (P(t)=1/fEventMeanTime*Exp(-t/fEventMeanTime) */
     Double_t fEventMeanTime;   //!
     /** used to generate random numbers for event time; */
-    TF1* fTimeProb;            //!
-                               /** True if the file layout should be checked when adding files to a chain.
-                                *  Default value is true.
-                                */
+    std::unique_ptr<TF1> fTimeProb;   //!
+    /** True if the file layout should be checked when adding files to a chain.
+     *  Default value is true.
+     */
     Bool_t fCheckFileLayout;   //!
 
     ClassDef(FairFileSource, 3);
