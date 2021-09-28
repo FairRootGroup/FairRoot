@@ -70,7 +70,6 @@ FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
     , fBeamTime(-1.)
     , fGapTime(-1.)
     , fEventMeanTime(0.)
-    , fTimeProb(0)
     , fSignalBGN()
     , fSBRatiobyN(kFALSE)
     , fSBRatiobyT(kFALSE)
@@ -125,7 +124,6 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
     , fBeamTime(-1.)
     , fGapTime(-1.)
     , fEventMeanTime(0.)
-    , fTimeProb(0)
     , fSignalBGN()
     , fSBRatiobyN(kFALSE)
     , fSBRatiobyT(kFALSE)
@@ -180,7 +178,6 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     , fBeamTime(-1.)
     , fGapTime(-1.)
     , fEventMeanTime(0.)
-    , fTimeProb(0)
     , fSignalBGN()
     , fSBRatiobyN(kFALSE)
     , fSBRatiobyT(kFALSE)
@@ -717,15 +714,7 @@ Int_t FairMixedSource::CheckMaxEventNo(Int_t EvtEnd)
 void FairMixedSource::SetEventMeanTime(Double_t mean)
 {
     fEventMeanTime = mean;
-    /*
-  TString form="(1/";
-  form+= mean;
-  form+=")*exp(-x/";
-  form+=mean;
-  form+=")";
-  fTimeProb= new TF1("TimeProb", form.Data(), 0., mean*10);
-*/
-    fTimeProb = new TF1("TimeProb", "(1/[0])*exp(-x/[0])", 0., mean * 10);
+    fTimeProb = std::make_unique<TF1>("TimeProb", "(1/[0])*exp(-x/[0])", 0., mean * 10);
     fTimeProb->SetParameter(0, mean);
     fTimeProb->GetRandom();
     fEventTimeInMCHeader = kFALSE;
@@ -733,6 +722,8 @@ void FairMixedSource::SetEventMeanTime(Double_t mean)
 
 void FairMixedSource::SetEventTimeInterval(Double_t min, Double_t max)
 {
+    // disable fTimeProb for the uniform distribution
+    fTimeProb.reset();
     fEventTimeMin = min;
     fEventTimeMax = max;
     fEventMeanTime = (fEventTimeMin + fEventTimeMax) / 2;
@@ -763,7 +754,7 @@ void FairMixedSource::SetEventTime()
 Double_t FairMixedSource::GetDeltaEventTime()
 {
     Double_t deltaTime = 0;
-    if (fTimeProb != 0) {
+    if (fTimeProb) {
         deltaTime = fTimeProb->GetRandom();
         LOG(debug) << "Time set via sampling method : " << deltaTime;
     } else {
