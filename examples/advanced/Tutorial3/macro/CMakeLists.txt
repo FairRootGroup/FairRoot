@@ -22,20 +22,22 @@ foreach(mcEngine IN ITEMS TGeant3 TGeant4)
   set_tests_properties(ex_tutorial3_sim_${mcEngine} PROPERTIES
     TIMEOUT ${testTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
+    FIXTURES_SETUP fixture.ex_tutorial3_sim_${mcEngine}
   )
 
   add_test(NAME ex_tutorial3_digi_${mcEngine}
            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_digi.sh \"${mcEngine}\")
   set_tests_properties(ex_tutorial3_digi_${mcEngine} PROPERTIES
-    DEPENDS ex_tutorial3_sim_${mcEngine}
+    FIXTURES_REQUIRED fixture.ex_tutorial3_sim_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
+    FIXTURES_SETUP fixture.ex_tutorial3_digi_${mcEngine}
   )
 
   add_test(NAME ex_tutorial3_reco_${mcEngine}
            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_reco.sh \"${mcEngine}\")
   set_tests_properties(ex_tutorial3_reco_${mcEngine} PROPERTIES
-    DEPENDS ex_tutorial3_digi_${mcEngine}
+    FIXTURES_REQUIRED fixture.ex_tutorial3_digi_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
@@ -43,15 +45,16 @@ foreach(mcEngine IN ITEMS TGeant3 TGeant4)
   add_test(NAME ex_tutorial3_digi_timebased_${mcEngine}
            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_digi_timebased.sh \"${mcEngine}\")
   set_tests_properties(ex_tutorial3_digi_timebased_${mcEngine} PROPERTIES
-    DEPENDS ex_tutorial3_sim_${mcEngine}
+    FIXTURES_REQUIRED fixture.ex_tutorial3_sim_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
+    FIXTURES_SETUP fixture.ex_tutorial3_digi_timebased_${mcEngine}
   )
 
   add_test(NAME ex_tutorial3_reco_timebased_${mcEngine}
            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_reco_timebased.sh \"${mcEngine}\")
   set_tests_properties(ex_tutorial3_reco_timebased_${mcEngine} PROPERTIES
-    DEPENDS ex_tutorial3_digi_timebased_${mcEngine}
+    FIXTURES_REQUIRED fixture.ex_tutorial3_digi_timebased_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
@@ -59,7 +62,7 @@ foreach(mcEngine IN ITEMS TGeant3 TGeant4)
   add_test(NAME ex_tutorial3_digi_reco_proof_${mcEngine}
            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_digi_reco_proof.sh 1 \"${mcEngine}\")
   set_tests_properties(ex_tutorial3_digi_reco_proof_${mcEngine} PROPERTIES
-    DEPENDS ex_tutorial3_sim_${mcEngine}
+    FIXTURES_REQUIRED fixture.ex_tutorial3_sim_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
