@@ -36,7 +36,6 @@ FairYamlVMCConfig::FairYamlVMCConfig()
     : FairGenericVMCConfig()
     , fMCEngine("")
 {
-    UsePostInitConfig();
 }
 
 void FairYamlVMCConfig::Setup(const char* mcEngine)
