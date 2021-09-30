@@ -10,7 +10,7 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = fals
     UInt_t randomSeed = 123456;
     gRandom->SetSeed(randomSeed);
 
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
 
     TString tut_geomdir = dir + "/common/geometry";
     gSystem->Setenv("GEOMPATH", tut_geomdir.Data());

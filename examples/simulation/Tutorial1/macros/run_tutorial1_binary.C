@@ -10,6 +10,7 @@
 #include <iostream>
 using namespace std;
 #include "FairBoxGenerator.h"
+#include "FairConfig.h"
 #include "FairCave.h"
 #include "FairParRootFileIo.h"
 #include "FairPrimaryGenerator.h"
@@ -36,7 +37,7 @@ void run_tutorial1_binary()
 // This function should be called from main of the executable
 void run_tutorial1_main(const FairSimConfig& config)
 {
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/simulation/Tutorial1";
 
     TString tut_geomdir = dir + "/common/geometry";

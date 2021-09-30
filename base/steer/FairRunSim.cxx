@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,6 +12,7 @@
 #include "FairRunSim.h"
 
 #include "FairBaseParSet.h"         // for FairBaseParSet
+#include "FairConfig.h"             // for FairConfig
 #include "FairField.h"              // for FairField
 #include "FairFileHeader.h"         // for FairFileHeader
 #include "FairGenericVMCConfig.h"   // for FairGenericVMCConfig
@@ -254,7 +255,7 @@ void FairRunSim::SetFieldContainer()
 void FairRunSim::CheckFlukaExec()
 {
     /** Private method for setting FLUKA simulation*/
-    TString work = getenv("VMCWORKDIR");
+    const auto work = FairConfig::Instance().GetVMCWorkDir();
     TString work_config = work + "/gconfig/";
     work_config.ReplaceAll("//", "/");
 
@@ -317,7 +318,7 @@ void FairRunSim::SetMaterials(const char* MatFileName)
     TString work = getenv("GEOMPATH");
     work.ReplaceAll("//", "/");
     if (work.IsNull()) {
-        work = getenv("VMCWORKDIR");
+        work = FairConfig::Instance().GetVMCWorkDir();
         Mat = work + "/geometry/";
         Mat.ReplaceAll("//", "/");
     } else {

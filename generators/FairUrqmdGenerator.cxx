@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -11,6 +11,7 @@
 // -------------------------------------------------------------------------
 #include "FairUrqmdGenerator.h"
 
+#include "FairConfig.h"             // for FairConfig
 #include "FairLogger.h"             // for logging
 #include "FairMCEventHeader.h"      // for FairMCEventHeader
 #include "FairPrimaryGenerator.h"   // for FairPrimaryGenerator
@@ -322,7 +323,7 @@ Bool_t FairUrqmdGenerator::SkipEvents(Int_t count)
 
 void FairUrqmdGenerator::ReadConversionTable(TString conversion_table)
 {
-    TString work = getenv("VMCWORKDIR");
+    TString work = FairConfig::Instance().GetVMCWorkDir();
     TString fileName;
 
     if (conversion_table.IsNull()) {

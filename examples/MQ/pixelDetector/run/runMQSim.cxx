@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -7,6 +7,7 @@
  ********************************************************************************/
 
 #include "FairBoxGenerator.h"
+#include "FairConfig.h"
 #include "FairCave.h"
 #include "FairMQSimDevice.h"
 #include "FairModule.h"
@@ -47,13 +48,7 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 {
     gRandom->SetSeed(config.GetValue<int64_t>("random-seed"));
 
-    char* cdir = getenv("VMCWORKDIR");
-
-    if (cdir == nullptr) {
-        throw std::runtime_error("VMCWORKDIR not initialized");
-    }
-
-    std::string dir = cdir;
+    const std::string dir = FairConfig::Instance().GetVMCWorkDir();
     std::string tutdir = dir + "/MQ/pixelDetector";
 
     std::string tutGeomDir = dir + "/common/geometry";

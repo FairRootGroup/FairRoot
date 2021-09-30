@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,6 +12,7 @@
 
 #include "FairRunAnaProof.h"
 
+#include "FairConfig.h"
 #include "FairBaseParSet.h"
 #include "FairEventHeader.h"
 #include "FairFieldFactory.h"
@@ -38,7 +39,7 @@ FairRunAnaProof::FairRunAnaProof(const char* proofName)
     , fProof(nullptr)
     , fRunOnProofWorker(kFALSE)
     , fProofServerName(proofName)
-    , fProofParName("$VMCWORKDIR/gconfig/libFairRoot.par")
+    , fProofParName(FairConfig::Instance().GetVMCWorkDir() + "/gconfig/libFairRoot.par")
     , fOutputDirectory("")
     , fProofOutputStatus("copy")
     , fProofFileSource(0)

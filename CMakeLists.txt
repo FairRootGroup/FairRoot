@@ -90,6 +90,7 @@ if(NOT DEFINED CMAKE_INSTALL_MESSAGE)
 endif()
 
 SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/examples)
+SET(VMCWORKDIR_INSTALL ${CMAKE_INSTALL_PREFIX}/share/fairbase/examples)
 
 include(CheckSymbolExists)
 

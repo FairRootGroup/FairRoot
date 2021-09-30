@@ -22,7 +22,7 @@ void run_digi(TString mcEngine = "TGeant3", Int_t fileId = 0)
     parFile = parFile + mcEngine + ".params.root";
 
     // Digitization parameter file
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/MQ/pixelDetector";
     TString digParFile = tutdir + "/param/pixel_digi.par";
 

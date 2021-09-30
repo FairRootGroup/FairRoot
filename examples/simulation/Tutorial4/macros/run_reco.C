@@ -42,7 +42,7 @@ void run_reco(TString mcEngine = "TGeant3", Bool_t AlignDone = true)
 
     TList* parFileList = new TList();
 
-    TString workDir = gSystem->Getenv("VMCWORKDIR");
+    TString workDir = FairConfig::Instance().GetVMCWorkDir();
     TString paramDir = workDir + "/simulation/Tutorial4/parameters/";
     TString paramFile = paramDir + "example.par";
 

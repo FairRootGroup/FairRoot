@@ -27,7 +27,7 @@ void run_tutorial4_createParameterFile()
 
     // Open file and get the stired TGeoManager
     TString mcEngine = "TGeant3";
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
 
     TString outDir = "./data/";
 

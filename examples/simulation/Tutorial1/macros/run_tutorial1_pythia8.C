@@ -8,7 +8,7 @@
 void run_tutorial1_pythia8(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 {
 
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/simulation/Tutorial1";
 
     TString tut_geomdir = dir + "/common/geometry";

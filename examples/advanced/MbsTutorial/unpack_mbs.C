@@ -5,7 +5,7 @@ void unpack_mbs()
     timer.Start();
 
     // Create source with unpackers ----------------------------------------------
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/advanced/MbsTutorial";
 
     FairLmdSource* source = new FairLmdSource();

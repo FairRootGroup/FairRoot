@@ -8,7 +8,7 @@
 void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT = true)
 {
 
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/simulation/Tutorial2";
 
     TString tut_geomdir = dir + "/common/geometry";

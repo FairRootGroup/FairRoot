@@ -8,7 +8,7 @@
 void run_tutorial4_createGeometryFile(Int_t nEvents = 1, TString mcEngine = "TGeant3", Bool_t isMT = false)
 {
 
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
 
     TString tut_configdir = dir + "/simulation/Tutorial4/gconfig";
     gSystem->Setenv("CONFIG_DIR", tut_configdir.Data());

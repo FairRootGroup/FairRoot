@@ -60,7 +60,7 @@ void Config()
     /// Customise Geant4 setting
     /// (verbose level, global range cut, ..)
 
-    TString configm(gSystem->Getenv("VMCWORKDIR"));
+    TString configm = FairConfig::Instance().GetVMCWorkDir();
     TString configm1 = configm + "/gconfig/g4config.in";
     cout << " -I g4Config() using g4conf  macro: " << configm1 << endl;
 

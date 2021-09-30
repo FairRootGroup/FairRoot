@@ -8,7 +8,7 @@
 void run_rutherford(Int_t nEvents = 10, TString mcEngine = "TGeant4", Bool_t isMT = true)
 {
 
-    TString dir = gSystem->Getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/simulation/rutherford/macros";
 
     TString tut_geomdir = dir + "/common/geometry";

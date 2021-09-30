@@ -15,7 +15,7 @@ void run_dAsciiSource(TString mcEngine = "TGeant3")
     parFile = parFile + mcEngine + ".params.root";
 
     // Digitization parameter file
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/MQ/pixelDetector";
     TString digParFile = tutdir + "/param/pixel_digi.par";
 

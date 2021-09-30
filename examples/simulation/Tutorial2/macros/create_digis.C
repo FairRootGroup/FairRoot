@@ -13,7 +13,7 @@ void create_digis()
 
     gDebug = 0;
 
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/simulation/Tutorial2";
 
     TString inFile = "./tutorial2_pions.mc_p2.000_t0_n10.root";
@@ -38,8 +38,7 @@ void create_digis()
     io1->open(parFile.Data(), "UPDATE");
 
     FairParAsciiFileIo* parInput2 = new FairParAsciiFileIo();
-    TString tutDetDigiFile = gSystem->Getenv("VMCWORKDIR");
-    tutDetDigiFile += "/simulation/Tutorial2/parameters/tutdet.digi.par";
+    TString tutDetDigiFile = dir + "/simulation/Tutorial2/parameters/tutdet.digi.par";
     parInput2->open(tutDetDigiFile.Data(), "in");
 
     rtdb->setFirstInput(io1);

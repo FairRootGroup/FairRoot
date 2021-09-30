@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -11,6 +11,7 @@
 // -------------------------------------------------------------------------
 #include "FairYamlVMCConfig.h"
 
+#include "FairConfig.h"
 #include "FairFastSimRunConfiguration.h"
 #include "FairLogger.h"
 #include "FairRunSim.h"
@@ -70,7 +71,7 @@ void FairYamlVMCConfig::SetupPostInit(const char* mcEngine)
         LOG(fatal) << "FairYamlVMCConfig::SetupPostInit() only valid for TGeant4.";
     }
 
-    TString work = getenv("VMCWORKDIR");
+    TString work = FairConfig::Instance().GetVMCWorkDir();
     TString work_config = work + "/gconfig/";
     work_config.ReplaceAll("//", "/");
 
@@ -243,7 +244,7 @@ string FairYamlVMCConfig::ObtainYamlFileName(const char* mcEngine)
 {
     TString lUserConfig = FairRunSim::Instance()->GetUserConfig();
 
-    TString work = getenv("VMCWORKDIR");
+    TString work = FairConfig::Instance().GetVMCWorkDir();
     TString work_config = work + "/gconfig/";
     work_config.ReplaceAll("//", "/");
 

@@ -7,7 +7,7 @@ void run_sim_sep(Int_t fileId, Int_t nEvents = 1000, TString mcEngine = "TGeant3
     gDebug = 0;
 
     // Use non default gconfig and geometry directories
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/";
 
     TString tut_geomdir = tutdir + "/common/geometry";

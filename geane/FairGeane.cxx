@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -11,6 +11,7 @@
 //
 #include "FairGeane.h"
 
+#include "FairConfig.h"             // for FairConfig
 #include "FairField.h"              // for FairField
 #include "FairGeaneApplication.h"   // for FairGeaneApplication
 #include "FairRunAna.h"             // for FairRunAna
@@ -68,7 +69,7 @@ InitStatus FairGeane::Init()
         cuts = "SetCuts.C";
     }
 
-    TString work = getenv("VMCWORKDIR");
+    TString work = FairConfig::Instance().GetVMCWorkDir();
     TString work_config = work + "/gconfig/";
     work_config.ReplaceAll("//", "/");
     TString config_dir = getenv("CONFIG_DIR");

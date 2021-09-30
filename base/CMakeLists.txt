@@ -11,6 +11,10 @@ EndIf()
 
 set(target Base)
 
+configure_file(steer/FairConfig.cxx.in
+  ${CMAKE_CURRENT_BINARY_DIR}/FairConfig.cxx @ONLY
+)
+
 set(sources
   event/FairEventBuilder.cxx
   event/FairEventBuilderManager.cxx
@@ -61,6 +65,7 @@ set(sources
   source/FairSource.cxx
 
   steer/FairAnaSelector.cxx
+  ${CMAKE_CURRENT_BINARY_DIR}/FairConfig.cxx
   steer/FairLinkManager.cxx
   steer/FairRadGridManager.cxx
   steer/FairRadLenManager.cxx
@@ -94,6 +99,9 @@ if(BUILD_MBS)
 endif()
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
+list(APPEND headers
+  steer/FairConfig.h
+)
 
 add_library(${target} SHARED ${sources} ${headers})
 fairroot_library_settings(${target})

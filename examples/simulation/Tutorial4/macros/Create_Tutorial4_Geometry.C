@@ -97,7 +97,7 @@ void create_materials_from_media_file()
     // Use the FairRoot geometry interface to load the media which are already defined
     FairGeoLoader* geoLoad = new FairGeoLoader("TGeo", "FairGeoLoader");
     FairGeoInterface* geoFace = geoLoad->getGeoInterface();
-    TString geoPath = gSystem->Getenv("VMCWORKDIR");
+    TString geoPath = FairConfig::Instance().GetVMCWorkDir();
     TString geoFile = geoPath + "/common/geometry/media.geo";
     geoFace->setMediaFile(geoFile);
     geoFace->readMedia();

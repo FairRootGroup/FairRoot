@@ -1,6 +1,6 @@
 void run_signal(Int_t fileNr, Int_t nEvents = 10)
 {
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/simulation/Tutorial2";
 
     TString tut_geomdir = dir + "/common/geometry";

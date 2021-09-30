@@ -1,8 +1,8 @@
 /********************************************************************************
  *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 // $Id: FairLinkDef.h,v 1.4 2006/09/15 12:43:35 turany Exp $
@@ -80,6 +80,7 @@
 
 #pragma link C++ class FairSink;
 #pragma link C++ class FairRootFileSink;
+#pragma link C++ class FairConfig;
 #ifdef BUILD_MBS
 #pragma link C++ class FairMbsSource;
 #pragma link C++ class FairRemoteSource;

@@ -2,6 +2,7 @@
 
 // MQRunSim
 #include "FairBoxGenerator.h"
+#include "FairConfig.h"
 #include "FairMQPrimaryGeneratorDevice.h"
 #include "FairPrimaryGenerator.h"
 
@@ -31,7 +32,7 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
 {
     gRandom->SetSeed(config.GetValue<int64_t>("random-seed"));
 
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/MQ/pixelDetector";
 
     TString tut_configdir = config.GetValue<std::string>("fairroot-config-dir");

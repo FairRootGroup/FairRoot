@@ -8,7 +8,7 @@
 void run_rad(Int_t nEvents = 100, TString mcEngine = "TGeant3")
 {
 
-    TString dir = gSystem->Getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/simulation/rutherford/macros";
 
     TString tut_geomdir = dir + "/common/geometry";

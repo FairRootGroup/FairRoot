@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -15,6 +15,7 @@
 // Class that takes care of Root IO.
 #include "FairRootManager.h"
 
+#include "FairConfig.h"               // for FairConfig
 #include "FairEventHeader.h"   // for FairEventHeader
 #include "FairFileHeader.h"    // for FairFileHeader
 #include "FairFileSource.h"
@@ -978,13 +979,13 @@ void FairRootManager::DeleteOldWriteoutBufferData()
 char* FairRootManager::GetTreeName()
 {
     char* default_name = (char*)"cbmsim";
-    char* workdir = getenv("VMCWORKDIR");
-    if (nullptr == workdir) {
+    const auto workdir = FairConfig::Instance().GetVMCWorkDir();
+    if (workdir.empty()) {
         return default_name;
     }
 
     // Open file with output tree name
-    FILE* file = fopen(Form("%s/config/rootmanager.dat", workdir), "r");
+    FILE* file = fopen(Form("%s/config/rootmanager.dat", workdir.c_str()), "r");
     // If file does not exist -> default
     if (nullptr == file) {
         return default_name;
@@ -1013,13 +1014,13 @@ char* FairRootManager::GetFolderName()
     if (!FairRun::Instance()->IsAna()) {
         default_name = (char*)"cbmroot";
     }
-    char* workdir = getenv("VMCWORKDIR");
-    if (nullptr == workdir) {
+    const auto workdir = FairConfig::Instance().GetVMCWorkDir();
+    if (workdir.empty()) {
         return default_name;
     }
 
     // Open file with output tree name
-    FILE* file = fopen(Form("%s/config/rootmanager.dat", workdir), "r");
+    FILE* file = fopen(Form("%s/config/rootmanager.dat", workdir.c_str()), "r");
     // If file does not exist -> default
     if (nullptr == file) {
         return default_name;

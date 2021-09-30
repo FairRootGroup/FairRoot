@@ -8,7 +8,7 @@
 void run_tutorial1_urqmd(Int_t nEvents = 2, TString mcEngine = "TGeant3")
 {
 
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/simulation//Tutorial1";
 
     TString inFile = dir + "/common/input/urqmd.ftn14";

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -11,6 +11,7 @@
 // -------------------------------------------------------------------------
 #include "FairGenericVMCConfig.h"
 
+#include "FairConfig.h"
 #include "FairLogger.h"
 #include "FairRunSim.h"
 
@@ -31,7 +32,7 @@ void FairGenericVMCConfig::Setup(const char* mcEngine)
     TString lUserCuts = FairRunSim::Instance()->GetUserCuts();
     TString lUserConfig = FairRunSim::Instance()->GetUserConfig();
 
-    TString work = getenv("VMCWORKDIR");
+    const auto work = FairConfig::Instance().GetVMCWorkDir();
     TString work_config = work + "/gconfig/";
     work_config.ReplaceAll("//", "/");
 
@@ -179,7 +180,7 @@ void FairGenericVMCConfig::SetupPostInit(const char* mcEngine)
     LOG(warning) << "FairGenericVMCConfig::SetupPostInit() Using " << fPostInitName << " macro DEPRACATED.";
     LOG(warning) << "Check FairRoot/examples/common/gconfig/ for current YAML implementation.";
 
-    TString work = getenv("VMCWORKDIR");
+    const auto work = FairConfig::Instance().GetVMCWorkDir();
     TString work_config = work + "/gconfig/";
     work_config.ReplaceAll("//", "/");
 

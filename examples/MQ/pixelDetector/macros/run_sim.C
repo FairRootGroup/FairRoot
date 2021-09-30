@@ -8,7 +8,7 @@
 
 void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0, Bool_t isMT = kFALSE)
 {
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/MQ/pixelDetector";
 
     TString tut_geomdir = dir + "/common/geometry";

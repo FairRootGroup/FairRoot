@@ -11,7 +11,7 @@ void read_digis()
     TStopwatch timer;
     timer.Start();
 
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
     TString tutdir = dir + "/simulation/Tutorial2";
 
     TString inFile = "./tutorial2_pions.mc_p2.000_t0_n10.root";
@@ -36,8 +36,7 @@ void read_digis()
 
     // Fallback solution if paramters are not found in database (ROOT file)
     FairParAsciiFileIo* parInput2 = new FairParAsciiFileIo();
-    TString tutDetDigiFile = gSystem->Getenv("VMCWORKDIR");
-    tutDetDigiFile += "/simulation/Tutorial2/parameters/tutdet.digi.par";
+    TString tutDetDigiFile = dir + "/simulation/Tutorial2/parameters/tutdet.digi.par";
     parInput2->open(tutDetDigiFile.Data(), "in");
 
     // The parameter container is initialized from first input since it

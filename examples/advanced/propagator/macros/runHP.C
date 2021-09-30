@@ -7,7 +7,7 @@
  ********************************************************************************/
 int runHP()
 {
-    TString dir = getenv("VMCWORKDIR");
+    TString dir = FairConfig::Instance().GetVMCWorkDir();
 
     TString tut_geomdir = dir + "/common/geometry";
     gSystem->Setenv("GEOMPATH", tut_geomdir.Data());

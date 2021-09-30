@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -13,6 +13,7 @@
 
 #include "FairAnaSelector.h"
 
+#include "FairConfig.h"           // for FairConfig
 #include "FairFileSource.h"       // for FairFileSource
 #include "FairLogger.h"           // for FairLogger, MESSAGE_ORIGIN
 #include "FairParAsciiFileIo.h"   // for FairParAsciiFileIo
@@ -66,7 +67,7 @@ void FairAnaSelector::Init(TTree* tree)
     } else {
         LOG(info) << "FairAnaSelector::Init(): Have to create fRunAna.";
 
-        TString vmcPath = gSystem->Getenv("VMCWORKDIR");
+        const auto vmcPath = FairConfig::Instance().GetVMCWorkDir();
 
         TNamed* contStat = static_cast<TNamed*>(fInput->FindObject("FAIRRUNANA_fContainerStatic"));
         TNamed* outStat = static_cast<TNamed*>(fInput->FindObject("FAIRRUNANA_fProofOutputStatus"));

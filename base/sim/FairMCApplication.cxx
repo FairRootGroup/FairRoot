@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -11,6 +11,7 @@
 // -------------------------------------------------------------------------
 #include "FairMCApplication.h"
 
+#include "FairConfig.h"             // for FairConfig
 #include "FairDetector.h"           // for FairDetector
 #include "FairField.h"              // for FairField
 #include "FairGenericStack.h"       // for FairGenericStack
@@ -1277,7 +1278,7 @@ void FairMCApplication::AddParticles()
 //_____________________________________________________________________________
 void FairMCApplication::AddDecayModes()
 {
-    TString work = getenv("VMCWORKDIR");
+    const auto work = FairConfig::Instance().GetVMCWorkDir();
     TString work_config = work + "/gconfig/";
     work_config.ReplaceAll("//", "/");
 
