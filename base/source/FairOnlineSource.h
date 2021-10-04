@@ -32,21 +32,21 @@ class FairOnlineSource : public FairSource
     inline void AddUnpacker(FairUnpack* unpacker) { fUnpackers->Add(unpacker); }
     inline const TObjArray* GetUnpackers() const { return fUnpackers; }
 
-    virtual Bool_t Init() = 0;
-    virtual Int_t ReadEvent(UInt_t = 0) = 0;
-    virtual void Close() = 0;
+    Bool_t Init() override = 0;
+    Int_t ReadEvent(UInt_t = 0) override = 0;
+    void Close() override = 0;
 
-    virtual void SetParUnpackers();
+    void SetParUnpackers() override;
 
-    virtual Bool_t InitUnpackers();
+    Bool_t InitUnpackers() override;
 
-    virtual Bool_t ReInitUnpackers();
+    Bool_t ReInitUnpackers() override;
 
-    void Reset();
+    void Reset() override;
 
-    virtual Source_Type GetSourceType() { return kONLINE; }
+    Source_Type GetSourceType() override { return kONLINE; }
 
-    Bool_t SpecifyRunId()
+    Bool_t SpecifyRunId() override
     {
         ReadEvent(0);
         return true;
@@ -58,7 +58,7 @@ class FairOnlineSource : public FairSource
   private:
     FairOnlineSource& operator=(const FairOnlineSource&);
 
-    ClassDef(FairOnlineSource, 0);
+    ClassDefOverride(FairOnlineSource, 0);
 };
 
 #endif
