@@ -6,6 +6,9 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+list(PREPEND CMAKE_MODULE_PATH "cmake/private")
+include(Testlib)
+
 cmake_host_system_information(RESULT fqdn QUERY FQDN)
 
 set(CTEST_SOURCE_DIRECTORY .)
@@ -59,7 +62,7 @@ ctest_build(FLAGS "-j${NCPUS}" TARGET install
 
 unset(repeat)
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.17)
-  set(repeat REPEAT UNTIL_PASS:5)
+  set(repeat REPEAT UNTIL_PASS:7)
 endif()
 if(_ctest_build_ret_val OR _ctest_build_num_errs)
   message(STATUS "Skipping tests, because build failed"
@@ -74,7 +77,8 @@ else()
              RETURN_VALUE _ctest_test_ret_val)
 endif()
 
-ctest_submit()
+fairroot_ctest_submit(FINAL)
+fairroot_summary_cdash()
 
 if(_ctest_test_ret_val)
   Message(FATAL_ERROR "Some tests failed.")
