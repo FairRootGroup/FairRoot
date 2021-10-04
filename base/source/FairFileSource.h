@@ -43,26 +43,26 @@ class FairFileSource : public FairSource
     // FairFileSource(const FairFileSource& file);
     virtual ~FairFileSource();
 
-    Bool_t Init();
-    Int_t ReadEvent(UInt_t i = 0);
-    void Close();
-    void Reset();
+    Bool_t Init() override;
+    Int_t ReadEvent(UInt_t i = 0) override;
+    void Close() override;
+    void Reset() override;
 
-    virtual Source_Type GetSourceType() { return kFILE; }
+    Source_Type GetSourceType() override { return kFILE; }
 
-    virtual void SetParUnpackers() {}
+    void SetParUnpackers() override {}
 
-    virtual Bool_t InitUnpackers() { return kTRUE; }
+    Bool_t InitUnpackers() override { return kTRUE; }
 
-    virtual Bool_t ReInitUnpackers() { return kTRUE; }
+    Bool_t ReInitUnpackers() override { return kTRUE; }
 
     /**Check the maximum event number we can run to*/
-    virtual Int_t CheckMaxEventNo(Int_t EvtEnd = 0);
+    Int_t CheckMaxEventNo(Int_t EvtEnd = 0) override;
     /**Read the tree entry on one branch**/
-    virtual void ReadBranchEvent(const char* BrName);
+    void ReadBranchEvent(const char* BrName) override;
     /**Read specific tree entry on one branch**/
-    virtual void ReadBranchEvent(const char* BrName, Int_t Entry);
-    virtual void FillEventHeader(FairEventHeader* feh);
+    void ReadBranchEvent(const char* BrName, Int_t Entry) override;
+    void FillEventHeader(FairEventHeader* feh) override;
 
     const TFile* GetRootFile() { return fRootFile; }
     /** Add a friend file (input) by name)*/
@@ -105,8 +105,8 @@ class FairFileSource : public FairSource
     void SetFileHeader(FairFileHeader* f) { fFileHeader = f; }
     Double_t GetEventTime();
 
-    virtual Bool_t ActivateObject(TObject** obj, const char* BrName);
-    virtual Bool_t ActivateObjectAny(void**, const std::type_info&, const char*);
+    Bool_t ActivateObject(TObject** obj, const char* BrName) override;
+    Bool_t ActivateObjectAny(void**, const std::type_info&, const char*) override;
 
     /**Set the status of the EvtHeader
      *@param Status:  True: The header was creatged in this session and has to be filled
@@ -120,7 +120,7 @@ class FairFileSource : public FairSource
     void SetCheckFileLayout(Bool_t enable) { fCheckFileLayout = enable; }
 
     /**Read one event from source to find out which RunId to use*/
-    Bool_t SpecifyRunId();
+    Bool_t SpecifyRunId() override;
 
   private:
     /** Title of input source, could be input, background or signal*/
@@ -199,7 +199,7 @@ class FairFileSource : public FairSource
      */
     Bool_t fCheckFileLayout;   //!
 
-    ClassDef(FairFileSource, 3);
+    ClassDefOverride(FairFileSource, 3);
 };
 
 #endif /* defined(__FAIRROOT__FairFileSource__) */
