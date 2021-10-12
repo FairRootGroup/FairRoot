@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   * This means, that all library dependencies of the type `Core` are either not working at all, or might not work as expected. Please upgrade all of them to be like `ROOT::Core` .
   * This also means, that you need to add an `include(ROOTMacros)` after your `find_package2(... ROOT ...)`.
   * `ROOT_VERSION_NUMBER` is gone. Use `ROOT_VERSION` (which is the dotted version number) and `VERSION_GREATER`/etc now.
+  * `ROOTSYS` isn't any longer set. For example use ROOT targets instead.
 * Many CMake related tools have been externalized into
   [FairCMakeModules](https://github.com/FairRootGroup/FairCMakeModules)
   and partly rewritten
