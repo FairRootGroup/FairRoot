@@ -5,7 +5,6 @@ setenv System_ "@_system@"
 . @_EXECDIR@/check_system.csh
 if ( "$same_system" == "1" ) then
 	setenv SIMPATH "@SIMPATH@"
-	setenv ROOTSYS "@ROOTSYS@"
 	setenv FAIRROOTPATH "@FAIRROOTPATH@"
 	if ( @FULL_CONFIG_FILE@ == true ) then
 		setenv Geant4_INCLUDE_DIRS "@Geant4_INCLUDE_DIRS@"
