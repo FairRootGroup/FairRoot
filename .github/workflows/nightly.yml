@@ -1,0 +1,29 @@
+name: Nightly
+
+on:
+  schedule:
+    # timezone is UTC
+    - cron:  '45 23 * * *'
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  snapshot-nightly-branches:
+    name: Snapshot nightly branch
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target: [master, dev]
+    env:
+      nightly: 'nightly_${{ matrix.target }}'
+    steps:
+      - name: Clone repository and checkout branch ${{ matrix.target }}
+        run: |
+          git clone -b ${{ matrix.target }} --single-branch --progress \
+          https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} .
+      - name: Snapshot current ${{ matrix.target }} branch in branch ${{ env.nightly }}
+        run: git switch -C ${{ env.nightly }} ${{ matrix.target }}
+      - name: Print snapshotted HEAD
+        run: git log --oneline HEAD~1..HEAD
+      - name: Push ${{ env.nightly }} branch to origin
+        run: git push -f origin ${{ env.nightly }}
