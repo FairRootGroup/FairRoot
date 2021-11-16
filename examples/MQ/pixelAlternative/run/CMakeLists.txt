@@ -46,7 +46,7 @@ set(maxTestTime 30)
 add_test(NAME ex_MQ_pixel_alt_static
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixAlt.sh --work-dir ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector --max-index 10000 --aggregate 100 --processors 5 --command static --force-kill true)
 set_tests_properties(ex_MQ_pixel_alt_static PROPERTIES
-  DEPENDS ex_MQ_pixel_static
+  FIXTURES_REQUIRED fixtures.ex_MQ_pixel_static
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Shell script finished successfully"
 )
