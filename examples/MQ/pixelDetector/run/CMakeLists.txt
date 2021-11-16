@@ -124,7 +124,7 @@ if(DDS_VERSION VERSION_GREATER_EQUAL 3.5
   add_test(NAME ex_MQ_pixel_simulation
            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim.sh)
   set_tests_properties(ex_MQ_pixel_simulation PROPERTIES
-    DEPENDS ex_MQ_pixel_static
+    FIXTURES_REQUIRED fixtures.ex_MQ_pixel_static
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Shell script finished successfully"
 )
@@ -133,8 +133,9 @@ endif()
 add_test(NAME ex_MQ_pixel_static
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixel.sh --work-dir ${CMAKE_CURRENT_BINARY_DIR}/../ -p 3 --command static --force-kill true)
 set_tests_properties(ex_MQ_pixel_static PROPERTIES
-  DEPENDS ex_pixel_digi_to_bin_TGeant3
+  FIXTURES_REQUIRED fixtures.ex_pixel_digi_to_bin_TGeant3
   TIMEOUT ${maxTestTime}
   RUN_SERIAL ON
   PASS_REGULAR_EXPRESSION "Shell script finished successfully"
+  FIXTURES_SETUP fixtures.ex_MQ_pixel_static
 )
