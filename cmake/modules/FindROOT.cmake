@@ -175,7 +175,7 @@ If(ROOT_FOUND)
     Include(ROOTMacros)
 
   # Aliases for imported VMC packages ROOT dependencies
-  foreach(_root_dep VMC Core RIO Tree Rint Physics MathCore Thread Geom EG Gpad Hist RHTTP Proof Net Matrix GeomPainter Graf3d Graf RooFit RooFitCore XMLParser XMLIO Eve RGL Gui Ged Gdml)
+  foreach(_root_dep VMC Core RIO Tree Rint Physics MathCore Thread Geom EG EGPythia6 Gpad Hist RHTTP Proof Net Matrix GeomPainter Graf3d Graf RooFit RooFitCore XMLParser XMLIO Eve RGL Gui Ged Gdml)
     find_library(${_root_dep}_LIB ${_root_dep} PATHS ${ROOT_LIBRARY_DIR})
     if(${_root_dep}_LIB)
       add_library(${_root_dep} SHARED IMPORTED GLOBAL)
