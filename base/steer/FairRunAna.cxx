@@ -238,6 +238,7 @@ void FairRunAna::Init()
         fTask->SetParTask();
         fRtdb->initContainers(fRunId);
     }
+
     FairFieldFactory* fieldfact = FairFieldFactory::Instance();
     if (fieldfact) {
         fieldfact->SetParm();
@@ -252,22 +253,28 @@ void FairRunAna::Init()
     if (fieldfact && !fField) {
         fField = fieldfact->createFairField();
     }
+
+    // Align the geometry when it is avaialble in all cases
+    // (read from file, read from container) and before it could
+    // be used in the Init() function of a user task
+    AlignGeometry();
+
     // Now call the User initialize for Tasks
     fTask->InitTask();
+
     // if the vis manager is available then initialize it!
     FairTrajFilter* fTrajFilter = FairTrajFilter::Instance();
     if (fTrajFilter) {
         fTrajFilter->Init();
     }
-    // Create a list of time based branches (if any).
 
+    // Create a list of time based branches (if any).
     fRootManager->UpdateListOfTimebasedBranches();
 
     // create the output tree after tasks initialisation
     fRootManager->WriteFolder();
     fRootManager->WriteFileHeader(fFileHeader);
 
-    AlignGeometry();
 }
 //_____________________________________________________________________________
 
