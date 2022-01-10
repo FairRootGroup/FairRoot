@@ -1055,22 +1055,4 @@ void FairRootManager::UpdateFileName(TString& fileName)
     fileName.Insert(fileName.Index(".root"), tid);
 }
 
-TFile* FairRootManager::GetOutFile()
-{
-    LOG(warning) << "FairRootManager::GetOutFile() deprecated. Use separate file to store additional data.";
-    auto sink = GetSink();
-    assert(sink->GetSinkType() == kFILESINK);
-    auto rootFileSink = static_cast<FairRootFileSink*>(sink);
-    return rootFileSink->GetRootFile();
-}
-
-TTree* FairRootManager::GetOutTree()
-{
-    LOG(warning) << "FairRootManager::GetOutTree() deprecated. Use separate file to store additional data.";
-    auto sink = GetSink();
-    assert(sink->GetSinkType() == kFILESINK);
-    auto rootFileSink = static_cast<FairRootFileSink*>(sink);
-    return rootFileSink->GetOutTree();
-}
-
 ClassImp(FairRootManager);
