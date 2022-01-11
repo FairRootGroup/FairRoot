@@ -43,7 +43,7 @@ void FairMQExHistoServer::InitTask()
 bool FairMQExHistoServer::ReceiveData(FairMQMessagePtr& msg, int index)
 {
     TObject* tempObject = nullptr;
-    Deserialize<RootSerializer>(*msg, tempObject);
+    RootSerializer().Deserialize(*msg, tempObject);
 
     if (TString(tempObject->ClassName()).EqualTo("TObjArray")) {
         std::lock_guard<std::mutex> lk(mtx);

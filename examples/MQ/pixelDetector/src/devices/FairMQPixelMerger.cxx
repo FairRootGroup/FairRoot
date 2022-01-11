@@ -54,7 +54,7 @@ bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
     // "******************************************************************************************************";
     for (int ipart = 0; ipart < parts.Size(); ipart++) {
         tempObject = nullptr;
-        Deserialize<RootSerializer>(*parts.At(ipart), tempObject);
+        RootSerializer().Deserialize(*parts.At(ipart), tempObject);
         if (strcmp(tempObject->GetName(), "EventHeader.") == 0) {
             fEventHeader = (PixelEventHeader*)tempObject;
             // LOG(debug) << "GOT PART [" << fEventHeader->GetRunId() << "][" << fEventHeader->GetMCEntryNumber() <<
@@ -144,11 +144,11 @@ bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
         FairMQParts partsOut;
 
         FairMQMessagePtr messFEH(NewMessage());
-        Serialize<RootSerializer>(*messFEH, fEventHeader);
+        RootSerializer().Serialize(*messFEH, fEventHeader);
         partsOut.AddPart(std::move(messFEH));
         for (int iarray = 0; iarray < nofArrays; iarray++) {
             messageTCA[iarray] = NewMessage();
-            Serialize<RootSerializer>(*messageTCA[iarray], tempArrays[iarray]);
+            RootSerializer().Serialize(*messageTCA[iarray], tempArrays[iarray]);
             partsOut.AddPart(std::move(messageTCA[iarray]));
         }
         Send(partsOut, fOutputChannelName);

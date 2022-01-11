@@ -38,14 +38,14 @@ class Ex1Processor : public FairMQDevice
 
                 /// DESERIALIZE ///
                 std::unique_ptr<TClonesArray> digis(nullptr);
-                Deserialize<RootSerializer>(*msgIn, digis);
+                RootSerializer().Deserialize(*msgIn, digis);
 
                 /// COMPUTE ///
                 TClonesArray hits = FindHits(*digis);
 
                 /// SERIALIZE ///
                 FairMQMessagePtr msgOut(NewMessageFor("data2", 0));
-                Serialize<RootSerializer>(*msgOut, &hits);
+                RootSerializer().Serialize(*msgOut, &hits);
 
                 /// SEND ///
                 Send(msgOut, "data2");

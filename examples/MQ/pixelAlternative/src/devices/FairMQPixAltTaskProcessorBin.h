@@ -182,7 +182,7 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
         if (Send(req, fParamChannelName) > 0) {
             if (Receive(rep, fParamChannelName) > 0) {
                 thisPar = nullptr;
-                Deserialize<RootSerializer>(*rep, thisPar);
+                RootSerializer().Deserialize(*rep, thisPar);
                 LOG(info) << "Received parameter" << paramName << " from the server (" << thisPar << ")";
                 return thisPar;
             }
