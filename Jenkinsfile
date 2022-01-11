@@ -36,8 +36,6 @@ def jobMatrix(String prefix, String type, List specs) {
           }
           if (selector =~ /^macos/) {
             sh "echo \"export SIMPATH=\$(brew --prefix fairsoft@${fairsoft})\" >> ${jobscript}"
-          } else if (selector =~/^gsi-debian/ && ver == '8') {
-            sh "echo \"export SIMPATH=/cvmfs/fairsoft.gsi.de/debian8/fairsoft/${fairsoft}\" >> ${jobscript}"
           } else {
             sh "echo \"export SIMPATH=/fairsoft/${fairsoft}\" >> ${jobscript}"
           }
@@ -51,9 +49,6 @@ def jobMatrix(String prefix, String type, List specs) {
             sh "bash ${jobscript}"
           } else {
             def containercmd = "singularity exec -B/shared ${env.SINGULARITY_CONTAINER_ROOT}/fairroot/${os}.${ver}.sif bash -l -c \\\"${ctestcmd}\\\""
-            if (selector =~/^gsi-debian/ && ver == '8') {
-              containercmd = "singularity exec -B/shared,/cvmfs ${env.SINGULARITY_CONTAINER_ROOT}/fairroot/${os}.${ver}.sif bash -l -c \\\"spack load gcc@8; spack load cmake arch=${arch}; ${ctestcmd}\\\""
-            }
             sh """\
               echo \"echo \\\"*** Job started at .......: \\\$(date -R)\\\"\" >> ${jobscript}
               echo \"echo \\\"*** Job ID ...............: \\\${SLURM_JOB_ID}\\\"\" >> ${jobscript}
@@ -98,7 +93,6 @@ pipeline{
             [os: 'ubuntu',     ver: '20.04', arch: 'x86_64', compiler: 'gcc-9',           fairsoft: 'apr21_patches_mt'],
             [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches'],
             [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches_mt'],
-            [os: 'gsi-debian', ver: '8',     arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'nov20'],
             // [os: 'macos',      ver: '10.15', arch: 'x86_64', compiler: 'apple-clang-11',  fairsoft: '20.11'],
             // [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-12',  fairsoft: '20.11'],
             [os: 'macos',      ver: '10.15', arch: 'x86_64', compiler: 'apple-clang-11',  fairsoft: '21.4'],
