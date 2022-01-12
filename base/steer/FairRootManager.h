@@ -266,9 +266,11 @@ class FairRootManager : public TObject
     void SetFinishRun(Bool_t val = kTRUE) { fFinishRun = val; }
     Bool_t FinishRun() { return fFinishRun; }
 
-    static char* GetTreeName();
+    static void SetTreeName(const std::string& tname) { fTreeName = tname; }
+    static void SetFolderName(const std::string& tname) { fFolderName = tname; }
 
-    static char* GetFolderName();
+    const static char* GetTreeName();
+    const static char* GetFolderName();
 
     /**public Members for multi-threading */
     Int_t GetInstanceId() const { return fId; }
@@ -352,6 +354,12 @@ class FairRootManager : public TObject
      */
     std::map<TString, TObject*> fMap;   //!
 
+    /**folder name variable*/
+    static std::string fFolderName;   //!
+    /**tree name variable*/
+    static std::string fTreeName;   //!
+    static std::string GetNameFromFile(const char* namekind);
+
     /// A map of branchnames to typeinformation + memory address;
     /// used for branches registered with RegisterAny; use of ptr here
     /// since type_info cannot be copied
@@ -397,7 +405,7 @@ class FairRootManager : public TObject
 
     FairSource* fSource;
 
-    TChain* fSourceChain;
+    TChain* fSourceChain = nullptr;
     std::map<UInt_t, TChain*> fSignalChainList;   //!
 
     FairEventHeader* fEventHeader;
