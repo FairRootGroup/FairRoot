@@ -56,6 +56,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   * In your template consider using `source @FairRoot_BINDIR/FairRootConfig.sh`
 * Drop deprecated `FairRootManager::GetOut{File,Tree}`
   It has been deprecated since 18.0.0.
+* `FairRootManager::Get{Tree,Folder}Name()` now return `const char *`.
+  Do NOT `delete` the returned pointer!
 
 ### Deprecated
 * Deprecating MbsAPI
