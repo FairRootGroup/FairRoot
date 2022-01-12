@@ -29,6 +29,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * Dropped `USE_PATH_INFO` CMake option. It was an anti-pattern. Don't use it!
 * Dropped `ROOT_GENERATE_ROOTMAP`. It was used on ROOT 5.x.
   * Rewrite your build system, if you still use it.
+* `FairRootManager::Get{Tree,Folder}Name()` now return `const char *`.
+  Do NOT `delete` the returned pointer!
 
 ### Deprecated
 * Deprecating MbsAPI

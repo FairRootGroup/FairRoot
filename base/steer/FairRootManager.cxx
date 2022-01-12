@@ -67,6 +67,8 @@ TMCMutex deleteMutex = TMCMUTEX_INITIALIZER;
 }   // namespace
 
 Int_t FairRootManager::fgCounter = 0;
+std::string FairRootManager::fFolderName = "";
+std::string FairRootManager::fTreeName = "";
 
 FairRootManager* FairRootManager::Instance()
 {
@@ -103,7 +105,6 @@ FairRootManager::FairRootManager()
     , fEntryNr(0)
     , fListFolder(0)
     , fSource(0)
-    , fSourceChain(new TChain(GetTreeName(), Form("/%s", GetFolderName())))
     , fSignalChainList()
     , fEventHeader(new FairEventHeader())
     , fSink(nullptr)
@@ -161,6 +162,8 @@ FairRootManager::~FairRootManager()
 
 Bool_t FairRootManager::InitSource()
 {
+    // creating fSourceChain now, to give the user chance to change the tree and folder name
+    fSourceChain = new TChain(GetTreeName(), Form("/%s", GetFolderName()));
 
     LOG(debug) << "Call the initialiazer for the FairSource in FairRootManager ";
     if (fSource) {
@@ -974,71 +977,69 @@ void FairRootManager::DeleteOldWriteoutBufferData()
     }
 }
 
-char* FairRootManager::GetTreeName()
+std::string FairRootManager::GetNameFromFile(const char* namekind)
 {
-    char* default_name = (char*)"cbmsim";
+    std::string default_name = "";
+
+    if (strcmp(namekind, "treename=") && strcmp(namekind, "foldername=")) {
+        LOG(fatal) << "FairRootManager, requested " << namekind << ", while only treename= and foldername= available.";
+        return default_name;
+    }
+
     char* workdir = getenv("VMCWORKDIR");
     if (nullptr == workdir) {
         return default_name;
     }
 
     // Open file with output tree name
-    FILE* file = fopen(Form("%s/config/rootmanager.dat", workdir), "r");
+    std::ifstream file(Form("%s/config/rootmanager.dat", workdir));
     // If file does not exist -> default
-    if (nullptr == file) {
+    if (!file.is_open()) {
         return default_name;
     }
 
-    char str[100];
-    while (nullptr != fgets(str, 100, file)) {
-        if (TString(str).Contains("treename")) {
-            char* treename = new char[100];
-            if (1 == sscanf(str, "treename=%s", treename)) {
-                fclose(file);
-                return treename;
-            }
-            delete[] treename;
+    std::string line;
+    while (std::getline(file, line)) {
+        if (line.rfind(namekind, 0) == 0) {
+            line.replace(0, strlen(namekind), "");
+            file.close();
+            return line;
         }
     }
 
-    // Key "treename" was not found in file: return default
-    fclose(file);
+    file.close();
     return default_name;
 }
 
-char* FairRootManager::GetFolderName()
+const char* FairRootManager::GetTreeName()
 {
-    char* default_name = (char*)"cbmout";
+    if (fTreeName.length() > 0) {
+        return Form("%s", fTreeName.c_str());
+    }
+
+    std::string nameFromFile = GetNameFromFile("treename=");
+    if (nameFromFile.length() > 0) {
+        return Form("%s", nameFromFile.c_str());
+    }
+
+    return "cbmsim";
+}
+
+const char* FairRootManager::GetFolderName()
+{
+    if (fFolderName.length() > 0) {
+        return Form("%s", fFolderName.c_str());
+    }
+
+    std::string nameFromFile = GetNameFromFile("foldername=");
+    if (nameFromFile.length() > 0) {
+        return Form("%s", nameFromFile.c_str());
+    }
+
     if (!FairRun::Instance()->IsAna()) {
-        default_name = (char*)"cbmroot";
+        return "cbmroot";
     }
-    char* workdir = getenv("VMCWORKDIR");
-    if (nullptr == workdir) {
-        return default_name;
-    }
-
-    // Open file with output tree name
-    FILE* file = fopen(Form("%s/config/rootmanager.dat", workdir), "r");
-    // If file does not exist -> default
-    if (nullptr == file) {
-        return default_name;
-    }
-
-    char str[100];
-    while (nullptr != fgets(str, 100, file)) {
-        if (TString(str).Contains("foldername")) {
-            char* foldername = new char[100];
-            if (1 == sscanf(str, "foldername=%s", foldername)) {
-                fclose(file);
-                return foldername;
-            }
-            delete[] foldername;
-        }
-    }
-
-    // Key "foldername" was not found in file: return default
-    fclose(file);
-    return default_name;
+    return "cbmout";
 }
 
 void FairRootManager::EmitMemoryBranchWrongTypeWarning(const char* brname, const char* type1, const char* type2) const
