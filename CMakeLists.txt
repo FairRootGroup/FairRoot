@@ -334,6 +334,7 @@ EndIf ()
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)
 if(BUILD_DOXYGEN)
   MESSAGE(STATUS "*** Building the Doxygen documentation ***")
+  find_package2(PRIVATE Doxygen)
   add_subdirectory(doxygen)
 endif(BUILD_DOXYGEN)
 
