@@ -10,31 +10,18 @@
 #include <TFile.h>
 #include <TTree.h>
 #include <chrono>
+#include <thread>
 
 class Ex2Sampler : public FairMQDevice
 {
   public:
     Ex2Sampler()
-        : FairMQDevice()
-        , fInput(nullptr)
+        : fInput(nullptr)
         , fTree(nullptr)
-        , fFileName()
         , fInputFile(nullptr)
     {}
 
-    Ex2Sampler(const Ex2Sampler&);
-    Ex2Sampler& operator=(const Ex2Sampler&);
-
-    virtual ~Ex2Sampler()
-    {
-        if (fInputFile) {
-            fInputFile->Close();
-            delete fInputFile;
-        }
-    }
-
-  protected:
-    virtual void Init()
+    void Init() override
     {
         fFileName = fConfig->GetValue<std::string>("input-file");
         fInputFile = TFile::Open(fFileName.c_str(), "READ");
@@ -50,13 +37,11 @@ class Ex2Sampler : public FairMQDevice
         }
     }
 
-    virtual void Run()
+    void Run() override
     {
-        int64_t sentMsgs = 0;
-        const int64_t numEvents = fTree->GetEntries();
+        uint64_t sentMsgs = 0;
+        const uint64_t numEvents = fTree->GetEntries();
         LOG(info) << "Number of events to process: " << numEvents;
-
-        auto tStart = std::chrono::high_resolution_clock::now();
 
         for (int64_t idx = 0; idx < numEvents; idx++) {
             fTree->GetEntry(idx);
@@ -82,9 +67,20 @@ class Ex2Sampler : public FairMQDevice
             }
         }
 
-        auto tEnd = std::chrono::high_resolution_clock::now();
-        LOG(info) << "Sent " << sentMsgs
-                  << " messages in: " << std::chrono::duration<double, std::milli>(tEnd - tStart).count() << " ms";
+        LOG(info) << "Sent " << sentMsgs << " messages!";
+
+        // stay in the Running state until a transition to Ready is requested
+        while (!NewStatePending()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+    }
+
+    void Reset()
+    {
+        if (fInputFile) {
+            fInputFile->Close();
+            delete fInputFile;
+        }
     }
 
   private:
@@ -94,4 +90,4 @@ class Ex2Sampler : public FairMQDevice
     TFile* fInputFile;
 };
 
-#endif
+#endif   // EX2SAMPLER_H
