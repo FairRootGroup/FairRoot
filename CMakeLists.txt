@@ -23,15 +23,6 @@ SET(FAIRROOT_PATCH_VERSION 0)
 
 set(PROJECT_MIN_CXX_STANDARD 14)
 
-if(APPLE)
-  if(NOT DEFINED CMAKE_C_COMPILER)
-    set(CMAKE_C_COMPILER clang)
-  endif()
-  if(NOT DEFINED CMAKE_CXX_COMPILER)
-    set(CMAKE_CXX_COMPILER clang++)
-  endif()
-endif()
-
 # Set name of our project to "FAIRROOT".
 # Has to be done after check of cmake version
 # This also sets ${FAIRROOT_VERSION} to the provided VERSION value, which would be empty if not set here explicitly

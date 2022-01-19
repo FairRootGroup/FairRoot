@@ -39,9 +39,6 @@ def jobMatrix(String prefix, String type, List specs) {
           } else {
             sh "echo \"export SIMPATH=/fairsoft/${fairsoft}\" >> ${jobscript}"
           }
-          if (selector =~ /^macos-10\.15/) {
-            sh "echo \"export SDKROOT=\$(xcrun --show-sdk-path)\" >> ${jobscript}"
-          }
           sh "echo \"export LABEL=\\\"\${JOB_BASE_NAME} ${label}\\\"\" >> ${jobscript}"
           if (selector =~ /^macos/) {
             sh "echo \"${ctestcmd}\" >> ${jobscript}"
