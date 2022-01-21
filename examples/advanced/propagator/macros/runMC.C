@@ -70,7 +70,7 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = fals
     det->SetGeometryFileName("tutProp.geo");
     run->AddModule(det);
 
-    FairTutPropDet* det2 = new FairTutPropDet("TutPropDetector", kTRUE);
+    FairTutPropDet* det2 = new FairTutPropDet("TutPropDetector2", kTRUE);
     det2->SetGeometryFileName("tutProp2.geo");
     det2->SetPointsArrayName("FairTutPropPoint2");
     run->AddModule(det2);
