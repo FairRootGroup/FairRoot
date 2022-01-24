@@ -30,6 +30,7 @@
 #include <TBranch.h>        // for TBranch
 #include <TClonesArray.h>   // for TClonesArray
 #include <TCollection.h>    // for TCollection, TIter
+#include <TDirectory.h>     // for TDirectory::TContext
 #include <TFile.h>          // for TFile
 #include <TFolder.h>        // for TFolder
 #include <TGeoManager.h>    // for TGeoManager, gGeoManager
@@ -412,11 +413,10 @@ void FairRootManager::CreateGeometryFile(const char* geofile)
      *  framework. The geomanager used by the framework is still
      *  stored in the parameter file or database
      */
-    TFile* oldfile = gFile;
+    TDirectory::TContext restorecwd{};
     std::unique_ptr<TFile> file{TFile::Open(geofile, "RECREATE")};
     file->WriteTObject(gGeoManager);
     file->Close();
-    gFile = oldfile;
 }
 
 void FairRootManager::WriteFolder()

@@ -29,7 +29,8 @@
 #include "signal.h"
 
 #include <TCollection.h>      // for TIter
-#include <TFile.h>            // for TFile, gFile
+#include <TDirectory.h>       // for TDirectory::TContext
+#include <TFile.h>            // for TFile
 #include <TGeoManager.h>      // for gGeoManager, TGeoManager
 #include <TKey.h>             // for TKey
 #include <TList.h>            // for TList
@@ -109,8 +110,7 @@ void FairRunAna::SetGeomFile(const char* GeoFileName)
         LOG(fatal) << "Geometry file has to be set before Run::Init !";
         exit(-1);
     } else {
-
-        TFile* CurrentFile = gFile;
+        TDirectory::TContext restorecwd{};
         fInputGeoFile = TFile::Open(GeoFileName);
         if (fInputGeoFile->IsZombie()) {
             LOG(error) << "Error opening Geometry Input file";
@@ -118,7 +118,6 @@ void FairRunAna::SetGeomFile(const char* GeoFileName)
         }
         LOG(info) << "Opening Geometry input file: " << GeoFileName;
         fLoadGeo = kTRUE;
-        gFile = CurrentFile;
     }
 }
 
@@ -161,7 +160,7 @@ void FairRunAna::Init()
         // check that the geometry was loaded if not try all connected files!
         if (fLoadGeo && gGeoManager == 0) {
             LOG(info) << "Geometry was not found in the input file we will look in the friends if any!";
-            TFile* currentfile = gFile;
+            TDirectory::TContext restorecwd{};
             TFile* nextfile = 0;
             TSeqCollection* fileList = gROOT->GetListOfFiles();
             for (Int_t k = 0; k < fileList->GetEntries(); k++) {
@@ -173,7 +172,6 @@ void FairRunAna::Init()
                     break;
                 }
             }
-            gFile = currentfile;
         }
     } else {   //  if(fInputFile )
         // NO input file but there is a geometry file

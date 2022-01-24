@@ -19,6 +19,7 @@
 #include <TBufferFile.h>     // for TBufferFile
 #include <TClass.h>          // for TClass
 #include <TCollection.h>     // for TIter
+#include <TDirectory.h>      // for TDirectory::TContext
 #include <TStreamerInfo.h>   // for TStreamerInfo
 #include <iostream>          // for operator<<, ostream, cout, etc
 #include <string.h>          // for memcpy, strcmp, strlen
@@ -581,7 +582,7 @@ void FairParamList::addObject(const Text_t* name, TObject* obj)
     FairParamObj* o = new FairParamObj(name);
     o->setParamType(obj->IsA()->GetName());
     o->setClassVersion(obj->IsA()->GetClassVersion());
-    TFile* filesave = gFile;
+    TDirectory::TContext restorecwd{};
     FairParamTFile* paramFile = new FairParamTFile();
     gFile = paramFile;
     const Int_t bufsize = 10000;
@@ -627,7 +628,6 @@ void FairParamList::addObject(const Text_t* name, TObject* obj)
     delete paramFile;
     paramList.Add(o);
     delete buffer;
-    gFile = filesave;
 }
 
 void FairParamList::print()
@@ -922,7 +922,7 @@ Bool_t FairParamList::fillObject(const Text_t* name, TObject* obj)
         //      Warning("FairParamList::fill",
         //              "\n       Read Class Version = %i does not match actual version = %i",
         //              o->getClassVersion(),obj->IsA()->GetClassVersion());
-        TFile* filesave = gFile;
+        TDirectory::TContext restorecwd{};
         gFile = 0;
         TBufferFile* buf = 0;
 
@@ -954,7 +954,6 @@ Bool_t FairParamList::fillObject(const Text_t* name, TObject* obj)
         buf->MapObject(obj);
         obj->Streamer(*buf);
         delete buf;
-        gFile = filesave;
         return len;
     }
     LOG(error) << "Could not find parameter " << name;
