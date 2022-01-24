@@ -48,6 +48,7 @@
 #include <iostream>   // for operator<<, basic_ostream, etc
 #include <list>       // for _List_iterator, list, etc
 #include <map>        // for map, _Rb_tree_iterator, etc
+#include <memory>     // for unique_ptr
 #include <set>        // for set, set<>::iterator
 #include <stdlib.h>   // for exit
 #include <utility>    // for pair
@@ -412,11 +413,9 @@ void FairRootManager::CreateGeometryFile(const char* geofile)
      *  stored in the parameter file or database
      */
     TFile* oldfile = gFile;
-    TFile* file = TFile::Open(geofile, "RECREATE");
-    file->cd();
-    gGeoManager->Write();
+    std::unique_ptr<TFile> file{TFile::Open(geofile, "RECREATE")};
+    file->WriteTObject(gGeoManager);
     file->Close();
-    file->Delete();
     gFile = oldfile;
 }
 
