@@ -312,11 +312,7 @@ void FairRootFileSink::WriteObject(TObject* f, const char* name, Int_t option)
     f->Write(name, option);
 }
 
-void FairRootFileSink::WriteGeometry()
-{
-    fRootFile->cd();
-    gGeoManager->Write();
-}
+void FairRootFileSink::WriteGeometry() { fRootFile->WriteTObject(gGeoManager); }
 
 void FairRootFileSink::Fill()
 {
@@ -342,8 +338,7 @@ Int_t FairRootFileSink::Write(const char*, Int_t, Int_t)
         fRootFile = fOutTree->GetCurrentFile();
         FairMonitor::GetMonitor()->StoreHistograms(fRootFile);
         LOG(debug) << "FairRootFileSink::Write to file: " << fRootFile->GetName();
-        fRootFile->cd();
-        fOutTree->Write();
+        fRootFile->WriteTObject(fOutTree);
     } else {
         LOG(info) << "No Output Tree";
     }

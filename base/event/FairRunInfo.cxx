@@ -16,6 +16,7 @@
 #include <TString.h>     // for TString
 #include <TSystem.h>     // for ProcInfo_t, TSystem, etc
 #include <algorithm>     // for sort
+#include <memory>        // for unique_ptr
 
 ClassImp(FairRunInfo);
 
@@ -177,14 +178,13 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
     filename += ".root";
     LOG(debug) << "Filename: " << filename.Data();
 
-    TFile* f1 = TFile::Open(filename, "recreate");
-    f1->cd();
+    std::unique_ptr<TFile> f1{TFile::Open(filename, "recreate")};
 
     TIterator* listIter = histoList->MakeIterator();
     listIter->Reset();
     TObject* obj = nullptr;
     while ((obj = listIter->Next())) {
-        obj->Write();
+        f1->WriteTObject(obj);
     }
 
     delete listIter;
@@ -192,7 +192,6 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
     delete histoList;
 
     f1->Close();
-    f1->Delete();
     gFile = oldfile;
 }
 

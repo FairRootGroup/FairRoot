@@ -176,8 +176,7 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option, const T
         while ((inpKey = static_cast<TKey*>(keyIter.Next()))) {
             TObject* tempObj = inFile->Get(inpKey->GetName());
 
-            newParFile->cd();
-            tempObj->Write();
+            newParFile->WriteTObject(tempObj);
         }
     }
 
