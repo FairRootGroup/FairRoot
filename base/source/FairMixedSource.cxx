@@ -21,6 +21,7 @@
 #include "FairRootManager.h"
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
 
+#include <TDirectory.h>   // for TDirectory::TContext
 #include <TFolder.h>
 #include <TList.h>
 #include <TObjArray.h>
@@ -287,9 +288,7 @@ Bool_t FairMixedSource::Init()
 
     // Add all additional input files to the input chain and do a consitency check
     for (auto fileName : fInputChainList) {
-        // Store global gFile pointer for safety reasons.
-        // Set gFile to old value at the end of the routine.R
-        TFile* temp = gFile;
+        TDirectory::TContext restorecwd{};
 
         // Temporarily open the input file to extract information which
         // is needed to bring the friend trees in the correct order
@@ -312,9 +311,8 @@ Bool_t FairMixedSource::Init()
         // Add the file to the input chain
         fBackgroundChain->Add(fileName);
 
-        // Close the temporarly file and restore the gFile pointer.
+        // Close the temporarly file
         inputFile->Close();
-        gFile = temp;
     }
     fNoOfEntries = fBackgroundChain->GetEntries();
     FairRootManager::Instance()->SetInChain(fBackgroundChain, 0);

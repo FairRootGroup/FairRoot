@@ -24,6 +24,7 @@
 #include "FairTask.h"
 #include "FairTrajFilter.h"
 
+#include <TDirectory.h>   // for TDirectory::TContext
 #include <TGeoManager.h>
 #include <TKey.h>
 #include <TProof.h>
@@ -111,7 +112,7 @@ void FairRunAnaProof::Init()
             // check that the geometry was loaded if not try all connected files!
             if (fLoadGeo && gGeoManager == 0) {
                 LOG(info) << "Geometry was not found in the input file we will look in the friends if any!";
-                TFile* currentfile = gFile;
+                TDirectory::TContext restorecwd{};
                 TFile* nextfile = 0;
                 TSeqCollection* fileList = gROOT->GetListOfFiles();
                 for (Int_t k = 0; k < fileList->GetEntries(); k++) {
@@ -123,7 +124,6 @@ void FairRunAnaProof::Init()
                         break;
                     }
                 }
-                gFile = currentfile;
             }
         }
     } else {   //  if(fInputFile )

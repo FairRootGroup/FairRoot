@@ -25,6 +25,7 @@
 #include <TChainElement.h>
 #include <TClass.h>
 #include <TCollection.h>   // for TIter
+#include <TDirectory.h>    // for TDirectory::TContext
 #include <TFolder.h>
 #include <TList.h>
 #include <TObjArray.h>
@@ -248,9 +249,7 @@ Bool_t FairFileSource::Init()
     // Add all additional input files to the input chain and do a
     // consitency check
     for (auto fileName : fInputChainList) {
-        // Store global gFile pointer for safety reasons.
-        // Set gFile to old value at the end of the routine.R
-        TFile* temp = gFile;
+        TDirectory::TContext restorecwd{};
 
         // Temporarily open the input file to extract information which
         // is needed to bring the friend trees in the correct order
@@ -275,9 +274,8 @@ Bool_t FairFileSource::Init()
         // Add the file to the input chain
         fInChain->Add(fileName);
 
-        // Close the temporarly file and restore the gFile pointer.
+        // Close the temporarly file
         inputFile->Close();
-        gFile = temp;
     }
     fNoOfEntries = fInChain->GetEntries();
 
@@ -371,7 +369,7 @@ void FairFileSource::AddFriendsToChain()
     // TODO: print a warning if it was neccessary to remove a filname from the
     // list. This can be chacked by comparing the size of both list
 
-    TFile* temp = gFile;
+    TDirectory::TContext restorecwd{};
 
     Int_t friendType = 1;
     // Loop over all files which have been added as friends
@@ -412,7 +410,6 @@ void FairFileSource::AddFriendsToChain()
         TChain* chain = static_cast<TChain*>(fFriendTypeList[inputLevel]);
         chain->AddFile(fileName, 1234567890, FairRootManager::GetTreeName());
     }
-    gFile = temp;
 
     // Check if all friend chains have the same runids and the same
     // number of event numbers as the corresponding input chain
@@ -534,7 +531,7 @@ void FairFileSource::CheckFriendChains()
 
 void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
 {
-    TFile* temp = gFile;
+    TDirectory::TContext restorecwd{};
     TFile* f = TFile::Open(inputFile);
 
     TFolder* added = nullptr;
@@ -577,7 +574,6 @@ void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
     fFriendTypeList[inputLevel] = chain;
 
     f->Close();
-    gFile = temp;
 }
 
 Bool_t FairFileSource::CompareBranchList(TFile* fileHandle, TString inputLevel)

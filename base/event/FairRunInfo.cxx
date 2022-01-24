@@ -9,14 +9,15 @@
 
 #include "FairLogger.h"   // for FairLogger
 
-#include <TFile.h>       // for TFile, gFile
-#include <TH1.h>         // for TH1F
-#include <TIterator.h>   // for TIterator
-#include <TList.h>       // for TList
-#include <TString.h>     // for TString
-#include <TSystem.h>     // for ProcInfo_t, TSystem, etc
-#include <algorithm>     // for sort
-#include <memory>        // for unique_ptr
+#include <TDirectory.h>   // for TDirectory::TContext
+#include <TFile.h>        // for TFile, gFile
+#include <TH1.h>          // for TH1F
+#include <TIterator.h>    // for TIterator
+#include <TList.h>        // for TList
+#include <TString.h>      // for TString
+#include <TSystem.h>      // for ProcInfo_t, TSystem, etc
+#include <algorithm>      // for sort
+#include <memory>         // for unique_ptr
 
 ClassImp(FairRunInfo);
 
@@ -154,7 +155,7 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
     // can't be read any longer. Because of this problem the histos
     // are written to a separate file instead
 
-    TFile* oldfile = gFile;
+    TDirectory::TContext restorecwd{};
 
     TString directory = gFile->GetName();
     LOG(debug) << "Name: " << gFile->GetName();
@@ -192,7 +193,6 @@ void FairRunInfo::WriteHistosToFile(TList* histoList)
     delete histoList;
 
     f1->Close();
-    gFile = oldfile;
 }
 
 void FairRunInfo::Reset() { GetInfo(); }
