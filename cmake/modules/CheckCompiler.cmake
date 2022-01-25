@@ -67,16 +67,17 @@ if (CMAKE_SYSTEM_NAME MATCHES Linux)
 
      # Configure build types
      set(CMAKE_CONFIGURATION_TYPES "RELWITHDEBINFO" "NIGHTLY" "TEST" "RELEASE" "DEBUG" "DEBUGFULL" "PROFILE" "ARRAY_CHECK")
+     set(_FR_COMMON_CXX_FLAGS "-Wshadow -Wall")
 
-     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -Wshadow")
-     set(CMAKE_CXX_FLAGS_NIGHTLY        "-O0 -g -Wshadow")
-     set(CMAKE_CXX_FLAGS_TEST           "-O2 -g -Wshadow")
-     set(CMAKE_CXX_FLAGS_RELEASE        "-O2 -Wshadow ")
+     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "${_FR_COMMON_CXX_FLAGS} -O2 -g")
+     set(CMAKE_CXX_FLAGS_NIGHTLY        "${_FR_COMMON_CXX_FLAGS} -O0 -g")
+     set(CMAKE_CXX_FLAGS_TEST           "${_FR_COMMON_CXX_FLAGS} -O2 -g")
+     set(CMAKE_CXX_FLAGS_RELEASE        "${_FR_COMMON_CXX_FLAGS} -O2")
 
-     set(CMAKE_CXX_FLAGS_DEBUG          "-g -Wshadow ")
-     set(CMAKE_CXX_FLAGS_DEBUGFULL      "-g3 -fno-inline -Wnon-virtual-dtor -Wno-long-long -ansi -Wundef -Wcast-align -Wchar-subscripts -Wall -W -Wpointer-arith -Wformat-security -fno-exceptions -fno-check-new -fno-common -fexceptions")
-     set(CMAKE_CXX_FLAGS_PROFILE        "-g3 -fno-inline -ftest-coverage -fprofile-arcs -Wshadow -Wall -Wextra -Wunused-variable")
-     set(CMAKE_CXX_FLAGS_ARRAY_CHECK    "-g3 -fno-inline -ftest-coverage -fprofile-arcs -fstack-protector")
+     set(CMAKE_CXX_FLAGS_DEBUG          "${_FR_COMMON_CXX_FLAGS} -g")
+     set(CMAKE_CXX_FLAGS_DEBUGFULL      "${_FR_COMMON_CXX_FLAGS} -g3 -fno-inline -Wnon-virtual-dtor -Wno-long-long -ansi -Wundef -Wcast-align -Wchar-subscripts -W -Wpointer-arith -Wformat-security -fno-exceptions -fno-check-new -fno-common -fexceptions")
+     set(CMAKE_CXX_FLAGS_PROFILE        "${_FR_COMMON_CXX_FLAGS} -g3 -fno-inline -ftest-coverage -fprofile-arcs -Wextra -Wunused-variable")
+     set(CMAKE_CXX_FLAGS_ARRAY_CHECK    "${_FR_COMMON_CXX_FLAGS} -g3 -fno-inline -ftest-coverage -fprofile-arcs -fstack-protector")
 
      set(CMAKE_C_FLAGS_RELWITHDEBINFO   "-O2 -g")
      set(CMAKE_C_FLAGS_RELEASE          "-O2")
