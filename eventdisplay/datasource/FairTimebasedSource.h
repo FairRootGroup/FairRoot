@@ -20,8 +20,8 @@ class FairTimebasedSource : public FairDataSourceI
     FairTimebasedSource();
     FairTimebasedSource(TString branchName, Double_t windowMinus, Double_t windowPlus)
         : FairDataSourceI(branchName)
-        , fTimeWindowMinus(windowMinus)
-        , fTimeWindowPlus(windowPlus){};
+        , fTimeWindowPlus(windowMinus)
+        , fTimeWindowMinus(windowPlus){};
     virtual ~FairTimebasedSource();
 
     virtual void RetrieveData(double time);
