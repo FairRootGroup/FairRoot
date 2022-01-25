@@ -104,7 +104,7 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
             LOG(debug) << "+ [" << fEvRIPair.second << "][" << fEvRIPair.first << "][" << fEvCOPair.first << "] "
                        << tca_elem->GetName();
             fEvCOPair.second = tca_elem;
-            fObjectMap.insert(std::pair<std::pair<int, int>, std::pair<int, TObject*>>(fEvRIPair, fEvCOPair));
+            fObjectMap.insert(std::make_pair(fEvRIPair, fEvCOPair));
         }
         //        LOG(info) << "                 now we have fObjectMap (size = " << fObjectMap.size() << ")";
         if (printInfo)
