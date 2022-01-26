@@ -229,7 +229,6 @@ void FairEventManagerEditor::StartAnimation()
             FairTask* pMainTask = ana->GetMainTask();
             TList* taskList = pMainTask->GetListOfTasks();
 
-            Int_t ntask = ana->GetNTasks();
             Bool_t runOnce = true;
             for (Double_t i = start; i < end; i += step) {
                 if (runOnce == true) {   // Clear the buffer at the beginning of an animation run
