@@ -128,14 +128,6 @@ void Pixel::ProcessHits()
     }
 }
 
-void Pixel::EndOfEvent()
-{
-
-    fPixelPointCollection->Clear();
-
-    return kTRUE;
-}
-
 void Pixel::EndOfEvent() { fPixelPointCollection->Clear(); }
 
 void Pixel::Register()
