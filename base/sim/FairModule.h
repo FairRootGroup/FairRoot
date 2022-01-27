@@ -149,11 +149,6 @@ class FairModule : public TVirtualMCSensitiveDetector
     FairVolume* getFairVolume(FairGeoNode* fNode);
     void AddSensitiveVolume(TGeoVolume* v);
 
-    static thread_local TArrayI* volNumber;   //!
-    TString fMotherVolumeName;                //!
-    FairVolume* getFairVolume(FairGeoNode* fNode);
-    void AddSensitiveVolume(TGeoVolume* v);
-
     virtual void EndOfEvent() {}
 
     virtual void Initialize() {}

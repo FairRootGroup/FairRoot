@@ -14,6 +14,7 @@
 
 #include "FairGeoNode.h"   // for FairGeoNode
 #include "FairLogger.h"    // for FairLogger, MESSAGE_ORIGIN
+#include "FairMCApplication.h" // TEMPORARY until the depracated Bool_t ProcessHits() in use
 #include "FairModule.h"    // for FairModule::svList, etc
 #include "FairRootManager.h"
 #include "FairVolume.h"   // for FairVolume
@@ -123,6 +124,21 @@ void FairDetector::Initialize()
     // Initialize cached pointer to MC (on master in sequential mode)
     fMC = TVirtualMC::GetMC();
 }
+
+// -------------------------------------------------------------------------
+
+void FairDetector::ProcessHits()
+{
+    static const auto printOnce = [this] {
+        LOG(warning) << "Calling depracated Bool_t FairDetector::ProcessHits(FairVolume* vol = 0) for \"" << GetName() << "\".";
+        LOG(warning) << "        Replace with void FairDetector::ProcessHits(). ";
+        return true;
+    } ();
+    ProcessHits(FairMCApplication::Instance()->GetFairVolume());
+    return;
+}
+
+// -------------------------------------------------------------------------
 
 void FairDetector::SaveGeoParams()
 {

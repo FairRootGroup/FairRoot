@@ -539,36 +539,6 @@ void FairMCApplication::Stepping()
     // 3.) Fluence of particles through a defined plane which can be anywhere
     //     in the geometry. This plane has not to be correlated with any real
     //     volume
-    if(fTrajAccepted) {
-        if(fMC->TrackStep() > fTrajFilter->GetStepSizeCut()) {
-            fMC->TrackPosition(fTrkPos);
-            fTrajFilter->GetCurrentTrk()->AddPoint(fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z(), fTrkPos.T());
-        }
-    }
-    if(fRadLenMan) {
-        id = fMC->CurrentVolID(copyNo);
-        fModVolIter = fgMasterInstance->fModVolMap.find(id);
-        fRadLenMan->AddPoint(fModVolIter->second);
-    }
-    if(fRadMapMan) {
-        id = fMC->CurrentVolID(copyNo);
-        fModVolIter = fgMasterInstance->fModVolMap.find(id);
-        fRadMapMan->AddPoint(fModVolIter->second);
-    }
-    if(fRadGridMan) {
-        fRadGridMan->FillMeshList();
-    }
-    
-    // If information about the tracks should be stored the information as to be
-    // stored for any step.
-    // Information about each single step has also to be stored for the other
-    // special run modes of the simulation which are used to store information
-    // about
-    // 1.) Radiation length in each volume
-    // 2.) Energy deposition in each volume
-    // 3.) Fluence of particles through a defined plane which can be anywhere
-    //     in the geometry. This plane has not to be correlated with any real
-    //     volume
     if (fTrajAccepted) {
         if (fMC->TrackStep() > fTrajFilter->GetStepSizeCut()) {
             fMC->TrackPosition(fTrkPos);
@@ -633,13 +603,10 @@ void FairMCApplication::StopMCRun()
 }
 
 //_____________________________________________________________________________
-void FairMCApplication::FinishEvent()
+void FairMCApplication::EndOfEvent()
 {
-    // User actions after finishing of an event
+    // User actions just before finishing of an event
     // ---
-    LOG(debug) << "[" << fRootManager->GetInstanceId()
-               << " FairMCMCApplication::FinishEvent: " << fMCEventHeader->GetEventID() << " (MC "
-               << gMC->CurrentEvent() << ")";
     if (gMC->IsMT()
         && fRun->GetSink()->GetSinkType() == kONLINESINK) {   // fix the rare case when running G4 multithreaded on MQ
         fMCEventHeader->SetEventID(gMC->CurrentEvent() + 1);
@@ -657,15 +624,26 @@ void FairMCApplication::FinishEvent()
         fFairTaskList->FinishEvent();
     }
 
-    for (auto detectorPtr : listActiveDetectors) {
-        detectorPtr->FinishEvent();
-    }
-
     if (fRootManager && fSaveCurrentEvent) {
         fRootManager->Fill();
     } else {
         fSaveCurrentEvent = kTRUE;
     }
+}
+
+//_____________________________________________________________________________
+void FairMCApplication::FinishEvent()
+{
+    // User actions after finishing of an event
+    // ---
+    LOG(debug) << "[" << fRootManager->GetInstanceId()
+               << " FairMCMCApplication::FinishEvent: " << fMCEventHeader->GetEventID() << " (MC "
+               << gMC->CurrentEvent() << ")";
+
+    for (auto detectorPtr : listActiveDetectors) {
+        detectorPtr->FinishEvent();
+    }
+
     fStack->Reset();
     if (nullptr != fTrajFilter) {
         fTrajFilter->Reset();
@@ -1323,6 +1301,52 @@ void FairMCApplication::ConstructSensitiveDetectors()
 void FairMCApplication::AddSensitiveModule(std::string volName, FairModule* module)
 {
     fMapSensitiveDetectors[volName] = module;
+}
+
+FairVolume* FairMCApplication::GetFairVolume()
+{
+    // Check if the volume with id is in the volume multimap.
+    // If it is not in the map the volume is not a sensitive volume
+    // and we do not call nay of our ProcessHits functions.
+
+    // If the volume is in the multimap, check in second step if the current
+    // copy is alredy inside the multimap.
+    // If the volume is not in the multimap add the copy of the volume to the
+    // multimap.
+    // In any case call the ProcessHits function for this specific detector.
+    Int_t copyNo;
+    Int_t id = fMC->CurrentVolID(copyNo);
+    fDisVol = 0;
+    Int_t fCopyNo = 0;
+    fVolIter = fVolMap.find(id);
+
+    if (fVolIter != fVolMap.end()) {
+
+        // Call Process hits for FairVolume with this id, copyNo
+        do {
+            fDisVol = fVolIter->second;
+            fCopyNo = fDisVol->getCopyNo();
+            if (copyNo == fCopyNo) {
+                return fDisVol;
+            }
+            ++fVolIter;
+        } while (fVolIter != fVolMap.upper_bound(id));
+
+        // Create new FairVolume with this id, copyNo.
+        // Use the FairVolume with the same id found in the map to get
+        // the link to the detector.
+        // Seems that this never happens (?)
+        // cout << "Volume not in map; fDisVol ? " << fDisVol << endl
+        FairVolume* fNewV = new FairVolume(fMC->CurrentVolName(), id);
+        fNewV->setMCid(id);
+        fNewV->setModId(fDisVol->getModId());
+        fNewV->SetModule(fDisVol->GetModule());
+        fNewV->setCopyNo(copyNo);
+        fVolMap.insert(pair<Int_t, FairVolume*>(id, fNewV));
+
+        return fNewV;
+    }
+    return 0;
 }
 
 ClassImp(FairMCApplication)
