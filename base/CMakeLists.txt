@@ -55,6 +55,7 @@ set(sources
   sink/FairRootFileSink.cxx
   sink/FairSink.cxx
 
+  source/FairFileSourceBase.cxx
   source/FairFileSource.cxx
   source/FairMixedSource.cxx
   source/FairOnlineSource.cxx
