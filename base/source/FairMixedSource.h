@@ -16,7 +16,7 @@
 #ifndef __FAIRROOT__FairMixedSource__
 #define __FAIRROOT__FairMixedSource__
 
-#include "FairSource.h"
+#include "FairFileSourceBase.h"
 
 #include <TArrayI.h>
 #include <TChain.h>
@@ -36,7 +36,7 @@ class TObject;
 
 class FairRootManager;
 
-class FairMixedSource : public FairSource
+class FairMixedSource : public FairFileSourceBase
 {
   public:
     FairMixedSource(TFile* f, const char* Title = "InputRootFile", UInt_t identifier = 0);
@@ -154,7 +154,6 @@ class FairMixedSource : public FairSource
     std::list<TString> fFriendFileList;                                 //!
     std::list<TString> fInputChainList;                                 //!
     std::map<TString, TChain*> fFriendTypeList;                         //!
-    std::map<TString, std::list<TString>*> fCheckInputBranches;         //!
     std::list<TString> fInputLevel;                                     //!
     std::map<TString, std::multimap<TString, TArrayI>> fRunIdInfoAll;   //!
     /** list of folders from all input (and friends) files*/

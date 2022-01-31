@@ -74,6 +74,7 @@
 
 #pragma link C++ class FairRunOnline;
 #pragma link C++ class FairSource;
+#pragma link C++ class FairFileSourceBase;
 #pragma link C++ class FairFileSource;
 #pragma link C++ class FairMixedSource;
 #pragma link C++ class FairOnlineSource;
