@@ -16,7 +16,7 @@
 #ifndef __FAIRROOT__FairFileSource__
 #define __FAIRROOT__FairFileSource__
 
-#include "FairSource.h"
+#include "FairFileSourceBase.h"
 
 #include <TArrayI.h>
 #include <TChain.h>
@@ -34,7 +34,7 @@ class FairMCEventHeader;
 class FairRuntimeDb;
 class TTree;
 
-class FairFileSource : public FairSource
+class FairFileSource : public FairFileSourceBase
 {
   public:
     FairFileSource(TFile* f, const char* Title = "InputRootFile", UInt_t identifier = 0);
@@ -133,7 +133,6 @@ class FairFileSource : public FairSource
     std::list<TString> fFriendFileList;                                 //!
     std::list<TString> fInputChainList;                                 //!
     std::map<TString, TChain*> fFriendTypeList;                         //!
-    std::map<TString, std::list<TString>*> fCheckInputBranches;         //!
     std::list<TString> fInputLevel;                                     //!
     std::map<TString, std::multimap<TString, TArrayI>> fRunIdInfoAll;   //!
     /**Input Chain */
