@@ -345,6 +345,8 @@ if(BUILD_UNITTESTS)
   message(STATUS "Building the unit tests.")
   add_subdirectory(test)
 endif()
+add_subdirectory(test/tgeo)
+
 
 if(BUILD_EXAMPLES)
   install(DIRECTORY
