@@ -315,6 +315,8 @@ if(BUILD_UNITTESTS)
   message(STATUS "Building the unit tests.")
   add_subdirectory(test)
 endif()
+add_subdirectory(test/tgeo)
+
 
 add_subdirectory(cmake)
 
