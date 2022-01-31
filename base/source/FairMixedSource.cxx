@@ -287,32 +287,34 @@ Bool_t FairMixedSource::Init()
     //  GetRunIdInfo(fInFile->GetName(), chainName);
 
     // Add all additional input files to the input chain and do a consitency check
-    for (auto fileName : fInputChainList) {
+    {
         TDirectory::TContext restorecwd{};
 
-        // Temporarily open the input file to extract information which
-        // is needed to bring the friend trees in the correct order
-        TFile* inputFile = TFile::Open(fileName);
-        if (inputFile->IsZombie()) {
-            LOG(fatal) << "Error opening the file " << fileName.Data()
-                       << " which should be added to the input chain or as friend chain";
+        for (auto fileName : fInputChainList) {
+            // Temporarily open the input file to extract information which
+            // is needed to bring the friend trees in the correct order
+            TFile* inputFile = TFile::Open(fileName);
+            if (inputFile->IsZombie()) {
+                LOG(fatal) << "Error opening the file " << fileName.Data()
+                           << " which should be added to the input chain or as friend chain";
+            }
+
+            // Check if the branchlist is the same as for the first input file.
+            Bool_t isOk = CompareBranchList(inputFile, chainName);
+            if (!isOk) {
+                LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName()
+                           << " and the file to be added " << fileName.Data();
+                return kFALSE;
+            }
+
+            // Add the runid information for all files in the chain.
+            // GetRunIdInfo(inputFile->GetName(), chainName);
+            // Add the file to the input chain
+            fBackgroundChain->Add(fileName);
+
+            // Close the temporarly file
+            inputFile->Close();
         }
-
-        // Check if the branchlist is the same as for the first input file.
-        Bool_t isOk = CompareBranchList(inputFile, chainName);
-        if (!isOk) {
-            LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName() << " and the file to be added "
-                       << fileName.Data();
-            return kFALSE;
-        }
-
-        // Add the runid information for all files in the chain.
-        // GetRunIdInfo(inputFile->GetName(), chainName);
-        // Add the file to the input chain
-        fBackgroundChain->Add(fileName);
-
-        // Close the temporarly file
-        inputFile->Close();
     }
     fNoOfEntries = fBackgroundChain->GetEntries();
     FairRootManager::Instance()->SetInChain(fBackgroundChain, 0);
