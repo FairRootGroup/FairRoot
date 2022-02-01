@@ -528,7 +528,7 @@ void FairMCApplication::Stepping()
 
     Int_t copyNo;
     Int_t id = fMC->CurrentVolID(copyNo);
-    
+
     // If information about the tracks should be stored the information as to be
     // stored for any step.
     // Information about each single step has also to be stored for the other
@@ -1290,10 +1290,8 @@ void FairMCApplication::UndoGeometryModifications()
 
 void FairMCApplication::ConstructSensitiveDetectors()
 {
-    for(auto const& x : fMapSensitiveDetectors)
-    {
-        LOG(debug) << "FairMCApplication::ConstructSensitiveDetectors "
-        << x.first << " " << x.second;
+    for (auto const& x : fMapSensitiveDetectors) {
+        LOG(debug) << "FairMCApplication::ConstructSensitiveDetectors " << x.first << " " << x.second;
         TVirtualMC::GetMC()->SetSensitiveDetector(x.first, x.second);
     }
 }

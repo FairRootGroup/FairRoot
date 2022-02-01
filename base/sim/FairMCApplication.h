@@ -227,7 +227,7 @@ class FairMCApplication : public TVirtualMCApplication
      * Get the current application state.
      */
     FairMCApplicationState GetState() const { return fState; }
-    
+
     /**
      * Add module to the list of sensitive detectors.
      */
@@ -334,7 +334,7 @@ class FairMCApplication : public TVirtualMCApplication
 
     /** Current state */
     FairMCApplicationState fState;   //!
-    
+
     /** List of sensitive detectors.
      * To be used with TVirtualMCSensitiveDetector. */
     std::map<std::string, FairModule*> fMapSensitiveDetectors;
