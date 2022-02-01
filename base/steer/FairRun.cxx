@@ -21,7 +21,12 @@
 #include "FairRuntimeDb.h"      // for FairRuntimeDb
 #include "FairTask.h"           // for FairTask
 
-#include <TFile.h>     // for TFile
+#include <RVersion.h>      // for ROOT_VERSION_CODE and ROOT_VERSION
+#include <TFile.h>         // for TFile
+#include <TGeoManager.h>   // for gGeoManager, TGeoManager
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 18, 2) && ROOT_VERSION_CODE <= ROOT_VERSION(6, 22, 6)
+#include <TGeoSystemOfUnits.h>   // for TGeoUnit::kTGeoUnits
+#endif
 #include <TList.h>     // for TList
 #include <TObject.h>   // for TObject
 #include <cassert>     // for... well, assert
@@ -50,7 +55,27 @@ FairRun::FairRun(Bool_t isMaster)
         Fatal("FairRun", "Singleton instance already exists.");
         return;
     }
+
     fRunInstance = this;
+
+    // Fix the unit system to the ROOT one which was the default before ROOT v6.18.02.
+    // With ROOT v6.18.02 the ROOT team introduced a new unit system (taken from Geant4)
+    // for the geometry manager. The change was reverted with ROOT v6.25.1.
+    // Unfortunately the way to set the default units to the ROOT one is
+    // different for different ROOT versions such that the code needs some
+    // preprocessor statements.
+    // Before version v6.18.2 and after v6.25.1 the units are correct
+    // by default
+
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 18, 2) && ROOT_VERSION_CODE <= ROOT_VERSION(6, 22, 6)
+    TGeoUnit::setUnitType(TGeoUnit::kTGeoUnits);
+#endif
+
+#if ROOT_VERSION_CODE >= ROOT_VERSION(6, 22, 8) && ROOT_VERSION_CODE <= ROOT_VERSION(6, 25, 1)
+    TGeoManager::LockDefaultUnits(false);
+    TGeoManager::SetDefaultUnits(TGeoManager::EDefaultUnits::kRootUnits);
+    TGeoManager::LockDefaultUnits(true);
+#endif
 
     fRootManager = FairRootManager::Instance();
 
