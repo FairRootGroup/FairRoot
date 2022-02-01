@@ -20,7 +20,7 @@ set(CMAKE_INSTALL_MESSAGE LAZY)
 # Set project version
 SET(FAIRROOT_MAJOR_VERSION 18)
 SET(FAIRROOT_MINOR_VERSION 6)
-SET(FAIRROOT_PATCH_VERSION 6)
+SET(FAIRROOT_PATCH_VERSION 7)
 
 if(APPLE)
   if(NOT DEFINED CMAKE_C_COMPILER)
@@ -345,6 +345,8 @@ if(BUILD_UNITTESTS)
   message(STATUS "Building the unit tests.")
   add_subdirectory(test)
 endif()
+add_subdirectory(test/tgeo)
+
 
 if(BUILD_EXAMPLES)
   install(DIRECTORY
