@@ -23,8 +23,6 @@ ClassImp(FairRadGridManager);
 
 FairRadGridManager* FairRadGridManager::fgInstance = nullptr;
 
-Double_t FairRadGridManager::fLtmp = 0.0;
-
 FairRadGridManager* FairRadGridManager::Instance()
 {
     /**singelton instance*/
@@ -55,13 +53,13 @@ FairRadGridManager::FairRadGridManager()
     if (nullptr == fgInstance) {
         fgInstance = this;
     }
-    fLtmp = 0;
 }
 
 FairRadGridManager::~FairRadGridManager()
 {
-    /** radiation length default dtor */
-    fgInstance = nullptr;
+    if (fgInstance == this) {
+        fgInstance = nullptr;
+    }
 }
 
 void FairRadGridManager::Init()
