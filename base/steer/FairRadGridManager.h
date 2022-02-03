@@ -90,8 +90,6 @@ class FairRadGridManager
     /** output file name */
     TString fOutputFileName;
 
-    static Double_t fLtmp;
-
   public:
     TObjArray* GetMeshList() { return fMeshList; }
     void AddMeshList(TObjArray* list)
