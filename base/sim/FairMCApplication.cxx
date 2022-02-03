@@ -105,7 +105,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     , fRadLenMan(nullptr)
     , fRadMap(kFALSE)
     , fRadMapMan(nullptr)
-    , fRadGridMan(nullptr)
     , fEventHeader(nullptr)
     , fMCEventHeader(nullptr)
     , listActiveDetectors()
@@ -195,7 +194,6 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
     , fRadLenMan(nullptr)
     , fRadMap(kFALSE)
     , fRadMapMan(nullptr)
-    , fRadGridMan(nullptr)
     , fEventHeader(nullptr)
     , fMCEventHeader(nullptr)
     , listActiveDetectors()
@@ -288,7 +286,6 @@ FairMCApplication::FairMCApplication()
     , fRadLenMan(nullptr)
     , fRadMap(kFALSE)
     , fRadMapMan(nullptr)
-    , fRadGridMan(nullptr)
     , fEventHeader(nullptr)
     , fMCEventHeader(nullptr)
     , listActiveDetectors()
@@ -996,7 +993,7 @@ void FairMCApplication::InitGeometry()
     if (nullptr != fRadMapMan) {
         fRadMapMan->Init();
     }
-    if (nullptr != fRadGridMan) {
+    if (fRadGridMan) {
         fRadGridMan->Init();
     }
 
@@ -1342,7 +1339,7 @@ void FairMCApplication::SetRadiationMapReg(Bool_t RadMap)
 void FairMCApplication::AddMeshList(TObjArray* meshList)
 {
     if (!fRadGridMan) {
-        fRadGridMan = new FairRadGridManager();
+        fRadGridMan = std::make_unique<FairRadGridManager>();
     }
     fRadGridMan->AddMeshList(meshList);
 }

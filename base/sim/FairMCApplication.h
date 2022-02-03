@@ -13,6 +13,7 @@
 #ifndef FAIR_MC_APPLICATION_H
 #define FAIR_MC_APPLICATION_H
 
+#include "FairRadGridManager.h"
 #include "FairRunInfo.h"   // for FairRunInfo
 
 #include <Rtypes.h>                  // for Int_t, Bool_t, Double_t, etc
@@ -21,6 +22,7 @@
 #include <TVirtualMCApplication.h>   // for TVirtualMCApplication
 #include <list>                      // for list
 #include <map>                       // for map, multimap, etc
+#include <memory>                    // for std::unique_ptr
 
 class FairDetector;
 class FairEventHeader;
@@ -28,7 +30,6 @@ class FairField;
 class FairGenericStack;
 class FairMCEventHeader;
 class FairPrimaryGenerator;
-class FairRadGridManager;
 class FairRadLenManager;
 class FairRadMapManager;
 class FairRootManager;
@@ -281,7 +282,7 @@ class FairMCApplication : public TVirtualMCApplication
     /**Radiation Map Manager*/
     FairRadMapManager* fRadMapMan;   //!
     /**Radiation map Grid Manager*/
-    FairRadGridManager* fRadGridMan;   //!
+    std::unique_ptr<FairRadGridManager> fRadGridMan{};   //!
 
     FairEventHeader* fEventHeader;   //!
 
