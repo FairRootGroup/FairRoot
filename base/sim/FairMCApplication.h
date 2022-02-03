@@ -305,10 +305,12 @@ class FairMCApplication : public TVirtualMCApplication
     ClassDef(FairMCApplication, 4);
 
   private:
-    /** Protected copy constructor */
+    /** Protected copy constructor, needed for CloneForWorker */
     FairMCApplication(const FairMCApplication&);
-    /** Protected assignment operator */
-    FairMCApplication& operator=(const FairMCApplication&);
+    /* delete all the others */
+    FairMCApplication& operator=(const FairMCApplication&) = delete;
+    FairMCApplication(FairMCApplication&&) = delete;
+    FairMCApplication& operator=(FairMCApplication&&) = delete;
 
     FairRunInfo fRunInfo;   //!
     Bool_t fGeometryIsInitialized;
