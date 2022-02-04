@@ -210,6 +210,11 @@ class FairMCApplication : public TVirtualMCApplication
      */
     FairMCApplicationState GetState() const { return fState; }
 
+    /**
+     * Return non-owning pointer to FairRadGridManager
+     */
+    auto GetRadGridMan() { return fRadGridMan.get(); }
+
   private:
     // methods
     Int_t GetIonPdg(Int_t z, Int_t a) const;
