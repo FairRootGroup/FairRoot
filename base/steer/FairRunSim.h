@@ -189,6 +189,11 @@ class FairRunSim : public FairRun
 
     void StopMCRun() { fApp->StopMCRun(); }
 
+    /**
+     * Get non-owning pointer to FairMCApplication
+     */
+    auto GetMCApplication() { return fApp; }
+
   private:
     FairRunSim(const FairRunSim& M);
     FairRunSim& operator=(const FairRunSim&) { return *this; }
