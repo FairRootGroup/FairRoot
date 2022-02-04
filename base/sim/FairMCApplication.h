@@ -79,32 +79,32 @@ class FairMCApplication : public TVirtualMCApplication
     static FairMCApplication* Instance();
     virtual void AddDecayModes();
     /**  Add user defined particles (optional) */
-    virtual void AddParticles();   // MC Application
+    void AddParticles() override;   // MC Application
     /** Add user defined ions (optional) */
-    virtual void AddIons();   // MC Application
+    void AddIons() override;   // MC Application
     /**
      *Add user defined Tasks to be executed after each event (optional)
      * @param fTask: Task that has to be excuted during simulation
      */
     void AddTask(TTask* fTask);
     /** Define actions at the beginning of the event */
-    virtual void BeginEvent();   // MC Application
+    void BeginEvent() override;   // MC Application
     /** Define actions at the beginning of primary track */
-    virtual void BeginPrimary();   // MC Application
+    void BeginPrimary() override;   // MC Application
     /** Construct user geometry */
-    virtual void ConstructGeometry();   // MC Application
+    void ConstructGeometry() override;   // MC Application
     /** Align or misalign geometry before actual run       */
-    virtual Bool_t MisalignGeometry();
+    Bool_t MisalignGeometry() override;
     /** Define parameters for optical processes (optional) */
-    virtual void ConstructOpGeometry();   // MC Application
+    void ConstructOpGeometry() override;   // MC Application
     /** Define actions at the end of event */
-    virtual void FinishEvent();   // MC Application
+    void FinishEvent() override;   // MC Application
     /** Define actions at the end of primary track */
-    virtual void FinishPrimary();   // MC Application
+    void FinishPrimary() override;   // MC Application
     /** Define actions at the end of run */
     void FinishRun();
     /** Generate primary particles */
-    virtual void GeneratePrimaries();   // MC Application
+    void GeneratePrimaries() override;   // MC Application
     /** Return detector by name  */
     FairDetector* GetDetector(const char* DetName);
     /** Return Field used in simulation*/
@@ -116,24 +116,24 @@ class FairMCApplication : public TVirtualMCApplication
     FairGenericStack* GetStack();
     TChain* GetChain();
     /** Initialize geometry */
-    virtual void InitGeometry();   // MC Application
+    void InitGeometry() override;   // MC Application
     /** Initialize MC engine */
     void InitMC(const char* setup, const char* cuts);
     /** Initialize Tasks if any*/
     void InitTasks();
     /**Define actions at the end of each track */
-    virtual void PostTrack();   // MC Application
+    void PostTrack() override;   // MC Application
     /** Define actions at the beginning of each track*/
-    virtual void PreTrack();   // MC Application
+    void PreTrack() override;   // MC Application
 
     /** Clone for worker (used in MT mode only) */
-    virtual TVirtualMCApplication* CloneForWorker() const;
+    TVirtualMCApplication* CloneForWorker() const override;
 
     /** Init application on worker (used in MT mode only) */
-    virtual void InitOnWorker();
+    void InitOnWorker() override;
 
     /** Finish run on worker (used in MT mode only) */
-    virtual void FinishRunOnWorker();
+    void FinishRunOnWorker() override;
 
     /** Run the MC engine
      * @param nofEvents : number of events to simulate
@@ -186,15 +186,15 @@ class FairMCApplication : public TVirtualMCApplication
      */
     void SetUserDecayConfig(const TString decayerConf) { fUserDecayConfig = decayerConf; }
     /** Define action at each step, dispatch the action to the corresponding detectors */
-    virtual void Stepping();   // MC Application
+    void Stepping() override;   // MC Application
     /** Stop the run*/
     virtual void StopRun();
     /** Stop the run*/
     virtual void StopMCRun();
     /**Define maximum radius for tracking (optional) */
-    virtual Double_t TrackingRmax() const;   // MC Application
+    Double_t TrackingRmax() const override;   // MC Application
     /** Define maximum z for tracking (optional) */
-    virtual Double_t TrackingZmax() const;   // MC Application
+    Double_t TrackingZmax() const override;   // MC Application
 
     void AddMeshList(TObjArray* meshList);
 
@@ -303,7 +303,7 @@ class FairMCApplication : public TVirtualMCApplication
     /** Current state */
     FairMCApplicationState fState;   //!
 
-    ClassDef(FairMCApplication, 4);
+    ClassDefOverride(FairMCApplication, 4);
 
   private:
     /** Protected copy constructor, needed for CloneForWorker */
