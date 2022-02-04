@@ -117,7 +117,7 @@ void run_tutorial1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 
     // -----   Initialize simulation run   ------------------------------------
     run->Init();
-    FairRadGridManager::Instance()->SetOutputFileName("radGridResults.root");
+    run->GetMCApplication()->GetRadGridMan()->SetOutputFileName("radGridResults.root");
     // ------------------------------------------------------------------------
 
     // -----   Runtime database   ---------------------------------------------
