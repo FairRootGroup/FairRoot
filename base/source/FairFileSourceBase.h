@@ -11,6 +11,7 @@
 
 #include "FairSource.h"
 
+#include <TFile.h>
 #include <list>
 #include <map>
 
@@ -19,6 +20,9 @@
  */
 class FairFileSourceBase : public FairSource
 {
+  public:
+    Bool_t CompareBranchList(TFile* fileHandle, TString inputLevel);
+
   protected:
     FairFileSourceBase()
         : FairSource(){};
