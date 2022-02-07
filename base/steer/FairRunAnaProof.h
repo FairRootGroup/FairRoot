@@ -24,7 +24,7 @@
 class FairRunAnaProof : public FairRunAna
 {
   public:
-    static FairRunAnaProof* Instance();
+    [[deprecated]] static FairRunAnaProof* Instance();   ///< \deprecated
     virtual ~FairRunAnaProof();
     FairRunAnaProof(const char* proofName = "");
 

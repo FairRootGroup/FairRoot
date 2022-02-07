@@ -38,6 +38,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * It will be disabled by default in FairRoot 19.
     * We plan to remove it completely in FairRoot 20.
   * If you need it, speak up NOW.
+* Deprecate some singleton-like APIs:
+  * `FairRunAnaProof::Instance()` - keep a pointer to the
+    object after `new` in your code.
 
 ### Other Notable Changes
 * Tests using Geant3 have been disabled by default, because
