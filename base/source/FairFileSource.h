@@ -71,7 +71,6 @@ class FairFileSource : public FairFileSourceBase
     void AddFile(TString FileName);
     void AddFriendsToChain();
     void PrintFriendList();
-    Bool_t CompareBranchList(TFile* fileHandle, TString inputLevel);
     void CheckFriendChains();
     void CreateNewFriendChain(TString inputFile, TString inputLevel);
     TTree* GetInTree() { return fInChain->GetTree(); }

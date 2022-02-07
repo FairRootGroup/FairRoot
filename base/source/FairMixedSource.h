@@ -121,8 +121,6 @@ class FairMixedSource : public FairFileSourceBase
     void SetFileHeader(FairFileHeader* f) { fFileHeader = f; }
     Double_t GetEventTime();
 
-    /**Add ROOT file to input, the file will be chained to already added files*/
-    Bool_t CompareBranchList(TFile* fileHandle, TString inputLevel);
     /**Set the input tree when running on PROOF worker*/
     TObjArray* GetListOfFolders() { return fListFolder; }
     TFolder* GetBranchDescriptionFolder() { return fCbmroot; }
