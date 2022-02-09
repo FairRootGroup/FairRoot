@@ -65,11 +65,11 @@ class FairRunSim : public FairRun
     /**
      *       Initialize the Simulation
      */
-    virtual void Init();
+    void Init() override;
     /**
      *       run the  simulation
      */
-    virtual void Run(Int_t NEvents = 0, Int_t NotUsed = 0);
+    void Run(Int_t NEvents = 0, Int_t NotUsed = 0) override;
     /**
      *       Set the magnetic that has to be used for simulation field
      */
@@ -109,7 +109,7 @@ class FairRunSim : public FairRun
     TString* GetGeoModel() { return fLoaderName; }
 
     /**Get the field used in simulation*/
-    FairField* GetField() { return fField; }
+    FairField* GetField() override { return fField; }
 
     /**Get the detector specific event header*/
     FairMCEventHeader* GetMCEventHeader();
@@ -231,7 +231,7 @@ class FairRunSim : public FairRun
     bool fUseSimSetupPostInitFunction = false;
     FairGenericVMCConfig* fSimulationConfig;   //!                 /** Simulation configuration */
 
-    ClassDef(FairRunSim, 2);
+    ClassDefOverride(FairRunSim, 2);
 };
 
 #endif   // FAIRRUNSIM_H
