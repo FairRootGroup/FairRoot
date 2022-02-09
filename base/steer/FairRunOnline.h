@@ -35,14 +35,14 @@ class FairRunOnline : public FairRun
     FairRunOnline(FairSource* source);
 
     /**initialize the run manager*/
-    void Init();
+    void Init() override;
     /**Run for the given number of events*/
-    void Run(Int_t Ev_start, Int_t Ev_end);
+    void Run(Int_t Ev_start, Int_t Ev_end) override;
 
     void Reinit(UInt_t runId);
     UInt_t getRunId() { return fRunId; }
     /** Get the magnetic field **/
-    FairField* GetField() { return fField; }
+    FairField* GetField() override { return fField; }
     /** Set the magnetic Field */
     void SetField(FairField* ffield) { fField = ffield; }
 
@@ -108,7 +108,7 @@ class FairRunOnline : public FairRun
 
     virtual void Fill();
 
-    ClassDef(FairRunOnline, 0);
+    ClassDefOverride(FairRunOnline, 0);
 };
 
 #endif   // FAIRRUNONLINE_H

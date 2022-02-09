@@ -38,9 +38,9 @@ class FairRunAna : public FairRun
     virtual ~FairRunAna();
     FairRunAna();
     /**initialize the run manager*/
-    void Init();
+    void Init() override;
     /**Run from event number NStart to event number NStop */
-    void Run(Int_t NStart = 0, Int_t NStop = 0);
+    void Run(Int_t NStart = 0, Int_t NStop = 0) override;
     /**Run over the whole input file with timpe window delta_t as unit (entry)*/
     void Run(Double_t delta_t);
     /**Run for the given single entry*/
@@ -75,7 +75,7 @@ class FairRunAna : public FairRun
     void Reinit(UInt_t runId);
     UInt_t getRunId() { return fRunId; }
     /** Get the magnetic field **/
-    FairField* GetField() { return fField; }
+    FairField* GetField() override { return fField; }
     /** Set the magnetic Field */
     void SetField(FairField* ffield) { fField = ffield; }
     /** Set external geometry file */
@@ -140,7 +140,7 @@ class FairRunAna : public FairRun
     /** Flag for Event Header Persistency */
     Bool_t fStoreEventHeader;   //!
 
-    ClassDef(FairRunAna, 6);
+    ClassDefOverride(FairRunAna, 6);
 };
 
 #endif   // FAIRRUNANA_H

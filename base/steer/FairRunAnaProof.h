@@ -29,7 +29,7 @@ class FairRunAnaProof : public FairRunAna
     FairRunAnaProof(const char* proofName = "");
 
     /**initialize the run manager*/
-    void Init();
+    void Init() override;
 
     /** Init containers executed on PROOF, which is part of Init when running locally*/
     void InitContainers();
@@ -44,7 +44,7 @@ class FairRunAnaProof : public FairRunAna
     //    virtual void    SetOutputFile(TFile* f);
 
     /**Run from event number NStart to event number NStop */
-    void Run(Int_t NStart = 0, Int_t NStop = 0);
+    void Run(Int_t NStart = 0, Int_t NStop = 0) override;
     /**Run for one event, used on PROOF nodes*/
     void RunOneEvent(Long64_t entry);
     /**Run on proof from event NStart to event NStop*/
@@ -67,7 +67,7 @@ class FairRunAnaProof : public FairRunAna
     /** Set PROOF output status, possibilities: "copy","merge"*/
     void SetProofOutputStatus(TString outStat) { fProofOutputStatus = outStat; }
 
-    virtual void SetSource(FairSource* tempSource);
+    void SetSource(FairSource* tempSource) override;
 
   protected:
     static FairRunAnaProof* fRAPInstance;
@@ -91,7 +91,7 @@ class FairRunAnaProof : public FairRunAna
 
     FairFileSource* fProofFileSource;
 
-    ClassDef(FairRunAnaProof, 1);
+    ClassDefOverride(FairRunAnaProof, 1);
 };
 
 #endif   // FAIRRUNANAPROOF_H
