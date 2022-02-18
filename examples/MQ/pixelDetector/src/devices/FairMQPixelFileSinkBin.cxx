@@ -63,6 +63,10 @@ void FairMQPixelFileSinkBin::Init()
     fTreeName = "cbmsim";
 
     fOutFile = TFile::Open(fFileName.c_str(), fFileOption.c_str());
+    if (!fOutFile) {
+        LOG(error) << "Could not open file" << fFileName.c_str();
+        return;
+    }
 
     fTree = new TTree(fTreeName.c_str(), "/cbmout");
 
