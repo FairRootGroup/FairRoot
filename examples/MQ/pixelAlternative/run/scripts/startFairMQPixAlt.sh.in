@@ -204,10 +204,10 @@ if [ "$COMMAND" == "static" ]; then
         fi
     fi
 
-    $SERVER &> server_$DATESTRING.out.log &
+    $SERVER > server_$DATESTRING.out.log &
     SERVER_PID=$!
 
-    $SAMPLER &> sampler_$DATESTRING.out.log &
+    $SAMPLER > sampler_$DATESTRING.out.log &
     SAMPLER_PID=$!
 
     for (( i=0 ; i<$NOFPROCESSORS ; i++ ))
@@ -216,7 +216,7 @@ if [ "$COMMAND" == "static" ]; then
         APROCESSOR_PID[i]=$!
     done
 
-    $FILESINK &> fileSink_$DATESTRING.out.log &
+    $FILESINK > fileSink_$DATESTRING.out.log &
     FILESINK_PID=$!
 
     RUN_STRING="Running"
