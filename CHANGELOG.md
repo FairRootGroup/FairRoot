@@ -68,6 +68,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * Consider calling `fairroot_check_root_cxxstd_compatibility()`
   in your `CMakeLists.txt`.
 * `fairsoft-config` isn't searched for and not needed any more.
+* Tests using Geant3 have been disabled by default, because
+  those tests have a probability > 0 for failing.
+  If you want to run them anyways, pass
+  `-DENABLE_GEANT3_TESTING=ON` to CMake.
 
 ### Example Changes in Experiment Repos
 * https://github.com/R3BRootGroup/R3BRoot/pull/413

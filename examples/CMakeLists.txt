@@ -6,7 +6,12 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+set(mcEngine_list TGeant4)
+
 if(Geant3_FOUND)
+  if(ENABLE_GEANT3_TESTING)
+    list(APPEND mcEngine_list TGeant3)
+  endif()
   add_subdirectory(common/passive)
   add_subdirectory(common/mcstack)
   if(TARGET FairRoot::EventDisplay)

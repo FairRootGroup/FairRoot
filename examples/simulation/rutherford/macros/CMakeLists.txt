@@ -11,7 +11,7 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_rutherford.C)
 
 set(maxTestTime 60)
 
-foreach(mcEngine IN ITEMS TGeant3 TGeant4)
+foreach(mcEngine IN LISTS mcEngine_list)
   add_test(NAME ex_sim_rutherford_${mcEngine}
            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_rutherford.sh 10 \"${mcEngine}\")
   set_tests_properties(ex_sim_rutherford_${mcEngine} PROPERTIES
