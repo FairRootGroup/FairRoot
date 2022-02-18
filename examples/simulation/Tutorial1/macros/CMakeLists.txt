@@ -14,7 +14,7 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial1.C)
 
 set(maxTestTime 60)
 
-foreach(mcEngine IN ITEMS TGeant3 TGeant4)
+foreach(mcEngine IN LISTS mcEngine_list)
   add_test(NAME ex_sim_tutorial1_mesh_${mcEngine}
            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_mesh.sh 10 \"${mcEngine}\")
   set_tests_properties(ex_sim_tutorial1_mesh_${mcEngine} PROPERTIES

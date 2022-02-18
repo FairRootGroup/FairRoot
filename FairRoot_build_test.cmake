@@ -54,6 +54,10 @@ list(APPEND options
   "-DCMAKE_INSTALL_PREFIX:PATH=${test_install_prefix}"
   "-DBUILD_MBS=ON"
 )
+if ("$ENV{CHANGE_ID}" STREQUAL "")
+  # Branch build
+  list(APPEND options "-DENABLE_GEANT3_TESTING:BOOL=ON")
+endif()
 ctest_configure(OPTIONS "${options}")
 
 ctest_build(FLAGS "-j${NCPUS}" TARGET install
@@ -62,7 +66,10 @@ ctest_build(FLAGS "-j${NCPUS}" TARGET install
 
 unset(repeat)
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.17)
-  set(repeat REPEAT UNTIL_PASS:7)
+  if ("$ENV{CHANGE_ID}" STREQUAL "")
+    # Branch build
+    set(repeat REPEAT UNTIL_PASS:7)
+  endif()
 endif()
 if(_ctest_build_ret_val OR _ctest_build_num_errs)
   message(STATUS "Skipping tests, because build failed"

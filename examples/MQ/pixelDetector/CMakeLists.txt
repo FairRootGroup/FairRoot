@@ -6,7 +6,9 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-add_subdirectory(src)
-add_subdirectory(macros)
-add_subdirectory(run)
 add_subdirectory(param)
+add_subdirectory(src)
+if(ENABLE_GEANT3_TESTING)
+  add_subdirectory(macros)
+endif()
+add_subdirectory(run)
