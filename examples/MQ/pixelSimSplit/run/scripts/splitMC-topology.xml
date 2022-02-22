@@ -15,7 +15,7 @@
     </decltask>
 
     <decltask @dds_name_tag@="Transporter">
-      <exe reachable="true">@splitmc_bin_location@/pixel-sim-transport --config-key splitMC-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect --channel-config name=primariesChannel,type=pull,method=connect --channel-config name=data#all#,type=push,method=connect --transport-name TGeant3 --running-mode pp --severity INFO --detector-library @CMAKE_BINARY_DIR@/lib/libExPixel.@example_library_extension@ -P dds --color false</exe>
+      <exe reachable="true">@splitmc_bin_location@/pixel-sim-transport --config-key splitMC-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect --channel-config name=primariesChannel,type=pull,method=connect --channel-config name=data#all#,type=push,method=connect --transport-name @pixel_simulation_engine@ --running-mode pp --severity INFO --detector-library @CMAKE_BINARY_DIR@/lib/libExPixel.@example_library_extension@ -P dds --color false</exe>
         <properties>
           <@dds_name_tag@ access="read">fmqchan_primariesChannel</@dds_name_tag@>
           <@dds_name_tag@ access="read">fmqchan_data#all#</@dds_name_tag@>
@@ -32,7 +32,7 @@
     </decltask>
 
     <decltask @dds_name_tag@="Sink">
-      <exe reachable="true">@pixel_bin_dir@/pixel-sink --id splitMC-sink --in-channel dataOut --severity INFO --channel-config name=dataOut,type=pull,method=connect --file-name @splitmc_file_location@/DDS.simulation_TGeant3.data.root --ack-channel ackChannel --channel-config name=ackChannel,type=push,method=connect,rateLogging=1 -P dds --color false</exe>
+      <exe reachable="true">@pixel_bin_dir@/pixel-sink --id splitMC-sink --in-channel dataOut --severity INFO --channel-config name=dataOut,type=pull,method=connect --file-name @splitmc_file_location@/DDS.simulation_@pixel_simulation_engine@.data.root --ack-channel ackChannel --channel-config name=ackChannel,type=push,method=connect,rateLogging=1 -P dds --color false</exe>
         <properties>
           <@dds_name_tag@ access="read">fmqchan_dataOut</@dds_name_tag@>
           <@dds_name_tag@ access="read">fmqchan_ackChannel</@dds_name_tag@>
@@ -40,7 +40,7 @@
     </decltask>
 
     <decltask @dds_name_tag@="ParamServer">
-      <exe reachable="true">@fairroot_bin_dir@/parmq-server zeromq --id splitMC-parmq-server --channel-config name=updateChannel,type=rep,method=bind --severity INFO --update-channel-name updateChannel --output-name @splitmc_file_location@/DDS.simulation_TGeant3.pars.root -P dds --color false</exe>
+      <exe reachable="true">@fairroot_bin_dir@/parmq-server zeromq --id splitMC-parmq-server --channel-config name=updateChannel,type=rep,method=bind --severity INFO --update-channel-name updateChannel --output-name @splitmc_file_location@/DDS.simulation_@pixel_simulation_engine@.pars.root -P dds --color false</exe>
         <properties>
             <@dds_name_tag@ access="write">fmqchan_updateChannel</@dds_name_tag@>
         </properties>

@@ -73,32 +73,32 @@ fi
 
 ########################### Define some variables
 # ASCII and ROOT parameter files for the processor device
-ROOTPARAM="$WORKDIR/macros/pixel_TGeant3.params.root"
+ROOTPARAM="$WORKDIR/macros/pixel_@pixel_simulation_engine@.params.root"
 ASCIIPARAM="$WORKDIR/param/pixel_digi.par"
 
 if [ "$FAIRTASKNAME" == "--task-name PixelFindHits" ] ; then
     # input file and branch for the sampler device
-    INPUTFILE="$WORKDIR/macros/pixel_TGeant3.digi.root"
- #   INPUTFILE+=" --file-name $WORKDIR/macros/pixel_TGeant3.digi.f1.root"
+    INPUTFILE="$WORKDIR/macros/pixel_@pixel_simulation_engine@.digi.root"
+ #   INPUTFILE+=" --file-name $WORKDIR/macros/pixel_@pixel_simulation_engine@.digi.f1.root"
     INPUTBRANCH="PixelDigis"
 
     # output file for sink
-    OUTPUTFILE="$WORKDIR/macros/MQ.pixel_TGeant3.hits.root"
+    OUTPUTFILE="$WORKDIR/macros/MQ.pixel_@pixel_simulation_engine@.hits.root"
 elif [ "$FAIRTASKNAME" == "--task-name PixelFindTracks" ] ; then
     # input file and branch for the sampler device
     FAIRTASKNAME+=" --keep-data PixelHits"
-    INPUTFILE="$WORKDIR/macros/MQ.pixel_TGeant3.hits.root"
+    INPUTFILE="$WORKDIR/macros/MQ.pixel_@pixel_simulation_engine@.hits.root"
     INPUTBRANCH="PixelHits"
 
     # output file for sink
-    OUTPUTFILE="$WORKDIR/macros/MQ.pixel_TGeant3.hits_tracks.root"
+    OUTPUTFILE="$WORKDIR/macros/MQ.pixel_@pixel_simulation_engine@.hits_tracks.root"
 elif [ "$FAIRTASKNAME" == "--task-name PixelFitTracks" ] ; then
     # input file and branch for the sampler device
-    INPUTFILE="$WORKDIR/macros/MQ.pixel_TGeant3.hits_tracks.root"
+    INPUTFILE="$WORKDIR/macros/MQ.pixel_@pixel_simulation_engine@.hits_tracks.root"
     INPUTBRANCH="PixelHits --branch-name PixelTracks"
 
     # output file for sink
-    OUTPUTFILE="$WORKDIR/macros/MQ.pixel_TGeant3.fitTracks.root"
+    OUTPUTFILE="$WORKDIR/macros/MQ.pixel_@pixel_simulation_engine@.fitTracks.root"
 else
     echo "TASK $FAIRTASKNAME UNKNOWN!!!"
     exit

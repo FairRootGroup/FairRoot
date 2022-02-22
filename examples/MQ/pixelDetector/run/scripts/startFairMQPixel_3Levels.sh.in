@@ -28,18 +28,18 @@ done
 
 ########################### Define some variables
 # ASCII and ROOT parameter files for the processor device
-ROOTPARAM="@pixel_file_dir@/macros/pixel_TGeant3.params.root"
+ROOTPARAM="@pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.params.root"
 ASCIIPARAM="@pixel_file_dir@/param/pixel_digi.par"
 
 FAIRTASKNAME1="--task-name PixelFindHits"
 FAIRTASKNAME2="--task-name PixelFindTracks --keep-data PixelHits"
 FAIRTASKNAME3="--task-name PixelFitTracks"
 # input file and branch for the sampler device
-INPUTFILE="@pixel_file_dir@/macros/pixel_TGeant3.digi.root"
+INPUTFILE="@pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.root"
 INPUTBRANCH="PixelDigis"
 
 # output file for sink
-OUTPUTFILE="@pixel_file_dir@/macros/MQ.pixel_TGeant3.3Levels.fitTracks.root"
+OUTPUTFILE="@pixel_file_dir@/macros/MQ.pixel_@pixel_simulation_engine@.3Levels.fitTracks.root"
 ###########################
 
 

@@ -84,7 +84,7 @@ fi
 
 ########################### Define some variables
 # ASCII and ROOT parameter files for the processor device
-ROOTPARAM="$WORKDIR/macros/pixel_TGeant3.params.root"
+ROOTPARAM="$WORKDIR/macros/pixel_@pixel_simulation_engine@.params.root"
 ASCIIPARAM="$WORKDIR/param/pixel_digi.par"
 
 if [ "$FAIRTASKNAME" == "--task-name PixelAltFindHits" ] ; then
@@ -92,15 +92,15 @@ if [ "$FAIRTASKNAME" == "--task-name PixelAltFindHits" ] ; then
     if [ "$INPUTTYPE" == "dat" ] ; then
         INPUTFILE="$WORKDIR/macros/digisBin.dat"
     elif [ "$INPUTTYPE" == "root" ] ; then
-        INPUTFILE="$WORKDIR/macros/pixel_TGeant3.digi.root"
+        INPUTFILE="$WORKDIR/macros/pixel_@pixel_simulation_engine@.digi.root"
         INPUTBRANCH="PixelDigis"
     fi
 
     # output file for sink
     if [ "$OUTPUTTYPE" == "dat" ] ; then
-        OUTPUTFILE="$WORKDIR/macros/MQa.pixel_TGeant3.bin.hits.dat"
+        OUTPUTFILE="$WORKDIR/macros/MQa.pixel_@pixel_simulation_engine@.bin.hits.dat"
     elif [ "$OUTPUTTYPE" == "root" ] ; then
-        OUTPUTFILE="$WORKDIR/macros/MQa.pixel_TGeant3.bin.hits.root"
+        OUTPUTFILE="$WORKDIR/macros/MQa.pixel_@pixel_simulation_engine@.bin.hits.root"
         OUTPUTCLASS="--class-name TClonesArray(PixelHit)"
         OUTPUTBRANCH="--branch-name PixelHits"
     fi
