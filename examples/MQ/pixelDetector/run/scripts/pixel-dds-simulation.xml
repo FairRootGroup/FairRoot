@@ -4,7 +4,7 @@
     <property @dds_name_tag@="fmqchan_updateChannel" />
 
     <decltask @dds_name_tag@="Sampler">
-      <exe reachable="true">@pixel_bin_dir@/pixel-sim --config-key sampler --channel-config name=data#all#,type=push,method=connect --channel-config name=updateChannel,type=req,method=connect --severity DEBUG --nof-events 1000 --transport-name TGeant3 --id sampler_%taskIndex% --random-seed 0 -P dds --color false</exe>
+      <exe reachable="true">@pixel_bin_dir@/pixel-sim --config-key sampler --channel-config name=data#all#,type=push,method=connect --channel-config name=updateChannel,type=req,method=connect --severity DEBUG --nof-events 1000 --transport-name @pixel_simulation_engine@ --id sampler_%taskIndex% --random-seed 0 -P dds --color false</exe>
         <properties>
           <@dds_name_tag@ access="read">fmqchan_data#all#</@dds_name_tag@>
 	  <@dds_name_tag@ access="read">fmqchan_updateChannel</@dds_name_tag@>
@@ -12,14 +12,14 @@
     </decltask>
 
     <decltask @dds_name_tag@="Sink">
-      <exe reachable="true">@pixel_bin_dir@/pixel-sink --in-channel data#all# --severity DEBUG --id sink1 --channel-config name=data#all#,type=pull,method=bind --file-name @pixel_file_dir@/DDS.simulation_TGeant3.data.root -P dds --color false</exe>
+      <exe reachable="true">@pixel_bin_dir@/pixel-sink --in-channel data#all# --severity DEBUG --id sink1 --channel-config name=data#all#,type=pull,method=bind --file-name @pixel_file_dir@/DDS.simulation_@pixel_simulation_engine@.data.root -P dds --color false</exe>
         <properties>
             <@dds_name_tag@ access="write">fmqchan_data#all#</@dds_name_tag@>
         </properties>
     </decltask>
 
     <decltask @dds_name_tag@="ParamServer">
-      <exe reachable="true">@fairroot_bin_dir@/parmq-server zeromq --id parmq-server --channel-config name=updateChannel,type=rep,method=bind --severity DEBUG --update-channel-name updateChannel --output-name @pixel_file_dir@/DDS.simulation_TGeant3.pars.root -P dds --color false</exe>
+      <exe reachable="true">@fairroot_bin_dir@/parmq-server zeromq --id parmq-server --channel-config name=updateChannel,type=rep,method=bind --severity DEBUG --update-channel-name updateChannel --output-name @pixel_file_dir@/DDS.simulation_@pixel_simulation_engine@.pars.root -P dds --color false</exe>
         <properties>
             <@dds_name_tag@ access="write">fmqchan_updateChannel</@dds_name_tag@>
         </properties>

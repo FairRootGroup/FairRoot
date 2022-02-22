@@ -32,19 +32,19 @@ done
 
 ########################### Define some variables
 # ASCII and ROOT parameter files for the processor device
-ROOTPARAM="@pixel_file_dir@/macros/pixel_TGeant3.params.root"
+ROOTPARAM="@pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.params.root"
 ASCIIPARAM="@pixel_file_dir@/param/pixel_digi.par"
 
 if [ "$FAIRTASKNAME" == "--task-name PixelFindHits" ] ; then
     # input file and branch for the sampler device
-    INPUTFILE1="@pixel_file_dir@/macros/pixel_TGeant3.digi.root"
+    INPUTFILE1="@pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.root"
 
-    INPUTFILE2="@pixel_file_dir@/macros/pixel_TGeant3.digi.f1.root"
+    INPUTFILE2="@pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.f1.root"
     INPUTBRANCH="PixelDigis"
 
     # output file for sink
-    OUTPUTFILE1="@pixel_file_dir@/macros/MQ.pixel_TGeant3.bin.hits1.root"
-    OUTPUTFILE2="@pixel_file_dir@/macros/MQ.pixel_TGeant3.bin.hits2.root"
+    OUTPUTFILE1="@pixel_file_dir@/macros/MQ.pixel_@pixel_simulation_engine@.bin.hits1.root"
+    OUTPUTFILE2="@pixel_file_dir@/macros/MQ.pixel_@pixel_simulation_engine@.bin.hits2.root"
     OUTPUTCLASS="--class-name TClonesArray(PixelHit)"
     OUTPUTBRANCH="--branch-name PixelHits"
 else

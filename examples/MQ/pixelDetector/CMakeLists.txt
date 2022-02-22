@@ -8,7 +8,5 @@
 
 add_subdirectory(param)
 add_subdirectory(src)
-if(ENABLE_GEANT3_TESTING)
-  add_subdirectory(macros)
-endif()
+add_subdirectory(macros)
 add_subdirectory(run)

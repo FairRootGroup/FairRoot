@@ -32,26 +32,26 @@ done
 
 ########################### Define some variables
 # ASCII and ROOT parameter files for the processor device
-ROOTPARAM="@pixel_file_dir@/macros/pixel_TGeant3.params.root"
+ROOTPARAM="@pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.params.root"
 ASCIIPARAM="@pixel_file_dir@/param/pixel_digi.par"
 
 if [ "$FAIRTASKNAME" == "--task-name PixelFindHits" ] ; then
     # input file and branch for the sampler device
-    INPUTFILE="@pixel_file_dir@/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_TGeant3.digi.root"
-#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_TGeant3.digi.root"
- #   INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_TGeant3.digi.f1.root"
+    INPUTFILE="@pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.root"
+#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.root"
+#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.root"
+#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.root"
+#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.root"
+#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.root"
+#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.root"
+#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.root"
+#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.root"
+#    INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.root"
+ #   INPUTFILE+=" --file-name @pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.f1.root"
     INPUTBRANCH="PixelDigis"
 
     # output file for sink
-    OUTPUTFILE="@pixel_file_dir@/macros/MQ.pixel_TGeant3.bin.hits.root"
+    OUTPUTFILE="@pixel_file_dir@/macros/MQ.pixel_@pixel_simulation_engine@.bin.hits.root"
     OUTPUTCLASS="--class-name TClonesArray(PixelHit)"
     OUTPUTBRANCH="--branch-name PixelHits"
 else
