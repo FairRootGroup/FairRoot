@@ -117,27 +117,25 @@ install(TARGETS pixel-sampler pixel-processor pixel-sink pixel-sampler-bin pixel
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelDetector/bin
 )
 
-if(ENABLE_GEANT3_TESTING)
-  set(maxTestTime 100)
+set(maxTestTime 100)
 
-  if(DDS_VERSION VERSION_GREATER_EQUAL 3.5
-     AND FairMQ_VERSION VERSION_GREATER_EQUAL 1.4.23)
-    add_test(NAME ex_MQ_pixel_simulation
-             COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim.sh)
-    set_tests_properties(ex_MQ_pixel_simulation PROPERTIES
-      FIXTURES_REQUIRED fixtures.ex_MQ_pixel_static
-      TIMEOUT ${maxTestTime}
-      PASS_REGULAR_EXPRESSION "Shell script finished successfully"
-  )
-  endif()
-
-  add_test(NAME ex_MQ_pixel_static
-           COMMAND ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixel.sh --work-dir ${CMAKE_CURRENT_BINARY_DIR}/../ -p 3 --command static --force-kill true)
-  set_tests_properties(ex_MQ_pixel_static PROPERTIES
-    FIXTURES_REQUIRED fixtures.ex_pixel_digi_to_bin_TGeant3
+if(DDS_VERSION VERSION_GREATER_EQUAL 3.5
+   AND FairMQ_VERSION VERSION_GREATER_EQUAL 1.4.23)
+  add_test(NAME ex_MQ_pixel_simulation
+           COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim.sh)
+  set_tests_properties(ex_MQ_pixel_simulation PROPERTIES
+    FIXTURES_REQUIRED fixtures.ex_MQ_pixel_static
     TIMEOUT ${maxTestTime}
-    RUN_SERIAL ON
     PASS_REGULAR_EXPRESSION "Shell script finished successfully"
-    FIXTURES_SETUP fixtures.ex_MQ_pixel_static
-  )
+)
 endif()
+
+add_test(NAME ex_MQ_pixel_static
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixel.sh --work-dir ${CMAKE_CURRENT_BINARY_DIR}/../ -p 3 --command static --force-kill true)
+set_tests_properties(ex_MQ_pixel_static PROPERTIES
+  FIXTURES_REQUIRED fixtures.ex_pixel_digi_to_bin_${pixel_simulation_engine}
+  TIMEOUT ${maxTestTime}
+  RUN_SERIAL ON
+  PASS_REGULAR_EXPRESSION "Shell script finished successfully"
+  FIXTURES_SETUP fixtures.ex_MQ_pixel_static
+)

@@ -2,22 +2,22 @@
 
 source @CMAKE_BINARY_DIR@/config.sh -p
 
-if [ -f @splitmc_file_location@/MQ.simulation_TGeant3.data.root ]; then
-    echo "File @splitmc_file_location@/MQ.simulation_TGeant3.data.root exists. Deleting"
-    rm -rf @splitmc_file_location@/MQ.simulation_TGeant3.data.root
+if [ -f @splitmc_file_location@/MQ.simulation_@pixel_simulation_engine@.data.root ]; then
+    echo "File @splitmc_file_location@/MQ.simulation_@pixel_simulation_engine@.data.root exists. Deleting"
+    rm -rf @splitmc_file_location@/MQ.simulation_@pixel_simulation_engine@.data.root
 fi
 
 INPUT_EVENTS="100"
 
 GENERATOR="@splitmc_bin_location@/pixel-sim-gen --id pixSplit-gen --channel-config name=primariesChannel,type=push,method=bind,rateLogging=1,address=tcp://*:5901 --running-mode pp --severity DEBUG --nof-events $INPUT_EVENTS --chunk-size 10 --ack-channel ack --channel-config name=ack,type=pull,method=bind,rateLogging=1,address=tcp://*:5905 --control static --color false"
 
-TRANSPORTER="@splitmc_bin_location@/pixel-sim-transport --config-key pixSplit-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect,rateLogging=1,address=tcp://localhost:5904 --channel-config name=primariesChannel,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5901 --channel-config name=data#all#,type=push,method=connect,rateLogging=1,address=tcp://localhost:5902 --transport-name TGeant3 --running-mode pp --severity DEBUG --detector-library @CMAKE_BINARY_DIR@/lib/libExPixel.@example_library_extension@ --control static --color false"
+TRANSPORTER="@splitmc_bin_location@/pixel-sim-transport --config-key pixSplit-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect,rateLogging=1,address=tcp://localhost:5904 --channel-config name=primariesChannel,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5901 --channel-config name=data#all#,type=push,method=connect,rateLogging=1,address=tcp://localhost:5902 --transport-name @pixel_simulation_engine@ --running-mode pp --severity DEBUG --detector-library @CMAKE_BINARY_DIR@/lib/libExPixel.@example_library_extension@ --control static --color false"
 
 MERGER="@splitmc_bin_location@/pixel-sim-chunk-merger --id pixSplit-merger --in-channel data#all# --channel-config name=data#all#,type=pull,method=bind,rateLogging=1,address=tcp://*:5902 --out-channel dataOut --channel-config name=dataOut,type=push,method=bind,rateLogging=1,address=tcp://*:5903 --transport zeromq --severity DEBUG --control static --color false"
 
-FILESINK="@pixel_bin_dir@/pixel-sink --id pixSplit-sink --in-channel dataOut --severity DEBUG --channel-config name=dataOut,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5903 --file-name @splitmc_file_location@/MQ.simulation_TGeant3.data.root --ack-channel ack --channel-config name=ack,type=push,method=connect,rateLogging=1,address=tcp://localhost:5905 --control static --color false"
+FILESINK="@pixel_bin_dir@/pixel-sink --id pixSplit-sink --in-channel dataOut --severity DEBUG --channel-config name=dataOut,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5903 --file-name @splitmc_file_location@/MQ.simulation_@pixel_simulation_engine@.data.root --ack-channel ack --channel-config name=ack,type=push,method=connect,rateLogging=1,address=tcp://localhost:5905 --control static --color false"
 
-PARMQSERVER="@fairroot_bin_dir@/parmq-server zeromq --id pixSplit-parmq-server --channel-config name=updateChannel,type=rep,method=bind,rateLogging=1,address=tcp://*:5904 --severity DEBUG --update-channel-name updateChannel --output-name @splitmc_file_location@/MQ.simulation_TGeant3.pars.root --control static --color false"
+PARMQSERVER="@fairroot_bin_dir@/parmq-server zeromq --id pixSplit-parmq-server --channel-config name=updateChannel,type=rep,method=bind,rateLogging=1,address=tcp://*:5904 --severity DEBUG --update-channel-name updateChannel --output-name @splitmc_file_location@/MQ.simulation_@pixel_simulation_engine@.pars.root --control static --color false"
 
 #xterm +aw -geometry 100x25+0+0     -hold -e $GENERATOR &
 #xterm +aw -geometry 100x25+0+350   -hold -e $TRANSPORTER &
@@ -50,7 +50,7 @@ kill $MERGER_PID
 kill $PARMQSERVER_PID
 kill $FILESINK_PID
 
-OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | @ROOT_EXECUTABLE@ -l -b @splitmc_file_location@/MQ.simulation_TGeant3.data.root | tail -1)"
+OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | @ROOT_EXECUTABLE@ -l -b @splitmc_file_location@/MQ.simulation_@pixel_simulation_engine@.data.root | tail -1)"
 
 echo "There are $OUTPUT_EVENTS events in the output file."
 

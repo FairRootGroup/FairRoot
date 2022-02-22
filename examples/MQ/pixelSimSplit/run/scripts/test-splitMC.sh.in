@@ -72,8 +72,8 @@ dds-session stop $DDS_SESSION_ID -f
 trap "" EXIT
 
 echo "***** Check the output file"
-ls -ltrh @splitmc_file_location@/DDS.simulation_TGeant3.data.$DDS_SESSION_ID.root
-OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @splitmc_file_location@/DDS.simulation_TGeant3.data.$DDS_SESSION_ID.root | tail -1)"
+ls -ltrh @splitmc_file_location@/DDS.simulation_@pixel_simulation_engine@.data.$DDS_SESSION_ID.root
+OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | root -l -b @splitmc_file_location@/DDS.simulation_@pixel_simulation_engine@.data.$DDS_SESSION_ID.root | tail -1)"
 echo "There are $OUTPUT_EVENTS events in the output file."
 
 if (( $OUTPUT_EVENTS == 100 ));
