@@ -26,15 +26,15 @@ PARMQSERVER="@fairroot_bin_dir@/parmq-server zeromq --id pixSplit-parmq-server -
 #xterm +aw -geometry 100x25+500+700 -hold -e $PARMQSERVER &
 
 echo "Start devices"
-$GENERATOR   &> gen_log.dat &
+$GENERATOR   > gen_log.dat &
 GENERATOR_PID=$!
-$TRANSPORTER &> tra_log.dat &
+$TRANSPORTER > tra_log.dat &
 TRANSPORTER_PID=$!
-$MERGER      &> mer_log.dat &
+$MERGER      > mer_log.dat &
 MERGER_PID=$!
-$FILESINK    &> sin_log.dat &
+$FILESINK    > sin_log.dat &
 FILESINK_PID=$!
-$PARMQSERVER &> par_log.dat &
+$PARMQSERVER > par_log.dat &
 PARMQSERVER_PID=$!
 
 # ps -p $$ --ppid $$ --forest
@@ -44,11 +44,17 @@ wait $GENERATOR_PID
 
 sleep 1
 
-echo "Kill other devices"
+echo "Kill other devices $TRANSPORTER_PID $MERGER_PID $PARMQSERVER_PID $FILESINK_PID"
 kill $TRANSPORTER_PID
 kill $MERGER_PID
 kill $PARMQSERVER_PID
 kill $FILESINK_PID
+
+# So that all sinks can finish and close
+for pid in $TRANSPORTER_PID $MERGER_PID $PARMQSERVER_PID $FILESINK_PID
+do
+    wait $pid || echo "$pid failed"
+done
 
 OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | @ROOT_EXECUTABLE@ -l -b @splitmc_file_location@/MQ.simulation_@pixel_simulation_engine@.data.root | tail -1)"
 
