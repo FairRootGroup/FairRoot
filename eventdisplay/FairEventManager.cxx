@@ -157,20 +157,10 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
     fAxesPhi = new TEveProjectionAxes(fRPhiProjManager);
     fAxesRho = new TEveProjectionAxes(fRhoZProjManager);
 
-    TEveWindowSlot *RPhiSlot = TEveWindow::CreateWindowInTab(gEve->GetBrowser()->GetTabRight());
-    TEveWindowPack *RPhiPack = RPhiSlot->MakePack();
-    RPhiPack->SetElementName("RPhi View");
-    RPhiPack->SetShowTitleBar(kFALSE);
-    RPhiPack->NewSlot()->MakeCurrent();
     fRPhiView = gEve->SpawnNewViewer("RPhi View", "");
     fRPhiScene = gEve->SpawnNewScene("RPhi", "Scene holding axis.");
     fRPhiScene->AddElement(fAxesPhi);
 
-    TEveWindowSlot *RhoZSlot = TEveWindow::CreateWindowInTab(gEve->GetBrowser()->GetTabRight());
-    TEveWindowPack *RhoZPack = RhoZSlot->MakePack();
-    RhoZPack->SetElementName("RhoZ View");
-    RhoZPack->SetShowTitleBar(kFALSE);
-    RhoZPack->NewSlot()->MakeCurrent();
     fRhoZView = gEve->SpawnNewViewer("RhoZ View", "");
     fRhoZScene = gEve->SpawnNewScene("RhoZ", "Scene holding axis.");
     fRhoZScene->AddElement(fAxesRho);
