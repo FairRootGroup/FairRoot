@@ -206,9 +206,9 @@ function(fairroot_summary_components)
   message(STATUS "  ${BWhite}Examples${CR}             ${examples_summary}")
 
   if(BUILD_DOXYGEN)
-    set(doxygen_summary "${BGreen}YES${CR}    (default, disable with ${BMagenta}-DBUILD_DOXYGENS=OFF${CR})")
+    set(doxygen_summary "${BGreen}YES${CR}     (disable with ${BMagenta}-DBUILD_DOXYGEN=OFF${CR})")
   else()
-    set(doxygen_summary "${BRed} NO${CR}     (enable with ${BMagenta}-DBUILD_DOXYGEN=ON${CR})")
+    set(doxygen_summary   "${BRed} NO${CR}     (default, enable with ${BMagenta}-DBUILD_DOXYGEN=ON${CR})")
   endif()
   message(STATUS "  ${BWhite}Doxygen${CR}             ${doxygen_summary}")
 
