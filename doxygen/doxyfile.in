@@ -18,7 +18,7 @@ ABBREVIATE_BRIEF       =
 ALWAYS_DETAILED_SEC    = NO
 INLINE_INHERITED_MEMB  = NO
 FULL_PATH_NAMES        = YES
-STRIP_FROM_PATH        =
+STRIP_FROM_PATH        = "@CMAKE_SOURCE_DIR@"
 STRIP_FROM_INC_PATH    =
 SHORT_NAMES            = NO
 JAVADOC_AUTOBRIEF      = NO
@@ -36,7 +36,7 @@ OPTIMIZE_OUTPUT_VHDL   = NO
 EXTENSION_MAPPING      =
 MARKDOWN_SUPPORT       = YES
 AUTOLINK_SUPPORT       = YES
-BUILTIN_STL_SUPPORT    = NO
+BUILTIN_STL_SUPPORT    = YES
 CPP_CLI_SUPPORT        = NO
 SIP_SUPPORT            = NO
 IDL_PROPERTY_SUPPORT   = YES
@@ -103,7 +103,7 @@ INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          =
 RECURSIVE              = YES
 EXCLUDE                = .git/ \
-                         build/ xbuild\
+                         build/ xbuild \
                          build-dir/ \
                          html-docs/ \
                          doxygen cmake config  gconfig geometry input parameters .svn vis
@@ -284,7 +284,7 @@ CLASS_DIAGRAMS         = YES
 MSCGEN_PATH            =
 DIA_PATH               =
 HIDE_UNDOC_RELATIONS   = YES
-HAVE_DOT               = NO
+HAVE_DOT               = YES
 DOT_NUM_THREADS        = 0
 DOT_FONTNAME           = Helvetica
 DOT_FONTSIZE           = 10
@@ -301,14 +301,14 @@ CALL_GRAPH             = NO
 CALLER_GRAPH           = NO
 GRAPHICAL_HIERARCHY    = YES
 DIRECTORY_GRAPH        = YES
-DOT_IMAGE_FORMAT       = png
-INTERACTIVE_SVG        = NO
-DOT_PATH               = "@DOT_PATH@"
+DOT_IMAGE_FORMAT       = svg
+INTERACTIVE_SVG        = YES
+DOT_PATH               = "@DOXYGEN_DOT_PATH@"
 DOTFILE_DIRS           =
 MSCFILE_DIRS           =
 DIAFILE_DIRS           =
 PLANTUML_JAR_PATH      =
-DOT_GRAPH_MAX_NODES    = 50
+DOT_GRAPH_MAX_NODES    = 100
 MAX_DOT_GRAPH_DEPTH    = 0
 DOT_TRANSPARENT        = NO
 DOT_MULTI_TARGETS      = YES
