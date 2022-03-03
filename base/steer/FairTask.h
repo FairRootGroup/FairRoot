@@ -47,8 +47,13 @@ class FairTask : public TTask
      **/
     FairTask(const char* name, Int_t iVerbose = 1);
 
+    FairTask(const FairTask&) = delete;
+    FairTask& operator=(const FairTask&) = delete;
+    FairTask(FairTask&&) = delete;
+    FairTask& operator=(FairTask&&) = delete;
+
     /** Destructor **/
-    virtual ~FairTask();
+    ~FairTask() override;
 
     /** Initialisation at begin of run. For this task and all of the subtasks.
         Method used internally in FairRoot. **/
@@ -85,7 +90,7 @@ class FairTask : public TTask
      */
     [[deprecated]] void CheckInputPersistance(TString branchName);
 
-    virtual void ExecuteTask(Option_t* option = "0");   // *MENU*
+    void ExecuteTask(Option_t* option = "0") override;   // *MENU*
 
     /** Set persistency of branch with given name true or false
      *  In case is is set to false the branch will not be written to the output.
@@ -131,7 +136,7 @@ class FairTask : public TTask
     /** Recursive reinitialisation of subtasks **/
     void ReInitTasks();
 
-    virtual void ExecuteTasks(Option_t* option);
+    void ExecuteTasks(Option_t* option) override;
 
     /** Recursive parameter initialisation for subtasks **/
     void SetParTasks();
@@ -145,10 +150,7 @@ class FairTask : public TTask
   private:
     std::map<TString, Bool_t> fOutputPersistance;
 
-    FairTask(const FairTask&);
-    FairTask& operator=(const FairTask&);
-
-    ClassDef(FairTask, 4);
+    ClassDefOverride(FairTask, 4);
 };
 
 #endif
