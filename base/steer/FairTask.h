@@ -21,8 +21,6 @@
 #ifndef FAIRTASK_H
 #define FAIRTASK_H
 
-#include "FairRootManager.h"   // for FairRootManager
-
 #include <Rtypes.h>    // for Int_t, FairTask::Class, etc
 #include <TString.h>   // for TString
 #include <TTask.h>     // for TTask
@@ -74,13 +72,18 @@ class FairTask : public TTask
     /** Set verbosity level. For this task and all of the subtasks. **/
     void SetVerbose(Int_t iVerbose);
 
-    void SetInputPersistance(Bool_t val) { fInputPersistance = val; }
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    /**
+     * \deprecated Deprecated in v19, will be removed in v20.
+     */
+    [[deprecated]] void SetInputPersistance(Bool_t val) { fInputPersistance = val; }
+#pragma GCC diagnostic pop
 
-    void CheckInputPersistance(TString branchName)
-    {
-        FairRootManager* ioman = FairRootManager::Instance();
-        fInputPersistance = ioman->CheckBranch(branchName);
-    }
+    /**
+     * \deprecated Deprecated in v19, will be removed in v20.
+     */
+    [[deprecated]] void CheckInputPersistance(TString branchName);
 
     virtual void ExecuteTask(Option_t* option = "0");   // *MENU*
 
@@ -97,9 +100,9 @@ class FairTask : public TTask
     void SetStreamProcessing(Bool_t val = kTRUE) { fStreamProcessing = val; }
 
   protected:
-    Int_t fVerbose;            //  Verbosity level
-    Int_t fInputPersistance;   ///< Indicates if input branch is persistant
-    FairLogger* fLogger;       //!
+    Int_t fVerbose;                           //  Verbosity level
+    [[deprecated]] Int_t fInputPersistance;   ///< \deprecated Deprecated in v19, will be removed in v20.
+    FairLogger* fLogger;                      //!
     Bool_t fStreamProcessing;
 
     /** Intialisation at begin of run. To be implemented in the derived class.
