@@ -72,7 +72,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     `GetRadGridMan()` method on `FairMCApplcation`.
   * `FairRadMapManager::Instance`, `FairRadLenManager::Instance`
 * Deprecated some other APIs
-  `FairGeoVector::round` was nonfunctional and never did anything.
+  * `FairGeoVector::round` was nonfunctional and never did anything.
+  * `FairTask::*InputPersistance`:
+    There's no getter for `fInputPersistance`,
+    no other code in FairRoot uses the setters,
+    we're not aware of anyone using it.
 * Many items were already deprecated in prior versions.
   Marked them with proper C++14 deprecation warnings.
   Scheduled them for removal in v20.
