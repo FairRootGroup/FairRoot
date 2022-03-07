@@ -77,6 +77,7 @@
 #pragma link C++ class FairFileSource;
 #pragma link C++ class FairMixedSource;
 #pragma link C++ class FairOnlineSource;
+#pragma link C++ class FairUnpack;
 
 #pragma link C++ class FairSink;
 #pragma link C++ class FairRootFileSink;
@@ -85,7 +86,6 @@
 #pragma link C++ class FairRemoteSource;
 #pragma link C++ class FairMbsStreamSource;
 #pragma link C++ class FairLmdSource;
-#pragma link C++ class FairUnpack;
 #pragma link C++ class MRevBuffer;
 #pragma link C++ class REvent;
 #endif
