@@ -268,7 +268,7 @@ void FairRunAnaProof::SetSource(FairSource* tempSource)
     if (strncmp(tempSource->GetName(), "FairFileSource", 14) != 0) {
         LOG(warn) << "FairRunAnaProof. Seems you are trying to set different source than FairFileSource";
     }
-    fRootManager->SetSource(tempSource);
+    FairRunAna::SetSource(tempSource);
     fProofFileSource = static_cast<FairFileSource*>(tempSource);
 }
 

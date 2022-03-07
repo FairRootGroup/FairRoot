@@ -1,3 +1,5 @@
+#include <memory>
+
 void create_digis_mixed()
 {
 
@@ -5,9 +7,6 @@ void create_digis_mixed()
     timer.Start();
 
     gDebug = 0;
-
-    TString dir = getenv("VMCWORKDIR");
-    TString tutdir = dir + "/simulation/Tutorial2";
 
     TString BGinFile = "./tutorial2_pions.mc_p2.000_t0_n130.bg.root";
     TString SG1inFile = "./tutorial2_pions.mc_p2.000_t0_n10.sg1.root";
@@ -24,11 +23,11 @@ void create_digis_mixed()
     cout << "Background    File: " << BGinFile << endl;
     cout << "First  Signal File: " << SG1inFile << endl;
     cout << "Second signal File: " << SG2inFile << endl;
-    cout << "ParamFile: " << parFile << endl;
-    cout << "OutFile: " << outFile << endl;
+    cout << "ParamFile:          " << parFile << endl;
+    cout << "OutFile:            " << outFile << endl;
     cout << "******************************" << endl;
 
-    FairRunAna* fRun = new FairRunAna();
+    auto fRun = std::make_unique<FairRunAna>();
 
     //** Create a mixed source and set BG file *//
     FairMixedSource* fMixedSource = new FairMixedSource(BGinFile.Data(), 0);
