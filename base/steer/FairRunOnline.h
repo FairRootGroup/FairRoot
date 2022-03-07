@@ -50,10 +50,6 @@ class FairRunOnline : public FairRun
         run functuion
     **/
     void SetAutoFinish(Bool_t val) { fAutomaticFinish = val; }
-    /** Set the source which should be used **/
-    void SetSource(FairSource* source) { fRootManager->SetSource(source); }
-    /** Return pointer to source **/
-    FairSource* GetSource() { return fRootManager->GetSource(); }
 
     /** Initialization of parameter container is set to static, i.e: the run id is
      *  is not checked anymore after initialization
