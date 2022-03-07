@@ -85,6 +85,10 @@ FairRun::FairRun(Bool_t isMaster)
 FairRun::~FairRun()
 {
     LOG(debug) << "Enter Destructor of FairRun";
+
+    // So that FairRootManager does not try to delete it, because we will do that:
+    fRootManager->SetSource(nullptr);
+
     delete fTask;   // There is another tasklist in MCApplication,
     // but this should be independent
     delete fRtdb;   // who is responsible for the RuntimeDataBase
@@ -208,6 +212,12 @@ void FairRun::AlignGeometry() const { fAlignmentHandler.AlignGeometry(); }
 void FairRun::AddAlignmentMatrices(const std::map<std::string, TGeoHMatrix>& alignmentMatrices, bool invertMatrices)
 {
     fAlignmentHandler.AddAlignmentMatrices(alignmentMatrices, invertMatrices);
+}
+
+void FairRun::SetSource(FairSource* othersource)
+{
+    fRootManager->SetSource(othersource);
+    fSource.reset(othersource);
 }
 
 ClassImp(FairRun);

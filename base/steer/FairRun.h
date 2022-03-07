@@ -16,6 +16,7 @@
 #include <TNamed.h>   // for TNamed
 #include <TString.h>
 #include <map>
+#include <memory>
 #include <string>
 
 class FairEventHeader;
@@ -192,6 +193,15 @@ class FairRun : public TNamed
 
     void AddAlignmentMatrices(const std::map<std::string, TGeoHMatrix>& alignmentMatrices, bool invertMatrices = false);
 
+    /**
+     * \brief Set the input signal file
+     *
+     * Takes an owning pointer!
+     */
+    virtual void SetSource(FairSource* tempSource);
+    /** Return non-owning pointer to source **/
+    FairSource* GetSource() { return fSource.get(); }
+
   private:
     FairRun(const FairRun& M);
     FairRun& operator=(const FairRun&) { return *this; }
@@ -230,8 +240,10 @@ class FairRun : public TNamed
 
     FairAlignmentHandler fAlignmentHandler;
 
+    std::unique_ptr<FairSource> fSource{};   //!
+
     void AlignGeometry() const;
 
-    ClassDef(FairRun, 5);
+    ClassDefOverride(FairRun, 5);
 };
 #endif   // FAIRRUN_H

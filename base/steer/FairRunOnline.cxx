@@ -70,7 +70,7 @@ FairRunOnline::FairRunOnline(FairSource* source)
     , fServer(nullptr)
     , fServerRefreshRate(0)
 {
-    fRootManager->SetSource(source);
+    SetSource(source);
     fgRinstance = this;
     fAna = kTRUE;
     LOG(info) << "FairRunOnline constructed at " << this;
@@ -116,7 +116,7 @@ void FairRunOnline::Init()
     // Add a Generated run ID to the FairRunTimeDb for input data which contain a FairMCEventHeader
     // The call doesn't make sense for online sources which doesn't contain a  FairMCEventHeader
 
-    if (kONLINE != fRootManager->GetSource()->GetSourceType()) {
+    if (kONLINE != GetSource()->GetSourceType()) {
         fRootManager->ReadEvent(0);
     }
 
@@ -131,14 +131,14 @@ void FairRunOnline::Init()
             // Generate unique Run ID
             FairRunIdGenerator genid;
             fRunId = genid.generateId();
-            fRootManager->GetSource()->SetRunId(fRunId);
+            GetSource()->SetRunId(fRunId);
         } else {
             // Use Run ID from source
             fRunId = fEvtHeader->GetRunId();
         }
     } else {
         // Run ID was set in the run manager - propagate to source
-        fRootManager->GetSource()->SetRunId(fRunId);
+        GetSource()->SetRunId(fRunId);
     }
 
     fRtdb->addRun(fRunId);
@@ -171,7 +171,7 @@ void FairRunOnline::Init()
 
     fRootManager->WriteFileHeader(fFileHeader);
 
-    fRootManager->GetSource()->SetParUnpackers();
+    GetSource()->SetParUnpackers();
     fTask->SetParTask();
     fRtdb->initContainers(fRunId);
 
@@ -185,7 +185,7 @@ void FairRunOnline::Init()
     fRootManager->Register("EventHeader.", "Event", fEvtHeader, (nullptr != fRootManager->GetSink()));
     fEvtHeader->SetRunId(fRunId);
 
-    fRootManager->GetSource()->InitUnpackers();
+    GetSource()->InitUnpackers();
 
     // Now call the User initialize for Tasks
     fTask->InitTask();
@@ -246,7 +246,7 @@ Int_t FairRunOnline::EventLoop()
         LOG(info) << "FairRunOnline::EventLoop() Call Reinit due to changed RunID (from " << fRunId << " to " << tmpId;
         fRunId = tmpId;
         Reinit(fRunId);
-        fRootManager->GetSource()->ReInitUnpackers();
+        GetSource()->ReInitUnpackers();
         fTask->ReInitTask();
     }
 
@@ -344,7 +344,7 @@ void FairRunOnline::Finish()
     fTask->FinishTask();
     fRootManager->LastFill();
     fRootManager->Write();
-    fRootManager->GetSource()->Close();
+    GetSource()->Close();
 
     fRootManager->CloseSink();
 }

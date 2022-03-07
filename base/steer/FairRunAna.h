@@ -62,12 +62,6 @@ class FairRunAna : public FairRun
     void RunOnTBData();
     /** finish tasks, write output*/
     void TerminateRun();
-    /**Set the input signal file
-     *@param name :        signal file name
-     *@param identifier :  Unsigned integer which identify the signal file
-     */
-
-    virtual void SetSource(FairSource* tempSource) { fRootManager->SetSource(tempSource); }
 
     /** Switch On/Off the storing of FairEventHeader in output file*/
     void SetEventHeaderPersistence(Bool_t flag) { fStoreEventHeader = flag; }
