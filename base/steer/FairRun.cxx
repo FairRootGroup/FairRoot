@@ -29,6 +29,7 @@
 #endif
 #include <TList.h>     // for TList
 #include <TObject.h>   // for TObject
+#include <TROOT.h>     // fot gROOT
 #include <cassert>     // for... well, assert
 
 TMCThreadLocal FairRun* FairRun::fRunInstance = 0;
@@ -85,7 +86,11 @@ FairRun::FairRun(Bool_t isMaster)
 FairRun::~FairRun()
 {
     LOG(debug) << "Enter Destructor of FairRun";
-    delete fTask;   // There is another tasklist in MCApplication,
+    if (fTask) {
+        // FairRunAna added it, but let's remove it here, because we own it
+        gROOT->GetListOfBrowsables()->Remove(fTask);
+        delete fTask;   // There is another tasklist in MCApplication,
+    }
     // but this should be independent
     delete fRtdb;   // who is responsible for the RuntimeDataBase
     delete fEvtHeader;
