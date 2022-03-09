@@ -129,6 +129,40 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0,
     cout << "Output file is " << outFile << endl;
     cout << "Parameter file is " << parFile << endl;
     cout << "Real time " << rtime << " s, CPU time " << ctime << "s" << endl << endl;
+
+    auto outputFile = TFile::Open(outFile);
+    auto outputTree = dynamic_cast<TTree*>(outputFile->Get("cbmsim"));
+    outputTree->Draw("PixelPoint.fTime", "", "goff");
+    auto htemp = dynamic_cast<TH1F*>(outputFile->Get("htemp"));
+    int outputTreeEntries = outputTree->GetEntries();
+    int outputPoints = (int)(htemp->GetEntries());
+    double outputTime = htemp->GetMean();
+    delete htemp;
+    delete outputTree;
+    outputFile->Close();
+    delete outputFile;
+
+    cout << endl;
+    cout << "<DartMeasurement name=\"TreeEntries\" type=\"numeric/int\">";
+    cout << outputTreeEntries;
+    cout << "</DartMeasurement>" << endl;
+    cout << "<DartMeasurement name=\"NumberOfPoints\" type=\"numeric/int\">";
+    cout << outputPoints;
+    cout << "</DartMeasurement>" << endl;
+    cout << "<DartMeasurement name=\"PointTimeMean\" type=\"numeric/double\">";
+    cout << outputTime;
+    cout << "</DartMeasurement>" << endl;
+    cout << endl;
+
+    if (outputTreeEntries < nEvents) {
+        cout << "Not enough events (" << outputTreeEntries << ") in the output tree." << endl;
+        return;
+    }
+    if (outputPoints < 7. * nEvents) {
+        cout << "Not enough points (" << outputPoints << ") in the output tree." << endl;
+        return;
+    }
+
     cout << "Macro finished successfully." << endl;
 
     // ------------------------------------------------------------------------
