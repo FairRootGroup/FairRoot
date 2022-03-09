@@ -13,7 +13,7 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_digiToBin.C)
 set(maxTestTime 30)
 
 add_test(NAME ex_pixel_sim_${pixel_simulation_engine}
-         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_sim.sh 10000 \"${pixel_simulation_engine}\")
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_sim.sh 1000 \"${pixel_simulation_engine}\")
 math(EXPR testTime 4*${maxTestTime})
 set_tests_properties(ex_pixel_sim_${pixel_simulation_engine} PROPERTIES
   TIMEOUT ${testTime}
