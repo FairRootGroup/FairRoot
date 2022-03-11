@@ -250,10 +250,9 @@ Bool_t FairMixedSource::Init()
     if (list == 0)
         LOG(fatal) << "No Branch list in input file";
     TString chainName = fInputTitle;
-    TString ObjName;
     fInputLevel.push_back(chainName);
-    fCheckInputBranches[chainName] = new std::list<TString>;
     if (list) {
+        TString ObjName;
         TObjString* Obj = 0;
         LOG(info) << "Enteries in the list " << list->GetEntries();
         for (Int_t i = 0; i < list->GetEntries(); i++) {
@@ -261,7 +260,7 @@ Bool_t FairMixedSource::Init()
             if (Obj != 0) {
                 ObjName = Obj->GetString();
                 LOG(info) << "Branch name " << ObjName.Data();
-                fCheckInputBranches[chainName]->push_back(ObjName.Data());
+                fCheckInputBranches[chainName].push_back(ObjName);
 
                 FairRootManager::Instance()->AddBranchToList(ObjName.Data());
             }
@@ -520,12 +519,11 @@ Bool_t FairMixedSource::OpenBackgroundChain()
     TList* list = dynamic_cast<TList*>(fRootFile->Get("BranchList"));
     TString chainName = "BGInChain";
     fInputLevel.push_back(chainName);
-    fCheckInputBranches[chainName] = new std::list<TString>;
     if (list) {
         TObjString* Obj = 0;
         for (Int_t i = 0; i < list->GetEntries(); i++) {
             Obj = dynamic_cast<TObjString*>(list->At(i));
-            fCheckInputBranches[chainName]->push_back(Obj->GetString().Data());
+            fCheckInputBranches[chainName].push_back(Obj->GetString());
             FairRootManager::Instance()->AddBranchToList(Obj->GetString().Data());
         }
     }

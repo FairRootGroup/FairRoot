@@ -212,10 +212,9 @@ Bool_t FairFileSource::Init()
         LOG(fatal) << "No Branch list in input file";
     }
     TString chainName = fInputTitle;
-    TString ObjName;
     fInputLevel.push_back(chainName);
-    fCheckInputBranches[chainName] = new std::list<TString>;
     if (list) {
+        TString ObjName;
         TObjString* Obj = 0;
         LOG(debug) << "Enteries in the list " << list->GetEntries();
         for (Int_t i = 0; i < list->GetEntries(); i++) {
@@ -223,7 +222,7 @@ Bool_t FairFileSource::Init()
             if (Obj != 0) {
                 ObjName = Obj->GetString();
                 LOG(debug) << "Branch name " << ObjName.Data();
-                fCheckInputBranches[chainName]->push_back(ObjName.Data());
+                fCheckInputBranches[chainName].push_back(ObjName);
 
                 FairRootManager::Instance()->AddBranchToList(ObjName.Data());
             }
@@ -556,12 +555,11 @@ void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
     TList* list = dynamic_cast<TList*>(f->Get("BranchList"));
     TString chainName = inputLevel;
     fInputLevel.push_back(chainName);
-    fCheckInputBranches[chainName] = new std::list<TString>;
     if (list) {
         TObjString* Obj = 0;
         for (Int_t i = 0; i < list->GetEntries(); i++) {
             Obj = dynamic_cast<TObjString*>(list->At(i));
-            fCheckInputBranches[chainName]->push_back(Obj->GetString().Data());
+            fCheckInputBranches[chainName].push_back(Obj->GetString());
             FairRootManager::Instance()->AddBranchToList(Obj->GetString().Data());
         }
     }
