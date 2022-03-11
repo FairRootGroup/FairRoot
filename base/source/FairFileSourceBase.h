@@ -28,7 +28,7 @@ class FairFileSourceBase : public FairSource
         : FairSource(){};
     virtual ~FairFileSourceBase();
 
-    std::map<TString, std::list<TString>*> fCheckInputBranches{};   //!
+    std::map<TString, std::list<TString>> fCheckInputBranches{};   //!
 
     ClassDefOverride(FairFileSourceBase, 0);
 };

@@ -16,21 +16,14 @@ using std::set;
 
 ClassImp(FairFileSourceBase);
 
-FairFileSourceBase::~FairFileSourceBase()
-{
-    std::for_each(fCheckInputBranches.begin(), fCheckInputBranches.end(), [](auto el) {
-        delete el.second;
-        el.second = nullptr;
-    });
-    fCheckInputBranches.clear();
-}
+FairFileSourceBase::~FairFileSourceBase() {}
 
 Bool_t FairFileSourceBase::CompareBranchList(TFile* fileHandle, TString inputLevel)
 {
     // fill a set with the original branch structure
     // This allows to use functions find and erase
     std::set<TString> branches;
-    for (auto li : *(fCheckInputBranches[inputLevel])) {
+    for (auto li : (fCheckInputBranches[inputLevel])) {
         branches.insert(li);
     }
 
