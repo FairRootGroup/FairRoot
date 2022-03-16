@@ -28,15 +28,17 @@
 #include "FairRtdbRun.h"     // for FairRtdbRun
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
 
-#include <TCollection.h>   // for TIter
-#include <TDatime.h>       // for TDatime
-#include <TKey.h>          // for TKey
-#include <TList.h>         // for TListIter, TList
-#include <TObjString.h>    // for TObjString
-#include <TObject.h>       // for TObject
-#include <TString.h>       // for TString, Form
-#include <iostream>        // for operator<<, basic_ostream, etc
-#include <memory>          // for std::unique_ptr
+#include <TCollection.h>         // for TIter
+#include <TDatime.h>             // for TDatime
+#include <TDirectory.h>          // for TDirectory::TContext
+#include <TKey.h>                // for TKey
+#include <TList.h>               // for TListIter, TList
+#include <TObjString.h>          // for TObjString
+#include <TObject.h>             // for TObject
+#include <TString.h>             // for TString, Form
+#include <fairlogger/Logger.h>   // for LOG
+#include <iostream>              // for operator<<, basic_ostream, etc
+#include <memory>                // for std::unique_ptr
 
 using std::cerr;
 using std::cout;
@@ -146,6 +148,12 @@ Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option, const Text
     return kFALSE;
 }
 
+/**
+ * \brief Combine a list of parfiles into one, and open it
+ * \warning Creation of the allParams file has a race condition.
+ *   Create the filename yourself, then use \ref MergeFiles,
+ *   and finally \ref open.
+ */
 Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option, const Text_t* ftitle, Int_t compress)
 {
     TDatime currentDate;
@@ -161,12 +169,48 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option, const T
             continue;
         }
 
-        if (!newParFile) {
-            newParFileName = string->GetString();
-            newParFileName.Replace(newParFileName.Last('/') + 1, newParFileName.Length(), "");
-            newParFileName =
-                Form("%sallParams_%d_%06d.root", newParFileName.Data(), currentDate.GetDate(), currentDate.GetTime());
-            newParFile.reset(TFile::Open(newParFileName.Data(), "RECREATE"));
+        newParFileName = string->GetString();
+        newParFileName.Remove(newParFileName.Last('/') + 1);
+        newParFileName += Form("allParams_%d_%06d.root", currentDate.GetDate(), currentDate.GetTime());
+        newParFile.reset(TFile::Open(newParFileName.Data(), "RECREATE"));
+        if (newParFile) {
+            break;
+        }
+    }
+
+    if (!newParFile) {
+        LOG(error) << "FairParRootFileIo::open: Could not generate merged file";
+        return kFALSE;
+    }
+
+    MergeFiles(newParFile.get(), fnamelist);
+
+    // Close (and delete object) so that this->open has a clean file
+    newParFile.reset();
+
+    std::cout << "**** merged file = \"" << newParFileName.Data() << "\"" << std::endl;
+
+    return this->open(newParFileName, option, ftitle, compress);
+}
+
+/**
+ * \brief merge many parfiles into one
+ * \param newParFile non-owning, already open file to merge content into
+ * \param fnamelist  List of filesnames to read data from
+ */
+void FairParRootFileIo::MergeFiles(TFile* newParFile, const TList* fnamelist)
+{
+    if (!newParFile) {
+        return;
+    }
+    TDirectory::TContext restorecwd{};
+    TObjString* string;
+    TListIter myIter(fnamelist);
+    while ((string = static_cast<TObjString*>(myIter.Next()))) {
+        std::unique_ptr<TFile> inFile(TFile::Open(string->GetString().Data()));
+        if (!inFile) {
+            cout << "-W- File \"" << string->GetString().Data() << "\" does not exist" << endl;
+            continue;
         }
 
         TList* inputKeys = static_cast<TList*>(inFile->GetListOfKeys());
@@ -179,13 +223,6 @@ Bool_t FairParRootFileIo::open(const TList* fnamelist, Option_t* option, const T
             newParFile->WriteTObject(tempObj);
         }
     }
-
-    // Close (and delete object) so that this->open has a clean file
-    newParFile.reset();
-
-    std::cout << "**** merged file = \"" << newParFileName.Data() << "\"" << std::endl;
-
-    return this->open(newParFileName, option, ftitle, compress);
 }
 
 Bool_t FairParRootFileIo::open(TFile* f)
