@@ -1,3 +1,6 @@
+/**
+\defgroup parbase ParBase
+
 parbase
 ========
 
@@ -6,3 +9,7 @@ The `FairRuntimeDb` provides interaction layer between the analysis run (`FairRu
 Currently, in this folder, there are classes for storing and retrieving the parameters in the ROOT or ASCII files.
 
 The parameter reader/writer implemented by users should derive from `FairParGenericSet`.
+
+The CMake target name for this library is `FairRoot::ParBase`.
+
+ */

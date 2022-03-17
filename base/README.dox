@@ -1,3 +1,6 @@
+/**
+\defgroup base Base
+
 base
 ======
 
@@ -10,3 +13,7 @@ They are groupped in the following few directories:
 - sim - Monte Carlo simulation classes
 - source - input classes
 - steer - steering classes
+
+The CMake target name for this library is `FairRoot::Base`.
+
+ */

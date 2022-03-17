@@ -1,3 +1,6 @@
+/**
+\defgroup fairtools FairTools
+
 # FairTools
 
 ## FairLogger
@@ -14,3 +17,7 @@ We recommend using fair::Logger directly. Upgrade notes:
 - All severity names are now available in lower case. Uppercase variants are deprecated and will be removed in future versions to avoid confusion with MACRO_NAMES. Refer to fair::Logger docs for full list of all severity names.
 - Replace `Debug4(...)` style functions with `LOG(debug4) << content;` calls.
 - Replace `FairLogger::IsLogNeeded(<severity>)` with `fair::Logger::Logging(<severity>)`.
+
+The CMake target name for this library is `FairRoot::FairTools`.
+
+ */
