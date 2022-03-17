@@ -370,19 +370,4 @@ void FairRunAnaProof::RunOnProof(Int_t NStart, Int_t NStop)
     return;
 }
 
-// // void FairRunAnaProof::SetOutputFile(const char* fname)
-// {
-//   fOutname=fname;
-// }
-//
-// // void FairRunAnaProof::SetOutputFile(TFile* f)
-// {
-//   if (! fRootManager) return;
-
-//   fOutname=f->GetName();
-//   fRootManager->OpenOutFile(f);
-//   fOutFile = f;
-
-// }
-//
 ClassImp(FairRunAnaProof);
