@@ -1,3 +1,6 @@
+/**
+\defgroup geobase GeoBase
+
 geobase
 ========
 
@@ -7,3 +10,7 @@ The base classes for the geometry description, including:
 - assemblies of shapes;
 - geometry transformations;
 - geometry building from ASCII or from ROOT.
+
+The CMake target name for this library is `FairRoot::GeoBase`.
+
+ */

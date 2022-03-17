@@ -1,3 +1,7 @@
+/**
+\defgroup base_steer Base | Steer
+\ingroup base
+
 steer
 ========
 
@@ -18,3 +22,5 @@ The radiation length studies may be performed using the `FairRad...` classes.
 In order to visualize the simulated particle trajectories, one should SetStoreTraj(kTRUE) of the `FairRunSim` object. It is possible to implement cuts via the singleton `FairTrajFilter` class.
 
 The mother classes for the time based simulation are also located here (`FairWriteoutBuffer`, `FairRingSorter`, `FairRingSorterTask`). One finds here also the `FairTSBufferFunctional` providing realistic access to the time based simulated data for further analysis.
+
+ */

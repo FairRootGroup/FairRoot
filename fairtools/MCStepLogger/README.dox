@@ -1,3 +1,7 @@
+/**
+\defgroup fairtools_mcstepplogger MC Step Logger
+\ingroup fairtools
+
 MC Step Logger
 ========
 
@@ -50,3 +54,5 @@ unset DYLD_INSERT_LIBRARIES
 ```bash
 DYLD_INSERT_LIBRARIES=/path/to/your/library/libFairMCStepLogger.so root UserMacro.C
 ```
+
+ */

@@ -1,3 +1,7 @@
+/**
+\defgroup base_source Base | Source
+\ingroup base
+
 source
 ========
 
@@ -9,3 +13,5 @@ Several implementations are provided:
 * from the remote DAQ server (derive from MbsSource)
 
 The abstract unpacker class to transform the data into ROOT compliant data.
+
+ */

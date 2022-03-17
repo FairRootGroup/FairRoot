@@ -1,3 +1,6 @@
+/**
+\defgroup datamatch DataMatch
+
 datamatch
 ========
 
@@ -11,4 +14,6 @@ This functionality is performed with the help of `FairLink`s, where
 for every created data object a list of `FairLink`s is created, pointing to
 all of the data used to create that very data object, with the pointers to the event number, data's array and data's position in that array. With this information it is possible to compare the reconstructed data with the simulated one.
 
+The CMake target name for this library is `FairRoot::FairDataMatch`.
 
+ */
