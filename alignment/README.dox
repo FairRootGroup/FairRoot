@@ -1,3 +1,6 @@
+/**
+\defgroup alignment Alignment
+
 # Alignment Module in FairRoot
 
 This is the alignment interface module in FairRoot. It's supposed to handle the misalignment of individual detector components and give the user a simple interface to create misalignment matrices and apply them to the current working geometry in a simulation macro.
@@ -166,3 +169,5 @@ The interface exists but is not tested yet.
 # Known Issues
 
 None as of yet, but some functionality is still missing.
+
+ */
