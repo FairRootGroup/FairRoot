@@ -146,7 +146,7 @@ void FairRun::SetUseFairLinks(Bool_t val) { fRootManager->SetUseFairLinks(val); 
 
 void FairRun::SetWriteRunInfoFile(Bool_t write)
 {
-    LOG(warn) << "Function FairRun::SetWriteRunInfoFile(Bool_t) is depcrecated and will vanish in future versions of "
+    LOG(warn) << "Function FairRun::SetWriteRunInfoFile(Bool_t) is deprecated and will vanish in future versions of "
                  "FairRoot.\n";
     LOG(warn) << "Please use FairRun::SetGenerateRunInfo(Bool_t) instead.";
 
@@ -156,7 +156,7 @@ void FairRun::SetWriteRunInfoFile(Bool_t write)
 Bool_t FairRun::GetWriteRunInfoFile()
 {
     LOG(warn)
-        << "Function FairRun::GetWriteRunInfoFile() is depcrecated and will vanish in future versions of FairRoot.\n";
+        << "Function FairRun::GetWriteRunInfoFile() is deprecated and will vanish in future versions of FairRoot.\n";
     LOG(warn) << "Please use FairRun::IsRunInfoGenerated() instead.";
 
     return fGenerateRunInfo;

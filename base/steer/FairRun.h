@@ -124,14 +124,22 @@ class FairRun : public TNamed
     /**Create a new file and save the TGeoManager to it*/
     void CreateGeometryFile(const char* geofile);
 
-    //** Set if RunInfo file should be written */
-    void SetWriteRunInfoFile(Bool_t write);
+    /**
+     * Set if RunInfo file should be written
+     * \deprecated Use SetGenerateRunInfo() instead.
+     *   Deprecated pre-v19, will be removed in v20.
+     */
+    [[deprecated]] void SetWriteRunInfoFile(Bool_t write);
 
     //** Set if RunInfo should be generated */
     void SetGenerateRunInfo(Bool_t write) { fGenerateRunInfo = write; }
 
-    //** Get info if RunInfo file is written */
-    Bool_t GetWriteRunInfoFile();
+    /**
+     * Get info if RunInfo file is written
+     * \deprecated Use \ref IsRunInfoGenerated() instead.
+     *   Deprecated pre-v19, will be removed in v20.
+     */
+    [[deprecated]] Bool_t GetWriteRunInfoFile();
 
     //** Get info if RunInfo file is written */
     Bool_t IsRunInfoGenerated() { return fGenerateRunInfo; }
@@ -151,21 +159,29 @@ class FairRun : public TNamed
     //** Set option string */
     void SetOptions(const TString& s) { fOptions = s; };
 
-    // vvvvvvvvvv depracted functions, replaced by FairSink vvvvvvvvvv
     /**
      * Set the output file name for analysis or simulation
+     * \deprecated Use \ref FairSink and \ref SetSink().
+     *   Deprecated pre-v19, will be removed in v20.
      */
-    virtual void SetOutputFile(const char* fname);
+    [[deprecated]] virtual void SetOutputFile(const char* fname);
     /**
      * Set the output file for analysis or simulation
+     * \deprecated Use \ref FairSink and \ref SetSink().
+     *   Deprecated pre-v19, will be removed in v20.
      */
-    virtual void SetOutputFile(TFile* f);
+    [[deprecated]] virtual void SetOutputFile(TFile* f);
     /**
      * Set the  output file name without creating the file
+     * \deprecated Use \ref FairSink and \ref SetSink().
+     *   Deprecated pre-v19, will be removed in v20.
      */
-    void SetOutputFileName(const TString& name);
-    TFile* GetOutputFile();
-    // ^^^^^^^^^^ depracted functions, replaced by FairSink ^^^^^^^^^^
+    [[deprecated]] void SetOutputFileName(const TString& name);
+    /**
+     * \deprecated Use \ref FairSink and \ref SetSink().
+     *   Deprecated pre-v19, will be removed in v20.
+     */
+    [[deprecated]] TFile* GetOutputFile();
 
     /**
      * New functions which allow to postpone creating a new Sink in MT
