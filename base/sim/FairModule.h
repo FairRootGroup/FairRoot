@@ -68,9 +68,11 @@ class FairModule : public TNamed
     virtual void ConstructRootGeometry(TGeoMatrix* shiftM = nullptr);
     /**construct geometry from standard ASSCII files (Hades Format)*/
     virtual void ConstructASCIIGeometry();
-    /** Modify the geometry for the simulation run using methods of the Root geometry package */
-    virtual void ModifyGeometry()
-        __attribute__((deprecated("Use FairAlignmentHandler instead, see Tutorial4 for examples")))
+    /**
+     * Modify the geometry for the simulation run using methods of the Root geometry package
+     * \deprecated Deprecated pre-v19, will be removed in v20.
+     */
+    [[deprecated("Use FairAlignmentHandler instead, see Tutorial4 for examples")]] virtual void ModifyGeometry()
     {
         LOG(warn) << "This function is deprecated. Use FairAlignmentHandler instead, see Tutorial4 for examples.";
     }
