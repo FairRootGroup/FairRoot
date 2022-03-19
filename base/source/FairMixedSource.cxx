@@ -19,7 +19,6 @@
 #include "FairLogger.h"
 #include "FairMCEventHeader.h"
 #include "FairRootManager.h"
-#include "FairRuntimeDb.h"   // for FairRuntimeDb
 
 #include <TDirectory.h>   // for TDirectory::TContext
 #include <TFolder.h>
@@ -43,7 +42,6 @@ FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
     , fInputLevel()
     , fRunIdInfoAll()
     , fListFolder(new TObjArray(16))
-    , fRtdb(FairRuntimeDb::instance())
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -96,7 +94,6 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
     , fInputLevel()
     , fRunIdInfoAll()
     , fListFolder(new TObjArray(16))
-    , fRtdb(FairRuntimeDb::instance())
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -149,7 +146,6 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     , fInputLevel()
     , fRunIdInfoAll()
     , fListFolder(new TObjArray(16))
-    , fRtdb(FairRuntimeDb::instance())
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
