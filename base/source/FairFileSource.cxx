@@ -19,7 +19,6 @@
 #include "FairLogger.h"
 #include "FairMCEventHeader.h"
 #include "FairRootManager.h"
-#include "FairRuntimeDb.h"   // for FairRuntimeDb
 
 #include <TChain.h>
 #include <TChainElement.h>
@@ -56,7 +55,6 @@ FairFileSource::FairFileSource(TFile* f, const char* Title, UInt_t)
     , fInChain(0)
     , fInTree(0)
     , fListFolder(new TObjArray(16))
-    , fRtdb(FairRuntimeDb::instance())
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -96,7 +94,6 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
     , fInChain(0)
     , fInTree(0)
     , fListFolder(new TObjArray(16))
-    , fRtdb(FairRuntimeDb::instance())
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -137,7 +134,6 @@ FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UI
     , fInChain(0)
     , fInTree(0)
     , fListFolder(new TObjArray(16))
-    , fRtdb(FairRuntimeDb::instance())
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)

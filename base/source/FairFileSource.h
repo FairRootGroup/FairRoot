@@ -31,7 +31,6 @@
 class FairEventHeader;
 class FairFileHeader;
 class FairMCEventHeader;
-class FairRuntimeDb;
 class TTree;
 
 class FairFileSource : public FairFileSourceBase
@@ -140,8 +139,6 @@ class FairFileSource : public FairFileSourceBase
     TTree* fInTree;
     /** list of folders from all input (and friends) files*/
     TObjArray* fListFolder;   //!
-    /** RuntimeDb*/
-    FairRuntimeDb* fRtdb;
     /**folder structure of output*/
     TFolder* fCbmout;
     /**folder structure of input*/
