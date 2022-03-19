@@ -42,7 +42,6 @@ FairRun::FairRun(Bool_t isMaster)
     , fRtdb(FairRuntimeDb::instance())
     , fTask(new FairTask("FairTaskList"))
     , fRootManager(0)
-    , fSink(0)
     , fUserOutputFileName()
     , fRunId(0)
     , fAna(kFALSE)
@@ -87,8 +86,9 @@ FairRun::~FairRun()
 {
     LOG(debug) << "Enter Destructor of FairRun";
 
-    // So that FairRootManager does not try to delete it, because we will do that:
+    // So that FairRootManager does not try to delete these, because we will do that:
     fRootManager->SetSource(nullptr);
+    fRootManager->SetSink(nullptr);
 
     if (fTask) {
         // FairRunAna added it, but let's remove it here, because we own it
@@ -171,31 +171,41 @@ Bool_t FairRun::GetWriteRunInfoFile()
     return fGenerateRunInfo;
 }
 
+void FairRun::SetSink(std::unique_ptr<FairSink>&& newsink)
+{
+    fSink = std::move(newsink);
+    fRootManager->SetSink(fSink.get());
+    fUserOutputFileName = fSink->GetFileName();
+}
+
+void FairRun::SetSink(FairSink* tempSink)
+{
+    fSink.reset(tempSink);
+    fRootManager->SetSink(fSink.get());
+    fUserOutputFileName = fSink->GetFileName();
+}
+
 void FairRun::SetOutputFile(const char* fname)
 {
     LOG(warning) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
-    fSink = new FairRootFileSink(fname);
+    fSink = std::make_unique<FairRootFileSink>(fname);
     if (fRootManager)
-        fRootManager->SetSink(fSink);
+        fRootManager->SetSink(fSink.get());
     fUserOutputFileName = fname;
 }
 
 void FairRun::SetOutputFile(TFile* f)
 {
     LOG(warning) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
-    fSink = new FairRootFileSink(f);
-    if (fRootManager)
-        fRootManager->SetSink(fSink);
-    if (f)
-        fUserOutputFileName = f->GetName();
+    SetSink(std::make_unique<FairRootFileSink>(f));
 }
 
 void FairRun::SetOutputFileName(const TString& name)
 {
     LOG(warning) << "FairRun::SetOutputFileName() deprecated. Use FairRootFileSink.";
-    fSink = new FairRootFileSink(name);
+    fSink = std::make_unique<FairRootFileSink>(name);
     if (fRootManager)
-        fRootManager->SetSink(fSink);
+        fRootManager->SetSink(fSink.get());
     fUserOutputFileName = name;
 }
 
