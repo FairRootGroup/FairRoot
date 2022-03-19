@@ -30,7 +30,6 @@ class FairEventHeader;
 class FairFileHeader;
 class FairMCEventHeader;
 class TString;
-class FairRuntimeDb;
 class TFolder;
 class TObject;
 
@@ -156,8 +155,6 @@ class FairMixedSource : public FairFileSourceBase
     std::map<TString, std::multimap<TString, TArrayI>> fRunIdInfoAll;   //!
     /** list of folders from all input (and friends) files*/
     TObjArray* fListFolder;   //!
-    /** RuntimeDb*/
-    FairRuntimeDb* fRtdb;
     /**folder structure of output*/
     TFolder* fCbmout;
     /**folder structure of input*/
