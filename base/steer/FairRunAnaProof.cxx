@@ -332,7 +332,7 @@ void FairRunAnaProof::RunOnProof(Int_t NStart, Int_t NStop)
     fProof->AddInput(fTask);
 
     // get file name from FairSink
-    TString fileName = fRootManager->GetSink()->GetFileName();
+    TString fileName = GetSink()->GetFileName();
     LOG(info) << " outputFileName = " << fileName.Data();
     if (fileName.Length() < 5)
         fileName = "proofOutput.root";

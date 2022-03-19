@@ -9,7 +9,8 @@
 #define FAIRRUN_H
 
 #include "FairAlignmentHandler.h"
-#include "FairRootManager.h"
+#include "FairSink.h"
+#include "FairSource.h"
 
 #include <Rtypes.h>   // for Int_t, Bool_t, etc
 #include <TMCtls.h>   // for multi-threading
@@ -21,6 +22,7 @@
 
 class FairEventHeader;
 class FairFileHeader;
+class FairRootManager;
 class FairRuntimeDb;
 class FairSink;
 class FairTask;
@@ -47,7 +49,7 @@ class FairRun : public TNamed
     /**
      * default dtor
      */
-    virtual ~FairRun();
+    ~FairRun() override;
     /**
      * static instance
      */
@@ -78,20 +80,16 @@ class FairRun : public TNamed
     /**
      * return a pointer to the RuntimeDB
      */
-    FairRuntimeDb* GetRuntimeDb(void) { return fRtdb; }
+    FairRuntimeDb* GetRuntimeDb() { return fRtdb; }
     /**
      * Set the sink
      */
-    void SetSink(FairSink* tempSink)
-    {
-        fSink = tempSink;
-        fRootManager->SetSink(tempSink);
-        fUserOutputFileName = fSink->GetFileName();
-    }
+    void SetSink(std::unique_ptr<FairSink>&& newsink);
+    void SetSink(FairSink* tempSink);
     /**
-     * return a pointer to the sink
+     * return a non-owning pointer to the sink
      */
-    FairSink* GetSink() { return fSink; }
+    FairSink* GetSink() { return fSink.get(); }
     /**
      * return the run ID for the actul run
      */
@@ -218,7 +216,7 @@ class FairRun : public TNamed
     /**IO manager */
     FairRootManager* fRootManager;
     /**Output sink*/
-    FairSink* fSink;
+    std::unique_ptr<FairSink> fSink{};   //!
     /**Output file name set by user*/
     TString fUserOutputFileName;
     /**Options for derived classes, to be set & parsed by user*/
