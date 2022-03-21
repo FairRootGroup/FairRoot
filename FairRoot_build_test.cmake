@@ -52,8 +52,13 @@ get_filename_component(test_install_prefix "${CTEST_BINARY_DIRECTORY}/install"
 list(APPEND options
   "-DDISABLE_COLOR=ON"
   "-DCMAKE_INSTALL_PREFIX:PATH=${test_install_prefix}"
-  "-DBUILD_MBS=ON"
 )
+if ((NOT DEFINED BUILD_MBS) OR BUILD_MBS)
+  list(APPEND options "-DBUILD_MBS=ON")
+endif()
+if (USE_CLANG_TIDY)
+  list(APPEND options "-DCMAKE_CXX_CLANG_TIDY=clang-tidy")
+endif()
 if ("$ENV{CHANGE_ID}" STREQUAL "")
   # Branch build
   list(APPEND options "-DENABLE_GEANT3_TESTING:BOOL=ON")

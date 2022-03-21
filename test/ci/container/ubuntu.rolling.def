@@ -1,0 +1,25 @@
+Bootstrap: docker
+From: ubuntu:rolling
+
+%files
+    fairsoft-install.sh /opt/fairsoft/fairsoft-install.sh
+
+%post
+    apt-get -q update
+    apt-get -q -y dist-upgrade
+    apt-get -q -y --no-install-recommends install apt-utils
+    (
+      echo "debconf debconf/frontend select Noninteractive"
+      echo "tzdata	tzdata/Areas	select	Europe"
+      echo "tzdata	tzdata/Zones/Europe	select	Berlin"
+    ) | debconf-set-selections
+    apt-get -q -y --no-install-recommends install lsb-release git ca-certificates
+
+    # Some extra tools for development/etc
+    apt-get -y --no-install-recommends install \
+        doxygen graphviz clang-format clang-tidy
+
+    chmod a+x /opt/fairsoft/fairsoft-install.sh
+    ln -s /opt/fairsoft /fairsoft
+    /opt/fairsoft/fairsoft-install.sh dev
+    apt-get -y clean

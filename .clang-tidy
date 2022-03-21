@@ -1,0 +1,4 @@
+---
+# disable clang-analyzer-core.UndefinedBinaryOperatorResult
+#   ROOT throws lots of them in their headers
+Checks: '-clang-analyzer-core.UndefinedBinaryOperatorResult'
