@@ -18,7 +18,7 @@ def jobMatrix(String prefix, String type, List specs) {
     def os = spec.os
     def ver = spec.ver
     def arch = spec.arch
-    def check = spec.check
+    def check = spec.getOrDefault("check", null)
     def extra = spec.getOrDefault("extra", null)
 
     nodes[label] = {
@@ -61,6 +61,12 @@ def jobMatrix(String prefix, String type, List specs) {
             sh "cat ${jobscript}"
             sh "./slurm-submit.sh \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
           }
+          if (check == "warnings") {
+            discoverGitReferenceBuild()
+            recordIssues(tools: [clangTidy(pattern: 'build/Testing/Temporary/*.log')],
+                         qualityGates: [[threshold: 1, type: 'NEW', unstable: true]],
+                         skipBlames: true)
+          }
 
           deleteDir()
           githubNotify(context: "${prefix}/${label}", description: 'Success', status: 'SUCCESS')
@@ -93,6 +99,7 @@ pipeline{
             [os: 'ubuntu',     ver: '20.04', arch: 'x86_64', compiler: 'gcc-9',           fairsoft: 'apr21_patches'],
             [os: 'ubuntu',     ver: '20.04', arch: 'x86_64', compiler: 'gcc-9',           fairsoft: 'apr21_patches_mt'],
             [os: 'ubuntu',   ver: 'rolling', arch: 'x86_64', compiler: 'current',         fairsoft: 'dev',
+                             check: 'warnings',
                              extra: '-DUSE_CLANG_TIDY=ON -DBUILD_MBS=OFF'],
             [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches'],
             [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches_mt'],
