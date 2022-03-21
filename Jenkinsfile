@@ -19,6 +19,7 @@ def jobMatrix(String prefix, String type, List specs) {
     def ver = spec.ver
     def arch = spec.arch
     def check = spec.check
+    def extra = spec.getOrDefault("extra", null)
 
     nodes[label] = {
       node(selector) {
@@ -33,6 +34,9 @@ def jobMatrix(String prefix, String type, List specs) {
           if (type == 'check') {
             ctestcmd = "ctest -S FairRoot_${check}_test.cmake -VV"
             sh "echo \"export FAIRROOT_FORMAT_BASE=origin/\${CHANGE_TARGET}\" >> ${jobscript}"
+          }
+          if (extra) {
+            ctestcmd = ctestcmd + " " + extra
           }
           if (selector =~ /^macos/) {
             sh "echo \"export SIMPATH=\$(brew --prefix fairsoft@${fairsoft})\" >> ${jobscript}"
@@ -88,6 +92,8 @@ pipeline{
             [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches_mt'],
             [os: 'ubuntu',     ver: '20.04', arch: 'x86_64', compiler: 'gcc-9',           fairsoft: 'apr21_patches'],
             [os: 'ubuntu',     ver: '20.04', arch: 'x86_64', compiler: 'gcc-9',           fairsoft: 'apr21_patches_mt'],
+            [os: 'ubuntu',   ver: 'rolling', arch: 'x86_64', compiler: 'current',         fairsoft: 'dev',
+                             extra: '-DUSE_CLANG_TIDY=ON -DBUILD_MBS=OFF'],
             [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches'],
             [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches_mt'],
             // [os: 'macos',      ver: '10.15', arch: 'x86_64', compiler: 'apple-clang-11',  fairsoft: '20.11'],
