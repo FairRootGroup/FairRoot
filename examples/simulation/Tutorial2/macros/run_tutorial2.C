@@ -29,9 +29,7 @@
 
 void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant4", Bool_t isMT = true, UInt_t initial_seed = 98989)
 {
-
     TString dir = getenv("VMCWORKDIR");
-    TString tutdir = dir + "/simulation/Tutorial2";
 
     TString tut_geomdir = dir + "/common/geometry";
     gSystem->Setenv("GEOMPATH", tut_geomdir.Data());
@@ -81,7 +79,7 @@ void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant4", Bool_t isMT
     // ------------------------------------------------------------------------
 
     // -----   Create simulation run   ----------------------------------------
-    FairRunSim* run = new FairRunSim();
+    auto run = std::make_unique<FairRunSim>();
     run->SetName(mcEngine);                        // Transport engine
     run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
     run->SetSink(new FairRootFileSink(outFile));   // Output file
