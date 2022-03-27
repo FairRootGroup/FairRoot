@@ -16,6 +16,7 @@
 
 class TClonesArray;
 class TMap;
+class TVirtualMC;
 
 /**
  * @class FairRadMapManager
@@ -93,7 +94,11 @@ class FairRadMapManager
 
   public:
     /**Add point to collection*/
-    void AddPoint(Int_t& ModuleId);
+    void AddPoint(TVirtualMC* aMC, const Int_t);
+    /**
+     * \deprecated Deprecated in v19, will be removed in v20.
+     */
+    [[deprecated("Use AddPoint(TVirtualMC*, ...)")]] void AddPoint(const Int_t ModuleId);
     /**initialize the manager*/
     void Init();
     /**reset*/

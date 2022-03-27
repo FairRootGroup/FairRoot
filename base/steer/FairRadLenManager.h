@@ -16,6 +16,7 @@
 #include <TLorentzVector.h>   // for TLorentzVector
 
 class TClonesArray;
+class TVirtualMC;
 
 /**
  * @class FairRadLenManager
@@ -81,7 +82,11 @@ class FairRadLenManager
 
   public:
     /**Add point to collection*/
-    void AddPoint(Int_t& ModuleId);
+    void AddPoint(TVirtualMC* aMC, const Int_t ModuleId);
+    /**
+     * \deprecated Deprecated in v19, will be removed in v20.
+     */
+    [[deprecated("Use AddPoint(TVirtualMC*, ...)")]] void AddPoint(const Int_t ModuleId);
     /**initialize the manager*/
     void Init();
     /**reset*/
