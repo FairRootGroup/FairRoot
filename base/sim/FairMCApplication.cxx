@@ -645,12 +645,12 @@ void FairMCApplication::Stepping()
     if (fRadLenMan) {
         id = fMC->CurrentVolID(copyNo);
         fModVolIter = fgMasterInstance->fModVolMap.find(id);
-        fRadLenMan->AddPoint(fModVolIter->second);
+        fRadLenMan->AddPoint(fMC, fModVolIter->second);
     }
     if (fRadMapMan) {
         id = fMC->CurrentVolID(copyNo);
         fModVolIter = fgMasterInstance->fModVolMap.find(id);
-        fRadMapMan->AddPoint(fModVolIter->second);
+        fRadMapMan->AddPoint(fMC, fModVolIter->second);
     }
     if (fRadGridMan) {
         fRadGridMan->FillMeshList();
