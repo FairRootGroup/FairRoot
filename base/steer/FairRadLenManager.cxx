@@ -57,7 +57,9 @@ FairRadLenManager::FairRadLenManager()
 FairRadLenManager::~FairRadLenManager()
 {
     /** radiation length default dtor */
-    fgInstance = nullptr;
+    if (fgInstance == this) {
+        fgInstance = nullptr;
+    }
     fPointCollection->Delete();
     delete fPointCollection;
 }

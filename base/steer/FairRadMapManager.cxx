@@ -74,7 +74,9 @@ FairRadMapManager::FairRadMapManager()
 FairRadMapManager::~FairRadMapManager()
 {
     /** radiation length default dtor */
-    fgInstance = nullptr;
+    if (fgInstance == this) {
+        fgInstance = nullptr;
+    }
     fPointCollection->Delete();
     delete fPointCollection;
     delete fMassMap;

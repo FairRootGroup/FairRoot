@@ -27,7 +27,6 @@ class FairRadLenManager
     /**
      * Default constructor.
      * Creates the singleton object of FairRadLenManager class.
-     * The pointer to this object can be reached via FairRadLenManager::Instance().
      */
     FairRadLenManager();
 
@@ -91,8 +90,9 @@ class FairRadLenManager
      * This function is used to access the methods of the class.
      * @return Pointer to the singleton FairRadLenManager object, created
      * with FairRadLenManager::FairRadLenManager().
+     * \deprecated Deprecated in v19, will be removed in v20.
      */
-    static FairRadLenManager* Instance();
+    [[deprecated]] static FairRadLenManager* Instance();
 };
 
 #endif
