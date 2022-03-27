@@ -27,7 +27,6 @@ class FairRadMapManager
     /**
      * Default constructor.
      * Creates the singleton object of FairRadMapManager class.
-     * The pointer to this object can be reached via FairRadMapManager::Instance().
      */
     FairRadMapManager();
 
@@ -103,8 +102,9 @@ class FairRadMapManager
      * This function is used to access the methods of the class.
      * @return Pointer to the singleton FairRadMapManager object, created
      * with FairRadMapManager::FairRadMapManager().
+     * \deprecated Deprecated in v19, will be removed in v20.
      */
-    static FairRadMapManager* Instance();
+    [[deprecated]] static FairRadMapManager* Instance();
     //  void GetGeoManager();
 };
 
