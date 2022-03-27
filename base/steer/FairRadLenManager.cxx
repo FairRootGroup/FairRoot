@@ -76,29 +76,29 @@ void FairRadLenManager::Reset()
     fPointCollection->Delete();
 }
 
-void FairRadLenManager::AddPoint(Int_t& ModuleId)
+void FairRadLenManager::AddPoint(TVirtualMC* aMC, const Int_t ModuleId)
 {
     /**Add a point to the collection*/
-    if (TVirtualMC::GetMC()->IsTrackEntering()) {
+    if (aMC->IsTrackEntering()) {
         fELoss = 0.;
         Int_t copyNo;
-        fVolumeID = TVirtualMC::GetMC()->CurrentVolID(copyNo);
-        fTime = TVirtualMC::GetMC()->TrackTime() * 1.0e09;
-        fLength = TVirtualMC::GetMC()->TrackLength();
-        TVirtualMC::GetMC()->TrackPosition(fPosIn);
-        TVirtualMC::GetMC()->TrackMomentum(fMomIn);
-        //    Int_t MatId=  TVirtualMC::GetMC()->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
-        TVirtualMC::GetMC()->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
+        fVolumeID = aMC->CurrentVolID(copyNo);
+        fTime = aMC->TrackTime() * 1.0e09;
+        fLength = aMC->TrackLength();
+        aMC->TrackPosition(fPosIn);
+        aMC->TrackMomentum(fMomIn);
+        //    Int_t MatId=  aMC->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
+        aMC->CurrentMaterial(fA, fZmat, fDensity, fRadl, fAbsl);
     }
     /** Sum energy loss for all steps in the active volume */
-    fELoss += TVirtualMC::GetMC()->Edep();
+    fELoss += aMC->Edep();
     /**  Create a point at exit of the volume */
-    if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
-        || TVirtualMC::GetMC()->IsTrackDisappeared()) {
+    if (aMC->IsTrackExiting() || aMC->IsTrackStop() || aMC->IsTrackDisappeared()) {
         //    FairRadLenPoint* p=0;
-        fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
-        TVirtualMC::GetMC()->TrackPosition(fPosOut);
-        TVirtualMC::GetMC()->TrackMomentum(fMomOut);
+        fTrackID = aMC->GetStack()->GetCurrentTrackNumber();
+        aMC->TrackPosition(fPosOut);
+        aMC->TrackMomentum(fMomOut);
+
         TClonesArray& clref = *fPointCollection;
         Int_t tsize = clref.GetEntriesFast();
         //    p=new(clref[tsize]) FairRadLenPoint(fTrackID, ModuleId,
@@ -117,3 +117,5 @@ void FairRadLenManager::AddPoint(Int_t& ModuleId)
                                            fRadl);
     }
 }
+
+void FairRadLenManager::AddPoint(const Int_t ModuleId) { AddPoint(TVirtualMC::GetMC(), ModuleId); }
