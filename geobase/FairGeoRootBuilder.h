@@ -34,11 +34,11 @@ class FairGeoRootBuilder : public FairGeoBuilder
     FairGeoRootBuilder(const char*, const char*);
     ~FairGeoRootBuilder() {}
     void setGeoManager(TGeoManager* me) { geoManager = me; }
-    Bool_t createNode(FairGeoNode*, Int_t hadFormat = 0);
-    Int_t createMedium(FairGeoMedium*);
-    void finalize();
+    Bool_t createNode(FairGeoNode*, Int_t hadFormat = 0) override;
+    Int_t createMedium(FairGeoMedium*) override;
+    void finalize() override;
     void checkOverlaps(Double_t ovlp = 0.0001);
-    ClassDef(FairGeoRootBuilder, 0);   //
+    ClassDefOverride(FairGeoRootBuilder, 0);   //
 };
 
 #endif /* !FAIRGEOROOTBUILDER_H */

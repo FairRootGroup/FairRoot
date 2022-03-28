@@ -36,26 +36,26 @@ class FairGeoOldAsciiIo : public FairGeoIo
     void setDirectory(const char* fDir) { filedir = fDir; }
     const char* getDirectory() { return filedir.Data(); }
     const char* getFilename() { return filename.Data(); }
-    Bool_t open(const char*, const Text_t* status = "in");
-    Bool_t isOpen();
-    Bool_t isWritable();
-    void close();
-    void print();
-    Bool_t read(FairGeoMedia*) { return kFALSE; }
-    Bool_t read(FairGeoSet*, FairGeoMedia*);
-    Bool_t write(FairGeoMedia*) { return kFALSE; }
-    Bool_t write(FairGeoSet*) { return kFALSE; }
-    Bool_t readGeomConfig(FairGeoInterface*) { return kFALSE; }
+    Bool_t open(const char*, const Text_t* status = "in") override;
+    Bool_t isOpen() override;
+    Bool_t isWritable() override;
+    void close() override;
+    void print() override;
+    Bool_t read(FairGeoMedia*) override { return kFALSE; }
+    Bool_t read(FairGeoSet*, FairGeoMedia*) override;
+    Bool_t write(FairGeoMedia*) override { return kFALSE; }
+    Bool_t write(FairGeoSet*) override { return kFALSE; }
+    Bool_t readGeomConfig(FairGeoInterface*) override { return kFALSE; }
     Bool_t readDetectorSetup(FairGeoInterface*) { return kFALSE; }
-    Bool_t setSimulRefRun(const char*) { return kTRUE; }
-    Bool_t setHistoryDate(const char*) { return kTRUE; }
+    Bool_t setSimulRefRun(const char*) override { return kTRUE; }
+    Bool_t setHistoryDate(const char*) override { return kTRUE; }
 
   private:
     Bool_t calculateShapePoints(Double_t*, FairGeoNode*);
     FairGeoOldAsciiIo(const FairGeoOldAsciiIo&);
     FairGeoOldAsciiIo& operator=(const FairGeoOldAsciiIo&);
 
-    ClassDef(FairGeoOldAsciiIo, 0);   //
+    ClassDefOverride(FairGeoOldAsciiIo, 0);   //
 };
 
 #endif /* !FAIRGEOOLDASCIIIO_H */

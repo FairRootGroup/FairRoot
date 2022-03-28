@@ -25,9 +25,9 @@ class FairGeoTrap : public FairGeoBasicShape
   public:
     FairGeoTrap();
     ~FairGeoTrap();
-    TArrayD* calcVoluParam(FairGeoVolume*);
-    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&);
-    ClassDef(FairGeoTrap, 0);   // class for geometry shape TRAP
+    TArrayD* calcVoluParam(FairGeoVolume*) override;
+    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&) override;
+    ClassDefOverride(FairGeoTrap, 0);   // class for geometry shape TRAP
 };
 
 #endif /* !FAIRGEOTRAP_H */

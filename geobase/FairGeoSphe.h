@@ -26,12 +26,12 @@ class FairGeoSphe : public FairGeoBasicShape
   public:
     FairGeoSphe();
     ~FairGeoSphe();
-    TArrayD* calcVoluParam(FairGeoVolume*);
-    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&);
-    Int_t readPoints(std::fstream*, FairGeoVolume*);
-    Bool_t writePoints(std::fstream*, FairGeoVolume*);
-    void printPoints(FairGeoVolume* volu);
-    ClassDef(FairGeoSphe, 0);   //
+    TArrayD* calcVoluParam(FairGeoVolume*) override;
+    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&) override;
+    Int_t readPoints(std::fstream*, FairGeoVolume*) override;
+    Bool_t writePoints(std::fstream*, FairGeoVolume*) override;
+    void printPoints(FairGeoVolume* volu) override;
+    ClassDefOverride(FairGeoSphe, 0);   //
 };
 
 #endif /* !FAIRGEOSPHE_H */
