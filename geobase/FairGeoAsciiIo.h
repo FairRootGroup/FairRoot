@@ -35,24 +35,24 @@ class FairGeoAsciiIo : public FairGeoIo
     void setDirectory(const char* fDir) { filedir = fDir; }
     const char* getDirectory() { return filedir.Data(); }
     const char* getFilename() { return filename.Data(); }
-    Bool_t open(const char*, const Text_t* status = "in");
-    Bool_t isOpen();
-    Bool_t isWritable();
-    void close();
-    void print();
-    Bool_t read(FairGeoMedia*);
-    Bool_t read(FairGeoSet*, FairGeoMedia*);
-    Bool_t write(FairGeoMedia*);
-    Bool_t write(FairGeoSet* set);
-    Bool_t readGeomConfig(FairGeoInterface*);
+    Bool_t open(const char*, const Text_t* status = "in") override;
+    Bool_t isOpen() override;
+    Bool_t isWritable() override;
+    void close() override;
+    void print() override;
+    Bool_t read(FairGeoMedia*) override;
+    Bool_t read(FairGeoSet*, FairGeoMedia*) override;
+    Bool_t write(FairGeoMedia*) override;
+    Bool_t write(FairGeoSet* set) override;
+    Bool_t readGeomConfig(FairGeoInterface*) override;
     Bool_t readDetectorSetup(FairGeoInterface*);
-    Bool_t setSimulRefRun(const char*) { return kTRUE; }
-    Bool_t setHistoryDate(const char*) { return kTRUE; }
+    Bool_t setSimulRefRun(const char*) override { return kTRUE; }
+    Bool_t setHistoryDate(const char*) override { return kTRUE; }
 
   private:
     FairGeoAsciiIo(const FairGeoAsciiIo&);
     FairGeoAsciiIo& operator=(const FairGeoAsciiIo&);
-    ClassDef(FairGeoAsciiIo, 0);   // Class for geometry I/O from ASCII file
+    ClassDefOverride(FairGeoAsciiIo, 0);   // Class for geometry I/O from ASCII file
 };
 
 #endif /* !FAIRGEOASCIIIO_H */

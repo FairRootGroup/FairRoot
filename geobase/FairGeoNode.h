@@ -97,8 +97,8 @@ class FairGeoNode : public FairGeoVolume
     void setLabTransform(FairGeoTransform&);
     Bool_t calcModuleTransform(FairGeoTransform&);
     Bool_t calcRefPos(FairGeoVector&);
-    void clear();
-    void print();
+    void clear() override;
+    void print() override;
     Bool_t write(std::fstream&);
     Int_t compare(FairGeoNode&);
 
@@ -112,7 +112,7 @@ class FairGeoNode : public FairGeoVolume
         }
     }
 
-    ClassDef(FairGeoNode, 1);   //
+    ClassDefOverride(FairGeoNode, 1);   //
 };
 
 // -------------------- inlines --------------------------
