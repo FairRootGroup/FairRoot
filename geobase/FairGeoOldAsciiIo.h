@@ -12,7 +12,7 @@
 
 #include <Rtypes.h>    // for Bool_t, kFALSE, etc
 #include <TString.h>   // for TString
-#include <iosfwd>      // for fstream
+#include <fstream>     // for fstream
 
 class FairGeoInterface;
 class FairGeoMedia;
@@ -28,7 +28,7 @@ class FairGeoOldAsciiIo : public FairGeoIo
     TString filename;
     TString filedir;
     Bool_t writable;
-    std::fstream* file;
+    std::fstream file{};   //!
 
   public:
     FairGeoOldAsciiIo();
