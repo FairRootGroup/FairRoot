@@ -29,9 +29,9 @@ class FairGeoCompositeVolume : public FairGeoVolume
     FairGeoVolume* getComponent(const Int_t);
     void createComponents(const Int_t);
     void setComponent(FairGeoVolume*, const Int_t);
-    void clear();
-    void print();
-    ClassDef(FairGeoCompositeVolume, 1);
+    void clear() override;
+    void print() override;
+    ClassDefOverride(FairGeoCompositeVolume, 1);
 
   private:
     FairGeoCompositeVolume(const FairGeoCompositeVolume&);

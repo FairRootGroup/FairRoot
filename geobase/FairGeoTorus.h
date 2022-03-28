@@ -22,13 +22,13 @@ class FairGeoTorus : public FairGeoBasicShape
   public:
     FairGeoTorus();
     ~FairGeoTorus();
-    TArrayD* calcVoluParam(FairGeoVolume*);
-    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&);
-    Int_t readPoints(std::fstream* pFile, FairGeoVolume* volu);
-    Bool_t writePoints(std::fstream*, FairGeoVolume*);
-    void printPoints(FairGeoVolume* volu);
+    TArrayD* calcVoluParam(FairGeoVolume*) override;
+    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&) override;
+    Int_t readPoints(std::fstream* pFile, FairGeoVolume* volu) override;
+    Bool_t writePoints(std::fstream*, FairGeoVolume*) override;
+    void printPoints(FairGeoVolume* volu) override;
 
-    ClassDef(FairGeoTorus, 0);   // class for geometry shape TORUS
+    ClassDefOverride(FairGeoTorus, 0);   // class for geometry shape TORUS
 };
 
 #endif /* !FAIRGEOTORUS_H */
