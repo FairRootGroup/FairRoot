@@ -14,6 +14,7 @@
 #include "FairMQPixelSampler.h"
 
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -37,7 +38,7 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     std::string samplerType = config.GetValue<std::string>("sampler-type");
     std::vector<std::string> filename = config.GetValue<std::vector<std::string>>("file-name");
 
-    FairMQPixelSampler* sampler = new FairMQPixelSampler();
+    auto sampler = std::make_unique<FairMQPixelSampler>();
 
     if (samplerType == "FairFileSource") {
     } else if (samplerType == "PixelDigiSource") {
@@ -56,5 +57,5 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
         return nullptr;
     }
 
-    return sampler;
+    return sampler.release();
 }
