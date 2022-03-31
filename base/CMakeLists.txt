@@ -146,6 +146,7 @@ target_compile_definitions(${target} PRIVATE
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF FairLinkDef.h
+  EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
 fairroot_install_exported(TARGETS ${target})

@@ -47,6 +47,7 @@ target_link_libraries(${target} PUBLIC
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF FairToolsLinkDef.h
+  EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
 fairroot_install_exported(TARGETS ${target})
