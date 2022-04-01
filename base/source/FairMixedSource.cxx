@@ -77,7 +77,7 @@ FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
     , fRunIdFromSG(kFALSE)
     , fRunIdFromSG_identifier(0)
 {
-    if (fRootFile->IsZombie()) {
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
     LOG(info) << "FairMixedSource created------------";
@@ -131,7 +131,7 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
     , fRunIdFromSG_identifier(0)
 {
     fRootFile = TFile::Open(RootFileName->Data());
-    if (fRootFile->IsZombie()) {
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
     fRootManager = FairRootManager::Instance();
@@ -184,6 +184,9 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     , fRunIdFromSG_identifier(0)
 {
     fRootFile = TFile::Open(RootFileName.Data());
+    if ((!fRootFile) || fRootFile->IsZombie()) {
+        LOG(fatal) << "Error opening the Input file";
+    }
 
     if (signalId == 0) {
         SetBackgroundFile(RootFileName);
