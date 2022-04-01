@@ -5,7 +5,7 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void eventDisplay(TString mcEngine = "TGeant3")
+void eventDisplay(TString mcEngine = "TGeant4")
 {
 
     TString inFile = "data/test_" + mcEngine + ".mc.root";
