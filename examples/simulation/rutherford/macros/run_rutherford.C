@@ -7,7 +7,6 @@
  ********************************************************************************/
 void run_rutherford(Int_t nEvents = 10, TString mcEngine = "TGeant4", Bool_t isMT = true)
 {
-
     TString dir = gSystem->Getenv("VMCWORKDIR");
     TString tutdir = dir + "/simulation/rutherford/macros";
 
@@ -18,6 +17,7 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine = "TGeant4", Bool_t isM
     gSystem->Setenv("CONFIG_DIR", tut_configdir.Data());
 
     TString outDir = "data";
+    gSystem->MakeDirectory(outDir);
     TString outFile = outDir + "/test_";
     outFile = outFile + mcEngine + ".mc.root";
 
