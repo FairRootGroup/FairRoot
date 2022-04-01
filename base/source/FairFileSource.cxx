@@ -77,7 +77,7 @@ FairFileSource::FairFileSource(TFile* f, const char* Title, UInt_t)
     , fEventMeanTime(0.)
     , fCheckFileLayout(kTRUE)
 {
-    if (fRootFile->IsZombie()) {
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
     LOG(debug) << "FairFileSource created------------";
@@ -118,7 +118,7 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
     , fCheckFileLayout(kTRUE)
 {
     fRootFile = TFile::Open(RootFileName->Data());
-    if (fRootFile->IsZombie()) {
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
     LOG(debug) << "FairFileSource created------------";
@@ -159,7 +159,7 @@ FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UI
     , fCheckFileLayout(kTRUE)
 {
     fRootFile = TFile::Open(RootFileName.Data());
-    if (fRootFile->IsZombie()) {
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
     LOG(debug) << "FairFileSource created------------";
