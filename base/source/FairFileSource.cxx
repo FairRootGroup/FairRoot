@@ -161,7 +161,7 @@ FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UI
     LOG(debug) << "FairFileSource created------------";
 }
 
-FairFileSource::~FairFileSource() {}
+FairFileSource::~FairFileSource() = default;
 
 Bool_t FairFileSource::Init()
 {
@@ -328,8 +328,6 @@ Bool_t FairFileSource::SpecifyRunId()
 }
 
 void FairFileSource::Close() { CloseInFile(); }
-
-void FairFileSource::Reset() {}
 
 void FairFileSource::AddFriend(TString fName) { fFriendFileList.push_back(fName); }
 
