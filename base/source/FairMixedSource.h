@@ -45,20 +45,11 @@ class FairMixedSource : public FairFileSourceBase
                     const char* Title = "InputRootFile",
                     UInt_t identifier = 0);
     //  FairMixedSource(const FairMixedSource& file);
-    virtual ~FairMixedSource();
+    ~FairMixedSource() override;
 
     Bool_t Init() override;
     Int_t ReadEvent(UInt_t i = 0) override;
     void Close() override;
-    void Reset() override;
-
-    Source_Type GetSourceType() override { return kFILE; }
-
-    void SetParUnpackers() override {}
-
-    Bool_t InitUnpackers() override { return kTRUE; }
-
-    Bool_t ReInitUnpackers() override { return kTRUE; }
 
     /**Check the maximum event number we can run to*/
     Int_t CheckMaxEventNo(Int_t EvtEnd = 0) override;
