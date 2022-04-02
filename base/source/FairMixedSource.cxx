@@ -198,7 +198,8 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     // }
 }
 
-FairMixedSource::~FairMixedSource() {}
+FairMixedSource::~FairMixedSource() = default;
+
 Bool_t FairMixedSource::Init()
 {
     fOutHeader = new FairEventHeader();
@@ -405,8 +406,6 @@ Int_t FairMixedSource::ReadEvent(UInt_t i)
 }
 
 void FairMixedSource::Close() {}
-
-void FairMixedSource::Reset() {}
 
 void FairMixedSource::FillEventHeader(FairEventHeader* feh)
 {

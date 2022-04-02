@@ -21,12 +21,18 @@
 class FairFileSourceBase : public FairSource
 {
   public:
+    void Reset() override {}
+    Source_Type GetSourceType() override { return kFILE; }
+    void SetParUnpackers() override {}
+    Bool_t InitUnpackers() override { return kTRUE; }
+    Bool_t ReInitUnpackers() override { return kTRUE; }
+
     Bool_t CompareBranchList(TFile* fileHandle, TString inputLevel);
 
   protected:
     FairFileSourceBase()
         : FairSource(){};
-    virtual ~FairFileSourceBase();
+    ~FairFileSourceBase() override;
 
     std::map<TString, std::list<TString>> fCheckInputBranches{};   //!
 
