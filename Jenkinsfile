@@ -62,10 +62,13 @@ def jobMatrix(String prefix, String type, List specs) {
             sh "./slurm-submit.sh \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
           }
           if (check == "warnings") {
+            def logpattern = 'build/Testing/Temporary/*.log'
             discoverGitReferenceBuild()
-            recordIssues(tools: [clangTidy(pattern: 'build/Testing/Temporary/*.log')],
+            recordIssues(tools: [clangTidy(pattern: logpattern)],
+                         filters: [excludeFile('build/.*/G__.*[.]cxx')],
                          qualityGates: [[threshold: 1, type: 'NEW', unstable: true]],
                          skipBlames: true)
+            archiveArtifacts(artifacts: logpattern, allowEmptyArchive: true, fingerprint: true)
           }
 
           deleteDir()
