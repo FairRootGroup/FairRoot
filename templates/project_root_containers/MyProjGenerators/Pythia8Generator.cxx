@@ -18,8 +18,6 @@
 
 #include "Pythia8Generator.h"
 
-using namespace Pythia8;
-
 // -----   Default constructor   -------------------------------------------
 Pythia8Generator::Pythia8Generator()
     : FairGenerator()

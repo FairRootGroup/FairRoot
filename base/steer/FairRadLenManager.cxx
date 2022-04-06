@@ -20,8 +20,6 @@
 #include <TVirtualMC.h>        // for TVirtualMC
 #include <TVirtualMCStack.h>   // for TVirtualMCStack
 
-using namespace std;
-
 ClassImp(FairRadLenManager);
 
 FairRadLenManager* FairRadLenManager::fgInstance = nullptr;

@@ -28,8 +28,6 @@
 #include <TVector3.h>
 #include <fairlogger/Logger.h>
 
-using namespace std;
-
 FairMQPixelFileSinkBin::FairMQPixelFileSinkBin()
     : FairMQDevice()
     , fInputChannelName("data-in")

@@ -20,8 +20,6 @@
 #include <fairlogger/Logger.h>
 #include <utility>
 
-using namespace std;
-
 FairMQPixAltSamplerBin::FairMQPixAltSamplerBin()
     : FairMQDevice()
     , fOutputChannelName("data-out")

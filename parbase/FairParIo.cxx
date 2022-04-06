@@ -23,8 +23,6 @@
 #include <TCollection.h>   // for TIter
 #include <TList.h>         // for TList
 
-using namespace std;
-
 ClassImp(FairParIo);
 
 FairParIo::FairParIo()

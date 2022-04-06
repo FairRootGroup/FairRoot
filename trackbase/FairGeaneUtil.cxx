@@ -20,8 +20,6 @@
 #include <cmath>                // for sqrt, cos, pow, sin, tan
 
 
-using namespace std;
-
 FairGeaneUtil::FairGeaneUtil()
     : TObject()
 {}
