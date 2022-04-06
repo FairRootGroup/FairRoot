@@ -27,7 +27,8 @@
 #include <TVirtualMCStack.h>   // for TVirtualMCStack
 #include <iostream>            // for operator<<, basic_ostream, etc
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 ClassImp(FairRadMapManager);
 

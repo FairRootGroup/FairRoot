@@ -36,8 +36,6 @@
 #include <iostream>
 #include <vector>
 
-using namespace std;
-
 FairMQTransportDevice::FairMQTransportDevice()
     : FairMQRunDevice()
     , fRunId(0)
@@ -147,16 +145,16 @@ void FairMQTransportDevice::InitializeRun()
     // -----      via the fUpdateChannelName   --------------------------------
     // -----      ask the fParamMQServer   ------------------------------------
     // -----      receive the run number and sampler id   ---------------------
-    std::string* askForRunNumber = new string("ReportSimDevice");
+    std::string* askForRunNumber = new std::string("ReportSimDevice");
     auto req(NewMessage(const_cast<char*>(askForRunNumber->c_str()),
                         askForRunNumber->length(),
-                        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                        [](void* /*data*/, void* object) { delete static_cast<std::string*>(object); },
                         askForRunNumber));
     auto rep(NewMessage());
 
     if (Send(req, fUpdateChannelName) > 0) {
         if (Receive(rep, fUpdateChannelName) > 0) {
-            std::string repString = string(static_cast<char*>(rep->GetData()), rep->GetSize());
+            std::string repString{static_cast<char*>(rep->GetData()), rep->GetSize()};
             LOG(info) << " -> " << repString.data();
             fRunId = stoi(repString);
             fMCSplitEventHeader->SetRunID(fRunId);
@@ -204,10 +202,10 @@ bool FairMQTransportDevice::ConditionalRun()
     if (!fRunConditional)
         return false;
 
-    std::string* requestString = new string("RequestData");
+    std::string* requestString = new std::string("RequestData");
     auto req(NewMessage(const_cast<char*>(requestString->c_str()),
                         requestString->length(),
-                        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                        [](void* /*data*/, void* object) { delete static_cast<std::string*>(object); },
                         requestString));
     fair::mq::Parts parts;
     //    FairMQMessagePtr rep(NewMessage());

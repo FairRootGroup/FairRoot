@@ -8,7 +8,6 @@
 
 #if !defined(__CLING__) || defined(__ROOTCLING__)
 #include <iostream>
-using namespace std;
 #include "FairBoxGenerator.h"
 #include "FairCave.h"
 #include "FairParRootFileIo.h"
@@ -21,6 +20,9 @@ using namespace std;
 
 #include <TRandom3.h>
 #include <TStopwatch.h>
+
+using std::cout;
+using std::endl;
 #endif
 
 void run_tutorial1_main(const FairSimConfig& config);

@@ -36,7 +36,8 @@
 #include "MyPodData.h"
 #include "RooDataGenerator.h"
 
-using namespace std;
+using std::string;
+using std::vector;
 
 // fill data payload and save to file
 template<typename T, typename ManagerType>
@@ -116,14 +117,14 @@ int main(int argc, char** argv)
 
         // loop over t (= bunch index), generate data from pdf, fill digi and save to file
         for (unsigned int t = 0; t < tmax; t++) {
-            unique_ptr<RooDataSet> gaussSample(gaussN.generate(n, 1));
+            std::unique_ptr<RooDataSet> gaussSample(gaussN.generate(n, 1));
             unsigned int nDigi = static_cast<unsigned int>(gaussSample->get(0)->getRealValue("N"));
             LOG(info) << "Bunch number " << t + 1 << "/" << tmax << " ("
                       << 100. * static_cast<double>(t + 1) / static_cast<double>(tmax)
                       << " %). Number of generated digis: " << nDigi
                       << ", payload = " << nDigi * (3 * sizeof(Int_t) + 2 * sizeof(Double_t)) << " bytes";
 
-            unique_ptr<RooDataSet> simdataset(model.GetGeneratedData(nDigi, t));
+            std::unique_ptr<RooDataSet> simdataset(model.GetGeneratedData(nDigi, t));
             SaveDataToFile<TDigi, RootFileManager>(rootman, simdataset.get());
         }
 
@@ -190,7 +191,7 @@ int main(int argc, char** argv)
 
             app.Run();
         }
-    } catch (exception& e) {
+    } catch (std::exception& e) {
         LOG(error) << e.what();
         return 1;
     }

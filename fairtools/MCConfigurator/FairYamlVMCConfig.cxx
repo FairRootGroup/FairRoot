@@ -45,7 +45,7 @@ void FairYamlVMCConfig::Setup(const char* mcEngine)
         LOG(fatal) << "FairYamlVMCConfig::Setup() Engine \"" << mcEngine << "\" unknown!";
     }
 
-    string yamlFileName = ObtainYamlFileName(mcEngine);
+    std::string yamlFileName = ObtainYamlFileName(mcEngine);
     fYamlConfig = YAML::LoadFile(yamlFileName);
 
     if (strcmp(mcEngine, "TGeant4") == 0) {
@@ -239,7 +239,7 @@ void FairYamlVMCConfig::SetCuts()
     }
 }
 
-string FairYamlVMCConfig::ObtainYamlFileName(const char* mcEngine)
+std::string FairYamlVMCConfig::ObtainYamlFileName(const char* mcEngine)
 {
     TString lUserConfig = FairRunSim::Instance()->GetUserConfig();
 

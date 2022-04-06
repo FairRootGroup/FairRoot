@@ -24,8 +24,6 @@
 #include <cstdio>   // printf
 #include <fairlogger/Logger.h>
 
-using namespace std;
-
 #include <mutex>   // std::mutex
 std::mutex mtx;    // mutex for critical section
 
@@ -39,7 +37,7 @@ void FairMQRunDevice::SendObject(TObject* obj, const std::string& chan)
     printf("sending %s", obj->GetName());
     if (Send(mess, chan) > 0) {
         if (Receive(rep, chan) > 0) {
-            std::string repString = string(static_cast<char*>(rep->GetData()), rep->GetSize());
+            std::string repString{static_cast<char*>(rep->GetData()), rep->GetSize()};
             LOG(info) << " -> " << repString.data();
         }
     }

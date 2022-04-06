@@ -14,8 +14,6 @@
 
 #include "FairMQSamplerTask.h"
 
-using namespace std;
-
 FairMQSamplerTask::FairMQSamplerTask()
     : FairTask("Abstract base task used for loading a branch from a root file into memory")
     , fBranch()
@@ -49,10 +47,13 @@ InitStatus FairMQSamplerTask::Init()
 
 void FairMQSamplerTask::Exec(Option_t* /*opt*/) {}
 
-void FairMQSamplerTask::SetBranch(const string& branch) { fBranch = branch; }
+void FairMQSamplerTask::SetBranch(const std::string& branch) { fBranch = branch; }
 
 void FairMQSamplerTask::SetEventIndex(Long64_t eventIndex) { fEventIndex = eventIndex; }
 
 void FairMQSamplerTask::GetPayload(fair::mq::MessagePtr& msg) { msg = move(fPayload); }
 
-void FairMQSamplerTask::SetTransport(shared_ptr<fair::mq::TransportFactory> factory) { fTransportFactory = factory; }
+void FairMQSamplerTask::SetTransport(std::shared_ptr<fair::mq::TransportFactory> factory)
+{
+    fTransportFactory = factory;
+}
