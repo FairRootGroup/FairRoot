@@ -23,7 +23,6 @@
 class FairPrimaryGenerator;   // lines 22-22
 
 class FairPrimaryGenerator;
-using namespace Pythia8;
 
 class PyTr1Rng : public RndmEngine
 {

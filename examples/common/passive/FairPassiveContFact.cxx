@@ -26,8 +26,6 @@
 
 class FairParSet;
 
-using namespace std;
-
 ClassImp(FairPassiveContFact);
 
 static FairPassiveContFact gFairPassiveContFact;

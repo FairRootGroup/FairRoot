@@ -14,8 +14,6 @@
 
 #include <TObjArray.h>   // for TObjArray
 
-using namespace std;
-
 ClassImp(FairGeoPassivePar);
 
 FairGeoPassivePar::FairGeoPassivePar(const char* name, const char* title, const char* context)

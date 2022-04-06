@@ -26,8 +26,6 @@
 #include <fairlogger/Logger.h>
 #include <vector>
 
-using namespace std;
-
 FairMQChunkMerger::FairMQChunkMerger()
     : FairMQDevice()
     , fInputChannelName("data-in")
