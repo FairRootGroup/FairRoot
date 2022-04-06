@@ -9,8 +9,8 @@
 #include <TGenericClassInfo.h>  // for TGenericClassInfo
 #include <iostream>             // for operator<<, basic_ostream, endl, cout
 
-
-using namespace std;
+using std::cout;
+using std::endl;
 
 FairRutherfordPoint::FairRutherfordPoint()
     : FairMCPoint()

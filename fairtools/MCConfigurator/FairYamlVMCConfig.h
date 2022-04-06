@@ -18,8 +18,6 @@
 #include <string>
 #include <yaml-cpp/yaml.h>
 
-using namespace std;
-
 class FairYamlVMCConfig : public FairGenericVMCConfig
 {
   public:
@@ -35,10 +33,10 @@ class FairYamlVMCConfig : public FairGenericVMCConfig
     }
 
   private:
-    string ObtainYamlFileName(const char* mcEngine);
+    std::string ObtainYamlFileName(const char* mcEngine);
     void StoreYamlInfo();
 
-    string fMCEngine;
+    std::string fMCEngine;
 
   protected:
     void SetupGeant3();

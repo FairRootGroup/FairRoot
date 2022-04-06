@@ -22,7 +22,7 @@
 #include <cstring>   // strcmp
 #include <fairlogger/Logger.h>
 
-using namespace std;
+using std::pair;
 
 FairMQPixelMerger::FairMQPixelMerger()
     : fInputChannelName("data-in")
