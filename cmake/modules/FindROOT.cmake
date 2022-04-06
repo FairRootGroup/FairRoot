@@ -133,8 +133,14 @@ If(ROOT_FOUND)
   if("${ROOT_VERSION_MAJOR}.${ROOT_VERSION_MINOR}" VERSION_GREATER 6.16)
     Execute_Process(COMMAND ${ROOT_CONFIG_EXECUTABLE} --has-vmc
                     OUTPUT_VARIABLE ROOT_vmc_FOUND
+                    RESULT_VARIABLE __root_config_has_vmc_rc
                    )
-    String(STRIP ${ROOT_vmc_FOUND} ROOT_vmc_FOUND)
+    if(NOT __root_config_has_vmc_rc EQUAL 0)
+      set(ROOT_vmc_FOUND no)
+    else()
+      string(STRIP ${ROOT_vmc_FOUND} ROOT_vmc_FOUND)
+    endif()
+    unset(__root_config_has_vmc_rc)
   else()
     set(ROOT_vmc_FOUND yes)
   endif()
@@ -174,8 +180,12 @@ If(ROOT_FOUND)
 
     Include(ROOTMacros)
 
-  # Aliases for imported VMC packages ROOT dependencies
-  foreach(_root_dep VMC Core RIO Tree Rint Physics MathCore Thread Geom EG EGPythia6)
+  # Setup targets for ROOT libraries (needed by VMC)
+  set(__root_targets_list Core RIO Tree Rint Physics MathCore Thread Geom EG EGPythia6)
+  if(ROOT_vmc_FOUND)
+    list(APPEND __root_targets_list VMC)
+  endif()
+  foreach(_root_dep ${__root_targets_list})
     find_library(${_root_dep}_LIB ${_root_dep} PATHS ${ROOT_LIBRARY_DIR})
     if(${_root_dep}_LIB)
       add_library(${_root_dep} SHARED IMPORTED GLOBAL)
@@ -184,6 +194,7 @@ If(ROOT_FOUND)
       message(STATUS "ROOT::${_root_dep} target added by hand.")
     endif()
   endforeach(_root_dep)
+  unset(__root_targets_list)
 
 Else(ROOT_FOUND)
 
