@@ -24,8 +24,6 @@
 #include <memory>
 #include <vector>
 
-using namespace std;
-
 FairMQPixelFileSink::FairMQPixelFileSink()
     : FairMQDevice()
     , fInputChannelName("data-in")

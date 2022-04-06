@@ -12,8 +12,6 @@
 #include "FairTestDetectorPayloadHit_generated.h"
 #include "flatbuffers/flatbuffers.h"
 
-using namespace TestDetectorFlat;
-
 template<>
 void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>::InitTask()
 {
@@ -21,7 +19,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>
         ++fReceivedMsgs;
         fOutput->Delete();
 
-        auto hitPayload = GetHitPayload(msg->GetData());
+        auto hitPayload = TestDetectorFlat::GetHitPayload(msg->GetData());
         auto hits = hitPayload->hits();
 
         // int numEntries = hits->size();

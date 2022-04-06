@@ -26,8 +26,6 @@
 #include <cstdio>   // printf
 #include <fairlogger/Logger.h>
 
-using namespace std;
-
 FairMQSimDevice::FairMQSimDevice()
     : FairMQRunDevice()
     , fSimDeviceId(0)
@@ -89,17 +87,17 @@ void FairMQSimDevice::InitializeRun()
     // -----      via the fUpdateChannelName   --------------------------------
     // -----      ask the fParamMQServer   ------------------------------------
     // -----      receive the run number and sampler id   ---------------------
-    std::string* askForRunNumber = new string("ReportSimDevice");
+    std::string* askForRunNumber = new std::string("ReportSimDevice");
     auto req(NewMessage(const_cast<char*>(askForRunNumber->c_str()),
                         askForRunNumber->length(),
-                        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                        [](void* /*data*/, void* object) { delete static_cast<std::string*>(object); },
                         askForRunNumber));
     auto rep(NewMessage());
 
     unsigned int runId = 0;
     if (Send(req, fUpdateChannelName) > 0) {
         if (Receive(rep, fUpdateChannelName) > 0) {
-            std::string repString = string(static_cast<char*>(rep->GetData()), rep->GetSize());
+            std::string repString{static_cast<char*>(rep->GetData()), rep->GetSize()};
             LOG(info) << " -> " << repString.data();
             runId = stoi(repString);
             repString = repString.substr(repString.find_first_of('_') + 1, repString.length());

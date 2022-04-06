@@ -26,7 +26,7 @@
 #include <cstdlib>   // getenv
 #include <fairlogger/Logger.h>
 
-using namespace std;
+using std::string;
 
 ParameterMQServer::ParameterMQServer()
     : fRtdb(FairRuntimeDb::instance())
@@ -175,7 +175,7 @@ bool ParameterMQServer::ProcessUpdate(fair::mq::MessagePtr& update, int /*index*
             FairRunIdGenerator genid;
             fRunId = genid.generateId();
         }
-        string messageToSend = to_string(fRunId) + "_" + to_string(fNofSimDevices);
+        string messageToSend = std::to_string(fRunId) + "_" + std::to_string(fNofSimDevices);
         text = new string(messageToSend);
         fNofSimDevices += 1;
         LOG(info) << "Replying with \"" << messageToSend << "\"";

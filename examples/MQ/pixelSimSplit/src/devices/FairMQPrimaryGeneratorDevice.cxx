@@ -25,8 +25,6 @@
 #include <fairlogger/Logger.h>
 #include <utility>   // move
 
-using namespace std;
-
 FairMQPrimaryGeneratorDevice::FairMQPrimaryGeneratorDevice()
     : fGeneratorChannelName("primariesChannel")
     , fAckChannelName("")
@@ -59,7 +57,7 @@ void FairMQPrimaryGeneratorDevice::InitTask()
 void FairMQPrimaryGeneratorDevice::PreRun()
 {
     if (fAckChannelName != "") {
-        fAckListener = thread(&FairMQPrimaryGeneratorDevice::ListenForAcks, this);
+        fAckListener = std::thread(&FairMQPrimaryGeneratorDevice::ListenForAcks, this);
     }
 }
 

@@ -13,8 +13,6 @@
 #include "FairTestDetectorPayloadHit_generated.h"
 #include "flatbuffers/flatbuffers.h"
 
-using namespace TestDetectorFlat;
-
 template<>
 void FairTestDetectorMQRecoTask<FairTestDetectorDigi,
                                 FairTestDetectorHit,
@@ -23,7 +21,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi,
 {
     fRecoTask.fDigiArray->Clear();
 
-    auto digiPayload = GetDigiPayload(fPayload->GetData());
+    auto digiPayload = TestDetectorFlat::GetDigiPayload(fPayload->GetData());
     auto digis = digiPayload->digis();
     int numEntries = digis->size();
 
@@ -52,7 +50,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi,
         }
         // LOG(warn) << " " << hit->GetDetectorID() << " " << hit->GetX() << " " << hit->GetY() << " " << hit->GetZ() <<
         // " " << hit->GetDx() << " " << hit->GetDy() << " " << hit->GetDz();
-        HitBuilder hb(*builder);
+        TestDetectorFlat::HitBuilder hb(*builder);
         hb.add_detID(hit->GetDetectorID());                // detID:int
         hb.add_mcIndex(hit->GetRefIndex());                // GetRefIndex:int
         hb.add_x(hit->GetX());                             // x:double

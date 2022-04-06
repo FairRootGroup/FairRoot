@@ -24,7 +24,8 @@
 #include <TParticle.h>   // for TParticle
 #include <iostream>      // for operator<<, basic_ostream, etc
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 ClassImp(FairTrajFilter);
 
