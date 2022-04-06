@@ -16,8 +16,6 @@
 #include "FairField.h"          // for FairField
 #include "FairRunAna.h"         // for FairRunAna
 
-using namespace std;
-
 FairTrackPar::FairTrackPar()
     : TObject()
     , fX(0.)

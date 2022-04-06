@@ -18,8 +18,6 @@
 
 #include <fairlogger/Logger.h>
 
-using namespace std;
-
 FairMQPixAltFileSinkBin::FairMQPixAltFileSinkBin()
     : fInputChannelName("data-in")
     , fAckChannelName("")
