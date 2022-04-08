@@ -52,7 +52,7 @@ class BaseMQFileSink
     {
         int receivedMsg = 0;
         while (!NewStatePending()) {
-            std::unique_ptr<FairMQMessage> msg(NewMessage());
+            auto msg(NewMessage());
             if (Receive(msg, fInputChanName) > 0) {
                 FairMQDevice::Deserialize<typename InputPolicy::DeserializerType>(
                     *msg, InputPolicy::fInput);                 // get data from message.

@@ -149,12 +149,11 @@ void FairMQTransportDevice::InitializeRun()
     // -----      ask the fParamMQServer   ------------------------------------
     // -----      receive the run number and sampler id   ---------------------
     std::string* askForRunNumber = new string("ReportSimDevice");
-    FairMQMessagePtr req(NewMessage(
-        const_cast<char*>(askForRunNumber->c_str()),
-        askForRunNumber->length(),
-        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
-        askForRunNumber));
-    FairMQMessagePtr rep(NewMessage());
+    auto req(NewMessage(const_cast<char*>(askForRunNumber->c_str()),
+                        askForRunNumber->length(),
+                        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                        askForRunNumber));
+    auto rep(NewMessage());
 
     if (Send(req, fUpdateChannelName) > 0) {
         if (Receive(rep, fUpdateChannelName) > 0) {
@@ -207,12 +206,11 @@ bool FairMQTransportDevice::ConditionalRun()
         return false;
 
     std::string* requestString = new string("RequestData");
-    FairMQMessagePtr req(NewMessage(
-        const_cast<char*>(requestString->c_str()),
-        requestString->length(),
-        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
-        requestString));
-    FairMQParts parts;
+    auto req(NewMessage(const_cast<char*>(requestString->c_str()),
+                        requestString->length(),
+                        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                        requestString));
+    fair::mq::Parts parts;
     //    FairMQMessagePtr rep(NewMessage());
 
     if (Send(req, fGeneratorChannelName) > 0) {

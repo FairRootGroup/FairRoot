@@ -56,10 +56,10 @@ class Ex2Sampler : public FairMQDevice
             Ex2Header* header = new Ex2Header();
             header->EventNumber = idx;
 
-            FairMQMessagePtr msgHeader(NewMessage());
+            auto msgHeader(NewMessage());
             SerializerEx2().Serialize(*msgHeader, header);
 
-            FairMQMessagePtr msg(NewMessage());
+            auto msg(NewMessage());
             RootSerializer().Serialize(*msg, fInput);
 
             FairMQParts parts;
