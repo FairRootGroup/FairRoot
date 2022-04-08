@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -124,11 +124,11 @@ class FairMQPixelTaskProcessorBin : public FairMQDevice
         header->fMCEntryNo = payloadE->fMCEntryNo;
         header->fPartNo = payloadE->fPartNo;
 
-        FairMQMessagePtr msgHeader(NewMessage(
-            header,
-            sizeof(PixelPayload::EventHeader),
-            [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); },
-            nullptr));
+        auto msgHeader(
+            NewMessage(header,
+                       sizeof(PixelPayload::EventHeader),
+                       [](void* data, void* /*hint*/) { delete static_cast<PixelPayload::EventHeader*>(data); },
+                       nullptr));
         partsOut.AddPart(std::move(msgHeader));
 
         for (int iobj = 0; iobj < fOutput->GetEntries(); iobj++) {
@@ -136,7 +136,7 @@ class FairMQPixelTaskProcessorBin : public FairMQDevice
                 Int_t nofEntries = ((TClonesArray*)fOutput->At(iobj))->GetEntries();
                 size_t hitsSize = nofEntries * sizeof(PixelPayload::Hit);
 
-                FairMQMessagePtr msgTCA(NewMessage(hitsSize));
+                auto msgTCA(NewMessage(hitsSize));
 
                 PixelPayload::Hit* hitPayload = static_cast<PixelPayload::Hit*>(msgTCA->GetData());
 
@@ -222,12 +222,11 @@ class FairMQPixelTaskProcessorBin : public FairMQDevice
         std::string* reqStr = new std::string(paramName + "," + std::to_string(fCurrentRunId));
         LOG(warn) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << " (" << thisPar
                   << ")";
-        FairMQMessagePtr req(NewMessage(
-            const_cast<char*>(reqStr->c_str()),
-            reqStr->length(),
-            [](void* /* data */, void* hint) { delete static_cast<std::string*>(hint); },
-            reqStr));
-        FairMQMessagePtr rep(NewMessage());
+        auto req(NewMessage(const_cast<char*>(reqStr->c_str()),
+                            reqStr->length(),
+                            [](void* /* data */, void* hint) { delete static_cast<std::string*>(hint); },
+                            reqStr));
+        auto rep(NewMessage());
 
         if (Send(req, fParamChannelName) > 0) {
             if (Receive(rep, fParamChannelName) > 0) {

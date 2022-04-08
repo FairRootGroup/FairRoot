@@ -26,7 +26,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::InitTask()
 
         fTree.SetBranchAddress("Output", &fOutput);
 
-        FairMQMessagePtr ack(fTransportFactory->CreateMessage());
+        auto ack(fTransportFactory->CreateMessage());
         fChannels.at(fAckChannelName).at(0).Send(ack);
 
         fTree.Fill();
