@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -13,9 +13,9 @@
 #include "FairOnlineSink.h"
 #include "FairParAsciiFileIo.h"
 #include "FairPrimaryGenerator.h"
+#include "FairRunFairMQDevice.h"
 #include "Pixel.h"
 #include "PixelDigitize.h"
-#include "runFairMQDevice.h"
 
 #include <Rtypes.h>
 #include <TObjArray.h>
@@ -43,7 +43,7 @@ void addCustomOptions(bpo::options_description& options)
         ;
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& config)
+std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& config)
 {
     gRandom->SetSeed(config.GetValue<int64_t>("random-seed"));
 
@@ -65,10 +65,10 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     }
     gSystem->Setenv("CONFIG_DIR", tutConfigDir.c_str());
 
-    FairMQSimDevice* run = new FairMQSimDevice();
+    auto run = std::unique_ptr<FairMQSimDevice>(new FairMQSimDevice());
 
     FairOnlineSink* sink = new FairOnlineSink();
-    sink->SetMQRunDevice(run);
+    sink->SetMQRunDevice(run.get());
     run->SetSink(sink);
 
     run->SetParamUpdateChannelName(config.GetValue<std::string>("param-channel-name"));

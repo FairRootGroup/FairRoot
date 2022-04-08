@@ -49,7 +49,7 @@ install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(ex-params-client runExParamsClient.cxx)
-target_link_libraries(ex-params-client PRIVATE FairRoot::ExParameters FairMQ::FairMQ)
+target_link_libraries(ex-params-client PRIVATE FairRoot::ExParameters FairRoot::FairMQ)
 
 install(TARGETS ex-params-client
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/parameters/bin
