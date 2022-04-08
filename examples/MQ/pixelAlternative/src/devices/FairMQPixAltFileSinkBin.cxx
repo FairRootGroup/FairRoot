@@ -85,7 +85,7 @@ bool FairMQPixAltFileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
     }
 
     if (fAckChannelName != "") {
-        unique_ptr<FairMQMessage> msg(NewMessage());
+        auto msg(NewMessage());
         Send(msg, fAckChannelName);
     }
     return true;

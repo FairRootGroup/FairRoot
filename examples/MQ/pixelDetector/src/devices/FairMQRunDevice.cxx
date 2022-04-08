@@ -32,10 +32,10 @@ std::mutex mtx;    // mutex for critical section
 
 void FairMQRunDevice::SendObject(TObject* obj, const std::string& chan)
 {
-    FairMQMessagePtr mess(NewMessage());
+    auto mess(NewMessage());
     RootSerializer().Serialize(*mess, obj);
 
-    FairMQMessagePtr rep(NewMessage());
+    auto rep(NewMessage());
 
     printf("sending %s", obj->GetName());
     if (Send(mess, chan) > 0) {
@@ -79,7 +79,7 @@ void FairMQRunDevice::SendBranches()
                             TObject* objClone = (*mcTrackArray)->Clone();
                             LOG(debug) << "FairMQRunDevice::SendBranches() the track array has "
                                        << ((TClonesArray*)(objClone))->GetEntries() << " entries.";
-                            FairMQMessagePtr mess(NewMessage());
+                            auto mess(NewMessage());
                             RootSerializer().Serialize(*mess, objClone);
                             parts.AddPart(std::move(mess));
                             LOG(debug) << "channel >" << mi.first.data() << "< --> >" << ObjStr->GetString().Data()
@@ -94,7 +94,7 @@ void FairMQRunDevice::SendBranches()
                     TObject* object = FairRootManager::Instance()->GetObject(ObjStr->GetString());
                     if (object) {
                         TObject* objClone = object->Clone();
-                        FairMQMessagePtr mess(NewMessage());
+                        auto mess(NewMessage());
                         RootSerializer().Serialize(*mess, objClone);
                         parts.AddPart(std::move(mess));
                         LOG(debug) << "channel >" << mi.first.data() << "< --> >" << ObjStr->GetString().Data() << "<";

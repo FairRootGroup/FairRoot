@@ -152,15 +152,14 @@ bool FairMQPixAltSamplerBin::ReadBinFile()
         header->fRunId = head[0];
         header->fMCEntryNo = head[1];
         header->fPartNo = head[2];
-        FairMQMessagePtr msgHeader(
-            NewMessage(header, sizeof(PixelPayload::EventHeader), [](void* data, void* /*hint*/) {
-                delete static_cast<PixelPayload::EventHeader*>(data);
-            }));
+        auto msgHeader(NewMessage(header, sizeof(PixelPayload::EventHeader), [](void* data, void* /*hint*/) {
+            delete static_cast<PixelPayload::EventHeader*>(data);
+        }));
         parts.AddPart(std::move(msgHeader));
 
         size_t digisSize = head[3] * sizeof(PixelPayload::Digi);
 
-        FairMQMessagePtr msgDigis(NewMessage(digisSize));
+        auto msgDigis(NewMessage(digisSize));
 
         PixelPayload::Digi* digiPayload = static_cast<PixelPayload::Digi*>(msgDigis->GetData());
 
@@ -203,14 +202,14 @@ bool FairMQPixAltSamplerBin::ReadRootFile()
     header->fRunId = fEventHeader->fRunId;
     header->fMCEntryNo = fEventHeader->fMCEntryNo;
     header->fPartNo = fEventHeader->fPartNo;
-    FairMQMessagePtr msgHeader(NewMessage(header, sizeof(PixelPayload::EventHeader), [](void* data, void* /*hint*/) {
+    auto msgHeader(NewMessage(header, sizeof(PixelPayload::EventHeader), [](void* data, void* /*hint*/) {
         delete static_cast<PixelPayload::EventHeader*>(data);
     }));
     parts.AddPart(std::move(msgHeader));
 
     size_t digisSize = sizeof(PixelPayload::Digi) * fDigiArray->size();
 
-    FairMQMessagePtr msgDigis(NewMessage(digisSize));
+    auto msgDigis(NewMessage(digisSize));
     PixelPayload::Digi* digiPayload = static_cast<PixelPayload::Digi*>(msgDigis->GetData());
 
     for (int idigi = 0; idigi < (int)fDigiArray->size(); idigi++) {
@@ -247,7 +246,7 @@ void FairMQPixAltSamplerBin::ListenForAcks()
 {
     if (fAckChannelName != "") {
         do {
-            FairMQMessagePtr ack(NewMessage());
+            auto ack(NewMessage());
             if (Receive(ack, fAckChannelName) >= 0) {
                 fNofRecAcks++;
             }

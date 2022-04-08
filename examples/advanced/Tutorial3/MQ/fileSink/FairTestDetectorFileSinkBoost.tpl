@@ -30,7 +30,7 @@ void FairTestDetectorFileSink<TIn, TPayloadIn>::InitTask()
             LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
         }
 
-        FairMQMessagePtr ack(NewMessage());
+        auto ack(NewMessage());
         Send(ack, fAckChannelName);
 
         fTree.Fill();
