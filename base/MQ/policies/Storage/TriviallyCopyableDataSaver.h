@@ -16,7 +16,10 @@
 #ifndef TRIVIALLYCOPYABLEDATASAVER_H
 #define TRIVIALLYCOPYABLEDATASAVER_H
 
-#include <FairMQMessage.h>
+#include "FairMQ.h"   // for fair::mq::Message
+
+#include <fairlogger/Logger.h>
+#include <fstream>
 
 template<typename TPayload>
 class TriviallyCopyableDataSaver
@@ -36,7 +39,7 @@ class TriviallyCopyableDataSaver
         }
     }
 
-    void Write(std::ofstream& outfile, FairMQMessage* msg)
+    void Write(std::ofstream& outfile, fair::mq::Message* msg)
     {
         int inputSize = msg->GetSize();
         long sizeArr = 0;

@@ -15,16 +15,16 @@
 #ifndef FAIRMQUNPACKER_H
 #define FAIRMQUNPACKER_H
 
+#include "FairMQ.h"   // for fair::mq::Channel, fair::mq::Device
 #include "RootSerializer.h"
 
-#include <FairMQDevice.h>
 #include <map>
 #include <stdexcept>
 #include <string>
 #include <tuple>
 
 template<typename UnpackerType, typename SerializationType = RootSerializer>
-class FairMQUnpacker : public FairMQDevice
+class FairMQUnpacker : public fair::mq::Device
 {
   public:
     FairMQUnpacker()
@@ -105,7 +105,7 @@ class FairMQUnpacker : public FairMQDevice
 
     void Run()
     {
-        FairMQChannel& inputChannel = fChannels.at(fInputChannelName).at(0);
+        fair::mq::Channel& inputChannel = fChannels.at(fInputChannelName).at(0);
 
         while (!NewStatePending()) {
             auto msgSize(NewMessage());

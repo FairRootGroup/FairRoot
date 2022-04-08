@@ -1,7 +1,7 @@
 #ifndef BASICSERIALIZEREXAMPLE2_H
 #define BASICSERIALIZEREXAMPLE2_H
 
-#include <FairMQMessage.h>
+#include "FairMQ.h"   // for fair::mq::Message
 
 namespace boost {
 namespace serialization {
@@ -30,12 +30,12 @@ void serialize(Archive& ar, Ex2Header& header, const unsigned int /*version*/)
 
 struct SerializerEx2
 {
-    void Serialize(FairMQMessage& msg, Ex2Header* header)
+    void Serialize(fair::mq::Message& msg, Ex2Header* header)
     {
         msg.Rebuild(header, sizeof(header), [](void* ptr, void* /*hint*/) { delete static_cast<Ex2Header*>(ptr); });
     }
 
-    void Deserialize(FairMQMessage& msg, Ex2Header*& header) { header = static_cast<Ex2Header*>(msg.GetData()); }
+    void Deserialize(fair::mq::Message& msg, Ex2Header*& header) { header = static_cast<Ex2Header*>(msg.GetData()); }
 };
 
 #endif

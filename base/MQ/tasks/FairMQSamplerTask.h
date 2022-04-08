@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -16,10 +16,9 @@
 #define FAIRMQSAMPLERTASK_H_
 
 #include "FairEventHeader.h"
-#include "FairMQTransportFactory.h"
+#include "FairMQ.h"   // for fair::mq::Message, fair::mq::TransportFactory
 #include "FairTask.h"
 
-#include <FairMQMessage.h>
 #include <TClonesArray.h>
 #include <memory>
 #include <string>
@@ -40,16 +39,16 @@ class FairMQSamplerTask : public FairTask
     void SetEventIndex(Long64_t eventIndex);
     void SetBranch(const std::string& branch);
 
-    void GetPayload(std::unique_ptr<FairMQMessage>& msg);
-    void SetTransport(std::shared_ptr<FairMQTransportFactory> factory);
+    void GetPayload(std::unique_ptr<fair::mq::Message>& msg);
+    void SetTransport(std::shared_ptr<fair::mq::TransportFactory> factory);
 
   protected:
     std::string fBranch;
     TClonesArray* fInput;
-    FairMQMessagePtr fPayload;
+    fair::mq::MessagePtr fPayload;
     Long64_t fEventIndex;
     FairEventHeader* fEvtHeader;
-    std::shared_ptr<FairMQTransportFactory> fTransportFactory;
+    std::shared_ptr<fair::mq::TransportFactory> fTransportFactory;
 };
 
 #endif /* FAIRMQSAMPLERTASK_H_ */

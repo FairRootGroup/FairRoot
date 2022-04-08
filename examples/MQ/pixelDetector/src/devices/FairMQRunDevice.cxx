@@ -18,7 +18,6 @@
 #include "FairRootManager.h"
 #include "RootSerializer.h"
 
-#include <FairMQMessage.h>
 #include <Rtypes.h>
 #include <TList.h>
 #include <TObjString.h>
@@ -57,7 +56,7 @@ void FairMQRunDevice::SendBranches()
     for (auto& mi : fChannels) {
         LOG(debug) << "trying channel >" << mi.first.data() << "<";
 
-        FairMQParts parts;
+        fair::mq::Parts parts;
 
         for (Int_t t = 0; t < branchNameList->GetEntries(); t++) {
             ObjStr = static_cast<TObjString*>(branchNameList->TList::At(t));

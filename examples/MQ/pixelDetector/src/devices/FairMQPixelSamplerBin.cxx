@@ -93,7 +93,7 @@ bool FairMQPixelSamplerBin::ConditionalRun()
     if (readEventReturn != 0)
         return false;
 
-    FairMQParts parts;
+    fair::mq::Parts parts;
 
     for (int iobj = 0; iobj < fNObjects; iobj++) {
         if (strcmp(fInputObjects[iobj]->GetName(), "EventHeader.") == 0) {

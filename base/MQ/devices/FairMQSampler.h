@@ -16,13 +16,13 @@
 #define FAIRMQSAMPLER_H_
 
 #include "FairFileSource.h"
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::MessagePtr
 #include "FairMQSamplerTask.h"
 #include "FairParRootFileIo.h"
 #include "FairRootFileSink.h"
 #include "FairRunAna.h"
 #include "FairRuntimeDb.h"
 
-#include <FairMQDevice.h>
 #include <chrono>
 #include <fairlogger/Logger.h>
 #include <thread>
@@ -40,7 +40,7 @@
  */
 
 template<typename Task>
-class FairMQSampler : public FairMQDevice
+class FairMQSampler : public fair::mq::Device
 {
   public:
     FairMQSampler()
@@ -130,7 +130,7 @@ class FairMQSampler : public FairMQDevice
 
     virtual bool ConditionalRun()
     {
-        FairMQMessagePtr msg;
+        fair::mq::MessagePtr msg;
 
         fSamplerTask->SetEventIndex(fSentMsgs);
         fFairRunAna->RunMQ(fSentMsgs);

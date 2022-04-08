@@ -20,7 +20,6 @@
 #include "FairStack.h"
 #include "RootSerializer.h"
 
-#include <FairMQMessage.h>
 #include <Rtypes.h>
 #include <TClonesArray.h>
 #include <fairlogger/Logger.h>
@@ -71,7 +70,7 @@ bool FairMQPrimaryGeneratorDevice::ConditionalRun()
     return GenerateAndSendData();
 }
 
-bool FairMQPrimaryGeneratorDevice::Reply([[gnu::unused]] FairMQMessagePtr& mPtr, [[gnu::unused]] int /*index*/)
+bool FairMQPrimaryGeneratorDevice::Reply([[gnu::unused]] fair::mq::MessagePtr& mPtr, [[gnu::unused]] int /*index*/)
 {
     return GenerateAndSendData();
 }
@@ -87,7 +86,7 @@ bool FairMQPrimaryGeneratorDevice::GenerateAndSendData()
     if (fEventCounter > fNofEvents)
         return false;
 
-    FairMQParts parts;
+    fair::mq::Parts parts;
 
     // even if sending in chunks is set, send all of the primaries anyway, the transporter takes care of transporting
     // needed primaries create FairMCEventHeader, misuse not-yet-set fRunID to store begin

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2017 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2017-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -62,8 +62,8 @@ class FairMQTransportDevice : public FairMQRunDevice
     void RunInReqMode(bool tb = true) { fRunConditional = tb; };
 
   protected:
-    bool TransportData(FairMQParts&, int);
-    //  bool TransportData(FairMQMessagePtr&, int);
+    bool TransportData(fair::mq::Parts&, int);
+    //  bool TransportData(fair::mq::MessagePtr&, int);
     virtual void Init();
     virtual void InitTask();
     virtual void PreRun();

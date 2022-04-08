@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -8,9 +8,9 @@
 #ifndef FAIRMQEXHISTOSERVER
 #define FAIRMQEXHISTOSERVER
 
+#include "FairMQ.h"                      // for fair::mq::Device, fair::mq::MessagePtr
 #include "FairMQExHistoCanvasDrawer.h"   // for FairMQExHistoCanvasDrawer
 
-#include <FairMQDevice.h>
 #include <THttpServer.h>
 #include <TObjArray.h>
 #include <memory>
@@ -18,7 +18,7 @@
 #include <thread>
 #include <utility>
 
-class FairMQExHistoServer : public FairMQDevice
+class FairMQExHistoServer : public fair::mq::Device
 {
   public:
     FairMQExHistoServer();
@@ -35,7 +35,7 @@ class FairMQExHistoServer : public FairMQDevice
   protected:
     virtual void InitTask();
 
-    bool ReceiveData(FairMQMessagePtr& msg, int index);
+    bool ReceiveData(fair::mq::MessagePtr& msg, int index);
 
     virtual void PreRun();
 

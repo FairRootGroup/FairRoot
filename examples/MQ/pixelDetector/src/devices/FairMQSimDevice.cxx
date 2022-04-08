@@ -20,7 +20,6 @@
 #include "FairRunSim.h"
 #include "FairRuntimeDb.h"
 
-#include <FairMQDevice.h>
 #include <TCollection.h>
 #include <TList.h>
 #include <TObjArray.h>

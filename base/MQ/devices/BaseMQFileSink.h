@@ -16,12 +16,13 @@
 #ifndef BASEMQFILESINK_H
 #define BASEMQFILESINK_H
 
-#include <FairMQDevice.h>
+#include "FairMQ.h"   // for fair::mq::Device
+
 #include <fairlogger/Logger.h>
 
 template<typename InputPolicy, typename OutputPolicy>
 class BaseMQFileSink
-    : public FairMQDevice
+    : public fair::mq::Device
     , public InputPolicy
     , public OutputPolicy
 {
