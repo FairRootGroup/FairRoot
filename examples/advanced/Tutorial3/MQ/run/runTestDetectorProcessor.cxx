@@ -31,7 +31,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
                                                                      FairTestDetectorHit,
                                                                      TestDetectorPayload::Digi,
                                                                      TestDetectorPayload::Hit>>;
-        return std::unique_ptr<Processor>(new Processor());
+        return std::make_unique<Processor>();
     } else if (dataFormat == "boost") {
         if (fair::base::serialization::has_BoostSerialization<FairTestDetectorDigi,
                                                               void(boost::archive::binary_iarchive&,
@@ -53,11 +53,11 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
                                                                      FairTestDetectorHit,
                                                                      boost::archive::binary_iarchive,
                                                                      boost::archive::binary_oarchive>>;
-        return std::unique_ptr<Processor>(new Processor());
+        return std::make_unique<Processor>();
     } else if (dataFormat == "tmessage") {
         using Processor =
             FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage>>;
-        return std::unique_ptr<Processor>(new Processor());
+        return std::make_unique<Processor>();
     }
 #ifdef FLATBUFFERS
     else if (dataFormat == "flatbuffers") {
@@ -65,14 +65,14 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
                                                                      FairTestDetectorHit,
                                                                      TestDetectorFlat::DigiPayload,
                                                                      TestDetectorFlat::HitPayload>>;
-        return std::unique_ptr<Processor>(new Processor());
+        return std::make_unique<Processor>();
     }
 #endif
 #ifdef MSGPACK
     else if (dataFormat == "msgpack") {
         using Processor =
             FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPack, MsgPack>>;
-        return std::unique_ptr<Processor>(new Processor());
+        return std::make_unique<Processor>();
     }
 #endif
 #ifdef PROTOBUF
@@ -81,7 +81,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
                                                                      FairTestDetectorHit,
                                                                      TestDetectorProto::DigiPayload,
                                                                      TestDetectorProto::HitPayload>>;
-        return std::unique_ptr<Processor>(new Processor());
+        return std::make_unique<Processor>();
     }
 #endif
     else {

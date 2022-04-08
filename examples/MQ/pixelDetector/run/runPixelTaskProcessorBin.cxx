@@ -38,7 +38,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
     LOG(info) << "get device with setting!";
 
     if (taskname == "PixelFindHits") {
-        return std::unique_ptr<HitFinder>(new HitFinder());
+        return std::make_unique<HitFinder>();
     }
 
     LOG(info) << "TASK \"" << taskname << "\" UNKNOWN!!!";

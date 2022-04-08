@@ -8,7 +8,9 @@
 #include "FairMQExHistoCanvasDrawerExample.h"
 #include "runExHistoServer.h"
 
+#include <memory>
+
 std::unique_ptr<FairMQExHistoCanvasDrawer> getCanvasDrawer()
 {
-    return std::unique_ptr<FairMQExHistoCanvasDrawer>{new FairMQExHistoCanvasDrawerExample()};
+    return std::make_unique<FairMQExHistoCanvasDrawerExample>();
 }

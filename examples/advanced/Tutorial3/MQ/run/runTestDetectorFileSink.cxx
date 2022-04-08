@@ -27,7 +27,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 
     if (dataFormat == "binary") {
         using Sink = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>;
-        return std::unique_ptr<Sink>(new Sink());
+        return std::make_unique<Sink>();
     } else if (dataFormat == "boost") {
         if (fair::base::serialization::has_BoostSerialization<FairTestDetectorHit,
                                                               void(boost::archive::binary_iarchive&,
@@ -38,27 +38,27 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
             return {nullptr};
         }
         using Sink = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::binary_iarchive>;
-        return std::unique_ptr<Sink>(new Sink());
+        return std::make_unique<Sink>();
     } else if (dataFormat == "tmessage") {
         using Sink = FairTestDetectorFileSink<FairTestDetectorHit, TMessage>;
-        return std::unique_ptr<Sink>(new Sink());
+        return std::make_unique<Sink>();
     }
 #ifdef FLATBUFFERS
     else if (dataFormat == "flatbuffers") {
         using Sink = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>;
-        return std::unique_ptr<Sink>(new Sink());
+        return std::make_unique<Sink>();
     }
 #endif
 #ifdef MSGPACK
     else if (dataFormat == "msgpack") {
         using Sink = FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>;
-        return std::unique_ptr<Sink>(new Sink());
+        return std::make_unique<Sink>();
     }
 #endif
 #ifdef PROTOBUF
     else if (dataFormat == "protobuf") {
         using Sink = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>;
-        return std::unique_ptr<Sink>(new Sink());
+        return std::make_unique<Sink>();
     }
 #endif
     else {

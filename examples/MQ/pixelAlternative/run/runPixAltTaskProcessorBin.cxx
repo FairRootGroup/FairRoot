@@ -36,7 +36,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 
     if (taskname == "PixelAltFindHits") {
         using Processor = FairMQPixAltTaskProcessorBin<PixelAltFindHits>;
-        return std::unique_ptr<Processor>(new Processor());
+        return std::make_unique<Processor>();
     }
 
     LOG(info) << "TASK \"" << taskname << "\" UNKNOWN!!!";

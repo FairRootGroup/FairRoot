@@ -54,7 +54,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
         tut_configdir = dir + "/common/gconfig";
     gSystem->Setenv("CONFIG_DIR", tut_configdir.Data());
 
-    auto run = std::unique_ptr<FairMQTransportDevice>(new FairMQTransportDevice());
+    auto run = std::make_unique<FairMQTransportDevice>();
     run->RunInPullMode(true);
     if (config.GetValue<std::string>("running-mode") == "rr") {
         LOG(info) << "Going to request data.";
