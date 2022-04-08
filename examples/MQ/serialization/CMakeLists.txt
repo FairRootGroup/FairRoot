@@ -62,25 +62,25 @@ install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(ex-serialization1-sampler 1-simple/runEx1Sampler.cxx)
-target_link_libraries(ex-serialization1-sampler PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
+target_link_libraries(ex-serialization1-sampler PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
 
 add_executable(ex-serialization1-processor 1-simple/runEx1Processor.cxx)
-target_link_libraries(ex-serialization1-processor PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
+target_link_libraries(ex-serialization1-processor PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
 
 add_executable(ex-serialization1-sink 1-simple/runEx1Sink.cxx)
-target_link_libraries(ex-serialization1-sink PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
+target_link_libraries(ex-serialization1-sink PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
 
 add_executable(ex-serialization2-sampler 2-multipart/runEx2Sampler.cxx)
-target_link_libraries(ex-serialization2-sampler PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
+target_link_libraries(ex-serialization2-sampler PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
 
 add_executable(ex-serialization2-processor 2-multipart/runEx2Processor.cxx)
-target_link_libraries(ex-serialization2-processor PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
+target_link_libraries(ex-serialization2-processor PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
 
 add_executable(ex-serialization2-sink 2-multipart/runEx2Sink.cxx)
-target_link_libraries(ex-serialization2-sink PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
+target_link_libraries(ex-serialization2-sink PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
 
 add_executable(ex-serialization-generate-data data_generator/runGenerateData.cxx)
-target_link_libraries(ex-serialization-generate-data PRIVATE FairRoot::ExSerialization FairMQ::FairMQ)
+target_link_libraries(ex-serialization-generate-data PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
 
 # Create a directory that will hold root input/output data file
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data_io)
