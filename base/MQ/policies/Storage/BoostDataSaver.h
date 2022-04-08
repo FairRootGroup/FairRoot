@@ -16,6 +16,9 @@
 #ifndef BOOSTDATASAVER_H
 #define BOOSTDATASAVER_H
 
+// FairRoot
+#include "FairMQ.h"   // for fair::mq::Message
+
 // std
 #include <fstream>
 #include <iostream>
@@ -32,13 +35,11 @@ class access;
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
-
-// FairRoot
-#include <FairMQMessage.h>
+#include <fairlogger/Logger.h>
 
 template<typename TPayload,
          typename TArchiveIn = boost::archive::binary_iarchive,
-         typename TArchiveOut = TBoboost::archive::binary_oarchiveostOut>
+         typename TArchiveOut = boost::archive::binary_oarchive>
 class BoostDataSaver
 {
   public:
@@ -60,7 +61,7 @@ class BoostDataSaver
         outArchive << dataVector;
     }
 
-    void Write(std::ofstream& outfile, FairMQMessage* msg)
+    void Write(std::ofstream& outfile, fair::mq::Message* msg)
     {
         std::vector<TPayload> objArr;
         std::string msgStr(static_cast<char*>(msg->GetData()), msg->GetSize());

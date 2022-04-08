@@ -51,7 +51,7 @@ void FairMQChunkMerger::Init()
     OnData(fInputChannelName, &FairMQChunkMerger::MergeData);
 }
 
-bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
+bool FairMQChunkMerger::MergeData(fair::mq::Parts& parts, int /*index*/)
 {
     bool printInfo = false;
     int nofReceivedParts = 0;   // if set to -1, the data seems to be duplicated
@@ -169,7 +169,7 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
         }
         fObjectMap.erase(fRet.first, fRet.second);
 
-        FairMQParts partsOut;
+        fair::mq::Parts partsOut;
 
         fMCSplitEventHeader->SetNofChunks(1);
         fMCSplitEventHeader->SetChunkStart(0);

@@ -10,14 +10,14 @@
 #define EX2SINK_H
 
 #include "BoostSerializer.h"
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
 #include "MyHit.h"
 #include "SerializerExample2.h"
 
-#include <FairMQDevice.h>
 #include <TFile.h>
 #include <TTree.h>
 
-class Ex2Sink : public FairMQDevice
+class Ex2Sink : public fair::mq::Device
 {
   public:
     Ex2Sink()
@@ -40,7 +40,7 @@ class Ex2Sink : public FairMQDevice
     {
         int receivedMsgs = 0;
         while (!NewStatePending()) {
-            FairMQParts parts;
+            fair::mq::Parts parts;
             if (Receive(parts, "data2") > 0) {
                 Ex2Header header;
                 BoostSerializer<Ex2Header>().Deserialize(*(parts.At(0)), header);

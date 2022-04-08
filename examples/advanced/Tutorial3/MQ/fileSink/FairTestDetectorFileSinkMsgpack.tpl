@@ -19,7 +19,7 @@ struct MsgPack
 template<>
 void FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>::InitTask()
 {
-    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/) {
+    OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
 
         // deserialize
