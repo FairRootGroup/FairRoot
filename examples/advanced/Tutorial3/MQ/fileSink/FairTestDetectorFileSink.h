@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -19,13 +19,13 @@
 #include "FairTestDetectorPayload.h"
 
 #include <FairMQDevice.h>
-#include <FairMQLogger.h>
 #include <Rtypes.h>
 #include <TClonesArray.h>
 #include <TFile.h>
 #include <TSystem.h>
 #include <TTree.h>
 #include <array>
+#include <fairlogger/Logger.h>
 #include <iostream>
 #include <memory>
 #include <string>

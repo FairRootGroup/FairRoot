@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -24,7 +24,6 @@
 #include "FairTask.h"
 #include "RootSerializer.h"
 
-#include <FairMQLogger.h>
 #include <FairMQMessage.h>
 #include <TClonesArray.h>
 #include <TCollection.h>
@@ -34,6 +33,7 @@
 #include <TVirtualMC.h>
 #include <cstring>   // for strcmp
 #include <dlfcn.h>   // dlopen
+#include <fairlogger/Logger.h>
 #include <iostream>
 #include <vector>
 

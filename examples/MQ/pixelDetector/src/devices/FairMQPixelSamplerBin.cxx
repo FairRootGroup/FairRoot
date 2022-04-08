@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -20,11 +20,11 @@
 #include "PixelDigi.h"
 #include "PixelPayload.h"
 
-#include <FairMQLogger.h>
 #include <Rtypes.h>   // for Int_t, Long64_t
 #include <TClonesArray.h>
 #include <TObject.h>
 #include <cstring>
+#include <fairlogger/Logger.h>
 #include <utility>   // move
 
 using namespace std;
