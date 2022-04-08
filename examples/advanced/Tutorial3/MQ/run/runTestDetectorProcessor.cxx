@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -7,8 +7,8 @@
  ********************************************************************************/
 
 #include "FairMQProcessor.h"
+#include "FairRunFairMQDevice.h"
 #include "FairTestDetectorMQRecoTask.h"
-#include "runFairMQDevice.h"
 
 namespace bpo = boost::program_options;
 
@@ -22,15 +22,16 @@ void addCustomOptions(bpo::options_description& options)
     // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& config)
+std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& config)
 {
     std::string dataFormat = config.GetValue<std::string>("data-format");
 
     if (dataFormat == "binary") {
-        return new FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi,
-                                                              FairTestDetectorHit,
-                                                              TestDetectorPayload::Digi,
-                                                              TestDetectorPayload::Hit>>;
+        using Processor = FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi,
+                                                                     FairTestDetectorHit,
+                                                                     TestDetectorPayload::Digi,
+                                                                     TestDetectorPayload::Hit>>;
+        return std::unique_ptr<Processor>(new Processor());
     } else if (dataFormat == "boost") {
         if (fair::base::serialization::has_BoostSerialization<FairTestDetectorDigi,
                                                               void(boost::archive::binary_iarchive&,
@@ -38,7 +39,7 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
             == 0) {
             LOG(error) << "Boost serialization for Input Payload requested, but the input type does not support it. "
                           "Check the TIn parameter. Aborting.";
-            return nullptr;
+            return {nullptr};
         }
         if (fair::base::serialization::has_BoostSerialization<FairTestDetectorHit,
                                                               void(boost::archive::binary_oarchive&,
@@ -46,41 +47,46 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
             == 0) {
             LOG(error) << "Boost serialization for Output Payload requested, but the output type does not support it. "
                           "Check the TOut parameter. Aborting.";
-            return nullptr;
+            return {nullptr};
         }
-        return new FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi,
-                                                              FairTestDetectorHit,
-                                                              boost::archive::binary_iarchive,
-                                                              boost::archive::binary_oarchive>>;
+        using Processor = FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi,
+                                                                     FairTestDetectorHit,
+                                                                     boost::archive::binary_iarchive,
+                                                                     boost::archive::binary_oarchive>>;
+        return std::unique_ptr<Processor>(new Processor());
     } else if (dataFormat == "tmessage") {
-        return new FairMQProcessor<
-            FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage>>;
+        using Processor =
+            FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage>>;
+        return std::unique_ptr<Processor>(new Processor());
     }
 #ifdef FLATBUFFERS
     else if (dataFormat == "flatbuffers") {
-        return new FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi,
-                                                              FairTestDetectorHit,
-                                                              TestDetectorFlat::DigiPayload,
-                                                              TestDetectorFlat::HitPayload>>;
+        using Processor = FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi,
+                                                                     FairTestDetectorHit,
+                                                                     TestDetectorFlat::DigiPayload,
+                                                                     TestDetectorFlat::HitPayload>>;
+        return std::unique_ptr<Processor>(new Processor());
     }
 #endif
 #ifdef MSGPACK
     else if (dataFormat == "msgpack") {
-        return new FairMQProcessor<
-            FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPack, MsgPack>>;
+        using Processor =
+            FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPack, MsgPack>>;
+        return std::unique_ptr<Processor>(new Processor());
     }
 #endif
 #ifdef PROTOBUF
     else if (dataFormat == "protobuf") {
-        return new FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi,
-                                                              FairTestDetectorHit,
-                                                              TestDetectorProto::DigiPayload,
-                                                              TestDetectorProto::HitPayload>>;
+        using Processor = FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi,
+                                                                     FairTestDetectorHit,
+                                                                     TestDetectorProto::DigiPayload,
+                                                                     TestDetectorProto::HitPayload>>;
+        return std::unique_ptr<Processor>(new Processor());
     }
 #endif
     else {
         LOG(error)
             << "No valid data format provided. (--data-format binary|boost|flatbuffers|msgpack|protobuf|tmessage). ";
-        return nullptr;
+        return {nullptr};
     }
 }
