@@ -19,6 +19,6 @@
 template<>
 void FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* /*opt*/)
 {
-    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage());
+    fPayload = fTransportFactory->CreateMessage();
     RootSerializer().Serialize(*fPayload, fInput);
 }

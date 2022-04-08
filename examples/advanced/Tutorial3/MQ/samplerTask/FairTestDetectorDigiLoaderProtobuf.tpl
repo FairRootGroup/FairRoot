@@ -40,11 +40,11 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPay
     std::string* str = new std::string();
     dp.SerializeToString(str);
 
-    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(
-        const_cast<char*>(str->c_str()),
-        str->length(),
-        [](void* /* data */, void* obj) { delete static_cast<std::string*>(obj); },
-        str));
+    fPayload =
+        fTransportFactory->CreateMessage(const_cast<char*>(str->c_str()),
+                                         str->length(),
+                                         [](void* /* data */, void* obj) { delete static_cast<std::string*>(obj); },
+                                         str);
 }
 
 #endif /* PROTOBUF */

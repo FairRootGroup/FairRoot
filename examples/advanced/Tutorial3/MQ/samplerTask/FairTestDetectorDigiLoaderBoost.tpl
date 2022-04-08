@@ -21,6 +21,6 @@
 template<typename TOut, typename TPayloadOut>
 void FairTestDetectorDigiLoader<TOut, TPayloadOut>::Exec(Option_t* /*opt*/)
 {
-    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage());
+    fPayload = fTransportFactory->CreateMessage();
     BoostSerializer<TOut>().Serialize(*fPayload, fInput);
 }
