@@ -19,7 +19,7 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>
     int numEntries = fInput->GetEntriesFast();
     size_t digisSize = numEntries * sizeof(TestDetectorPayload::Digi);
 
-    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(digisSize));
+    fPayload = fTransportFactory->CreateMessage(digisSize);
 
     TestDetectorPayload::Digi* digiPayload = static_cast<TestDetectorPayload::Digi*>(fPayload->GetData());
 
