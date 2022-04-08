@@ -247,7 +247,7 @@ class FairMQLmdSampler : public FairMQDevice
                 FairMQParts parts;
 
                 // send header
-                // std::unique_ptr<FairMQMessage> header(fTransportFactory->CreateMessage(fSubEvent, sizeof(fSubEvent),
+                // auto header(fTransportFactory->CreateMessage(fSubEvent, sizeof(fSubEvent),
                 // free_buffer, nullptr)); fChannels.at(chanName).at(0).SendPart(header);
 
                 int* arraySize = new int(sebuflength);

@@ -40,7 +40,7 @@ class Ex1Sink : public FairMQDevice
     {
         int receivedMsgs = 0;
         while (!NewStatePending()) {
-            FairMQMessagePtr msg(NewMessage());
+            auto msg(NewMessage());
             if (Receive(msg, "data2") > 0) {
                 RootSerializer().Deserialize(*msg, fInput);
                 receivedMsgs++;

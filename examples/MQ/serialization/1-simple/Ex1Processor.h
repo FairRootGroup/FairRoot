@@ -30,7 +30,7 @@ class Ex1Processor : public FairMQDevice
 
         while (!NewStatePending()) {
             // Receive
-            FairMQMessagePtr msgIn(NewMessageFor("data1", 0));
+            auto msgIn(NewMessageFor("data1", 0));
             if (Receive(msgIn, "data1") > 0) {
                 receivedMsgs++;
 
@@ -42,7 +42,7 @@ class Ex1Processor : public FairMQDevice
                 TClonesArray hits = FindHits(*digis);
 
                 // Serialize
-                FairMQMessagePtr msgOut(NewMessageFor("data2", 0));
+                auto msgOut(NewMessageFor("data2", 0));
                 RootSerializer().Serialize(*msgOut, &hits);
 
                 // Send

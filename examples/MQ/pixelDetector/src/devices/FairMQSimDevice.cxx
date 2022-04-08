@@ -91,12 +91,11 @@ void FairMQSimDevice::InitializeRun()
     // -----      ask the fParamMQServer   ------------------------------------
     // -----      receive the run number and sampler id   ---------------------
     std::string* askForRunNumber = new string("ReportSimDevice");
-    FairMQMessagePtr req(NewMessage(
-        const_cast<char*>(askForRunNumber->c_str()),
-        askForRunNumber->length(),
-        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
-        askForRunNumber));
-    FairMQMessagePtr rep(NewMessage());
+    auto req(NewMessage(const_cast<char*>(askForRunNumber->c_str()),
+                        askForRunNumber->length(),
+                        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                        askForRunNumber));
+    auto rep(NewMessage());
 
     unsigned int runId = 0;
     if (Send(req, fUpdateChannelName) > 0) {

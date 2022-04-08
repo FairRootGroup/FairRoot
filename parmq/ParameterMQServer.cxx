@@ -140,7 +140,7 @@ bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
     if (par) {
         par->print();
 
-        FairMQMessagePtr rep(NewMessage());
+        auto rep(NewMessage());
         RootSerializer().Serialize(*rep, par);
 
         if (Send(rep, fRequestChannelName, 0) < 0) {
@@ -150,7 +150,7 @@ bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
     } else {
         LOG(error) << "Parameter uninitialized! Sending empty message back";
         // Send an empty message back to keep the REQ/REP cycle
-        FairMQMessagePtr rep(NewMessage());
+        auto rep(NewMessage());
         if (Send(rep, fRequestChannelName, 0) < 0) {
             LOG(error) << "failed sending reply";
             return false;
@@ -212,11 +212,10 @@ bool ParameterMQServer::ProcessUpdate(FairMQMessagePtr& update, int /*index*/)
         fRtdb->closeOutput();
     }
 
-    FairMQMessagePtr msg(NewMessage(
-        const_cast<char*>(text->c_str()),
-        text->length(),
-        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
-        text));
+    auto msg(NewMessage(const_cast<char*>(text->c_str()),
+                        text->length(),
+                        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                        text));
 
     if (Send(msg, fUpdateChannelName) < 0) {
         return false;

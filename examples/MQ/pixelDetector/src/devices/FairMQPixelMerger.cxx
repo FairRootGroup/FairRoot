@@ -143,7 +143,7 @@ bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
         FairMQMessagePtr messageTCA[10];
         FairMQParts partsOut;
 
-        FairMQMessagePtr messFEH(NewMessage());
+        auto messFEH(NewMessage());
         RootSerializer().Serialize(*messFEH, fEventHeader);
         partsOut.AddPart(std::move(messFEH));
         for (int iarray = 0; iarray < nofArrays; iarray++) {
