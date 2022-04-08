@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -7,10 +7,10 @@
  ********************************************************************************/
 
 #include "PixelFindHits.h"
-#include "runFairMQDevice.h"
 
 // PixelDetector example
 #include "FairMQPixelTaskProcessorBin.h"
+#include "FairRunFairMQDevice.h"
 
 #include <string>
 
@@ -31,16 +31,16 @@ void addCustomOptions(bpo::options_description& options)
     // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& config)
+std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& config)
 {
     std::string taskname = config.GetValue<std::string>("task-name");
 
     LOG(info) << "get device with setting!";
 
     if (taskname == "PixelFindHits") {
-        return new HitFinder();
+        return std::unique_ptr<HitFinder>(new HitFinder());
     }
 
     LOG(info) << "TASK \"" << taskname << "\" UNKNOWN!!!";
-    return 0;
+    return {nullptr};
 }

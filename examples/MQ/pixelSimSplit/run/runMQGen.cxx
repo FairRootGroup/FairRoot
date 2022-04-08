@@ -1,4 +1,3 @@
-#include "runFairMQDevice.h"
 /********************************************************************************
  * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
@@ -11,6 +10,7 @@
 #include "FairBoxGenerator.h"
 #include "FairMQPrimaryGeneratorDevice.h"
 #include "FairPrimaryGenerator.h"
+#include "FairRunFairMQDevice.h"
 
 #include <Rtypes.h>
 #include <TRandom.h>
@@ -34,7 +34,7 @@ void addCustomOptions(bpo::options_description& options)
     // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& config)
+std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& config)
 {
     gRandom->SetSeed(config.GetValue<int64_t>("random-seed"));
 
@@ -56,7 +56,7 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     boxGen->SetPhiRange(0, 360);
     primGen->AddGenerator(boxGen);
 
-    FairMQPrimaryGeneratorDevice* mqDevice = new FairMQPrimaryGeneratorDevice();
+    auto mqDevice = std::unique_ptr<FairMQPrimaryGeneratorDevice>(new FairMQPrimaryGeneratorDevice());
     LOG(INFO) << "Going to generate " << config.GetValue<int64_t>("nof-events") << " events.";
     mqDevice->SetChunkSize(config.GetValue<int64_t>("chunk-size"));
     mqDevice->RunInPushMode(true);

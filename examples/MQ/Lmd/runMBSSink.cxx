@@ -1,16 +1,17 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
 #include "BaseMQFileSink.h"
-#include "FairMBSRawItem.h"       // data type for the OutputPolicy
+#include "FairMBSRawItem.h"   // data type for the OutputPolicy
+#include "FairRunFairMQDevice.h"
 #include "IOPolicy.h"             // fair::mq::policy::
 #include "RootOutFileManager.h"   // OutputPolicy
 #include "RootSerializer.h"       // RootSerializer
-#include "runFairMQDevice.h"
 
 #include <TClonesArray.h>   // data type for the InputPolicy
 
@@ -40,10 +41,10 @@ void addCustomOptions(bpo::options_description& options)
     // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& config)
+std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& config)
 {
-    BaseMQFileSink<RootDefaultInputPolicy, RootOutFileManager<FairMBSRawItem>>* sink =
-        new BaseMQFileSink<RootDefaultInputPolicy, RootOutFileManager<FairMBSRawItem>>();
+    using Sink = BaseMQFileSink<RootDefaultInputPolicy, RootOutFileManager<FairMBSRawItem>>;
+    auto sink = std::unique_ptr<Sink>(new Sink());
 
     // call function member from deserialization policy
     sink->InitInputData(config.GetValue<std::string>("hit-classname").c_str());
