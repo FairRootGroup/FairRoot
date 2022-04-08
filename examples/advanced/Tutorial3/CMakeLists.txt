@@ -149,15 +149,15 @@ install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(tut3-sampler MQ/run/runTestDetectorSampler.cxx)
-target_link_libraries(tut3-sampler PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairMQ::FairMQ)
+target_link_libraries(tut3-sampler PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairRoot::FairMQ)
 target_compile_definitions(tut3-sampler PRIVATE ${defs})
 
 add_executable(tut3-processor MQ/run/runTestDetectorProcessor.cxx)
-target_link_libraries(tut3-processor PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairMQ::FairMQ)
+target_link_libraries(tut3-processor PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairRoot::FairMQ)
 target_compile_definitions(tut3-processor PRIVATE ${defs})
 
 add_executable(tut3-sink MQ/run/runTestDetectorFileSink.cxx)
-target_link_libraries(tut3-sink PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairMQ::FairMQ)
+target_link_libraries(tut3-sink PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairRoot::FairMQ)
 target_compile_definitions(tut3-sink PRIVATE ${defs})
 
 install(TARGETS tut3-sampler tut3-processor tut3-sink

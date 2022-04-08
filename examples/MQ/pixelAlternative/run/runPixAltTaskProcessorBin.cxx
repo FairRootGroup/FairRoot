@@ -1,16 +1,18 @@
 /********************************************************************************
- * Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "PixelAltFindHits.h"
-#include "runFairMQDevice.h"
-
 // PixelAlternative example
 #include "FairMQPixAltTaskProcessorBin.h"
+#include "FairRunFairMQDevice.h"
+#include "PixelAltFindHits.h"
+
+#include <fairlogger/Logger.h>
+#include <iostream>
 
 namespace bpo = boost::program_options;
 
@@ -26,16 +28,17 @@ void addCustomOptions(bpo::options_description& options)
     // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& config)
+std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& config)
 {
     std::string taskname = config.GetValue<std::string>("task-name");
 
     std::cout << "get device with setting!" << std::endl;
 
     if (taskname == "PixelAltFindHits") {
-        return new FairMQPixAltTaskProcessorBin<PixelAltFindHits>();
+        using Processor = FairMQPixAltTaskProcessorBin<PixelAltFindHits>;
+        return std::unique_ptr<Processor>(new Processor());
     }
 
     LOG(info) << "TASK \"" << taskname << "\" UNKNOWN!!!";
-    return 0;
+    return {nullptr};
 }
