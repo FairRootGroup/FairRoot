@@ -37,7 +37,6 @@ class access;
 #include "TriviallyCopyableDataSaver.h"
 #include "baseMQtools.h"
 
-#include <FairMQLogger.h>
 #include <FairMQMessage.h>
 
 #define GET_POLICY_ID(Policy) #Policy

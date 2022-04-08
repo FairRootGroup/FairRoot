@@ -19,12 +19,12 @@
 #include "FairSource.h"
 #include "RootSerializer.h"
 
-#include <FairMQLogger.h>
 #include <FairMQMessage.h>
 #include <Rtypes.h>
 #include <TClonesArray.h>
 #include <TObject.h>
 #include <cstring>
+#include <fairlogger/Logger.h>
 #include <utility>   // move
 
 using namespace std;

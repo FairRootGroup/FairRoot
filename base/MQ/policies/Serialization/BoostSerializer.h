@@ -16,7 +16,6 @@
 #ifndef BOOSTSERIALIZER_H
 #define BOOSTSERIALIZER_H
 
-#include <FairMQLogger.h>
 #include <FairMQMessage.h>
 #include <TClonesArray.h>
 
@@ -28,6 +27,7 @@ class access;
 #include <boost/archive/binary_iarchive.hpp>   // input: a non-portable native binary archive
 #include <boost/archive/binary_oarchive.hpp>   // output: a non-portable native binary archive
 #include <boost/serialization/vector.hpp>
+#include <fairlogger/Logger.h>
 #include <memory>
 #include <sstream>
 #include <string>

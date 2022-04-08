@@ -29,8 +29,8 @@
 #include <TTree.h>
 
 // FairRoot
-#include <FairMQLogger.h>
 #include <FairMQMessage.h>
+#include <fairlogger/Logger.h>
 
 template<typename DataType>
 class BaseSimpleTreeReader
