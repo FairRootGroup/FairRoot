@@ -11,20 +11,19 @@
 
 #include "FairEventHeader.h"
 #include "FairGeoParSet.h"
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
 #include "FairParGenericSet.h"
 #include "PixelDigi.h"
 #include "PixelHit.h"
 #include "PixelPayload.h"
 #include "RootSerializer.h"
 
-#include <FairMQDevice.h>
-#include <FairMQParts.h>
 #include <TClonesArray.h>
 #include <TList.h>
 #include <string>
 
 template<typename T>
-class FairMQPixelTaskProcessorBin : public FairMQDevice
+class FairMQPixelTaskProcessorBin : public fair::mq::Device
 {
   public:
     FairMQPixelTaskProcessorBin()
@@ -71,7 +70,7 @@ class FairMQPixelTaskProcessorBin : public FairMQDevice
     void SetStaticParameters(bool tbool) { fStaticParameters = tbool; }
 
   protected:
-    bool ProcessData(FairMQParts& parts, int)
+    bool ProcessData(fair::mq::Parts& parts, int)
     {
         // LOG(debug) << "message received with " << parts.Size() << " parts!";
         fReceivedMsgs++;
@@ -117,7 +116,7 @@ class FairMQPixelTaskProcessorBin : public FairMQDevice
         // LOG(info) << " The blocking line... analyzing event " << fEventHeader->GetMCEntryNumber();
         fFairTask->ExecMQ(fInput, fOutput);
 
-        FairMQParts partsOut;
+        fair::mq::Parts partsOut;
 
         PixelPayload::EventHeader* header = new PixelPayload::EventHeader();
         header->fRunId = payloadE->fRunId;

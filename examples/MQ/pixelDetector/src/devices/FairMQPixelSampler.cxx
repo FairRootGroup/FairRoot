@@ -19,7 +19,6 @@
 #include "FairSource.h"
 #include "RootSerializer.h"
 
-#include <FairMQMessage.h>
 #include <Rtypes.h>
 #include <TClonesArray.h>
 #include <TObject.h>
@@ -101,7 +100,7 @@ bool FairMQPixelSampler::ConditionalRun()
     if (readEventReturn != 0)
         return false;
 
-    FairMQParts parts;
+    fair::mq::Parts parts;
 
     for (int iobj = 0; iobj < fNObjects; iobj++) {
         auto mess(NewMessage());

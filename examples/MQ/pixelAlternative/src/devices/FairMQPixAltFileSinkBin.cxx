@@ -40,7 +40,7 @@ void FairMQPixAltFileSinkBin::Init()
     OnData(fInputChannelName, &FairMQPixAltFileSinkBin::StoreData);
 }
 
-bool FairMQPixAltFileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
+bool FairMQPixAltFileSinkBin::StoreData(fair::mq::Parts& parts, int /*index*/)
 {
     if (parts.Size() == 0)
         return true;   // probably impossible, but still check

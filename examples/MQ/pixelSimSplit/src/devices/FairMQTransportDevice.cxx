@@ -24,7 +24,6 @@
 #include "FairTask.h"
 #include "RootSerializer.h"
 
-#include <FairMQMessage.h>
 #include <TClonesArray.h>
 #include <TCollection.h>
 #include <TList.h>
@@ -219,7 +218,7 @@ bool FairMQTransportDevice::ConditionalRun()
 //     return true;
 // }
 
-bool FairMQTransportDevice::TransportData(FairMQParts& mParts, int /*index*/)
+bool FairMQTransportDevice::TransportData(fair::mq::Parts& mParts, int /*index*/)
 {
     TClonesArray* chunk = nullptr;
     FairMCSplitEventHeader* meh = nullptr;
