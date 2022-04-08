@@ -32,7 +32,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 
     if (dataFormat == "binary") {
         using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>>;
-        return std::unique_ptr<Sampler>(new Sampler());
+        return std::make_unique<Sampler>();
     } else if (dataFormat == "boost") {
         if (fair::base::serialization::has_BoostSerialization<FairTestDetectorDigi,
                                                               void(boost::archive::binary_oarchive&,
@@ -44,27 +44,27 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
         }
         using Sampler =
             FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::binary_oarchive>>;
-        return std::unique_ptr<Sampler>(new Sampler());
+        return std::make_unique<Sampler>();
     } else if (dataFormat == "tmessage") {
         using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>;
-        return std::unique_ptr<Sampler>(new Sampler());
+        return std::make_unique<Sampler>();
     }
 #ifdef FLATBUFFERS
     else if (dataFormat == "flatbuffers") {
         using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>>;
-        return std::unique_ptr<Sampler>(new Sampler());
+        return std::make_unique<Sampler>();
     }
 #endif
 #ifdef MSGPACK
     else if (dataFormat == "msgpack") {
         using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>>;
-        return std::unique_ptr<Sampler>(new Sampler());
+        return std::make_unique<Sampler>();
     }
 #endif
 #ifdef PROTOBUF
     else if (dataFormat == "protobuf") {
         using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>>;
-        return std::unique_ptr<Sampler>(new Sampler());
+        return std::make_unique<Sampler>();
     }
 #endif
     else {

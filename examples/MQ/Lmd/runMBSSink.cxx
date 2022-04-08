@@ -44,7 +44,7 @@ void addCustomOptions(bpo::options_description& options)
 std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& config)
 {
     using Sink = BaseMQFileSink<RootDefaultInputPolicy, RootOutFileManager<FairMBSRawItem>>;
-    auto sink = std::unique_ptr<Sink>(new Sink());
+    auto sink = std::make_unique<Sink>();
 
     // call function member from deserialization policy
     sink->InitInputData(config.GetValue<std::string>("hit-classname").c_str());
