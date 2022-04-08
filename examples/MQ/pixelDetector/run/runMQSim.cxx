@@ -65,7 +65,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
     }
     gSystem->Setenv("CONFIG_DIR", tutConfigDir.c_str());
 
-    auto run = std::unique_ptr<FairMQSimDevice>(new FairMQSimDevice());
+    auto run = std::make_unique<FairMQSimDevice>();
 
     FairOnlineSink* sink = new FairOnlineSink();
     sink->SetMQRunDevice(run.get());

@@ -44,13 +44,13 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
     LOG(info) << "get device with setting!";
 
     if (taskname == "PixelFindHits") {
-        return std::unique_ptr<HitFinder>(new HitFinder());
+        return std::make_unique<HitFinder>();
     } else if (taskname == "PixelFindTracks") {
-        return std::unique_ptr<TrackFinder>(new TrackFinder());
+        return std::make_unique<TrackFinder>();
     } else if (taskname == "PixelFitTracks") {
-        return std::unique_ptr<TrackFitter>(new TrackFitter());
+        return std::make_unique<TrackFitter>();
     } else if (taskname == "PixelDigitize") {
-        return std::unique_ptr<Digitizer>(new Digitizer());
+        return std::make_unique<Digitizer>();
     }
 
     return {nullptr};

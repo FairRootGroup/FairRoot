@@ -19,7 +19,7 @@ std::unique_ptr<FairMQExHistoCanvasDrawer> getCanvasDrawer();
 
 std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& /*config*/)
 {
-    auto histoServer = std::unique_ptr<FairMQExHistoServer>(new FairMQExHistoServer());
+    auto histoServer = std::make_unique<FairMQExHistoServer>();
 
     histoServer->SetCanvasDrawer(getCanvasDrawer());
 

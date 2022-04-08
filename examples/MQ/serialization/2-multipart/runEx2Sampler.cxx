@@ -28,5 +28,5 @@ void addCustomOptions(bpo::options_description& options)
 
 std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& /*config*/)
 {
-    return std::unique_ptr<Ex2Sampler>(new Ex2Sampler());
+    return std::make_unique<Ex2Sampler>();
 }
