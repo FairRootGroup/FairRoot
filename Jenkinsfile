@@ -66,7 +66,7 @@ def jobMatrix(String prefix, String type, List specs) {
             discoverGitReferenceBuild()
             recordIssues(tools: [clangTidy(pattern: logpattern)],
                          filters: [excludeFile('build/.*/G__.*[.]cxx')],
-                         qualityGates: [[threshold: 1, type: 'NEW', unstable: true]],
+                         qualityGates: [[threshold: 3, type: 'NEW', unstable: true]],
                          skipBlames: true)
             archiveArtifacts(artifacts: logpattern, allowEmptyArchive: true, fingerprint: true)
           }
