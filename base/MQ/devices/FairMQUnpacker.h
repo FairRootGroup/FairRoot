@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -108,8 +108,8 @@ class FairMQUnpacker : public FairMQDevice
         FairMQChannel& inputChannel = fChannels.at(fInputChannelName).at(0);
 
         while (!NewStatePending()) {
-            FairMQMessagePtr msgSize(NewMessage());
-            FairMQMessagePtr msg(NewMessage());
+            auto msgSize(NewMessage());
+            auto msg(NewMessage());
 
             if (inputChannel.Receive(msgSize) >= 0) {
                 if (inputChannel.Receive(msg) >= 0) {

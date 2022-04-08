@@ -52,7 +52,7 @@ class Ex1Sampler : public FairMQDevice
         LOG(info) << "Number of events to process: " << numEvents;
 
         for (uint64_t i = 0; i < numEvents; i++) {
-            FairMQMessagePtr msg(NewMessage());
+            auto msg(NewMessage());
             fTree->GetEntry(i);
             RootSerializer().Serialize(*msg, fInput);
             if (Send(msg, "data1") >= 0) {

@@ -35,7 +35,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::In
             LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
         }
 
-        FairMQMessagePtr ack(fTransportFactory->CreateMessage());
+        auto ack(fTransportFactory->CreateMessage());
         fChannels.at(fAckChannelName).at(0).Send(ack);
 
         fTree.Fill();

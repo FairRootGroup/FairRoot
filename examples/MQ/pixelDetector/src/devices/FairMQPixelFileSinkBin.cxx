@@ -143,7 +143,7 @@ bool FairMQPixelFileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
     }
 
     if (fAckChannelName != "") {
-        FairMQMessagePtr msg(NewMessage());
+        auto msg(NewMessage());
         Send(msg, fAckChannelName);
     }
     return true;
