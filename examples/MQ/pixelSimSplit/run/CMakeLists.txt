@@ -26,7 +26,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMQ.sh.in   ${CMAKE_
 
 set(exe_dependencies
   FairRoot::ExSimMQ
-  FairMQ::FairMQ
+  FairRoot::FairMQ
   Boost::program_options
 )
 

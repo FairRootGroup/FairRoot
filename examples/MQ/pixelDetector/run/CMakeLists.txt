@@ -64,7 +64,7 @@ endif()
 
 set(exe_dependencies
   FairRoot::ExPixel
-  FairMQ::FairMQ
+  FairRoot::FairMQ
   Boost::program_options
 )
 
