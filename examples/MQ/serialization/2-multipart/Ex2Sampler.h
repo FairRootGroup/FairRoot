@@ -9,18 +9,18 @@
 #ifndef EX2SAMPLER_H
 #define EX2SAMPLER_H
 
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
 #include "MyDigi.h"
 #include "RootSerializer.h"
 #include "SerializerExample2.h"
 
-#include <FairMQDevice.h>
 #include <Rtypes.h>
 #include <TFile.h>
 #include <TTree.h>
 #include <chrono>
 #include <thread>
 
-class Ex2Sampler : public FairMQDevice
+class Ex2Sampler : public fair::mq::Device
 {
   public:
     Ex2Sampler()
@@ -62,7 +62,7 @@ class Ex2Sampler : public FairMQDevice
             auto msg(NewMessage());
             RootSerializer().Serialize(*msg, fInput);
 
-            FairMQParts parts;
+            fair::mq::Parts parts;
             parts.AddPart(std::move(msgHeader));
             parts.AddPart(std::move(msg));
 

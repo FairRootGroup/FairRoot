@@ -14,7 +14,6 @@
 
 #include "FairMQPixAltSamplerBin.h"
 
-#include <FairMQMessage.h>
 #include <TBranch.h>
 #include <TChain.h>
 #include <cstddef>
@@ -95,7 +94,7 @@ bool FairMQPixAltSamplerBin::ConditionalRun()
 
 bool FairMQPixAltSamplerBin::ReadBinFile()
 {
-    FairMQParts parts;
+    fair::mq::Parts parts;
 
     for (int iaggr = 0; iaggr < fAggregateLevel; iaggr++) {
 
@@ -196,7 +195,7 @@ bool FairMQPixAltSamplerBin::ReadRootFile()
     fDigiBranch->GetEntry(fEventCounter);
 
     // create output multipart message
-    FairMQParts parts;
+    fair::mq::Parts parts;
 
     PixelPayload::EventHeader* header = new PixelPayload::EventHeader();
     header->fRunId = fEventHeader->fRunId;

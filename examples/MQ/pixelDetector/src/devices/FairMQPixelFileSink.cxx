@@ -64,7 +64,7 @@ void FairMQPixelFileSink::Init()
     OnData(fInputChannelName, &FairMQPixelFileSink::StoreData);
 }
 
-bool FairMQPixelFileSink::StoreData(FairMQParts& parts, int /*index*/)
+bool FairMQPixelFileSink::StoreData(fair::mq::Parts& parts, int /*index*/)
 {
     bool creatingTree = false;
     std::vector<TObject*> tempObjects;
