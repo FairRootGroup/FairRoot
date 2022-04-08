@@ -9,16 +9,16 @@
 #ifndef EX1PROCESSOR_H
 #define EX1PROCESSOR_H
 
+#include "FairMQ.h"   // for fair::mq::Device
 #include "MyDigi.h"
 #include "MyHit.h"
 #include "RootSerializer.h"
 
-#include <FairMQDevice.h>
 #include <TClonesArray.h>
 #include <TMath.h>
 #include <memory>
 
-class Ex1Processor : public FairMQDevice
+class Ex1Processor : public fair::mq::Device
 {
   public:
     Ex1Processor() {}

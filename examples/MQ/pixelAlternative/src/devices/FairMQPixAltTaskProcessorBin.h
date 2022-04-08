@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -11,19 +11,18 @@
 
 #include "FairEventHeader.h"
 #include "FairGeoParSet.h"
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
 #include "FairParGenericSet.h"
 #include "PixelDigi.h"
 #include "PixelPayload.h"
 #include "RootSerializer.h"
 
-#include <FairMQDevice.h>
-#include <FairMQParts.h>
 #include <TClonesArray.h>
 #include <TList.h>
 #include <string>
 
 template<typename T>
-class FairMQPixAltTaskProcessorBin : public FairMQDevice
+class FairMQPixAltTaskProcessorBin : public fair::mq::Device
 {
   public:
     FairMQPixAltTaskProcessorBin()
@@ -56,7 +55,7 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
     void SetParamChannelName(const std::string& tstr) { fParamChannelName = tstr; }
 
   protected:
-    bool ProcessData(FairMQParts& parts, int)
+    bool ProcessData(fair::mq::Parts& parts, int)
     {
         // LOG(debug)<<"message received with " << parts.Size() << " parts!";
         fReceivedMsgs++;
@@ -71,7 +70,7 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
             LOG(info) << "received " << parts.Size() << " parts, will ignore last part!!!";
 
         // creating output multipart message
-        FairMQParts partsOut;
+        fair::mq::Parts partsOut;
 
         for (int ievent = 0; ievent < parts.Size() / nPPE; ievent++) {
             // the first part should be the event header

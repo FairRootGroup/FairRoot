@@ -27,9 +27,6 @@
 #include <TClonesArray.h>
 #include <TFile.h>
 #include <TTree.h>
-
-// FairRoot
-#include <FairMQMessage.h>
 #include <fairlogger/Logger.h>
 
 template<typename DataType>

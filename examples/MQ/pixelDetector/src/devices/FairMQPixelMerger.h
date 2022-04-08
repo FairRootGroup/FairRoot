@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -15,7 +15,8 @@
 #ifndef FAIRMQPIXELMERGER_H_
 #define FAIRMQPIXELMERGER_H_
 
-#include <FairMQDevice.h>
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
+
 #include <map>
 #include <string>
 #include <utility>   // pair
@@ -25,7 +26,7 @@ class TObject;
 
 typedef std::multimap<std::pair<std::pair<int, int>, int>, TObject*> MultiMapDef;
 
-class FairMQPixelMerger : public FairMQDevice
+class FairMQPixelMerger : public fair::mq::Device
 {
   public:
     FairMQPixelMerger();
@@ -34,7 +35,7 @@ class FairMQPixelMerger : public FairMQDevice
     void SetNofParts(int iparts) { fNofParts = iparts; }
 
   protected:
-    bool MergeData(FairMQParts&, int);
+    bool MergeData(fair::mq::Parts&, int);
     virtual void Init();
 
   private:

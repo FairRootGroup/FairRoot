@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2017 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2017-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -16,7 +16,8 @@
 #ifndef FAIRMQPRIMARYGENERATORDEVICE_H_
 #define FAIRMQPRIMARYGENERATORDEVICE_H_
 
-#include <FairMQDevice.h>
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::MessagePtr
+
 #include <cstdint>
 #include <string>
 #include <thread>
@@ -26,7 +27,7 @@ class FairPrimaryGenerator;
 class TObject;
 class FairStack;
 
-class FairMQPrimaryGeneratorDevice : public FairMQDevice
+class FairMQPrimaryGeneratorDevice : public fair::mq::Device
 {
   public:
     FairMQPrimaryGeneratorDevice();
@@ -48,7 +49,7 @@ class FairMQPrimaryGeneratorDevice : public FairMQDevice
     void SetAckChannelName(std::string tstr) { fAckChannelName = tstr; }
 
   protected:
-    bool Reply(FairMQMessagePtr&, int);
+    bool Reply(fair::mq::MessagePtr&, int);
     virtual void InitTask();
     virtual void PreRun();
     virtual void PostRun();

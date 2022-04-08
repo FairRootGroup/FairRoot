@@ -10,16 +10,15 @@
 #define EX2PROCESSOR_H
 
 #include "BoostSerializer.h"
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
 #include "MyDigi.h"
 #include "MyHit.h"
 #include "RootSerializer.h"
 #include "SerializerExample2.h"
 
-#include <FairMQDevice.h>
-#include <FairMQParts.h>
 #include <TMath.h>
 
-class Ex2Processor : public FairMQDevice
+class Ex2Processor : public fair::mq::Device
 {
   public:
     Ex2Processor()
@@ -35,7 +34,7 @@ class Ex2Processor : public FairMQDevice
         int sentMsgs = 0;
 
         while (!NewStatePending()) {
-            FairMQParts partsIn;
+            fair::mq::Parts partsIn;
 
             if (Receive(partsIn, "data1") > 0) {
                 Ex2Header* header = nullptr;
@@ -46,7 +45,7 @@ class Ex2Processor : public FairMQDevice
 
                 Exec(fInput, fOutput);
 
-                FairMQParts partsOut;
+                fair::mq::Parts partsOut;
                 partsOut.AddPart(std::move(partsIn.At(0)));
                 partsOut.AddPart(NewMessage());
 
