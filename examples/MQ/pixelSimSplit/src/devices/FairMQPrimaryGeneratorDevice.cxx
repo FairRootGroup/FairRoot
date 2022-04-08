@@ -104,11 +104,11 @@ bool FairMQPrimaryGeneratorDevice::GenerateAndSendData()
             meh->SetNPrim(prims->GetEntries() - fChunkPointer);
     }
 
-    FairMQMessagePtr messEH(NewMessage());
+    auto messEH(NewMessage());
     RootSerializer().Serialize(*messEH, meh);
     parts.AddPart(std::move(messEH));
 
-    FairMQMessagePtr mess(NewMessage());
+    auto mess(NewMessage());
     RootSerializer().Serialize(*mess, prims);
     parts.AddPart(std::move(mess));
 
@@ -140,7 +140,7 @@ void FairMQPrimaryGeneratorDevice::ListenForAcks()
     if (fAckChannelName != "") {
         Long64_t numAcks = 0;
         do {
-            FairMQMessagePtr ack(NewMessage());
+            auto ack(NewMessage());
             if (Receive(ack, fAckChannelName) >= 0) {
                 LOG(info) << "RECEIVED ACK!";
                 numAcks++;

@@ -104,7 +104,7 @@ bool FairMQPixelSampler::ConditionalRun()
     FairMQParts parts;
 
     for (int iobj = 0; iobj < fNObjects; iobj++) {
-        FairMQMessagePtr mess(NewMessage());
+        auto mess(NewMessage());
         RootSerializer().Serialize(*mess, fInputObjects[iobj]);
         parts.AddPart(std::move(mess));
     }
@@ -130,7 +130,7 @@ void FairMQPixelSampler::ListenForAcks()
     if (fAckChannelName != "") {
         Long64_t numAcks = 0;
         do {
-            unique_ptr<FairMQMessage> ack(NewMessage());
+            auto ack(NewMessage());
             if (Receive(ack, fAckChannelName) >= 0) {
                 numAcks++;
             }
