@@ -123,7 +123,7 @@ class FairMQUnpacker : public FairMQDevice
                     // }
 
                     fUnpacker->DoUnpack(subEvtPtr, dataSize);
-                    Serialize<SerializationType>(*msg, fUnpacker->GetOutputData());
+                    SerializationType().Serialize(*msg, fUnpacker->GetOutputData());
                     Send(msg, fOutputChanName);
                     fUnpacker->Reset();
                 }
