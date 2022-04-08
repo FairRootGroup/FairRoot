@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -13,7 +13,7 @@
 #include "FairFileSource.h"
 #include "FairRunAna.h"
 
-#include <FairMQLogger.h>
+#include <fairlogger/Logger.h>
 #include <functional>
 #include <type_traits>
 
