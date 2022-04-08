@@ -54,9 +54,8 @@ class BaseMQFileSink
         while (!NewStatePending()) {
             auto msg(NewMessage());
             if (Receive(msg, fInputChanName) > 0) {
-                FairMQDevice::Deserialize<typename InputPolicy::DeserializerType>(
-                    *msg, InputPolicy::fInput);                 // get data from message.
-                OutputPolicy::Serialize(InputPolicy::fInput);   // put data into output.
+                InputPolicy::Deserialize(*msg, InputPolicy::fInput);   // get data from message.
+                OutputPolicy::Serialize(InputPolicy::fInput);          // put data into output.
                 receivedMsg++;
             }
         }
