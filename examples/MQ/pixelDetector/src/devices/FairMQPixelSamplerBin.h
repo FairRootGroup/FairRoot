@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -15,7 +15,8 @@
 #ifndef FAIRMQPIXELSAMPLERBIN_H_
 #define FAIRMQPIXELSAMPLERBIN_H_
 
-#include <FairMQDevice.h>
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
+
 #include <cstdint>
 #include <string>
 #include <thread>
@@ -25,7 +26,7 @@ class FairFileSource;
 class FairRunAna;
 class TObject;
 
-class FairMQPixelSamplerBin : public FairMQDevice
+class FairMQPixelSamplerBin : public fair::mq::Device
 {
   public:
     FairMQPixelSamplerBin();

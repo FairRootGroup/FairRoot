@@ -21,7 +21,7 @@
 template<typename TIn, typename TPayloadIn>
 void FairTestDetectorFileSink<TIn, TPayloadIn>::InitTask()
 {
-    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/) {
+    OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
 
         BoostSerializer<TIn>().Deserialize(*msg, fOutput);

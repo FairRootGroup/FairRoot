@@ -126,8 +126,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::GeoBase # FairGeoSet
   FairRoot::ExMCStack
   FairRoot::ParBase # FairRuntimeDb, FairContFact, FairParamList
-
-  FairMQ::FairMQ
+  FairRoot::FairMQ
 
   Boost::serialization
   $<$<BOOL:${Protobuf_FOUND}>:protobuf::libprotobuf>

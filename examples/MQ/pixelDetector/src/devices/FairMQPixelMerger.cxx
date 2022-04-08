@@ -40,7 +40,7 @@ FairMQPixelMerger::FairMQPixelMerger()
 
 void FairMQPixelMerger::Init() { OnData(fInputChannelName, &FairMQPixelMerger::MergeData); }
 
-bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
+bool FairMQPixelMerger::MergeData(fair::mq::Parts& parts, int /*index*/)
 {
     bool printInfo = false;
     int nofReceivedParts = 0;   // if set to -1, the data seems to be duplicated
@@ -140,8 +140,8 @@ bool FairMQPixelMerger::MergeData(FairMQParts& parts, int /*index*/)
             fObjectMap.erase(fRet.first, fRet.second);
         }
 
-        FairMQMessagePtr messageTCA[10];
-        FairMQParts partsOut;
+        fair::mq::MessagePtr messageTCA[10];
+        fair::mq::Parts partsOut;
 
         auto messFEH(NewMessage());
         RootSerializer().Serialize(*messFEH, fEventHeader);

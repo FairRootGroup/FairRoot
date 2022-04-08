@@ -34,10 +34,9 @@ class access;
 
 // FairRoot
 #include "BoostDataSaver.h"
+#include "FairMQ.h"   // for fair::mq::Message
 #include "TriviallyCopyableDataSaver.h"
 #include "baseMQtools.h"
-
-#include <FairMQMessage.h>
 
 #define GET_POLICY_ID(Policy) #Policy
 
@@ -69,7 +68,7 @@ class BinaryOutFileManager : public TStoragePolicy
 
     void SetFileProperties(const std::string& filename) { fFileName = filename; }
 
-    void AddToFile(FairMQMessage* msg) { TStoragePolicy::Write(fOutfile, msg); }
+    void AddToFile(fair::mq::Message* msg) { TStoragePolicy::Write(fOutfile, msg); }
 
     void AddToFile(TPayload* objArr, long size) { AppendObjArray<TPayload>(fOutfile, objArr, size); }
 

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -15,7 +15,8 @@
 #ifndef FAIRMQCHUNKMERGER_H_
 #define FAIRMQCHUNKMERGER_H_
 
-#include <FairMQDevice.h>
+#include "FairMQ.h"   // for fair::mq::Device
+
 #include <map>
 #include <string>
 #include <utility>   // pair
@@ -25,7 +26,7 @@ class FairMCSplitEventHeader;
 
 typedef std::multimap<std::pair<int, int>, std::pair<int, TObject*>> MultiMapDef;
 
-class FairMQChunkMerger : public FairMQDevice
+class FairMQChunkMerger : public fair::mq::Device
 {
   public:
     FairMQChunkMerger();
@@ -34,7 +35,7 @@ class FairMQChunkMerger : public FairMQDevice
     void SetNofParts(int iparts) { fNofParts = iparts; }
 
   protected:
-    bool MergeData(FairMQParts&, int);
+    bool MergeData(fair::mq::Parts&, int);
     virtual void Init();
 
   private:

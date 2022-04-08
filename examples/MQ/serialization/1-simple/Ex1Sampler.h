@@ -9,10 +9,10 @@
 #ifndef EX1SAMPLER_H
 #define EX1SAMPLER_H
 
+#include "FairMQ.h"   // for fair::mq::Device
 #include "MyDigi.h"
 #include "RootSerializer.h"
 
-#include <FairMQDevice.h>
 #include <Rtypes.h>
 #include <TClonesArray.h>
 #include <TFile.h>
@@ -20,7 +20,7 @@
 #include <chrono>
 #include <thread>
 
-class Ex1Sampler : public FairMQDevice
+class Ex1Sampler : public fair::mq::Device
 {
   public:
     Ex1Sampler()

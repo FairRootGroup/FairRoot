@@ -12,17 +12,16 @@
 #include "FairEventHeader.h"
 #include "FairGeoParSet.h"
 #include "FairMCEventHeader.h"
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
 #include "FairParGenericSet.h"
 #include "RootSerializer.h"
 
-#include <FairMQDevice.h>
-#include <FairMQParts.h>
 #include <TList.h>
 #include <string>
 #include <vector>
 
 template<typename T>
-class FairMQPixelTaskProcessor : public FairMQDevice
+class FairMQPixelTaskProcessor : public fair::mq::Device
 {
   public:
     FairMQPixelTaskProcessor()
@@ -64,7 +63,7 @@ class FairMQPixelTaskProcessor : public FairMQDevice
     void SetStaticParameters(bool tbool) { fStaticParameters = tbool; }
 
   protected:
-    bool ProcessData(FairMQParts& parts, int)
+    bool ProcessData(fair::mq::Parts& parts, int)
     {
         TObject* objectToKeep = nullptr;
 
@@ -117,7 +116,7 @@ class FairMQPixelTaskProcessor : public FairMQDevice
                 fOutput->Add(objectToKeep);
         }
 
-        FairMQParts partsOut;
+        fair::mq::Parts partsOut;
 
         if (fEventHeader) {
             auto mess(NewMessage());

@@ -15,6 +15,7 @@
 #ifndef FAIRMQLMDSAMPLER_H
 #define FAIRMQLMDSAMPLER_H
 
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
 extern "C"
 {
 #include "f_evt.h"
@@ -22,8 +23,6 @@ extern "C"
 #include "s_filhe_swap.h"
 }
 
-#include <FairMQDevice.h>
-#include <FairMQMessage.h>
 #include <boost/filesystem.hpp>
 #include <fairlogger/Logger.h>
 #include <map>
@@ -31,7 +30,7 @@ extern "C"
 #include <tuple>
 #include <vector>
 
-class FairMQLmdSampler : public FairMQDevice
+class FairMQLmdSampler : public fair::mq::Device
 {
   public:
     FairMQLmdSampler()
@@ -244,7 +243,7 @@ class FairMQLmdSampler : public FairMQDevice
                 std::string chanName = fSubEventChanMap.at(key);
                 // LOG(debug) << "chanName = " << chanName;
 
-                FairMQParts parts;
+                fair::mq::Parts parts;
 
                 // send header
                 // auto header(fTransportFactory->CreateMessage(fSubEvent, sizeof(fSubEvent),

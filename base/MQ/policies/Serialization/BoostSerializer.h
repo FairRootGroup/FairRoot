@@ -16,14 +16,14 @@
 #ifndef BOOSTSERIALIZER_H
 #define BOOSTSERIALIZER_H
 
-#include <FairMQMessage.h>
-#include <TClonesArray.h>
+#include "FairMQ.h"   // for fair::mq::Message
 
 namespace boost {
 namespace serialization {
 class access;
 }
 }   // namespace boost
+#include <TClonesArray.h>
 #include <boost/archive/binary_iarchive.hpp>   // input: a non-portable native binary archive
 #include <boost/archive/binary_oarchive.hpp>   // output: a non-portable native binary archive
 #include <boost/serialization/vector.hpp>
@@ -67,7 +67,7 @@ template<typename DataType>
 class BoostSerializer
 {
   public:
-    void Serialize(FairMQMessage& msg, DataType* data)
+    void Serialize(fair::mq::Message& msg, DataType* data)
     {
         std::ostringstream buffer;
         boost::archive::binary_oarchive outputArchive(buffer);
@@ -77,7 +77,7 @@ class BoostSerializer
         std::memcpy(msg.GetData(), buffer.str().c_str(), size);
     }
 
-    void Serialize(FairMQMessage& msg, const DataType& data)
+    void Serialize(fair::mq::Message& msg, const DataType& data)
     {
         std::ostringstream buffer;
         boost::archive::binary_oarchive outputArchive(buffer);
@@ -87,7 +87,7 @@ class BoostSerializer
         std::memcpy(msg.GetData(), buffer.str().c_str(), size);
     }
 
-    void Serialize(FairMQMessage& msg, const std::vector<DataType>& dataVec)
+    void Serialize(fair::mq::Message& msg, const std::vector<DataType>& dataVec)
     {
         std::ostringstream buffer;
         boost::archive::binary_oarchive outputArchive(buffer);
@@ -97,7 +97,7 @@ class BoostSerializer
         std::memcpy(msg.GetData(), buffer.str().c_str(), size);
     }
 
-    void Serialize(FairMQMessage& msg, TClonesArray* input)
+    void Serialize(fair::mq::Message& msg, TClonesArray* input)
     {
         std::vector<DataType> dataVec;
         for (int i = 0; i < input->GetEntriesFast(); ++i) {
@@ -110,9 +110,9 @@ class BoostSerializer
         Serialize(msg, dataVec);
     }
 
-    void Serialize(FairMQMessage& msg, std::unique_ptr<TClonesArray> input) { Serialize(msg, input.get()); }
+    void Serialize(fair::mq::Message& msg, std::unique_ptr<TClonesArray> input) { Serialize(msg, input.get()); }
 
-    void Deserialize(FairMQMessage& msg, DataType& input)
+    void Deserialize(fair::mq::Message& msg, DataType& input)
     {
         std::string msgStr(static_cast<char*>(msg.GetData()), msg.GetSize());
         std::istringstream buffer(msgStr);
@@ -124,7 +124,7 @@ class BoostSerializer
         }
     }
 
-    void Deserialize(FairMQMessage& msg, std::vector<DataType>& input)
+    void Deserialize(fair::mq::Message& msg, std::vector<DataType>& input)
     {
         input.clear();
         std::string msgStr(static_cast<char*>(msg.GetData()), msg.GetSize());
@@ -133,7 +133,7 @@ class BoostSerializer
         inputArchive >> input;
     }
 
-    void Deserialize(FairMQMessage& msg, TClonesArray* input)
+    void Deserialize(fair::mq::Message& msg, TClonesArray* input)
     {
         std::vector<DataType> dataVec;
         Deserialize(msg, dataVec);
@@ -144,12 +144,13 @@ class BoostSerializer
             }
 
             if (input->IsEmpty()) {
-                LOG(debug) << "BoostSerializer::Deserialize(FairMQMessage& msg, TClonesArray* input): No Output array!";
+                LOG(debug)
+                    << "BoostSerializer::Deserialize(fair::mq::Message& msg, TClonesArray* input): No Output array!";
             }
         }
     }
 
-    void Deserialize(FairMQMessage& msg, std::unique_ptr<TClonesArray>& input) { Deserialize(msg, input.get()); }
+    void Deserialize(fair::mq::Message& msg, std::unique_ptr<TClonesArray>& input) { Deserialize(msg, input.get()); }
 };
 
 #endif /* BOOSTSERIALIZER_H */

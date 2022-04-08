@@ -17,7 +17,7 @@ using namespace TestDetectorFlat;
 template<>
 void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>::InitTask()
 {
-    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/) {
+    OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
         fOutput->Delete();
 

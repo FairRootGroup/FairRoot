@@ -49,7 +49,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::ParBase
   FairRoot::BaseMQ # Serialization policies
   FairRoot::ExPixel
-  FairMQ::FairMQ
+  FairRoot::FairMQ
 
   Tree
   RIO # TFile
