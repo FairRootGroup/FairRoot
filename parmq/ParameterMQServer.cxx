@@ -114,7 +114,7 @@ void ParameterMQServer::InitTask()
     }
 }
 
-bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
+bool ParameterMQServer::ProcessRequest(fair::mq::MessagePtr& req, int /*index*/)
 {
     string parameterName = "";
     FairParGenericSet* par = nullptr;
@@ -160,7 +160,7 @@ bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
     return true;
 }
 
-bool ParameterMQServer::ProcessUpdate(FairMQMessagePtr& update, int /*index*/)
+bool ParameterMQServer::ProcessUpdate(fair::mq::MessagePtr& update, int /*index*/)
 {
     gGeoManager =
         nullptr;   // FairGeoParSet update deletes previous geometry because of resetting gGeoManager, so let's NULL it

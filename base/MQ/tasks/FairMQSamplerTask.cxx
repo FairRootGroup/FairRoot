@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -53,6 +53,6 @@ void FairMQSamplerTask::SetBranch(const string& branch) { fBranch = branch; }
 
 void FairMQSamplerTask::SetEventIndex(Long64_t eventIndex) { fEventIndex = eventIndex; }
 
-void FairMQSamplerTask::GetPayload(FairMQMessagePtr& msg) { msg = move(fPayload); }
+void FairMQSamplerTask::GetPayload(fair::mq::MessagePtr& msg) { msg = move(fPayload); }
 
-void FairMQSamplerTask::SetTransport(shared_ptr<FairMQTransportFactory> factory) { fTransportFactory = factory; }
+void FairMQSamplerTask::SetTransport(shared_ptr<fair::mq::TransportFactory> factory) { fTransportFactory = factory; }

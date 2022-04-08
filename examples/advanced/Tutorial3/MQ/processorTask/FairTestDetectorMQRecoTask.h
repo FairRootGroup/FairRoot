@@ -15,7 +15,6 @@
 #include "FairTestDetectorPayload.h"
 #include "FairTestDetectorRecoTask.h"
 
-#include <FairMQMessage.h>
 #include <TClonesArray.h>
 #include <fairlogger/Logger.h>
 

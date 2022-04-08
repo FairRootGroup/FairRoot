@@ -9,15 +9,15 @@
 #ifndef EX1SINK_H
 #define EX1SINK_H
 
+#include "FairMQ.h"   // for fair::mq::Device
 #include "MyHit.h"
 #include "RootSerializer.h"
 
-#include <FairMQDevice.h>
 #include <TClonesArray.h>
 #include <TFile.h>
 #include <TTree.h>
 
-class Ex1Sink : public FairMQDevice
+class Ex1Sink : public fair::mq::Device
 {
   public:
     Ex1Sink()

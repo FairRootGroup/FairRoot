@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -15,14 +15,15 @@
 #ifndef FAIRMQPIXELFILESINK_H_
 #define FAIRMQPIXELFILESINK_H_
 
-#include <FairMQDevice.h>
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
+
 #include <string>
 
 class TFile;
 class TObject;
 class TTree;
 
-class FairMQPixelFileSink : public FairMQDevice
+class FairMQPixelFileSink : public fair::mq::Device
 {
   public:
     FairMQPixelFileSink();
@@ -35,7 +36,7 @@ class FairMQPixelFileSink : public FairMQDevice
     void SetAckChannelName(const std::string& tstr) { fAckChannelName = tstr; }
 
   protected:
-    bool StoreData(FairMQParts&, int);
+    bool StoreData(fair::mq::Parts&, int);
     void InitTask() override;
     void ResetTask() override;
 

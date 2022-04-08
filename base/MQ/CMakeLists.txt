@@ -71,8 +71,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::ParBase # FairParRootFileIo, FairRuntimeDb
   FairRoot::FairTools
   $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
-
-  FairMQ::FairMQ
+  FairRoot::FairMQ
 
   Boost::serialization
   Boost::filesystem

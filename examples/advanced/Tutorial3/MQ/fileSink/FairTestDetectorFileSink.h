@@ -15,10 +15,10 @@
 #ifndef FAIRTESTDETECTORFILESINK_H_
 #define FAIRTESTDETECTORFILESINK_H_
 
+#include "FairMQ.h"   // for fair::mq::Device
 #include "FairTestDetectorHit.h"
 #include "FairTestDetectorPayload.h"
 
-#include <FairMQDevice.h>
 #include <Rtypes.h>
 #include <TClonesArray.h>
 #include <TFile.h>
@@ -31,7 +31,7 @@
 #include <string>
 
 template<typename TIn, typename TPayloadIn>
-class FairTestDetectorFileSink : public FairMQDevice
+class FairTestDetectorFileSink : public fair::mq::Device
 {
   public:
     FairTestDetectorFileSink()
