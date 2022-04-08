@@ -50,10 +50,10 @@ install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(ex-histo-device runExHistoDevice.cxx)
-target_link_libraries(ex-histo-device PRIVATE FairRoot::ExHistogramServer FairMQ::FairMQ)
+target_link_libraries(ex-histo-device PRIVATE FairRoot::ExHistogramServer FairRoot::FairMQ)
 
 add_executable(ex-histo-server runExHistoCanvasDrawer.cxx)
-target_link_libraries(ex-histo-server PRIVATE FairRoot::ExHistogramServer FairMQ::FairMQ)
+target_link_libraries(ex-histo-server PRIVATE FairRoot::ExHistogramServer FairRoot::FairMQ)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/fairmq-start-ex-histo.sh.in ${CMAKE_CURRENT_BINARY_DIR}/fairmq-start-ex-histo.sh)
 

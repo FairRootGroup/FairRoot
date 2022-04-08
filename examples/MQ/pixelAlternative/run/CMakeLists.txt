@@ -24,7 +24,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixAlt.sh_install DESTINATI
 
 set(exe_dependencies
   FairRoot::ExPixelAlt
-  FairMQ::FairMQ
+  FairRoot::FairMQ
   Boost::program_options
 )
 
