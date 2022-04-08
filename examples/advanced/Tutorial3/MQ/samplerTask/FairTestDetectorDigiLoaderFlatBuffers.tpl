@@ -46,11 +46,11 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayl
 
     delete[] digis;
 
-    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(
+    fPayload = fTransportFactory->CreateMessage(
         builder->GetBufferPointer(),
         builder->GetSize(),
         [](void* /* data */, void* obj) { delete static_cast<flatbuffers::FlatBufferBuilder*>(obj); },
-        builder));
+        builder);
 }
 
 #endif /* FLATBUFFERS */
