@@ -101,10 +101,9 @@ bool FairMQPixelSamplerBin::ConditionalRun()
             header->fRunId = ((FairEventHeader*)fInputObjects[iobj])->GetRunId();
             header->fMCEntryNo = ((FairEventHeader*)fInputObjects[iobj])->GetMCEntryNumber();
             header->fPartNo = 0;
-            FairMQMessagePtr msgHeader(
-                NewMessage(header, sizeof(PixelPayload::EventHeader), [](void* data, void* /*hint*/) {
-                    delete static_cast<PixelPayload::EventHeader*>(data);
-                }));
+            auto msgHeader(NewMessage(header, sizeof(PixelPayload::EventHeader), [](void* data, void* /*hint*/) {
+                delete static_cast<PixelPayload::EventHeader*>(data);
+            }));
             parts.AddPart(std::move(msgHeader));
             // LOG(debug) << "-----------------------------";
             // LOG(debug) << "first part has size = " << sizeof(PixelPayload::EventHeader);
@@ -112,7 +111,7 @@ bool FairMQPixelSamplerBin::ConditionalRun()
             Int_t nofEntries = ((TClonesArray*)fInputObjects[iobj])->GetEntries();
             size_t digisSize = nofEntries * sizeof(PixelPayload::Digi);
 
-            FairMQMessagePtr msgTCA(NewMessage(digisSize));
+            auto msgTCA(NewMessage(digisSize));
 
             PixelPayload::Digi* digiPayload = static_cast<PixelPayload::Digi*>(msgTCA->GetData());
 
@@ -155,7 +154,7 @@ void FairMQPixelSamplerBin::ListenForAcks()
     if (fAckChannelName != "") {
         Long64_t numAcks = 0;
         do {
-            FairMQMessagePtr ack(NewMessage());
+            auto ack(NewMessage());
             if (Receive(ack, fAckChannelName) >= 0) {
                 numAcks++;
             }

@@ -174,12 +174,12 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
         fMCSplitEventHeader->SetNofChunks(1);
         fMCSplitEventHeader->SetChunkStart(0);
 
-        FairMQMessagePtr messEH(NewMessage());
+        auto messEH(NewMessage());
         RootSerializer().Serialize(*messEH, fMCSplitEventHeader);
         partsOut.AddPart(std::move(messEH));
 
         for (auto tca_elem : tcaVector) {
-            FairMQMessagePtr mess(NewMessage());
+            auto mess(NewMessage());
             RootSerializer().Serialize(*mess, tca_elem);
             partsOut.AddPart(std::move(mess));
         }

@@ -92,7 +92,7 @@ bool FairMQPixelFileSink::StoreData(FairMQParts& parts, int /*index*/)
     tempObjects.clear();
 
     if (fAckChannelName != "") {
-        unique_ptr<FairMQMessage> msg(NewMessage());
+        auto msg(NewMessage());
         Send(msg, fAckChannelName);
     }
     return true;
