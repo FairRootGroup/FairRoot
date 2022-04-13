@@ -127,8 +127,8 @@ Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat)
             tr = new TGeoTranslation(pos.getX(), pos.getY(), pos.getZ());
         } else {
             nRot++;
-            char b[10];
-            sprintf(b, "R%i", nRot);
+            char b[13];
+            snprintf(b, sizeof(b), "R%i", nRot);
             TGeoRotation* r = new TGeoRotation(b);
             Double_t a[9];
             for (Int_t i = 0; i < 9; i++) {

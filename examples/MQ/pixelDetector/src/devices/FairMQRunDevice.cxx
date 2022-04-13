@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -18,12 +18,11 @@
 #include "FairRootManager.h"
 #include "RootSerializer.h"
 
-#include <FairMQLogger.h>
-#include <FairMQMessage.h>
 #include <Rtypes.h>
 #include <TList.h>
 #include <TObjString.h>
 #include <cstdio>   // printf
+#include <fairlogger/Logger.h>
 
 using namespace std;
 
@@ -32,10 +31,10 @@ std::mutex mtx;    // mutex for critical section
 
 void FairMQRunDevice::SendObject(TObject* obj, const std::string& chan)
 {
-    FairMQMessagePtr mess(NewMessage());
+    auto mess(NewMessage());
     RootSerializer().Serialize(*mess, obj);
 
-    FairMQMessagePtr rep(NewMessage());
+    auto rep(NewMessage());
 
     printf("sending %s", obj->GetName());
     if (Send(mess, chan) > 0) {
@@ -57,7 +56,7 @@ void FairMQRunDevice::SendBranches()
     for (auto& mi : fChannels) {
         LOG(debug) << "trying channel >" << mi.first.data() << "<";
 
-        FairMQParts parts;
+        fair::mq::Parts parts;
 
         for (Int_t t = 0; t < branchNameList->GetEntries(); t++) {
             ObjStr = static_cast<TObjString*>(branchNameList->TList::At(t));
@@ -79,7 +78,7 @@ void FairMQRunDevice::SendBranches()
                             TObject* objClone = (*mcTrackArray)->Clone();
                             LOG(debug) << "FairMQRunDevice::SendBranches() the track array has "
                                        << ((TClonesArray*)(objClone))->GetEntries() << " entries.";
-                            FairMQMessagePtr mess(NewMessage());
+                            auto mess(NewMessage());
                             RootSerializer().Serialize(*mess, objClone);
                             parts.AddPart(std::move(mess));
                             LOG(debug) << "channel >" << mi.first.data() << "< --> >" << ObjStr->GetString().Data()
@@ -94,7 +93,7 @@ void FairMQRunDevice::SendBranches()
                     TObject* object = FairRootManager::Instance()->GetObject(ObjStr->GetString());
                     if (object) {
                         TObject* objClone = object->Clone();
-                        FairMQMessagePtr mess(NewMessage());
+                        auto mess(NewMessage());
                         RootSerializer().Serialize(*mess, objClone);
                         parts.AddPart(std::move(mess));
                         LOG(debug) << "channel >" << mi.first.data() << "< --> >" << ObjStr->GetString().Data() << "<";

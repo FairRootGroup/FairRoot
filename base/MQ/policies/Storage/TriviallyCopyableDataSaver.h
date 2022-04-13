@@ -1,3 +1,11 @@
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
+
 /*
  * File:   TriviallyCopyableDataSaver.h
  * Author: winckler
@@ -8,7 +16,10 @@
 #ifndef TRIVIALLYCOPYABLEDATASAVER_H
 #define TRIVIALLYCOPYABLEDATASAVER_H
 
-#include <FairMQMessage.h>
+#include "FairMQ.h"   // for fair::mq::Message
+
+#include <fairlogger/Logger.h>
+#include <fstream>
 
 template<typename TPayload>
 class TriviallyCopyableDataSaver
@@ -28,7 +39,7 @@ class TriviallyCopyableDataSaver
         }
     }
 
-    void Write(std::ofstream& outfile, FairMQMessage* msg)
+    void Write(std::ofstream& outfile, fair::mq::Message* msg)
     {
         int inputSize = msg->GetSize();
         long sizeArr = 0;

@@ -1,3 +1,10 @@
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /*
  * File:   FairTestDetectorFileSink.tpl
  * Author: winckler, A. Rybalchenko
@@ -10,7 +17,7 @@
 template<>
 void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::InitTask()
 {
-    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/) {
+    OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
         fOutput->Delete();
 
@@ -28,7 +35,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::In
             LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
         }
 
-        FairMQMessagePtr ack(fTransportFactory->CreateMessage());
+        auto ack(fTransportFactory->CreateMessage());
         fChannels.at(fAckChannelName).at(0).Send(ack);
 
         fTree.Fill();

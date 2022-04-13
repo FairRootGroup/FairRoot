@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -15,16 +15,16 @@
 #ifndef FAIRMQUNPACKER_H
 #define FAIRMQUNPACKER_H
 
+#include "FairMQ.h"   // for fair::mq::Channel, fair::mq::Device
 #include "RootSerializer.h"
 
-#include <FairMQDevice.h>
 #include <map>
 #include <stdexcept>
 #include <string>
 #include <tuple>
 
 template<typename UnpackerType, typename SerializationType = RootSerializer>
-class FairMQUnpacker : public FairMQDevice
+class FairMQUnpacker : public fair::mq::Device
 {
   public:
     FairMQUnpacker()
@@ -105,11 +105,11 @@ class FairMQUnpacker : public FairMQDevice
 
     void Run()
     {
-        FairMQChannel& inputChannel = fChannels.at(fInputChannelName).at(0);
+        fair::mq::Channel& inputChannel = fChannels.at(fInputChannelName).at(0);
 
         while (!NewStatePending()) {
-            FairMQMessagePtr msgSize(NewMessage());
-            FairMQMessagePtr msg(NewMessage());
+            auto msgSize(NewMessage());
+            auto msg(NewMessage());
 
             if (inputChannel.Receive(msgSize) >= 0) {
                 if (inputChannel.Receive(msg) >= 0) {
@@ -123,7 +123,7 @@ class FairMQUnpacker : public FairMQDevice
                     // }
 
                     fUnpacker->DoUnpack(subEvtPtr, dataSize);
-                    Serialize<SerializationType>(*msg, fUnpacker->GetOutputData());
+                    SerializationType().Serialize(*msg, fUnpacker->GetOutputData());
                     Send(msg, fOutputChanName);
                     fUnpacker->Reset();
                 }

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -21,10 +21,10 @@
 #include "FairRuntimeDb.h"
 #include "RootSerializer.h"
 
-#include <FairMQLogger.h>
 #include <Rtypes.h>
 #include <TGeoManager.h>
 #include <cstdlib>   // getenv
+#include <fairlogger/Logger.h>
 
 using namespace std;
 
@@ -114,7 +114,7 @@ void ParameterMQServer::InitTask()
     }
 }
 
-bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
+bool ParameterMQServer::ProcessRequest(fair::mq::MessagePtr& req, int /*index*/)
 {
     string parameterName = "";
     FairParGenericSet* par = nullptr;
@@ -140,19 +140,19 @@ bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
     if (par) {
         par->print();
 
-        FairMQMessagePtr rep(NewMessage());
+        auto rep(NewMessage());
         RootSerializer().Serialize(*rep, par);
 
         if (Send(rep, fRequestChannelName, 0) < 0) {
-            LOG(ERROR) << "failed sending reply";
+            LOG(error) << "failed sending reply";
             return false;
         }
     } else {
-        LOG(ERROR) << "Parameter uninitialized! Sending empty message back";
+        LOG(error) << "Parameter uninitialized! Sending empty message back";
         // Send an empty message back to keep the REQ/REP cycle
-        FairMQMessagePtr rep(NewMessage());
+        auto rep(NewMessage());
         if (Send(rep, fRequestChannelName, 0) < 0) {
-            LOG(ERROR) << "failed sending reply";
+            LOG(error) << "failed sending reply";
             return false;
         }
     }
@@ -160,7 +160,7 @@ bool ParameterMQServer::ProcessRequest(FairMQMessagePtr& req, int /*index*/)
     return true;
 }
 
-bool ParameterMQServer::ProcessUpdate(FairMQMessagePtr& update, int /*index*/)
+bool ParameterMQServer::ProcessUpdate(fair::mq::MessagePtr& update, int /*index*/)
 {
     gGeoManager =
         nullptr;   // FairGeoParSet update deletes previous geometry because of resetting gGeoManager, so let's NULL it
@@ -212,11 +212,10 @@ bool ParameterMQServer::ProcessUpdate(FairMQMessagePtr& update, int /*index*/)
         fRtdb->closeOutput();
     }
 
-    FairMQMessagePtr msg(NewMessage(
-        const_cast<char*>(text->c_str()),
-        text->length(),
-        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
-        text));
+    auto msg(NewMessage(const_cast<char*>(text->c_str()),
+                        text->length(),
+                        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                        text));
 
     if (Send(msg, fUpdateChannelName) < 0) {
         return false;

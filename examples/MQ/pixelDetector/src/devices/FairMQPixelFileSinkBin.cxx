@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -18,7 +18,6 @@
 #include "PixelHit.h"
 #include "PixelPayload.h"
 
-#include <FairMQLogger.h>
 #include <TClonesArray.h>
 #include <TFile.h>
 #include <TFolder.h>
@@ -27,6 +26,7 @@
 #include <TObject.h>
 #include <TTree.h>
 #include <TVector3.h>
+#include <fairlogger/Logger.h>
 
 using namespace std;
 
@@ -96,7 +96,7 @@ void FairMQPixelFileSinkBin::Init()
     OnData(fInputChannelName, &FairMQPixelFileSinkBin::StoreData);
 }
 
-bool FairMQPixelFileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
+bool FairMQPixelFileSinkBin::StoreData(fair::mq::Parts& parts, int /*index*/)
 {
     if (parts.Size() == 0)
         return true;   // probably impossible, but still check
@@ -143,7 +143,7 @@ bool FairMQPixelFileSinkBin::StoreData(FairMQParts& parts, int /*index*/)
     }
 
     if (fAckChannelName != "") {
-        FairMQMessagePtr msg(NewMessage());
+        auto msg(NewMessage());
         Send(msg, fAckChannelName);
     }
     return true;

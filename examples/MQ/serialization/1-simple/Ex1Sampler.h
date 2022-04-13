@@ -1,10 +1,18 @@
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
+
 #ifndef EX1SAMPLER_H
 #define EX1SAMPLER_H
 
+#include "FairMQ.h"   // for fair::mq::Device
 #include "MyDigi.h"
 #include "RootSerializer.h"
 
-#include <FairMQDevice.h>
 #include <Rtypes.h>
 #include <TClonesArray.h>
 #include <TFile.h>
@@ -12,7 +20,7 @@
 #include <chrono>
 #include <thread>
 
-class Ex1Sampler : public FairMQDevice
+class Ex1Sampler : public fair::mq::Device
 {
   public:
     Ex1Sampler()
@@ -44,7 +52,7 @@ class Ex1Sampler : public FairMQDevice
         LOG(info) << "Number of events to process: " << numEvents;
 
         for (uint64_t i = 0; i < numEvents; i++) {
-            FairMQMessagePtr msg(NewMessage());
+            auto msg(NewMessage());
             fTree->GetEntry(i);
             RootSerializer().Serialize(*msg, fInput);
             if (Send(msg, "data1") >= 0) {
@@ -63,7 +71,7 @@ class Ex1Sampler : public FairMQDevice
         }
     }
 
-    void Reset()
+    void Reset() override
     {
         if (fInputFile) {
             fInputFile->Close();

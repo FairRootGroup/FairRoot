@@ -1,10 +1,32 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
+
+### Wrapper around FairMQ::FairMQ to support API transition
+
+set(target FairMQ)
+
+set(headers FairMQ.h FairRunFairMQDevice.h)
+add_library(${target} INTERFACE)
+add_library(FairRoot::${target} ALIAS ${target})
+target_link_libraries(${target} INTERFACE FairMQ::FairMQ)
+target_include_directories(${target} INTERFACE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+install(TARGETS ${ARGS_TARGETS}
+  EXPORT ${PROJECT_EXPORT_SET}
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  ARCHIVE DESTINATION ${PROJECT_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+unset(headers)
+
+### BaseMQ lib
 
 set(target BaseMQ)
 
@@ -61,8 +83,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::ParBase # FairParRootFileIo, FairRuntimeDb
   FairRoot::FairTools
   $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
-
-  FairMQ::FairMQ
+  FairRoot::FairMQ
 
   Boost::serialization
   Boost::filesystem

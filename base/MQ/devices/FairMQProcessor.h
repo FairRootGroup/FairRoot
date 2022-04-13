@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -15,13 +15,13 @@
 #ifndef FAIRMQPROCESSOR_H_
 #define FAIRMQPROCESSOR_H_
 
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::MessagePtr
 #include "FairMQProcessorTask.h"
 
-#include <FairMQDevice.h>
-#include <FairMQLogger.h>
+#include <fairlogger/Logger.h>
 
 template<typename Task>
-class FairMQProcessor : public FairMQDevice
+class FairMQProcessor : public fair::mq::Device
 {
   public:
     FairMQProcessor()
@@ -52,7 +52,7 @@ class FairMQProcessor : public FairMQDevice
         }
 
         fProcessorTask->InitTask();
-        OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/) {
+        OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
             ++fReceivedMsgs;
             fProcessorTask->SetPayload(msg);
             fProcessorTask->Exec();

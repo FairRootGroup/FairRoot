@@ -1,3 +1,10 @@
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /*
  * File:   FairTestDetectorDigiLoader.tpl
  * @since 2014-02-08
@@ -12,7 +19,7 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>
     int numEntries = fInput->GetEntriesFast();
     size_t digisSize = numEntries * sizeof(TestDetectorPayload::Digi);
 
-    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(digisSize));
+    fPayload = fTransportFactory->CreateMessage(digisSize);
 
     TestDetectorPayload::Digi* digiPayload = static_cast<TestDetectorPayload::Digi*>(fPayload->GetData());
 

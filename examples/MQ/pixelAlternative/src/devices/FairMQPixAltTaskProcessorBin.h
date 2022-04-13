@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -11,19 +11,18 @@
 
 #include "FairEventHeader.h"
 #include "FairGeoParSet.h"
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
 #include "FairParGenericSet.h"
 #include "PixelDigi.h"
 #include "PixelPayload.h"
 #include "RootSerializer.h"
 
-#include <FairMQDevice.h>
-#include <FairMQParts.h>
 #include <TClonesArray.h>
 #include <TList.h>
 #include <string>
 
 template<typename T>
-class FairMQPixAltTaskProcessorBin : public FairMQDevice
+class FairMQPixAltTaskProcessorBin : public fair::mq::Device
 {
   public:
     FairMQPixAltTaskProcessorBin()
@@ -56,7 +55,7 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
     void SetParamChannelName(const std::string& tstr) { fParamChannelName = tstr; }
 
   protected:
-    bool ProcessData(FairMQParts& parts, int)
+    bool ProcessData(fair::mq::Parts& parts, int)
     {
         // LOG(debug)<<"message received with " << parts.Size() << " parts!";
         fReceivedMsgs++;
@@ -71,7 +70,7 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
             LOG(info) << "received " << parts.Size() << " parts, will ignore last part!!!";
 
         // creating output multipart message
-        FairMQParts partsOut;
+        fair::mq::Parts partsOut;
 
         for (int ievent = 0; ievent < parts.Size() / nPPE; ievent++) {
             // the first part should be the event header
@@ -101,16 +100,15 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
             header->fRunId = payloadE->fRunId;
             header->fMCEntryNo = payloadE->fMCEntryNo;
             header->fPartNo = payloadE->fPartNo;
-            FairMQMessagePtr msgHeader(
-                NewMessage(header, sizeof(PixelPayload::EventHeader), [](void* data, void* /*hint*/) {
-                    delete static_cast<PixelPayload::EventHeader*>(data);
-                }));
+            auto msgHeader(NewMessage(header, sizeof(PixelPayload::EventHeader), [](void* data, void* /*hint*/) {
+                delete static_cast<PixelPayload::EventHeader*>(data);
+            }));
             partsOut.AddPart(std::move(msgHeader));
 
             // create part with hits
             int hitsSize = nofDigis * sizeof(PixelPayload::Hit);
 
-            FairMQMessagePtr msgTCA = NewMessage(hitsSize);
+            auto msgTCA = NewMessage(hitsSize);
 
             PixelPayload::Hit* hitPayload = static_cast<PixelPayload::Hit*>(msgTCA->GetData());
 
@@ -172,12 +170,11 @@ class FairMQPixAltTaskProcessorBin : public FairMQDevice
         std::string* reqStr = new std::string(paramName + "," + std::to_string(fCurrentRunId));
         LOG(warn) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << " (" << thisPar
                   << ")";
-        FairMQMessagePtr req(NewMessage(
-            const_cast<char*>(reqStr->c_str()),
-            reqStr->length(),
-            [](void* /*data*/, void* obj) { delete static_cast<std::string*>(obj); },
-            reqStr));
-        FairMQMessagePtr rep(NewMessage());
+        auto req(NewMessage(const_cast<char*>(reqStr->c_str()),
+                            reqStr->length(),
+                            [](void* /*data*/, void* obj) { delete static_cast<std::string*>(obj); },
+                            reqStr));
+        auto rep(NewMessage());
 
         if (Send(req, fParamChannelName) > 0) {
             if (Receive(rep, fParamChannelName) > 0) {

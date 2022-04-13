@@ -1,3 +1,10 @@
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /*
  * File:   FairTestDetectorFileSink.tpl
  * Author: winckler, A. Rybalchenko
@@ -14,7 +21,7 @@
 template<typename TIn, typename TPayloadIn>
 void FairTestDetectorFileSink<TIn, TPayloadIn>::InitTask()
 {
-    OnData(fInChannelName, [this](FairMQMessagePtr& msg, int /*index*/) {
+    OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
 
         BoostSerializer<TIn>().Deserialize(*msg, fOutput);
@@ -23,7 +30,7 @@ void FairTestDetectorFileSink<TIn, TPayloadIn>::InitTask()
             LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
         }
 
-        FairMQMessagePtr ack(NewMessage());
+        auto ack(NewMessage());
         Send(ack, fAckChannelName);
 
         fTree.Fill();

@@ -1,7 +1,16 @@
-#include "runFairMQDevice.h"
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 
 // MQRunSim
 #include "FairMQChunkMerger.h"
+#include "FairRunFairMQDevice.h"
+
+#include <string>
 
 namespace bpo = boost::program_options;
 
@@ -14,4 +23,7 @@ void addCustomOptions(bpo::options_description& options)
     // clang-format on
 }
 
-FairMQDevicePtr getDevice([[gnu::unused]] const FairMQProgOptions& config) { return new FairMQChunkMerger(); }
+std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions&)
+{
+    return std::unique_ptr<FairMQChunkMerger>(new FairMQChunkMerger());
+}

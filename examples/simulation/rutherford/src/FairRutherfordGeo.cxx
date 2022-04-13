@@ -29,7 +29,7 @@ const char* FairRutherfordGeo::getModuleName(Int_t m)
       ASCII file should start with FairRutherford otherwise they will
       not be constructed
   */
-    sprintf(modName, "rutherford%i", m + 1);
+    snprintf(modName, sizeof(modName), "rutherford%i", m + 1);
     return modName;
 }
 

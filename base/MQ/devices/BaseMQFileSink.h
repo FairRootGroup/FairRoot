@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -16,12 +16,13 @@
 #ifndef BASEMQFILESINK_H
 #define BASEMQFILESINK_H
 
-#include <FairMQDevice.h>
-#include <FairMQLogger.h>
+#include "FairMQ.h"   // for fair::mq::Device
+
+#include <fairlogger/Logger.h>
 
 template<typename InputPolicy, typename OutputPolicy>
 class BaseMQFileSink
-    : public FairMQDevice
+    : public fair::mq::Device
     , public InputPolicy
     , public OutputPolicy
 {
@@ -52,11 +53,10 @@ class BaseMQFileSink
     {
         int receivedMsg = 0;
         while (!NewStatePending()) {
-            std::unique_ptr<FairMQMessage> msg(NewMessage());
+            auto msg(NewMessage());
             if (Receive(msg, fInputChanName) > 0) {
-                FairMQDevice::Deserialize<typename InputPolicy::DeserializerType>(
-                    *msg, InputPolicy::fInput);                 // get data from message.
-                OutputPolicy::Serialize(InputPolicy::fInput);   // put data into output.
+                InputPolicy::Deserialize(*msg, InputPolicy::fInput);   // get data from message.
+                OutputPolicy::Serialize(InputPolicy::fInput);          // put data into output.
                 receivedMsg++;
             }
         }

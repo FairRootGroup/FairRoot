@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -16,11 +16,11 @@
 
 #include "RootSerializer.h"
 
-#include <FairMQLogger.h>
 #include <TFile.h>
 #include <TObject.h>
 #include <TTree.h>
 #include <cstdlib>
+#include <fairlogger/Logger.h>
 #include <memory>
 #include <vector>
 
@@ -64,7 +64,7 @@ void FairMQPixelFileSink::InitTask()
     OnData(fInputChannelName, &FairMQPixelFileSink::StoreData);
 }
 
-bool FairMQPixelFileSink::StoreData(FairMQParts& parts, int /*index*/)
+bool FairMQPixelFileSink::StoreData(fair::mq::Parts& parts, int /*index*/)
 {
     bool creatingTree = false;
     std::vector<TObject*> tempObjects;
@@ -92,7 +92,7 @@ bool FairMQPixelFileSink::StoreData(FairMQParts& parts, int /*index*/)
     tempObjects.clear();
 
     if (fAckChannelName != "") {
-        unique_ptr<FairMQMessage> msg(NewMessage());
+        auto msg(NewMessage());
         Send(msg, fAckChannelName);
     }
     return true;

@@ -1,16 +1,24 @@
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
+
 #ifndef EX1PROCESSOR_H
 #define EX1PROCESSOR_H
 
+#include "FairMQ.h"   // for fair::mq::Device
 #include "MyDigi.h"
 #include "MyHit.h"
 #include "RootSerializer.h"
 
-#include <FairMQDevice.h>
 #include <TClonesArray.h>
 #include <TMath.h>
 #include <memory>
 
-class Ex1Processor : public FairMQDevice
+class Ex1Processor : public fair::mq::Device
 {
   public:
     Ex1Processor() {}
@@ -22,7 +30,7 @@ class Ex1Processor : public FairMQDevice
 
         while (!NewStatePending()) {
             // Receive
-            FairMQMessagePtr msgIn(NewMessageFor("data1", 0));
+            auto msgIn(NewMessageFor("data1", 0));
             if (Receive(msgIn, "data1") > 0) {
                 receivedMsgs++;
 
@@ -34,7 +42,7 @@ class Ex1Processor : public FairMQDevice
                 TClonesArray hits = FindHits(*digis);
 
                 // Serialize
-                FairMQMessagePtr msgOut(NewMessageFor("data2", 0));
+                auto msgOut(NewMessageFor("data2", 0));
                 RootSerializer().Serialize(*msgOut, &hits);
 
                 // Send

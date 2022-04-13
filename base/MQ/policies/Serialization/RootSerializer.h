@@ -1,3 +1,11 @@
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
+
 /*
  * File:   RootSerializer.h
  * Author: winckler
@@ -8,7 +16,8 @@
 #ifndef ROOTSERIALIZER_H
 #define ROOTSERIALIZER_H
 
-#include <FairMQMessage.h>
+#include "FairMQ.h"   // for fair::mq::Message
+
 #include <TClonesArray.h>
 #include <TMessage.h>
 #include <memory>
@@ -30,7 +39,7 @@ struct RootSerializer
     virtual ~RootSerializer() = default;
 
     template<typename T>
-    void Serialize(FairMQMessage& msg, T* input)
+    void Serialize(fair::mq::Message& msg, T* input)
     {
         TMessage* tm = new TMessage(kMESS_OBJECT);
         tm->WriteObject(input);
@@ -39,7 +48,7 @@ struct RootSerializer
     }
 
     template<typename T>
-    void Serialize(FairMQMessage& msg, const std::unique_ptr<T>& input)
+    void Serialize(fair::mq::Message& msg, const std::unique_ptr<T>& input)
     {
         TMessage* tm = new TMessage(kMESS_OBJECT);
         tm->WriteObject(input.get());
@@ -48,7 +57,7 @@ struct RootSerializer
     }
 
     template<typename T>
-    void Deserialize(FairMQMessage& msg, T*& output)
+    void Deserialize(fair::mq::Message& msg, T*& output)
     {
         delete output;
         FairTMessage tm(msg.GetData(), msg.GetSize());
@@ -56,7 +65,7 @@ struct RootSerializer
     }
 
     template<typename T>
-    void Deserialize(FairMQMessage& msg, std::unique_ptr<T>& output)
+    void Deserialize(fair::mq::Message& msg, std::unique_ptr<T>& output)
     {
         FairTMessage tm(msg.GetData(), msg.GetSize());
         output.reset(static_cast<T*>(tm.ReadObjectAny(tm.GetClass())));

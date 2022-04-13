@@ -1,4 +1,10 @@
-#include "runFairMQDevice.h"
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 
 // MQRunSim
 #include "FairCave.h"
@@ -6,6 +12,7 @@
 #include "FairModule.h"
 #include "FairOnlineSink.h"
 #include "FairParAsciiFileIo.h"
+#include "FairRunFairMQDevice.h"
 #include "PixelDigitize.h"
 
 #include <TObjArray.h>
@@ -32,7 +39,7 @@ void addCustomOptions(bpo::options_description& options)
     // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& config)
+std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& config)
 {
     gRandom->SetSeed(config.GetValue<int64_t>("random-seed"));
 
@@ -47,19 +54,19 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
         tut_configdir = dir + "/common/gconfig";
     gSystem->Setenv("CONFIG_DIR", tut_configdir.Data());
 
-    FairMQTransportDevice* run = new FairMQTransportDevice();
+    auto run = std::unique_ptr<FairMQTransportDevice>(new FairMQTransportDevice());
     run->RunInPullMode(true);
     if (config.GetValue<std::string>("running-mode") == "rr") {
-        LOG(INFO) << "Going to request data.";
+        LOG(info) << "Going to request data.";
         run->RunInPullMode(false);
     } else {
-        LOG(INFO) << "Going to pull data.";
+        LOG(info) << "Going to pull data.";
     }
 
     //  TString outputfilename = Form("outputfile_%d.root",(int)(getpid()));
     //  FairRootFileSink* sink = new FairRootFileSink(outputfilename);
     FairOnlineSink* sink = new FairOnlineSink();
-    sink->SetMQRunDevice(run);
+    sink->SetMQRunDevice(run.get());
     run->SetSink(sink);
 
     run->SetParamUpdateChannelName(config.GetValue<std::string>("param-channel-name"));

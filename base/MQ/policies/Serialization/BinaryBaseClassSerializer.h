@@ -1,3 +1,11 @@
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
+
 /*
  * File:   BinaryBaseClassSerializer.h
  * Author: winckler
@@ -8,7 +16,7 @@
 #ifndef BINARYBASECLASSSERIALIZER_H
 #define BINARYBASECLASSSERIALIZER_H
 
-#include <FairMQMessage.h>
+#include "FairMQ.h"   // for fair::mq::Message
 
 template<typename TPayload>
 class BinaryBaseClassSerializer
@@ -25,7 +33,7 @@ class BinaryBaseClassSerializer
 
     virtual ~BinaryBaseClassSerializer() {}
 
-    void GetPayload(FairMQMessage* msg)
+    void GetPayload(fair::mq::Message* msg)
     {
         int inputSize = msg->GetSize();
         if (inputSize > 0) {
@@ -34,13 +42,13 @@ class BinaryBaseClassSerializer
         fPayload = static_cast<TPayload*>(msg->GetData());
     }
 
-    void SetMessage(FairMQMessage* msg) { fMessage = msg; }
+    void SetMessage(fair::mq::Message* msg) { fMessage = msg; }
 
-    FairMQMessage* GetMessage() { return fMessage; }
+    fair::mq::Message* GetMessage() { return fMessage; }
 
   protected:
     TPayload* fPayload;
-    FairMQMessage* fMessage;
+    fair::mq::Message* fMessage;
     int fNumInput;
 };
 

@@ -1,18 +1,26 @@
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
+
 #ifndef EX2SAMPLER_H
 #define EX2SAMPLER_H
 
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
 #include "MyDigi.h"
 #include "RootSerializer.h"
 #include "SerializerExample2.h"
 
-#include <FairMQDevice.h>
 #include <Rtypes.h>
 #include <TFile.h>
 #include <TTree.h>
 #include <chrono>
 #include <thread>
 
-class Ex2Sampler : public FairMQDevice
+class Ex2Sampler : public fair::mq::Device
 {
   public:
     Ex2Sampler()
@@ -48,13 +56,13 @@ class Ex2Sampler : public FairMQDevice
             Ex2Header* header = new Ex2Header();
             header->EventNumber = idx;
 
-            FairMQMessagePtr msgHeader(NewMessage());
+            auto msgHeader(NewMessage());
             SerializerEx2().Serialize(*msgHeader, header);
 
-            FairMQMessagePtr msg(NewMessage());
+            auto msg(NewMessage());
             RootSerializer().Serialize(*msg, fInput);
 
-            FairMQParts parts;
+            fair::mq::Parts parts;
             parts.AddPart(std::move(msgHeader));
             parts.AddPart(std::move(msg));
 
@@ -75,7 +83,7 @@ class Ex2Sampler : public FairMQDevice
         }
     }
 
-    void Reset()
+    void Reset() override
     {
         if (fInputFile) {
             fInputFile->Close();

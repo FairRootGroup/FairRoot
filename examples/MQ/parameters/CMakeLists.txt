@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -41,7 +41,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::BaseMQ # Serialization policies
   FairRoot::FairTools # FairLogger
   FairRoot::ParBase
-  FairMQ::FairMQ
+  FairRoot::FairMQ
 
   Core
 )
@@ -55,7 +55,7 @@ install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 add_executable(ex-params-client runExParamsClient.cxx)
-target_link_libraries(ex-params-client PRIVATE FairRoot::ExParameters FairMQ::FairMQ)
+target_link_libraries(ex-params-client PRIVATE FairRoot::ExParameters FairRoot::FairMQ)
 
 install(TARGETS ex-params-client
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/parameters/bin

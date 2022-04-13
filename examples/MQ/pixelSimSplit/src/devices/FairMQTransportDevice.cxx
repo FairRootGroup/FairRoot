@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -24,8 +24,6 @@
 #include "FairTask.h"
 #include "RootSerializer.h"
 
-#include <FairMQLogger.h>
-#include <FairMQMessage.h>
 #include <TClonesArray.h>
 #include <TCollection.h>
 #include <TList.h>
@@ -34,6 +32,7 @@
 #include <TVirtualMC.h>
 #include <cstring>   // for strcmp
 #include <dlfcn.h>   // dlopen
+#include <fairlogger/Logger.h>
 #include <iostream>
 #include <vector>
 
@@ -149,12 +148,11 @@ void FairMQTransportDevice::InitializeRun()
     // -----      ask the fParamMQServer   ------------------------------------
     // -----      receive the run number and sampler id   ---------------------
     std::string* askForRunNumber = new string("ReportSimDevice");
-    FairMQMessagePtr req(NewMessage(
-        const_cast<char*>(askForRunNumber->c_str()),
-        askForRunNumber->length(),
-        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
-        askForRunNumber));
-    FairMQMessagePtr rep(NewMessage());
+    auto req(NewMessage(const_cast<char*>(askForRunNumber->c_str()),
+                        askForRunNumber->length(),
+                        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                        askForRunNumber));
+    auto rep(NewMessage());
 
     if (Send(req, fUpdateChannelName) > 0) {
         if (Receive(rep, fUpdateChannelName) > 0) {
@@ -207,12 +205,11 @@ bool FairMQTransportDevice::ConditionalRun()
         return false;
 
     std::string* requestString = new string("RequestData");
-    FairMQMessagePtr req(NewMessage(
-        const_cast<char*>(requestString->c_str()),
-        requestString->length(),
-        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
-        requestString));
-    FairMQParts parts;
+    auto req(NewMessage(const_cast<char*>(requestString->c_str()),
+                        requestString->length(),
+                        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                        requestString));
+    fair::mq::Parts parts;
     //    FairMQMessagePtr rep(NewMessage());
 
     if (Send(req, fGeneratorChannelName) > 0) {
@@ -233,7 +230,7 @@ bool FairMQTransportDevice::ConditionalRun()
 //     return true;
 // }
 
-bool FairMQTransportDevice::TransportData(FairMQParts& mParts, int /*index*/)
+bool FairMQTransportDevice::TransportData(fair::mq::Parts& mParts, int /*index*/)
 {
     TClonesArray* chunk = nullptr;
     FairMCSplitEventHeader* meh = nullptr;

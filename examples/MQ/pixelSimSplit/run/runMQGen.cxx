@@ -1,9 +1,16 @@
-#include "runFairMQDevice.h"
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 
 // MQRunSim
 #include "FairBoxGenerator.h"
 #include "FairMQPrimaryGeneratorDevice.h"
 #include "FairPrimaryGenerator.h"
+#include "FairRunFairMQDevice.h"
 
 #include <Rtypes.h>
 #include <TRandom.h>
@@ -27,7 +34,7 @@ void addCustomOptions(bpo::options_description& options)
     // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& config)
+std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& config)
 {
     gRandom->SetSeed(config.GetValue<int64_t>("random-seed"));
 
@@ -49,15 +56,15 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
     boxGen->SetPhiRange(0, 360);
     primGen->AddGenerator(boxGen);
 
-    FairMQPrimaryGeneratorDevice* mqDevice = new FairMQPrimaryGeneratorDevice();
-    LOG(INFO) << "Going to generate " << config.GetValue<int64_t>("nof-events") << " events.";
+    auto mqDevice = std::unique_ptr<FairMQPrimaryGeneratorDevice>(new FairMQPrimaryGeneratorDevice());
+    LOG(info) << "Going to generate " << config.GetValue<int64_t>("nof-events") << " events.";
     mqDevice->SetChunkSize(config.GetValue<int64_t>("chunk-size"));
     mqDevice->RunInPushMode(true);
     if (config.GetValue<std::string>("running-mode") == "rr") {
-        LOG(INFO) << "Going to reply with data.";
+        LOG(info) << "Going to reply with data.";
         mqDevice->RunInPushMode(false);
     } else {
-        LOG(INFO) << "Going to push data.";
+        LOG(info) << "Going to push data.";
     }
 
     mqDevice->SetNofEvents(config.GetValue<int64_t>("nof-events"));

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -7,8 +7,8 @@
  ********************************************************************************/
 
 #include "FairMQSampler.h"
+#include "FairRunFairMQDevice.h"
 #include "FairTestDetectorDigiLoader.h"
-#include "runFairMQDevice.h"
 
 namespace bpo = boost::program_options;
 
@@ -26,12 +26,13 @@ void addCustomOptions(bpo::options_description& options)
     // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& config)
+std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& config)
 {
     std::string dataFormat = config.GetValue<std::string>("data-format");
 
     if (dataFormat == "binary") {
-        return new FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>>;
+        using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>>;
+        return std::unique_ptr<Sampler>(new Sampler());
     } else if (dataFormat == "boost") {
         if (fair::base::serialization::has_BoostSerialization<FairTestDetectorDigi,
                                                               void(boost::archive::binary_oarchive&,
@@ -39,25 +40,31 @@ FairMQDevicePtr getDevice(const FairMQProgOptions& config)
             == 0) {
             LOG(error) << "Boost serialization for Output Payload requested, but the output type does not support it. "
                           "Check the TOut parameter. Aborting.";
-            return nullptr;
+            return {nullptr};
         }
-        return new FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::binary_oarchive>>;
+        using Sampler =
+            FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::binary_oarchive>>;
+        return std::unique_ptr<Sampler>(new Sampler());
     } else if (dataFormat == "tmessage") {
-        return new FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>;
+        using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>;
+        return std::unique_ptr<Sampler>(new Sampler());
     }
 #ifdef FLATBUFFERS
     else if (dataFormat == "flatbuffers") {
-        return new FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>>;
+        using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>>;
+        return std::unique_ptr<Sampler>(new Sampler());
     }
 #endif
 #ifdef MSGPACK
     else if (dataFormat == "msgpack") {
-        return new FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>>;
+        using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>>;
+        return std::unique_ptr<Sampler>(new Sampler());
     }
 #endif
 #ifdef PROTOBUF
     else if (dataFormat == "protobuf") {
-        return new FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>>;
+        using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>>;
+        return std::unique_ptr<Sampler>(new Sampler());
     }
 #endif
     else {

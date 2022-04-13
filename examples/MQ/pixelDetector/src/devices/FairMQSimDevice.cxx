@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -20,12 +20,11 @@
 #include "FairRunSim.h"
 #include "FairRuntimeDb.h"
 
-#include <FairMQDevice.h>
-#include <FairMQLogger.h>
 #include <TCollection.h>
 #include <TList.h>
 #include <TObjArray.h>
 #include <cstdio>   // printf
+#include <fairlogger/Logger.h>
 
 using namespace std;
 
@@ -91,12 +90,11 @@ void FairMQSimDevice::InitializeRun()
     // -----      ask the fParamMQServer   ------------------------------------
     // -----      receive the run number and sampler id   ---------------------
     std::string* askForRunNumber = new string("ReportSimDevice");
-    FairMQMessagePtr req(NewMessage(
-        const_cast<char*>(askForRunNumber->c_str()),
-        askForRunNumber->length(),
-        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
-        askForRunNumber));
-    FairMQMessagePtr rep(NewMessage());
+    auto req(NewMessage(const_cast<char*>(askForRunNumber->c_str()),
+                        askForRunNumber->length(),
+                        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                        askForRunNumber));
+    auto rep(NewMessage());
 
     unsigned int runId = 0;
     if (Send(req, fUpdateChannelName) > 0) {

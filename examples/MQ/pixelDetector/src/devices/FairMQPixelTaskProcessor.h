@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,17 +12,16 @@
 #include "FairEventHeader.h"
 #include "FairGeoParSet.h"
 #include "FairMCEventHeader.h"
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
 #include "FairParGenericSet.h"
 #include "RootSerializer.h"
 
-#include <FairMQDevice.h>
-#include <FairMQParts.h>
 #include <TList.h>
 #include <string>
 #include <vector>
 
 template<typename T>
-class FairMQPixelTaskProcessor : public FairMQDevice
+class FairMQPixelTaskProcessor : public fair::mq::Device
 {
   public:
     FairMQPixelTaskProcessor()
@@ -64,7 +63,7 @@ class FairMQPixelTaskProcessor : public FairMQDevice
     void SetStaticParameters(bool tbool) { fStaticParameters = tbool; }
 
   protected:
-    bool ProcessData(FairMQParts& parts, int)
+    bool ProcessData(fair::mq::Parts& parts, int)
     {
         TObject* objectToKeep = nullptr;
 
@@ -117,20 +116,20 @@ class FairMQPixelTaskProcessor : public FairMQDevice
                 fOutput->Add(objectToKeep);
         }
 
-        FairMQParts partsOut;
+        fair::mq::Parts partsOut;
 
         if (fEventHeader) {
-            FairMQMessagePtr mess(NewMessage());
+            auto mess(NewMessage());
             RootSerializer().Serialize(*mess, fEventHeader);
             partsOut.AddPart(std::move(mess));
         } else if (fMCEventHeader) {
-            FairMQMessagePtr mess(NewMessage());
+            auto mess(NewMessage());
             RootSerializer().Serialize(*mess, fMCEventHeader);
             partsOut.AddPart(std::move(mess));
         }
 
         for (int iobj = 0; iobj < fOutput->GetEntries(); iobj++) {
-            FairMQMessagePtr mess(NewMessage());
+            auto mess(NewMessage());
             RootSerializer().Serialize(*mess, fOutput->At(iobj));
             partsOut.AddPart(std::move(mess));
         }
@@ -200,12 +199,11 @@ class FairMQPixelTaskProcessor : public FairMQDevice
         LOG(debug) << "Requesting parameter \"" << paramName << "\" for Run ID " << fCurrentRunId << " (" << thisPar
                    << ")";
 
-        FairMQMessagePtr req(NewMessage(
-            const_cast<char*>(reqStr->c_str()),
-            reqStr->length(),
-            [](void* /* data */, void* hint) { delete static_cast<std::string*>(hint); },
-            reqStr));
-        FairMQMessagePtr rep(NewMessage());
+        auto req(NewMessage(const_cast<char*>(reqStr->c_str()),
+                            reqStr->length(),
+                            [](void* /* data */, void* hint) { delete static_cast<std::string*>(hint); },
+                            reqStr));
+        auto rep(NewMessage());
 
         if (Send(req, fParamChannelName) > 0) {
             if (Receive(rep, fParamChannelName) > 0) {

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -16,15 +16,15 @@
 #define FAIRMQSAMPLER_H_
 
 #include "FairFileSource.h"
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::MessagePtr
 #include "FairMQSamplerTask.h"
 #include "FairParRootFileIo.h"
 #include "FairRootFileSink.h"
 #include "FairRunAna.h"
 #include "FairRuntimeDb.h"
 
-#include <FairMQDevice.h>
-#include <FairMQLogger.h>
 #include <chrono>
+#include <fairlogger/Logger.h>
 #include <thread>
 
 /**
@@ -40,7 +40,7 @@
  */
 
 template<typename Task>
-class FairMQSampler : public FairMQDevice
+class FairMQSampler : public fair::mq::Device
 {
   public:
     FairMQSampler()
@@ -130,7 +130,7 @@ class FairMQSampler : public FairMQDevice
 
     virtual bool ConditionalRun()
     {
-        FairMQMessagePtr msg;
+        fair::mq::MessagePtr msg;
 
         fSamplerTask->SetEventIndex(fSentMsgs);
         fFairRunAna->RunMQ(fSentMsgs);
@@ -168,7 +168,7 @@ class FairMQSampler : public FairMQDevice
     {
         uint64_t numAcks = 0;
         for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr) {
-            FairMQMessagePtr ack(NewMessage());
+            auto ack(NewMessage());
             if (Receive(ack, fAckChannelName) >= 0) {
                 ++numAcks;
             }

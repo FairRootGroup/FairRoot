@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -20,10 +20,9 @@
 #include "FairStack.h"
 #include "RootSerializer.h"
 
-#include <FairMQLogger.h>
-#include <FairMQMessage.h>
 #include <Rtypes.h>
 #include <TClonesArray.h>
+#include <fairlogger/Logger.h>
 #include <utility>   // move
 
 using namespace std;
@@ -71,7 +70,7 @@ bool FairMQPrimaryGeneratorDevice::ConditionalRun()
     return GenerateAndSendData();
 }
 
-bool FairMQPrimaryGeneratorDevice::Reply([[gnu::unused]] FairMQMessagePtr& mPtr, [[gnu::unused]] int /*index*/)
+bool FairMQPrimaryGeneratorDevice::Reply([[gnu::unused]] fair::mq::MessagePtr& mPtr, [[gnu::unused]] int /*index*/)
 {
     return GenerateAndSendData();
 }
@@ -87,7 +86,7 @@ bool FairMQPrimaryGeneratorDevice::GenerateAndSendData()
     if (fEventCounter > fNofEvents)
         return false;
 
-    FairMQParts parts;
+    fair::mq::Parts parts;
 
     // even if sending in chunks is set, send all of the primaries anyway, the transporter takes care of transporting
     // needed primaries create FairMCEventHeader, misuse not-yet-set fRunID to store begin
@@ -104,11 +103,11 @@ bool FairMQPrimaryGeneratorDevice::GenerateAndSendData()
             meh->SetNPrim(prims->GetEntries() - fChunkPointer);
     }
 
-    FairMQMessagePtr messEH(NewMessage());
+    auto messEH(NewMessage());
     RootSerializer().Serialize(*messEH, meh);
     parts.AddPart(std::move(messEH));
 
-    FairMQMessagePtr mess(NewMessage());
+    auto mess(NewMessage());
     RootSerializer().Serialize(*mess, prims);
     parts.AddPart(std::move(mess));
 
@@ -140,7 +139,7 @@ void FairMQPrimaryGeneratorDevice::ListenForAcks()
     if (fAckChannelName != "") {
         Long64_t numAcks = 0;
         do {
-            FairMQMessagePtr ack(NewMessage());
+            auto ack(NewMessage());
             if (Receive(ack, fAckChannelName) >= 0) {
                 LOG(info) << "RECEIVED ACK!";
                 numAcks++;

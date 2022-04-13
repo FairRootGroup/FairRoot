@@ -34,8 +34,6 @@ SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
   set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules_old"  ${CMAKE_MODULE_PATH})
   set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
 
-Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")
-
 find_package(FairRoot)
 
 # Load some basic macros which are needed later on
@@ -154,16 +152,6 @@ Generate_Version_Info()
 SET(_LIBDIR ${CMAKE_BINARY_DIR}/lib)
 SET(LD_LIBRARY_PATH  ${_LIBDIR} ${LD_LIBRARY_PATH})
 
-
-
-# Check if the compiler support specific C++11 features
-# Up to now this is only a check since the code does not use
-# any of the features of the new standard
-include(CheckCXX11Features)
-
-IF(HAS_CXX11_SHAREDPOINTER)
-  Add_Definitions(-DHAS_SHAREDPOINTER)
-ENDIF(HAS_CXX11_SHAREDPOINTER)
 
 # Recurse into the given subdirectories.  This does not actually
 # cause another cmake executable to run.  The same process will walk through

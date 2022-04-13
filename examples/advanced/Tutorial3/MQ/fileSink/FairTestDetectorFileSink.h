@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -15,23 +15,23 @@
 #ifndef FAIRTESTDETECTORFILESINK_H_
 #define FAIRTESTDETECTORFILESINK_H_
 
+#include "FairMQ.h"   // for fair::mq::Device
 #include "FairTestDetectorHit.h"
 #include "FairTestDetectorPayload.h"
 
-#include <FairMQDevice.h>
-#include <FairMQLogger.h>
 #include <Rtypes.h>
 #include <TClonesArray.h>
 #include <TFile.h>
 #include <TSystem.h>
 #include <TTree.h>
 #include <array>
+#include <fairlogger/Logger.h>
 #include <iostream>
 #include <memory>
 #include <string>
 
 template<typename TIn, typename TPayloadIn>
-class FairTestDetectorFileSink : public FairMQDevice
+class FairTestDetectorFileSink : public fair::mq::Device
 {
   public:
     FairTestDetectorFileSink()

@@ -1,10 +1,11 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
 /*
  * File:   runSamplerRoot.cxx
  * Author: winckler
@@ -13,7 +14,7 @@
  */
 
 #include "Ex2Sampler.h"
-#include "runFairMQDevice.h"
+#include "FairRunFairMQDevice.h"
 
 namespace bpo = boost::program_options;
 
@@ -25,4 +26,7 @@ void addCustomOptions(bpo::options_description& options)
     // clang-format on
 }
 
-FairMQDevicePtr getDevice(const FairMQProgOptions& /*config*/) { return new Ex2Sampler(); }
+std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& /*config*/)
+{
+    return std::unique_ptr<Ex2Sampler>(new Ex2Sampler());
+}

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -15,6 +15,7 @@
 #ifndef FAIRMQLMDSAMPLER_H
 #define FAIRMQLMDSAMPLER_H
 
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
 extern "C"
 {
 #include "f_evt.h"
@@ -22,16 +23,14 @@ extern "C"
 #include "s_filhe_swap.h"
 }
 
-#include <FairMQDevice.h>
-#include <FairMQLogger.h>
-#include <FairMQMessage.h>
 #include <boost/filesystem.hpp>
+#include <fairlogger/Logger.h>
 #include <map>
 #include <string>
 #include <tuple>
 #include <vector>
 
-class FairMQLmdSampler : public FairMQDevice
+class FairMQLmdSampler : public fair::mq::Device
 {
   public:
     FairMQLmdSampler()
@@ -244,10 +243,10 @@ class FairMQLmdSampler : public FairMQDevice
                 std::string chanName = fSubEventChanMap.at(key);
                 // LOG(debug) << "chanName = " << chanName;
 
-                FairMQParts parts;
+                fair::mq::Parts parts;
 
                 // send header
-                // std::unique_ptr<FairMQMessage> header(fTransportFactory->CreateMessage(fSubEvent, sizeof(fSubEvent),
+                // auto header(fTransportFactory->CreateMessage(fSubEvent, sizeof(fSubEvent),
                 // free_buffer, nullptr)); fChannels.at(chanName).at(0).SendPart(header);
 
                 int* arraySize = new int(sebuflength);

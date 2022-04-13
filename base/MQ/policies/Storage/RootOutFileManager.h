@@ -1,3 +1,11 @@
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
+
 /*
  * File:   RootOutFileManager.h
  * Author: winckler
@@ -25,9 +33,7 @@
 
 // FairRoot
 #include "FairLogger.h"
-
-#include <FairMQMessage.h>
-#include <options/FairMQProgOptions.h>
+#include "FairMQ.h"   // for fair::mq::Message, fair::mq::ProgOptions
 
 template<typename DataType>
 class RootOutFileManager
@@ -111,7 +117,7 @@ class RootOutFileManager
         }
     }
 
-    void SetFileProperties(const FairMQProgOptions& config)
+    void SetFileProperties(const fair::mq::ProgOptions& config)
     {
         fFilename = config.GetValue<std::string>("output-file-name");
         fTreeName = config.GetValue<std::string>("output-file-tree");
@@ -194,7 +200,7 @@ class RootOutFileManager
         }
     }
 
-    void AddToFile(FairMQMessage* msg)
+    void AddToFile(fair::mq::Message* msg)
     {
         int inputSize = msg->GetSize();
         int numInput = 0;

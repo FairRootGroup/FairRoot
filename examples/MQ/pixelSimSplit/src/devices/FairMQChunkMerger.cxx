@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -19,11 +19,11 @@
 #include "FairMCTrack.h"
 #include "RootSerializer.h"
 
-#include <FairMQLogger.h>
 #include <TClonesArray.h>
 #include <TObject.h>
 #include <algorithm>
 #include <cstring>
+#include <fairlogger/Logger.h>
 #include <vector>
 
 using namespace std;
@@ -51,7 +51,7 @@ void FairMQChunkMerger::Init()
     OnData(fInputChannelName, &FairMQChunkMerger::MergeData);
 }
 
-bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
+bool FairMQChunkMerger::MergeData(fair::mq::Parts& parts, int /*index*/)
 {
     bool printInfo = false;
     int nofReceivedParts = 0;   // if set to -1, the data seems to be duplicated
@@ -169,17 +169,17 @@ bool FairMQChunkMerger::MergeData(FairMQParts& parts, int /*index*/)
         }
         fObjectMap.erase(fRet.first, fRet.second);
 
-        FairMQParts partsOut;
+        fair::mq::Parts partsOut;
 
         fMCSplitEventHeader->SetNofChunks(1);
         fMCSplitEventHeader->SetChunkStart(0);
 
-        FairMQMessagePtr messEH(NewMessage());
+        auto messEH(NewMessage());
         RootSerializer().Serialize(*messEH, fMCSplitEventHeader);
         partsOut.AddPart(std::move(messEH));
 
         for (int iarray = 0; iarray < tcaVector.size(); ++iarray) {
-            FairMQMessagePtr mess(NewMessage());
+            auto mess(NewMessage());
             RootSerializer().Serialize(*mess, tcaVector[iarray]);
             partsOut.AddPart(std::move(mess));
         }

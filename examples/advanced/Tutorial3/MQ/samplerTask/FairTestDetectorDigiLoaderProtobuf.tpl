@@ -1,3 +1,10 @@
+/********************************************************************************
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 /**
  * File:   FairTestDetectorDigiLoader.tpl
  * @since 2014-02-08
@@ -33,11 +40,11 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPay
     std::string* str = new std::string();
     dp.SerializeToString(str);
 
-    fPayload = FairMQMessagePtr(fTransportFactory->CreateMessage(
-        const_cast<char*>(str->c_str()),
-        str->length(),
-        [](void* /* data */, void* obj) { delete static_cast<std::string*>(obj); },
-        str));
+    fPayload =
+        fTransportFactory->CreateMessage(const_cast<char*>(str->c_str()),
+                                         str->length(),
+                                         [](void* /* data */, void* obj) { delete static_cast<std::string*>(obj); },
+                                         str);
 }
 
 #endif /* PROTOBUF */
