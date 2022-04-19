@@ -58,6 +58,7 @@ void MyPassiveContFact::setAllContainers()
 
 FairParSet* MyPassiveContFact::createContainer(FairContainer* c)
 {
+    return nullptr;
     /** Calls the constructor of the corresponding parameter container.
      * For an actual context, which is not an empty string and not the default context
      * of this container, the name is concatinated with the context. */
