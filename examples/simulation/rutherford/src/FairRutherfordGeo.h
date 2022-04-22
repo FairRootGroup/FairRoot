@@ -15,17 +15,16 @@
 
 class FairRutherfordGeo : public FairGeoSet
 {
-
   protected:
     char modName[22];   // name of module
     char eleName[20];   // substring for elements in module
   public:
     FairRutherfordGeo();
-    ~FairRutherfordGeo() {}
-    const char* getModuleName(Int_t);
-    const char* getEleName(Int_t);
-    inline Int_t getModNumInMod(const TString&);
-    ClassDef(FairRutherfordGeo, 1);
+    ~FairRutherfordGeo() override {}
+    const char* getModuleName(Int_t) override;
+    const char* getEleName(Int_t) override;
+    inline Int_t getModNumInMod(const TString&) override;
+    ClassDefOverride(FairRutherfordGeo, 1);
 };
 
 inline Int_t FairRutherfordGeo::getModNumInMod(const TString& name)

@@ -23,37 +23,16 @@ FairRutherfordGeo* FairRutherford::fgGeo = nullptr;
 
 FairRutherford::FairRutherford()
     : FairDetector("FairRutherford", kTRUE, kFairRutherford)
-    , fTrackID(-1)
-    , fVolumeID(-1)
-    , fPos()
-    , fMom()
-    , fTime(-1.)
-    , fLength(-1.)
-    , fELoss(-1)
     , fFairRutherfordPointCollection(new TClonesArray("FairRutherfordPoint"))
 {}
 
 FairRutherford::FairRutherford(const char* name, Bool_t active)
     : FairDetector(name, active, kFairRutherford)
-    , fTrackID(-1)
-    , fVolumeID(-1)
-    , fPos()
-    , fMom()
-    , fTime(-1.)
-    , fLength(-1.)
-    , fELoss(-1)
     , fFairRutherfordPointCollection(new TClonesArray("FairRutherfordPoint"))
 {}
 
 FairRutherford::FairRutherford(const FairRutherford& rhs)
     : FairDetector(rhs)
-    , fTrackID(-1)
-    , fVolumeID(-1)
-    , fPos()
-    , fMom()
-    , fTime(-1.)
-    , fLength(-1.)
-    , fELoss(-1)
     , fFairRutherfordPointCollection(new TClonesArray("FairRutherfordPoint"))
 {}
 
@@ -107,7 +86,7 @@ Bool_t FairRutherford::ProcessHits(FairVolume* vol)
                fELoss);
 
         // Increment number of FairRutherford points in TParticle
-        FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
+        auto stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
         stack->AddPoint(kFairRutherford);
     }
 
