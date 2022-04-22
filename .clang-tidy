@@ -2,4 +2,9 @@
 HeaderFilterRegex: '.*'
 # disable clang-analyzer-core.UndefinedBinaryOperatorResult
 #   ROOT throws lots of them in their headers
-Checks: '-clang-analyzer-core.UndefinedBinaryOperatorResult,modernize-make-unique'
+# enable google-build-using-namespace
+#   "using namespace" imports a changing amount of symbols, avoid it
+Checks: >-
+  -clang-analyzer-core.UndefinedBinaryOperatorResult,
+  modernize-make-unique,
+  google-build-using-namespace
