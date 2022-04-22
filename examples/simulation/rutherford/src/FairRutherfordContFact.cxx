@@ -37,8 +37,7 @@ void FairRutherfordContFact::setAllContainers()
       the list of containers for the FairRutherford library.
   */
 
-    FairContainer* p =
-        new FairContainer("FairRutherfordGeoPar", "FairRutherford Geometry Parameters", "TestDefaultContext");
+    auto p = new FairContainer("FairRutherfordGeoPar", "FairRutherford Geometry Parameters", "TestDefaultContext");
     p->addContext("TestNonDefaultContext");
 
     containers->Add(p);

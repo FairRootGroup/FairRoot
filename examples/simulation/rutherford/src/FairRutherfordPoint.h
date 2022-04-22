@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -19,7 +19,6 @@ class TMemberInspector;
 
 class FairRutherfordPoint : public FairMCPoint
 {
-
   public:
     /** Default constructor **/
     FairRutherfordPoint();
@@ -45,10 +44,10 @@ class FairRutherfordPoint : public FairMCPoint
                         Double_t theta);
 
     /** Destructor **/
-    virtual ~FairRutherfordPoint();
+    ~FairRutherfordPoint() override;
 
     /** Output to screen **/
-    virtual void Print(const Option_t* opt) const;
+    void Print(const Option_t* opt) const override;
 
   private:
     Double32_t fRadius, fPhi, fTheta;
@@ -57,7 +56,7 @@ class FairRutherfordPoint : public FairMCPoint
     FairRutherfordPoint(const FairRutherfordPoint& point);
     FairRutherfordPoint operator=(const FairRutherfordPoint& point);
 
-    ClassDef(FairRutherfordPoint, 1);
+    ClassDefOverride(FairRutherfordPoint, 1);
 };
 
 #endif

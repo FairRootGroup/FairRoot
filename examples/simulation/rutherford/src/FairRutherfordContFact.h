@@ -21,9 +21,9 @@ class FairRutherfordContFact : public FairContFact
 
   public:
     FairRutherfordContFact();
-    ~FairRutherfordContFact() {}
-    FairParSet* createContainer(FairContainer*);
-    ClassDef(FairRutherfordContFact, 0);   // Factory for all FairRutherford parameter containers
+    ~FairRutherfordContFact() override {}
+    FairParSet* createContainer(FairContainer*) override;
+    ClassDefOverride(FairRutherfordContFact, 0);   // Factory for all FairRutherford parameter containers
 };
 
 #endif
