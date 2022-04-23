@@ -93,12 +93,8 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     , fUserDecay(kFALSE)
     , fUserDecayConfig("")
     , fDebug(kFALSE)
-    , fDisVol(nullptr)
-    , fDisDet(nullptr)
     , fVolMap()
-    , fVolIter()
     , fModVolMap()
-    , fModVolIter()
     , fTrkPos(TLorentzVector(0, 0, 0, 0))
     , fRadLength(kFALSE)
     , fRadLenMan(nullptr)
@@ -151,8 +147,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     fMcVersion = -1;
     // Initialise fTrajFilter pointer
     fTrajFilter = nullptr;
-    fDisVol = 0;
-    fDisDet = 0;
 
     // This ctor is used to construct the application on master
     fgMasterInstance = this;
@@ -180,12 +174,8 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
     , fUserDecay(kFALSE)
     , fUserDecayConfig(rhs.fUserDecayConfig)
     , fDebug(rhs.fDebug)
-    , fDisVol(nullptr)
-    , fDisDet(nullptr)
     , fVolMap()
-    , fVolIter()
     , fModVolMap()
-    , fModVolIter()
     , fTrkPos(rhs.fTrkPos)
     , fRadLength(kFALSE)
     , fRadLenMan(nullptr)
@@ -269,12 +259,8 @@ FairMCApplication::FairMCApplication()
     , fUserDecay(kFALSE)
     , fUserDecayConfig("")
     , fDebug(kFALSE)
-    , fDisVol(0)
-    , fDisDet(0)
     , fVolMap()
-    , fVolIter()
     , fModVolMap()
-    , fModVolIter()
     , fTrkPos(TLorentzVector(0, 0, 0, 0))
     , fRadLength(kFALSE)
     , fRadLenMan(nullptr)
@@ -573,49 +559,47 @@ void FairMCApplication::Stepping()
     // In any case call the ProcessHits function for this specific detector.
     Int_t copyNo;
     Int_t id = fMC->CurrentVolID(copyNo);
-    Bool_t InMap = kFALSE;
-    fDisVol = 0;
-    fDisDet = 0;
-    Int_t fCopyNo = 0;
-    fVolIter = fVolMap.find(id);
+    auto voliter = fVolMap.find(id);
 
-    if (fVolIter != fVolMap.end()) {
+    if (voliter != fVolMap.end()) {
+        Bool_t InMap = kFALSE;
+        FairVolume* disvol = nullptr;
+        FairDetector* disdet = nullptr;
 
         // Call Process hits for FairVolume with this id, copyNo
         do {
-            fDisVol = fVolIter->second;
-            fCopyNo = fDisVol->getCopyNo();
-            if (copyNo == fCopyNo) {
-                fDisDet = fDisVol->GetDetector();
-                if (fDisDet) {
-                    fDisDet->ProcessHits(fDisVol);
+            disvol = voliter->second;
+            if (copyNo == disvol->getCopyNo()) {
+                disdet = disvol->GetDetector();
+                if (disdet) {
+                    disdet->ProcessHits(disvol);
                 }
                 InMap = kTRUE;
                 break;
             }
-            ++fVolIter;
-        } while (fVolIter != fVolMap.upper_bound(id));
+            ++voliter;
+        } while (voliter != fVolMap.upper_bound(id));
 
-        //    if (fDisVol && !InMap) { // fDisVolume is set previously, no check needed
+        //    if (disvol && !InMap) { // fDisVolume is set previously, no check needed
 
         // Create new FairVolume with this id, copyNo.
         // Use the FairVolume with the same id found in the map to get
         // the link to the detector.
         // Seems that this never happens (?)
         if (!InMap) {
-            // cout << "Volume not in map; fDisVol ? " << fDisVol << endl
+            // cout << "Volume not in map; disvol ? " << disvol << endl
             FairVolume* fNewV = new FairVolume(fMC->CurrentVolName(), id);
             fNewV->setMCid(id);
-            fNewV->setModId(fDisVol->getModId());
-            fNewV->SetModule(fDisVol->GetModule());
+            fNewV->setModId(disvol->getModId());
+            fNewV->SetModule(disvol->GetModule());
             fNewV->setCopyNo(copyNo);
             fVolMap.insert(pair<Int_t, FairVolume*>(id, fNewV));
-            fDisDet = fDisVol->GetDetector();
+            disdet = disvol->GetDetector();
 
             // LOG(info) << "FairMCApplication::Stepping: new fair volume"
-            //    << id << " " << copyNo << " " <<  fDisDet;
-            if (fDisDet) {
-                fDisDet->ProcessHits(fNewV);
+            //    << id << " " << copyNo << " " <<  disdet;
+            if (disdet) {
+                disdet->ProcessHits(fNewV);
             }
         }
     }
@@ -638,13 +622,13 @@ void FairMCApplication::Stepping()
     }
     if (fRadLenMan) {
         id = fMC->CurrentVolID(copyNo);
-        fModVolIter = fgMasterInstance->fModVolMap.find(id);
-        fRadLenMan->AddPoint(fMC, fModVolIter->second);
+        auto modvoliter = fgMasterInstance->fModVolMap.find(id);
+        fRadLenMan->AddPoint(fMC, modvoliter->second);
     }
     if (fRadMapMan) {
         id = fMC->CurrentVolID(copyNo);
-        fModVolIter = fgMasterInstance->fModVolMap.find(id);
-        fRadMapMan->AddPoint(fMC, fModVolIter->second);
+        auto modvoliter = fgMasterInstance->fModVolMap.find(id);
+        fRadMapMan->AddPoint(fMC, modvoliter->second);
     }
     if (fRadGridMan) {
         fRadGridMan->FillMeshList();

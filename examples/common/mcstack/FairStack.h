@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -246,12 +246,10 @@ class FairStack : public FairGenericStack
     TClonesArray* fTracks;
 
     /** STL map from particle index to storage flag  **/
-    std::map<Int_t, Bool_t> fStoreMap;              //!
-    std::map<Int_t, Bool_t>::iterator fStoreIter;   //!
+    std::map<Int_t, Bool_t> fStoreMap;   //!
 
     /** STL map from particle index to track index  **/
-    std::map<Int_t, Int_t> fIndexMap;              //!
-    std::map<Int_t, Int_t>::iterator fIndexIter;   //!
+    std::map<Int_t, Int_t> fIndexMap;   //!
 
     /** STL map from track index and detector ID to number of MCPoints **/
     std::map<std::pair<Int_t, Int_t>, Int_t> fPointsMap;   //!
