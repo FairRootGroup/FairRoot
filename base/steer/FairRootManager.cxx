@@ -34,7 +34,6 @@
 #include <TFile.h>          // for TFile
 #include <TFolder.h>        // for TFolder
 #include <TGeoManager.h>    // for TGeoManager, gGeoManager
-#include <TIterator.h>      // for TIterator
 #include <TList.h>          // for TList
 #include <TMCAutoLock.h>
 #include <TNamed.h>       // for TNamed
@@ -96,7 +95,6 @@ FairRootManager::FairRootManager()
     , fInputBranchMap()
     , fBranchPerMap(kFALSE)
     , fBrPerMap()
-    , fBrPerMapIter()
     , fCurrentEntryNo(0)
     , fTimeforEntryNo(0)
     , fFillLastData(kFALSE)
@@ -108,9 +106,6 @@ FairRootManager::FairRootManager()
     , fSink(nullptr)
     , fUseFairLinks(kFALSE)
     , fFinishRun(kFALSE)
-    , fListOfBranchesFromInput(0)
-    , fListOfBranchesFromInputIter(0)
-    , fListOfNonTimebasedBranchesIter(0)
     , fId(0)
 {
     LOG(debug) << "FairRootManager::FairRootManager: going to lock " << this;
@@ -165,17 +160,16 @@ Bool_t FairRootManager::InitSource()
     LOG(debug) << "Call the initialiazer for the FairSource in FairRootManager ";
     if (fSource) {
         Bool_t sourceInitBool = fSource->Init();
-        fListOfBranchesFromInput = fSourceChain->GetListOfBranches();
+        TObjArray* listofbranchesfrominput = fSourceChain->GetListOfBranches();
         TObject* obj;
-        if (fListOfBranchesFromInput) {
-            fListOfBranchesFromInputIter = fListOfBranchesFromInput->MakeIterator();
-            while ((obj = fListOfBranchesFromInputIter->Next())) {
+        if (listofbranchesfrominput) {
+            TIter branchiter{listofbranchesfrominput};
+            while ((obj = branchiter())) {
                 if ((fTimeBasedBranchNameList->FindObject(obj->GetName())) == 0)
                     fListOfNonTimebasedBranches.Add(obj);
             }
         }
         LOG(debug) << "Source is intialized and the list of branches is created in FairRootManager ";
-        fListOfNonTimebasedBranchesIter = fListOfNonTimebasedBranches.MakeIterator();
         return sourceInitBool;
     }
     return kFALSE;
@@ -498,8 +492,8 @@ Int_t FairRootManager::ReadNonTimeBasedEventFromBranches(Int_t Entry)
 {
     if (fSource) {
         TObject* Obj;
-        fListOfNonTimebasedBranchesIter->Reset();
-        while ((Obj = fListOfNonTimebasedBranchesIter->Next())) {
+        TIter branchiter{&fListOfNonTimebasedBranches};
+        while ((Obj = branchiter())) {
             fSource->ReadBranchEvent(Obj->GetName(), Entry);
             fSource->FillEventHeader(fEventHeader);
             fCurrentTime = fEventHeader->GetEventTime();
@@ -715,9 +709,9 @@ Int_t FairRootManager::CheckBranch(const char* BrName)
         CreatePerMap();
         return CheckBranchSt(BrName);
     } else {
-        fBrPerMapIter = fBrPerMap.find(BrName);
-        if (fBrPerMapIter != fBrPerMap.end()) {
-            return fBrPerMapIter->second;
+        auto brpermapiter = fBrPerMap.find(BrName);
+        if (brpermapiter != fBrPerMap.end()) {
+            return brpermapiter->second;
         } else {
             return 0;
         }

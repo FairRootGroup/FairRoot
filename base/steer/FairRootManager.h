@@ -36,7 +36,6 @@ class TObjArray;
 class TCollection;
 class TFile;
 class TFolder;
-class TIterator;
 class TList;
 class TNamed;
 class TTree;
@@ -380,8 +379,6 @@ class FairRootManager : public TObject
     Bool_t fBranchPerMap;
     /** Map for branch persistency list */
     std::map<TString, Int_t> fBrPerMap;   //!
-    /**Iterator for the fBrPerMap  Map*/
-    std::map<TString, Int_t>::iterator fBrPerMapIter;
 
     /** for internal use, to return the same event time for the same entry*/
     UInt_t fCurrentEntryNo;   //!
@@ -403,14 +400,8 @@ class FairRootManager : public TObject
 
     Bool_t fUseFairLinks;   //!
     Bool_t fFinishRun;      //!
-    /** List of branches from input Chain or Tree*/
-    TObjArray* fListOfBranchesFromInput;   //!
-    /** Iterator for the list of branches from input Chain or Tree */
-    TIterator* fListOfBranchesFromInputIter;   //!
     /** List of branches used with no-time stamp in time-based session */
     TRefArray fListOfNonTimebasedBranches{};   //!
-    /** Iterator for the list of branches used with no-time stamp in time-based session */
-    TIterator* fListOfNonTimebasedBranchesIter;   //!
 
     /**private Members for multi-threading */
     // global static data members
