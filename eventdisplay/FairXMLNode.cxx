@@ -140,14 +140,14 @@ FairXMLFile::FairXMLFile(TString name, TString mode)
         Parser.SetValidate(kFALSE);
         Parser.ParseFile(name);
         TXMLNode* MainNode = Parser.GetXMLDocument()->GetRootNode();
-        fRootNode.reset(new FairXMLNode());
+        fRootNode = std::make_unique<FairXMLNode>();
         fRootNode->Copy(MainNode);
     } else {
         fOverwrite = kTRUE;
     }
 }
 
-void FairXMLFile::CreateRootNode(TString name) { fRootNode.reset(new FairXMLNode(name)); }
+void FairXMLFile::CreateRootNode(TString name) { fRootNode = std::make_unique<FairXMLNode>(name); }
 
 void FairXMLFile::SetRootNode(FairXMLNode* node) { fRootNode.reset(node); }
 
