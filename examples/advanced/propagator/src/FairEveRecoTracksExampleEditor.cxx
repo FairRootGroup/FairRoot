@@ -38,9 +38,9 @@ FairEveRecoTracksExampleEditor::FairEveRecoTracksExampleEditor(const TGWindow *p
     SetName("RecoTracksEditor");
 
     TGVerticalFrame *kinFrame = CreateEditorTabSubFrame("Kin");
-    fPtCut = std::unique_ptr<FairEveMinMaxCut>(new FairEveMinMaxCut(this, kinFrame, "Pt", width));
-    fEtaCut = std::unique_ptr<FairEveMinMaxCut>(new FairEveMinMaxCut(this, kinFrame, "Eta", width));
-    fEnergyCut = std::unique_ptr<FairEveMinMaxCut>(new FairEveMinMaxCut(this, kinFrame, "E", width));
+    fPtCut = std::make_unique<FairEveMinMaxCut>(this, kinFrame, "Pt", width);
+    fEtaCut = std::make_unique<FairEveMinMaxCut>(this, kinFrame, "Eta", width);
+    fEnergyCut = std::make_unique<FairEveMinMaxCut>(this, kinFrame, "E", width);
     fPtCut->Init();
     fEtaCut->Init();
     fEnergyCut->Init();
@@ -48,7 +48,7 @@ FairEveRecoTracksExampleEditor::FairEveRecoTracksExampleEditor(const TGWindow *p
 
     TGVerticalFrame *statFrame = CreateEditorTabSubFrame("Status");
 
-    fDrawMC = std::unique_ptr<FairEveBoolCut>(new FairEveBoolCut(this, statFrame, "Draw MC", 1));
+    fDrawMC = std::make_unique<FairEveBoolCut>(this, statFrame, "Draw MC", 1);
     fDrawMC->UpdateWhenChanged();
     fDrawMC->Init();
 
