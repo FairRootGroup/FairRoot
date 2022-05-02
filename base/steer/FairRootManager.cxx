@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -40,7 +40,6 @@
 #include <TNamed.h>       // for TNamed
 #include <TObjArray.h>    // for TObjArray
 #include <TObjString.h>   // for TObjString
-#include <TRefArray.h>    // for TRefArray
 #include <TTree.h>        // for TTree
 #include <algorithm>      // for find
 #include <cassert>
@@ -112,7 +111,6 @@ FairRootManager::FairRootManager()
     , fFinishRun(kFALSE)
     , fListOfBranchesFromInput(0)
     , fListOfBranchesFromInputIter(0)
-    , fListOfNonTimebasedBranches(new TRefArray())
     , fListOfNonTimebasedBranchesIter(0)
     , fId(0)
 {
@@ -174,11 +172,11 @@ Bool_t FairRootManager::InitSource()
             fListOfBranchesFromInputIter = fListOfBranchesFromInput->MakeIterator();
             while ((obj = fListOfBranchesFromInputIter->Next())) {
                 if ((fTimeBasedBranchNameList->FindObject(obj->GetName())) == 0)
-                    fListOfNonTimebasedBranches->Add(obj);
+                    fListOfNonTimebasedBranches.Add(obj);
             }
         }
         LOG(debug) << "Source is intialized and the list of branches is created in FairRootManager ";
-        fListOfNonTimebasedBranchesIter = fListOfNonTimebasedBranches->MakeIterator();
+        fListOfNonTimebasedBranchesIter = fListOfNonTimebasedBranches.MakeIterator();
         return sourceInitBool;
     }
     return kFALSE;

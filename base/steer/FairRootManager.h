@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,12 +12,12 @@
 #include "FairSink.h"
 #include "FairSource.h"
 
-#include <Rtypes.h>    // for Bool_t, Int_t, UInt_t, etc
-#include <TChain.h>    // for TChain
-#include <TMCtls.h>    // for multi-threading
-#include <TObject.h>   // for TObject
-#include <TString.h>   // for TString, operator<
-#include <map>         // for map, multimap, etc
+#include <Rtypes.h>      // for Bool_t, Int_t, UInt_t, etc
+#include <TChain.h>      // for TChain
+#include <TObject.h>     // for TObject
+#include <TRefArray.h>   // for TRefArray
+#include <TString.h>     // for TString, operator<
+#include <map>           // for map, multimap, etc
 #include <memory>
 #include <string>
 #include <type_traits>   // is_pointer, remove_pointer, is_const, remove...
@@ -39,7 +39,6 @@ class TFolder;
 class TIterator;
 class TList;
 class TNamed;
-class TRefArray;
 class TTree;
 
 /**
@@ -409,7 +408,7 @@ class FairRootManager : public TObject
     /** Iterator for the list of branches from input Chain or Tree */
     TIterator* fListOfBranchesFromInputIter;   //!
     /** List of branches used with no-time stamp in time-based session */
-    TRefArray* fListOfNonTimebasedBranches;   //!
+    TRefArray fListOfNonTimebasedBranches{};   //!
     /** Iterator for the list of branches used with no-time stamp in time-based session */
     TIterator* fListOfNonTimebasedBranchesIter;   //!
 
