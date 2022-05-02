@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -155,11 +155,6 @@ void FairRunAnaProof::Init()
     // Init the RTDB containers
     fRtdb = GetRuntimeDb();
     FairBaseParSet* par = static_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
-
-    /**Set the IO Manager to run with time stamps*/
-    if (fTimeStamps) {
-        fRootManager->RunWithTimeStamps();
-    }
 
     // create the output tree after tasks initialisation
     fRootManager->InitSink();
