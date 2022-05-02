@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -77,7 +77,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     , fActiveDetectors(nullptr)
     , fFairTaskList(nullptr)
     , fDetectors(nullptr)
-    , fDetMap(nullptr)
     , fModIter(nullptr)
     , fModules(nullptr)
     , fNoSenVolumes(0)
@@ -152,7 +151,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     fMcVersion = -1;
     // Initialise fTrajFilter pointer
     fTrajFilter = nullptr;
-    fDetMap = new TRefArray(1000);
     fDisVol = 0;
     fDisDet = 0;
 
@@ -166,7 +164,6 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
     , fActiveDetectors(nullptr)
     , fFairTaskList(nullptr)
     , fDetectors(nullptr)
-    , fDetMap(nullptr)
     , fModIter(nullptr)
     , fModules(nullptr)
     , fNoSenVolumes(0)
@@ -249,8 +246,6 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
     // Let's try without it
     // fFairTaskList= new FairTask("Task List", 1);
     // gROOT->GetListOfBrowsables()->Add(fFairTaskList);
-
-    fDetMap = new TRefArray(1000);
 }
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication()
@@ -258,7 +253,6 @@ FairMCApplication::FairMCApplication()
     , fActiveDetectors(0)
     , fFairTaskList(0)
     , fDetectors(0)
-    , fDetMap(0)
     , fModIter(0)
     , fModules(0)
     , fNoSenVolumes(0)
