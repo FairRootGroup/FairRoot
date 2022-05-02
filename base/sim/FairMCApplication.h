@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -229,8 +229,6 @@ class FairMCApplication : public TVirtualMCApplication
     FairTask* fFairTaskList;   //!
     /**detector list (Passive and Active)*/
     TRefArray* fDetectors;
-    /**Map used for dispatcher*/
-    TRefArray* fDetMap;
     /**Iterator for Module list*/
     TIterator* fModIter;   //!
     /**Module list in simulation*/
@@ -308,7 +306,7 @@ class FairMCApplication : public TVirtualMCApplication
     /** Current state */
     FairMCApplicationState fState;   //!
 
-    ClassDefOverride(FairMCApplication, 4);
+    ClassDefOverride(FairMCApplication, 5);
 
   private:
     /** Protected copy constructor, needed for CloneForWorker */
