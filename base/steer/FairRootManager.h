@@ -174,8 +174,10 @@ class FairRootManager : public TObject
     FairWriteoutBuffer* RegisterWriteoutBuffer(TString branchName, FairWriteoutBuffer* buffer);
     /**Update the list of time based branches in the output file*/
     void UpdateListOfTimebasedBranches();
-    /**Use time stamps to read data and not tree entries*/
-    void RunWithTimeStamps() { fTimeStamps = kTRUE; }
+    /**Use time stamps to read data and not tree entries
+     * \deprecated Deprecated in v19, will be removed in v20.
+     */
+    [[deprecated]] void RunWithTimeStamps() {}
 
     /**Set the branch name list*/
     void SetBranchNameList(TList* list);
@@ -367,8 +369,6 @@ class FairRootManager : public TObject
     std::map<TString, FairTSBufferFunctional*> fTSBufferMap;     //!
     std::map<TString, FairWriteoutBuffer*> fWriteoutBufferMap;   //!
     std::map<Int_t, TBranch*> fInputBranchMap;                   //!    //Map of input branch ID with TBranch pointer
-    /**if kTRUE Read data according to time and not entries*/
-    Bool_t fTimeStamps;
     /**Flag for creation of Map for branch persistency list  */
     Bool_t fBranchPerMap;
     /** Map for branch persistency list */
@@ -411,7 +411,7 @@ class FairRootManager : public TObject
     // data members
     Int_t fId;   // This manager ID
 
-    ClassDefOverride(FairRootManager, 13);
+    ClassDefOverride(FairRootManager, 14);
 };
 
 // FIXME: move to source since we can make it non-template dependent
