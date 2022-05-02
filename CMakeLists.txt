@@ -21,7 +21,7 @@ SET(FAIRROOT_MAJOR_VERSION 19)
 SET(FAIRROOT_MINOR_VERSION 0)
 SET(FAIRROOT_PATCH_VERSION 0)
 
-set(PROJECT_MIN_CXX_STANDARD 14)
+set(PROJECT_MIN_CXX_STANDARD 17)
 
 # Set name of our project to "FAIRROOT".
 # Has to be done after check of cmake version
