@@ -23,21 +23,21 @@ class FairFastSimDetector : public FairDetector
 
     FairFastSimDetector(const char* name, Int_t DetId = 0);
 
-    virtual ~FairFastSimDetector();
+    ~FairFastSimDetector() override;
 
-    virtual void Initialize() = 0;
+    void Initialize() override = 0;
 
-    virtual Bool_t ProcessHits(FairVolume* vol = 0) final;
+    Bool_t ProcessHits(FairVolume* vol = 0) override final;
 
-    virtual void EndOfEvent() {}
+    void EndOfEvent() override {}
 
-    virtual void Register() = 0;
+    void Register() override = 0;
 
-    virtual TClonesArray* GetCollection(Int_t iColl) const = 0;
+    TClonesArray* GetCollection(Int_t iColl) const override = 0;
 
-    virtual void Reset() = 0;
+    void Reset() override = 0;
 
-    virtual void ConstructGeometry();
+    void ConstructGeometry() override;
 
   protected:
     virtual void FastSimProcessParticle() = 0;
@@ -48,7 +48,7 @@ class FairFastSimDetector : public FairDetector
 
     FairFastSimDetector& operator=(const FairFastSimDetector&);
 
-    ClassDef(FairFastSimDetector, 1);
+    ClassDefOverride(FairFastSimDetector, 1);
 };
 
 #endif   //! FAIRFASTSIMDETECTOR_H

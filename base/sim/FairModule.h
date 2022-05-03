@@ -51,9 +51,9 @@ class FairModule : public TNamed
     /**Standard ctor*/
     FairModule(const char* Name, const char* title, Bool_t Active = kFALSE);
     /**default dtor*/
-    virtual ~FairModule();
+    ~FairModule() override;
     /**Print method should be implemented in detector or module*/
-    virtual void Print(Option_t*) const { ; }
+    void Print(Option_t*) const override { ; }
     /**Set the geometry file name o be used*/
     virtual void SetGeometryFileName(TString fname, TString geoVer = "0");
     /**Get the Geometry file name*/
@@ -165,7 +165,7 @@ class FairModule : public TNamed
     Bool_t fGeoSaved;   //! flag for initialisation
     TVirtualMC* fMC;    //! cahed pointer to MC (available only after initialization)
 
-    ClassDef(FairModule, 4);
+    ClassDefOverride(FairModule, 4);
 };
 
 template<class T, class U>

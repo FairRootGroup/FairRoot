@@ -37,21 +37,21 @@ class FairBaseParSet : public FairParGenericSet
                    const char* title = "Class for base parameter io",
                    const char* context = "BaseDefaultContext");
     /** dtor*/
-    ~FairBaseParSet(void);
+    ~FairBaseParSet() override;
     /** clear*/
-    void clear(void);
+    void clear() override;
     /**
      * Fills all persistent data members into the list for write.
      * @param FairParamList : Parameter list to be filled
      */
-    void putParams(FairParamList*);
+    void putParams(FairParamList*) override;
     /**
      * Fills all persistent data members from the list after reading. The function
      * returns false, when a data member is not in the list.
      * @param FairParamList : Parameter list to be filled
      */
 
-    Bool_t getParams(FairParamList*);
+    Bool_t getParams(FairParamList*) override;
     /**
      * Set the detector list used in the simulation
      * @param array: TObjArray of detector
@@ -110,7 +110,7 @@ class FairBaseParSet : public FairParGenericSet
     /// Random Seed from gRandom
     UInt_t fRandomSeed;
 
-    ClassDef(FairBaseParSet, 6);
+    ClassDefOverride(FairBaseParSet, 6);
 
   private:
     FairBaseParSet(const FairBaseParSet& L);

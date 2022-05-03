@@ -57,12 +57,12 @@ class FairParticle : public TObject
 
     FairParticle();
 
-    virtual ~FairParticle();
+    ~FairParticle() override;
 
     // methods
     void SetMother(FairParticle* particle);
     void AddDaughter(FairParticle* particle);
-    virtual void Print(Option_t* option = "") const;
+    void Print(Option_t* option = "") const override;
     void PrintDaughters() const;
 
     // get methods
@@ -71,7 +71,7 @@ class FairParticle : public TObject
     FairParticle* GetMother() const;
     Int_t GetNofDaughters() const;
     FairParticle* GetDaughter(Int_t i) const;
-    virtual const char* GetName() const { return fname.Data(); }
+    const char* GetName() const override { return fname.Data(); }
     TMCParticleType GetMCType() { return fmcType; }
     Double_t GetMass() { return fmass; }
     Double_t GetCharge() { return fcharge; }
@@ -113,7 +113,7 @@ class FairParticle : public TObject
     Int_t fbaryon;
     Bool_t fstable;
 
-    ClassDef(FairParticle, 3);
+    ClassDefOverride(FairParticle, 3);
 };
 
 #endif   // FAIR_PARTICLE_H

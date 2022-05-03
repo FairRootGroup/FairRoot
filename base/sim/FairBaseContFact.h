@@ -24,12 +24,12 @@ class FairBaseContFact : public FairContFact
     /**default ctor*/
     FairBaseContFact();
     /**default dtor*/
-    ~FairBaseContFact() {}
+    ~FairBaseContFact() override {}
     /** Calls the constructor of the corresponding parameter container.
      * For an actual context, which is not an empty string and not the default context
      * of this container, the name is concatinated with the context. */
-    FairParSet* createContainer(FairContainer*);
-    ClassDef(FairBaseContFact, 0);
+    FairParSet* createContainer(FairContainer*) override;
+    ClassDefOverride(FairBaseContFact, 0);
 };
 
 #endif /* !FAIRBASECONTFACT_H */
