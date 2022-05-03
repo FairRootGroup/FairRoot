@@ -83,18 +83,18 @@ class FairRingSorterTask : public FairTask
     }
 
     /** Destructor **/
-    virtual ~FairRingSorterTask() { delete fSorter; }
+    ~FairRingSorterTask() override { delete fSorter; }
 
     /** Virtual method Init **/
-    virtual InitStatus Init();
-    virtual InitStatus ReInit();
+    InitStatus Init() override;
+    InitStatus ReInit() override;
 
     /** Virtual method Exec **/
-    virtual void Exec(Option_t* opt);
-    virtual void FinishEvent();
-    virtual void FinishTask();
+    void Exec(Option_t* opt) override;
+    void FinishEvent() override;
+    void FinishTask() override;
 
-    virtual void SetParContainers(){};
+    void SetParContainers() override {}
 
     void SetPersistance(Bool_t p = kTRUE) { fPersistance = p; };
     Bool_t GetPersistance() { return fPersistance; };
@@ -121,7 +121,7 @@ class FairRingSorterTask : public FairTask
     FairRingSorterTask(const FairRingSorterTask&);
     FairRingSorterTask& operator=(const FairRingSorterTask&);
 
-    ClassDef(FairRingSorterTask, 2);
+    ClassDefOverride(FairRingSorterTask, 2);
 };
 
 #endif

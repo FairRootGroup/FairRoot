@@ -36,21 +36,21 @@ class FairGeoParSet : public FairParGenericSet
                   const char* title = "Class for base parameter io",
                   const char* context = "BaseDefaultContext");
     /** dtor*/
-    ~FairGeoParSet(void);
+    ~FairGeoParSet() override;
     /** clear*/
-    void clear(void);
+    void clear() override;
     /**
      * Fills all persistent data members into the list for write.
      * @param FairParamList : Parameter list to be filled
      */
-    void putParams(FairParamList*);
+    void putParams(FairParamList*) override;
     /**
      * Fills all persistent data members from the list after reading. The function
      * returns false, when a data member is not in the list.
      * @param FairParamList : Parameter list to be filled
      */
 
-    Bool_t getParams(FairParamList*);
+    Bool_t getParams(FairParamList*) override;
     /**
      * Set the Geometry node list used in the simulation
      * @param array: TObjArray of Geometry nodes
@@ -75,7 +75,7 @@ class FairGeoParSet : public FairParGenericSet
     TObjArray* fGeoNodes;   //!
     /// Full Geometry
     TGeoManager* fGeom;
-    ClassDef(FairGeoParSet, 1);
+    ClassDefOverride(FairGeoParSet, 1);
 
   private:
     FairGeoParSet(const FairGeoParSet& L);

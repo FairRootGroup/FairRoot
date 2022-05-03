@@ -60,14 +60,14 @@ class StopTime : public BinaryFunctor
     /**
      * \parameter b: StopTime: All data older than StopTime is returned
      */
-    bool Call(FairTimeStamp* a, double b)
+    bool Call(FairTimeStamp* a, double b) override
     {
         fRequestTime = b;
         // std::cout << "StopTime: " << a->GetTimeStamp() << " > " <<  b << std::endl;
         return a->GetTimeStamp() > b;
     };
 
-    bool TimeOut()
+    bool TimeOut() override
     {
         if (fRequestTime != fOldTime) {
             fOldTime = fRequestTime;
@@ -90,7 +90,7 @@ class StopTime : public BinaryFunctor
         }
     }
 
-    void ResetTimeOut() { fSameTimeRequestCounter = 0; }
+    void ResetTimeOut() override { fSameTimeRequestCounter = 0; }
 
   private:
     double fRequestTime;
@@ -112,7 +112,7 @@ class TimeGap : public BinaryFunctor
     /**
      * \parameter b : TimeGap: All data between two time gaps which are larger than TimeGap are returned
      */
-    bool Call(FairTimeStamp* a, double b)
+    bool Call(FairTimeStamp* a, double b) override
     {
         double aTime = a->GetTimeStamp();
 
@@ -161,7 +161,7 @@ class FairTSBufferFunctional : public TObject
                            BinaryFunctor* stopFunction,
                            BinaryFunctor* startFunction = 0);
 
-    virtual ~FairTSBufferFunctional(){};
+    ~FairTSBufferFunctional() override {}
     TClonesArray* GetData(Double_t stopParameter);
     TClonesArray* GetData(Double_t startParameter, Double_t stopParameter);
     Int_t GetBranchIndex() { return fBranchIndex; }
@@ -215,7 +215,7 @@ class FairTSBufferFunctional : public TObject
     FairTSBufferFunctional(const FairTSBufferFunctional&);
     FairTSBufferFunctional& operator=(const FairTSBufferFunctional&);
 
-    ClassDef(FairTSBufferFunctional, 0);
+    ClassDefOverride(FairTSBufferFunctional, 0);
 };
 
 #endif

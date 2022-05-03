@@ -53,7 +53,7 @@ class FairRootManager : public TObject
 {
   public:
     /**dtor*/
-    virtual ~FairRootManager();
+    ~FairRootManager() override;
     Bool_t AllDataProcessed();
     /** Add a branch name to the Branchlist and give it an id*/
     Int_t AddBranchToList(const char* name);
@@ -195,7 +195,7 @@ class FairRootManager : public TObject
      * this method truncate the full path from the branch names
      */
 
-    Int_t Write(const char* name = 0, Int_t option = 0, Int_t bufsize = 0);
+    Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) override;
     /** Write the current TGeoManager to file*/
     void WriteGeometry();
     /**Write the file header object to the output file*/
@@ -412,7 +412,7 @@ class FairRootManager : public TObject
     // data members
     Int_t fId;   // This manager ID
 
-    ClassDef(FairRootManager, 13);
+    ClassDefOverride(FairRootManager, 13);
 };
 
 // FIXME: move to source since we can make it non-template dependent
