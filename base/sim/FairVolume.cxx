@@ -12,58 +12,26 @@
 
 #include "FairVolume.h"
 
+#include "FairDetector.h"
+
 FairVolume::FairVolume()
     : TNamed()
-    ,
-    //    fName(""),          /**Volume Name in MC*/
-    fRealName("")
-    , /**Volume Name in ASCII file*/
-    fVolumeId(-1)
-    , /**Volume Id in GeoManager*/
-    fModId(-1)
-    , /**Module Id in which this volume exist*/
-    fMCid(-1)
-    , /**Volume Id in MC*/
-    fCopyNo(-1)
-    , /**Volume Copy No*/
-    fMotherId(-1)
-    , /**Mother Volume Id*/
-    fMotherCopyNo(-1)
-    , /**Mother Volume Copy No*/
-    fDetector(0)
-    , fModule(nullptr)
-    ,              /**The Module (detector) which will proccess the hits for this volume*/
-    fNode(nullptr) /**Node corre*/
 {}
 
-FairVolume::FairVolume(TString name, Int_t id, Int_t ModId, FairModule* fMod)
+FairVolume::FairVolume(const TString& name, Int_t id, Int_t modId, FairModule* fMod)
     : TNamed(name, name)
-    ,
-    //   fName(name),
-    fRealName("")
-    , /**Volume Name in ASCII file*/
-    fVolumeId(id)
-    , /**Volume Id in GeoManager*/
-    fModId(ModId)
-    , /**Module Id in which this volume exist*/
-    fMCid(-1)
-    , /**Volume Id in MC*/
-    fCopyNo(-1)
-    , /**Volume Copy No*/
-    fMotherId(0)
-    , /**Mother Volume Id*/
-    fMotherCopyNo(0)
-    , /**Mother Volume Copy No*/
-    fDetector(0)
+    , fVolumeId(id)
+    , fModId(modId)
+    , fDetector(dynamic_cast<FairDetector*>(fMod))
     , fModule(fMod)
-    ,              /**The Module (detector) which will proccess the hits for this volume*/
-    fNode(nullptr) /**Node corre*/
-{
-    if (fModule && fModule->InheritsFrom("FairDetector")) {
-        fDetector = dynamic_cast<FairDetector*>(fModule);
-    }
-}
+{}
 
-FairVolume::~FairVolume() {}
+FairVolume::~FairVolume() = default;
+
+void FairVolume::SetModule(FairModule* mod)
+{
+    fModule = mod;
+    fDetector = dynamic_cast<FairDetector*>(mod);
+}
 
 ClassImp(FairVolume);
