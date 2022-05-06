@@ -107,10 +107,11 @@ class FairMCApplication : public TVirtualMCApplication
     /** Define parameters for optical processes (optional) */
     void ConstructOpGeometry() override;   // MC Application
 
-    virtual void ConstructSensitiveDetectors();
+    /** set sensitive detectors following TVirtualMCSensitiveDetector logic */
+    void ConstructSensitiveDetectors() override;   // MC Application
 
     /** Define actions just before sensitive->EndOfEvent */
-    virtual void EndOfEvent();   // MC Application
+    void EndOfEvent() override;   // MC Application
     /** Define actions at the end of event */
     void FinishEvent() override;   // MC Application
     /** Define actions at the end of primary track */
