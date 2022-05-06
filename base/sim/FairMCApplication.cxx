@@ -1290,9 +1290,22 @@ void FairMCApplication::UndoGeometryModifications()
 
 void FairMCApplication::ConstructSensitiveDetectors()
 {
+    std::map<std::string, FairModule*> cloneVolumeMap;
+
     for (auto const& x : fMapSensitiveDetectors) {
-        LOG(debug) << "FairMCApplication::ConstructSensitiveDetectors " << x.first << " " << x.second;
-        TVirtualMC::GetMC()->SetSensitiveDetector(x.first, x.second);
+        std::string volName = x.first;   //.substr(0, x.first.find("#", 0));
+        if (volName.find('#') != std::string::npos) {
+            volName = volName.substr(0, volName.find("#", 0));
+            std::map<std::string, FairModule*>::iterator it;
+            it = cloneVolumeMap.find(volName);
+            LOG(debug) << "FairMCApplication::ConstructSensitiveDetectors got clone " << x.first << " " << x.second;
+            if (it != cloneVolumeMap.end())
+                continue;
+            cloneVolumeMap[volName] = x.second;
+            LOG(debug) << "FairMCApplication::ConstructSensitiveDetectors really do " << volName;
+        }
+        LOG(debug) << "FairMCApplication::ConstructSensitiveDetectors really do " << volName;
+        TVirtualMC::GetMC()->SetSensitiveDetector(volName, x.second);
     }
 }
 
