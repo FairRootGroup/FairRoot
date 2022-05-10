@@ -69,6 +69,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   * `FairRunAnaProof::Instance()` - keep a pointer to the
     object after `new` in your code.
   * `FairRadMapManager::Instance`, `FairRadLenManager::Instance`
+* Deprecated some other APIs
+  `FairGeoVector::round` was nonfunctional and never did anything.
 * Many items were already deprecated in prior versions.
   Marked them with proper C++14 deprecation warnings.
   Scheduled them for removal in v20.
