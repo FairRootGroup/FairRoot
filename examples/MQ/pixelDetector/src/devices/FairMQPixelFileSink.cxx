@@ -16,9 +16,7 @@
 
 #include "RootSerializer.h"
 
-#include <TFile.h>
 #include <TObject.h>
-#include <TTree.h>
 #include <cstdlib>
 #include <fairlogger/Logger.h>
 #include <memory>
@@ -31,8 +29,6 @@ FairMQPixelFileSink::FairMQPixelFileSink()
     , fFileName()
     , fTreeName()
     , fFileOption()
-    , fOutFile(nullptr)
-    , fTree(nullptr)
     , fOutputObjects(new TObject*[1000])
 {}
 
@@ -54,7 +50,7 @@ void FairMQPixelFileSink::InitTask()
         }
     }
 
-    fOutFile = TFile::Open(fFileName.c_str(), fFileOption.c_str());
+    fOutFile.reset(TFile::Open(fFileName.c_str(), fFileOption.c_str()));
 
     OnData(fInputChannelName, &FairMQPixelFileSink::StoreData);
 }
@@ -65,7 +61,7 @@ bool FairMQPixelFileSink::StoreData(fair::mq::Parts& parts, int /*index*/)
     std::vector<TObject*> tempObjects;
     if (!fTree) {
         creatingTree = true;
-        fTree = new TTree(fTreeName.c_str(), "/cbmout");
+        fTree = std::make_unique<TTree>(fTreeName.c_str(), "/cbmout");
     }
 
     for (int ipart = 0; ipart < parts.Size(); ipart++) {
@@ -97,6 +93,8 @@ void FairMQPixelFileSink::ResetTask()
 {
     if (fTree) {
         fTree->Write();
+        // Delete the tree, because we're going to close the file
+        fTree.reset();
     }
 
     if (fOutFile) {
@@ -106,13 +104,4 @@ void FairMQPixelFileSink::ResetTask()
     }
 }
 
-FairMQPixelFileSink::~FairMQPixelFileSink()
-{
-    if (fTree) {
-        delete fTree;
-    }
-
-    if (fOutFile) {
-        delete fOutFile;
-    }
-}
+FairMQPixelFileSink::~FairMQPixelFileSink() = default;
