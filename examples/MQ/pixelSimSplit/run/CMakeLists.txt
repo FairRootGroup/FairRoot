@@ -37,7 +37,7 @@ set(fairroot_bin_dir ${CMAKE_BINARY_DIR}/bin)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/splitMC-topology.xml ${CMAKE_CURRENT_BINARY_DIR}/splitMC-topology.xml)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMC.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh @ONLY)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMQ.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMQ.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh @ONLY)
 
 set(exe_dependencies
   FairRoot::ExSimMQ
@@ -80,7 +80,6 @@ add_test(NAME ex_MQ_pixel_split
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh)
 set_tests_properties(ex_MQ_pixel_split PROPERTIES
   TIMEOUT ${maxTestTime}
-  PASS_REGULAR_EXPRESSION "Shell script finished successfully"
 )
 
 if(TARGET FairMQ::fairmq-dds-command-ui)
