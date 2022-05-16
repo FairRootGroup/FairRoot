@@ -29,7 +29,6 @@ FairMQPixelFileSink::FairMQPixelFileSink()
     , fFileName()
     , fTreeName()
     , fFileOption()
-    , fOutputObjects(new TObject*[1000])
 {}
 
 void FairMQPixelFileSink::InitTask()
@@ -58,31 +57,30 @@ void FairMQPixelFileSink::InitTask()
 bool FairMQPixelFileSink::StoreData(fair::mq::Parts& parts, int /*index*/)
 {
     bool creatingTree = false;
-    std::vector<TObject*> tempObjects;
+    auto numParts = parts.Size();
+    std::vector<std::unique_ptr<TObject>> cleanup;
+    std::vector<TObject*> objectsForBranches;
+
     if (!fTree) {
         creatingTree = true;
         fTree = std::make_unique<TTree>(fTreeName.c_str(), "/cbmout");
     }
 
-    for (int ipart = 0; ipart < parts.Size(); ipart++) {
-        fOutputObjects[ipart] = nullptr;
-        RootSerializer().Deserialize(*parts.At(ipart), fOutputObjects[ipart]);
-        tempObjects.push_back(fOutputObjects[ipart]);
-        if (creatingTree)
-            fTree->Branch(tempObjects.back()->GetName(), tempObjects.back()->ClassName(), &fOutputObjects[ipart]);
-        fTree->SetBranchAddress(tempObjects.back()->GetName(), &fOutputObjects[ipart]);
+    cleanup.reserve(numParts);
+    objectsForBranches.resize(numParts, nullptr);
+    for (int ipart = 0; ipart < numParts; ipart++) {
+        auto& curobj = cleanup.emplace_back();
+        RootSerializer().Deserialize(*parts.At(ipart), curobj);
+        objectsForBranches.at(ipart) = curobj.get();
+        if (creatingTree) {
+            fTree->Branch(curobj->GetName(), curobj->ClassName(), &objectsForBranches[ipart]);
+        }
+        fTree->SetBranchAddress(curobj->GetName(), &objectsForBranches[ipart]);
     }
     //   LOG(INFO) << "Finished branches";
     fTree->Fill();
 
-    for (unsigned int ipart = 0; ipart < tempObjects.size(); ipart++) {
-        if (tempObjects[ipart]) {
-            delete tempObjects[ipart];
-        }
-    }
-    tempObjects.clear();
-
-    if (fAckChannelName != "") {
+    if (!fAckChannelName.empty()) {
         auto msg(NewMessage());
         Send(msg, fAckChannelName);
     }

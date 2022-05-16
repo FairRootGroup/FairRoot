@@ -52,7 +52,6 @@ class FairMQPixelFileSink : public fair::mq::Device
 
     std::unique_ptr<TFile> fOutFile{};
     std::unique_ptr<TTree> fTree{};
-    TObject** fOutputObjects;
 
     FairMQPixelFileSink(const FairMQPixelFileSink&);
     FairMQPixelFileSink& operator=(const FairMQPixelFileSink&);
