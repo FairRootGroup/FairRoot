@@ -48,12 +48,9 @@ class FairMQPixelFileSink : public fair::mq::Device
     std::string fTreeName;
 
     std::string fFileOption;
-    bool fFlowMode;
-    bool fWrite;
 
     TFile* fOutFile;
     TTree* fTree;
-    unsigned int fNObjects;
     TObject** fOutputObjects;
 
     FairMQPixelFileSink(const FairMQPixelFileSink&);
