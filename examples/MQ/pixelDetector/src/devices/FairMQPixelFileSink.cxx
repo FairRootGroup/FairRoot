@@ -31,11 +31,8 @@ FairMQPixelFileSink::FairMQPixelFileSink()
     , fFileName()
     , fTreeName()
     , fFileOption()
-    , fFlowMode(false)
-    , fWrite(false)
     , fOutFile(nullptr)
     , fTree(nullptr)
-    , fNObjects(0)
     , fOutputObjects(new TObject*[1000])
 {}
 
