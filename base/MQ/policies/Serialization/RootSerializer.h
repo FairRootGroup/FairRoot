@@ -41,7 +41,7 @@ struct RootSerializer
     template<typename T>
     void Serialize(fair::mq::Message& msg, T* input)
     {
-        TMessage* tm = new TMessage(kMESS_OBJECT);
+        auto tm = new TMessage(kMESS_OBJECT);
         tm->WriteObject(input);
         msg.Rebuild(
             tm->Buffer(), tm->BufferSize(), [](void*, void* tmsg) { delete static_cast<TMessage*>(tmsg); }, tm);
@@ -50,14 +50,14 @@ struct RootSerializer
     template<typename T>
     void Serialize(fair::mq::Message& msg, const std::unique_ptr<T>& input)
     {
-        TMessage* tm = new TMessage(kMESS_OBJECT);
+        auto tm = new TMessage(kMESS_OBJECT);
         tm->WriteObject(input.get());
         msg.Rebuild(
             tm->Buffer(), tm->BufferSize(), [](void*, void* tmsg) { delete static_cast<TMessage*>(tmsg); }, tm);
     }
 
     template<typename T>
-    void Deserialize(fair::mq::Message& msg, T*& output)
+    void Deserialize(const fair::mq::Message& msg, T*& output)
     {
         delete output;
         FairTMessage tm(msg.GetData(), msg.GetSize());
@@ -65,10 +65,17 @@ struct RootSerializer
     }
 
     template<typename T>
-    void Deserialize(fair::mq::Message& msg, std::unique_ptr<T>& output)
+    void Deserialize(const fair::mq::Message& msg, std::unique_ptr<T>& output)
     {
         FairTMessage tm(msg.GetData(), msg.GetSize());
         output.reset(static_cast<T*>(tm.ReadObjectAny(tm.GetClass())));
+    }
+
+    template<typename T>
+    [[nodiscard]] std::unique_ptr<T> DeserializeTo(const fair::mq::Message& msg)
+    {
+        FairTMessage tm(msg.GetData(), msg.GetSize());
+        return std::unique_ptr<T>{static_cast<T*>(tm.ReadObjectAny(tm.GetClass()))};
     }
 };
 

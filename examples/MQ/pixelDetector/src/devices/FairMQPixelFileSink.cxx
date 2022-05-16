@@ -69,13 +69,13 @@ bool FairMQPixelFileSink::StoreData(fair::mq::Parts& parts, int /*index*/)
     cleanup.reserve(numParts);
     objectsForBranches.resize(numParts, nullptr);
     for (int ipart = 0; ipart < numParts; ipart++) {
-        auto& curobj = cleanup.emplace_back();
-        RootSerializer().Deserialize(*parts.At(ipart), curobj);
+        auto curobj = RootSerializer().DeserializeTo<TObject>(*parts.At(ipart));
         objectsForBranches.at(ipart) = curobj.get();
         if (creatingTree) {
             fTree->Branch(curobj->GetName(), curobj->ClassName(), &objectsForBranches[ipart]);
         }
         fTree->SetBranchAddress(curobj->GetName(), &objectsForBranches[ipart]);
+        cleanup.emplace_back(std::move(curobj));
     }
     //   LOG(INFO) << "Finished branches";
     fTree->Fill();
