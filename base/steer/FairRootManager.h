@@ -166,10 +166,6 @@ class FairRootManager : public TObject
     /** create a new branch based on an arbitrary type T (for which a dictionary must exist) **/
     template<typename T>
     void RegisterAny(const char* name, T*& obj, Bool_t toFile);
-    /// for branches which are not managed by folders, we need a special function
-    /// to trigger persistent branch creation
-    /// return true if successful; false if problem
-    bool CreatePersistentBranchesAny();
 
     void RegisterInputObject(const char* name, TObject* obj);
 
@@ -362,8 +358,6 @@ class FairRootManager : public TObject
     /// used for branches registered with RegisterAny; use of ptr here
     /// since type_info cannot be copied
     std::map<std::string, std::unique_ptr<TypeAddressPair const>> fAnyBranchMap;   //!
-    /// keeps track of branches which are supposed to be persistified
-    std::vector<std::string> fPersistentBranchesAny;
 
     /**Branch id for this run */
     Int_t fBranchSeqId;
