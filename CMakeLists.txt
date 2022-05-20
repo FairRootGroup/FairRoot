@@ -146,6 +146,12 @@ include(ROOTMacros)
 #Check the compiler and set the compile and link flags
 Check_Compiler()
 
+if(CMAKE_CXX_CLANG_TIDY)
+  # Force clang-tidy to the same C++ Standard
+  list(APPEND CMAKE_CXX_CLANG_TIDY
+       "--extra-arg=-std=c++${CMAKE_CXX_STANDARD}")
+endif()
+
 fairroot_check_root_cxxstd_compatibility()
 
 if(ROOT_vmc_FOUND)
