@@ -248,6 +248,11 @@ void FairRootFileSink::RegisterImpl(const char* /* name */, const char* folderNa
 
 void FairRootFileSink::RegisterAny(const char* brname, const std::type_info& oi, const std::type_info& pi, void* obj)
 {
+    if (fPersistentBranchesDone) {
+        LOG(warning) << "FairRootFileSink::RegisterAny called for branch \"" << brname
+                     << "\" after FairRootFileSink::CreatePersistentBranchesAny has already completed. "
+                        "The branch will not be registered.";
+    }
     fPersistentBranchesMap[brname] = std::unique_ptr<TypeAddressPair const>(new TypeAddressPair(oi, pi, obj));
 }
 
@@ -303,6 +308,7 @@ bool FairRootFileSink::CreatePersistentBranchesAny()
         LOG(info) << "Creating branch for " << iter.first.c_str() << " with address " << obj;
         fOutTree->Branch(iter.first.c_str(), tname.c_str(), obj);
     }
+    fPersistentBranchesDone = true;
     return true;
 }
 
