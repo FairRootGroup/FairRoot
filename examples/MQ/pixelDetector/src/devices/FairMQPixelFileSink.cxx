@@ -41,8 +41,8 @@ void FairMQPixelFileSink::InitTask()
     fFileOption = "RECREATE";
     fTreeName = "cbmsim";
 
-    if (::getenv("DDS_SESSION_ID")) {
-        std::string DDS_SESSION_ID = ::getenv("DDS_SESSION_ID");
+    if (const char* dds_session_env = ::getenv("DDS_SESSION_ID")) {
+        std::string DDS_SESSION_ID{dds_session_env};
         if (fFileName.length() > 5) {
             DDS_SESSION_ID = "." + DDS_SESSION_ID + ".root";
             fFileName.replace(fFileName.length() - 5, 5, DDS_SESSION_ID.c_str());
