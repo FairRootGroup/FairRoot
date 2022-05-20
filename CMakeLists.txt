@@ -137,6 +137,12 @@ if(SIMPATH)
   set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${SIMPATH}/lib)
 endif()
 
+if(CMAKE_CXX_CLANG_TIDY)
+  # Force clang-tidy to the same C++ Standard
+  list(APPEND CMAKE_CXX_CLANG_TIDY
+       "--extra-arg=-std=c++${CMAKE_CXX_STANDARD}")
+endif()
+
 # FairRoot only supports ROOT6, so check which version is available
 find_package2(PUBLIC ROOT  VERSION 6.10.00  REQUIRED)
 if(ROOT_vmc_FOUND)
