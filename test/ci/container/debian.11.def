@@ -1,0 +1,30 @@
+Bootstrap: docker
+From: debian:11
+
+%files
+    fairsoft-install.py /opt/fairsoft/fairsoft-install.py
+
+%post
+    apt-get -q update
+    apt-get -q -y dist-upgrade
+    apt-get -q -y --no-install-recommends install apt-utils
+    (
+      echo "debconf debconf/frontend select Noninteractive"
+      echo "tzdata	tzdata/Areas	select	Europe"
+      echo "tzdata	tzdata/Zones/Europe	select	Berlin"
+    ) | debconf-set-selections
+    apt-get -q -y --no-install-recommends install lsb-release git ca-certificates python3-distro
+
+    apt-get -y --no-install-recommends install \
+        liblzma-dev liblz4-dev nlohmann-json3-dev libzstd-dev libftgl-dev
+
+    chmod a+x /opt/fairsoft/fairsoft-install.py
+    ln -s /opt/fairsoft /fairsoft
+    /opt/fairsoft/fairsoft-install.py --setup-only dev
+    for release in apr22 apr21
+    do
+        /opt/fairsoft/fairsoft-install.py ${release}_patches
+        /opt/fairsoft/fairsoft-install.py ${release}_patches ${release}_patches_mt -- -DGEANT4MT=ON
+    done
+
+    apt-get -y clean
