@@ -2,7 +2,7 @@ Bootstrap: docker
 From: ubuntu:rolling
 
 %files
-    fairsoft-install.sh /opt/fairsoft/fairsoft-install.sh
+    fairsoft-install.py /opt/fairsoft/fairsoft-install.py
 
 %post
     apt-get -q update
@@ -13,13 +13,17 @@ From: ubuntu:rolling
       echo "tzdata	tzdata/Areas	select	Europe"
       echo "tzdata	tzdata/Zones/Europe	select	Berlin"
     ) | debconf-set-selections
-    apt-get -q -y --no-install-recommends install lsb-release git ca-certificates
+    apt-get -q -y --no-install-recommends install lsb-release git ca-certificates python3-distro
 
     # Some extra tools for development/etc
     apt-get -y --no-install-recommends install \
         doxygen graphviz clang-format clang-tidy
 
-    chmod a+x /opt/fairsoft/fairsoft-install.sh
+    apt-get -y --no-install-recommends install \
+        liblzma-dev liblz4-dev nlohmann-json3-dev libzstd-dev libftgl-dev
+
+    chmod a+x /opt/fairsoft/fairsoft-install.py
     ln -s /opt/fairsoft /fairsoft
-    /opt/fairsoft/fairsoft-install.sh dev
+    /opt/fairsoft/fairsoft-install.py dev
+
     apt-get -y clean
