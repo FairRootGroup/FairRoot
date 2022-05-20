@@ -93,6 +93,8 @@ class FairRootFileSink : public FairSink
     /**File Header*/
     FairFileHeader* fFileHeader;   //!
 
+    bool fPersistentBranchesDone{false};   //!
+
     ClassDef(FairRootFileSink, 1);
 };
 
