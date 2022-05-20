@@ -24,6 +24,7 @@ def jobMatrix(String prefix, String type, List specs) {
     nodes[label] = {
       node(selector) {
         githubNotify(context: "${prefix}/${label}", description: 'Building ...', status: 'PENDING')
+        def logpattern = 'build/Testing/Temporary/*.log'
         try {
           deleteDir()
           checkout scm
@@ -62,7 +63,6 @@ def jobMatrix(String prefix, String type, List specs) {
             sh "./slurm-submit.sh \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
           }
           if (check == "warnings") {
-            def logpattern = 'build/Testing/Temporary/*.log'
             discoverGitReferenceBuild()
             recordIssues(tools: [clangTidy(pattern: logpattern)],
                          filters: [excludeFile('build/.*/G__.*[.]cxx')],
@@ -75,6 +75,9 @@ def jobMatrix(String prefix, String type, List specs) {
           deleteDir()
           githubNotify(context: "${prefix}/${label}", description: 'Success', status: 'SUCCESS')
         } catch (e) {
+          if (check == "warnings") {
+            archiveArtifacts(artifacts: logpattern, allowEmptyArchive: true, fingerprint: true)
+          }
           deleteDir()
           githubNotify(context: "${prefix}/${label}", description: 'Error', status: 'ERROR')
           throw e
