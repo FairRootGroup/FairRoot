@@ -34,7 +34,7 @@ class Ex1Sampler : public fair::mq::Device
         fFileName = fConfig->GetValue<std::string>("input-file");
         fInputFile = TFile::Open(fFileName.c_str(), "READ");
         if (fInputFile) {
-            fTree = static_cast<TTree*>(fInputFile->Get("cbmsim"));
+            fTree = fInputFile->Get<TTree>("cbmsim");
             if (fTree) {
                 fTree->SetBranchAddress("MyDigi", &fInput);
             } else {

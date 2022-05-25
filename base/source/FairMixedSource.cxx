@@ -221,11 +221,11 @@ Bool_t FairMixedSource::Init()
 
     // Get the folder structure from file which describes the input tree.
     // There are two different names possible, so check both.
-    fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get(FairRootManager::GetFolderName()));
+    fCbmroot = fRootFile->Get<TFolder>(FairRootManager::GetFolderName());
     if (!fCbmroot) {
-        fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get("cbmroot"));
+        fCbmroot = fRootFile->Get<TFolder>("cbmroot");
         if (!fCbmroot) {
-            fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get("cbmout"));
+            fCbmroot = fRootFile->Get<TFolder>("cbmout");
             if (!fCbmroot) {
                 fCbmroot = gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
             } else {
@@ -246,7 +246,7 @@ Bool_t FairMixedSource::Init()
     // with a different branch structure but the same tree name. ROOT
     // probably only checks if the name of the tree is the same.
 
-    TList* list = dynamic_cast<TList*>(fRootFile->Get("BranchList"));
+    auto list = fRootFile->Get<TList>("BranchList");
     if (list == 0)
         LOG(fatal) << "No Branch list in input file";
     TString chainName = fInputTitle;
@@ -488,11 +488,11 @@ Bool_t FairMixedSource::OpenBackgroundChain()
 {
     // Get the folder structure from file which describes the input tree.
     // There are two different names possible, so check both.
-    fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get(FairRootManager::GetFolderName()));
+    fCbmroot = fRootFile->Get<TFolder>(FairRootManager::GetFolderName());
     if (!fCbmroot) {
-        fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get("cbmroot"));
+        fCbmroot = fRootFile->Get<TFolder>("cbmroot");
         if (!fCbmroot) {
-            fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get("cbmout"));
+            fCbmroot = fRootFile->Get<TFolder>("cbmout");
             if (!fCbmroot) {
                 fCbmroot = gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
             } else {
@@ -514,7 +514,7 @@ Bool_t FairMixedSource::OpenBackgroundChain()
     // with a different branch structure but the same tree name. ROOT
     // probably only checks if the name of the tree is the same.
 
-    TList* list = dynamic_cast<TList*>(fRootFile->Get("BranchList"));
+    auto list = fRootFile->Get<TList>("BranchList");
     TString chainName = "BGInChain";
     fInputLevel.push_back(chainName);
     if (list) {
