@@ -84,7 +84,11 @@ void FairParRootFile::readVersions(FairRtdbRun* currentRun)
     // in the ROOT file
     delete run;
 
-    run = static_cast<FairRtdbRun*>(RootFile->Get((const_cast<char*>(currentRun->GetName()))));
+    run = RootFile->Get<FairRtdbRun>(currentRun->GetName());
+    if (!run) {
+        LOG(warning) << "FairParRootFile::readVersions(" << RootFile->GetName() << "): Reading run "
+                     << currentRun->GetName() << " failed";
+    }
     // cout << "-I- FairParRootFile :: readversions " << currentRun->GetName() << " : " << run << endl;
 }
 

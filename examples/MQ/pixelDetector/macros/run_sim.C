@@ -131,9 +131,9 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0,
     cout << "Real time " << rtime << " s, CPU time " << ctime << "s" << endl << endl;
 
     auto outputFile = TFile::Open(outFile);
-    auto outputTree = dynamic_cast<TTree*>(outputFile->Get("cbmsim"));
+    auto outputTree = outputFile->Get<TTree>("cbmsim");
     outputTree->Draw("PixelPoint.fTime", "", "goff");
-    auto htemp = dynamic_cast<TH1F*>(outputFile->Get("htemp"));
+    auto htemp = outputFile->Get<TH1F>("htemp");
     int outputTreeEntries = outputTree->GetEntries();
     int outputPoints = (int)(htemp->GetEntries());
     double outputTime = htemp->GetMean();
