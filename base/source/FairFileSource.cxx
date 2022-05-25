@@ -178,11 +178,11 @@ Bool_t FairFileSource::Init()
 
     // Get the folder structure from file which describes the input tree.
     // There are two different names possible, so check both.
-    fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get(FairRootManager::GetFolderName()));
+    fCbmroot = fRootFile->Get<TFolder>(FairRootManager::GetFolderName());
     if (!fCbmroot) {
-        fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get("cbmroot"));
+        fCbmroot = fRootFile->Get<TFolder>("cbmroot");
         if (!fCbmroot) {
-            fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get("cbmout"));
+            fCbmroot = fRootFile->Get<TFolder>("cbmout");
             if (!fCbmroot) {
                 fCbmroot = gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
             } else {
@@ -203,7 +203,7 @@ Bool_t FairFileSource::Init()
     // branch structure. Without this check it is possible to add trees
     // with a different branch structure but the same tree name. ROOT
     // probably only checks if the name of the tree is the same.
-    TList* list = dynamic_cast<TList*>(fRootFile->Get("BranchList"));
+    auto list = fRootFile->Get<TList>("BranchList");
     if (list == 0) {
         LOG(fatal) << "No Branch list in input file";
     }
@@ -288,7 +288,7 @@ Bool_t FairFileSource::Init()
 
     AddFriendsToChain();
 
-    TList* timebasedlist = dynamic_cast<TList*>(fRootFile->Get("TimeBasedBranchList"));
+    auto timebasedlist = fRootFile->Get<TList>("TimeBasedBranchList");
     if (timebasedlist == 0) {
         LOG(warn) << "No time based branch list in input file";
     } else {
@@ -523,18 +523,17 @@ void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
     TDirectory::TContext restorecwd{};
     TFile* f = TFile::Open(inputFile);
 
-    TFolder* added = nullptr;
     TString folderName1 = FairRootManager::GetFolderName();
     TString folderName = Form("/%s", folderName1.Data());
-    added = dynamic_cast<TFolder*>(f->Get(folderName1));
+    auto added = f->Get<TFolder>(folderName1);
     if (!added) {
         folderName = "/cbmout";
         folderName1 = "cbmout";
-        added = dynamic_cast<TFolder*>(f->Get("cbmout"));
+        added = f->Get<TFolder>("cbmout");
         if (!added) {
             folderName = "/cbmroot";
             folderName1 = "cbmroot";
-            added = dynamic_cast<TFolder*>(f->Get("cbmroot"));
+            added = f->Get<TFolder>("cbmroot");
             if (!added) {
                 LOG(fatal) << "Could not find folder cbmout nor cbmroot.";
                 exit(-1);
@@ -546,7 +545,7 @@ void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
     fListFolder->Add(added);
 
     /**Get The list of branches from the friend file and add it to the actual list*/
-    TList* list = dynamic_cast<TList*>(f->Get("BranchList"));
+    auto list = f->Get<TList>("BranchList");
     TString chainName = inputLevel;
     fInputLevel.push_back(chainName);
     if (list) {

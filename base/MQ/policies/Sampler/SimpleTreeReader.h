@@ -70,7 +70,7 @@ class BaseSimpleTreeReader
     {
         fInputFile = TFile::Open(fFileName.c_str(), "READ");
         if (fInputFile) {
-            fTree = static_cast<TTree*>(fInputFile->Get(fTreeName.c_str()));
+            fTree = fInputFile->Get<TTree>(fTreeName.c_str());
             if (fTree) {
                 fTree->SetBranchAddress(fBranchName.c_str(), &fInput);
                 fIndexMax = fTree->GetEntries();

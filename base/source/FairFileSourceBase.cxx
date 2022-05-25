@@ -38,7 +38,7 @@ Bool_t FairFileSourceBase::CompareBranchList(TFile* fileHandle, TString inputLev
     // the list. If in the end no branch is left in the list everything is
     // fine.
     set<TString>::iterator iter1;
-    TList* list = dynamic_cast<TList*>(fileHandle->Get("BranchList"));
+    auto list = fileHandle->Get<TList>("BranchList");
     if (list) {
         TObjString* Obj = 0;
         for (Int_t i = 0; i < list->GetEntries(); i++) {

@@ -222,7 +222,7 @@ class RootOutFileManager
 
         // if given option is update attempt to get tree from file
         if (fFileOption == "UPDATE") {
-            fTree = static_cast<TTree*>(fOutFile->Get(fTreeName.c_str()));
+            fTree = fOutFile->Get<TTree>(fTreeName.c_str());
             if (fTree) {
                 updateTree = true;
                 LOG(info) << "Update tree";
@@ -275,7 +275,7 @@ class RootOutFileManager
         std::vector<DataType> tempObj;
 
         if (file) {
-            fTree = static_cast<TTree*>(file->Get(fTreeName.c_str()));
+            fTree = file->Get<TTree>(fTreeName.c_str());
         } else {
             LOG(error) << "Could not open file" << fTreeName.c_str();
         }
@@ -332,7 +332,7 @@ class RootOutFileManager
 
         // if given option is update attempt to get tree from file
         if (fFileOption == "UPDATE") {
-            fTree = static_cast<TTree*>(fOutFile->Get(fTreeName.c_str()));
+            fTree = fOutFile->Get<TTree>(fTreeName.c_str());
             if (fTree) {
                 updateTree = true;
                 LOG(info) << "Update tree";
