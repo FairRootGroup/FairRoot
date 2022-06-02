@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -17,6 +17,7 @@
 
 #include <TGenericClassInfo.h>   // for TGenericClassInfo
 #include <TParticlePDG.h>        // for TParticlePDG
+#include <array>                 // for std::array
 #include <fairlogger/Logger.h>   // for LOG
 #include <math.h>                // for sqrt
 #include <stdio.h>               // for printf
@@ -36,15 +37,13 @@ FairRKPropagator::FairRKPropagator(FairField* field)
     , fPCAPropagationType(0)
     , fPCAPropagationDir(1)
     , fPCAPropagationPar(nullptr)
-
 {
-    //  fMaxStep=10.0;
+    if (!fMagField) {
+        LOG(warning) << "FairRKPropagator: No magnetic field";
+    }
 }
 //______________________________________________________________________________
-FairRKPropagator::~FairRKPropagator()
-{
-    // Destructor.
-}
+FairRKPropagator::~FairRKPropagator() = default;
 
 double FairRKPropagator::GetChargeFromPDG(int pdg)
 {
@@ -505,7 +504,6 @@ double FairRKPropagator::Step(double Charge, double* vecRKIn, double* vecOut)
 //______________________________________________________________________________
 double FairRKPropagator::OneStepRungeKutta(double charge, double step, double* vect, double* vout)
 {
-
     // Wrapper to step with method RungeKutta.
 
     /// ******************************************************************
@@ -530,7 +528,7 @@ double FairRKPropagator::OneStepRungeKutta(double charge, double step, double* v
     /// *                *
     /// ******************************************************************
 
-    double f[4];
+    std::array<double, 4> magneticfield{0., 0., 0., 0.};
     double xyzt[3];
     double secxs[4], secys[4], seczs[4];   // hxp[3];
     //  double /*g1 , g2, g3, g4, g5, g6,*/;
@@ -577,7 +575,9 @@ double FairRKPropagator::OneStepRungeKutta(double charge, double step, double* v
             h = rest;
         }
 
-        fMagField->GetFieldValue(vout, f);
+        if (fMagField) {
+            fMagField->GetFieldValue(vout, magneticfield.data());
+        }
 
         // * start of integration
         double x = vout[0];
@@ -594,9 +594,9 @@ double FairRKPropagator::OneStepRungeKutta(double charge, double step, double* v
 
         //   printf(" -------------------------------------------  h2 = %f\n",h2);
 
-        secxs[0] = (b * f[2] - c * f[1]) * ph2;
-        secys[0] = (c * f[0] - a * f[2]) * ph2;
-        seczs[0] = (a * f[1] - b * f[0]) * ph2;
+        secxs[0] = (b * magneticfield[2] - c * magneticfield[1]) * ph2;
+        secys[0] = (c * magneticfield[0] - a * magneticfield[2]) * ph2;
+        seczs[0] = (a * magneticfield[1] - b * magneticfield[0]) * ph2;
         double ang2 = (secxs[0] * secxs[0] + secys[0] * secys[0] + seczs[0] * seczs[0]);
         if (ang2 > kpisqua) {
             break;
@@ -624,21 +624,23 @@ double FairRKPropagator::OneStepRungeKutta(double charge, double step, double* v
         xyzt[1] = yt;
         xyzt[2] = zt;
 
-        fMagField->GetFieldValue(xyzt, f);
+        if (fMagField) {
+            fMagField->GetFieldValue(xyzt, magneticfield.data());
+        }
 
         double at = a + secxs[0];
         double bt = b + secys[0];
         double ct = c + seczs[0];
 
-        secxs[1] = (bt * f[2] - ct * f[1]) * ph2;
-        secys[1] = (ct * f[0] - at * f[2]) * ph2;
-        seczs[1] = (at * f[1] - bt * f[0]) * ph2;
+        secxs[1] = (bt * magneticfield[2] - ct * magneticfield[1]) * ph2;
+        secys[1] = (ct * magneticfield[0] - at * magneticfield[2]) * ph2;
+        seczs[1] = (at * magneticfield[1] - bt * magneticfield[0]) * ph2;
         at = a + secxs[1];
         bt = b + secys[1];
         ct = c + seczs[1];
-        secxs[2] = (bt * f[2] - ct * f[1]) * ph2;
-        secys[2] = (ct * f[0] - at * f[2]) * ph2;
-        seczs[2] = (at * f[1] - bt * f[0]) * ph2;
+        secxs[2] = (bt * magneticfield[2] - ct * magneticfield[1]) * ph2;
+        secys[2] = (ct * magneticfield[0] - at * magneticfield[2]) * ph2;
+        seczs[2] = (at * magneticfield[1] - bt * magneticfield[0]) * ph2;
         dxt = h * (a + secxs[2]);
         dyt = h * (b + secys[2]);
         dzt = h * (c + seczs[2]);
@@ -663,15 +665,17 @@ double FairRKPropagator::OneStepRungeKutta(double charge, double step, double* v
         xyzt[1] = yt;
         xyzt[2] = zt;
 
-        fMagField->GetFieldValue(xyzt, f);
+        if (fMagField) {
+            fMagField->GetFieldValue(xyzt, magneticfield.data());
+        }
 
         z = z + (c + (seczs[0] + seczs[1] + seczs[2]) * kthird) * h;
         y = y + (b + (secys[0] + secys[1] + secys[2]) * kthird) * h;
         x = x + (a + (secxs[0] + secxs[1] + secxs[2]) * kthird) * h;
         //  printf(" Position 3 at  x=%f  y=%f  z=%f  \n", x, y, z);
-        secxs[3] = (bt * f[2] - ct * f[1]) * ph2;
-        secys[3] = (ct * f[0] - at * f[2]) * ph2;
-        seczs[3] = (at * f[1] - bt * f[0]) * ph2;
+        secxs[3] = (bt * magneticfield[2] - ct * magneticfield[1]) * ph2;
+        secys[3] = (ct * magneticfield[0] - at * magneticfield[2]) * ph2;
+        seczs[3] = (at * magneticfield[1] - bt * magneticfield[0]) * ph2;
         a = a + (secxs[0] + secxs[3] + 2. * (secxs[1] + secxs[2])) * kthird;
         b = b + (secys[0] + secys[3] + 2. * (secys[1] + secys[2])) * kthird;
         c = c + (seczs[0] + seczs[3] + 2. * (seczs[1] + seczs[2])) * kthird;
