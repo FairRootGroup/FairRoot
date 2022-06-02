@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2020-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -15,18 +15,21 @@
  */
 #ifndef FAIREVEMCTRACKS_H_
 #define FAIREVEMCTRACKS_H_
-#include <Rtypes.h>         // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>     // for Bool_t, Int_t
-#include "FairEveTracks.h"  // for FairEveTracks
-#include "FairTask.h"       // for InitStatus
-class FairMCTrack;  // lines 22-22
-class FairRKPropagator;  // lines 23-23
+
+#include "FairEveTracks.h"   // for FairEveTracks
+#include "FairTask.h"        // for InitStatus
+
+#include <FairRKPropagator.h>
+#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>   // for Bool_t, Int_t
+#include <memory>         // for std::unique_ptr
+
+class FairMCTrack;
 class TBuffer;
 class TClass;
 class TClonesArray;
-class TDatabasePDG;  // lines 24-24
+class TDatabasePDG;
 class TMemberInspector;
-
 
 class FairEveMCTracks : public FairEveTracks
 {
@@ -35,7 +38,7 @@ class FairEveMCTracks : public FairEveTracks
     Bool_t fShowSecondary;
     Bool_t fUsePdg;
     Int_t fPdgCut;
-    FairRKPropagator *fRK;
+    std::unique_ptr<FairRKPropagator> fRK{};
     TDatabasePDG *fPDG;
 
   protected:
@@ -44,7 +47,7 @@ class FairEveMCTracks : public FairEveTracks
 
   public:
     FairEveMCTracks();
-    void Repaint();
+    void Repaint() override;
     void SetPdgCut(Int_t pdg, Bool_t use)
     {
         fPdgCut = pdg;
@@ -55,9 +58,9 @@ class FairEveMCTracks : public FairEveTracks
         fShowPrimary = prim;
         fShowSecondary = sec;
     }
-    virtual InitStatus Init();
-    virtual ~FairEveMCTracks();
-    ClassDef(FairEveMCTracks, 0)
+    InitStatus Init() override;
+    ~FairEveMCTracks() override;
+    ClassDefOverride(FairEveMCTracks, 0)
 };
 
 #endif /* FAIREVEMCTRACKS_H_ */
