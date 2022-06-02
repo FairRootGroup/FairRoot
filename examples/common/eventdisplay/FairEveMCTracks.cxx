@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2020-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -41,7 +41,6 @@ FairEveMCTracks::FairEveMCTracks()
     , fShowSecondary(kTRUE)
     , fUsePdg(kFALSE)
     , fPdgCut(0)
-    , fRK(nullptr)
     , fPDG(nullptr)
 {
     SetElementNameTitle("FairMCTracks", "FairMCTracks");
@@ -155,12 +154,11 @@ InitStatus FairEveMCTracks::Init()
     FairRunAna *ana = FairRunAna::Instance();
     FairField *field = ana->GetField();
     if (field == nullptr) {
-        LOG(error) << "Lack of magnetic field map!";
-    } else {
-        fRK = new FairRKPropagator(field);
+        LOG(warning) << "Lack of magnetic field map!";
     }
+    fRK = std::make_unique<FairRKPropagator>(field);
     fPDG = TDatabasePDG::Instance();
     return FairEveTracks::Init();
 }
 
-FairEveMCTracks::~FairEveMCTracks() {}
+FairEveMCTracks::~FairEveMCTracks() = default;
