@@ -31,6 +31,7 @@ FairTutorialDet1::FairTutorialDet1()
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
+    , fIsInitialised(kFALSE)
     , fFairTutorialDet1PointCollection(new TClonesArray("FairTutorialDet1Point"))
 {}
 
@@ -43,6 +44,7 @@ FairTutorialDet1::FairTutorialDet1(const char* name, Bool_t active)
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
+    , fIsInitialised(kFALSE)
     , fFairTutorialDet1PointCollection(new TClonesArray("FairTutorialDet1Point"))
 {}
 
@@ -55,6 +57,7 @@ FairTutorialDet1::FairTutorialDet1(const FairTutorialDet1& rhs)
     , fTime(-1.)
     , fLength(-1.)
     , fELoss(-1)
+    , fIsInitialised(kFALSE)
     , fFairTutorialDet1PointCollection(new TClonesArray("FairTutorialDet1Point"))
 {}
 
@@ -68,7 +71,14 @@ FairTutorialDet1::~FairTutorialDet1()
 
 void FairTutorialDet1::Initialize()
 {
+
+    LOG(info) << "Initializing FairTutorialDet1";
+
+    // Prevent duplicate initialisation
+    assert(!fIsInitialised);
+
     FairDetector::Initialize();
+    fIsInitialised = kTRUE;
     /*
   FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
   FairTutorialDet1GeoPar* par=(FairTutorialDet1GeoPar*)(rtdb->getContainer("FairTutorialDet1GeoPar"));

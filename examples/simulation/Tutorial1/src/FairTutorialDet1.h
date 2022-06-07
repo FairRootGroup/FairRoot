@@ -95,6 +95,8 @@ class FairTutorialDet1 : public FairDetector
     Double32_t fLength;    //!  length
     Double32_t fELoss;     //!  energy loss
 
+    Bool_t fIsInitialised;   //!  prevent double initilization
+
     /** container for data points */
 
     TClonesArray* fFairTutorialDet1PointCollection;
