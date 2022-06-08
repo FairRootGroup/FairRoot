@@ -1,10 +1,22 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TFile.h>
+#include <TH1F.h>
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+#include <TTree.h>
+#include <iostream>
+#include <memory>
+
+using std::cout;
+using std::endl;
 
 void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0, Bool_t isMT = kFALSE)
 {
@@ -47,7 +59,7 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0,
     // ------------------------------------------------------------------------
 
     // -----   Create simulation run   ----------------------------------------
-    FairRunSim* run = new FairRunSim();
+    auto run = std::make_unique<FairRunSim>();
     run->SetName(mcEngine);   // Transport engine
     run->SetIsMT(isMT);       // Multi-threading mode (Geant4 only)
     run->SetSink(new FairRootFileSink(outFile));
@@ -130,17 +142,19 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0,
     cout << "Parameter file is " << parFile << endl;
     cout << "Real time " << rtime << " s, CPU time " << ctime << "s" << endl << endl;
 
-    auto outputFile = TFile::Open(outFile);
-    auto outputTree = outputFile->Get<TTree>("cbmsim");
+    std::unique_ptr<TFile> outputFile{TFile::Open(outFile)};
+    assert(outputFile);
+    std::unique_ptr<TTree> outputTree{outputFile->Get<TTree>("cbmsim")};
+    assert(outputTree);
     outputTree->Draw("PixelPoint.fTime", "", "goff");
-    auto htemp = outputFile->Get<TH1F>("htemp");
+    std::unique_ptr<TH1F> htemp{outputFile->Get<TH1F>("htemp")};
+    assert(htemp);
     int outputTreeEntries = outputTree->GetEntries();
     int outputPoints = (int)(htemp->GetEntries());
     double outputTime = htemp->GetMean();
-    delete htemp;
-    delete outputTree;
-    outputFile->Close();
-    delete outputFile;
+    htemp.reset();
+    outputTree.reset();
+    outputFile.reset();
 
     cout << endl;
     cout << "<DartMeasurement name=\"TreeEntries\" type=\"numeric/int\">";
