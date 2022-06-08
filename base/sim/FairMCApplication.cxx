@@ -526,9 +526,6 @@ void FairMCApplication::Stepping()
         TrackId = fMC->GetStack()->GetCurrentTrackNumber();
     }
 
-    Int_t copyNo;
-    Int_t id = fMC->CurrentVolID(copyNo);
-
     // If information about the tracks should be stored the information as to be
     // stored for any step.
     // Information about each single step has also to be stored for the other
@@ -546,6 +543,8 @@ void FairMCApplication::Stepping()
         }
     }
     if (fRadLenMan || fRadMapMan) {
+        Int_t copyNo;
+        Int_t id = fMC->CurrentVolID(copyNo);
         id = fMC->CurrentVolID(copyNo);
         auto modvoliter = (fParent ? fParent : this)->fModVolMap.find(id);
         if (fRadLenMan) {
@@ -1313,51 +1312,4 @@ void FairMCApplication::AddSensitiveModule(std::string volName, FairModule* modu
 {
     fMapSensitiveDetectors[volName] = module;
 }
-
-FairVolume* FairMCApplication::GetFairVolume()
-{
-    // Check if the volume with id is in the volume multimap.
-    // If it is not in the map the volume is not a sensitive volume
-    // and we do not call nay of our ProcessHits functions.
-
-    // If the volume is in the multimap, check in second step if the current
-    // copy is alredy inside the multimap.
-    // If the volume is not in the multimap add the copy of the volume to the
-    // multimap.
-    // In any case call the ProcessHits function for this specific detector.
-    Int_t copyNo;
-    Int_t id = fMC->CurrentVolID(copyNo);
-    fDisVol = 0;
-    Int_t fCopyNo = 0;
-    fVolIter = fVolMap.find(id);
-
-    if (fVolIter != fVolMap.end()) {
-
-        // Call Process hits for FairVolume with this id, copyNo
-        do {
-            fDisVol = fVolIter->second;
-            fCopyNo = fDisVol->getCopyNo();
-            if (copyNo == fCopyNo) {
-                return fDisVol;
-            }
-            ++fVolIter;
-        } while (fVolIter != fVolMap.upper_bound(id));
-
-        // Create new FairVolume with this id, copyNo.
-        // Use the FairVolume with the same id found in the map to get
-        // the link to the detector.
-        // Seems that this never happens (?)
-        // cout << "Volume not in map; fDisVol ? " << fDisVol << endl
-        FairVolume* fNewV = new FairVolume(fMC->CurrentVolName(), id);
-        fNewV->setMCid(id);
-        fNewV->setModId(fDisVol->getModId());
-        fNewV->SetModule(fDisVol->GetModule());
-        fNewV->setCopyNo(copyNo);
-        fVolMap.insert(pair<Int_t, FairVolume*>(id, fNewV));
-
-        return fNewV;
-    }
-    return 0;
-}
-
 ClassImp(FairMCApplication)

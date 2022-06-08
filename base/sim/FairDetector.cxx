@@ -12,10 +12,9 @@
 
 #include "FairDetector.h"
 
-#include "FairGeoNode.h"         // for FairGeoNode
-#include "FairLogger.h"          // for FairLogger, MESSAGE_ORIGIN
-#include "FairMCApplication.h"   // TEMPORARY until the depracated Bool_t ProcessHits() in use
-#include "FairModule.h"          // for FairModule::svList, etc
+#include "FairGeoNode.h"   // for FairGeoNode
+#include "FairLogger.h"    // for FairLogger, MESSAGE_ORIGIN
+#include "FairModule.h"    // for FairModule::svList, etc
 #include "FairRootManager.h"
 #include "FairVolume.h"   // for FairVolume
 
@@ -135,7 +134,8 @@ void FairDetector::ProcessHits()
         LOG(warning) << "        Replace with void FairDetector::ProcessHits(). ";
         return true;
     }();
-    ProcessHits(FairMCApplication::Instance()->GetFairVolume());
+    (void)printOnce;
+    ProcessHits(NULL);
     return;
 }
 

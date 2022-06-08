@@ -233,7 +233,7 @@ class FairMCApplication : public TVirtualMCApplication
      * Add module to the list of sensitive detectors.
      */
     void AddSensitiveModule(std::string volName, FairModule* module);
- 
+
     /**
      * Return non-owning pointer to FairRadGridManager
      */

@@ -149,11 +149,11 @@ class FairModule : public TVirtualMCSensitiveDetector
     FairVolume* getFairVolume(FairGeoNode* fNode);
     void AddSensitiveVolume(TGeoVolume* v);
 
-    virtual void EndOfEvent() {}
+    void EndOfEvent() override {}
 
-    virtual void Initialize() {}
+    void Initialize() override {}
 
-    virtual void ProcessHits() {}
+    void ProcessHits() override {}
 
   private:
     /** Re-implimented from ROOT:  TGeoMatrix::SetDefaultName()  */

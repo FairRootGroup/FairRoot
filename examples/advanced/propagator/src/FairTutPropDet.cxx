@@ -62,7 +62,7 @@ FairTutPropDet::~FairTutPropDet()
     }
 }
 
-Bool_t FairTutPropDet::ProcessHits(FairVolume* vol)
+void FairTutPropDet::ProcessHits()
 {
 
     /** This method is called from the MC stepping */
@@ -82,10 +82,11 @@ Bool_t FairTutPropDet::ProcessHits(FairVolume* vol)
     if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
         || TVirtualMC::GetMC()->IsTrackDisappeared()) {
         fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
-        fVolumeID = vol->getMCid();
+        Int_t copyNo;
+        fVolumeID = fMC->CurrentVolID(copyNo);
 
         if (fELoss == 0.) {
-            return kFALSE;
+            return;
         }
 
         // Taking stationNr from string is almost effortless.
@@ -110,7 +111,7 @@ Bool_t FairTutPropDet::ProcessHits(FairVolume* vol)
         stack->AddPoint(kTutProp);
     }
 
-    return kTRUE;
+    return;
 }
 
 void FairTutPropDet::EndOfEvent() { fFairTutPropPointCollection->Clear(); }
