@@ -15,6 +15,10 @@
 
 #include "FairGenericVMCConfig.h"
 
+// in case system yaml-cpp was compiled with an older boost version where boost::next was defined
+// in utility.hpp:
+#include <boost/next_prior.hpp>
+
 #include <string>
 #include <yaml-cpp/yaml.h>
 
