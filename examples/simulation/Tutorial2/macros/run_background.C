@@ -1,3 +1,6 @@
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
 #include <memory>
 
 void run_background(Int_t nEvents = 130)
@@ -51,7 +54,7 @@ void run_background(Int_t nEvents = 130)
     // -----   Create simulation run   ----------------------------------------
     auto run = std::make_unique<FairRunSim>();
     run->SetName("TGeant4");                       // Transport engine
-    run->SetSink(new FairRootFileSink(outFile));   // Output file
+    run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------
 

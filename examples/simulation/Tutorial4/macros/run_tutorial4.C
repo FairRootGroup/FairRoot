@@ -9,6 +9,7 @@
 #include <TObjString.h>
 #include <TStopwatch.h>
 #include <TSystem.h>
+#include <memory>
 
 void run_tutorial4(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t doAlign = true, Bool_t isMT = false)
 {
@@ -71,7 +72,7 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t doAl
     FairRunSim* run = new FairRunSim();
     run->SetName(mcEngine);                        // Transport engine
     run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
-    run->SetSink(new FairRootFileSink(outFile));   // Output file
+    run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------
 

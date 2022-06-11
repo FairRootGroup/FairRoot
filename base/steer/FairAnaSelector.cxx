@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -30,6 +30,7 @@
 #include <TProofOutputFile.h>   // for TProofOutputFile
 #include <TProofServ.h>         // for TProofServ
 #include <TSystem.h>            // for TSystem, gSystem
+#include <memory>               // for std::make_unique
 
 void FairAnaSelector::Init(TTree* tree)
 {
@@ -116,7 +117,7 @@ void FairAnaSelector::Init(TTree* tree)
         fRunAna->SetSource(fProofSource);
         LOG(info) << "FairAnaSelector::Init(): SetInTree done";
 
-        fRunAna->SetSink(new FairRootFileSink(fFile));
+        fRunAna->SetSink(std::make_unique<FairRootFileSink>(fFile));
         if (containerS == "kTRUE") {
             fRunAna->SetContainerStatic(kTRUE);
         } else {
