@@ -1,10 +1,16 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TRandom.h>
+#include <TString.h>
+#include <TSystem.h>
+#include <memory>
+
 void run_rutherford(Int_t nEvents = 10, TString mcEngine = "TGeant4", Bool_t isMT = true)
 {
     TString dir = gSystem->Getenv("VMCWORKDIR");
@@ -54,7 +60,7 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine = "TGeant4", Bool_t isM
     FairRunSim* run = new FairRunSim();
     run->SetName(mcEngine);                        // Transport engine
     run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
-    run->SetSink(new FairRootFileSink(outFile));   // Output file
+    run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------
 
