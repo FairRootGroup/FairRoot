@@ -1,8 +1,13 @@
+#include <TStopwatch.h>
+#include <TString.h>
+#include <iostream>
 #include <memory>
+
+using std::cout;
+using std::endl;
 
 void create_digis_mixed()
 {
-
     TStopwatch timer;
     timer.Start();
 
@@ -43,7 +48,7 @@ void create_digis_mixed()
 
     fRun->SetSource(fMixedSource);
 
-    fRun->SetSink(new FairRootFileSink(outFile));
+    fRun->SetSink(std::make_unique<FairRootFileSink>(outFile));
 
     //----- Mix using entries  ----------------------------------------
 

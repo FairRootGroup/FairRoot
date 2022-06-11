@@ -502,7 +502,7 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
     // and pass some data from master FairRunSim object
     FairRunSim* workerRun = new FairRunSim(kFALSE);
     workerRun->SetName(fRun->GetName());   // Transport engine
-    workerRun->SetSink(fRun->GetSink()->CloneSink());
+    workerRun->SetSink(std::unique_ptr<FairSink>{fRun->GetSink()->CloneSink()});
 
     // Trajectories filter is created explicitly as we do not call
     // FairRunSim::Init on workers

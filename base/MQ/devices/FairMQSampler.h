@@ -100,7 +100,7 @@ class FairMQSampler : public fair::mq::Device
 
         TString output = fInputFile;
         output.Append(".out.root");
-        fFairRunAna->SetSink(new FairRootFileSink(output.Data()));
+        fFairRunAna->SetSink(std::make_unique<FairRootFileSink>(output.Data()));
 
         fFairRunAna->AddTask(fSamplerTask);
 
