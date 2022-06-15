@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -11,7 +11,6 @@
 //
 #include "FairGeanePro.h"
 
-#include "FairGeaneApplication.h"   // for FairGeaneApplication
 #include "FairGeaneUtil.h"          // for FairGeaneUtil
 #include "FairLogger.h"
 #include "FairTrackPar.h"    // for FairTrackPar
@@ -52,10 +51,9 @@ FairGeanePro::FairGeanePro()
     , ftrklength(0.)
     , ftrktime(0.)
     , flag(0)
-    , fApp(FairGeaneApplication::Instance())
     , fPrintErrors(kTRUE)
 {
-    if (gMC3 == NULL) {
+    if (gMC3 == nullptr) {
         LOG(fatal) << "FairGeanePro::TGeant3 has not been initialized! ABORTING!";
         throw;
     }
@@ -82,12 +80,11 @@ FairGeanePro::FairGeanePro()
   fwire2 = TVector3(0., 0., 0.);
   */
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 5; j++) {
             trpmat[i][j] = 0.;
         }
-
-    //  fApp = FairGeaneApplication::Instance();
+    }
 
     //   fPropOption = "";
     for (int i = 0; i < 15; i++) {
@@ -128,7 +125,7 @@ FairGeanePro::FairGeanePro()
   */
 }
 
-FairGeanePro::~FairGeanePro() {}
+FairGeanePro::~FairGeanePro() = default;
 
 bool FairGeanePro::Propagate(FairTrackParH* TParam, FairTrackParH* TEnd, int PDG)
 {
@@ -380,7 +377,6 @@ bool FairGeanePro::Propagate(FairTrackParH* /*TStart*/, FairTrackParP* /*TEnd*/,
 
 bool FairGeanePro::Propagate(float* X1, float* P1, float* X2, float* P2, int PDG)
 {
-    //  fApp->GeanePreTrack(X1, P1, PDG);
     GeantCode = fdbPDG->ConvertPdgToGeant3(PDG);
     xlf[0] = 1000;
     gMC3->Eufill(1, ein, xlf);
@@ -400,7 +396,7 @@ bool FairGeanePro::Propagate(int PDG)
 
     GeantCode = fdbPDG->ConvertPdgToGeant3(PDG);
     // LOG(info) <<  " FairGeanePro::Propagate ---------------------------"<< "  " << x1[0]<< " "<< x1[1]<< "  "<<
-    // x1[2]; fApp->GeanePreTrack(x1, p1, PDG);
+    // x1[2];
     gMC3->Ertrak(x1, p1, x2, p2, GeantCode, fPropOption.Data());
     if (x2[0] < -1.E29) {
         return kFALSE;
@@ -1555,10 +1551,11 @@ void FairGeanePro::Track3ToPoint(TVector3 X1,
 
 void FairGeanePro::GetTransportMatrix(double trm[5][5])
 {
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 5; i++) {
         for (int j = 0; j < 5; j++) {
             trm[i][j] = trpmat[i][j];
         }
+    }
 }
 
 ClassImp(FairGeanePro);
