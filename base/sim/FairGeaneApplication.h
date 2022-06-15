@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -48,9 +48,14 @@ class FairGeaneApplication : public TVirtualMCApplication
     /** Define action at each step, dispatch the action to the corresponding detectors */
     void GeaneStepping() override;   // MC Application
     void ConstructGeometry() override;
-    /** Singelton instance
+    /**
+     * Singelton instance
+     * \deprecated Deprecated in v19, will be removed in v20.
      */
-    static FairGeaneApplication* Instance();
+    [[deprecated]] static FairGeaneApplication* Instance()
+    {
+        return static_cast<FairGeaneApplication*>(TVirtualMCApplication::Instance());
+    }
 
     /**pure virtual functions that hasve to be implimented */
 
@@ -82,12 +87,5 @@ class FairGeaneApplication : public TVirtualMCApplication
     FairGeaneApplication(const FairGeaneApplication&);
     FairGeaneApplication& operator=(const FairGeaneApplication&);
 };
-
-// inline functions
-
-inline FairGeaneApplication* FairGeaneApplication::Instance()
-{
-    return static_cast<FairGeaneApplication*>(TVirtualMCApplication::Instance());
-}
 
 #endif

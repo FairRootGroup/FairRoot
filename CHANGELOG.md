@@ -44,6 +44,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   * `FairRadGridManager::Instance()` - Consider using the
     `GetRadGridMan()` method on `FairMCApplcation`.
   * `FairRadMapManager::Instance`, `FairRadLenManager::Instance`
+  * `FairGeaneApplication::Instance`
 * Deprecated some other APIs
   * `FairGeoVector::round` was nonfunctional and never did anything.
   * `FairTask::*InputPersistance`:
