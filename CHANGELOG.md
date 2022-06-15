@@ -27,7 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * Note that `fair_pad` needs the width argument to be incremented by 1,
       and the COLOR option takes no argument.
 * Dropped `CheckCXX11Features`
-  * FairRoot assumes a recent compiler that fully supports C++11.
+  * FairRoot assumes a recent compiler that fully supports C++17.
   * Remove the following things from your `CMakeLists.txt`:
     * ```cmake
       Set(CheckSrcDir "${FAIRROOTPATH}/share/fairbase/cmake/checks")`
@@ -58,8 +58,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   It has been deprecated since 18.0.0.
 * `FairRootManager::Get{Tree,Folder}Name()` now return `const char *`.
   Do NOT `delete` the returned pointer!
+* Some headers were cleaned up and now `#include` fewer
+  other headers. You might have to add some `#includes`s
+  in your code.
 
-### Deprecated
+
+### Deprecations
+
+This release of FairRoot deprecates many APIs for various
+reasons. If you think you really require some API, please
+file an issue, so that we can see how to handle this.
+
 * Deprecating MbsAPI
   * This release deprecates MbsAPI. We plan to remove it completely in the next major release.
   * If you need it, speak up NOW.
@@ -67,7 +76,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   * It can still be enabled with `-DBUILD_MBS=ON`.
 * Deprecate some singleton-like APIs:
   * `FairRunAnaProof::Instance()` - keep a pointer to the
-    object after `new` in your code.
+    object after instantiating it in your code.
   * `FairRadGridManager::Instance()` - Consider using the
     `GetRadGridMan()` method on `FairMCApplcation`.
   * `FairRadMapManager::Instance`, `FairRadLenManager::Instance`
