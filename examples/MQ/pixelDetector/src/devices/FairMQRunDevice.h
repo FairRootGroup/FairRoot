@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2017-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2017-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -32,7 +32,7 @@ class FairMQRunDevice : public fair::mq::Device
     FairMQRunDevice& operator=(const FairMQRunDevice&) = delete;
     ~FairMQRunDevice() override;
 
-    virtual void SendBranches();
+    virtual void SendBranches(FairOnlineSink& sink);
 
     void SetSink(std::unique_ptr<FairOnlineSink> sink);
 
