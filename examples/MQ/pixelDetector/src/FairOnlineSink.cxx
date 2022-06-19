@@ -49,8 +49,9 @@ void FairOnlineSink::Fill()
     /// Fill the Root tree.
     LOG(debug) << "[" << FairRootManager::Instance()->GetInstanceId() << "] called FairOnlineSink::Fill()!!!!";
 
-    if (fMQRunDevice)
-        fMQRunDevice->SendBranches();
+    if (fMQRunDevice) {
+        fMQRunDevice->SendBranches(*this);
+    }
 }
 
 //_____________________________________________________________________________

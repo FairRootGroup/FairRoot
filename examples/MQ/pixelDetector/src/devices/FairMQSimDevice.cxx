@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -161,10 +161,10 @@ void FairMQSimDevice::UpdateParameterServer()
     printf("FairMQSimDevice::UpdateParameterServer() finished\n");
 }
 
-void FairMQSimDevice::SendBranches()
+void FairMQSimDevice::SendBranches(FairOnlineSink& sink)
 {
     if (NewStatePending()) {
         fRunSim->StopMCRun();
     }
-    FairMQRunDevice::SendBranches();
+    FairMQRunDevice::SendBranches(sink);
 }

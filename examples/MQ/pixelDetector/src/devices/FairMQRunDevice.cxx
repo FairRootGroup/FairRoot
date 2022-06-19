@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -59,13 +59,12 @@ void FairMQRunDevice::SendObject(TObject* obj, const std::string& chan)
     }
 }
 
-void FairMQRunDevice::SendBranches()
+void FairMQRunDevice::SendBranches(FairOnlineSink& sink)
 {
     /// Fill the Root tree.
     LOG(debug) << "called FairMQRunDevice::SendBranches()!!!!";
 
     TList* branchNameList = FairRootManager::Instance()->GetBranchNameList();
-    TObjString* ObjStr;
 
     for (auto& mi : fChannels) {
         LOG(debug) << "trying channel >" << mi.first << "<";
@@ -73,17 +72,14 @@ void FairMQRunDevice::SendBranches()
         fair::mq::Parts parts;
 
         for (Int_t t = 0; t < branchNameList->GetEntries(); t++) {
-            ObjStr = static_cast<TObjString*>(branchNameList->TList::At(t));
+            auto ObjStr = static_cast<TObjString*>(branchNameList->TList::At(t));
             LOG(debug) << "              branch >" << ObjStr->GetString().Data() << "<";
             std::string modifiedBranchName = std::string("#") + ObjStr->GetString().Data() + "#";
             if (mi.first.find(modifiedBranchName) != std::string::npos || mi.first.find("#all#") != std::string::npos) {
-                if ((static_cast<FairOnlineSink*>(FairRootManager::Instance()->GetSink()))
-                        ->IsPersistentBranchAny(ObjStr->GetString())) {
+                if (sink.IsPersistentBranchAny(ObjStr->GetString())) {
                     LOG(debug) << "Branch \"" << ObjStr->GetString() << "\" is persistent ANY";
                     if (ObjStr->GetString().CompareTo("MCTrack") == 0) {
-                        TClonesArray** mcTrackArray =
-                            (static_cast<FairOnlineSink*>(FairRootManager::Instance()->GetSink()))
-                                ->GetPersistentBranchAny<TClonesArray**>(ObjStr->GetString());
+                        auto mcTrackArray = sink.GetPersistentBranchAny<TClonesArray**>(ObjStr->GetString());
                         if (mcTrackArray) {
                             (*mcTrackArray)->SetName("MCTrack");
                             LOG(debug) << "[" << FairRootManager::Instance()->GetInstanceId() << "] mcTrack "
