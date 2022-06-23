@@ -21,10 +21,6 @@ IF(NOT DEFINED ENV{FAIRROOTPATH})
   MESSAGE(FATAL_ERROR "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot. Please set this variable and execute cmake again.")
 ENDIF(NOT DEFINED ENV{FAIRROOTPATH})
 
-IF(NOT DEFINED ENV{SIMPATH})
-   MESSAGE(FATAL_ERROR "You did not define the environment variable SIMPATH which is nedded to find the external packages. Please set this variable and execute cmake again.")
-ENDIF(NOT DEFINED ENV{SIMPATH})
-
 SET(SIMPATH $ENV{SIMPATH})
 SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
 
@@ -40,7 +36,7 @@ find_package(FairCMakeModules 0.2 QUIET REQUIRED)
 include(FairFindPackage2)
 include(FairSummary)
 
-find_package2(PUBLIC FairRoot)
+find_package2(PUBLIC FairRoot VERSION 19.0 REQUIRED)
 
 # Load some basic macros which are needed later on
 include(FairMacros)
