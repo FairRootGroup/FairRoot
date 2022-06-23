@@ -305,7 +305,7 @@ EndMacro(Generate_Exe_Script)
 ################################################################################
 
 Macro (Generate_Version_Info)
-IF(FAIRROOT_FOUND)
+ if(FairRoot_FOUND)
 
   Add_Custom_Target(svnheader ALL)
 
@@ -316,7 +316,7 @@ IF(FAIRROOT_FOUND)
                      -DFAIRROOT=${FAIRROOT_CMAKEMOD_DIR}
                      -P ${FAIRROOT_CMAKEMOD_DIR}/modules/GenerateVersionInfo.cmake
                       )
-ELSE(FAIRROOT_FOUND)
+ else()
   Add_Custom_Target(svnheader ALL)
   Add_Custom_Command(TARGET svnheader
                      COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${CMAKE_SOURCE_DIR}
@@ -324,13 +324,12 @@ ELSE(FAIRROOT_FOUND)
                      -DINCLUDE_OUTPUT_DIRECTORY=${INCLUDE_OUTPUT_DIRECTORY}
                      -P ${CMAKE_SOURCE_DIR}/cmake/modules/GenerateVersionInfo.cmake
 		     )
-ENDIF(FAIRROOT_FOUND)
-
+ endif()
 EndMacro (Generate_Version_Info)
 ################################################################################
 
 Macro (SetBasicVariables)
-IF(FAIRROOT_FOUND)
+if(FairRoot_FOUND)
   Set(BASE_INCLUDE_DIRECTORIES
     ${FAIRROOT_INCLUDE_DIR}
     ${VMC_INCLUDE_DIRS}
@@ -343,16 +342,14 @@ IF(FAIRROOT_FOUND)
   Set(ROOT_INCLUDE_PATH
       ${FAIRROOT_INCLUDE_DIR}
      )
-ENDIF(FAIRROOT_FOUND)
 
-IF(FAIRROOT_FOUND)
   Set(FAIRLIBDIR ${FAIRROOT_LIBRARY_DIR})
-ELSE(FAIRROOT_FOUND)
+else()
   Set(FAIRLIBDIR ${CMAKE_BINARY_DIR}/lib)
-ENDIF(FAIRROOT_FOUND)
+endif()
 Set(LD_LIBRARY_PATH  ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
 
-if(FAIRROOT_FOUND)
+if(FairRoot_FOUND)
   include_directories(${BASE_INCLUDE_DIRECTORIES})
   include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 endif()
