@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+set -x -e
 
 CURRENT_DIR=`pwd`
 SOURCE_DIR=@CMAKE_SOURCE_DIR@
@@ -12,10 +12,20 @@ cd project_stl_containers
 ./rename.sh TestProj Tst det
 mkdir build
 cd build
-export SIMPATH=@SIMPATH@
+export CMAKE_PREFIX_PATH="@SIMPATH@${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
 export FAIRROOTPATH=@CMAKE_INSTALL_PREFIX@
 cmake -DCMAKE_CXX_STANDARD=@CMAKE_CXX_STANDARD@ ..
+
+if [ "$1" = "--double-configure" ]
+then
+    echo "*** Calling cmake configure again:"
+    # Check if all the cache variables
+    # are good for a reconfiguration step
+    cmake ..
+fi
+
 make
+
 if [ $? -eq 0 ]; then
     echo 'Test successful.'
 fi
