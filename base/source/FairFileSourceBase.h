@@ -21,6 +21,7 @@
 class FairFileSourceBase : public FairSource
 {
   public:
+    ~FairFileSourceBase() override;
     void Reset() override {}
     Source_Type GetSourceType() override { return kFILE; }
     void SetParUnpackers() override {}
@@ -32,7 +33,6 @@ class FairFileSourceBase : public FairSource
   protected:
     FairFileSourceBase()
         : FairSource(){};
-    ~FairFileSourceBase() override;
 
     std::map<TString, std::list<TString>> fCheckInputBranches{};   //!
 

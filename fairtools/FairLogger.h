@@ -117,14 +117,15 @@ class FairLogger
 
     void SetScreenStreamToCerr(bool /* useCerr */) {}
 
+  protected:
+    ~FairLogger() = default;
+
   private:
     static FairLogger* instance;
 
     FairLogger();
     FairLogger(const FairLogger&);
     FairLogger operator=(const FairLogger&);
-
-    ~FairLogger() {}
 
     void Log(fair::Severity level,
              const char* file,
