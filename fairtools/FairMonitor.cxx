@@ -61,7 +61,12 @@ FairMonitor::FairMonitor()
     , fTaskPos()
 {}
 
-FairMonitor::~FairMonitor() {}
+FairMonitor::~FairMonitor()
+{
+    if (instance == this) {
+        instance = nullptr;
+    }
+}
 
 FairMonitor* FairMonitor::GetMonitor()
 {
