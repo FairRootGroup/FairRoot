@@ -6,8 +6,6 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#if !defined(__CLING__) || defined(__ROOTCLING__)
-#include <iostream>
 #include "FairBoxGenerator.h"
 #include "FairCave.h"
 #include "FairParRootFileIo.h"
@@ -21,6 +19,9 @@
 
 #include <TRandom3.h>
 #include <TStopwatch.h>
+
+#if !defined(__CLING__) || defined(__ROOTCLING__)
+#include <iostream>
 
 using std::cout;
 using std::endl;

@@ -222,7 +222,7 @@ set(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
 )
 set(PROJECT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
-find_package2(PUBLIC yaml-cpp)
+find_package2(PUBLIC yaml-cpp REQUIRED)
 # Workaround missing exported include directories
 # Upstream has fixed this in https://github.com/jbeder/yaml-cpp/commit/ab5f9259a4e67d3fe0e4832bd407a9e596e2d884 (since 0.6.3)
 if(yaml-cpp_FOUND)
