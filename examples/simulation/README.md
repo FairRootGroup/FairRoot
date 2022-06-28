@@ -1,16 +1,16 @@
-# Examples
+# Simulation Examples {#ex_simulation}
 
-## Tutorial1
+- \subpage ex_sim_tutorial1
 
-Implement a simple detector using the old ASCII interface to describe the geometry.
+  Implement a simple detector using the old ASCII interface to describe the geometry.
 
-## Tutorial2
+- \subpage ex_sim_tutorial2
 
-Reading and writing parameters
+  Reading and writing parameters
 
-## Tutorial4
+- \subpage ex_sim_tutorial4
 
-ROOT geometry as input for detector description
+  ROOT geometry as input for detector description
 
 ## rutherford
 

@@ -1,4 +1,4 @@
-Example 7: Communicating with ParameterMQServer
+Example 7: Communicating with ParameterMQServer {#ex_mq_parameters}
 ===============
 
 This example shows how to communicate with the ParameterMQServer, that retrieves parameters from FairRuntimeDb.

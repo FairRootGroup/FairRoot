@@ -1,4 +1,4 @@
-# MC simulations in FairMQ
+# MC simulations in FairMQ {#ex_mq_pixel_simsplit}
 
 The example shows the possibility to separate the generation of the MC events from their transport in Geant engines.
 
