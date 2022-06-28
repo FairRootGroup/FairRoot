@@ -1,4 +1,4 @@
-## Tutorial2
+# Tutorial2 {#ex_sim_tutorial2}
 
 This example show you how to:
 
