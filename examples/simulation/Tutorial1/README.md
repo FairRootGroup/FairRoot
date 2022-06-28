@@ -1,4 +1,5 @@
-## Tutorial1:
+# Tutorial1 {#ex_sim_tutorial1}
+
 How to implement a simple detector using the old ASCII interface to describe the geometry (see Detector Geometry and Media for more details about this geometry interface)
 See also Adding new detector for a detailed description of the detector class implementation, MC point class and the CMakeLists.txt
 

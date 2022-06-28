@@ -1,4 +1,4 @@
-# common
+# common {#ex_common}
 
 This directory contains common stuff needed by different examples for simulation and reconstruction.
 

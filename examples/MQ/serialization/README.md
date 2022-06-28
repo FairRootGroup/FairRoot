@@ -1,4 +1,4 @@
-# Serialization Examples
+# Serialization Examples {#ex_mq_serialization}
 
 ## Quick start
 
