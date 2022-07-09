@@ -223,6 +223,14 @@ class FairMCApplication : public TVirtualMCApplication
 
   protected:
     // data members
+    /**
+     * \brief Main instance
+     *
+     * Only set for instances created by \ref CloneForWorker
+     * and points to the instance from which the clone was
+     * created
+     */
+    const FairMCApplication* fParent{nullptr};   //!
     /**List of active detector */
     TRefArray* fActiveDetectors;
     /**List of FairTask*/
@@ -310,8 +318,6 @@ class FairMCApplication : public TVirtualMCApplication
 
     FairRunInfo fRunInfo;   //!
     Bool_t fGeometryIsInitialized;
-
-    static FairMCApplication* fgMasterInstance;
 };
 
 // inline functions

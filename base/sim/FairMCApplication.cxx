@@ -69,8 +69,6 @@ std::mutex mtx;       // mutex for critical section
 
 using std::pair;
 
-FairMCApplication* FairMCApplication::fgMasterInstance = 0;
-
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication(const char* name, const char* title, TObjArray* ModList, const char*)
     : TVirtualMCApplication(name, title)
@@ -147,9 +145,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     fMcVersion = -1;
     // Initialise fTrajFilter pointer
     fTrajFilter = nullptr;
-
-    // This ctor is used to construct the application on master
-    fgMasterInstance = this;
 }
 
 //_____________________________________________________________________________
@@ -475,7 +470,7 @@ void FairMCApplication::PreTrack()
 //_____________________________________________________________________________
 TVirtualMCApplication* FairMCApplication::CloneForWorker() const
 {
-    mtx.lock();
+    std::lock_guard guard(mtx);
     LOG(info) << "FairMCApplication::CloneForWorker ";
 
     // Create new FairRunSim object on worker
@@ -493,8 +488,7 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
     // Create new FairMCApplication object on worker
     FairMCApplication* workerApplication = new FairMCApplication(*this);
     workerApplication->SetGenerator(fEvGen->ClonePrimaryGenerator());
-
-    mtx.unlock();
+    workerApplication->fParent = this;
 
     return workerApplication;
 }
@@ -620,15 +614,15 @@ void FairMCApplication::Stepping()
             fTrajFilter->GetCurrentTrk()->AddPoint(fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z(), fTrkPos.T());
         }
     }
-    if (fRadLenMan) {
+    if (fRadLenMan || fRadMapMan) {
         id = fMC->CurrentVolID(copyNo);
-        auto modvoliter = fgMasterInstance->fModVolMap.find(id);
-        fRadLenMan->AddPoint(fMC, modvoliter->second);
-    }
-    if (fRadMapMan) {
-        id = fMC->CurrentVolID(copyNo);
-        auto modvoliter = fgMasterInstance->fModVolMap.find(id);
-        fRadMapMan->AddPoint(fMC, modvoliter->second);
+        auto modvoliter = (fParent ? fParent : this)->fModVolMap.find(id);
+        if (fRadLenMan) {
+            fRadLenMan->AddPoint(fMC, modvoliter->second);
+        }
+        if (fRadMapMan) {
+            fRadMapMan->AddPoint(fMC, modvoliter->second);
+        }
     }
     if (fRadGridMan) {
         fRadGridMan->FillMeshList();
