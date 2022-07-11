@@ -1,13 +1,17 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TStopwatch.h>
+#include <TString.h>
+#include <memory>
+
 void run_reco(TString mcEngine = "TGeant3")
 {
-
     FairLogger* logger = FairLogger::GetLogger();
     logger->SetLogFileName("MyLog.log");
     logger->SetLogToScreen(kTRUE);
@@ -38,7 +42,7 @@ void run_reco(TString mcEngine = "TGeant3")
     FairRunAna* fRun = new FairRunAna();
     FairFileSource* fFileSource = new FairFileSource(inFile);
     fRun->SetSource(fFileSource);
-    fRun->SetSink(new FairRootFileSink(outFile));
+    fRun->SetSink(std::make_unique<FairRootFileSink>(outFile));
     fRun->SetUseFairLinks(kTRUE);
     FairLinkManager::Instance()->AddIncludeType(0);
     //  FairLinkManager::Instance()->AddIncludeType(1);

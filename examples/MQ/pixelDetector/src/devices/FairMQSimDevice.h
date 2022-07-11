@@ -17,10 +17,12 @@
 #define FAIRMQSIMDEVICE_H_
 
 #include "FairMQRunDevice.h"
+#include "FairSink.h"
 
 #include <Rtypes.h>
 #include <TString.h>
 #include <cstdint>
+#include <memory>
 #include <string>
 
 class FairRunSim;
@@ -28,7 +30,6 @@ class FairField;
 class FairParIo;
 class FairPrimaryGenerator;
 class TObjArray;
-class FairSink;
 
 class FairMQSimDevice : public FairMQRunDevice
 {
@@ -51,7 +52,7 @@ class FairMQSimDevice : public FairMQRunDevice
     void SetSecondParameter(FairParIo* par) { fSecondParameter = par; }
     void SetUserConfig(const TString& Config) { fUserConfig = Config; }
     void SetUserCuts(const TString& Cuts) { fUserCuts = Cuts; }
-    void SetSink(FairSink* sink) { fSink = sink; }
+    void SetSink(std::unique_ptr<FairSink>&& sink) { fSink = std::move(sink); }
     // ------ ---------- -------- ------
 
     void InitializeRun();
@@ -84,7 +85,7 @@ class FairMQSimDevice : public FairMQRunDevice
     FairParIo* fSecondParameter;   // second input (used if not found in first input)
     TString fUserConfig;           //!                  /** Macro for geant configuration*/
     TString fUserCuts;             //!                  /** Macro for geant cuts*/
-    FairSink* fSink;
+    std::unique_ptr<FairSink> fSink{};
     // ------ ---------- -------- ------
 
     void UpdateParameterServer();
