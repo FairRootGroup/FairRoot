@@ -116,6 +116,7 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
 
     LOG(debug) << "FairMCApplication-ctor " << this;
 
+    fRootManager = &fRun->GetRootManager();
     fModules = ModList;
     fModIter = fModules->MakeIterator();
     // Create and fill a list of active detectors
@@ -194,6 +195,7 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
 
     fParent = &rhs;
     fRun = fWorkerRunSim.get();
+    fRootManager = &fRun->GetRootManager();
 
     // Create an ObjArray of Modules and its iterator
     fModules = new TObjArray();
@@ -315,7 +317,6 @@ void FairMCApplication::InitMC(const char*, const char*)
     }
     fMC->SetMagField(fxField);
 
-    fRootManager = FairRootManager::Instance();
     // fRootManager->SetDebug(true);
 
     fMC->Init();
@@ -503,9 +504,6 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
 //_____________________________________________________________________________
 void FairMCApplication::InitOnWorker()
 {
-    // Create Root manager
-    fRootManager = FairRootManager::Instance();
-
     LOG(info) << "FairMCApplication::InitForWorker " << fRootManager->GetInstanceId() << " " << this;
 
     // Generate per-thread file name

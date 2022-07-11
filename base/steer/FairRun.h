@@ -199,6 +199,8 @@ class FairRun : public TNamed
     virtual void SetSource(FairSource* tempSource);
     /** Return non-owning pointer to source **/
     FairSource* GetSource() { return fSource.get(); }
+    FairRootManager& GetRootManager() { return *fRootManager; }
+    FairRootManager const& GetRootManager() const { return *fRootManager; }
 
   private:
     FairRun(const FairRun& M);
