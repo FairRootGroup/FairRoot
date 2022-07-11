@@ -1,10 +1,15 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TStopwatch.h>
+#include <TString.h>
+#include <memory>
+
 void run_digiToBin(Int_t divideLevel = 1, TString mcEngine = "TGeant3")
 {
     if (divideLevel < 0 || divideLevel > 2) {
@@ -39,7 +44,7 @@ void run_digiToBin(Int_t divideLevel = 1, TString mcEngine = "TGeant3")
     FairRunAna* fRun = new FairRunAna();
     FairFileSource* fFileSource = new FairFileSource(inFile);
     fRun->SetSource(fFileSource);
-    fRun->SetSink(new FairRootFileSink(outFile));
+    fRun->SetSink(std::make_unique<FairRootFileSink>(outFile));
 
     FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
     FairParRootFileIo* parInput1 = new FairParRootFileIo();

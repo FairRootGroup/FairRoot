@@ -42,14 +42,13 @@ FairMQSimDevice::FairMQSimDevice()
     , fTaskArray(nullptr)
     , fFirstParameter(nullptr)
     , fSecondParameter(nullptr)
-    , fSink(nullptr)
 {}
 
 void FairMQSimDevice::InitTask()
 {
     fRunSim = new FairRunSim();
 
-    fRunSim->SetSink(fSink);
+    fRunSim->SetSink(std::move(fSink));
 
     if (fFirstParameter || fSecondParameter) {
         FairRuntimeDb* rtdb = fRunSim->GetRuntimeDb();

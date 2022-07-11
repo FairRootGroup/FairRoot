@@ -1,3 +1,9 @@
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+#include <iostream>
+#include <memory>
+
 void run_digi_reco_proof(Int_t nofFiles, TString mcEngine = "TGeant3")
 {
     FairLogger* logger = FairLogger::GetLogger();
@@ -28,7 +34,7 @@ void run_digi_reco_proof(Int_t nofFiles, TString mcEngine = "TGeant3")
         fFileSource->AddFile(Form("file://%s/data/testrun_%s_f%d.root", workDir.Data(), mcEngine.Data(), ifile));
     fRun->SetSource(fFileSource);
 
-    fRun->SetSink(new FairRootFileSink(outFile));
+    fRun->SetSink(std::make_unique<FairRootFileSink>(outFile));
 
     fRun->SetProofOutputStatus("merge");
 
