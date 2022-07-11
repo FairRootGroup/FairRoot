@@ -62,9 +62,8 @@ void FairEventManagerEditor::SwitchBackground(Bool_t light_background) { fManage
 
 void FairEventManagerEditor::Init()
 {
-    FairRootManager* rootManager = FairRootManager::Instance();
-    TChain* chain = rootManager->GetInChain();
-    Int_t Entries = chain->GetEntriesFast();
+    auto const* chain = fManager->GetRootManager().GetInChain();
+    auto const Entries = chain->GetEntriesFast();
 
     MakeTitle("FairEventManager  Editor");
     TGVerticalFrame* fInfoFrame = CreateEditorTabSubFrame("Info");
@@ -72,8 +71,7 @@ void FairEventManagerEditor::Init()
         new TGCompositeFrame(fInfoFrame, 250, 10, kVerticalFrame | kLHintsExpandX | kFixedWidth | kOwnBackground);
 
     TString Infile = "Input file : ";
-    //  TFile* file =FairRunAna::Instance()->GetInputFile();
-    TFile* file = FairRootManager::Instance()->GetInChain()->GetFile();
+    auto const* file = chain->GetFile();
     Infile += file->GetName();
     TGLabel* TFName = new TGLabel(title1, Infile.Data());
     title1->AddFrame(TFName);
