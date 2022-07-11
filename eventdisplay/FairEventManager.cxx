@@ -47,7 +47,8 @@ FairEventManager *FairEventManager::Instance() { return fgRinstance; }
 
 FairEventManager::FairEventManager()
     : TEveEventManager("FairEventManager", "")
-    , fRootManager(FairRootManager::Instance())
+    , fRunAna(FairRunAna::Instance())
+    , fRootManager(fRunAna->GetRootManager())
     , fEntry(0)
     , fWorldSizeX(2000)
     , fWorldSizeY(2000)
@@ -58,7 +59,6 @@ FairEventManager::FairEventManager()
     , fTimeEvent(-1.)
     , fAnimatedTracks(kFALSE)
     , fClearHandler(kTRUE)
-    , fRunAna(FairRunAna::Instance())
     , fEvent(0)
     , fRPhiPlane{0, 0, 10, 0}
     , fRhoZPlane{-1, 0, 0, 0}
@@ -566,7 +566,7 @@ void FairEventManager::MakeScreenshot(FairEveAnimationControl::eScreenshotType p
 Float_t FairEventManager::GetEvtTime()
 {
     if (fUseTimeOfEvent) {
-        fTimeEvent = FairRootManager::Instance()->GetEventTime();
+        fTimeEvent = fRootManager.GetEventTime();
     }
     return fTimeEvent;
 }
