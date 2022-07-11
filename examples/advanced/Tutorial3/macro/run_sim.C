@@ -1,10 +1,16 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+#include <memory>
+
 void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant3")
 {
     TStopwatch timer;
@@ -39,7 +45,7 @@ void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant3")
     TString parFile = "data/testparams_";
     parFile = parFile + mcEngine + ".root";
 
-    fRun->SetSink(new FairRootFileSink(outFile));
+    fRun->SetSink(std::make_unique<FairRootFileSink>(outFile));
     fRun->SetGenerateRunInfo(kTRUE);   // Create FairRunInfo file
 
     // -----   Magnetic field   -------------------------------------------

@@ -65,9 +65,9 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 
     //  TString outputfilename = Form("outputfile_%d.root",(int)(getpid()));
     //  FairRootFileSink* sink = new FairRootFileSink(outputfilename);
-    FairOnlineSink* sink = new FairOnlineSink();
+    auto sink = std::make_unique<FairOnlineSink>();
     sink->SetMQRunDevice(run.get());
-    run->SetSink(sink);
+    run->SetSink(std::move(sink));
 
     run->SetParamUpdateChannelName(config.GetValue<std::string>("param-channel-name"));
 

@@ -67,9 +67,9 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 
     auto run = std::make_unique<FairMQSimDevice>();
 
-    FairOnlineSink* sink = new FairOnlineSink();
+    auto sink = std::make_unique<FairOnlineSink>();
     sink->SetMQRunDevice(run.get());
-    run->SetSink(sink);
+    run->SetSink(std::move(sink));
 
     run->SetParamUpdateChannelName(config.GetValue<std::string>("param-channel-name"));
 
