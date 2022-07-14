@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -7,7 +7,6 @@
  ********************************************************************************/
 #include "FairTutorialDet2ContFact.h"
 
-#include "FairRuntimeDb.h"
 #include "FairTutorialDet2DigiPar.h"
 #include "FairTutorialDet2GeoPar.h"
 
@@ -18,12 +17,10 @@ ClassImp(FairTutorialDet2ContFact);
 static FairTutorialDet2ContFact gFairTutorialDet2ContFact;
 
 FairTutorialDet2ContFact::FairTutorialDet2ContFact()
+    : FairContFact("FairTutorialDet2ContFact", "Factory for parameter containers in libTutorial1")
 {
     /** Constructor (called when the library is loaded) */
-    fName = "FairTutorialDet2ContFact";
-    fTitle = "Factory for parameter containers in libTutorial1";
     setAllContainers();
-    FairRuntimeDb::instance()->addContFactory(this);
 }
 
 void FairTutorialDet2ContFact::setAllContainers()

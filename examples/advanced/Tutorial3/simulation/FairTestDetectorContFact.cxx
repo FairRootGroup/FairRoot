@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -8,7 +8,6 @@
 #include "FairTestDetectorContFact.h"
 
 #include "FairConstPar.h"             // for FairConstPar
-#include "FairRuntimeDb.h"            // for FairRuntimeDb
 #include "FairTestDetectorGeoPar.h"   // for FairTestDetectorGeoPar
 
 #include <TList.h>     // for TList
@@ -22,13 +21,10 @@ ClassImp(FairTestDetectorContFact);
 static FairTestDetectorContFact gFairTestDetectorContFact;
 
 FairTestDetectorContFact::FairTestDetectorContFact()
-    : FairContFact()
+    : FairContFact("FairTestDetectorContFact", "Factory for parameter containers in libFairTestDetector")
 {
     /** Constructor (called when the library is loaded) */
-    fName = "FairTestDetectorContFact";
-    fTitle = "Factory for parameter containers in libFairTestDetector";
     setAllContainers();
-    FairRuntimeDb::instance()->addContFactory(this);
 }
 
 void FairTestDetectorContFact::setAllContainers()

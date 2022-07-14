@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -7,7 +7,6 @@
  ********************************************************************************/
 #include "NewDetectorContFact.h"
 
-#include "FairRuntimeDb.h"
 #include "NewDetectorGeoPar.h"
 
 #include <iostream>
@@ -17,13 +16,10 @@ ClassImp(NewDetectorContFact);
 static NewDetectorContFact gNewDetectorContFact;
 
 NewDetectorContFact::NewDetectorContFact()
-    : FairContFact()
+    : FairContFact("NewDetectorContFact", "Factory for parameter containers in libNewDetector")
 {
     /** Constructor (called when the library is loaded) */
-    fName = "NewDetectorContFact";
-    fTitle = "Factory for parameter containers in libNewDetector";
     setAllContainers();
-    FairRuntimeDb::instance()->addContFactory(this);
 }
 
 void NewDetectorContFact::setAllContainers()

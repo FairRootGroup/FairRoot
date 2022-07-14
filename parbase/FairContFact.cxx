@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -18,13 +18,13 @@
 
 #include "FairContFact.h"
 
-#include "FairLogger.h"      // for FairLogger
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
 
 #include <TCollection.h>   // for TIter
-#include <TObjString.h>    // for TObjString
-#include <iostream>        // for operator<<, ostream, cout, etc
-#include <string.h>        // for strlen
+#include <TObjString.h>
+#include <cstring>   // for strlen
+#include <fairlogger/Logger.h>
+#include <iostream>   // for operator<<, ostream, cout, etc
 
 using std::cout;
 
@@ -35,7 +35,6 @@ FairContainer::FairContainer()
     : TNamed()
     , contexts(nullptr)
     , actualContext("")
-    , fLogger(FairLogger::GetLogger())
 {}
 // Default constructor
 
@@ -43,7 +42,6 @@ FairContainer::FairContainer(const char* name, const char* title, const char* de
     : TNamed(name, title)
     , contexts(new TList())
     , actualContext("")
-    , fLogger(FairLogger::GetLogger())
 {
     // Constructor
     // Arguments:  name       = name of the corresponding parameter container
@@ -64,7 +62,7 @@ FairContainer::~FairContainer()
 void FairContainer::addContext(const char* name)
 {
     // Adds a context to the list of accepted contexts
-    TObjString* c = new TObjString(name);
+    auto c = new TObjString(name);
     contexts->Add(c);
 }
 
@@ -77,11 +75,12 @@ Bool_t FairContainer::setActualContext(const char* c)
     if (contexts->FindObject(c)) {
         if (actualContext.IsNull()) {
             actualContext = c;
-        } else
+        } else {
             Warning("addContext",
                     "Actual context of parameter container %s already defined as %s",
                     GetName(),
                     actualContext.Data());
+        }
         return kTRUE;
     }
     return kFALSE;
@@ -149,11 +148,12 @@ const char* FairContainer::getContext()
 
 FairContFact::FairContFact()
     : TNamed()
-    , containers(new TList)
-    , fLogger(FairLogger::GetLogger())
+{}
+
+FairContFact::FairContFact(const char* name, const char* title)
+    : TNamed(name, title)
 {
-    // Constructor creates a list to store objects of type FairContainer
-    //  containers=new TList;
+    FairRuntimeDb::instance()->addContFactory(this);
 }
 
 FairContFact::~FairContFact()
@@ -167,7 +167,7 @@ FairContFact::~FairContFact()
 Bool_t FairContFact::addContext(const char* name)
 {
     // Set the actual context in all containers, which accept this context
-    FairContainer* c = 0;
+    FairContainer* c = nullptr;
     Bool_t found = kFALSE;
     TIter next(containers);
     while ((c = static_cast<FairContainer*>(next()))) {
@@ -185,9 +185,9 @@ FairParSet* FairContFact::getContainer(const char* name)
     // createContainer(FairContainer*), which is implemented in the derived classes
     // and calls the corresponding constructor. Then the pointer it added in the
     // runtime database.
-    FairContainer* c = static_cast<FairContainer*>((containers->FindObject(name)));
+    auto c = static_cast<FairContainer*>((containers->FindObject(name)));
 
-    FairParSet* cont = 0;
+    FairParSet* cont = nullptr;
     if (c) {
         TString cn = c->getConcatName();
         FairRuntimeDb* rtdb = FairRuntimeDb::instance();
