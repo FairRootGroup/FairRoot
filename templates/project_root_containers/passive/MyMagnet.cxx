@@ -55,8 +55,8 @@ void MyMagnet::ConstructGeometry()
     TGeoMedium *Fe = new TGeoMedium("Fe", 5, matFe);
 
     // magnet yoke
-    TGeoBBox *magyoke1 = new TGeoBBox("magyoke1", 350, 350, 125);
-    TGeoBBox *magyoke2 = new TGeoBBox("magyoke2", 250, 250, 126);
+    new TGeoBBox("magyoke1", 350, 350, 125);
+    new TGeoBBox("magyoke2", 250, 250, 126);
 
     TGeoCompositeShape *magyokec = new TGeoCompositeShape("magyokec", "magyoke1-magyoke2");
     TGeoVolume *magyoke = new TGeoVolume("magyoke", magyokec, Fe);
@@ -65,10 +65,10 @@ void MyMagnet::ConstructGeometry()
     top->AddNode(magyoke, 1, new TGeoTranslation(0, 0, 0));
 
     // magnet
-    TGeoTubeSeg *magnet1a = new TGeoTubeSeg("magnet1a", 250, 300, 35, 45, 135);
-    TGeoTubeSeg *magnet1b = new TGeoTubeSeg("magnet1b", 250, 300, 35, 45, 135);
-    TGeoTubeSeg *magnet1c = new TGeoTubeSeg("magnet1c", 250, 270, 125, 45, 60);
-    TGeoTubeSeg *magnet1d = new TGeoTubeSeg("magnet1d", 250, 270, 125, 120, 135);
+    new TGeoTubeSeg("magnet1a", 250, 300, 35, 45, 135);
+    new TGeoTubeSeg("magnet1b", 250, 300, 35, 45, 135);
+    new TGeoTubeSeg("magnet1c", 250, 270, 125, 45, 60);
+    new TGeoTubeSeg("magnet1d", 250, 270, 125, 120, 135);
 
     // magnet composite shape matrices
     TGeoTranslation *m1 = new TGeoTranslation(0, 0, 160);

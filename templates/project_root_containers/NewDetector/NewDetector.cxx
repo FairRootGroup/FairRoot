@@ -88,7 +88,8 @@ void NewDetector::Initialize()
 
     FairDetector::Initialize();
     FairRuntimeDb* rtdb = FairRun::Instance()->GetRuntimeDb();
-    NewDetectorGeoPar* par = (NewDetectorGeoPar*)(rtdb->getContainer("NewDetectorGeoPar"));
+    auto par = (NewDetectorGeoPar*)(rtdb->getContainer("NewDetectorGeoPar"));
+    (void)par;   // stop warning about unused variable
 }
 
 Bool_t NewDetector::ProcessHits(FairVolume* vol)
