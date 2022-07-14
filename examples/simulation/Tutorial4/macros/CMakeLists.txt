@@ -11,6 +11,7 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial4_createGeomet
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial4_createParameterFile.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial4.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_reco.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/plots.C)
 
 set(maxTestTime 60)
 
@@ -26,6 +27,14 @@ foreach(mcEngine IN LISTS mcEngine_list)
            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_reco.sh \"${mcEngine}\")
   set_tests_properties(ex_sim_tutorial4_reco_${mcEngine} PROPERTIES
     DEPENDS ex_sim_tutorial4_${mcEngine}
+    TIMEOUT ${maxTestTime}
+    PASS_REGULAR_EXPRESSION "Macro finished successfully"
+  )
+
+  add_test(NAME ex_sim_tutorial4_plots_${mcEngine}
+           COMMAND ${CMAKE_CURRENT_BINARY_DIR}/plots.sh 1000 1 \"align_${mcEngine}\")
+  set_tests_properties(ex_sim_tutorial4_plots_${mcEngine} PROPERTIES
+    DEPENDS ex_sim_tutorial4_reco_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
