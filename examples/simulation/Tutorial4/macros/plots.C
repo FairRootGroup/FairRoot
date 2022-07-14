@@ -5,21 +5,23 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "TGeant3")
+int plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "align_TGeant3")
 {
+    TStopwatch timer;
+
+    TString outDir = "./data/";
 
     // Input data definitions
     //-----User Settings:-----------------------------------------------
-    TString MCFile = "testrun_" + mcEngine + ".root";
-    TString ParFile = "testparams_" + mcEngine + ".root";
-    TString RecoFile = "testreco_" + mcEngine + ".root";
-    ;
+    TString MCFile = outDir + "testrun_" + mcEngine + ".root";
+    TString ParFile = outDir + "testparams_" + mcEngine + ".root";
+    TString RecoFile = outDir + "testreco_" + mcEngine + ".root";
 
     // -----   Reconstruction run   -------------------------------------------
     FairRunAna *fRun = new FairRunAna();
     FairFileSource *fFileSource = new FairFileSource(MCFile);
+    fFileSource->AddFriend(RecoFile.Data());
     fRun->SetSource(fFileSource);
-    fRun->AddFriend(RecoFile.Data());
 
     FairRuntimeDb *rtdb = fRun->GetRuntimeDb();
     FairParRootFileIo *parInput1 = new FairParRootFileIo();
@@ -29,8 +31,8 @@ plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "TGeant3")
     TFile *f1 = TFile::Open(MCFile);
     TFile *f2 = TFile::Open(RecoFile);
 
-    TTree *t1 = f1->Get("cbmsim");
-    TTree *t2 = f2->Get("cbmsim");
+    auto t1 = f1->Get<TTree>("cbmsim");
+    auto t2 = f2->Get<TTree>("cbmsim");
 
     FairMCEventHeader *MCEventHeader = new FairMCEventHeader();
     TClonesArray *MCTracks = new TClonesArray("FairMCTrack");
@@ -47,8 +49,8 @@ plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "TGeant3")
     FairTutorialDet4Hit *Hit;
 
     // histograms
-    fRun->SetSink(new FairRootFileSink("test.ana.root"));
-    TFile *fHist = fRun->GetOutputFile();
+    fRun->SetSink(new FairRootFileSink(Form("%stest.ana.root", outDir.Data())));
+    auto fHist = static_cast<FairRootFileSink *>(fRun->GetSink())->GetRootFile();
 
     Float_t xrange = 80.;
     Float_t yrange = 80.;
@@ -88,14 +90,14 @@ plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "TGeant3")
 
         cout << " Event" << iev << ":";
         cout << nMCTracks << " MC tracks ";
-        cout << nPoints << "  points ";
-        cout << nHits << " Hits " << endl;
+        cout << nPoints << " points ";
+        cout << nHits << " hits " << endl;
 
         // Hit loop
         for (Int_t j = 0; j < nHits; j++) {
-            Hit = (FairTutorialDet4Hit *)TutorialDetHits->At(j);
+            Hit = static_cast<FairTutorialDet4Hit *>(TutorialDetHits->At(j));
             Int_t l = Hit->GetRefIndex();
-            Point = (FairTutorialDet4Point *)TutorialDetPoints->At(l);
+            Point = static_cast<FairTutorialDet4Point *>(TutorialDetPoints->At(l));
 
             // Point info
             x_poi = Point->GetX();
@@ -125,24 +127,14 @@ plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "TGeant3")
 
     }   // event loop end
 
+    auto pullx_Ent = pullx->GetEntries();
+    auto pullx_Dev = pullx->GetStdDev();
+
     // save histos to file
     // TFile *fHist = TFile::Open("data/auaumbias.hst.root","RECREATE");
     cout << "Processing done, outflag =" << iout << endl;
     if (iout == 1) {
         fHist->Write();
-        if (0) {   // explicit writing
-            TIter next(gDirectory->GetList());
-            TH1 *h;
-            TObject *obj;
-            while (obj = (TObject *)next()) {
-                if (obj->InheritsFrom(TH1::Class())) {
-                    h = (TH1 *)obj;
-                    cout << "Write histo " << h->GetTitle() << endl;
-                    h->Write();
-                }
-            }
-        }
-        fHist->ls();
         fHist->Close();
     }
 
@@ -168,10 +160,18 @@ plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "TGeant3")
     cout << "</DartMeasurement>" << endl;
 
     cout << endl << endl;
-    cout << "Output file is " << outFile << endl;
-    cout << "Parameter file is " << parFile << endl;
+    cout << "Output file is " << fHist->GetName() << endl;
+    cout << "Parameter file is " << ParFile << endl;
     cout << "Real time " << rtime << " s, CPU time " << ctime << "s" << endl << endl;
-    cout << "Macro finished successfully." << endl;
+
+    if (nevent >= 10 && pullx_Ent > nevent * 35 && abs(pullx_Dev - 0.1) < 0.03)
+        cout << "Macro finished successfully. Number of events (" << nevent << "), hist entries (" << pullx_Ent
+             << ") and deviation (" << pullx_Dev << ") inside limits." << endl;
+    else
+        cout << "Macro failed. Number of events (" << nevent << "), hist entries (" << pullx_Ent << ") or deviation ("
+             << pullx_Dev << ") too far off." << endl;
 
     // ------------------------------------------------------------------------
+
+    return 0;
 }
