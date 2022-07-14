@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -9,18 +9,15 @@
 #include "FairMQExParamsContFact.h"
 
 #include "FairMQExParamsParOne.h"
-#include "FairRuntimeDb.h"
 
 #include <cstring>   // strcmp
 
 static FairMQExParamsContFact gFairMQExParamsContFact;
 
 FairMQExParamsContFact::FairMQExParamsContFact()
+    : FairContFact("FairMQExParamsContFact", "Factory for parameter containers in FairMQ Example 7")
 {
-    fName = "FairMQExParamsContFact";
-    fTitle = "Factory for parameter containers in FairMQ Example 7";
     setAllContainers();
-    FairRuntimeDb::instance()->addContFactory(this);
 }
 
 void FairMQExParamsContFact::setAllContainers()
