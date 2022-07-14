@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -8,9 +8,8 @@
 
 #include "PixelContFact.h"
 
-#include "FairRuntimeDb.h"   // for FairRuntimeDb
-#include "PixelDigiPar.h"    // for PixelDigiPar
-#include "PixelGeoPar.h"     // for PixelGeoPar
+#include "PixelDigiPar.h"
+#include "PixelGeoPar.h"
 
 #include <TList.h>     // for TList
 #include <TString.h>   // for TString
@@ -23,13 +22,10 @@ ClassImp(PixelContFact);
 static PixelContFact gPixelContFact;
 
 PixelContFact::PixelContFact()
-    : FairContFact()
+    : FairContFact("PixelContFact", "Factory for parameter containers in libPixel")
 {
     /** Constructor (called when the library is loaded) */
-    fName = "PixelContFact";
-    fTitle = "Factory for parameter containers in libPixel";
     setAllContainers();
-    FairRuntimeDb::instance()->addContFactory(this);
 }
 
 void PixelContFact::setAllContainers()

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -23,8 +23,6 @@
 /////////////////////////////////////////////////////////////
 #include "MyPassiveContFact.h"
 
-#include "FairRuntimeDb.h"   // for FairRuntimeDb
-
 #include <TList.h>     // for TList
 #include <TString.h>   // for TString
 #include <string.h>    // for strcmp, NULL
@@ -36,13 +34,10 @@ ClassImp(MyPassiveContFact);
 static MyPassiveContFact gMyPassiveContFact;
 
 MyPassiveContFact::MyPassiveContFact()
-    : FairContFact()
+    : FairContFact("MyPassiveContFact", "Factory for parameter containers in libPassive")
 {
     // Constructor (called when the library is loaded)
-    fName = "MyPassiveContFact";
-    fTitle = "Factory for parameter containers in libPassive";
     setAllContainers();
-    FairRuntimeDb::instance()->addContFactory(this);
 }
 
 void MyPassiveContFact::setAllContainers()

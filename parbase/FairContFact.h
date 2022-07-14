@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -13,7 +13,6 @@
 #include <TNamed.h>    // for TNamed
 #include <TString.h>   // for TString
 
-class FairLogger;
 class FairParIo;
 class FairParSet;
 
@@ -29,12 +28,10 @@ class FairContainer : public TNamed
     TList* contexts;
     /** actual context set by the user */
     TString actualContext;
-    /** Fair Logger */
-    FairLogger* fLogger;   //!
 
   public:
     FairContainer(const char*, const char*, const char*);
-    ~FairContainer();
+    ~FairContainer() override;
     void addContext(const char*);
     Bool_t setActualContext(const char* c);
     const char* getDefaultContext();
@@ -49,23 +46,22 @@ class FairContFact : public TNamed
 {
   public:
     FairContFact();
-    virtual ~FairContFact();
+    FairContFact(const char* name, const char* title);
+    ~FairContFact() override;
     Bool_t addContext(const char* name);
     void print();
     FairParSet* getContainer(const char*);
-    virtual FairParSet* createContainer(FairContainer*) { return 0; }
+    virtual FairParSet* createContainer(FairContainer*) { return nullptr; }
     virtual void activateParIo(FairParIo*) {}
     /// @param[in] container Transfers ownership if return value is true
     Bool_t AddContainer(FairContainer*);
 
   protected:
-    TList* containers;   // all parameter containers managed by this factory
+    TList* containers{new TList};   // all parameter containers managed by this factory
     const char* getActualContext(const char* name)
     {
         return (static_cast<FairContainer*>(containers->FindObject(name)))->getActualContext();
     }
-    /** Fair Logger */
-    FairLogger* fLogger;         //!
     ClassDefOverride(FairContFact, 0);   // base class of all factories for parameter containers
 
   private:

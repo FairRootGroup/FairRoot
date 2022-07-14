@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -16,7 +16,6 @@
 
 #include "FairBaseParSet.h"
 #include "FairGeoParSet.h"
-#include "FairRuntimeDb.h"
 
 #include <TList.h>
 #include <TString.h>
@@ -29,13 +28,10 @@ ClassImp(FairBaseContFact);
 static FairBaseContFact gFairBaseContFact;
 
 FairBaseContFact::FairBaseContFact()
-    : FairContFact()
+    : FairContFact("FairBaseContFact", "Factory for parameter containers in libSts")
 {
     // Constructor (called when the library is loaded)
-    fName = "FairBaseContFact";
-    fTitle = "Factory for parameter containers in libSts";
     setAllContainers();
-    FairRuntimeDb::instance()->addContFactory(this);
 }
 
 void FairBaseContFact::setAllContainers()
