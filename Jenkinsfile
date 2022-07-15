@@ -119,6 +119,8 @@ pipeline{
           if (env.CHANGE_ID != null) { // only run checks for PRs
             checks = jobMatrix('alfa-ci', 'check', [
               [os: 'debian', ver: '10', arch: 'x86_64', check: 'format', fairsoft: 'apr21_patches'],
+              [os: 'ubuntu',   ver: 'rolling', arch: 'x86_64', compiler: 'current',         fairsoft: 'dev',
+                               check: 'doxygen'],
             ])
           }
 
