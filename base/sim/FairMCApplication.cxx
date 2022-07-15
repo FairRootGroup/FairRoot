@@ -411,6 +411,10 @@ void FairMCApplication::FinishRun()
         fRootManager->CloseSink();
     }
 
+    if (fEvGen) {
+        fEvGen->Finish();
+    }
+
     if (!fMC->IsMT()) {
         UndoGeometryModifications();
     }

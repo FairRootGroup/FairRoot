@@ -144,13 +144,22 @@ FairPrimaryGenerator::FairPrimaryGenerator(const FairPrimaryGenerator &rhs)
 Bool_t FairPrimaryGenerator::Init()
 {
     /** Initialize list of generators*/
-    for (Int_t i = 0; i < fGenList->GetEntries(); i++) {
-        FairGenerator *gen = static_cast<FairGenerator *>(fGenList->At(i));
-        if (gen) {
-            gen->Init();
-        }
+    for (auto gen : TRangeDynCast<FairGenerator>(fGenList)) {
+        if (!gen)
+            continue;
+        gen->Init();
     }
     return kTRUE;
+}
+
+void FairPrimaryGenerator::Finish()
+{
+    /** Finalize list of generators*/
+    for (auto gen : TRangeDynCast<FairGenerator>(fGenList)) {
+        if (!gen)
+            continue;
+        gen->Finish();
+    }
 }
 
 FairPrimaryGenerator::~FairPrimaryGenerator()
