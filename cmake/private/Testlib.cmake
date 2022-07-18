@@ -1,10 +1,31 @@
 ################################################################################
-# Copyright (C) 2020-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2020-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
+
+macro(show_jenkins_info)
+    if(DEFINED ENV{CHANGE_URL})
+        message(STATUS " Pull / Merge Request .: $ENV{CHANGE_URL}")
+    endif()
+    if(DEFINED ENV{BRANCH_NAME})
+        message(STATUS " BRANCH_NAME ..........: $ENV{BRANCH_NAME}")
+    endif()
+    if(DEFINED ENV{CHANGE_ID})
+        message(STATUS " CHANGE_ID ............: $ENV{CHANGE_ID}")
+    endif()
+    if(DEFINED ENV{CHANGE_TARGET})
+        message(STATUS " CHANGE_TARGET ........: $ENV{CHANGE_TARGET}")
+    endif()
+    if(DEFINED ENV{JOB_NAME})
+        message(STATUS " JOB_NAME .............: $ENV{JOB_NAME}")
+    endif()
+    if(DEFINED ENV{BUILD_TAG})
+        message(STATUS " BUILD_TAG ............: $ENV{BUILD_TAG}")
+    endif()
+endmacro()
 
 function(fairroot_ctest_submit)
     cmake_parse_arguments(PARSE_ARGV 0 ARGS "FINAL" "" "")
