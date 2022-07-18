@@ -71,6 +71,12 @@ def jobMatrix(String prefix, String type, List specs) {
                          skipBlames: true)
             archiveArtifacts(artifacts: logpattern, allowEmptyArchive: true, fingerprint: true)
           }
+          if (check == "doxygen") {
+            discoverGitReferenceBuild()
+            recordIssues(tools: [doxygen()],
+                         ignoreFailedBuilds: false,
+                         skipBlames: true)
+          }
 
           deleteDir()
           githubNotify(context: "${prefix}/${label}", description: 'Success', status: 'SUCCESS')
