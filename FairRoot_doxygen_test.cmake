@@ -6,6 +6,9 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+list(PREPEND CMAKE_MODULE_PATH "cmake/private")
+include(Testlib)
+
 cmake_host_system_information(RESULT fqdn QUERY FQDN)
 
 set(CTEST_SOURCE_DIRECTORY .)
@@ -25,6 +28,8 @@ if ("$ENV{LABEL}" STREQUAL "")
 else()
   set(CTEST_BUILD_NAME $ENV{LABEL})
 endif()
+
+show_jenkins_info()
 
 ctest_start(Experimental TRACK Checks)
 
