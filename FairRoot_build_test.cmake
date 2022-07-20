@@ -9,14 +9,9 @@
 list(PREPEND CMAKE_MODULE_PATH "cmake/private")
 include(Testlib)
 
-cmake_host_system_information(RESULT fqdn QUERY FQDN)
+fairroot_ctest_setup()
 
-set(CTEST_SOURCE_DIRECTORY .)
-set(CTEST_BINARY_DIRECTORY build)
-set(CTEST_PROJECT_NAME "FairRoot")
 set(CTEST_CUSTOM_MAXIMUM_PASSED_TEST_OUTPUT_SIZE 102400)
-set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
-set(CTEST_USE_LAUNCHERS ON)
 set(CTEST_CONFIGURATION_TYPE "RelWithDebInfo")
 
 if(NOT NCPUS)
@@ -31,12 +26,6 @@ if(NOT NCPUS)
       set(NCPUS 1)
     endif()
   endif()
-endif()
-
-if ("$ENV{CTEST_SITE}" STREQUAL "")
-  set(CTEST_SITE "${fqdn}")
-else()
-  set(CTEST_SITE $ENV{CTEST_SITE})
 endif()
 
 if ("$ENV{LABEL}" STREQUAL "")
