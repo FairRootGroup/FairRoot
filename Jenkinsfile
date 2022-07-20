@@ -62,8 +62,10 @@ def jobMatrix(String prefix, String type, List specs) {
             sh "cat ${jobscript}"
             sh "./slurm-submit.sh \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
           }
-          if (check == "warnings") {
+          if (check == "warnings" || check == "doxygen") {
             discoverGitReferenceBuild()
+          }
+          if (check == "warnings") {
             recordIssues(tools: [clangTidy(pattern: logpattern)],
                          filters: [excludeFile('build/.*/G__.*[.]cxx')],
                          qualityGates: [[threshold: 3, type: 'NEW', unstable: true]],
@@ -72,10 +74,13 @@ def jobMatrix(String prefix, String type, List specs) {
             archiveArtifacts(artifacts: logpattern, allowEmptyArchive: true, fingerprint: true)
           }
           if (check == "doxygen") {
-            discoverGitReferenceBuild()
             recordIssues(tools: [doxygen()],
                          ignoreFailedBuilds: false,
                          skipBlames: true)
+            def result_url = readFile(file: 'build/generated-doxygen.url')
+            publishChecks(name: 'Doxygen-Preview',
+                          title: 'Doxygen Preview',
+                          summary: result_url)
           }
 
           deleteDir()
@@ -121,13 +126,14 @@ pipeline{
             [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-13',  fairsoft: '22.4'],
           ])
 
-          def checks = [:]
+          def checks = jobMatrix('alfa-ci', 'check', [
+            [os: 'ubuntu',   ver: 'rolling', arch: 'x86_64', compiler: 'current',         fairsoft: 'dev',
+                             check: 'doxygen'],
+          ])
           if (env.CHANGE_ID != null) { // only run checks for PRs
-            checks = jobMatrix('alfa-ci', 'check', [
+            checks += jobMatrix('alfa-ci', 'check', [
               [os: 'ubuntu',   ver: 'rolling', arch: 'x86_64', compiler: 'current',         fairsoft: 'dev',
                                check: 'format'],
-              [os: 'ubuntu',   ver: 'rolling', arch: 'x86_64', compiler: 'current',         fairsoft: 'dev',
-                               check: 'doxygen'],
             ])
           }
 
