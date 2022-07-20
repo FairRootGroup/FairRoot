@@ -6,6 +6,22 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+macro(fairroot_ctest_setup)
+  cmake_host_system_information(RESULT fqdn QUERY FQDN)
+
+  set(CTEST_SOURCE_DIRECTORY .)
+  set(CTEST_BINARY_DIRECTORY build)
+  set(CTEST_PROJECT_NAME "FairRoot")
+  set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
+  set(CTEST_USE_LAUNCHERS ON)
+
+  if ("$ENV{CTEST_SITE}" STREQUAL "")
+    set(CTEST_SITE "${fqdn}")
+  else()
+    set(CTEST_SITE $ENV{CTEST_SITE})
+  endif()
+endmacro()
+
 macro(show_jenkins_info)
     if(DEFINED ENV{CHANGE_URL})
         message(STATUS " Pull / Merge Request .: $ENV{CHANGE_URL}")

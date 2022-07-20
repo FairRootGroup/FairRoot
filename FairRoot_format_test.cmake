@@ -9,19 +9,7 @@
 list(PREPEND CMAKE_MODULE_PATH "cmake/private")
 include(Testlib)
 
-cmake_host_system_information(RESULT fqdn QUERY FQDN)
-
-set(CTEST_SOURCE_DIRECTORY .)
-set(CTEST_BINARY_DIRECTORY build)
-Set(CTEST_PROJECT_NAME "FairRoot")
-set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
-set(CTEST_USE_LAUNCHERS ON)
-
-if ("$ENV{CTEST_SITE}" STREQUAL "")
-  set(CTEST_SITE "${fqdn}")
-else()
-  set(CTEST_SITE $ENV{CTEST_SITE})
-endif()
+fairroot_ctest_setup()
 
 if ("$ENV{LABEL}" STREQUAL "")
   set(CTEST_BUILD_NAME "format-check")
