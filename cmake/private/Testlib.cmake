@@ -28,9 +28,12 @@ macro(show_jenkins_info)
     endif()
     if(DEFINED ENV{BRANCH_NAME})
         message(STATUS " BRANCH_NAME ..........: $ENV{BRANCH_NAME}")
+        # For a Pull Request, this usually is some identifier of the PR
+        # Otherwise the branch being built
     endif()
     if(DEFINED ENV{CHANGE_ID})
         message(STATUS " CHANGE_ID ............: $ENV{CHANGE_ID}")
+        # If set at all, then this is a Pull Request
     endif()
     if(DEFINED ENV{CHANGE_TARGET})
         message(STATUS " CHANGE_TARGET ........: $ENV{CHANGE_TARGET}")
@@ -40,6 +43,7 @@ macro(show_jenkins_info)
     endif()
     if(DEFINED ENV{BUILD_TAG})
         message(STATUS " BUILD_TAG ............: $ENV{BUILD_TAG}")
+        # Mostly used as a unique id to create directories
     endif()
 endmacro()
 
