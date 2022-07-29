@@ -16,7 +16,7 @@
  ** @author M.Al-Turany <m.al/turany@gsi.de>
  ** @author V.Friese <v.friese@gsi.de>
  ** @since 06.01.2004
- ** @version1.0
+ ** @version 1.0
  **
  ** Abstract base class for magnetic fields in FAIR
  ** Concrete field should implement the pure virtual methods

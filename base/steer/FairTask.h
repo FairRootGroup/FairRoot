@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -35,6 +35,9 @@ enum InitStatus
     kFATAL
 };
 
+/**
+ * \ingroup base_steer
+ */
 class FairTask : public TTask
 {
   public:
@@ -111,12 +114,12 @@ class FairTask : public TTask
     Bool_t fStreamProcessing;
 
     /** Intialisation at begin of run. To be implemented in the derived class.
-     *@value  Success   If not kSUCCESS, task will be set inactive.
+     * \retval  kSUCCESS   If not kSUCCESS, task will be set inactive.
      **/
     virtual InitStatus Init() { return kSUCCESS; };
 
     /** Reinitialisation. To be implemented in the derived class.
-     *@value  Success   If not kSUCCESS, task will be set inactive.
+     * \retval  kSUCCESS   If not kSUCCESS, task will be set inactive.
      **/
     virtual InitStatus ReInit() { return kSUCCESS; };
 
