@@ -14,7 +14,7 @@
 /** MyConstField.h
  ** @author M.Al-Turany <m.al/turany@gsi.de>
  ** @since 25.03.2014
- ** @version1.0
+ ** @version 1.0
  **
  ** A constant (homogeneous) magnetic field
  **/

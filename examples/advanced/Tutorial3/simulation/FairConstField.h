@@ -8,7 +8,7 @@
 /** FairConstField.h
  ** @author M.Al-Turany <m.al/turany@gsi.de>
  ** @since 30.01.2007
- ** @version1.0
+ ** @version 1.0
  ** A constant  magnetic field
  **/
 
