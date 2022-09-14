@@ -148,9 +148,17 @@ void FairEveMCTracks::Repaint()
 InitStatus FairEveMCTracks::Init()
 {
     FairRootManager *mngr = FairRootManager::Instance();
-    fContainer = (TClonesArray *)mngr->GetObject("MCTrack");
-    if (fContainer == nullptr)
-        return kFATAL;
+    fContainer = dynamic_cast<TClonesArray *>(mngr->GetObject("MCTrack"));
+    if (!fContainer) {
+        LOG(warning) << "MCTrack branch not found ! FairMCTrackDraw will be deactivated.";
+        return kERROR;
+    }
+    TClass *classTrack = fContainer->GetClass();
+    if (classTrack && !classTrack->InheritsFrom("FairMCTrack")) {
+        LOG(warning)
+            << "MCTrack branch found but does not contain FairMCTrack objects! FairMCTrackDraw will be deactivated.";
+        return kERROR;
+    }
     FairRunAna *ana = FairRunAna::Instance();
     FairField *field = ana->GetField();
     if (field == nullptr) {
