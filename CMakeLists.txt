@@ -238,6 +238,17 @@ if(    yaml-cpp_FOUND
   )
 endif()
 
+find_package(Go4 QUIET)
+
+If(${Go4_FOUND})
+  add_compile_definitions(GO4)
+  add_compile_options(-I${GO4_INCLUDE_DIR})
+  add_link_options(-L${GO4_LIBRARY_DIR} )
+EndIf()
+
+
+
+
 configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/FairRootConfigVersion.cmake.in "${CMAKE_BINARY_DIR}/FairRootConfigVersion.cmake" @ONLY)
 
 # Load the macro to generate the needed version info at compile time
@@ -346,7 +357,7 @@ install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
 find_package(Git)
 set (Git_VERSION ${GIT_VERSION_STRING})
 string(REPLACE "git" " " Git_ROOT ${GIT_EXECUTABLE} )
-If(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
+If(${GIT_FOUND} AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
   Execute_Process(COMMAND ${GIT_EXECUTABLE} describe --tags
                   OUTPUT_VARIABLE FAIRROOT_GIT_VERSION
                   OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -360,6 +371,7 @@ Configure_File(${CMAKE_SOURCE_DIR}/cmake/scripts/fairroot-config.in ${CMAKE_BINA
 install(PROGRAMS ${CMAKE_BINARY_DIR}/fairroot-config
   DESTINATION bin
 )
+
 
 
 WRITE_CONFIG_FILE(config.sh)
@@ -378,6 +390,6 @@ fair_summary_global_cxx_flags_standard()
 fair_summary_build_types()
 fairroot_summary_package_dependencies()
 fairroot_summary_components()
-
 message(STATUS "  ")
 ################################################################################
+  message(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")

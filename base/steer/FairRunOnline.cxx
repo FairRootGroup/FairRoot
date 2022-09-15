@@ -38,6 +38,16 @@
 #include <signal.h>
 #include <stdlib.h>
 
+#ifdef GO4
+#include <TGo4Analysis.h>
+#include <TGo4AnalysisClient.h>
+#include <TH1.h>
+#include <TFolder.h>
+#include <TCanvas.h>
+#else
+#error "bad"
+#endif
+
 using std::cout;
 using std::endl;
 
@@ -260,7 +270,9 @@ Int_t FairRunOnline::EventLoop()
     if (fServer && 0 == (fNevents % fServerRefreshRate)) {
         fServer->ProcessRequests();
     }
-
+#ifdef GO4
+    gSystem->ProcessEvents();
+#endif
     if (gIsInterrupted) {
         return 1;
     }
@@ -398,6 +410,7 @@ void FairRunOnline::AddObject(TObject* object)
             LOG(warn) << "FairRunOnline::AddObject : unrecognized object type : " << classname;
         }
     }
+    AddGo4Obj(object);
 }
 
 void FairRunOnline::Fill()
@@ -408,5 +421,87 @@ void FairRunOnline::Fill()
         fMarkFill = kTRUE;
     }
 }
+
+void FairRunOnline::StartGo4Server(uint16_t port)
+{
+#ifdef GO4
+  TDirectory* oldDir=gDirectory;
+  assert(!fGo4 && "Can only call StartGo4Server once!");
+  auto c=new TGo4AnalysisClient("FairGo4Server", // name
+                                nullptr, 
+                                "localhost", // node (dummy)
+                                port, 
+                                1,  // histoserver 
+                                "", // histogram server basename
+                                "", // histogram server passwd
+                                1,  // autorun
+                                0,  // cintmode
+                                0,  // loadprefs
+                                0); // showrate
+  fGo4=TGo4Analysis::Instance();
+  assert(fGo4 && "go4 failed to start?");
+  if (fGo4FailedAdding)
+    LOG(warning) << "Some objects were added to FairRunOnline before the Go4 server was started.\n"
+      "These objects will not appear in Go4.";
+  fGo4->SetAutoSave(0);
+  if (oldDir)
+    oldDir->cd();
+#else
+  LOG(fatal) << "FairRoot was compiled without Go4 support, can not start Go4 server!";
+#endif
+}
+
+
+void FairRunOnline::AddGo4Obj(TObject* obj, std::string dir)
+{
+#ifdef GO4
+  if (!fGo4)
+    {
+      fGo4FailedAdding=1;
+      return;
+    }
+  const char* dirstr=dir.c_str(); // sue me.
+  if (strlen(dirstr)==0)
+    dirstr=nullptr;
+  if (auto p=dynamic_cast<TFolder*>(obj))
+    {
+      std::string subdir{};
+      if (dir!="")
+        {
+          subdir=dir+"/"+p->GetName();
+        }
+      else
+        {
+          subdir=p->GetName();
+        }      
+      for (auto i: *(p->GetListOfFolders()))
+        {
+          AddGo4Obj(i, subdir);
+        }
+      return;
+    }
+  if (auto p=dynamic_cast<TH1*>(obj))
+    {
+      fGo4->AddHistogram(p, dirstr, 0 /*no replacing*/);
+      return;
+    }
+  if (auto p=dynamic_cast<TCanvas*>(obj))
+    {
+      fGo4->AddCanvas(p, dirstr);
+      return;
+    }
+                                                                           
+  if (auto p=dynamic_cast<TNamed*>(obj))
+    {
+      fGo4->AddObject(p, dirstr);
+      
+      return;
+    }
+  // warning message here?
+#else
+  // no GO4 support -- do nothing. 
+#endif
+}
+
 
 ClassImp(FairRunOnline);

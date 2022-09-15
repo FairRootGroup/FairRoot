@@ -132,6 +132,7 @@ target_link_libraries(${target} PUBLIC
   ROOT::Tree
   ${VMCLIB}
   $<$<BOOL:${ROOT_gdml_FOUND}>:ROOT::Gdml>
+  $<$<BOOL:${Go4_FOUND}>:Go4Analysis>
 )
 
 target_compile_definitions(${target} PRIVATE
@@ -148,3 +149,4 @@ fairroot_target_root_dictionary(${target}
 
 fairroot_install_exported(TARGETS ${target})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+  message(steer CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")

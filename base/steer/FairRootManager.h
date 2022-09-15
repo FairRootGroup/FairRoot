@@ -10,6 +10,7 @@
 
 #include "FairLogger.h"
 #include "FairSink.h"
+#include "FairRootFileSink.h"
 #include "FairSource.h"
 
 #include <Rtypes.h>      // for Bool_t, Int_t, UInt_t, etc
@@ -231,6 +232,13 @@ class FairRootManager : public TObject
 
     void SetSink(FairSink* tempSink) { fSink = tempSink; }
     FairSink* GetSink() { return fSink; }
+    TFile* GetOutFile()
+    {
+      if (auto p=dynamic_cast<FairRootFileSink*>(fSink))
+        return p->GetRootFile();
+      return nullptr;
+    }
+  
     Bool_t InitSink();
 
     void SetListOfFolders(TObjArray* ta) { fListFolder = ta; }

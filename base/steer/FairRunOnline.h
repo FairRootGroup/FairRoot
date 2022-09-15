@@ -25,6 +25,7 @@ class FairField;
 class FairSource;
 class THttpServer;
 class TObject;
+class TGo4Analysis;
 
 class FairRunOnline : public FairRun
 {
@@ -81,11 +82,15 @@ class FairRunOnline : public FairRun
     /** Write last data to file, close input and output **/
     void Finish();
 
+    /** **/
+    void StartGo4Server(uint16_t port);
+
+  
   private:
     Bool_t fAutomaticFinish;
 
     FairRunOnline(const FairRunOnline& M);
-    FairRunOnline& operator=(const FairRunOnline&) { return *this; }
+    FairRunOnline& operator=(const FairRunOnline&) = delete;
 
     /** Main Event loop **/
     Int_t EventLoop();
@@ -101,9 +106,10 @@ class FairRunOnline : public FairRun
     Int_t fNevents;             //!
     THttpServer* fServer;       //!
     Int_t fServerRefreshRate;   //!
-
+    TGo4Analysis* fGo4{};
+    bool fGo4FailedAdding{};
     virtual void Fill();
-
+    virtual void AddGo4Obj(TObject* obj, std::string dir="");
     ClassDefOverride(FairRunOnline, 0);
 };
 
