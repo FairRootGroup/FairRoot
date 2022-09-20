@@ -19,6 +19,7 @@ class FairGenericVMCConfig
 {
   public:
     FairGenericVMCConfig();
+    FairGenericVMCConfig(const FairGenericVMCConfig& config);
     virtual ~FairGenericVMCConfig();
 
     virtual void Setup(const char* mcEngine);

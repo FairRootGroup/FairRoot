@@ -70,11 +70,11 @@ void run_tutorial1(Int_t nEvents = 10,
     // -----   Create simulation run   ----------------------------------------
     FairRunSim* run = new FairRunSim();
     run->SetName(mcEngine);   // Transport engine
-    FairVMCConfig* config = new FairVMCConfig();
+    std::unique_ptr<FairVMCConfig> config = std::make_unique<FairVMCConfig>();
     if (loadPostInitConfig)
         config->UsePostInitConfig();
-    run->SetSimulationConfig(config);
-    run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
+    run->SetSimulationConfig(move(config));
+    run->SetIsMT(isMT);   // Multi-threading mode (Geant4 only)
     run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------

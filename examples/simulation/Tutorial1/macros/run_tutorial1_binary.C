@@ -79,9 +79,9 @@ void run_tutorial1_main(const FairSimConfig& config)
 
     // -----   Create simulation run   ----------------------------------------
     FairRunSim run;
-    run.SetName(config.GetEngine());              // Transport engine
-    run.SetSimulationConfig(new FairVMCConfig());
-    run.SetIsMT(config.IsMultiThreaded());        // Multi-threading mode (Geant4 only)
+    run.SetName(config.GetEngine());   // Transport engine
+    run.SetSimulationConfig(std::make_unique<FairVMCConfig>());
+    run.SetIsMT(config.IsMultiThreaded());   // Multi-threading mode (Geant4 only)
     run.SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run.GetRuntimeDb();
     // ------------------------------------------------------------------------

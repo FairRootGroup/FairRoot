@@ -74,8 +74,6 @@ FairRunSim::FairRunSim(Bool_t isMaster)
     , fUserCuts("SetCuts.C")
     , fIsMT(kFALSE)
     , fImportTGeoToVMC(kTRUE)
-    , fSimulationConfig(nullptr)
-
 {
     if (fginstance) {
         Fatal("FairRun", "Singleton instance already exists.");
@@ -290,7 +288,7 @@ void FairRunSim::SetMCConfig()
         fSimSetup();
     } else {
         if (fSimulationConfig == nullptr)   // RKRKRK COMMENT
-            fSimulationConfig = new FairGenericVMCConfig();
+            fSimulationConfig = std::make_unique<FairGenericVMCConfig>();
         fSimulationConfig->Setup(GetName());
     }
 
