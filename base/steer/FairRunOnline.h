@@ -61,7 +61,7 @@ class FairRunOnline : public FairRun
     Bool_t GetContainerStatic() { return fStatic; };
 
     /** Add histogram to be displayed using THttpServer.*/
-    void AddObject(TObject* object);
+    virtual void AddObject(TObject* object);
 
     /** Activate http server on defined host port. To be called before Init.
      * @param refreshRate an interval in number of events for server update.
@@ -104,7 +104,7 @@ class FairRunOnline : public FairRun
 
     virtual void Fill();
 
-    ClassDefOverride(FairRunOnline, 0);
+    ClassDefOverride(FairRunOnline, 1);
 };
 
 #endif   // FAIRRUNONLINE_H
