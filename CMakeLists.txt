@@ -20,7 +20,7 @@ set(CMAKE_INSTALL_MESSAGE LAZY)
 # Set project version
 SET(FAIRROOT_MAJOR_VERSION 18)
 SET(FAIRROOT_MINOR_VERSION 6)
-SET(FAIRROOT_PATCH_VERSION 8)
+SET(FAIRROOT_PATCH_VERSION 9)
 
 if(APPLE)
   if(NOT DEFINED CMAKE_C_COMPILER)
@@ -291,7 +291,9 @@ else()
   Set(ROOT_HAS_OPENGL FALSE)
 endif()
 
-add_subdirectory(MbsAPI)
+if(BUILD_MBS)
+  add_subdirectory(MbsAPI)
+endif()
 add_subdirectory(datamatch)
 
 add_subdirectory(templates)

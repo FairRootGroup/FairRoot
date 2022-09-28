@@ -59,6 +59,7 @@ set(sources
   source/FairMixedSource.cxx
   source/FairOnlineSource.cxx
   source/FairSource.cxx
+  source/FairUnpack.cxx
 
   steer/FairAnaSelector.cxx
   steer/FairLinkManager.cxx
@@ -86,7 +87,6 @@ if(BUILD_MBS)
     source/FairMbsSource.cxx
     source/FairMbsStreamSource.cxx
     source/FairRemoteSource.cxx
-    source/FairUnpack.cxx
     source/MRevBuffer.cxx
     source/rclose.c
     source/swaplw.c
