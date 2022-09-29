@@ -276,10 +276,10 @@ add_subdirectory(templates)
 
 If (FairMQ_FOUND AND Boost_FOUND)
   add_subdirectory(fairmq)
-  add_subdirectory(base/MQ)
+  add_subdirectory(basemq)
   add_subdirectory(parmq)
 Else ()
-  Message(STATUS "fairmq, base/MQ and parmq will not be built, because FairMQ and/or Boost was not found.")
+  Message(STATUS "fairmq, basemq and parmq will not be built, because FairMQ and/or Boost was not found.")
 EndIf ()
 
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)

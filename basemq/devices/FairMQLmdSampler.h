@@ -16,8 +16,7 @@
 #define FAIRMQLMDSAMPLER_H
 
 #include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
-extern "C"
-{
+extern "C" {
 #include "f_evt.h"
 #include "s_bufhe_swap.h"
 #include "s_filhe_swap.h"
