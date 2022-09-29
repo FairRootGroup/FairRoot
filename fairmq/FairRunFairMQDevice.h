@@ -6,8 +6,8 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef FAIRROOT_BASE_MQ_FAIRRUNFAIRMQDEVICE_H
-#define FAIRROOT_BASE_MQ_FAIRRUNFAIRMQDEVICE_H
+#ifndef FAIRROOT_FAIRRUNFAIRMQDEVICE_H
+#define FAIRROOT_FAIRRUNFAIRMQDEVICE_H
 
 #include <fairmq/Version.h>
 #ifdef FAIRMQ_VERSION_DEC
@@ -50,4 +50,4 @@ std::unique_ptr<fair::mq::Device> getDevice(fair::mq::ProgOptions const& options
 std::unique_ptr<fair::mq::Device> getDevice(fair::mq::ProgOptions& options) { return fairGetDevice(options); }
 #endif
 
-#endif   // FAIRROOT_BASE_MQ_FAIRRUNFAIRMQDEVICE_H
+#endif   // FAIRROOT_FAIRRUNFAIRMQDEVICE_H

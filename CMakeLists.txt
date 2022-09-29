@@ -274,6 +274,7 @@ add_subdirectory(datamatch)
 add_subdirectory(templates)
 
 If (FairMQ_FOUND AND Boost_FOUND)
+  add_subdirectory(fairmq)
   add_subdirectory(base/MQ)
   add_subdirectory(parmq)
 Else ()
