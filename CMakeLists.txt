@@ -8,19 +8,14 @@
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 cmake_policy(VERSION 3.15...3.23)
 
-# Set project version
-SET(FAIRROOT_MAJOR_VERSION 19)
-SET(FAIRROOT_MINOR_VERSION 0)
-SET(FAIRROOT_PATCH_VERSION 0)
+set(FairRoot_VERSION_MAJOR 19)
+set(FairRoot_VERSION_MINOR 0)
+set(FairRoot_VERSION_PATCH 0)
 
 set(PROJECT_MIN_CXX_STANDARD 17)
 
-# Set name of our project to "FAIRROOT".
-# Has to be done after check of cmake version
-# This also sets ${FAIRROOT_VERSION} to the provided VERSION value, which would be empty if not set here explicitly
-project(FAIRROOT VERSION ${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION})
-# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
-# is checked
+project(FairRoot VERSION ${FairRoot_VERSION_MAJOR}.${FairRoot_VERSION_MINOR}.${FairRoot_VERSION_PATCH})
+
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/private")
 
@@ -209,10 +204,9 @@ Else (Boost_FOUND)
   Set(Boost_Avail 0)
 EndIf (Boost_FOUND)
 
-set(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
+set(PROJECT_LIBRARY_PROPERTIES ${PROJECT_LIBRARY_PROPERTIES}
   VERSION "${PROJECT_VERSION}"
 )
-set(PROJECT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
 find_package2(PUBLIC yaml-cpp)
 # Workaround missing exported include directories
@@ -230,7 +224,7 @@ if(    yaml-cpp_FOUND
   )
 endif()
 
-configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/FairRootConfigVersion.cmake.in "${CMAKE_BINARY_DIR}/FairRootConfigVersion.cmake" @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/cmake/private/FairRootConfigVersion.cmake.in "${CMAKE_BINARY_DIR}/FairRootConfigVersion.cmake" @ONLY)
 
 # Load the macro to generate the needed version info at compile time
 Generate_Version_Info()
@@ -349,12 +343,12 @@ set (Git_VERSION ${GIT_VERSION_STRING})
 string(REPLACE "git" " " Git_ROOT ${GIT_EXECUTABLE} )
 If(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
   Execute_Process(COMMAND ${GIT_EXECUTABLE} describe --tags
-                  OUTPUT_VARIABLE FAIRROOT_GIT_VERSION
+                  OUTPUT_VARIABLE PROJECT_GIT_VERSION
                   OUTPUT_STRIP_TRAILING_WHITESPACE
                   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                  )
 Else()
-  Set(FAIRROOT_GIT_VERSION v${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION})
+  set(PROJECT_GIT_VERSION v${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH})
 EndIf()
 Configure_File(${CMAKE_SOURCE_DIR}/cmake/scripts/fairroot-config.in ${CMAKE_BINARY_DIR}/fairroot-config @ONLY)
 

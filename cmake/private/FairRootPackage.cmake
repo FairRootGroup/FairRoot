@@ -10,9 +10,6 @@ include(CMakePackageConfigHelpers)
 
 # Configure/Install CMake package
 function(install_cmake_package)
-  # Correct spelling, in local scope
-  set(PROJECT_NAME FairRoot)
-
   set(PACKAGE_INSTALL_DESTINATION
     ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}-${PROJECT_VERSION})
   if(PROJECT_EXPORT_SET)
