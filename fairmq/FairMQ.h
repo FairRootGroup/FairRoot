@@ -6,8 +6,8 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef FAIRROOT_BASE_MQ_FAIRMQ_H
-#define FAIRROOT_BASE_MQ_FAIRMQ_H
+#ifndef FAIRROOT_FAIRMQ_H
+#define FAIRROOT_FAIRMQ_H
 
 #include <fairmq/Version.h>
 #ifdef FAIRMQ_VERSION_DEC
@@ -52,4 +52,4 @@ using TransportFactory = ::FairMQTransportFactory;
 
 #endif
 
-#endif   // FAIRROOT_BASE_MQ_FAIRMQ_H
+#endif   // FAIRROOT_FAIRMQ_H

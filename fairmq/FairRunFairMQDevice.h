@@ -6,8 +6,8 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef FAIRROOT_BASE_MQ_FAIRRUNFAIRMQDEVICE_H
-#define FAIRROOT_BASE_MQ_FAIRRUNFAIRMQDEVICE_H
+#ifndef FAIRROOT_FAIRRUNFAIRMQDEVICE_H
+#define FAIRROOT_FAIRRUNFAIRMQDEVICE_H
 
 #include <fairmq/Version.h>
 #ifdef FAIRMQ_VERSION_DEC
@@ -41,13 +41,22 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(fair::mq::ProgOptions const&);
 // FairMQ API
 #if FAIRMQ_VERSION_DEC < 104340
 // getDevice from <fairmq/runFairMQDevice.h>
-FairMQDevicePtr getDevice(fair::mq::ProgOptions const& options) { return fairGetDevice(options).release(); }
+FairMQDevicePtr getDevice(fair::mq::ProgOptions const& options)
+{
+    return fairGetDevice(options).release();
+}
 #elif FAIRMQ_VERSION_DEC < 104380
 // see https://github.com/FairRootGroup/FairMQ/commit/978191fa6c252714b73dde70d6737ac1cc4e529a
-std::unique_ptr<fair::mq::Device> getDevice(fair::mq::ProgOptions const& options) { return fairGetDevice(options); }
+std::unique_ptr<fair::mq::Device> getDevice(fair::mq::ProgOptions const& options)
+{
+    return fairGetDevice(options);
+}
 #else
 // see https://github.com/FairRootGroup/FairMQ/commit/a7dbeadd1c8f3f82c43067b05290e4393a44f1ac
-std::unique_ptr<fair::mq::Device> getDevice(fair::mq::ProgOptions& options) { return fairGetDevice(options); }
+std::unique_ptr<fair::mq::Device> getDevice(fair::mq::ProgOptions& options)
+{
+    return fairGetDevice(options);
+}
 #endif
 
-#endif   // FAIRROOT_BASE_MQ_FAIRRUNFAIRMQDEVICE_H
+#endif   // FAIRROOT_FAIRRUNFAIRMQDEVICE_H
