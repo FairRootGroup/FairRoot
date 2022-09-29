@@ -31,10 +31,13 @@ endfunction()
 # - Export C++ language level
 # - Set namespaced ALIAS to allow consistent target use
 # - Set some generic PROPERTIES (VERSION, SOVERSION)
+# - Prefix the library names with the project name in lower kebab-case
 function(fairroot_library_settings target)
   fairroot_compile_features("${target}")
   add_library(FairRoot::${target} ALIAS ${target})
-  set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+  string(TOLOWER ${PROJECT_NAME}-${target} outname)
+  set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES}
+    OUTPUT_NAME ${outname})
 endfunction()
 
 

@@ -72,6 +72,6 @@ extern "C" void flushFinalLog();
     }
 
 // the runtime will now dispatch to these functions due to LD_PRELOAD
-INTERCEPT_STEPPING(FairMCApplication, "libBase", "_ZN17FairMCApplication8SteppingEv")
-INTERCEPT_FINISHEVENT(FairMCApplication, "libBase", "_ZN17FairMCApplication11FinishEventEv")
-INTERCEPT_FINISHRUN(FairMCApplication, "libBase", "_ZN17FairMCApplication9FinishRunEv")
+INTERCEPT_STEPPING(FairMCApplication, "libfairroot-base", "_ZN17FairMCApplication8SteppingEv")
+INTERCEPT_FINISHEVENT(FairMCApplication, "libfairroot-base", "_ZN17FairMCApplication11FinishEventEv")
+INTERCEPT_FINISHRUN(FairMCApplication, "libfairroot-base", "_ZN17FairMCApplication9FinishRunEv")
