@@ -36,7 +36,10 @@ FairMQSamplerTask::FairMQSamplerTask(const Text_t* name, int iVerbose)
     , fTransportFactory(nullptr)
 {}
 
-FairMQSamplerTask::~FairMQSamplerTask() { delete fInput; }
+FairMQSamplerTask::~FairMQSamplerTask()
+{
+    delete fInput;
+}
 
 InitStatus FairMQSamplerTask::Init()
 {
@@ -49,11 +52,20 @@ InitStatus FairMQSamplerTask::Init()
 
 void FairMQSamplerTask::Exec(Option_t* /*opt*/) {}
 
-void FairMQSamplerTask::SetBranch(const std::string& branch) { fBranch = branch; }
+void FairMQSamplerTask::SetBranch(const std::string& branch)
+{
+    fBranch = branch;
+}
 
-void FairMQSamplerTask::SetEventIndex(Long64_t eventIndex) { fEventIndex = eventIndex; }
+void FairMQSamplerTask::SetEventIndex(Long64_t eventIndex)
+{
+    fEventIndex = eventIndex;
+}
 
-void FairMQSamplerTask::GetPayload(fair::mq::MessagePtr& msg) { msg = move(fPayload); }
+void FairMQSamplerTask::GetPayload(fair::mq::MessagePtr& msg)
+{
+    msg = move(fPayload);
+}
 
 void FairMQSamplerTask::SetTransport(std::shared_ptr<fair::mq::TransportFactory> factory)
 {
