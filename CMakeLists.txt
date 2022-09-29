@@ -1,20 +1,12 @@
  ################################################################################
- # Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+ # Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             #
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# The name of our project is "FairRoot".  CMakeLists files in this project can
-# refer to the root source directory of the project as ${FAIRROOT_SOURCE_DIR} or
-# as ${CMAKE_SOURCE_DIR} and to the root binary directory of the project as
-# ${FAIRROOT_BINARY_DIR} or ${CMAKE_BINARY_DIR}.
-# This difference is important for the base classes which are in FAIRROOT
-# and the subproject (i.e: CbmRoot, Pandaroot,... etc).
-
-# Check if cmake has the required version
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
-cmake_policy(VERSION 3.15...3.20)
+cmake_policy(VERSION 3.15...3.23)
 
 # Set project version
 SET(FAIRROOT_MAJOR_VERSION 18)
