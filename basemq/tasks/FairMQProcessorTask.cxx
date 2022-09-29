@@ -22,6 +22,12 @@ FairMQProcessorTask::~FairMQProcessorTask() {}
 
 void FairMQProcessorTask::Exec(Option_t* /*opt*/) {}
 
-void FairMQProcessorTask::SetPayload(std::unique_ptr<fair::mq::Message>& msg) { fPayload = std::move(msg); }
+void FairMQProcessorTask::SetPayload(std::unique_ptr<fair::mq::Message>& msg)
+{
+    fPayload = std::move(msg);
+}
 
-void FairMQProcessorTask::GetPayload(std::unique_ptr<fair::mq::Message>& msg) { msg = std::move(fPayload); }
+void FairMQProcessorTask::GetPayload(std::unique_ptr<fair::mq::Message>& msg)
+{
+    msg = std::move(fPayload);
+}
