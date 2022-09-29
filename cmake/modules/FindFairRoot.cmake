@@ -1,11 +1,11 @@
  ################################################################################
  # Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
+ #              This software is distributed under the terms of the             #
+ #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# Find FairRoot installation 
+# Find FairRoot installation
 # Check the environment variable "FAIRROOTPATH"
 
 include(FindPackageHandleStandardArgs)
@@ -30,26 +30,17 @@ if(NOT FairRoot_FOUND)
   find_package_handle_standard_args(FairRoot CONFIG_MODE)
   return()
 endif()
-set(FAIRROOTPATH "${FairRoot_PREFIX}")
 
 MESSAGE(STATUS "Setting FairRoot environment:")
 message(STATUS "  FairRoot Version           : ${FairRoot_VERSION}")
 message(STATUS "  FairRoot CXX Standard      : ${FairRoot_CXX_STANDARD}")
 message(STATUS "  FairRoot prefix            : ${FairRoot_PREFIX}")
 
-FIND_PATH(FAIRROOT_INCLUDE_DIR NAMES FairRun.h PATHS
-  ${FAIRROOTPATH}/include
-)
-
-FIND_PATH(FAIRROOT_LIBRARY_DIR NAMES libBase.so libBase.dylib PATHS
-   ${FAIRROOTPATH}/lib
-   ${FAIRROOTPATH}/lib64
-)
-
-FIND_PATH(FAIRROOT_CMAKEMOD_DIR
-  NAMES modules/FindFairRoot.cmake modules/ROOTMacros.cmake
-  PATHS ${FAIRROOTPATH}/share/fairbase/cmake
-)
+# Set backwards compat variables
+set(FAIRROOTPATH ${FairRoot_PREFIX})
+set(FAIRROOT_INCLUDE_DIR ${FairRoot_INCLUDEDIR})
+set(FAIRROOT_LIBRARY_DIR ${FairRoot_LIBDIR})
+set(FAIRROOT_CMAKEMOD_DIR ${FairRoot_DATADIR}/cmake)
 
 # look for exported FairMQ targets and include them
 find_file(_fairroot_fairmq_cmake
