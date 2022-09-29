@@ -42,15 +42,6 @@ set(FAIRROOT_INCLUDE_DIR ${FairRoot_INCLUDEDIR})
 set(FAIRROOT_LIBRARY_DIR ${FairRoot_LIBDIR})
 set(FAIRROOT_CMAKEMOD_DIR ${FairRoot_DATADIR}/cmake)
 
-# look for exported FairMQ targets and include them
-find_file(_fairroot_fairmq_cmake
-    NAMES FairMQ.cmake
-    HINTS ${FAIRROOTPATH}/include/cmake
-)
-if(_fairroot_fairmq_cmake)
-    include(${_fairroot_fairmq_cmake})
-endif()
-
 find_package_handle_standard_args(FairRoot CONFIG_MODE
                                   REQUIRED_VARS FAIRROOT_INCLUDE_DIR
                                                 FAIRROOT_LIBRARY_DIR)
