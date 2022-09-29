@@ -1,5 +1,5 @@
 ################################################################################
-#    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+# Copyright (C) 2019-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #    Copyright (C) 2019 CERN and copyright holders of ALICE O2                 #
 #                                                                              #
 #              This software is distributed under the terms of the             #
@@ -90,20 +90,20 @@ function(fairroot_target_root_dictionary target)
   get_property(lib_output_dir
                TARGET ${target}
                PROPERTY LIBRARY_OUTPUT_DIRECTORY)
-  # if(NOT lib_output_dir)
+  if(NOT lib_output_dir)
     set(lib_output_dir ${CMAKE_BINARY_DIR}/lib)
-  # endif()
+  endif()
 
   # Define the names of generated files
   get_property(basename TARGET ${target} PROPERTY OUTPUT_NAME)
   if(NOT basename)
     set(basename ${target})
   endif()
-  set(dictionary G__${basename})
+  set(dictionary ${basename})
   set(dictionaryFile ${CMAKE_CURRENT_BINARY_DIR}/${dictionary}.cxx)
-  set(pcmBase ${dictionary}_rdict.pcm)
+  set(pcmBase ${CMAKE_SHARED_LIBRARY_PREFIX}${basename}_rdict.pcm)
   set(pcmFile ${lib_output_dir}/${pcmBase})
-  set(rootmapFile ${lib_output_dir}/lib${basename}.rootmap)
+  set(rootmapFile ${lib_output_dir}/${CMAKE_SHARED_LIBRARY_PREFIX}${basename}.rootmap)
 
   # get the list of compile_definitions
   set(prop $<TARGET_PROPERTY:${target},COMPILE_DEFINITIONS>)
@@ -124,7 +124,6 @@ function(fairroot_target_root_dictionary target)
 
   # add a custom command to generate the dictionary using rootcling
   # cmake-format: off
-  set(space " ")
   add_custom_command(
     OUTPUT ${dictionaryFile} ${pcmFile} ${rootmapFile}
     VERBATIM
@@ -134,6 +133,7 @@ function(fairroot_target_root_dictionary target)
       -inlineInputHeader
       -rmf ${rootmapFile}
       -rml $<TARGET_FILE_NAME:${target}>
+      -s ${CMAKE_SHARED_LIBRARY_PREFIX}${basename}${CMAKE_SHARED_LIBRARY_SUFFIX}
       -I$<JOIN:${includeDirs},$<SEMICOLON>-I>
       ${extra_includes}
       -excludePath "${CMAKE_BINARY_DIR}"
