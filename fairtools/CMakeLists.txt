@@ -6,10 +6,6 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-if(Geant3_FOUND AND Geant4VMC_FOUND AND yaml-cpp_FOUND)
-  add_subdirectory(MCConfigurator)
-endif()
-
 set(target FairTools)
 
 set(sources

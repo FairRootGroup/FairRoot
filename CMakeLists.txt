@@ -326,6 +326,10 @@ if(Geant4_FOUND AND Geant4VMC_FOUND)
   add_subdirectory (fairfastsim)
 endif()
 
+if(Geant3_FOUND AND Geant4VMC_FOUND AND yaml-cpp_FOUND)
+  add_subdirectory(mcconfigurator)
+endif()
+
 find_package2_implicit_dependencies()
 
 add_subdirectory(cmake)
