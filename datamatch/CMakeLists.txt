@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target FairDataMatch)
+set(target DataMatch)
 
 set(sources
   FairMCDataCrawler.cxx
