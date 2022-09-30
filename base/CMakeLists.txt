@@ -5,9 +5,6 @@
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-If(Geant4_FOUND AND Geant4VMC_FOUND)
-  add_subdirectory (sim/fastsim)
-EndIf()
 
 set(target Base)
 

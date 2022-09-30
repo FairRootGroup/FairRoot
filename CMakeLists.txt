@@ -321,6 +321,9 @@ if(BUILD_UNITTESTS)
 endif()
 add_subdirectory(test/tgeo)
 
+if(Geant4_FOUND AND Geant4VMC_FOUND)
+  add_subdirectory (fairfastsim)
+endif()
 
 find_package2_implicit_dependencies()
 
