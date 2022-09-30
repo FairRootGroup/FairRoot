@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -105,7 +105,7 @@ add_executable(pixel-sim runMQSim.cxx)
 target_link_libraries(pixel-sim PRIVATE
   ${exe_dependencies}
   FairRoot::Base # FairModule, FairPrimaryGenerator
-  FairRoot::Gen # FairBoxGenerator
+  FairRoot::Generators # FairBoxGenerator
   FairRoot::ParBase # FairParAsciiFileIo
   FairRoot::ExPassive # FairCave
 
