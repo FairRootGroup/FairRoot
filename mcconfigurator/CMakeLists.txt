@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -19,7 +19,7 @@ fairroot_library_settings(${target})
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+  $<INSTALL_INTERFACE:${PROJECT_INSTALL_INCLUDEDIR}>
 )
 
 target_link_libraries(${target} PUBLIC
@@ -42,4 +42,4 @@ fairroot_target_root_dictionary(${target}
 )
 
 fairroot_install_exported(TARGETS ${target})
-install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(FILES ${headers} DESTINATION ${PROJECT_INSTALL_INCLUDEDIR})

@@ -46,7 +46,7 @@ target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/policies/Sampler>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/policies/Serialization>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/policies/Storage>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+  $<INSTALL_INTERFACE:${PROJECT_INSTALL_INCLUDEDIR}>
 )
 
 target_link_libraries(${target} PUBLIC
@@ -66,4 +66,4 @@ target_link_libraries(${target} PUBLIC
 )
 
 fairroot_install_exported(TARGETS ${target})
-install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(FILES ${headers} DESTINATION ${PROJECT_INSTALL_INCLUDEDIR})

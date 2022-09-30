@@ -20,7 +20,7 @@ fairroot_library_settings(${target})
 
 target_include_directories(${target} INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+  $<INSTALL_INTERFACE:${PROJECT_INSTALL_INCLUDEDIR}>
 )
 
 target_link_libraries(${target} INTERFACE
@@ -28,4 +28,4 @@ target_link_libraries(${target} INTERFACE
 )
 
 fairroot_install_exported(TARGETS ${target})
-install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(FILES ${headers} DESTINATION ${PROJECT_INSTALL_INCLUDEDIR})
