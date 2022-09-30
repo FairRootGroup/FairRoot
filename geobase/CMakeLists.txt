@@ -54,7 +54,7 @@ target_include_directories(${target} PUBLIC
 )
 
 target_link_libraries(${target} PUBLIC
-  FairRoot::FairTools
+  FairRoot::Tools
 
   ROOT::Core
   ROOT::MathCore

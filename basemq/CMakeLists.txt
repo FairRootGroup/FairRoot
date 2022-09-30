@@ -52,7 +52,7 @@ target_include_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairTask, FairRunAna, FairRootFileSink, FairFileSource
   FairRoot::ParBase # FairParRootFileIo, FairRuntimeDb
-  FairRoot::FairTools
+  FairRoot::Tools
   $<$<BOOL:${BUILD_MBS}>:FairRoot::MBS>
   FairRoot::FairMQ
 

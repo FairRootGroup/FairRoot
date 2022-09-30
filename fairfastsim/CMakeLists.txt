@@ -33,7 +33,7 @@ else()
 endif()
 
 target_link_libraries(${target} PUBLIC
-  FairRoot::FairTools
+  FairRoot::Tools
   FairRoot::Base # FairDetector,
   FairRoot::GeoBase
 

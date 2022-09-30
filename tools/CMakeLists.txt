@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target FairTools)
+set(target Tools)
 
 set(sources
   FairLogger.cxx
@@ -37,7 +37,7 @@ target_link_libraries(${target} PUBLIC
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
-  LINKDEF FairToolsLinkDef.h
+  LINKDEF LinkDef.h
   EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 

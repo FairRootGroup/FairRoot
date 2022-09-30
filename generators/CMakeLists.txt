@@ -32,7 +32,7 @@ target_include_directories(${target} PUBLIC
 
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairPrimaryGenerator, FairGenerator, FairIon, FairParticle, FairRunSim
-  FairRoot::FairTools
+  FairRoot::Tools
 
   ROOT::Core
   ROOT::EG

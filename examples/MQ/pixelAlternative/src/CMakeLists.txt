@@ -38,7 +38,7 @@ target_include_directories(${target} PUBLIC
 
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
-  FairRoot::FairTools # FairLogger
+  FairRoot::Tools # FairLogger
   FairRoot::ParBase
   FairRoot::BaseMQ # Serialization policies
   FairRoot::ExPixel

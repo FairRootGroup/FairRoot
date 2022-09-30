@@ -238,7 +238,7 @@ SetBasicVariables()
 # Recurse into the given subdirectories.  This does not actually
 # cause another cmake executable to run.  The same process will walk through
 # the project's entire directory structure.
-add_subdirectory(fairtools)
+add_subdirectory(tools)
 add_subdirectory(alignment)
 add_subdirectory(base)
 add_subdirectory(fairmcsteplogger)

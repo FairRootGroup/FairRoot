@@ -1,7 +1,7 @@
 /**
-\defgroup fairtools FairTools
+\defgroup tools Tools
 
-# FairTools
+# Tools
 
 ## FairLogger
 
@@ -18,6 +18,6 @@ We recommend using fair::Logger directly. Upgrade notes:
 - Replace `Debug4(...)` style functions with `LOG(debug4) << content;` calls.
 - Replace `FairLogger::IsLogNeeded(<severity>)` with `fair::Logger::Logging(<severity>)`.
 
-The CMake target name for this library is `FairRoot::FairTools`.
+The CMake target name for this library is `FairRoot::Tools`.
 
  */
