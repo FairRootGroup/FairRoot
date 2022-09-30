@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -22,7 +22,7 @@ if(Geant3_FOUND)
     add_subdirectory(common/gconfig)
   endif()
 
-  if(TARGET FairFastSim)
+  if(TARGET FairRoot::FastSim)
     add_subdirectory(simulation/Tutorial1)
   endif()
   if(TARGET FairRoot::EventDisplay)

@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target FairFastSim)
+set(target FastSim)
 
 set(sources
   FairFastSimDetector.cxx
@@ -49,7 +49,7 @@ target_link_libraries(${target} PUBLIC
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
-  LINKDEF FastSimLinkDef.h
+  LINKDEF LinkDef.h
   EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 

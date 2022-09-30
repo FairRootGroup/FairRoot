@@ -312,7 +312,7 @@ endif()
 add_subdirectory(test/tgeo)
 
 if(Geant4_FOUND AND Geant4VMC_FOUND)
-  add_subdirectory (fairfastsim)
+  add_subdirectory (fastsim)
 endif()
 
 if(Geant3_FOUND AND Geant4VMC_FOUND AND yaml-cpp_FOUND)
