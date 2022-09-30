@@ -1,12 +1,10 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
-
-add_subdirectory(MCStepLogger)
 
 if(Geant3_FOUND AND Geant4VMC_FOUND AND yaml-cpp_FOUND)
   add_subdirectory(MCConfigurator)

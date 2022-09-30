@@ -1,6 +1,5 @@
 /**
-\defgroup fairtools_mcstepplogger MC Step Logger
-\ingroup fairtools
+\defgroup fairmcstepplogger MC Step Logger
 
 MC Step Logger
 ========
