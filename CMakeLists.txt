@@ -257,7 +257,7 @@ else()
 endif()
 
 if(BUILD_MBS)
-  add_subdirectory(MbsAPI)
+  add_subdirectory(mbs)
 endif()
 add_subdirectory(datamatch)
 

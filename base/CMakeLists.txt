@@ -112,7 +112,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::ParBase
   FairRoot::GeoBase
   Boost::serialization
-  $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
+  $<$<BOOL:${BUILD_MBS}>:FairRoot::MBS>
 
   ROOT::RHTTP # THttpServer
   ROOT::Core

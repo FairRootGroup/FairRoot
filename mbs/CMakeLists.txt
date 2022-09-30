@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target MbsAPI)
+set(target MBS)
 
 set(sources
   f_evt.c
