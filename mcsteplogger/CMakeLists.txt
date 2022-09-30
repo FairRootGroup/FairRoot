@@ -7,9 +7,8 @@
 ################################################################################
 
 # @author Sandro Wenzel
-# @brief  cmake setup for module Utilities/MCStepLogger
 
-set(target FairMCStepLogger)
+set(target MCStepLogger)
 
 set(sources
   MCStepInterceptor.cxx
