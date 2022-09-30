@@ -1,7 +1,7 @@
 /**
-\defgroup trackbase trackbase (TrkBase)
+\defgroup trkbase TrkBase
 
-trackbase
+trkbase
 ========
 
 Track parameter containers.

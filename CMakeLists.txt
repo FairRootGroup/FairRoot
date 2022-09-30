@@ -247,7 +247,7 @@ add_subdirectory(parbase)
 add_subdirectory(generators)
 If(Geant3_FOUND)
  add_subdirectory(geane)
- add_subdirectory(trackbase)
+ add_subdirectory(trkbase)
 EndIf ()
 
 if(ROOT_opengl_FOUND)
