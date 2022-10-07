@@ -111,7 +111,6 @@ class FairMixedSource : public FairFileSourceBase
     void SetFileHeader(FairFileHeader* f) { fFileHeader = f; }
     Double_t GetEventTime();
 
-    /**Set the input tree when running on PROOF worker*/
     TObjArray* GetListOfFolders() { return fListFolder; }
     TFolder* GetBranchDescriptionFolder() { return fCbmroot; }
     UInt_t GetEntries() { return fNoOfEntries; }

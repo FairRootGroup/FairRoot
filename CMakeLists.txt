@@ -126,6 +126,7 @@ endif()
 # Set option(s)
 option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
 option(ENABLE_GEANT3_TESTING "Enable tests utilizing Geant3" OFF)
+option(BUILD_PROOF_SUPPORT "Support ROOT::Proof (deprecated)" ON)
 
 # searches for needed packages
 # REQUIRED means that cmake will stop if this packages are not found

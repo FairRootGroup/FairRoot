@@ -13,7 +13,9 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_digi.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_reco.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_digi_timebased.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_reco_timebased.C)
-GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_digi_reco_proof.C)
+if(BUILD_PROOF_SUPPORT)
+  GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_digi_reco_proof.C)
+endif()
 
 foreach(mcEngine IN LISTS mcEngine_list)
   add_test(NAME ex_tutorial3_sim_${mcEngine}
@@ -59,13 +61,15 @@ foreach(mcEngine IN LISTS mcEngine_list)
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
 
-  add_test(NAME ex_tutorial3_digi_reco_proof_${mcEngine}
-           COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_digi_reco_proof.sh 1 \"${mcEngine}\")
-  set_tests_properties(ex_tutorial3_digi_reco_proof_${mcEngine} PROPERTIES
-    FIXTURES_REQUIRED fixture.ex_tutorial3_sim_${mcEngine}
-    TIMEOUT ${maxTestTime}
-    PASS_REGULAR_EXPRESSION "Macro finished successfully"
-  )
+  if(BUILD_PROOF_SUPPORT)
+    add_test(NAME ex_tutorial3_digi_reco_proof_${mcEngine}
+             COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_digi_reco_proof.sh 1 \"${mcEngine}\")
+    set_tests_properties(ex_tutorial3_digi_reco_proof_${mcEngine} PROPERTIES
+      FIXTURES_REQUIRED fixture.ex_tutorial3_sim_${mcEngine}
+      TIMEOUT ${maxTestTime}
+      PASS_REGULAR_EXPRESSION "Macro finished successfully"
+    )
+  endif()
 endforeach()
 
 install(FILES
