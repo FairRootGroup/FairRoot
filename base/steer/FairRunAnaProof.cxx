@@ -30,7 +30,7 @@
 #include <TProof.h>
 #include <TROOT.h>
 
-FairRunAnaProof* FairRunAnaProof::fRAPInstance = 0;
+FairRunAnaProof* FairRunAnaProof::fRAPInstance = nullptr;
 
 FairRunAnaProof* FairRunAnaProof::Instance() { return fRAPInstance; }
 
@@ -59,7 +59,13 @@ FairRunAnaProof::FairRunAnaProof(const char* proofName)
     fAna = kTRUE;
 }
 
-FairRunAnaProof::~FairRunAnaProof() {}
+FairRunAnaProof::~FairRunAnaProof()
+{
+    if (fRAPInstance == this) {
+        // Do not point to a destructed object!
+        fRAPInstance = nullptr;
+    }
+}
 
 void FairRunAnaProof::Init()
 {

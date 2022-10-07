@@ -57,7 +57,7 @@ void FRA_handler_ctrlc(int)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-FairRunAna* FairRunAna::fgRinstance = 0;
+FairRunAna* FairRunAna::fgRinstance = nullptr;
 //_____________________________________________________________________________
 FairRunAna* FairRunAna::Instance() { return fgRinstance; }
 //_____________________________________________________________________________
@@ -80,9 +80,7 @@ FairRunAna::FairRunAna()
     , fFileSource(0)
     , fMixedSource(0)
     , fStoreEventHeader(kTRUE)
-
 {
-
     fgRinstance = this;
     fAna = kTRUE;
 }
@@ -99,6 +97,10 @@ FairRunAna::~FairRunAna()
             gGeoManager->GetListOfShapes()->Delete();
         }
         delete gGeoManager;
+    }
+    if (fgRinstance == this) {
+        // Do not point to a destructed object!
+        fgRinstance = nullptr;
     }
 }
 
