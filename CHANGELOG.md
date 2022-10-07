@@ -74,6 +74,10 @@ file an issue, so that we can see how to handle this.
   * If you need it, speak up NOW.
   * It is disabled by default in this release.
   * It can still be enabled with `-DBUILD_MBS=ON`.
+* Deprecated Proof relaled classes
+  * Proof was deprecated by ROOT
+  * The affected code in FairRoot is disabled by default now
+  * It can still be enabled with `-DBUILD_PROOF_SUPPORT=ON`.
 * Deprecate some singleton-like APIs:
   * `FairRunAnaProof::Instance()` - keep a pointer to the
     object after instantiating it in your code.
