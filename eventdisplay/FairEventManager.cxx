@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -41,7 +41,7 @@
 
 ClassImp(FairEventManager);
 
-FairEventManager *FairEventManager::fgRinstance = 0;
+FairEventManager *FairEventManager::fgRinstance = nullptr;
 
 FairEventManager *FairEventManager::Instance() { return fgRinstance; }
 
@@ -224,7 +224,13 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
 
 void FairEventManager::UpdateEditor() {}
 
-FairEventManager::~FairEventManager() {}
+FairEventManager::~FairEventManager()
+{
+    if (fgRinstance == this) {
+        // Do not point to a destructed object!
+        fgRinstance = nullptr;
+    }
+}
 
 void FairEventManager::Open() {}
 

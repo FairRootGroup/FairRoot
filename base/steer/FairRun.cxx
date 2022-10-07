@@ -32,7 +32,7 @@
 #include <TROOT.h>     // fot gROOT
 #include <cassert>     // for... well, assert
 
-TMCThreadLocal FairRun* FairRun::fRunInstance = 0;
+TMCThreadLocal FairRun* FairRun::fRunInstance = nullptr;
 
 FairRun* FairRun::Instance() { return fRunInstance; }
 
@@ -98,6 +98,10 @@ FairRun::~FairRun()
     // but this should be independent
     delete fRtdb;   // who is responsible for the RuntimeDataBase
     delete fEvtHeader;
+    if (fRunInstance == this) {
+        // Do not point to a destructed object!
+        fRunInstance = nullptr;
+    }
     LOG(debug) << "Leave Destructor of FairRun";
 }
 

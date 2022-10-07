@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -41,7 +41,7 @@
 using std::cout;
 using std::endl;
 
-FairRunOnline* FairRunOnline::fgRinstance = 0;
+FairRunOnline* FairRunOnline::fgRinstance = nullptr;
 
 FairRunOnline* FairRunOnline::Instance() { return fgRinstance; }
 
@@ -88,6 +88,10 @@ FairRunOnline::~FairRunOnline()
         delete gGeoManager;
     }
     delete fServer;
+    if (fgRinstance == this) {
+        // Do not point to a destructed object!
+        fgRinstance = nullptr;
+    }
 }
 
 Bool_t gIsInterrupted;
