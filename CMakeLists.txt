@@ -222,22 +222,6 @@ set(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
 )
 set(PROJECT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
-find_package2(PUBLIC yaml-cpp)
-# Workaround missing exported include directories
-# Upstream has fixed this in https://github.com/jbeder/yaml-cpp/commit/ab5f9259a4e67d3fe0e4832bd407a9e596e2d884 (since 0.6.3)
-if(yaml-cpp_FOUND)
-  get_filename_component(YAML_CPP_INCLUDE_DIR "${YAML_CPP_INCLUDE_DIR}" REALPATH BASE_DIR "/")
-endif()
-if(    yaml-cpp_FOUND
-   AND TARGET yaml-cpp
-   AND EXISTS YAML_CPP_INCLUDE_DIR
-   AND yaml-cpp_VERSION VERSION_LESS 0.6.3
-)
-  set_target_properties(yaml-cpp PROPERTIES
-    INTERFACE_INCLUDE_DIRECTORIES "${YAML_CPP_INCLUDE_DIR}"
-  )
-endif()
-
 configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/FairRootConfigVersion.cmake.in "${CMAKE_BINARY_DIR}/FairRootConfigVersion.cmake" @ONLY)
 
 # Load the macro to generate the needed version info at compile time

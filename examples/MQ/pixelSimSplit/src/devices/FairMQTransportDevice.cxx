@@ -22,6 +22,7 @@
 #include "FairRunSim.h"
 #include "FairRuntimeDb.h"
 #include "FairTask.h"
+#include "FairVMCConfig.h"
 #include "RootSerializer.h"
 
 #include <TClonesArray.h>
@@ -84,6 +85,8 @@ void FairMQTransportDevice::InitTask()
     }
 
     fRunSim->SetName(fTransportName.data());
+    fRunSim->SetSimulationConfig(std::make_unique<FairVMCConfig>());
+    fRunSim->SetIsMT(kFALSE);
 
     if (fUserConfig.Length() > 0)
         fRunSim->SetUserConfig(fUserConfig);

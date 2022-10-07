@@ -1,0 +1,8 @@
+<SIM>
+  <G4_PostInit>
+    <Commands>
+      <value>/tracking/verbose 1</value>
+    </Commands>
+  </G4_PostInit>
+</SIM>
+

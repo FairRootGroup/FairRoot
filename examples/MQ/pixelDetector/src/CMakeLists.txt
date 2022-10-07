@@ -71,6 +71,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Gen # FairBoxGenerator
   FairRoot::GeoBase
   FairRoot::ParBase # FairParGenericSet
+  FairRoot::ExGConfig
   FairRoot::ExMCStack
   FairRoot::ExPassive # FairCave
   FairRoot::FairMQ

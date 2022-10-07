@@ -1,0 +1,59 @@
+<SIM>
+  <G3>
+    <TRIG>1</TRIG>
+    <SWIT>
+      <value>4</value>
+      <value>100</value>
+    </SWIT>
+    <DEBU>
+      <value>0</value>
+      <value>0</value>
+      <value>1</value>
+    </DEBU>
+    <RAYL>1</RAYL>
+    <STRA>1</STRA>
+    <AUTO>0</AUTO>                        <!--#Select automatic STMIN etc... calc. (AUTO 1) or manual (AUTO 0)-->
+    <ABAN>0</ABAN>                        <!--#Restore 3.16 behaviour for abandoned tracks-->
+    <OPTI>2</OPTI>                        <!--#Select optimisation level for GEANT geometry searches (0,1,2)-->
+    <ERAN>5e-7</ERAN>
+    <CKOV>1</CKOV>                        <!--#Cerenkov photons-->
+    <CUTS>                                <!--Setting the cuts directly by Geant3, expecting 11 or 16 values-->
+      <value>0.001</value>                <!--gammas (GeV)-->
+      <value>0.001</value>                <!--#electrons (GeV)-->
+      <value>0.001</value>                <!--#neutral hadrons (GeV)-->
+      <value>0.001</value>                <!--charged hadrons (GeV)-->
+      <value>0.001</value>                <!--muons (GeV)-->
+      <value>0.001</value>                <!--electron bremsstrahlung (GeV)-->
+      <value>0.001</value>                <!--muon and hadron bremsstrahlung (GeV)-->
+      <value>0.001</value>                <!--delta-rays by electrons (GeV)-->
+      <value>0.001</value>                <!--delta-rays by muons (GeV)-->
+      <value>0.001</value>                <!--direct pair production by muons (GeV)-->
+      <value>10000000000</value>          <!--time of flight cut in seconds-->
+      <value>0</value>                    <!--The last five parameters form an array of 5 user definable cuts (like in old Geant)-->
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+      <value>0</value>
+    </CUTS>
+  </G3>
+  <MonteCarlo>
+    <Process>
+      <PAIR>1</PAIR>                    <!--#pair production-->
+      <COMP>1</COMP>                    <!--#Compton scattering-->
+      <PHOT>1</PHOT>                    <!--#photo electric effect-->
+      <PFIS>0</PFIS>                    <!--#photofission-->
+      <DRAY>1</DRAY>                    <!--#delta-ray-->
+      <ANNI>1</ANNI>                    <!--#annihilation-->
+      <BREM>1</BREM>                    <!--#bremsstrahlung-->
+      <HADR>3</HADR>                    <!--hadronic process-->
+      <MUNU>1</MUNU>                    <!--muon nuclear interaction-->
+      <DCAY>1</DCAY>                    <!--decay-->
+      <LOSS>1</LOSS>                    <!--energy loss-->
+      <MULS>1</MULS>                    <!--multiple scattering-->
+    </Process>
+  </MonteCarlo>
+  <FairStack>
+    <StoreSecondaries>true</StoreSecondaries>
+    <MinPoints>0</MinPoints>
+  </FairStack>
+</SIM>

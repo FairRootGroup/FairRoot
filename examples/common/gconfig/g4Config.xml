@@ -1,0 +1,47 @@
+<SIM>
+  <G4>
+    <UserGeometry>geomRoot</UserGeometry>
+    <PhysicsList>QGSP_BERT_EMV</PhysicsList>
+    <SpecialProcess>stepLimiter+specialCuts+specialControls</SpecialProcess>
+    <SpecialStacking>false</SpecialStacking>
+    <Multithreaded>false</Multithreaded>
+    <MaxNStep>10000</MaxNStep>
+    <Commands>
+      <value>/cuts/setHighEdge 100 GeV</value>
+      <value>/tracking/verbose 0</value>
+    </Commands>
+  </G4>
+  <MonteCarlo>
+    <Process>
+      <PAIR>1</PAIR>                    <!--#pair production-->
+      <COMP>1</COMP>                    <!--#Compton scattering-->
+      <PHOT>1</PHOT>                    <!--#photo electric effect-->
+      <PFIS>0</PFIS>                    <!--#photofission-->
+      <DRAY>1</DRAY>                    <!--#delta-ray-->
+      <ANNI>1</ANNI>                    <!--#annihilation-->
+      <BREM>1</BREM>                    <!--#bremsstrahlung-->
+      <HADR>1</HADR>                    <!--hadronic process-->
+      <MUNU>1</MUNU>                    <!--muon nuclear interaction-->
+      <DCAY>1</DCAY>                    <!--decay-->
+      <LOSS>1</LOSS>                    <!--energy loss-->
+      <MULS>1</MULS>                    <!--multiple scattering-->
+    </Process>
+    <Cut>
+      <CUTGAM>0.001</CUTGAM>            <!--gammas (GeV)-->
+      <CUTELE>0.001</CUTELE>            <!--#electrons (GeV)-->
+      <CUTNEU>0.001</CUTNEU>            <!--#neutral hadrons (GeV)-->
+      <CUTHAD>0.001</CUTHAD>            <!--charged hadrons (GeV)-->
+      <CUTMUO>0.001</CUTMUO>            <!--muons (GeV)-->
+      <BCUTE>0.001</BCUTE>              <!--electron bremsstrahlung (GeV)-->
+      <BCUTM>0.001</BCUTM>              <!--muon and hadron bremsstrahlung (GeV)-->
+      <DCUTE>0.001</DCUTE>              <!--delta-rays by electrons (GeV)-->
+      <DCUTM>0.001</DCUTM>              <!--delta-rays by muons (GeV)-->
+      <PPCUTM>0.001</PPCUTM>            <!--direct pair production by muons (GeV)-->
+      <TOFMAX>10000000000</TOFMAX>      <!--time of flight cut in seconds-->
+    </Cut>
+  </MonteCarlo>
+  <FairStack>
+    <StoreSecondaries>true</StoreSecondaries>
+    <MinPoints>0</MinPoints>
+  </FairStack>
+</SIM>

@@ -1,0 +1,25 @@
+<SIM>
+  <G3>
+    <TRIG>1</TRIG>
+    <SWIT>
+      <value>4</value>
+      <value>100</value>
+    </SWIT>
+    <DEBU>
+      <value>0</value>
+      <value>0</value>
+      <value>1</value>
+    </DEBU>
+    <RAYL>1</RAYL>
+    <STRA>1</STRA>
+    <AUTO>0</AUTO>                        <!--#Select automatic STMIN etc... calc. (AUTO 1) or manual (AUTO 0)-->
+    <ABAN>0</ABAN>                        <!--#Restore 3.16 behaviour for abandoned tracks-->
+    <OPTI>2</OPTI>                        <!--#Select optimisation level for GEANT geometry searches (0,1,2)-->
+    <ERAN>5e-7</ERAN>
+    <CKOV>1</CKOV>                        <!--#Cerenkov photons-->
+  </G3>
+  <FairStack>
+    <StoreSecondaries>true</StoreSecondaries>
+    <MinPoints>0</MinPoints>
+  </FairStack>
+</SIM>

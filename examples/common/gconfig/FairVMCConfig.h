@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *    Copyright (C) 2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -13,9 +13,9 @@
 #ifndef FAIRROOT_SIM_CONFIG_H
 #define FAIRROOT_SIM_CONFIG_H
 
-#include "FairYamlVMCConfig.h"
+#include "FairXmlVMCConfig.h"
 
-class FairVMCConfig : public FairYamlVMCConfig
+class FairVMCConfig : public FairXmlVMCConfig
 {
   public:
     FairVMCConfig();

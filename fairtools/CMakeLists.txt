@@ -8,7 +8,7 @@
 
 add_subdirectory(MCStepLogger)
 
-if(Geant3_FOUND AND Geant4VMC_FOUND AND yaml-cpp_FOUND)
+if(Geant3_FOUND AND Geant4VMC_FOUND)
   add_subdirectory(MCConfigurator)
 endif()
 

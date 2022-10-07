@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -9,7 +9,7 @@
 set(target MCConfigurator)
 
 set(sources
-  FairYamlVMCConfig.cxx
+  FairXmlVMCConfig.cxx
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
@@ -29,7 +29,6 @@ target_link_libraries(${target} PUBLIC
 
   geant321
   geant4vmc
-  yaml-cpp
 
   ROOT::Core
   ${VMCLIB}

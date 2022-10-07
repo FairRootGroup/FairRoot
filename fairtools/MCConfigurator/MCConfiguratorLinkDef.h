@@ -13,7 +13,7 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class FairYamlVMCConfig+;
+#pragma link C++ class FairXmlVMCConfig+;
 
 #endif
 

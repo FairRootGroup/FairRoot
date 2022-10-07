@@ -21,12 +21,17 @@ FairGenericVMCConfig::FairGenericVMCConfig()
     , fPostInitName("g4ConfigPostInit.C")
 {}
 
+FairGenericVMCConfig::FairGenericVMCConfig(const FairGenericVMCConfig& config)
+    : fPostInitFlag(config.fPostInitFlag)
+    , fPostInitName(config.fPostInitName)
+{}
+
 FairGenericVMCConfig::~FairGenericVMCConfig() {}
 
 void FairGenericVMCConfig::Setup(const char* mcEngine)
 {
     LOG(warning) << "FairGenericVMCConfig::Setup() Using gConfig.C macro DEPRACATED.";
-    LOG(warning) << "Check FairRoot/examples/common/gconfig/ for current YAML implementation.";
+    LOG(warning) << "Check FairRoot/examples/common/gconfig/ for current XML implementation.";
 
     TString lUserCuts = FairRunSim::Instance()->GetUserCuts();
     TString lUserConfig = FairRunSim::Instance()->GetUserConfig();

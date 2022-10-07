@@ -8,10 +8,11 @@
 #ifndef FAIRRUNSIM_H
 #define FAIRRUNSIM_H
 
-#include "FairIon.h"             // for FairIon
-#include "FairMCApplication.h"   // for FairMCApplication
-#include "FairParticle.h"        // for FairParticle
-#include "FairRun.h"             // for FairRun
+#include "FairGenericVMCConfig.h"   // for FairGenericVMCConfig
+#include "FairIon.h"                // for FairIon
+#include "FairMCApplication.h"      // for FairMCApplication
+#include "FairParticle.h"           // for FairParticle
+#include "FairRun.h"                // for FairRun
 
 #include <Rtypes.h>      // for Bool_t, Double_t, Int_t, etc
 #include <TMCtls.h>      // for multi-threading
@@ -24,7 +25,6 @@ class FairMCEventHeader;
 class FairMesh;
 class FairModule;
 class FairPrimaryGenerator;
-class FairGenericVMCConfig;
 
 /**
  * Configure the Simulation session
@@ -178,8 +178,8 @@ class FairRunSim : public FairRun
         fUseSimSetupPostInitFunction = true;
     }
 
-    void SetSimulationConfig(FairGenericVMCConfig* tconf) { fSimulationConfig = tconf; }
-    FairGenericVMCConfig* GetSimulationConfig() { return fSimulationConfig; }
+    void SetSimulationConfig(std::unique_ptr<FairGenericVMCConfig>&& tconf) { fSimulationConfig = std::move(tconf); }
+    FairGenericVMCConfig* GetSimulationConfig() { return fSimulationConfig.get(); }
 
     void SetIsMT(Bool_t isMT) { fIsMT = isMT; }
     Bool_t IsMT() const { return fIsMT; }
@@ -234,7 +234,7 @@ class FairRunSim : public FairRun
     std::function<void()> fSimSetupPostInit;   //!                          /** A user provided function to do sim setup
                                                //!                          / instead of using macros **/
     bool fUseSimSetupPostInitFunction = false;
-    FairGenericVMCConfig* fSimulationConfig;   //!                 /** Simulation configuration */
+    std::unique_ptr<FairGenericVMCConfig> fSimulationConfig{};   //!        /** Simulation configuration */
 
     ClassDefOverride(FairRunSim, 2);
 };
