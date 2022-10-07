@@ -62,7 +62,6 @@ set(sources
   source/FairSource.cxx
   source/FairUnpack.cxx
 
-  steer/FairAnaSelector.cxx
   steer/FairLinkManager.cxx
   steer/FairRadGridManager.cxx
   steer/FairRadLenManager.cxx
@@ -72,7 +71,6 @@ set(sources
   steer/FairRootManager.cxx
   steer/FairRun.cxx
   steer/FairRunAna.cxx
-  steer/FairRunAnaProof.cxx
   steer/FairRunOnline.cxx
   steer/FairRunSim.cxx
   steer/FairTask.cxx
@@ -91,6 +89,12 @@ if(BUILD_MBS)
     source/MRevBuffer.cxx
     source/rclose.c
     source/swaplw.c
+  )
+endif()
+if(BUILD_PROOF_SUPPORT)
+  list(APPEND sources
+    steer/FairAnaSelector.cxx
+    steer/FairRunAnaProof.cxx
   )
 endif()
 
@@ -127,7 +131,6 @@ target_link_libraries(${target} PUBLIC
   ROOT::Matrix
   ROOT::Net # TSocket
   ROOT::Physics
-  ROOT::Proof
   ROOT::RIO
   ROOT::Tree
   ${VMCLIB}
@@ -139,6 +142,11 @@ target_compile_definitions(${target} PRIVATE
   $<$<BOOL:${ROOT_gdml_FOUND}>:ROOT_HAS_GDML>
   # $<$<PLATFORM_ID:Linux>:Linux>
 )
+
+if(BUILD_PROOF_SUPPORT)
+  target_link_libraries(${target} PUBLIC ROOT::Proof)
+  target_compile_definitions(${target} PRIVATE BUILD_PROOF_SUPPORT)
+endif()
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}

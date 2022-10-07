@@ -42,7 +42,6 @@
 #pragma link C++ class FairRootManager+;
 #pragma link C++ class FairRun+;
 #pragma link C++ class FairRunAna;
-#pragma link C++ class FairRunAnaProof;
 #pragma link C++ class FairRunIdGenerator;
 #pragma link C++ class FairRunSim;
 #pragma link C++ class FairGenericVMCConfig;
@@ -67,7 +66,6 @@
 #pragma link C++ class FairWriteoutBuffer;
 #pragma link C++ class FairRingSorter;
 #pragma link C++ class FairRingSorterTask;
-#pragma link C++ class FairAnaSelector+;
 #pragma link C++ class FairLinkManager+;
 #pragma link C++ class FairPrintFairLinks;
 
@@ -89,6 +87,10 @@
 #pragma link C++ class FairLmdSource;
 #pragma link C++ class MRevBuffer;
 #pragma link C++ class REvent;
+#endif
+#ifdef BUILD_PROOF_SUPPORT
+#pragma link C++ class FairAnaSelector+;
+#pragma link C++ class FairRunAnaProof;
 #endif
 
 #endif
