@@ -109,6 +109,10 @@ FairRunSim::~FairRunSim()
     // Not owner of the field
     delete fGen;
     delete fMCEvHead;
+    if (fginstance == this) {
+        // Do not point to a destructed object!
+        fginstance = nullptr;
+    }
 }
 
 FairRunSim* FairRunSim::Instance() { return fginstance; }
@@ -363,4 +367,4 @@ FairMCEventHeader* FairRunSim::GetMCEventHeader()
     return fMCEvHead;
 }
 
-TMCThreadLocal FairRunSim* FairRunSim::fginstance = 0;
+TMCThreadLocal FairRunSim* FairRunSim::fginstance = nullptr;
