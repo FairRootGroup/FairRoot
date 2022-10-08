@@ -244,8 +244,6 @@ class FairMCApplication : public TVirtualMCApplication
     TRefArray* fActiveDetectors;
     /**List of FairTask*/
     FairTask* fFairTaskList;   //!
-    /**detector list (Passive and Active)*/
-    TRefArray* fDetectors;
     /**Iterator for Module list*/
     TIterator* fModIter;   //!
     /**Module list in simulation*/

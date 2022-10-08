@@ -74,7 +74,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     : TVirtualMCApplication(name, title)
     , fActiveDetectors(nullptr)
     , fFairTaskList(nullptr)
-    , fDetectors(nullptr)
     , fModIter(nullptr)
     , fModules(nullptr)
     , fNoSenVolumes(0)
@@ -120,7 +119,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     fModules = ModList;
     fModIter = fModules->MakeIterator();
     // Create and fill a list of active detectors
-    fDetectors = new TRefArray;
     fActiveDetectors = new TRefArray();
     fModIter->Reset();
     FairDetector* detector;
@@ -129,7 +127,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     while ((obj = fModIter->Next())) {
         detector = dynamic_cast<FairDetector*>(obj);
         if (detector) {
-            fDetectors->Add(detector);
             listDetectors.push_back(detector);
             if (detector->IsActive()) {
                 fActiveDetectors->Add(detector);
@@ -153,7 +150,6 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
     : TVirtualMCApplication(rhs.GetName(), rhs.GetTitle())
     , fActiveDetectors(nullptr)
     , fFairTaskList(nullptr)
-    , fDetectors(nullptr)
     , fModIter(nullptr)
     , fModules(nullptr)
     , fNoSenVolumes(0)
@@ -209,7 +205,6 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
     }
 
     // Create and fill a list of active detectors
-    fDetectors = new TRefArray;
     fActiveDetectors = new TRefArray();
     fModIter->Reset();
     FairDetector* detector;
@@ -217,7 +212,6 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
         if (obj->InheritsFrom("FairDetector")) {
             detector = dynamic_cast<FairDetector*>(obj);
             if (detector) {
-                fDetectors->Add(detector);
                 listDetectors.push_back(detector);
                 if (detector->IsActive()) {
                     fActiveDetectors->Add(detector);
@@ -246,7 +240,6 @@ FairMCApplication::FairMCApplication()
     : TVirtualMCApplication()
     , fActiveDetectors(0)
     , fFairTaskList(0)
-    , fDetectors(0)
     , fModIter(0)
     , fModules(0)
     , fNoSenVolumes(0)
@@ -291,7 +284,6 @@ FairMCApplication::~FairMCApplication()
     delete fStack;
     delete fActiveDetectors;   // don't do fActiveDetectors->Delete() here
     // the modules are already deleted in FairRunSim
-    delete fDetectors;
     delete fModIter;
     //  LOG(debug3) << "Leave Destructor of FairMCApplication";
     delete fMC;
