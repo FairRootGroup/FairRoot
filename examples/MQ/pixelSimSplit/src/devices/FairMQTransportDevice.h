@@ -52,7 +52,7 @@ class FairMQTransportDevice : public FairMQRunDevice
     void SetSecondParameter(FairParIo* par) { fSecondParameter = par; };
     void SetUserConfig(const TString& Config) { fUserConfig = Config; }
     void SetUserCuts(const TString& Cuts) { fUserCuts = Cuts; }
-    void SetSink(std::unique_ptr<FairSink>&& sink) { fSink = std::move(sink); }
+    void SetSink(std::unique_ptr<FairSink> sink) { fSink = std::move(sink); }
     // ------ ---------- -------- ------
 
     void InitializeRun();

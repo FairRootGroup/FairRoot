@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2017 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2017-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -52,7 +52,7 @@ class FairMQSimDevice : public FairMQRunDevice
     void SetSecondParameter(FairParIo* par) { fSecondParameter = par; }
     void SetUserConfig(const TString& Config) { fUserConfig = Config; }
     void SetUserCuts(const TString& Cuts) { fUserCuts = Cuts; }
-    void SetSink(std::unique_ptr<FairSink>&& sink) { fSink = std::move(sink); }
+    void SetSink(std::unique_ptr<FairSink> sink) { fSink = std::move(sink); }
     // ------ ---------- -------- ------
 
     void InitializeRun();
