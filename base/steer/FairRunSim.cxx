@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -74,8 +74,6 @@ FairRunSim::FairRunSim(Bool_t isMaster)
     , fUserCuts("SetCuts.C")
     , fIsMT(kFALSE)
     , fImportTGeoToVMC(kTRUE)
-    , fSimulationConfig(nullptr)
-
 {
     if (fginstance) {
         Fatal("FairRun", "Singleton instance already exists.");
@@ -289,8 +287,9 @@ void FairRunSim::SetMCConfig()
     if (fUseSimSetupFunction) {
         fSimSetup();
     } else {
-        if (fSimulationConfig == nullptr)   // RKRKRK COMMENT
-            fSimulationConfig = new FairGenericVMCConfig();
+        if (!fSimulationConfig) {
+            fSimulationConfig = std::make_unique<FairGenericVMCConfig>();
+        }
         fSimulationConfig->Setup(GetName());
     }
 
@@ -299,7 +298,7 @@ void FairRunSim::SetMCConfig()
     if (fUseSimSetupPostInitFunction) {
         fSimSetupPostInit();
     } else {
-        if (fSimulationConfig != nullptr) {
+        if (fSimulationConfig) {
             fSimulationConfig->SetupPostInit(GetName());
         }
     }
