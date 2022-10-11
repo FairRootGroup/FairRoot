@@ -58,6 +58,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   It has been deprecated since 18.0.0.
 * `FairRootManager::Get{Tree,Folder}Name()` now return `const char *`.
   Do NOT `delete` the returned pointer!
+* `FairRunSim::SetSimulationConfig()` now takes a
+  `unique_ptr` instead of a raw pointer with unknown
+  ownership.
 * Some headers were cleaned up and now `#include` fewer
   other headers. You might have to add some `#includes`s
   in your code.
