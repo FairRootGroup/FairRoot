@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -171,7 +171,7 @@ Bool_t FairRun::GetWriteRunInfoFile()
     return fGenerateRunInfo;
 }
 
-void FairRun::SetSink(std::unique_ptr<FairSink>&& newsink)
+void FairRun::SetSink(std::unique_ptr<FairSink> newsink)
 {
     fSink = std::move(newsink);
     fRootManager->SetSink(fSink.get());
