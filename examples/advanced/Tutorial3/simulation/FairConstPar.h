@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -25,7 +25,6 @@ class FairParamList;
 
 class FairConstPar : public FairMapPar
 {
-
   public:
     /** Standard constructor  **/
     FairConstPar(const char* name, const char* title, const char* context);
@@ -34,12 +33,12 @@ class FairConstPar : public FairMapPar
     FairConstPar();
 
     /** Destructor **/
-    ~FairConstPar();
+    ~FairConstPar() override;
 
-    void putParams(FairParamList* list);
+    void putParams(FairParamList* list) override;
 
     /** Get parameters **/
-    Bool_t getParams(FairParamList* list);
+    Bool_t getParams(FairParamList* list) override;
 
     /** Set parameters from FairField  **/
     void SetParameters(FairField* field);
@@ -52,7 +51,7 @@ class FairConstPar : public FairMapPar
     /** Field values in [kG] **/
     Double_t fBx, fBy, fBz;
 
-    ClassDef(FairConstPar, 1);
+    ClassDefOverride(FairConstPar, 1);
 };
 
 #endif

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2019-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -30,27 +30,27 @@ class FairTutPropDet : public FairDetector
     FairTutPropDet();
 
     /**       destructor     */
-    virtual ~FairTutPropDet();
+    ~FairTutPropDet() override;
 
     /**      Initialization of the detector is done here    */
-    virtual void Initialize();
+    void Initialize() override;
 
     /**       this method is called for each step during simulation
      *       (see FairMCApplication::Stepping())
      */
-    virtual Bool_t ProcessHits(FairVolume* v = 0);
+    Bool_t ProcessHits(FairVolume* v = nullptr) override;
 
     /**       Registers the produced collections in FAIRRootManager.     */
-    virtual void Register();
+    void Register() override;
 
     /** Gets the produced collections */
-    virtual TClonesArray* GetCollection(Int_t iColl) const;
+    TClonesArray* GetCollection(Int_t iColl) const override;
 
     /**      has to be called after each event to reset the containers      */
-    virtual void Reset();
+    void Reset() override;
 
     /**      Create the detector geometry        */
-    void ConstructGeometry();
+    void ConstructGeometry() override;
 
     /**      This method is an example of how to add your own point
      *       of type FairTutPropDetPoint to the clones array
@@ -64,14 +64,14 @@ class FairTutPropDet : public FairDetector
 
     //    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
     //                               Int_t offset) {;}
-    virtual void SetSpecialPhysicsCuts() { ; }
-    virtual void EndOfEvent();
-    virtual void FinishPrimary() { ; }
-    virtual void FinishRun() { ; }
-    virtual void BeginPrimary() { ; }
-    virtual void PostTrack() { ; }
-    virtual void PreTrack() { ; }
-    virtual void BeginEvent() { ; }
+    void SetSpecialPhysicsCuts() override { ; }
+    void EndOfEvent() override;
+    void FinishPrimary() override { ; }
+    void FinishRun() override { ; }
+    void BeginPrimary() override { ; }
+    void PostTrack() override { ; }
+    void PreTrack() override { ; }
+    void BeginEvent() override { ; }
 
     void SetPointsArrayName(const std::string& tempName) { fPointsArrayName = tempName; };
 
@@ -96,7 +96,7 @@ class FairTutPropDet : public FairDetector
     FairTutPropDet(const FairTutPropDet&);
     FairTutPropDet& operator=(const FairTutPropDet&);
 
-    ClassDef(FairTutPropDet, 1);
+    ClassDefOverride(FairTutPropDet, 1);
 };
 
 #endif   // FAIRTUTPROPDET_H

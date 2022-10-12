@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -33,10 +33,10 @@ class PixelDigitize : public FairTask
     PixelDigitize(const char* name, Int_t iVerbose);
 
     /** Destructor **/
-    virtual ~PixelDigitize();
+    ~PixelDigitize() override;
 
     /** Execution **/
-    virtual void Exec(Option_t* opt);
+    void Exec(Option_t* opt) override;
 
     virtual void GetParList(TList* tempList);
     virtual void InitMQ(TList* tempList);
@@ -65,24 +65,24 @@ class PixelDigitize : public FairTask
     void ActivatePixel(Int_t index, Int_t detId, Int_t feId, Int_t col, Int_t row, Double_t charge, Double_t timestamp);
 
     /** Get parameter containers **/
-    virtual void SetParContainers();
+    void SetParContainers() override;
 
     /** Intialisation **/
-    virtual InitStatus Init();
+    InitStatus Init() override;
 
     /** Reinitialisation **/
-    virtual InitStatus ReInit();
+    InitStatus ReInit() override;
 
     /** Reset eventwise counters **/
     void Reset();
 
     /** Finish at the end of each event **/
-    virtual void Finish();
+    void Finish() override;
 
     PixelDigitize(const PixelDigitize&);
     PixelDigitize& operator=(const PixelDigitize&);
 
-    ClassDef(PixelDigitize, 1);
+    ClassDefOverride(PixelDigitize, 1);
 };
 
 #endif

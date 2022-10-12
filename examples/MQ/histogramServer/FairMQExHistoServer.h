@@ -23,7 +23,7 @@ class FairMQExHistoServer : public fair::mq::Device
   public:
     FairMQExHistoServer();
 
-    virtual ~FairMQExHistoServer();
+    ~FairMQExHistoServer() override;
 
     void UpdateHttpServer();
 
@@ -33,13 +33,13 @@ class FairMQExHistoServer : public fair::mq::Device
     }
 
   protected:
-    virtual void InitTask();
+    void InitTask() override;
 
     bool ReceiveData(fair::mq::MessagePtr& msg, int index);
 
-    virtual void PreRun();
+    void PreRun() override;
 
-    virtual void PostRun();
+    void PostRun() override;
 
   private:
     std::string fInputChannelName;

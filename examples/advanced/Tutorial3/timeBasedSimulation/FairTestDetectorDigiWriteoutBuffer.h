@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -31,18 +31,18 @@ class FairTestDetectorDigiWriteoutBuffer : public FairWriteoutBuffer
     FairTestDetectorDigiWriteoutBuffer();
     FairTestDetectorDigiWriteoutBuffer(TString branchName, TString folderName, Bool_t persistance);
 
-    virtual ~FairTestDetectorDigiWriteoutBuffer();
+    ~FairTestDetectorDigiWriteoutBuffer() override;
 
-    void AddNewDataToTClonesArray(FairTimeStamp*);
+    void AddNewDataToTClonesArray(FairTimeStamp*) override;
 
-    virtual double FindTimeForData(FairTimeStamp* data);
-    virtual void FillDataMap(FairTimeStamp* data, double activeTime);
-    virtual void EraseDataFromDataMap(FairTimeStamp* data);
+    double FindTimeForData(FairTimeStamp* data) override;
+    void FillDataMap(FairTimeStamp* data, double activeTime) override;
+    void EraseDataFromDataMap(FairTimeStamp* data) override;
 
   protected:
     std::map<FairTestDetectorDigi, double> fData_map;
 
-    ClassDef(FairTestDetectorDigiWriteoutBuffer, 1);
+    ClassDefOverride(FairTestDetectorDigiWriteoutBuffer, 1);
 };
 
 #endif /* FairTestDetectorDigiWriteoutBuffer_H_ */

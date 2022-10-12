@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -31,17 +31,17 @@ class PixelPoint : public FairMCPoint
     PixelPoint(Int_t trackID, Int_t detID, TVector3 pos, TVector3 mom, Double_t tof, Double_t length, Double_t eLoss);
 
     /** Destructor **/
-    virtual ~PixelPoint();
+    ~PixelPoint() override;
 
     /** Output to screen **/
-    virtual void Print(const Option_t* opt) const;
+    void Print(const Option_t* opt) const override;
 
   private:
     /** Copy constructor **/
     PixelPoint(const PixelPoint& point);
     PixelPoint operator=(const PixelPoint& point);
 
-    ClassDef(PixelPoint, 1);
+    ClassDefOverride(PixelPoint, 1);
 };
 
 #endif
