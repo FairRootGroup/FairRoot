@@ -19,6 +19,7 @@
 #include "FairPrimaryGenerator.h"
 #include "FairRunSim.h"
 #include "FairRuntimeDb.h"
+#include "FairVMCConfig.h"
 
 #include <TCollection.h>
 #include <TList.h>
@@ -59,7 +60,7 @@ void FairMQSimDevice::InitTask()
     }
 
     fRunSim->SetName(fTransportName.data());
-    //  fRunSim->SetSimulationConfig(new FairVMCConfig());
+    fRunSim->SetSimulationConfig(std::make_unique<FairVMCConfig>());
     fRunSim->SetIsMT(kFALSE);
 
     if (fUserConfig.Length() > 0)
@@ -87,10 +88,11 @@ void FairMQSimDevice::InitializeRun()
     // -----      ask the fParamMQServer   ------------------------------------
     // -----      receive the run number and sampler id   ---------------------
     std::string* askForRunNumber = new std::string("ReportSimDevice");
-    auto req(NewMessage(const_cast<char*>(askForRunNumber->c_str()),
-                        askForRunNumber->length(),
-                        [](void* /*data*/, void* object) { delete static_cast<std::string*>(object); },
-                        askForRunNumber));
+    auto req(NewMessage(
+        const_cast<char*>(askForRunNumber->c_str()),
+        askForRunNumber->length(),
+        [](void* /*data*/, void* object) { delete static_cast<std::string*>(object); },
+        askForRunNumber));
     auto rep(NewMessage());
 
     unsigned int runId = 0;

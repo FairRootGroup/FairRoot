@@ -35,6 +35,7 @@ void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant3")
     // ------------------------
 
     fRun->SetName(mcEngine);
+    fRun->SetSimulationConfig(std::make_unique<FairVMCConfig>());
 
     TString outFile = "data/testrun_";
     outFile = outFile + mcEngine + ".root";

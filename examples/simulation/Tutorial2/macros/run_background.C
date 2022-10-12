@@ -53,7 +53,8 @@ void run_background(Int_t nEvents = 130)
 
     // -----   Create simulation run   ----------------------------------------
     auto run = std::make_unique<FairRunSim>();
-    run->SetName("TGeant4");                       // Transport engine
+    run->SetName("TGeant4");   // Transport engine
+    run->SetSimulationConfig(std::make_unique<FairVMCConfig>());
     run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------

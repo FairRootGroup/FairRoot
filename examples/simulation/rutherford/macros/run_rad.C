@@ -55,7 +55,8 @@ void run_rad(Int_t nEvents = 100, TString mcEngine = "TGeant4")
 
     // -----   Create simulation run   ----------------------------------------
     FairRunSim* run = new FairRunSim();
-    run->SetName(mcEngine);                        // Transport engine
+    run->SetName(mcEngine);   // Transport engine
+    run->SetSimulationConfig(std::make_unique<FairVMCConfig>());
     run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------
