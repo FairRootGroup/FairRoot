@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -21,12 +21,12 @@ class PixelGeo : public FairGeoSet
 
   public:
     PixelGeo();
-    ~PixelGeo() {}
-    const char* getModuleName(Int_t);
-    const char* getEleName(Int_t);
-    inline Int_t getModNumInMod(const TString&);
+    ~PixelGeo() override = default;
+    const char* getModuleName(Int_t) override;
+    const char* getEleName(Int_t) override;
+    inline Int_t getModNumInMod(const TString&) override;
 
-    ClassDef(PixelGeo, 1);
+    ClassDefOverride(PixelGeo, 1);
 };
 
 inline Int_t PixelGeo::getModNumInMod(const TString& name)

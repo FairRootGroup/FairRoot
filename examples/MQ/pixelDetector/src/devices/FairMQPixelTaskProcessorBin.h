@@ -46,7 +46,7 @@ class FairMQPixelTaskProcessorBin : public fair::mq::Device
         , fGeoPar(nullptr)
     {}
 
-    virtual ~FairMQPixelTaskProcessorBin()
+    ~FairMQPixelTaskProcessorBin() override
     {
         delete fGeoPar;
         fGeoPar = nullptr;
@@ -166,7 +166,7 @@ class FairMQPixelTaskProcessorBin : public fair::mq::Device
         return true;
     }
 
-    virtual void Init()
+    void Init() override
     {
         fDataToKeep = fConfig->GetValue<std::string>("keep-data");
         fInputChannelName = fConfig->GetValue<std::string>("in-channel");
@@ -194,7 +194,7 @@ class FairMQPixelTaskProcessorBin : public fair::mq::Device
         OnData(fInputChannelName, &FairMQPixelTaskProcessorBin<T>::ProcessData);
     }
 
-    virtual void PostRun()
+    void PostRun() override
     {
         LOG(info) << "FairMQPixelTaskProcessorBin<T>::PostRun() Received " << fReceivedMsgs << " and sent " << fSentMsgs
                   << " messages!";

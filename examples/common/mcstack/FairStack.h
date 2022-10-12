@@ -57,7 +57,7 @@ class FairStack : public FairGenericStack
     FairStack(Int_t size = 100);
 
     /** Destructor  **/
-    virtual ~FairStack();
+    ~FairStack() override;
 
     /** Add a TParticle to the stack.
      ** Declared in TVirtualMCStack
@@ -74,109 +74,109 @@ class FairStack : public FairGenericStack
      *@param weight    Particle weight
      *@param is        Generation status code (whatever that means)
      **/
-    virtual void PushTrack(Int_t toBeDone,
-                           Int_t parentID,
-                           Int_t pdgCode,
-                           Double_t px,
-                           Double_t py,
-                           Double_t pz,
-                           Double_t e,
-                           Double_t vx,
-                           Double_t vy,
-                           Double_t vz,
-                           Double_t time,
-                           Double_t polx,
-                           Double_t poly,
-                           Double_t polz,
-                           TMCProcess proc,
-                           Int_t& ntr,
-                           Double_t weight,
-                           Int_t is);
+    void PushTrack(Int_t toBeDone,
+                   Int_t parentID,
+                   Int_t pdgCode,
+                   Double_t px,
+                   Double_t py,
+                   Double_t pz,
+                   Double_t e,
+                   Double_t vx,
+                   Double_t vy,
+                   Double_t vz,
+                   Double_t time,
+                   Double_t polx,
+                   Double_t poly,
+                   Double_t polz,
+                   TMCProcess proc,
+                   Int_t& ntr,
+                   Double_t weight,
+                   Int_t is) override;
 
-    virtual void PushTrack(Int_t toBeDone,
-                           Int_t parentID,
-                           Int_t pdgCode,
-                           Double_t px,
-                           Double_t py,
-                           Double_t pz,
-                           Double_t e,
-                           Double_t vx,
-                           Double_t vy,
-                           Double_t vz,
-                           Double_t time,
-                           Double_t polx,
-                           Double_t poly,
-                           Double_t polz,
-                           TMCProcess proc,
-                           Int_t& ntr,
-                           Double_t weight,
-                           Int_t is,
-                           Int_t secondParentId);
+    void PushTrack(Int_t toBeDone,
+                   Int_t parentID,
+                   Int_t pdgCode,
+                   Double_t px,
+                   Double_t py,
+                   Double_t pz,
+                   Double_t e,
+                   Double_t vx,
+                   Double_t vy,
+                   Double_t vz,
+                   Double_t time,
+                   Double_t polx,
+                   Double_t poly,
+                   Double_t polz,
+                   TMCProcess proc,
+                   Int_t& ntr,
+                   Double_t weight,
+                   Int_t is,
+                   Int_t secondParentId) override;
 
     /** Get next particle for tracking from the stack.
      ** Declared in TVirtualMCStack
      *@param  iTrack  index of popped track (return)
      *@return Pointer to the TParticle of the track
      **/
-    virtual TParticle* PopNextTrack(Int_t& iTrack);
+    TParticle* PopNextTrack(Int_t& iTrack) override;
 
     /** Get primary particle by index for tracking from stack
      ** Declared in TVirtualMCStack
      *@param  iPrim   index of primary particle
      *@return Pointer to the TParticle of the track
      **/
-    virtual TParticle* PopPrimaryForTracking(Int_t iPrim);
+    TParticle* PopPrimaryForTracking(Int_t iPrim) override;
 
     /** Set the current track number
      ** Declared in TVirtualMCStack
      *@param iTrack  track number
      **/
-    virtual void SetCurrentTrack(Int_t iTrack) { fCurrentTrack = iTrack; }
+    void SetCurrentTrack(Int_t iTrack) override { fCurrentTrack = iTrack; }
 
     /** Get total number of tracks
      ** Declared in TVirtualMCStack
      **/
-    virtual Int_t GetNtrack() const { return fNParticles; }
+    Int_t GetNtrack() const override { return fNParticles; }
 
     /** Get number of primary tracks
      ** Declared in TVirtualMCStack
      **/
-    virtual Int_t GetNprimary() const { return fNPrimaries; }
+    Int_t GetNprimary() const override { return fNPrimaries; }
 
     /** Get the current track's particle
      ** Declared in TVirtualMCStack
      **/
-    virtual TParticle* GetCurrentTrack() const;
+    TParticle* GetCurrentTrack() const override;
 
     /** Get the number of the current track
      ** Declared in TVirtualMCStack
      **/
-    virtual Int_t GetCurrentTrackNumber() const;   // { return fCurrentTrack; }
+    Int_t GetCurrentTrackNumber() const override;   // { return fCurrentTrack; }
 
     /** Get the track number of the parent of the current track
      ** Declared in TVirtualMCStack
      **/
-    virtual Int_t GetCurrentParentTrackNumber() const;
+    Int_t GetCurrentParentTrackNumber() const override;
 
     /** Add a TParticle to the fParticles array **/
     virtual void AddParticle(TParticle* part);
 
     /** Fill the MCTrack output array, applying filter criteria **/
-    virtual void FillTrackArray();
+    void FillTrackArray() override;
 
     /** Update the track index in the MCTracks and MCPoints **/
-    virtual void UpdateTrackIndex(TRefArray* detArray = 0);
+    void UpdateTrackIndex(TRefArray* detArray = 0) override;
 
     /** Resets arrays and stack and deletes particles and tracks **/
-    virtual void Reset();
+    void Reset() override;
 
     /** Register the MCTrack array to the Root Manager  **/
-    virtual void Register();
+    void Register() override;
 
     /** Output to screen
      **@param iVerbose: 0=events summary, 1=track info
      **/
-    virtual void Print(Option_t*) const;
+    void Print(Option_t*) const override;
 
     /** Modifiers  **/
     void StoreSecondaries(Bool_t choice = kTRUE) { fStoreSecondaries = choice; }
@@ -197,9 +197,9 @@ class FairStack : public FairGenericStack
 
     /** Accessors **/
     TParticle* GetParticle(Int_t trackId) const;
-    TClonesArray* GetListOfParticles() { return fParticles; }
+    TClonesArray* GetListOfParticles() override { return fParticles; }
 
-    void SetParticleArray(TClonesArray* partArray)
+    void SetParticleArray(TClonesArray* partArray) override
     {
         for (Int_t ipart = 0; ipart < partArray->GetEntries(); ipart++) {
             ((TParticle*)(partArray->At(ipart)))->SetUniqueID(fNPrimaries);
@@ -210,7 +210,7 @@ class FairStack : public FairGenericStack
         }
     }
 
-    void SetParticleArray(TClonesArray* partArray, Int_t partFrom, Int_t partTo)
+    void SetParticleArray(TClonesArray* partArray, Int_t partFrom, Int_t partTo) override
     {
         for (Int_t ipart = partFrom; ipart < partTo; ipart++) {
             ((TParticle*)(partArray->At(ipart)))->SetUniqueID(fNPrimaries);
@@ -223,7 +223,7 @@ class FairStack : public FairGenericStack
     }
 
     /** Clone this object (used in MT mode only) */
-    virtual FairGenericStack* CloneStack() const
+    FairGenericStack* CloneStack() const override
     {
         FairStack* clonedStack = new FairStack();
         clonedStack->StoreSecondaries(fStoreSecondaries);
@@ -273,7 +273,7 @@ class FairStack : public FairGenericStack
     FairStack(const FairStack&);
     FairStack& operator=(const FairStack&);
 
-    ClassDef(FairStack, 1);
+    ClassDefOverride(FairStack, 1);
 };
 
 #endif

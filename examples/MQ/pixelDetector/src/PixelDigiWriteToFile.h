@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -36,10 +36,10 @@ class PixelDigiWriteToFile : public FairTask
     PixelDigiWriteToFile(const char* name, Int_t iVerbose);
 
     /** Destructor **/
-    virtual ~PixelDigiWriteToFile();
+    ~PixelDigiWriteToFile() override;
 
     /** Execution **/
-    virtual void Exec(Option_t* opt);
+    void Exec(Option_t* opt) override;
 
     void SetOutputFileName(const TString& tstr) { fOutputFileName = tstr; }
 
@@ -53,7 +53,7 @@ class PixelDigiWriteToFile : public FairTask
     std::ofstream fOutputFiles[12];   // no more than 12 output files....
 
     /** Get parameter containers **/
-    virtual void SetParContainers() {}
+    void SetParContainers() override {}
 
     Int_t fDivideLevel;
 
@@ -62,21 +62,21 @@ class PixelDigiWriteToFile : public FairTask
     Int_t fPartNo;
 
     /** Intialisation **/
-    virtual InitStatus Init();
+    InitStatus Init() override;
 
     /** Reinitialisation **/
-    virtual InitStatus ReInit();
+    InitStatus ReInit() override;
 
     /** Reset eventwise counters **/
     void Reset() {}
 
     /** Finish at the end of each event **/
-    virtual void Finish();
+    void Finish() override;
 
     PixelDigiWriteToFile(const PixelDigiWriteToFile&);
     PixelDigiWriteToFile& operator=(const PixelDigiWriteToFile&);
 
-    ClassDef(PixelDigiWriteToFile, 1);
+    ClassDefOverride(PixelDigiWriteToFile, 1);
 };
 
 #endif

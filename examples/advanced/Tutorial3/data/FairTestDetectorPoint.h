@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -39,10 +39,10 @@ class FairTestDetectorPoint : public FairMCPoint
                           Double_t eLoss);
 
     /** Destructor **/
-    virtual ~FairTestDetectorPoint();
+    ~FairTestDetectorPoint() override;
 
     /** Output to screen **/
-    virtual void Print(const Option_t* opt) const;
+    void Print(const Option_t* opt) const override;
 
     /** Accessors **/
     Double_t GetXIn() const { return fX; }
@@ -73,7 +73,7 @@ class FairTestDetectorPoint : public FairMCPoint
     FairTestDetectorPoint(const FairTestDetectorPoint&);
     FairTestDetectorPoint operator=(const FairTestDetectorPoint&);
 
-    ClassDef(FairTestDetectorPoint, 2);
+    ClassDefOverride(FairTestDetectorPoint, 2);
 };
 
 #endif /* FAIRTESTDETECTORPOINT_H_ */
