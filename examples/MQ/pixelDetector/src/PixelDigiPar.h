@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -27,12 +27,12 @@ class PixelDigiPar : public FairParGenericSet
     PixelDigiPar(const char* name = "PixelDigiParameters",
                  const char* title = "Pixel digi parameters",
                  const char* context = "TestDefaultContext");
-    ~PixelDigiPar(void);
-    void clear(void){};
-    void putParams(FairParamList* list);
-    Bool_t getParams(FairParamList* list);
+    ~PixelDigiPar() override;
+    void clear() override {}
+    void putParams(FairParamList* list) override;
+    Bool_t getParams(FairParamList* list) override;
 
-    void Print(Option_t*) const;
+    void Print(Option_t*) const override;
 
     Double_t GetXPitch() const { return fDimX; }
     Double_t GetYPitch() const { return fDimY; }
@@ -79,7 +79,7 @@ class PixelDigiPar : public FairParGenericSet
     Double_t fPixelSorterCellWidth;    // Parameter for TimeStamp Sorter
     Int_t fPixelSorterNumberOfCells;   // Parameter for TimeStamp Sorter
 
-    ClassDef(PixelDigiPar, 1);
+    ClassDefOverride(PixelDigiPar, 1);
 };
 
 #endif /*!PIXELDIGIPAR_H*/

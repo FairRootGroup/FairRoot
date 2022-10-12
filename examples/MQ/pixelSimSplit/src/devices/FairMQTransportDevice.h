@@ -38,7 +38,7 @@ class FairMQTransportDevice : public FairMQRunDevice
 {
   public:
     FairMQTransportDevice();
-    virtual ~FairMQTransportDevice();
+    ~FairMQTransportDevice() override;
 
     // ------ FairRunSim setters ------
     void SetNofEvents(int64_t nofev) { fNofEvents = nofev; };
@@ -65,11 +65,11 @@ class FairMQTransportDevice : public FairMQRunDevice
   protected:
     bool TransportData(fair::mq::Parts&, int);
     //  bool TransportData(fair::mq::MessagePtr&, int);
-    virtual void Init();
-    virtual void InitTask();
-    virtual void PreRun();
-    virtual void PostRun();
-    virtual bool ConditionalRun();
+    void Init() override;
+    void InitTask() override;
+    void PreRun() override;
+    void PostRun() override;
+    bool ConditionalRun() override;
 
   private:
     UInt_t fRunId;

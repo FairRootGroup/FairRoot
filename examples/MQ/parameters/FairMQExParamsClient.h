@@ -24,11 +24,11 @@ class FairMQExParamsClient : public fair::mq::Device
 {
   public:
     FairMQExParamsClient();
-    virtual ~FairMQExParamsClient();
+    ~FairMQExParamsClient() override;
 
   protected:
-    virtual bool ConditionalRun();
-    virtual void InitTask();
+    bool ConditionalRun() override;
+    void InitTask() override;
 
   private:
     int fRunId;

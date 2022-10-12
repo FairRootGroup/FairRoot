@@ -49,7 +49,7 @@ class FairTestDetectorFileSink : public fair::mq::Device
     FairTestDetectorFileSink(const FairTestDetectorFileSink&) = delete;
     FairTestDetectorFileSink operator=(const FairTestDetectorFileSink&) = delete;
 
-    virtual ~FairTestDetectorFileSink()
+    ~FairTestDetectorFileSink() override
     {
         fTree.Write();
         fOutFile->Close();
@@ -63,7 +63,7 @@ class FairTestDetectorFileSink : public fair::mq::Device
     }
 
   protected:
-    virtual void Init()
+    void Init() override
     {
         fInChannelName = fConfig->GetValue<std::string>("in-channel");
         fAckChannelName = fConfig->GetValue<std::string>("ack-channel");
@@ -71,9 +71,9 @@ class FairTestDetectorFileSink : public fair::mq::Device
         InitOutputFile(fConfig->GetValue<std::string>("data-format"));
     }
 
-    virtual void PostRun() { LOG(info) << "Received " << fReceivedMsgs << " messages!"; }
+    void PostRun() override { LOG(info) << "Received " << fReceivedMsgs << " messages!"; }
 
-    virtual void InitTask();
+    void InitTask() override;
 
   private:
     std::unique_ptr<TClonesArray> fOutput;

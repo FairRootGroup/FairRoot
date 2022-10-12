@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2019-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -25,10 +25,10 @@ class FairTutPropGeoPar : public FairParGenericSet
     FairTutPropGeoPar(const char* name = "FairTutPropGeoPar",
                       const char* title = "Pixel Geometry Parameters",
                       const char* context = "TestDefaultContext");
-    ~FairTutPropGeoPar(void);
-    void clear(void);
-    void putParams(FairParamList*);
-    Bool_t getParams(FairParamList*);
+    ~FairTutPropGeoPar() override;
+    void clear() override;
+    void putParams(FairParamList*) override;
+    Bool_t getParams(FairParamList*) override;
     TObjArray* GetGeoSensitiveNodes() { return fGeoSensNodes; }
     TObjArray* GetGeoPassiveNodes() { return fGeoPassNodes; }
 
@@ -36,7 +36,7 @@ class FairTutPropGeoPar : public FairParGenericSet
     FairTutPropGeoPar(const FairTutPropGeoPar&);
     FairTutPropGeoPar& operator=(const FairTutPropGeoPar&);
 
-    ClassDef(FairTutPropGeoPar, 1);
+    ClassDefOverride(FairTutPropGeoPar, 1);
 };
 
 #endif   // FAIRTUTPROPGEOPAR_H

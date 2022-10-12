@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -26,15 +26,15 @@ class FairMQExParamsParOne : public FairParGenericSet
                          const char* context = "Default");
 
     /** Destructor **/
-    virtual ~FairMQExParamsParOne();
+    ~FairMQExParamsParOne() override;
 
-    virtual void print();
+    void print() override;
 
     /** Reset all parameters **/
-    virtual void clear();
+    void clear() override;
 
-    void putParams(FairParamList* list);
-    Bool_t getParams(FairParamList* list);
+    void putParams(FairParamList* list) override;
+    Bool_t getParams(FairParamList* list) override;
 
     inline void SetValue(const Int_t& val) { fParameterValue = val; }
 
@@ -44,7 +44,7 @@ class FairMQExParamsParOne : public FairParGenericSet
     FairMQExParamsParOne(const FairMQExParamsParOne&);
     FairMQExParamsParOne& operator=(const FairMQExParamsParOne&);
 
-    ClassDef(FairMQExParamsParOne, 1);
+    ClassDefOverride(FairMQExParamsParOne, 1);
 };
 
 #endif   // FAIRMQEXPARAMSPARONE_H_

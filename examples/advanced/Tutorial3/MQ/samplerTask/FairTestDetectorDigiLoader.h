@@ -30,7 +30,7 @@ class FairTestDetectorDigiLoader : public FairMQSamplerTask
         : FairMQSamplerTask("Load class TOut")
     {}
 
-    virtual void Exec(Option_t* opt);
+    void Exec(Option_t* opt) override;
 };
 
 // Template implementation is in FairTestDetectorDigiLoader.tpl :

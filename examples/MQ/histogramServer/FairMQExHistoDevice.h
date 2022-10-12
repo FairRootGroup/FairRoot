@@ -19,13 +19,13 @@ class FairMQExHistoDevice : public fair::mq::Device
 {
   public:
     FairMQExHistoDevice();
-    virtual ~FairMQExHistoDevice();
+    ~FairMQExHistoDevice() override;
 
   protected:
-    virtual void InitTask();
-    virtual void PreRun();
-    virtual void PostRun();
-    virtual bool ConditionalRun();
+    void InitTask() override;
+    void PreRun() override;
+    void PostRun() override;
+    bool ConditionalRun() override;
 
   private:
     FairMQExHistoDevice(const FairMQExHistoDevice&);

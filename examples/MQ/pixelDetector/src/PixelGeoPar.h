@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -27,10 +27,10 @@ class PixelGeoPar : public FairParGenericSet
     PixelGeoPar(const char* name = "PixelGeoPar",
                 const char* title = "Pixel Geometry Parameters",
                 const char* context = "TestDefaultContext");
-    ~PixelGeoPar(void);
-    void clear(void);
-    void putParams(FairParamList*);
-    Bool_t getParams(FairParamList*);
+    ~PixelGeoPar() override;
+    void clear() override;
+    void putParams(FairParamList*) override;
+    Bool_t getParams(FairParamList*) override;
     TObjArray* GetGeoSensitiveNodes() { return fGeoSensNodes; }
     TObjArray* GetGeoPassiveNodes() { return fGeoPassNodes; }
 
@@ -38,7 +38,7 @@ class PixelGeoPar : public FairParGenericSet
     PixelGeoPar(const PixelGeoPar&);
     PixelGeoPar& operator=(const PixelGeoPar&);
 
-    ClassDef(PixelGeoPar, 1);
+    ClassDefOverride(PixelGeoPar, 1);
 };
 
 #endif

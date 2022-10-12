@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -20,13 +20,13 @@ class FairTestDetectorRecoTask : public FairTask
     FairTestDetectorRecoTask(Int_t verbose);
 
     /** Destructor **/
-    virtual ~FairTestDetectorRecoTask();
+    ~FairTestDetectorRecoTask() override;
 
     /** Virtual method Init **/
-    virtual InitStatus Init();
+    InitStatus Init() override;
 
     /** Virtual method Exec **/
-    virtual void Exec(Option_t* opt);
+    void Exec(Option_t* opt) override;
 
     TClonesArray* fDigiArray;
     TClonesArray* fHitArray;
@@ -35,7 +35,7 @@ class FairTestDetectorRecoTask : public FairTask
     FairTestDetectorRecoTask(const FairTestDetectorRecoTask&);
     FairTestDetectorRecoTask& operator=(const FairTestDetectorRecoTask&);
 
-    ClassDef(FairTestDetectorRecoTask, 1);
+    ClassDefOverride(FairTestDetectorRecoTask, 1);
 };
 
 #endif /* FAIRTESTDETECTORRECOTASK_H_ */

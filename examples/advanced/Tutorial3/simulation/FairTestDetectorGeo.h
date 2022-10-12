@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -20,11 +20,11 @@ class FairTestDetectorGeo : public FairGeoSet
     char eleName[20];   // substring for elements in module
   public:
     FairTestDetectorGeo();
-    ~FairTestDetectorGeo() {}
-    const char* getModuleName(Int_t);
-    const char* getEleName(Int_t);
-    inline Int_t getModNumInMod(const TString&);
-    ClassDef(FairTestDetectorGeo, 1);
+    ~FairTestDetectorGeo() override = default;
+    const char* getModuleName(Int_t) override;
+    const char* getEleName(Int_t) override;
+    inline Int_t getModNumInMod(const TString&) override;
+    ClassDefOverride(FairTestDetectorGeo, 1);
 };
 
 inline Int_t FairTestDetectorGeo::getModNumInMod(const TString& name)

@@ -24,7 +24,7 @@ class FairMQPixAltFileSinkBin : public fair::mq::Device
 {
   public:
     FairMQPixAltFileSinkBin();
-    virtual ~FairMQPixAltFileSinkBin();
+    ~FairMQPixAltFileSinkBin() override;
 
     void SetOutputFileName(const std::string& tempString) { fFileName = tempString; }
     std::string GetOutputFileName() { return fFileName; }
@@ -34,7 +34,7 @@ class FairMQPixAltFileSinkBin : public fair::mq::Device
 
   protected:
     bool StoreData(fair::mq::Parts&, int);
-    virtual void Init();
+    void Init() override;
 
   private:
     std::string fInputChannelName;
