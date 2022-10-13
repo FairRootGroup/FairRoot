@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # The rename script exchange all occurence of PndPythia or PndPythia
-# by the name given by the first parameter. If the detector is for example 
+# by the name given by the first parameter. If the detector is for example
 # the Trd of the Cbm experiment a good name is CbmTrd. Normaly one should
 # use the naming convention of the experiment.
 # Also the filenames any many more things are changed automatically. In the
@@ -18,20 +18,20 @@ if [ $# -ne 3 ]; then
   echo "If you're not sure check in already existing detectors."
   echo "The script will exchange all default names by the new name"
   exit 1
-fi  
+fi
 
-DetectorName=$1 
+DetectorName=$1
 DetectorNameUpper=$(echo $DetectorName | tr [:lower:] [:upper:])
 
 ProjectName=$(echo $2 | tr [:lower:] [:upper:])
 ProjectSourceDir=${ProjectName}_SOURCE_DIR
 RelativeDir=$(basename $PWD)
 Prefix=$3
-for i in $(ls PndPythia*); do 
+for i in $(ls PndPythia*); do
   oldfile=$i
   newfile=$(echo $oldfile | sed "s/PndPythia/$DetectorName/")
   mv $oldfile $newfile
-done 
+done
 
 arch=`uname -s | tr '[A-Z]' '[a-z]'`
 case "$arch" in
@@ -61,7 +61,7 @@ sed -e "s/PndPythia/$DetectorName/g" $sedstring CMakeLists.txt
 sed -e "s/PndPythia/$DetectorNameUpper/g" $sedstring CMakeLists.txt
 sed -e "s/FAIRROOT_SOURCE_DIR/$ProjectSourceDir/g" $sedstring CMakeLists.txt
 
-if [ -d .svn ]; then  
+if [ -d .svn ]; then
   echo "Please remove the .svn directory."
   echo " This directory was also copied from templates."
   echo "##"
