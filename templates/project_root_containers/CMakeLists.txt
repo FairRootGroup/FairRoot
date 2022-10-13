@@ -128,7 +128,7 @@ find_package2_implicit_dependencies()
 # Defines all basic include directories from fairbase
 SetBasicVariables()
 
-set(FAIRROOT_LIBRARY_PROPERTIES VERSION "${PROJECT_VERSION}")
+set(PROJECT_LIBRARY_PROPERTIES VERSION "${PROJECT_VERSION}")
 
 SET(_LIBDIR ${CMAKE_BINARY_DIR}/lib)
 SET(LD_LIBRARY_PATH  ${_LIBDIR} ${LD_LIBRARY_PATH})
