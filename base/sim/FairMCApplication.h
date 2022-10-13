@@ -71,9 +71,15 @@ class FairMCApplication : public TVirtualMCApplication
     /** default constructor
      */
     FairMCApplication();
+
+    FairMCApplication(const FairMCApplication&) = delete;
+    FairMCApplication& operator=(const FairMCApplication&) = delete;
+    FairMCApplication(FairMCApplication&&) = delete;
+    FairMCApplication& operator=(FairMCApplication&&) = delete;
+
     /** default destructor
      */
-    virtual ~FairMCApplication();
+    ~FairMCApplication() override;
     /** Singelton instance
      */
     static FairMCApplication* Instance();
@@ -297,8 +303,8 @@ class FairMCApplication : public TVirtualMCApplication
     /** Pointer to the current MC engine //!
      */
     TVirtualMC* fMC;
-    /** Pointer to FairRunSim //! */
-    FairRunSim* fRun;
+
+    FairRunSim* fRun{nullptr};   //!
 
     /** Flag if the current event should be saved */
     Bool_t fSaveCurrentEvent;
@@ -309,15 +315,16 @@ class FairMCApplication : public TVirtualMCApplication
     ClassDefOverride(FairMCApplication, 5);
 
   private:
-    /** Protected copy constructor, needed for CloneForWorker */
-    FairMCApplication(const FairMCApplication&);
-    /* delete all the others */
-    FairMCApplication& operator=(const FairMCApplication&) = delete;
-    FairMCApplication(FairMCApplication&&) = delete;
-    FairMCApplication& operator=(FairMCApplication&&) = delete;
+    /** Private special copy constructor, needed for CloneForWorker */
+    FairMCApplication(const FairMCApplication&, std::unique_ptr<FairRunSim>);
 
     FairRunInfo fRunInfo;   //!
     Bool_t fGeometryIsInitialized;
+
+    /**
+     * Clean up the FairRunSim created in CloneForWorker
+     */
+    std::unique_ptr<FairRunSim> fWorkerRunSim;   //!
 };
 
 // inline functions
