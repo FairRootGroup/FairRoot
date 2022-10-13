@@ -96,7 +96,10 @@ FairRun::~FairRun()
         delete fTask;   // There is another tasklist in MCApplication,
     }
     // but this should be independent
-    delete fRtdb;   // who is responsible for the RuntimeDataBase
+    if (fIsMaster) {
+        // who is responsible for the RuntimeDataBase?
+        delete fRtdb;
+    }
     delete fEvtHeader;
     if (fRunInstance == this) {
         // Do not point to a destructed object!
