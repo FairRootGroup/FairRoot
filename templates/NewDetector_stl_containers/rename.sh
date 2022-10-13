@@ -59,13 +59,6 @@ find . -name "*.h" -exec sed -e "s/FairStack/${Prefix}Stack/g" $sedstring "{}" "
 sed -e "s#tutorial/NewDetector#$RelativeDir#g" $sedstring CMakeLists.txt
 sed -e "s/NewDetector/$DetectorName/g" $sedstring CMakeLists.txt
 sed -e "s/NEWDETECTOR/$DetectorNameUpper/g" $sedstring CMakeLists.txt
-sed -e "s/FAIRROOT_SOURCE_DIR/$ProjectSourceDir/g" $sedstring CMakeLists.txt
-
-if [ -d .svn ]; then
-  echo "Please remove the .svn directory."
-  echo " This directory was also copied from templates."
-  echo "##"
-fi
 
 echo "Please add the directories which contain the Stack and"
 echo "DetectorList classes to the include directories in CMakeLists.txt"
