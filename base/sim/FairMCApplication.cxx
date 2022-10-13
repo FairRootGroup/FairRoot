@@ -64,7 +64,7 @@ class TParticle;
 #include <float.h>    // for DBL_MAX
 #include <mutex>      // std::mutex
 #include <stdlib.h>   // for getenv, exit
-#include <utility>    // for pair
+#include <utility>    // for pair, move
 std::mutex mtx;       // mutex for critical section
 
 using std::pair;
@@ -103,11 +103,12 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     , listActiveDetectors()
     , listDetectors()
     , fMC(nullptr)
-    , fRun(nullptr)
+    , fRun(FairRunSim::Instance())
     , fSaveCurrentEvent(kTRUE)
     , fState(FairMCApplicationState::kUnknownState)
     , fRunInfo()
     , fGeometryIsInitialized(kFALSE)
+    , fWorkerRunSim()
 {
     // Standard Simulation constructor
 
@@ -115,7 +116,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
 
     LOG(debug) << "FairMCApplication-ctor " << this;
 
-    fRun = FairRunSim::Instance();
     fModules = ModList;
     fModIter = fModules->MakeIterator();
     // Create and fill a list of active detectors
@@ -148,7 +148,7 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
 }
 
 //_____________________________________________________________________________
-FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
+FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_ptr<FairRunSim> otherRunSim)
     : TVirtualMCApplication(rhs.GetName(), rhs.GetTitle())
     , fActiveDetectors(nullptr)
     , fFairTaskList(nullptr)
@@ -181,16 +181,19 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
     , listActiveDetectors()
     , listDetectors()
     , fMC(nullptr)
-    , fRun(nullptr)
     , fSaveCurrentEvent(kTRUE)
     , fState(FairMCApplicationState::kUnknownState)
     , fRunInfo()
     , fGeometryIsInitialized(kFALSE)
+    , fWorkerRunSim(std::move(otherRunSim))
 {
     // Copy constructor
     // Do not create Root manager
 
     LOG(debug) << "FairMCApplication-copy-ctor " << this;
+
+    fParent = &rhs;
+    fRun = fWorkerRunSim.get();
 
     // Create an ObjArray of Modules and its iterator
     fModules = new TObjArray();
@@ -226,6 +229,10 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
 
     // Clone stack
     fStack = rhs.fStack->CloneStack();
+
+    if (rhs.fEvGen) {
+        fEvGen = rhs.fEvGen->ClonePrimaryGenerator();
+    }
 
     // Create a Task list
     // Let's try without it
@@ -266,11 +273,11 @@ FairMCApplication::FairMCApplication()
     , listActiveDetectors()
     , listDetectors()
     , fMC(nullptr)
-    , fRun(nullptr)
     , fSaveCurrentEvent(kTRUE)
     , fState(FairMCApplicationState::kUnknownState)
     , fRunInfo()
     , fGeometryIsInitialized(kFALSE)
+    , fWorkerRunSim()
 {
     // Default constructor
 }
@@ -362,7 +369,7 @@ void FairMCApplication::FinishRun()
     }
     // fRootManager->Fill();
 
-    FairPrimaryGenerator* gen = FairRunSim::Instance()->GetPrimaryGenerator();
+    FairPrimaryGenerator* gen = fRun->GetPrimaryGenerator();
     // FairMCEventHeader* header = gen->GetEvent();
     Int_t nprimary = gen->GetTotPrimary();
     TObjArray* meshlist = nullptr;
@@ -402,7 +409,7 @@ void FairMCApplication::FinishRun()
     }
 
     // Save histograms with memory and runtime information in the output file
-    if (FairRunSim::Instance()->IsRunInfoGenerated()) {
+    if (fRun->IsRunInfoGenerated()) {
         fRunInfo.WriteInfo();
     }
 
@@ -479,7 +486,7 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
 
     // Create new FairRunSim object on worker
     // and pass some data from master FairRunSim object
-    FairRunSim* workerRun = new FairRunSim(kFALSE);
+    auto workerRun = std::make_unique<FairRunSim>(kFALSE);
     workerRun->SetName(fRun->GetName());   // Transport engine
     workerRun->SetSink(std::unique_ptr<FairSink>{fRun->GetSink()->CloneSink()});
 
@@ -490,11 +497,7 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
     }
 
     // Create new FairMCApplication object on worker
-    FairMCApplication* workerApplication = new FairMCApplication(*this);
-    workerApplication->SetGenerator(fEvGen->ClonePrimaryGenerator());
-    workerApplication->fParent = this;
-
-    return workerApplication;
+    return new FairMCApplication(*this, std::move(workerRun));
 }
 
 //_____________________________________________________________________________
@@ -504,9 +507,6 @@ void FairMCApplication::InitOnWorker()
     fRootManager = FairRootManager::Instance();
 
     LOG(info) << "FairMCApplication::InitForWorker " << fRootManager->GetInstanceId() << " " << this;
-
-    // Set FairRunSim worker(just for consistency, not needed on worker)
-    fRun = FairRunSim::Instance();
 
     // Generate per-thread file name
     // and create a new sink on worker
@@ -730,7 +730,7 @@ void FairMCApplication::FinishEvent()
 
     // Store information about runtime for one event and memory consuption
     // for later usage.
-    if ((FairRunSim::Instance()->IsRunInfoGenerated()) && !gMC->IsMT()) {
+    if (fRun->IsRunInfoGenerated() && !gMC->IsMT()) {
         fRunInfo.StoreInfo();
     }
 }
@@ -945,12 +945,12 @@ void FairMCApplication::InitGeometry()
 
     // store the EventHeader Info
     // Get and register EventHeader
-    UInt_t runId = FairRunSim::Instance()->GetRunId();
+    UInt_t runId = fRun->GetRunId();
 
     LOG(info) << "Simulation RunID: " << runId;
 
     // Get and register the MCEventHeader
-    fMCEventHeader = FairRunSim::Instance()->GetMCEventHeader();
+    fMCEventHeader = fRun->GetMCEventHeader();
     fMCEventHeader->SetRunID(runId);
     if (fRootManager) {
         fMCEventHeader->Register();
@@ -1260,7 +1260,7 @@ TTask* FairMCApplication::GetListOfTasks() { return fFairTaskList; }
 void FairMCApplication::SetParTask()
 {
     // Only RTDB init when more than Main Task list
-    if (FairRun::Instance()->GetNTasks() >= 1) {
+    if (fRun->GetNTasks() >= 1) {
         fFairTaskList->SetParTask();
     }
     fModIter->Reset();
@@ -1268,15 +1268,14 @@ void FairMCApplication::SetParTask()
     while ((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
         Mod->SetParContainers();
     }
-    FairRuntimeDb* fRTdb = FairRun::Instance()->GetRuntimeDb();
-    fRTdb->initContainers(FairRunSim::Instance()->GetRunId());
+    FairRuntimeDb* fRTdb = fRun->GetRuntimeDb();
+    fRTdb->initContainers(fRun->GetRunId());
 }
 //_____________________________________________________________________________
 void FairMCApplication::InitTasks()
 {
-
     // Only RTDB init when more than Main Task list
-    if (FairRun::Instance()->GetNTasks() >= 1) {
+    if (fRun->GetNTasks() >= 1) {
         LOG(info) << "Initialize Tasks--------------------------";
         fFairTaskList->InitTask();
     }
