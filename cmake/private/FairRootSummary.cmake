@@ -8,8 +8,8 @@
 
 function(fairroot_summary_header)
   set(version_str "${PROJECT_VERSION}")
-  if(FAIRROOT_GIT_VERSION)
-    string(APPEND version_str " (${FAIRROOT_GIT_VERSION})")
+  if(PROJECT_GIT_VERSION)
+    string(APPEND version_str " (${PROJECT_GIT_VERSION})")
   endif()
   # message(STATUS "  ")
   # message(STATUS "               C O N F I G U R A T I O N   S U M M A R Y")
