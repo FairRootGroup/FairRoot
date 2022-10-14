@@ -23,23 +23,14 @@ class FairFieldFactory
     static FairFieldFactory* Instance();
     FairFieldFactory();
     virtual ~FairFieldFactory();
-    virtual FairField* createFairField()
-    {
-        FairField* field = 0;
-        if (fCreator) {
-            field = fCreator->createFairField();
-        }
-        return field;
-    };
-    virtual void SetParm()
-    {
-        if (fCreator) {
-            fCreator->SetParm();
-        }
-    }
+    virtual FairField* createFairField() = 0;
+    virtual void SetParm() {}
 
   protected:
-    FairFieldFactory* fCreator;
+    /**
+     * \deprecated Deprecated in v19, will be removed in v20.
+     */
+    [[deprecated]] FairFieldFactory* fCreator;
     static FairFieldFactory* fgRinstance;
 
     ClassDef(FairFieldFactory, 1);
