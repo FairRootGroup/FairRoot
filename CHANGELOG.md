@@ -65,6 +65,7 @@ file an issue, so that we can see how to handle this.
     There's no getter for `fInputPersistance`,
     no other code in FairRoot uses the setters,
     we're not aware of anyone using it.
+  * `FairFieldFactory::fCreator` points to `this`.
 * Many items were already deprecated in prior versions.
   Marked them with proper C++14 deprecation warnings.
   Scheduled them for removal in v20.
