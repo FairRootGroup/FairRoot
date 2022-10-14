@@ -14,11 +14,14 @@
 
 FairFieldFactory* FairFieldFactory::fgRinstance = nullptr;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 FairFieldFactory::FairFieldFactory()
-    : fCreator(0)
+    : fCreator(nullptr)
 {
     fgRinstance = this;
 }
+#pragma GCC diagnostic pop
 
 FairFieldFactory::~FairFieldFactory()
 {
