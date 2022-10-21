@@ -7,9 +7,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## 18.8 (UNRELEASED) - 2022-11-XX
 
 ### Breaking Changes
+* Move online related code into the new Online library
+  * The special steering class FairRunOnline was moved from
+    the Base into the Online library.
+  * Also the MBS/LMD related source classes were moved to
+    the new Online library.
+  * If one of these classes are used in your code, you need
+    to link against new target `FairRoot::Online`.
 * Dropped `CheckCXX11Features` (This was also released in 18.6.8 and 18.4.8)
-  * FairRoot assumes a recent compiler that fully supports C++11.
-* Dropped `CheckCXX11Features`
   * FairRoot assumes a recent compiler that fully supports C++17.
   * Remove the following things from your `CMakeLists.txt`:
     * ```cmake

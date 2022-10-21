@@ -31,7 +31,7 @@ target_include_directories(${target} PUBLIC
 )
 
 target_link_libraries(${target} PUBLIC
-  FairRoot::Base
+  FairRoot::Online
   FairRoot::FairTools # FairLogger
 
   ROOT::Core

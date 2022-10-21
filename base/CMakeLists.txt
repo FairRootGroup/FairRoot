@@ -1,10 +1,10 @@
- ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
- #                                                                              #
- #              This software is distributed under the terms of the             #
- #              GNU Lesser General Public Licence (LGPL) version 3,             #
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
+ #####################################################################################
+ #    Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ #                                                                                   #
+ #                 This software is distributed under the terms of the               #
+ #                 GNU Lesser General Public Licence (LGPL) version 3,               #
+ #                     copied verbatim in the file "LICENSE"                         #
+ #####################################################################################
 If(Geant4_FOUND AND Geant4VMC_FOUND)
   add_subdirectory (sim/fastsim)
 EndIf()
@@ -58,9 +58,7 @@ set(sources
   source/FairFileSourceBase.cxx
   source/FairFileSource.cxx
   source/FairMixedSource.cxx
-  source/FairOnlineSource.cxx
   source/FairSource.cxx
-  source/FairUnpack.cxx
 
   steer/FairLinkManager.cxx
   steer/FairRadGridManager.cxx
@@ -71,7 +69,6 @@ set(sources
   steer/FairRootManager.cxx
   steer/FairRun.cxx
   steer/FairRunAna.cxx
-  steer/FairRunOnline.cxx
   steer/FairRunSim.cxx
   steer/FairTask.cxx
   steer/FairTrajFilter.cxx
@@ -79,18 +76,6 @@ set(sources
   steer/FairWriteoutBuffer.cxx
 )
 
-if(BUILD_MBS)
-  list(APPEND sources
-    source/exitCli.c
-    source/FairLmdSource.cxx
-    source/FairMbsSource.cxx
-    source/FairMbsStreamSource.cxx
-    source/FairRemoteSource.cxx
-    source/MRevBuffer.cxx
-    source/rclose.c
-    source/swaplw.c
-  )
-endif()
 if(BUILD_PROOF_SUPPORT)
   list(APPEND sources
     steer/FairAnaSelector.cxx
@@ -122,9 +107,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::ParBase
   FairRoot::GeoBase
   Boost::serialization
-  $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
 
-  ROOT::RHTTP # THttpServer
   ROOT::Core
   ROOT::EG
   ROOT::Geom
@@ -141,7 +124,6 @@ target_link_libraries(${target} PUBLIC
 )
 
 target_compile_definitions(${target} PRIVATE
-  $<$<BOOL:${BUILD_MBS}>:BUILD_MBS>
   $<$<BOOL:${ROOT_GDML_FOUND}>:ROOT_HAS_GDML>
   # $<$<PLATFORM_ID:Linux>:Linux>
 )

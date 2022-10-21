@@ -1,0 +1,15 @@
+/**
+\defgroup online Online
+
+online
+======
+
+Classes needed to run FairRun in an online mode with some special features.
+They are groupped in the following few directories:
+
+- source - input classes
+- steer - steering classes
+
+The CMake target name for this library is `FairRoot::Online`.
+
+ */
