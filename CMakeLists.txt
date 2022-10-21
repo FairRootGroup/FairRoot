@@ -106,8 +106,13 @@ ENDIF(NOT UNIX)
 # Set option(s)
 option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
 option(ENABLE_GEANT3_TESTING "Enable tests utilizing Geant3" OFF)
-option(BUILD_MBS "Build MBS" OFF)
 option(BUILD_PROOF_SUPPORT "Support ROOT::Proof (deprecated)" OFF)
+
+option(BUILD_ONLINE "Build the online library" ON)
+option(BUILD_MBS "Build MBS" OFF)
+if (BUILD_MBS)
+  set(BUILD_ONLINE ON)
+endif()
 
 # searches for needed packages
 # REQUIRED means that cmake will stop if this packages are not found
@@ -238,6 +243,14 @@ add_subdirectory(base)
 add_subdirectory(geobase)
 add_subdirectory(parbase)
 add_subdirectory(generators)
+
+if(BUILD_MBS)
+  add_subdirectory(MbsAPI)
+endif()
+if(BUILD_ONLINE)
+  add_subdirectory(online)
+endif()
+
 If(Geant3_FOUND)
  add_subdirectory(geane)
  add_subdirectory(trackbase)
@@ -249,9 +262,6 @@ else()
   message(STATUS "eventdisplay will not be built, because ROOT has no opengl support.")
 endif()
 
-if(BUILD_MBS)
-  add_subdirectory(MbsAPI)
-endif()
 add_subdirectory(datamatch)
 
 add_subdirectory(templates)

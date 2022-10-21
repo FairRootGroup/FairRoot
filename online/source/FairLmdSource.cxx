@@ -35,7 +35,8 @@ FairLmdSource::FairLmdSource()
     , fxEventData(nullptr)
     , fxSubEvent(nullptr)
     , fxInfoHeader(nullptr)
-{}
+{
+}
 
 FairLmdSource::FairLmdSource(const FairLmdSource& source)
     : FairMbsSource(source)
@@ -49,7 +50,8 @@ FairLmdSource::FairLmdSource(const FairLmdSource& source)
     , fxEventData(nullptr)
     , fxSubEvent(nullptr)
     , fxInfoHeader(nullptr)
-{}
+{
+}
 
 FairLmdSource::~FairLmdSource()
 {

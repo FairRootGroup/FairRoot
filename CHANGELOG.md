@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## 19.0 (UNRELEAASED) - 2021-XX-XX
 
 ### Breaking Changes
+* Move online related code into the new Online library
+  * The special steering class FairRunOnline was moved from the Base into the Online library.
+  * Also the MBS/LMD related source classes were moved to the new Online library.
+  * If one of these classes are used in your code, you need to use the new target FairRoot::Online when building your code  
 * We have moved away from our custom ROOT find module, and now use the native cmake package of ROOT.
   * This means, that all library dependencies of the type `Core` are either not working at all, or might not work as expected. Please upgrade all of them to be like `ROOT::Core` .
   * This also means, that you need to add an `include(ROOTMacros)` after your `find_package2(... ROOT ...)`.

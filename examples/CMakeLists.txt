@@ -40,7 +40,7 @@ endif()
 
 add_subdirectory(simulation/Tutorial2)
 
-if(BUILD_MBS)
+if(BUILD_MBS AND BUILD_ONLINE)
   add_subdirectory(advanced/MbsTutorial)
 endif()
 
@@ -49,7 +49,7 @@ if(FairMQ_FOUND AND Boost_FOUND)
   add_subdirectory(MQ/pixelDetector)
   add_subdirectory(MQ/pixelAlternative)
   add_subdirectory(MQ/pixelSimSplit)
-  if(BUILD_MBS)
+  if(BUILD_MBS AND BUILD_ONLINE)
     add_subdirectory(MQ/Lmd)
   endif()
   add_subdirectory(MQ/histogramServer)

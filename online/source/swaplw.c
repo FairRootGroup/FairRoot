@@ -17,7 +17,8 @@
  ****************************+***************************************
  */
 
-long swaplw(pp_source, l_len, pp_dest) long *pp_source, *pp_dest;
+long swaplw(pp_source, l_len, pp_dest)
+long *pp_source, *pp_dest;
 long l_len;
 {
 
