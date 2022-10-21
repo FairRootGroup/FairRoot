@@ -15,6 +15,7 @@
  * @since 28.02.05
  */
 
+#include "FairField.h"
 #include "FairRootManager.h"
 #include "FairRun.h"
 

@@ -20,7 +20,8 @@ FairMbsStreamSource::FairMbsStreamSource(TString tServerName)
     , fxBuffer(nullptr)
     , fxEventData(nullptr)
     , fxSubEvent(nullptr)
-{}
+{
+}
 
 FairMbsStreamSource::FairMbsStreamSource(const FairMbsStreamSource& source)
     : FairMbsSource(source)
@@ -30,7 +31,8 @@ FairMbsStreamSource::FairMbsStreamSource(const FairMbsStreamSource& source)
     , fxBuffer(nullptr)
     , fxEventData(nullptr)
     , fxSubEvent(nullptr)
-{}
+{
+}
 
 FairMbsStreamSource::~FairMbsStreamSource() {}
 

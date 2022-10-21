@@ -24,7 +24,8 @@ FairRemoteSource::FairRemoteSource(char* node)
     , fSocket(nullptr)
     , fBuffer(new MRevBuffer(1))
     , fREvent(nullptr)
-{}
+{
+}
 
 FairRemoteSource::FairRemoteSource(const FairRemoteSource& source)
     : FairMbsSource(source)
@@ -32,7 +33,8 @@ FairRemoteSource::FairRemoteSource(const FairRemoteSource& source)
     , fSocket(nullptr)
     , fBuffer(new MRevBuffer(1))
     , fREvent(nullptr)
-{}
+{
+}
 
 FairRemoteSource::~FairRemoteSource() { delete fBuffer; }
 

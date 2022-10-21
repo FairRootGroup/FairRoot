@@ -19,11 +19,13 @@
 
 FairMbsSource::FairMbsSource()
     : FairOnlineSource()
-{}
+{
+}
 
 FairMbsSource::FairMbsSource(const FairMbsSource &source)
     : FairOnlineSource(source)
-{}
+{
+}
 
 FairMbsSource::~FairMbsSource() {}
 

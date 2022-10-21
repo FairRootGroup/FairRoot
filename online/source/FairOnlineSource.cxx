@@ -20,12 +20,14 @@
 FairOnlineSource::FairOnlineSource()
     : FairSource()
     , fUnpackers(new TObjArray())
-{}
+{
+}
 
 FairOnlineSource::FairOnlineSource(const FairOnlineSource &source)
     : FairSource(source)
     , fUnpackers(new TObjArray(*(source.GetUnpackers())))
-{}
+{
+}
 
 FairOnlineSource::~FairOnlineSource()
 {
