@@ -65,9 +65,6 @@ class FairConstField : public FairField
      **/
     void SetField(Double_t bX, Double_t bY, Double_t bZ);
 
-    /** Get components of field at a given point
-     ** @param x,y,z   Point coordinates [cm]
-     **/
     Double_t GetBx(Double_t x, Double_t y, Double_t z) override;
     Double_t GetBy(Double_t x, Double_t y, Double_t z) override;
     Double_t GetBz(Double_t x, Double_t y, Double_t z) override;
