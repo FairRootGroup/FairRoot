@@ -27,6 +27,22 @@
 #include <mutex>   // std::mutex
 std::mutex mtx;    // mutex for critical section
 
+FairMQRunDevice::FairMQRunDevice()
+    : fair::mq::Device()
+    , fSink()
+{
+}
+
+FairMQRunDevice::~FairMQRunDevice() = default;
+
+void FairMQRunDevice::SetSink(std::unique_ptr<FairOnlineSink> sink)
+{
+    // Store it here, to later transfer into the FairRun
+    fSink = std::move(sink);
+}
+
+void FairMQRunDevice::SetupRunSink(FairRun& run) { run.SetSink(std::move(fSink)); }
+
 void FairMQRunDevice::SendObject(TObject* obj, const std::string& chan)
 {
     auto mess(NewMessage());
