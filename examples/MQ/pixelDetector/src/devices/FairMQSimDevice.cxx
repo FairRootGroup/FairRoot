@@ -48,7 +48,7 @@ void FairMQSimDevice::InitTask()
 {
     fRunSim = new FairRunSim();
 
-    fRunSim->SetSink(std::move(fSink));
+    SetupRunSink(*fRunSim);
 
     if (fFirstParameter || fSecondParameter) {
         FairRuntimeDb* rtdb = fRunSim->GetRuntimeDb();
