@@ -17,7 +17,6 @@
 #define FAIRMQSIMDEVICE_H_
 
 #include "FairMQRunDevice.h"
-#include "FairSink.h"
 
 #include <Rtypes.h>
 #include <TString.h>
@@ -35,7 +34,7 @@ class FairMQSimDevice : public FairMQRunDevice
 {
   public:
     FairMQSimDevice();
-    virtual ~FairMQSimDevice() {}
+    ~FairMQSimDevice() override = default;
 
     virtual void SetParamUpdateChannelName(const TString& tString) { fUpdateChannelName = tString; }
 
@@ -52,18 +51,17 @@ class FairMQSimDevice : public FairMQRunDevice
     void SetSecondParameter(FairParIo* par) { fSecondParameter = par; }
     void SetUserConfig(const TString& Config) { fUserConfig = Config; }
     void SetUserCuts(const TString& Cuts) { fUserCuts = Cuts; }
-    void SetSink(std::unique_ptr<FairSink> sink) { fSink = std::move(sink); }
     // ------ ---------- -------- ------
 
     void InitializeRun();
 
-    virtual void SendBranches();
+    void SendBranches() override;
 
   protected:
-    virtual void InitTask();
-    virtual void PreRun();
-    virtual void PostRun() {}
-    virtual bool ConditionalRun();
+    void InitTask() override;
+    void PreRun() override;
+    void PostRun() override {}
+    bool ConditionalRun() override;
 
   private:
     UInt_t fSimDeviceId;
@@ -85,7 +83,6 @@ class FairMQSimDevice : public FairMQRunDevice
     FairParIo* fSecondParameter;   // second input (used if not found in first input)
     TString fUserConfig;           //!                  /** Macro for geant configuration*/
     TString fUserCuts;             //!                  /** Macro for geant cuts*/
-    std::unique_ptr<FairSink> fSink{};
     // ------ ---------- -------- ------
 
     void UpdateParameterServer();

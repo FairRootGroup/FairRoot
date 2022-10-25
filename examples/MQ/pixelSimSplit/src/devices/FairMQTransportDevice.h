@@ -17,7 +17,6 @@
 #define FAIRMQTRANSPORTDEVICE_H_
 
 #include "FairMQRunDevice.h"
-#include "FairSink.h"
 
 #include <Rtypes.h>
 #include <TString.h>
@@ -52,7 +51,6 @@ class FairMQTransportDevice : public FairMQRunDevice
     void SetSecondParameter(FairParIo* par) { fSecondParameter = par; };
     void SetUserConfig(const TString& Config) { fUserConfig = Config; }
     void SetUserCuts(const TString& Cuts) { fUserCuts = Cuts; }
-    void SetSink(std::unique_ptr<FairSink> sink) { fSink = std::move(sink); }
     // ------ ---------- -------- ------
 
     void InitializeRun();
@@ -96,7 +94,6 @@ class FairMQTransportDevice : public FairMQRunDevice
     FairParIo* fSecondParameter;   // second input (used if not found in first input)
     TString fUserConfig;           //!                  /** Macro for geant configuration*/
     TString fUserCuts;             //!                  /** Macro for geant cuts*/
-    std::unique_ptr<FairSink> fSink{};
     // ------ ---------- -------- ------
 
     FairMCSplitEventHeader* fMCSplitEventHeader;

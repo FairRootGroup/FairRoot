@@ -73,7 +73,7 @@ void FairMQTransportDevice::InitTask()
     fRunSim->SetMCEventHeader(fMCSplitEventHeader);
     fRunSim->SetRunId(fRunSim->GetMCEventHeader()->GetRunID());
 
-    fRunSim->SetSink(std::move(fSink));
+    SetupRunSink(*fRunSim);
 
     if (fFirstParameter || fSecondParameter) {
         FairRuntimeDb* rtdb = fRunSim->GetRuntimeDb();
