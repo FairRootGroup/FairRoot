@@ -4,7 +4,7 @@
 
 ### Generate input file
 Start the script startSerializationGenerateData.sh (in FairRoot/build/bin/) to generate and store random data.
-A file inputGenEx.root will be produce in the directory <build_dir>/examples/MQ/GenericDevices/data_io.
+A file `inputGenEx.root` will be produce in the directory `<build_dir>/examples/MQ/GenericDevices/data_io`.
 Use the help command line :
 ```bash
 ./startSerializationGenerateData.sh --help
