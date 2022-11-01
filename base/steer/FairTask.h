@@ -25,6 +25,8 @@
 #include <TString.h>   // for TString
 #include <TTask.h>     // for TTask
 #include <map>
+#include <vector>
+#include <functional>
 
 class FairLogger;
 
@@ -107,6 +109,9 @@ class FairTask : public TTask
 
     void SetStreamProcessing(Bool_t val = kTRUE) { fStreamProcessing = val; }
 
+    /** Register a function to be called during InitTask() **/
+    void AddOnInit(std::function<void(void)> fun);
+
   protected:
     Int_t fVerbose;                           //  Verbosity level
     [[deprecated]] Int_t fInputPersistance;   ///< \deprecated Deprecated in v19, will be removed in v20.
@@ -150,10 +155,12 @@ class FairTask : public TTask
     /** Recursive FinishEvent of subtasks **/
     void FinishEvents();
 
+
   private:
     std::map<TString, Bool_t> fOutputPersistance;
-
-    ClassDefOverride(FairTask, 4);
+    std::vector<std::function<void(void)>> fOnInit{};
+  
+    ClassDefOverride(FairTask, 5);
 };
 
 #endif

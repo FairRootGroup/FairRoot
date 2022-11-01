@@ -163,7 +163,7 @@ class FairRootManager : public TObject
 
     /** create a new branch based on an arbitrary type T (for which a dictionary must exist) **/
     template<typename T>
-    void RegisterAny(const char* name, T*& obj, Bool_t toFile);
+    void RegisterAny(const char* name, T* obj, Bool_t toFile);
 
     void RegisterInputObject(const char* name, TObject* obj);
 
@@ -273,6 +273,10 @@ class FairRootManager : public TObject
     /**Read one event from source to find out which RunId to use*/
     Bool_t SpecifyRunId();
 
+    template<typename T>
+    T GetMemoryBranchAny(const char* name) const;
+
+  
   private:
     // helper struct since std::pair has problems with type_info
     struct TypeAddressPair
@@ -300,9 +304,7 @@ class FairRootManager : public TObject
     void AddMemoryBranch(const char*, TObject*);
 
     template<typename T>
-    void AddMemoryBranchAny(const char* name, T** obj);
-    template<typename T>
-    T GetMemoryBranchAny(const char* name) const;
+    void AddMemoryBranchAny(const char* name, T* obj);
 
     template<typename T>
     void RegisterImpl(const char* name, const char* Foldername, T* obj, Bool_t toFile);
@@ -407,13 +409,18 @@ class FairRootManager : public TObject
 
 // FIXME: move to source since we can make it non-template dependent
 template<typename T>
-void FairRootManager::AddMemoryBranchAny(const char* brname, T** obj)
+void FairRootManager::AddMemoryBranchAny(const char* brname, T* obj)
 {
-    if (fAnyBranchMap.find(brname) == fAnyBranchMap.end()) {
+    if (fAnyBranchMap.find(brname) == fAnyBranchMap.end())
+      {
         auto& ot = typeid(T*);
         auto& pt = typeid(T);
         fAnyBranchMap[brname] = std::unique_ptr<TypeAddressPair const>(new TypeAddressPair(ot, pt, (void*)obj));
-    }
+      }
+    else
+      {
+        LOG(fatal) << "Failed to add branch: " << brname << ", it already exists!\n";
+      }
 }
 
 // try to retrieve an object address from the registered branches/names
@@ -425,7 +432,7 @@ T FairRootManager::GetMemoryBranchAny(const char* brname) const
     auto iter = fAnyBranchMap.find(brname);
     if (iter != fAnyBranchMap.end()) {
         // verify type consistency
-        if (typeid(P).hash_code() != iter->second->origtypeinfo.hash_code()) {
+        if (typeid(T).hash_code() != iter->second->origtypeinfo.hash_code()) {
             EmitMemoryBranchWrongTypeWarning(brname, typeid(P).name(), iter->second->origtypeinfo.name());
             return nullptr;
         }
@@ -435,11 +442,11 @@ T FairRootManager::GetMemoryBranchAny(const char* brname) const
 }
 
 template<typename T>
-void FairRootManager::RegisterAny(const char* brname, T*& obj, bool persistence)
+void FairRootManager::RegisterAny(const char* brname, T* obj, bool persistence)
 {
     AddBranchToList(brname);
     // we are taking the address of the passed pointer
-    AddMemoryBranchAny<T>(brname, &obj);
+    AddMemoryBranchAny<T>(brname, obj);
     if (persistence) {
         auto& ot = typeid(T*);
         auto& pt = typeid(T);
@@ -463,10 +470,10 @@ TPtr FairRootManager::InitObjectAs(const char* brname)
 
     // is there already an object associated to the branch in memory??
     // then just return
-    T** obj = GetMemoryBranchAny<T**>(brname);
+    T* obj = GetMemoryBranchAny<T*>(brname);
     // obj is some address/instance holding TPtr instances
     if (obj != nullptr)
-        return *obj;
+        return obj;
 
     if (!fSource) {
         return nullptr;
@@ -486,7 +493,7 @@ TPtr FairRootManager::InitObjectAs(const char* brname)
         return nullptr;
     }
     // add into branch list
-    AddMemoryBranchAny<T>(brname, addr);
+    AddMemoryBranchAny<T>(brname, *addr);
 
     // NOTE: ideally we would do proper resource management for addr and *addr
     // since the FairRootManager becomes owner of these pointers/instances; Unfortunately this

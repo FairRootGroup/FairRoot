@@ -54,11 +54,15 @@ void FairTask::InitTask()
     if (!fActive) {
         return;
     }
+    
+    for (auto fun: fOnInit)
+      fun();
+    
     InitStatus tStat = Init();
-    if (tStat == kFATAL) {
+    if (tStat & kFATAL) {
         LOG(fatal) << "Initialization of Task " << fName.Data() << " failed fatally";
     }
-    if (tStat == kERROR) {
+    if (tStat & kERROR) {
         fActive = kFALSE;
     }
     FairMonitor::GetMonitor()->SetCurrentTask(0);
@@ -257,5 +261,11 @@ Bool_t FairTask::IsOutputBranchPersistent(TString branchName)
         return kTRUE;
     }
 }
+
+void FairTask::AddOnInit(std::function<void(void)> fun)
+{
+  fOnInit.push_back(fun);
+}
+
 
 ClassImp(FairTask);
