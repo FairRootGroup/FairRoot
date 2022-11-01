@@ -16,6 +16,11 @@
 #include "FairGenericVMCConfig.h"
 
 #include <string>
+
+// prevent yaml-cpp/node/detail/iterator.h:48:54:
+//  error: no member named 'next' in namespace 'boost'
+#include <boost/next_prior.hpp>
+
 #include <yaml-cpp/yaml.h>
 
 class FairYamlVMCConfig : public FairGenericVMCConfig
