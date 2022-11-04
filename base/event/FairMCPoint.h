@@ -113,6 +113,8 @@ inline void FairMCPoint::SetPosition(const TVector3& pos)
     fZ = pos.Z();
 }
 
+#ifdef FAIRROOT_HAS_BOOST_SERIALIZATION
+
 // #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/split_free.hpp>
 
@@ -181,5 +183,7 @@ void save(Archive& ar, FairMCPoint const& mcPoint, const unsigned int)
 }   // namespace boost::serialization
 
 BOOST_SERIALIZATION_SPLIT_FREE(FairMCPoint)
+
+#endif   // FAIRROOT_HAS_BOOST_SERIALIZATION
 
 #endif   // FAIRMCPOINT_H

@@ -107,6 +107,8 @@ inline FairTimeStamp::FairTimeStamp(Double_t time, Double_t timeerror)
     , fTimeStampError(timeerror)
 {}
 
+#ifdef FAIRROOT_HAS_BOOST_SERIALIZATION
+
 // #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/split_free.hpp>
 
@@ -135,5 +137,9 @@ void save(Archive& ar, FairTimeStamp const& time, const unsigned int)
 }
 
 }   // namespace boost::serialization
+
+BOOST_SERIALIZATION_SPLIT_FREE(FairTimeStamp)
+
+#endif   // FAIRROOT_HAS_BOOST_SERIALIZATION
 
 #endif   // FAIRTIMESTAMP_H
