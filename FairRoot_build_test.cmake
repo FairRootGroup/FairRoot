@@ -77,7 +77,7 @@ if(_ctest_build_ret_val OR _ctest_build_num_errs)
   set(_ctest_test_ret_val -1)
 else()
   ctest_test(BUILD "${CTEST_BINARY_DIRECTORY}"
-             PARALLEL_LEVEL 1
+             PARALLEL_LEVEL 4
              SCHEDULE_RANDOM ON
              ${repeat}
              RETURN_VALUE _ctest_test_ret_val)
