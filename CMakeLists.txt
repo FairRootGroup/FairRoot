@@ -179,9 +179,6 @@ find_package2(PUBLIC DDS)
 if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
   Set(Boost_NO_SYSTEM_PATHS TRUE)
 endif()
-if(NOT DEFINED Boost_NO_BOOST_CMAKE AND CMAKE_VERSION VERSION_LESS 3.15)
-  Set(Boost_NO_BOOST_CMAKE TRUE)
-endif()
 if(Boost_NO_BOOST_CMAKE)
   # If an older version of boost is found both of the variables below are
   # cached and in a second cmake run, a good boost version is found even
