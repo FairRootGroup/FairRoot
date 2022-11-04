@@ -3,9 +3,10 @@ Language: Cpp
 BasedOnStyle: Mozilla
 
 AllowAllParametersOfDeclarationOnNextLine: false
-AllowShortBlocksOnASingleLine: true
-AllowShortFunctionsOnASingleLine: true
-AllowShortIfStatementsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: All
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
@@ -14,6 +15,14 @@ AlwaysBreakAfterDefinitionReturnType: None
 BinPackArguments: false
 BinPackParameters: false
 BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterFunction: true
+  AfterStruct: true
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
 BreakConstructorInitializers: BeforeComma
 ColumnLimit: 120
 ConstructorInitializerIndentWidth: 4
@@ -28,6 +37,6 @@ NamespaceIndentation: None
 PointerAlignment: Left
 SortIncludes: true
 SpacesBeforeTrailingComments: 3
-Standard: Cpp11
+Standard: c++17
 UseTab: Never
 ...
