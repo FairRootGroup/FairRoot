@@ -44,6 +44,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * Some headers were cleaned up and now `#include` fewer
   other headers. You might have to add some `#includes`s
   in your code.
+* Added a new build switch `BUILD_BASEMQ` for controlling whether `FairRoot::BaseMQ` and
+  dependent targets are built (`FairRoot::FairMQ` and `FairRoot::ParMQ`). It is enabled
+  by default and will now **require** its external package dependencies FairMQ and Boost.
 
 
 ### Deprecations
