@@ -75,7 +75,7 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     , fActiveDetectors(nullptr)
     , fFairTaskList(nullptr)
     , fModIter(nullptr)
-    , fModules(nullptr)
+    , fModules(ModList)
     , fNoSenVolumes(0)
     , fPythiaDecayer(kFALSE)
     , fPythiaDecayerConfig("")
@@ -107,6 +107,7 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     , fState(FairMCApplicationState::kUnknownState)
     , fRunInfo()
     , fGeometryIsInitialized(kFALSE)
+    , fOwnedModules()
     , fWorkerRunSim()
 {
     // Standard Simulation constructor
@@ -116,24 +117,25 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     LOG(debug) << "FairMCApplication-ctor " << this;
 
     fRootManager = &fRun->GetRootManager();
-    fModules = ModList;
     fModIter = fModules->MakeIterator();
     // Create and fill a list of active detectors
     fActiveDetectors = new TRefArray();
     fModIter->Reset();
-    FairDetector* detector;
-    TObject* obj;
 
-    while ((obj = fModIter->Next())) {
-        detector = dynamic_cast<FairDetector*>(obj);
+    fListModules.reserve(fModules->GetEntriesFast());
+    for (auto module : TRangeDynCast<FairModule>(fModules)) {
+        if (!module) {
+            LOG(error) << "Dynamic cast fails. Object not a FairModule in module list";
+            continue;
+        }
+        fListModules.push_back(module);
+        auto detector = dynamic_cast<FairDetector*>(module);
         if (detector) {
             listDetectors.push_back(detector);
             if (detector->IsActive()) {
                 fActiveDetectors->Add(detector);
                 listActiveDetectors.push_back(detector);
             }
-        } else if (!dynamic_cast<FairModule*>(obj)) {
-            LOG(error) << "Dynamic cast fails. Object neither FairDetector nor FairModule in module list";
         }
     }
 
@@ -182,6 +184,7 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
     , fState(FairMCApplicationState::kUnknownState)
     , fRunInfo()
     , fGeometryIsInitialized(kFALSE)
+    , fOwnedModules()
     , fWorkerRunSim(std::move(otherRunSim))
 {
     // Copy constructor
@@ -197,28 +200,24 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
     fModules = new TObjArray();
     fModIter = fModules->MakeIterator();
     // Clone modules
-    TObject* obj;
-    rhs.fModIter->Reset();
-    while ((obj = rhs.fModIter->Next())) {
-        LOG(debug) << "cloning " << (static_cast<FairModule*>(obj))->GetName();
-        fModules->Add(static_cast<FairModule*>(obj)->CloneModule());
+    fListModules.reserve(rhs.fListModules.size());
+    fOwnedModules.reserve(rhs.fListModules.size());
+    for (auto const* module : rhs.fListModules) {
+        LOG(debug) << "cloning " << module->GetName();
+        auto& clone = fOwnedModules.emplace_back(module->CloneModule());
+        fListModules.emplace_back(clone.get());
+        fModules->Add(clone.get());
     }
 
     // Create and fill a list of active detectors
     fActiveDetectors = new TRefArray();
-    fModIter->Reset();
-    FairDetector* detector;
-    while ((obj = fModIter->Next())) {
-        if (obj->InheritsFrom("FairDetector")) {
-            detector = dynamic_cast<FairDetector*>(obj);
-            if (detector) {
-                listDetectors.push_back(detector);
-                if (detector->IsActive()) {
-                    fActiveDetectors->Add(detector);
-                    listActiveDetectors.push_back(detector);
-                }
-            } else {
-                LOG(error) << "Dynamic cast fails.";
+    for (auto module : fListModules) {
+        auto detector = dynamic_cast<FairDetector*>(module);
+        if (detector) {
+            listDetectors.push_back(detector);
+            if (detector->IsActive()) {
+                fActiveDetectors->Add(detector);
+                listActiveDetectors.push_back(detector);
             }
         }
     }
@@ -272,6 +271,7 @@ FairMCApplication::FairMCApplication()
     , fState(FairMCApplicationState::kUnknownState)
     , fRunInfo()
     , fGeometryIsInitialized(kFALSE)
+    , fOwnedModules()
     , fWorkerRunSim()
 {
     // Default constructor
@@ -775,10 +775,8 @@ void FairMCApplication::ConstructOpGeometry()
             TVirtualMC::GetMC()->SetCerenkov(Mid, NK, ppckov, absco, effic, rindex);
         }
     }
-    fModIter->Reset();
-    FairModule* Mod = nullptr;
-    while ((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
-        Mod->ConstructOpGeometry();
+    for (auto module : fListModules) {
+        module->ConstructOpGeometry();
     }
 }
 
@@ -794,15 +792,13 @@ void FairMCApplication::ConstructGeometry()
 
     fState = FairMCApplicationState::kConstructGeometry;
 
-    fModIter->Reset();
-    FairModule* Mod = nullptr;
     Int_t NoOfVolumes = 0;
     Int_t NoOfVolumesBefore = 0;
     Int_t ModId = 0;
 
     TObjArray* tgeovolumelist = gGeoManager->GetListOfVolumes();
 
-    while ((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
+    for (auto Mod : fListModules) {
         NoOfVolumesBefore = tgeovolumelist->GetEntriesFast();
         Mod->InitParContainers();
         Mod->ConstructGeometry();
@@ -854,8 +850,7 @@ void FairMCApplication::ConstructGeometry()
         }
         delete particleIter;
     }
-    fModIter->Reset();
-    while ((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
+    for (auto Mod : fListModules) {
         Mod->RegisterAlignmentMatrices();
     }
 
@@ -893,7 +888,6 @@ void FairMCApplication::InitGeometry()
     /** Register stack and detector collections*/
     FairVolume* fv = 0;
     Int_t id = 0;
-    fModIter->Reset();
 
     // Register stack
     if (fEvGen && fStack && fRootManager) {
@@ -905,13 +899,8 @@ void FairMCApplication::InitGeometry()
     /** SetSpecialPhysicsCuts for FairDetector objects and all passive modules inheriting from FairModule */
     // initialize and register FairDetector objects in addition
     // Note: listActiveDetectors or fActiveDetectors not used to include passive modules in the same loop.
-    FairModule* module;
-    FairDetector* detector;
-    TObject* obj;
-    fModIter->Reset();
-    while ((obj = fModIter->Next())) {
-        detector = dynamic_cast<FairDetector*>(obj);
-        module = dynamic_cast<FairModule*>(obj);
+    for (auto module : fListModules) {
+        auto detector = dynamic_cast<FairDetector*>(module);
         if (module) {
             module->SetSpecialPhysicsCuts();
         }
@@ -923,7 +912,6 @@ void FairMCApplication::InitGeometry()
             }
         }
     }
-    fModIter->Reset();
 
     /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the
      * tree*/
@@ -1253,10 +1241,8 @@ void FairMCApplication::SetParTask()
     if (fRun->GetNTasks() >= 1) {
         fFairTaskList->SetParTask();
     }
-    fModIter->Reset();
-    FairModule* Mod = nullptr;
-    while ((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
-        Mod->SetParContainers();
+    for (auto module : fListModules) {
+        module->SetParContainers();
     }
     FairRuntimeDb* fRTdb = fRun->GetRuntimeDb();
     fRTdb->initContainers(fRun->GetRunId());

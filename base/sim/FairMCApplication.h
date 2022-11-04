@@ -23,11 +23,13 @@
 #include <list>                      // for list
 #include <map>                       // for map, multimap, etc
 #include <memory>                    // for std::unique_ptr
+#include <vector>                    // for std::vector
 
 class FairDetector;
 class FairEventHeader;
 class FairField;
 class FairGenericStack;
+class FairModule;
 class FairMCEventHeader;
 class FairPrimaryGenerator;
 class FairRadLenManager;
@@ -321,6 +323,16 @@ class FairMCApplication : public TVirtualMCApplication
 
     FairRunInfo fRunInfo;   //!
     Bool_t fGeometryIsInitialized;
+
+    /**
+     * List of modules, mirrors fModules
+     */
+    std::vector<FairModule*> fListModules{};   //!
+
+    /**
+     * Owned Modules (inside the worker)
+     */
+    std::vector<std::unique_ptr<FairModule>> fOwnedModules;   //!
 
     /**
      * Clean up the FairRunSim created in CloneForWorker
