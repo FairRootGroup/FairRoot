@@ -34,7 +34,10 @@ endfunction()
 function(fairroot_library_settings target)
   fairroot_compile_features("${target}")
   add_library(FairRoot::${target} ALIAS ${target})
-  set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+  get_target_property(target_type ${target} TYPE)
+  if(NOT target_type STREQUAL "INTERFACE_LIBRARY")
+    set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+  endif()
 endfunction()
 
 
