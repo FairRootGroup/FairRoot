@@ -296,7 +296,10 @@ endif(IWYU_FOUND)
 find_package2(PRIVATE ClangFormat)
 if(ClangFormat_FOUND)
   add_custom_target(FormatCheck
-    ${CMAKE_COMMAND} -E env FAIRROOT_GIT_CLANG_FORMAT_BIN=${GIT_CLANG_FORMAT_BIN} ${CMAKE_SOURCE_DIR}/check-format.sh
+    ${CMAKE_COMMAND} -E env
+      FAIRROOT_GIT_CLANG_FORMAT_BIN=${GIT_CLANG_FORMAT_BIN}
+      FAIRROOT_CLANG_FORMAT_BIN=${CLANG_FORMAT_BIN}
+      ${CMAKE_SOURCE_DIR}/check-format.sh
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   )
 endif()
