@@ -22,10 +22,10 @@ if(Geant3_FOUND)
     add_subdirectory(common/gconfig)
   endif()
 
-  if(TARGET FairFastSim)
+  if(TARGET FairFastSim AND TARGET Boost::program_options)
     add_subdirectory(simulation/Tutorial1)
   endif()
-  if(TARGET FairRoot::EventDisplay)
+  if(TARGET FairRoot::EventDisplay AND TARGET FairRoot::BaseMQ)
     add_subdirectory(advanced/propagator)
   endif()
 
