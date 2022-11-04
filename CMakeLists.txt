@@ -113,6 +113,7 @@ option(BUILD_MBS "Build MBS" OFF)
 if (BUILD_MBS)
   set(BUILD_ONLINE ON)
 endif()
+option(BUILD_BASEMQ "Build the 'FairRoot::BaseMQ' library" ON)
 
 # searches for needed packages
 # REQUIRED means that cmake will stop if this packages are not found
@@ -263,13 +264,11 @@ add_subdirectory(datamatch)
 
 add_subdirectory(templates)
 
-If (FairMQ_FOUND AND Boost_FOUND)
+if(BUILD_BASEMQ)
   add_subdirectory(fairmq)
   add_subdirectory(basemq)
   add_subdirectory(parmq)
-Else ()
-  Message(STATUS "fairmq, basemq and parmq will not be built, because FairMQ and/or Boost was not found.")
-EndIf ()
+endif()
 
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)
 if(BUILD_DOXYGEN)
