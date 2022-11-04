@@ -174,33 +174,44 @@ if(NOT DEFINED GTEST_ROOT)
   set(GTEST_ROOT ${SIMPATH})
 endif()
 
-find_package2(PUBLIC FairMQ VERSION 1.4.0)
+if(BUILD_BASEMQ)
+  find_package2(PUBLIC FairMQ VERSION 1.4.0 REQUIRED)
+endif()
+
 find_package2(PUBLIC DDS)
 
-if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
-  Set(Boost_NO_SYSTEM_PATHS TRUE)
-endif()
-if(Boost_NO_BOOST_CMAKE)
-  # If an older version of boost is found both of the variables below are
-  # cached and in a second cmake run, a good boost version is found even
-  # if the version is to old.
-  # To overcome this problem both variables are cleared before checking
-  # for boost.
-  Unset(Boost_INCLUDE_DIR CACHE)
-  Unset(Boost_LIBRARY_DIRS CACHE)
-endif()
+if(BUILD_BASEMQ OR BUILD_UNITTESTS OR BUILD_EXAMPLES)
+  if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
+    Set(Boost_NO_SYSTEM_PATHS TRUE)
+  endif()
+  if(Boost_NO_BOOST_CMAKE)
+    # If an older version of boost is found both of the variables below are
+    # cached and in a second cmake run, a good boost version is found even
+    # if the version is to old.
+    # To overcome this problem both variables are cleared before checking
+    # for boost.
+    Unset(Boost_INCLUDE_DIR CACHE)
+    Unset(Boost_LIBRARY_DIRS CACHE)
+  endif()
 
-list(APPEND boost_dependencies filesystem serialization)
+  set(boost_dependencies)
+  if(BUILD_BASEMQ)
+    list(APPEND boost_dependencies filesystem serialization program_options)
+  endif()
+  if(BUILD_UNITTESTS)
+    list(APPEND boost_dependencies unit_test_framework)
+  endif()
+  if(BUILD_EXAMPLES)
+    list(APPEND boost_dependencies program_options)
+  endif()
 
-if(BUILD_UNITTESTS)
- list(APPEND boost_dependencies unit_test_framework)
+  find_package2(PUBLIC Boost
+    VERSION 1.67
+    COMPONENTS ${boost_dependencies}
+    ADD_REQUIREMENTS_OF FairMQ FairLogger
+    REQUIRED
+  )
 endif()
-
-find_package2(PUBLIC Boost
-  VERSION 1.67
-  COMPONENTS ${boost_dependencies}
-  ADD_REQUIREMENTS_OF FairMQ FairLogger
-)
 
 If (Boost_FOUND)
   Set(Boost_Avail 1)
