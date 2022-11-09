@@ -130,10 +130,9 @@ void FairRunOnline::Init()
         fRootManager->ReadEvent(0);
     }
 
-    GetEventHeader();
-
+    // --- Get event header from Run
+    auto* evtHeader = GetEventHeader();
     FillEventHeader();
-
     if (0 == fRunId)   // Run ID was not set in run manager
     {
         if (0 == GetEvtHeaderRunId())   // Run ID was not set in source
@@ -187,14 +186,9 @@ void FairRunOnline::Init()
         LOG(error) << "FairRunOnline::Init: fRtdb->initContainers failed";
     }
 
-    // --- Get event header from Run
-    if (!fEvtHeader) {
-        LOG(fatal) << "FairRunOnline::Init() No event header in run!";
-        return;
-    }
-    LOG(info) << "FairRunOnline::Init() Event header at " << fEvtHeader;
-    fRootManager->Register("EventHeader.", "Event", fEvtHeader, (nullptr != GetSink()));
-    fEvtHeader->SetRunId(fRunId);
+    LOG(info) << "FairRunOnline::Init() Event header at " << evtHeader;
+    fRootManager->Register("EventHeader.", "Event", evtHeader, (nullptr != GetSink()));
+    evtHeader->SetRunId(fRunId);
 
     if (!GetSource()->InitUnpackers()) {
         LOG(fatal) << "FairRunOnline->Init() InitUnpackers() failed!";
@@ -222,6 +216,7 @@ Int_t FairRunOnline::EventLoop()
 
     fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
     fTask->ExecuteTask("");
+    // TODO: Fill the event header again? Is this necessary?
     FillEventHeader();
     Fill();
     fRootManager->DeleteOldWriteoutBufferData();

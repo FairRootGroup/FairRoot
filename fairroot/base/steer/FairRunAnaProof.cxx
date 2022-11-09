@@ -13,7 +13,6 @@
 #include "FairRunAnaProof.h"
 
 #include "FairBaseParSet.h"
-#include "FairEventHeader.h"
 #include "FairFieldFactory.h"
 #include "FairFileHeader.h"
 #include "FairLogger.h"
@@ -170,19 +169,18 @@ void FairRunAnaProof::Init()
 
     // Assure that basic info is there for the run
 
+    auto* evtHeader = GetEventHeader();
     if (par && fInFileIsOpen) {
 
         LOG(info) << "Parameter and input file are available, Assure that basic info is there for the run!";
         fRootManager->SpecifyRunId();
-
-        GetEventHeader();
 
         FillEventHeader();
 
         fRunId = GetEvtHeaderRunId();
 
         // Copy the Event Header Info to Output
-        fEvtHeader->Register(GetSink() ? fStoreEventHeader : false);
+        evtHeader->Register(GetSink() ? fStoreEventHeader : false);
 
         // Init the containers in Tasks
         LOG(info) << "--- Initialize with RunId  --- " << fRunId;
@@ -192,12 +190,11 @@ void FairRunAnaProof::Init()
         fTask->SetParTask();
     } else {   // end----- if(fMixedInput)
         LOG(info) << "Initializing without input file or Mixed input";
-        FairEventHeader* evt = GetEventHeader();
-        evt->Register(GetSink() ? fStoreEventHeader : false);
+        evtHeader->Register(GetSink() ? fStoreEventHeader : false);
         FairRunIdGenerator genid;
         fRunId = genid.generateId();
         fRtdb->addRun(fRunId);
-        evt->SetRunId(fRunId);
+        evtHeader->SetRunId(fRunId);
         fTask->SetParTask();
         if (!fRtdb->initContainers(fRunId)) {
             LOG(error) << "FairRunAnaProof::Init: fRtdb->initContainers failed";
@@ -238,19 +235,18 @@ void FairRunAnaProof::InitContainers()
     fRtdb = GetRuntimeDb();
     FairBaseParSet* par = dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
 
+    auto* evtHeader = GetEventHeader();
     if (par && fInFileIsOpen) {
         fRootManager->SpecifyRunId();
-
-        GetEventHeader();
 
         FillEventHeader();
 
         fRunId = GetEvtHeaderRunId();
 
-        LOG(info) << "RKGOT FEH " << fEvtHeader << " (" << fRunId << ") FROM FRM " << fRootManager << ".";
+        LOG(info) << "RKGOT FEH " << evtHeader << " (" << fRunId << ") FROM FRM " << fRootManager << ".";
 
         // Copy the Event Header Info to Output
-        fEvtHeader->Register(GetSink() ? fStoreEventHeader : false);
+        evtHeader->Register(GetSink() ? fStoreEventHeader : false);
 
         // Init the containers in Tasks
         LOG(info) << "--- Initialize with RunId  --- " << fRunId;

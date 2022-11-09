@@ -37,13 +37,13 @@ FairRun* FairRun::Instance() { return fRunInstance; }
 FairRun::FairRun(Bool_t isMaster)
     : TNamed()
     , fNTasks(0)
+    , fEvtHeader()
     , fRtdb(FairRuntimeDb::instance())
     , fTask(new FairTask("FairTaskList"))
     , fRootManager(0)
     , fUserOutputFileName()
     , fRunId(0)
     , fAna(kFALSE)
-    , fEvtHeader(nullptr)
     , fFileHeader(new FairFileHeader())
     , fGenerateRunInfo(kFALSE)
     , fIsMaster(isMaster)
@@ -96,7 +96,6 @@ FairRun::~FairRun()
         // who is responsible for the RuntimeDataBase?
         delete fRtdb;
     }
-    delete fEvtHeader;
     if (fRunInstance == this) {
         // Do not point to a destructed object!
         fRunInstance = nullptr;
@@ -146,12 +145,22 @@ FairTask* FairRun::GetTask(const char* taskName)
     return dynamic_cast<FairTask*>(task);
 }
 
+void FairRun::SetEventHeader(FairEventHeader* EvHeader)
+{
+    fEvtHeader.reset(EvHeader);
+}
+
+void FairRun::SetEventHeader(std::unique_ptr<FairEventHeader> EvHeader)
+{
+    fEvtHeader = std::move(EvHeader);
+}
+
 FairEventHeader* FairRun::GetEventHeader()
 {
-    if (nullptr == fEvtHeader) {
-        fEvtHeader = new FairEventHeader();
+    if (!fEvtHeader) {
+        fEvtHeader = std::make_unique<FairEventHeader>();
     }
-    return fEvtHeader;
+    return fEvtHeader.get();
 }
 
 void FairRun::SetUseFairLinks(Bool_t val) { fRootManager->SetUseFairLinks(val); }
@@ -237,7 +246,7 @@ void FairRun::FillEventHeader()
         return;
     }
 
-    fSource->FillEventHeader(fEvtHeader);
+    fSource->FillEventHeader(fEvtHeader.get());
 }
 
 void FairRun::AddAlignmentMatrices(const std::map<std::string, TGeoHMatrix>& alignmentMatrices, bool invertMatrices)

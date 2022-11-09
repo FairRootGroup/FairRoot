@@ -75,7 +75,9 @@ class FairRun : public TNamed
      *       Set the experiment dependent run header
      *       for each run
      */
-    void SetEventHeader(FairEventHeader* EvHeader) { fEvtHeader = EvHeader; }
+    void SetEventHeader(std::unique_ptr<FairEventHeader> EvHeader);
+    [[deprecated("Use SetEventHeader(std::unique_ptr<FairEventHeader>) instead")]] void SetEventHeader(
+        FairEventHeader* EvHeader);
     /**
      * return a pointer to the RuntimeDB
      */
@@ -206,6 +208,8 @@ class FairRun : public TNamed
     FairRun& operator=(const FairRun&) { return *this; }
     /** Number of Tasks added*/
     Int_t fNTasks;
+    /** MC Event Header */
+    std::unique_ptr<FairEventHeader> fEvtHeader;   //!
 
     FairLinkManager fLinkManager{};   //!
 
@@ -228,8 +232,6 @@ class FairRun : public TNamed
     UInt_t fRunId;   //!
     /** true for Anaylsis session*/
     Bool_t fAna;   //!
-    /** MC Event Header */
-    FairEventHeader* fEvtHeader;   //!
     /** File  Header */
     FairFileHeader* fFileHeader;
     /** true if RunInfo file should be written*/

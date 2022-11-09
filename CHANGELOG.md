@@ -42,6 +42,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     in addition.
 * Renamed our `ROOT_GENERATE_DICTIONARY` to `FAIRROOT_GENERATE_DICTIONARY`.
   (It's not used in many places anyway, it seems.)
+* `fEvtHeader` member variable now is a private unique pointer owned by `FairRun`. To access
+  the event header, please use the public member function `GetEventHeader()`.
 * The following files have been deleted. As far as we know they were not used anywhere:
   * basemq/baseMQtools/baseMQtools.h
   * basemq/policies/Sampler/FairMQFileSource.h
@@ -78,6 +80,9 @@ file an issue, so that we can see how to handle this.
 * Deprecated FairEventBuilder and FairEventBuilderManager
   * The functionality, introduced to enable event reconstruction, is not used.
   * It can be enabled with `-DBUILD_EVENT_BUILDER=ON`.
+* Deprecated `FairRun::SetEventHeader(FairEventHeader*)`
+   * Use `FairRun::SetEventHeader(std::unique_ptr<FairEventHeader> EvHeader)`, which 
+     indicates the ownership transferring.
 
 ### Other Notable Changes
 * Consider calling `fairroot_check_root_cxxstd_compatibility()`
