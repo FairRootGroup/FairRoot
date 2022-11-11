@@ -19,6 +19,7 @@
 #include <Rtypes.h>                  // for Int_t, Bool_t, Double_t, etc
 #include <TLorentzVector.h>          // for TLorentzVector
 #include <TString.h>                 // for TString
+#include <TVirtualMC.h>              // for TVirtualMC
 #include <TVirtualMCApplication.h>   // for TVirtualMCApplication
 #include <list>                      // for list
 #include <map>                       // for map, multimap, etc
@@ -224,9 +225,16 @@ class FairMCApplication : public TVirtualMCApplication
      */
     auto GetRadGridMan() { return fRadGridMan.get(); }
 
+    /**
+     * Return the MT state of TVirtualMC
+     */
+    auto GetIsMT() { return fMC ? fMC->IsMT() : false; }
+
   private:
     // methods
     Int_t GetIonPdg(Int_t z, Int_t a) const;
+    /** Register output */
+    void RegisterOutput();
 
     void UndoGeometryModifications();
 

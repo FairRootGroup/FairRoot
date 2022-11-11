@@ -107,8 +107,7 @@ Bool_t FairRootFileSink::InitSink()
 
     // FairRun* fRun = FairRun::Instance();
     /**Check if a simulation run!*/
-    fOutFolder = gROOT->GetRootFolder()->AddFolder(
-        Form("%s_%d", FairRootManager::GetFolderName(), FairRootManager::Instance()->GetInstanceId()), "Main Folder");
+    fOutFolder = gROOT->GetRootFolder()->AddFolder(Form("%s", FairRootManager::GetFolderName()), "Main Folder");
     gROOT->GetListOfBrowsables()->Add(fOutFolder);
 
     LOG(info) << "FairRootFileSink initialized.";
@@ -262,13 +261,12 @@ void FairRootFileSink::WriteFolder()
     if (fOutFolder != 0) {
         fOutFolder->Write(FairRootManager::GetFolderName());
 
-        // FairRun* fRun = FairRun::Instance();
-        fOutTree =
-            new TTree(FairRootManager::GetTreeName(),
-                      Form("/%s_%d", FairRootManager::GetFolderName(), FairRootManager::Instance()->GetInstanceId()),
-                      99);
+        fOutTree = new TTree(FairRootManager::GetTreeName(), Form("/%s", FairRootManager::GetFolderName()), 99);
+
         TruncateBranchNames();
         CreatePersistentBranchesAny();
+        // Delete the folder to make place in the gROOT for fOutFolder created by the Geant4MT threads
+        gROOT->GetRootFolder()->Remove(fOutFolder);
     }
 }
 

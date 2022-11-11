@@ -57,7 +57,6 @@
 #include <TROOT.h>              // for TROOT, gROOT
 #include <TRefArray.h>          // for TRefArray
 #include <TSystem.h>            // for TSystem, gSystem
-#include <TVirtualMC.h>         // for TVirtualMC
 #include <TVirtualMCStack.h>    // for TVirtualMCStack
 class TParticle;
 
@@ -512,7 +511,12 @@ void FairMCApplication::InitOnWorker()
     // and create a new sink on worker
     // moved to CloneForWorker and specific sink->CloneSink();
 
-    fRootManager->InitSink();
+    {
+        std::lock_guard guard(mtx);
+        fRootManager->InitSink();
+        RegisterOutput();
+        fRootManager->WriteFolder();
+    }
 
     // Cache thread-local gMC
     fMC = gMC;
@@ -749,7 +753,10 @@ Double_t FairMCApplication::TrackingZmax() const
     return DBL_MAX;
 }
 //_____________________________________________________________________________
-void FairMCApplication::SetField(FairField* field) { fxField = field; }
+void FairMCApplication::SetField(FairField* field)
+{
+    fxField = field;
+}
 //_____________________________________________________________________________
 void FairMCApplication::ConstructOpGeometry()
 {
@@ -886,27 +893,9 @@ Bool_t FairMCApplication::MisalignGeometry()
 }
 
 //_____________________________________________________________________________
-void FairMCApplication::InitGeometry()
+void FairMCApplication::RegisterOutput()
 {
-    fState = FairMCApplicationState::kInitGeometry;
-
-    LOG(info) << "FairMCApplication::InitGeometry: " << fRootManager->GetInstanceId();
-
-    // ToBeDone
-    // Recently the InitGeometry is called twice from the G4VMC, This is a work around tell the problem get fixed in
-    // G4VMC
-    if (fGeometryIsInitialized)
-        return;
-
-    /// Initialize geometry
-
-    /** Register stack and detector collections*/
-    FairVolume* fv = 0;
-    Int_t id = 0;
-    fModIter->Reset();
-
-    // Register stack
-    if (fEvGen && fStack && fRootManager) {
+    if (fEvGen && fStack) {
         fStack->Register();
     } else {
         LOG(warn) << "Stack is not registered ";
@@ -934,6 +923,30 @@ void FairMCApplication::InitGeometry()
         }
     }
     fModIter->Reset();
+}
+
+//_____________________________________________________________________________
+void FairMCApplication::InitGeometry()
+{
+    fState = FairMCApplicationState::kInitGeometry;
+
+    // ToBeDone
+    // Recently the InitGeometry is called twice from the G4VMC, This is a work around tell the problem get fixed in
+    // G4VMC
+    if (fGeometryIsInitialized)
+        return;
+
+    /// Initialize geometry
+
+    /** Register stack and detector collections*/
+    FairVolume* fv = 0;
+    Int_t id = 0;
+    fModIter->Reset();
+
+    // Register stack
+    if (fRootManager && !fParent) {
+        RegisterOutput();
+    }
 
     /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the
      * tree*/
@@ -973,8 +986,8 @@ void FairMCApplication::InitGeometry()
         fRadGridMan->Init();
     }
 
-    /// save Geo Params in Output file
-    if (fRootManager) {
+    // save Geo Params in Output file
+    if (fRootManager && !fParent) {
         fRootManager->WriteFolder();
     }
 
@@ -1234,10 +1247,16 @@ void FairMCApplication::AddDecayModes()
 }
 
 //_____________________________________________________________________________
-FairPrimaryGenerator* FairMCApplication::GetGenerator() { return fEvGen; }
+FairPrimaryGenerator* FairMCApplication::GetGenerator()
+{
+    return fEvGen;
+}
 
 //_____________________________________________________________________________
-void FairMCApplication::SetGenerator(FairPrimaryGenerator* pGen) { fEvGen = pGen; }
+void FairMCApplication::SetGenerator(FairPrimaryGenerator* pGen)
+{
+    fEvGen = pGen;
+}
 
 //_____________________________________________________________________________
 void FairMCApplication::AddTask(TTask* fTask)
@@ -1251,10 +1270,16 @@ void FairMCApplication::AddTask(TTask* fTask)
 }
 
 //_____________________________________________________________________________
-FairGenericStack* FairMCApplication::GetStack() { return fStack; }
+FairGenericStack* FairMCApplication::GetStack()
+{
+    return fStack;
+}
 
 //_____________________________________________________________________________
-TTask* FairMCApplication::GetListOfTasks() { return fFairTaskList; }
+TTask* FairMCApplication::GetListOfTasks()
+{
+    return fFairTaskList;
+}
 
 //_____________________________________________________________________________
 void FairMCApplication::SetParTask()
