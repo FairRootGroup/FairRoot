@@ -83,13 +83,13 @@ class FairTask : public TTask
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     /**
-     * \deprecated Deprecated in v19, will be removed in v20.
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
     [[deprecated]] void SetInputPersistance(Bool_t val) { fInputPersistance = val; }
 #pragma GCC diagnostic pop
 
     /**
-     * \deprecated Deprecated in v19, will be removed in v20.
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
     [[deprecated]] void CheckInputPersistance(TString branchName);
 
@@ -109,7 +109,7 @@ class FairTask : public TTask
 
   protected:
     Int_t fVerbose;                           //  Verbosity level
-    [[deprecated]] Int_t fInputPersistance;   ///< \deprecated Deprecated in v19, will be removed in v20.
+    [[deprecated]] Int_t fInputPersistance;   ///< \deprecated Deprecated in v18.8, will be removed in v20.
     FairLogger* fLogger;                      //!
     Bool_t fStreamProcessing;
 

@@ -23,7 +23,7 @@ class FairGeoVector : public TObject
     Double_t y;
     Double_t z;
     /**
-     * \deprecated Deprecated in v19, will be removed in v20.
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
     [[deprecated("This method never did anything")]] void round(Double_t, Int_t) {}
 
@@ -100,7 +100,7 @@ class FairGeoVector : public TObject
     void clear() { x = y = z = 0.; }
     void print() const { printf("%10.3f%10.3f%10.3f\n", x, y, z); }
     /**
-     * \deprecated Deprecated in v19, will be removed in v20.
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
     [[deprecated("This method never did anything")]] void round(Int_t) {}
     inline friend std::ostream& operator<<(std::ostream& put, const FairGeoVector& v);
