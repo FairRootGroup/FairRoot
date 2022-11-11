@@ -174,7 +174,7 @@ class FairRootManager : public TObject
     /**Update the list of time based branches in the output file*/
     void UpdateListOfTimebasedBranches();
     /**Use time stamps to read data and not tree entries
-     * \deprecated Deprecated in v19, will be removed in v20.
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
     [[deprecated]] void RunWithTimeStamps() {}
 
