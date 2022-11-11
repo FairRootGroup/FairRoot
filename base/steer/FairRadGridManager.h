@@ -111,7 +111,7 @@ class FairRadGridManager
      * This function is used to access the methods of the class.
      * @return Pointer to the singleton FairRadGridManager object, created
      * with FairRadGridManager::FairRadGridManager().
-     * \deprecated Deprecated in v19, will be removed in v20.
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
     [[deprecated("Maybe use FairMCApplcation::GetRadGridMan()")]] static FairRadGridManager* Instance();
 };

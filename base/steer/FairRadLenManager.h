@@ -84,7 +84,7 @@ class FairRadLenManager
     /**Add point to collection*/
     void AddPoint(TVirtualMC* aMC, const Int_t ModuleId);
     /**
-     * \deprecated Deprecated in v19, will be removed in v20.
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
     [[deprecated("Use AddPoint(TVirtualMC*, ...)")]] void AddPoint(const Int_t ModuleId);
     /**initialize the manager*/
@@ -95,7 +95,7 @@ class FairRadLenManager
      * This function is used to access the methods of the class.
      * @return Pointer to the singleton FairRadLenManager object, created
      * with FairRadLenManager::FairRadLenManager().
-     * \deprecated Deprecated in v19, will be removed in v20.
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
     [[deprecated]] static FairRadLenManager* Instance();
 };
