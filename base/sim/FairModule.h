@@ -70,7 +70,7 @@ class FairModule : public TNamed
     virtual void ConstructASCIIGeometry();
     /**
      * Modify the geometry for the simulation run using methods of the Root geometry package
-     * \deprecated Deprecated pre-v19, will be removed in v20.
+     * \deprecated Deprecated pre-v18.8, will be removed in v20.
      */
     [[deprecated("Use FairAlignmentHandler instead, see Tutorial4 for examples")]] virtual void ModifyGeometry()
     {

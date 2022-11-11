@@ -96,7 +96,7 @@ class FairRadMapManager
     /**Add point to collection*/
     void AddPoint(TVirtualMC* aMC, const Int_t);
     /**
-     * \deprecated Deprecated in v19, will be removed in v20.
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
     [[deprecated("Use AddPoint(TVirtualMC*, ...)")]] void AddPoint(const Int_t ModuleId);
     /**initialize the manager*/
@@ -107,7 +107,7 @@ class FairRadMapManager
      * This function is used to access the methods of the class.
      * @return Pointer to the singleton FairRadMapManager object, created
      * with FairRadMapManager::FairRadMapManager().
-     * \deprecated Deprecated in v19, will be removed in v20.
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
     [[deprecated]] static FairRadMapManager* Instance();
     //  void GetGeoManager();
