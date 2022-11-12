@@ -34,12 +34,17 @@ list(APPEND headers
   policies/Storage/BoostDataSaver.h
   policies/Storage/RootOutFileManager.h
   policies/Storage/TriviallyCopyableDataSaver.h
+  FairBoostSerializationSupport.h
+  FairHitBoostSerializationSupport.h
+  FairMCPointBoostSerializationSupport.h
+  FairTimeStampBoostSerializationSupport.h
 )
 
 add_library(${target} SHARED ${sources} ${headers})
 fairroot_library_settings(${target})
 
 target_include_directories(${target} PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/devices>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/tasks>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/baseMQtools>

@@ -106,7 +106,6 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Tools
   FairRoot::ParBase
   FairRoot::GeoBase
-  $<$<TARGET_EXISTS:Boost::serialization>:Boost::serialization>
 
   ROOT::Core
   ROOT::EG
@@ -127,9 +126,6 @@ target_compile_definitions(${target}
   PRIVATE
   $<$<BOOL:${ROOT_GDML_FOUND}>:ROOT_HAS_GDML>
   # $<$<PLATFORM_ID:Linux>:Linux>
-
-  PUBLIC
-  $<$<TARGET_EXISTS:Boost::serialization>:FAIRROOT_HAS_BOOST_SERIALIZATION>
 )
 
 if(BUILD_PROOF_SUPPORT)

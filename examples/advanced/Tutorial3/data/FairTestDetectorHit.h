@@ -10,6 +10,7 @@
 
 #include "FairHit.h"   // for FairHit
 
+#include <FairHitBoostSerializationSupport.h>
 #include <Rtypes.h>   // for FairTestDetectorHit::Class, etc
 #include <boost/serialization/base_object.hpp>
 namespace boost {

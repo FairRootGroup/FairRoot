@@ -47,6 +47,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * Added a new build switch `BUILD_BASEMQ` for controlling whether `FairRoot::BaseMQ` and
   dependent targets are built (`FairRoot::FairMQ` and `FairRoot::ParMQ`). It is enabled
   by default and will now **require** its external package dependencies FairMQ and Boost.
+* Boost serialization support for `FairTimeStamp`, `FairHit`, and `FairMCPoint` has been
+  moved to the `FairRoot::BaseMQ` target to have `FairRoot::Base` no longer depend on
+  Boost.Serialization. The user must opt-in to the previously baseline Boost serialization
+  support by including one of the new headers, e.g. for `FairHit`:
+  ```cpp
+  #include <FairHit.h>
+  #include <FairHitBoostSerializationSupport.h>
+  ```
+  There is also a convenience header `<FairBoostSerializationSupport.h>` which includes all
+  class-based support headers currently offered.
 
 
 ### Deprecations
