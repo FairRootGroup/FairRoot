@@ -17,6 +17,7 @@
 
 #include "FairTimeStamp.h"   // for FairTimeStamp
 
+#include <FairTimeStampBoostSerializationSupport.h>
 #include <Rtypes.h>   // for Int_t, etc
 #include <boost/serialization/base_object.hpp>
 #include <iosfwd>     // for ostream

@@ -16,8 +16,8 @@
 #ifndef MYDIGIDATA_H
 #define MYDIGIDATA_H
 
-#include "FairTimeStamp.h"   // for FairTimeStamp
-
+#include <FairTimeStamp.h>   // for FairTimeStamp
+#include <FairTimeStampBoostSerializationSupport.h>
 #include <Rtypes.h>   // for Int_t, etc
 #include <iosfwd>     // for ostream
 #include <iostream>   // for operator<<, basic_ostream, etc
