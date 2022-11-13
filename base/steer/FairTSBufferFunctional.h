@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -32,9 +32,13 @@ class TTree;
  * The method TimeOut is used to break the processing if for example always the same data is requested.
  */
 
-class BinaryFunctor : public std::binary_function<FairTimeStamp*, double, bool>
+class BinaryFunctor
 {
   public:
+    using first_argument_type = FairTimeStamp*;
+    using second_argument_type = double;
+    using result_type = bool;
+
     virtual bool operator()(FairTimeStamp* a, double b) { return Call(a, b); };
     virtual bool Call(FairTimeStamp* a, double b) = 0;
     virtual bool TimeOut() { return false; }
