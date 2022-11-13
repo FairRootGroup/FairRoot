@@ -244,9 +244,9 @@ Int_t FairRunOnline::EventLoop()
     signal(SIGINT, handler_ctrlc);
 
     fRootManager->FillEventHeader(fEvtHeader);
-    Int_t tmpId = fEvtHeader->GetRunId();
+    auto const tmpId = fEvtHeader->GetRunId();
 
-    if (tmpId != -1 && tmpId != fRunId) {
+    if (tmpId != fRunId) {
         LOG(info) << "FairRunOnline::EventLoop() Call Reinit due to changed RunID (from " << fRunId << " to " << tmpId;
         fRunId = tmpId;
         Reinit(fRunId);
