@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -7,7 +7,7 @@
  ********************************************************************************/
 #include "FairRutherfordGeo.h"
 
-#include <cstdio>   // for sprintf
+#include <cstdio>   // for snprintf
 
 ClassImp(FairRutherfordGeo);
 
@@ -29,13 +29,13 @@ const char* FairRutherfordGeo::getModuleName(Int_t m)
       ASCII file should start with FairRutherford otherwise they will
       not be constructed
   */
-    snprintf(modName, sizeof(modName), "rutherford%i", m + 1);
+    std::snprintf(modName, sizeof(modName), "rutherford%i", m + 1);
     return modName;
 }
 
 const char* FairRutherfordGeo::getEleName(Int_t m)
 {
     /** Returns the element name of Det number m */
-    sprintf(eleName, "rutherford%i", m + 1);
+    std::snprintf(eleName, sizeof(eleName), "rutherford%i", m + 1);
     return eleName;
 }
