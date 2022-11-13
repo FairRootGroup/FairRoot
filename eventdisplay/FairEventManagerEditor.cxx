@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -128,7 +128,6 @@ void FairEventManagerEditor::Init()
 
     //=============== graphics =============================
     TGVerticalFrame* scene_conf = CreateEditorTabSubFrame("Graphics");
-    TGHorizontalFrame* transparency_frame = new TGHorizontalFrame(scene_conf);
 
     std::unique_ptr<FairEveTransparencyControl> transparency(
         new FairEveTransparencyControl(scene_conf, "Global transparency"));
