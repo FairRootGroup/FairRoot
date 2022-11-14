@@ -1,5 +1,5 @@
 /**
-\defgroup trackbase trackbase (TrkBase)
+\defgroup trackbase TrackBase
 
 trackbase
 ========
@@ -10,6 +10,6 @@ Track parameter containers.
   - `FairTrackParP` - parabolic track representation
   - `FairTrackParH` - helix track representation
 
-The CMake target name for this library is `FairRoot::TrkBase`.
+The CMake target name for this library is `FairRoot::TrackBase`.
 
  */

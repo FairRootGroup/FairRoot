@@ -145,6 +145,19 @@ file an issue, so that we can see how to handle this.
   Scheduled them for removal in v20.
 
 ### Other Notable Changes
+* CMake [targets](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html)
+  for libraries are now exported.
+  Some have names different from the filesystem library name.
+
+  | Old Library Name | Target Name           |
+  | ---              | ---                   |
+  | TrkBase          | `FairRoot::TrackBase` |
+
+  All those not listed here have the library name prefixed
+  with `FairRoot::` as the target name.
+* Note that the library filesystem name is scheduled to be
+  changed in 19.2 to a `fairroot-trackbase` style naming.
+  For those using the targets this change will not be visible.
 * Tests using Geant3 have been disabled by default, because
   those tests have a probability > 0 for failing.
   If you want to run them anyways, pass
