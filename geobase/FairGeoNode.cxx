@@ -338,11 +338,7 @@ Bool_t FairGeoNode::calcModuleTransform(FairGeoTransform& modTransform)
         modTransform.transFrom(pm->getTransform());
         node = pm;
     }
-    if (isTopNode()) {
-        return kFALSE;
-    } else {
-        return kTRUE;
-    }
+    return !isTopNode();
 }
 
 Bool_t FairGeoNode::calcRefPos(FairGeoVector& refPos)
@@ -358,11 +354,7 @@ Bool_t FairGeoNode::calcRefPos(FairGeoVector& refPos)
             return kFALSE;
         }
     } while (node && !node->isModule());
-    if (isTopNode()) {
-        return kFALSE;
-    } else {
-        return kTRUE;
-    }
+    return !isTopNode();
 }
 
 Int_t FairGeoNode::compare(FairGeoNode& rn)

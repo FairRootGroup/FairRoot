@@ -123,7 +123,7 @@ TRotMatrix* FairGeoRotation::createTRotMatrix(const Text_t* name, const Text_t* 
     // creates a TRotMatrix
     // (uses a new() operator and the user has to take care to free the memory)
     TRotMatrix* t = 0;
-    if (isUnitMatrix() == kTRUE) {
+    if (isUnitMatrix()) {
         return t;
     }
     Double_t a[9];

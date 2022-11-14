@@ -105,7 +105,7 @@ class FairMCMatch : public TNamed
     friend std::ostream& operator<<(std::ostream& out, const FairMCMatch& match)
     {
         for (int i = 0; i < match.GetNMCStages(); i++) {
-            if (match.GetMCStage(i)->GetLoaded() == kTRUE) {
+            if (match.GetMCStage(i)->GetLoaded()) {
                 match.GetMCStage(i)->PrintInfo(out);
                 out << std::endl;
             }

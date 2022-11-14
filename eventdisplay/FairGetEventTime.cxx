@@ -23,7 +23,7 @@
 // -----   Public method Init   --------------------------------------------
 InitStatus FairGetEventTime::Init()
 {
-    if (fRunOnce == true) {
+    if (fRunOnce) {
         FairRootManager *ioman = FairRootManager::Instance();
         FairSource *source = ioman->GetSource();
         if (source->GetSourceType() == Source_Type::kFILE) {

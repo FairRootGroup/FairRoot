@@ -85,7 +85,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 
     run->SetStoreTraj(false);
 
-    if ((config.GetValue<bool>("run-digi-tasks")) == true) {
+    if (config.GetValue<bool>("run-digi-tasks")) {
         // Attach tasks if needed
         TString digParFile = tutdir + "/param/pixel_digi.par";
         FairParAsciiFileIo* parIo1 = new FairParAsciiFileIo();

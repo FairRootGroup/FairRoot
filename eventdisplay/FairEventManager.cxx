@@ -484,7 +484,7 @@ Int_t FairEventManager::StringToColor(TString color) const
 
 void FairEventManager::SetTransparency(Bool_t use_xml, Int_t trans)
 {
-    if (use_xml == kFALSE) {   // high transparency
+    if (!use_xml) {   // high transparency
         Int_t vis_level = gGeoManager->GetVisLevel();
         TGeoNode *top = gGeoManager->GetTopNode();
         SetTransparencyForLayer(top, vis_level, trans);
@@ -565,7 +565,7 @@ void FairEventManager::MakeScreenshot(FairEveAnimationControl::eScreenshotType p
 
 Float_t FairEventManager::GetEvtTime()
 {
-    if (fUseTimeOfEvent == kTRUE) {
+    if (fUseTimeOfEvent) {
         fTimeEvent = FairRootManager::Instance()->GetEventTime();
     }
     return fTimeEvent;

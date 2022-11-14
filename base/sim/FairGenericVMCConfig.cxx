@@ -68,7 +68,7 @@ void FairGenericVMCConfig::Setup(const char* mcEngine)
             != TString("")) {   // be carfull after this call the string g4LibMacro is empty if not found!!!!
             LOG(info) << "---User path for Configuration (g4libs.C) is used: " << config_dir.Data();
             LibMacro = g4LibMacro;
-        } else if (gSystem->AccessPathName((Lib_config + "g4libs.C").Data()) == false) {
+        } else if (!gSystem->AccessPathName((Lib_config + "g4libs.C").Data())) {
             // Note: file is existing if AccessPathName return false
             LOG(info) << "---G4VMC macro  path for Configuration (g4libs.C) is used: " << Lib_config.Data();
             LibMacro = Lib_config + "g4libs.C";
@@ -102,7 +102,7 @@ void FairGenericVMCConfig::Setup(const char* mcEngine)
         if (TString(gSystem->FindFile(config_dir.Data(), g3LibMacro)) != TString("")) {
             LOG(info) << "---User path for Configuration (g3libs.C) is used: " << config_dir.Data();
             LibMacro = g3LibMacro;
-        } else if (gSystem->AccessPathName((work_config + "g3libs.C").Data()) == false) {
+        } else if (!gSystem->AccessPathName((work_config + "g3libs.C").Data())) {
             // Note: file is existing if AccessPathName return false
             LOG(info) << "---VMCWORKDIR path for Configuration (g3libs.C) is used: " << work_config.Data();
             LibMacro = work_config + "g3libs.C";

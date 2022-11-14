@@ -27,18 +27,12 @@ FairField::~FairField() {}
 
 Bool_t FairField::IsConst()
 {
-    if (fType == 1) {
-        return kTRUE;
-    }
-    return kFALSE;
+    return fType == 1;
 }
 
 Bool_t FairField::IsMap()
 {
-    if (fType == 2) {
-        return kTRUE;
-    }
-    return kFALSE;
+    return fType == 2;
 }
 
 void FairField::GetFieldValue(const Double_t point[3], Double_t* bField)

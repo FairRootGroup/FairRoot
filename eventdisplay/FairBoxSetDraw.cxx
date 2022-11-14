@@ -74,7 +74,7 @@ void FairBoxSetDraw::Exec(Option_t* /*option*/)
         Reset();
         //  cout<<  "FairBoxSetDraw::Init() Exec! " << fList->GetEntriesFast() << endl;
         CreateBoxSet();
-        if (FairEventManager::Instance()->GetClearHandler() == kTRUE) {
+        if (FairEventManager::Instance()->GetClearHandler()) {
             fDataSource->Reset();
         }
         fDataSource->RetrieveData(fEventManager->GetEvtTime());
