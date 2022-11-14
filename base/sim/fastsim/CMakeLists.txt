@@ -6,7 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-set(target FairFastSim)
+set(target FastSim)
 
 set(sources
   FairFastSimDetector.cxx
@@ -19,6 +19,8 @@ fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
 add_library(${target} SHARED ${sources} ${headers})
 fairroot_library_settings(${target})
+# Keep old filesystem name
+set_target_properties(${target} PROPERTIES OUTPUT_NAME FairFastSim)
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -52,7 +54,7 @@ target_link_libraries(${target} PUBLIC
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
-  LINKDEF FastSimLinkDef.h
+  LINKDEF LinkDef.h
   EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
