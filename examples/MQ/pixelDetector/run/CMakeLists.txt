@@ -105,7 +105,7 @@ add_executable(pixel-sim runMQSim.cxx)
 target_link_libraries(pixel-sim PRIVATE
   ${exe_dependencies}
   FairRoot::Base # FairModule, FairPrimaryGenerator
-  FairRoot::Gen # FairBoxGenerator
+  FairRoot::Generators # FairBoxGenerator
   FairRoot::ParBase # FairParAsciiFileIo
   FairRoot::ExPassive # FairCave
 
