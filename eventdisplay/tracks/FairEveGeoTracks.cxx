@@ -161,7 +161,7 @@ void FairEveGeoTracks::Repaint()
         } else {
             fBranch->GetEvent(evt.first);
         }
-        if (FairEventManager::Instance()->GetClearHandler() == kTRUE) {
+        if (FairEventManager::Instance()->GetClearHandler()) {
             fGeoTrackHandler.Reset();
         }
         if (evt.first > -1)

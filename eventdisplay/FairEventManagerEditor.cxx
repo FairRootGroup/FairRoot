@@ -230,12 +230,12 @@ void FairEventManagerEditor::StartAnimation()
 
             Bool_t runOnce = true;
             for (Double_t i = start; i < end; i += step) {
-                if (runOnce == true) {   // Clear the buffer at the beginning of an animation run
-                    if (fAnimation->GetClearBuffer() == kTRUE || fAnimation->GetRunContinuous() == kFALSE)
+                if (runOnce) {   // Clear the buffer at the beginning of an animation run
+                    if (fAnimation->GetClearBuffer() || !fAnimation->GetRunContinuous())
                         FairEventManager::Instance()->SetClearHandler(kTRUE);
                     runOnce = false;
                 } else {
-                    if (fAnimation->GetRunContinuous() == kFALSE) {
+                    if (!fAnimation->GetRunContinuous()) {
                         FairEventManager::Instance()->SetClearHandler(kTRUE);
                     } else {
                         FairEventManager::Instance()->SetClearHandler(kFALSE);

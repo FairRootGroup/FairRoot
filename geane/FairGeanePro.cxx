@@ -202,7 +202,7 @@ bool FairGeanePro::Propagate(FairTrackParH* TParam, FairTrackParH* TEnd, int PDG
         return kFALSE;
     }
     // Propagate
-    if (Propagate(PDG) == kFALSE) {
+    if (!Propagate(PDG)) {
         return kFALSE;
     }
 
@@ -324,13 +324,10 @@ bool FairGeanePro::Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, int PDG
                 TVector3 jver = TStart->GetJVer();
                 ;
                 TVector3 kver = TStart->GetKVer();
-                bool backtracking = kFALSE;
-                if (fPropOption.Contains("B")) {
-                    backtracking = kTRUE;
-                }
+                bool backtracking = fPropOption.Contains("B");
                 SetOriginPlane(jver, kver);
                 SetDestinationPlane(fvwi, fromwiretoextr, wiredirection);
-                if (backtracking == kTRUE) {
+                if (backtracking) {
                     fPropOption = "BPE";
                 }
 
@@ -339,8 +336,8 @@ bool FairGeanePro::Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, int PDG
         }
     }
     // Propagate
-    if (Propagate(PDG) == kFALSE) {
-        return kFALSE;
+    if (!Propagate(PDG)) {
+        return false;
     }
 
     for (int i = 0; i < 15; i++) {
@@ -490,11 +487,7 @@ bool FairGeanePro::SetDestinationVolume(std::string VolName, int CopyNo, int opt
     }
     VName = VolName;
     VCopyNo = CopyNo;
-    if (option == 1) {
-        VEnter = kTRUE;
-    } else {
-        VEnter = kFALSE;
-    }
+    VEnter = option == 1;
     fPropOption = "VE";
     ProMode = 1;   // need errors in representation 1 (SC) (see Geane doc)
     return kTRUE;

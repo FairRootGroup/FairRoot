@@ -59,10 +59,7 @@ Bool_t FairDetParAsciiFileIo::findContainer(const Text_t* name)
             break;
         }
     }
-    if (pFile->eof()) {
-        return kFALSE;
-    }
-    return kTRUE;
+    return !pFile->eof();
 }
 
 Bool_t FairDetParAsciiFileIo::checkAllFound(Int_t* set, Int_t setSize)

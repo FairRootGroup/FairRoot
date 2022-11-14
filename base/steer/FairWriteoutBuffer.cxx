@@ -32,11 +32,7 @@ FairWriteoutBuffer::FairWriteoutBuffer(TString branchName, TString className, TS
     , fLogger(FairLogger::GetLogger())
 {
     FairRootManager::Instance()->Register(branchName, className, folderName, persistance);
-    if (fBranchName == "" || fClassName == "") {
-        fTreeSave = false;
-    } else {
-        fTreeSave = true;
-    }
+    fTreeSave = !(fBranchName == "" || fClassName == "");
 }
 
 void FairWriteoutBuffer::WriteOutData(double time)
@@ -200,7 +196,7 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
                 }
             }
 
-            if (dataFound == true) {
+            if (dataFound) {
                 if (timeOfOldData
                     > startTime) {   // if older active data can interference with the new data call modify function
                     std::vector<std::pair<double, FairTimeStamp*>> modifiedData =

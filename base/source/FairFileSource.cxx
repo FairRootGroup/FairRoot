@@ -321,10 +321,7 @@ Int_t FairFileSource::ReadEvent(UInt_t i)
 Bool_t FairFileSource::SpecifyRunId()
 {
     /**Read the first entry in Chain to fill the event header and get the RunID*/
-    if (fInChain->GetEntry(0))
-        return true;
-
-    return false;
+    return fInChain->GetEntry(0) != 0;
 }
 
 void FairFileSource::Close() { CloseInFile(); }
