@@ -55,7 +55,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::ExMCStack
   FairRoot::GeoBase
   FairRoot::ParBase
-  FairRoot::Gen
+  FairRoot::Generators
   $<$<BOOL:${ROOT_opengl_FOUND}>:FairRoot::EventDisplay>
 
   ROOT::Core
