@@ -114,7 +114,7 @@ void FairBoxGenerator::SetBoxXYZ(Double32_t x1, Double32_t y1, Double32_t x2, Do
 Bool_t FairBoxGenerator::Init()
 {
     // Initialize parent generator
-    if (FairBaseMCGenerator::Init() == kFALSE)
+    if (!FairBaseMCGenerator::Init())
         return kFALSE;
     // Check for particle type
     TDatabasePDG* pdgBase = TDatabasePDG::Instance();

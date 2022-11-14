@@ -77,7 +77,7 @@ void FairPointSetDraw::Exec(Option_t* /*option*/)
 {
     Double_t timeOffset = 0.0;
     if (IsActive()) {
-        if (FairEventManager::Instance()->GetClearHandler() == kTRUE) {
+        if (FairEventManager::Instance()->GetClearHandler()) {
             fDataSource->Reset();
         }
         fDataSource->RetrieveData(FairEventManager::Instance()->GetEvtTime());
@@ -97,7 +97,7 @@ void FairPointSetDraw::Exec(Option_t* /*option*/)
             TVector3 vec(GetVector(fDataSource->GetData(i)));
             if (checkTime) {
                 double time = fDataSource->GetTime(i);
-                if (fUseTimeOffset == kTRUE && time > -1.0)
+                if (fUseTimeOffset && time > -1.0)
                     time += timeOffset;   ///< corrects a point time (with only time-of-flight) to event time +
                                           ///< ToF to match with TimeLimits tmin, tmax
                 if (time > 0) {

@@ -77,9 +77,5 @@ Bool_t FairTutorialDet4MisalignPar::getParams(FairParamList* l)
     }
 
     fRotZ.Set(fNrOfDetectors);
-    if (!l->fill("RotationZ", &fRotZ)) {
-        return kFALSE;
-    }
-
-    return kTRUE;
+    return l->fill("RotationZ", &fRotZ);
 }

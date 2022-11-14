@@ -83,11 +83,7 @@ class StopTime : public BinaryFunctor
                       << " smaller than old time " << fOldTime << std::endl;
             return true;
         }
-        if (fSameTimeRequestCounter > 9) {
-            return true;
-        } else {
-            return false;
-        }
+        return fSameTimeRequestCounter > 9;
     }
 
     void ResetTimeOut() override { fSameTimeRequestCounter = 0; }

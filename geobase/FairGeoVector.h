@@ -155,21 +155,33 @@ inline FairGeoVector& FairGeoVector::operator=(const FairGeoVector& v)
 
 inline Bool_t FairGeoVector::operator==(const FairGeoVector& v) const
 {
-    return ((v.getX() != x || v.getY() != y || v.getZ() != z) ? kFALSE : kTRUE);
+    return (!(v.getX() != x || v.getY() != y || v.getZ() != z));
 }
 
 inline Bool_t FairGeoVector::operator!=(const FairGeoVector& v) const
 {
-    return (v.getX() != x || v.getY() != y || v.getZ() != z) ? kTRUE : kFALSE;
+    return v.getX() != x || v.getY() != y || v.getZ() != z;
 }
 /// check with ilse
-inline Bool_t FairGeoVector::operator<(const Double_t a) { return (x >= a || y >= a || z >= a) ? kFALSE : kTRUE; }
+inline Bool_t FairGeoVector::operator<(const Double_t a)
+{
+    return !(x >= a || y >= a || z >= a);
+}
 
-inline Bool_t FairGeoVector::operator<=(const Double_t a) { return (x > a || y > a || z > a) ? kFALSE : kTRUE; }
+inline Bool_t FairGeoVector::operator<=(const Double_t a)
+{
+    return !(x > a || y > a || z > a);
+}
 
-inline Bool_t FairGeoVector::operator>(const Double_t a) { return (x <= a || y <= a || z <= a) ? kFALSE : kTRUE; }
+inline Bool_t FairGeoVector::operator>(const Double_t a)
+{
+    return !(x <= a || y <= a || z <= a);
+}
 
-inline Bool_t FairGeoVector::operator>=(const Double_t a) { return (x < a || y < a || z < a) ? kFALSE : kTRUE; }
+inline Bool_t FairGeoVector::operator>=(const Double_t a)
+{
+    return !(x < a || y < a || z < a);
+}
 
 inline FairGeoVector& FairGeoVector::operator+=(const Double_t a)
 {

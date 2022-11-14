@@ -72,13 +72,7 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
         return out;
     }
 
-    virtual bool operator<(const FairTimeStamp* rValue) const
-    {
-        if (GetTimeStamp() < rValue->GetTimeStamp())
-            return true;
-        else
-            return false;
-    }
+    virtual bool operator<(const FairTimeStamp* rValue) const { return GetTimeStamp() < rValue->GetTimeStamp(); }
 
   protected:
     Double_t fTimeStamp;      /** Time of digit or Hit  [ns] */

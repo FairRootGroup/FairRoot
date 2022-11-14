@@ -41,10 +41,7 @@ void FairOnlineSink::RegisterAny(const char* brname, const std::type_info& oi, c
 //_____________________________________________________________________________
 bool FairOnlineSink::IsPersistentBranchAny(const char* name)
 {
-    if (fPersistentBranchesMap.find(name) == fPersistentBranchesMap.end()) {
-        return false;
-    }
-    return true;
+    return fPersistentBranchesMap.find(name) != fPersistentBranchesMap.end();
 }
 
 //_____________________________________________________________________________

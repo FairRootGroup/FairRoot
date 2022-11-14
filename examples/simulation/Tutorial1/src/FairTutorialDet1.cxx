@@ -120,10 +120,7 @@ void FairTutorialDet1::Reset() { fFairTutorialDet1PointCollection->Clear(); }
 
 Bool_t FairTutorialDet1::IsSensitive(const std::string& name)
 {
-    if (name.find("tutdet") != std::string::npos) {
-        return kTRUE;
-    }
-    return kFALSE;
+    return name.find("tutdet") != std::string::npos;
 }
 
 void FairTutorialDet1::ConstructGeometry()

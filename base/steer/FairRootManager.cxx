@@ -210,7 +210,7 @@ void FairRootManager::RegisterImpl(const char* name, const char* folderName, T* 
     AddMemoryBranch(name, obj);
     AddBranchToList(name);
 
-    if (toFile == kFALSE) {
+    if (!toFile) {
         FairLinkManager::Instance()->AddIgnoreType(GetBranchId(name));
     }
 }
@@ -359,8 +359,8 @@ void FairRootManager::TerminateAllTSBuffer()
 Bool_t FairRootManager::AllDataProcessed()
 {
     for (auto& mi : fTSBufferMap) {
-        if (mi.second->AllDataProcessed() == kFALSE && mi.second->TimeOut() == kFALSE) {
-            return kFALSE;
+        if (!mi.second->AllDataProcessed() && !mi.second->TimeOut()) {
+            return false;
         }
     }
     return kTRUE;

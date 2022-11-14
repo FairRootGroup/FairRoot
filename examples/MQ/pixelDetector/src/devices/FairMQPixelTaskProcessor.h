@@ -86,7 +86,7 @@ class FairMQPixelTaskProcessor : public fair::mq::Device
             }
         }
 
-        if (fStaticParameters == false || fCurrentRunId == -1) {
+        if (!fStaticParameters || fCurrentRunId == -1) {
             // TODO: create fEventHeader form fMCEventHeader, if not there
             if (fEventHeader) {
                 fNewRunId = fEventHeader->GetRunId();

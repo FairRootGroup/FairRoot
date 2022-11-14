@@ -176,10 +176,8 @@ inline FairGeoRotation& FairGeoRotation::transform(const FairGeoRotation& r) { r
 
 inline Bool_t FairGeoRotation::isUnitMatrix()
 {
-    return (rot[0] == 1. && rot[1] == 0. && rot[2] == 0. && rot[3] == 0. && rot[4] == 1. && rot[5] == 0. && rot[6] == 0.
-            && rot[7] == 0. && rot[8] == 1.)
-               ? kTRUE
-               : kFALSE;
+    return rot[0] == 1. && rot[1] == 0. && rot[2] == 0. && rot[3] == 0. && rot[4] == 1. && rot[5] == 0. && rot[6] == 0.
+           && rot[7] == 0. && rot[8] == 1.;
 }
 
 inline FairGeoRotation FairGeoRotation::inverse() const
