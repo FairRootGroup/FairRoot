@@ -132,16 +132,16 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
         std::cout << "Add FairLink: " << link << std::endl;
     }
 
-    if (fPersistanceCheck == kFALSE || link.GetIndex() < 0
+    if (!fPersistanceCheck || link.GetIndex() < 0
         || (link.GetType() != ioman->GetMCTrackBranchId()
             && ioman->CheckBranch(ioman->GetBranchName(link.GetType())) == 0)) {
         InsertLink(link);
-        if (fInsertHistory == kTRUE)
+        if (fInsertHistory)
             InsertHistory(link);
         return;
     }
 
-    if (bypass == kFALSE) {
+    if (!bypass) {
         if (fVerbose > 1) {
             std::cout << "BranchName " << ioman->GetBranchName(link.GetType())
                       << " checkStatus: " << ioman->CheckBranch(ioman->GetBranchName(link.GetType())) << std::endl;
@@ -155,7 +155,7 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
         }
     }
 
-    if (bypass == kTRUE) {
+    if (bypass) {
         // FairRootManager* ioman = FairRootManager::Instance();
         if (link.GetType() > ioman->GetMCTrackBranchId()) {
             TClonesArray* array = static_cast<TClonesArray*>(ioman->GetObject(ioman->GetBranchName(link.GetType())));
@@ -172,12 +172,12 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
             return;
         } else {
             InsertLink(link);
-            if (fInsertHistory == kTRUE)
+            if (fInsertHistory)
                 InsertHistory(link);
         }
     } else {
         InsertLink(link);
-        if (fInsertHistory == kTRUE)
+        if (fInsertHistory)
             InsertHistory(link);
     }
 }
@@ -255,10 +255,7 @@ void FairMultiLinkedData::InsertHistory(FairLink link)
 
 Bool_t FairMultiLinkedData::IsLinkInList(Int_t type, Int_t index)
 {
-    if (LinkPosInList(type, index) > -1) {
-        return kTRUE;
-    }
-    return kFALSE;
+    return LinkPosInList(type, index) > -1;
 }
 
 Int_t FairMultiLinkedData::LinkPosInList(Int_t type, Int_t index)

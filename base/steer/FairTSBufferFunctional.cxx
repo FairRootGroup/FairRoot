@@ -275,16 +275,12 @@ void FairTSBufferFunctional::ReadInEntry(Int_t number)
 
 Bool_t FairTSBufferFunctional::AllDataProcessed()
 {
-    if (fTerminate == kTRUE) {
+    if (fTerminate) {
         return kTRUE;
     }
     if (fBranchIndex + 1 >= fBranch->GetEntries()) {
         if (fBufferArray->GetEntriesFast() == 0) {
-            if (fOutputArray->GetEntriesFast() == 0) {
-                return kTRUE;
-            } else {
-                return kFALSE;
-            }
+            return fOutputArray->GetEntriesFast() == 0;
         } else {
             return kFALSE;
         }

@@ -88,20 +88,12 @@ Bool_t FairGeoOldAsciiIo::open(const char* fname, const Text_t* status)
 
 Bool_t FairGeoOldAsciiIo::isOpen()
 {
-    // Returns kTRUE, if the file is open
-    if (file.is_open()) {
-        return kTRUE;
-    }
-    return kFALSE;
+    return file.is_open();
 }
 
 Bool_t FairGeoOldAsciiIo::isWritable()
 {
-    // Returns kTRUE, if the file is open and writable
-    if (isOpen() && writable) {
-        return kTRUE;
-    }
-    return kFALSE;
+    return isOpen() && writable;
 }
 
 void FairGeoOldAsciiIo::close()

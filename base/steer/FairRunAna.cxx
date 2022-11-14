@@ -458,7 +458,7 @@ void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
 //_____________________________________________________________________________
 void FairRunAna::Run(Double_t delta_t)
 {
-    while (fRootManager->ReadNextEvent(delta_t) == kTRUE) {
+    while (fRootManager->ReadNextEvent(delta_t)) {
         fTask->ExecuteTask("");
         FillEventHeader();
         Fill();
@@ -528,7 +528,7 @@ void FairRunAna::RunTSBuffers()
     Int_t globalEvent = 0;
 
     bool firstRun = true;
-    while (firstRun || fRootManager->AllDataProcessed() == kFALSE) {
+    while (firstRun || !fRootManager->AllDataProcessed()) {
         firstRun = false;
         if (globalEvent < fRootManager->CheckMaxEventNo(
                 0)) {   // this step is necessary to load in all data which is not read in via TSBuffers
@@ -575,7 +575,7 @@ void FairRunAna::RunOnLmdFiles(UInt_t NStart, UInt_t NStop)
 void FairRunAna::RunOnTBData()
 {
     //  std::cout << "FairRunAna::RunOnTBData " << std::endl;
-    while (fRootManager->FinishRun() != kTRUE) {
+    while (!fRootManager->FinishRun()) {
         fTask->ExecuteTask("");
         Fill();
         fTask->FinishEvent();

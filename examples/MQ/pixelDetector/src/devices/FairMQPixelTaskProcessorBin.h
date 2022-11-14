@@ -83,7 +83,7 @@ class FairMQPixelTaskProcessorBin : public fair::mq::Device
         // LOG(debug) << "GOT EVENT " << payloadE->fMCEntryNo << " OF RUN " << payloadE->fRunId << " (part " <<
         // payloadE->fPartNo << ")";
 
-        if (fStaticParameters == false || fCurrentRunId == -1) {
+        if (!fStaticParameters || fCurrentRunId == -1) {
             fNewRunId = payloadE->fRunId;
             if (fNewRunId != fCurrentRunId) {
                 fCurrentRunId = fNewRunId;

@@ -91,11 +91,7 @@ class FairGeoMedium : public TNamed
 
 inline Bool_t FairGeoMedium::isSensitive()
 {
-    if (sensFlag) {
-        return kTRUE;
-    } else {
-        return kFALSE;
-    }
+    return sensFlag != 0;
 }
 
 #endif /* !FAIRGEOMEDIUM_H */

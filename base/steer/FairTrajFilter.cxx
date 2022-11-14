@@ -121,11 +121,11 @@ Bool_t FairTrajFilter::IsAccepted(const TParticle* p) const
 
     // Apply generation cut
     if (-1 == p->GetFirstMother()) {
-        if (kFALSE == fStorePrim) {
+        if (!fStorePrim) {
             return kFALSE;
         }
     } else {
-        if (kFALSE == fStoreSec) {
+        if (!fStoreSec) {
             return kFALSE;
         }
     }

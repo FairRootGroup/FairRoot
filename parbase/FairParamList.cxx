@@ -354,7 +354,7 @@ void FairParamObj::setParamType(const Text_t* t)
         basicType = kFALSE;
         bytesPerValue = 1;
     }
-    if (basicType == kTRUE) {
+    if (basicType) {
         classVersion = -1;
         streamerInfoSize = 0;
         streamerInfo = 0;

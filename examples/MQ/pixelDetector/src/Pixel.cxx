@@ -166,10 +166,7 @@ void Pixel::ConstructGeometry()
 
 Bool_t Pixel::IsSensitive(const std::string& name)
 {
-    if (name.find("Pixel") != std::string::npos) {
-        return kTRUE;
-    }
-    return kFALSE;
+    return name.find("Pixel") != std::string::npos;
 }
 
 PixelPoint* Pixel::AddHit(Int_t trackID,

@@ -663,7 +663,7 @@ Bool_t FairRuntimeDb::setFirstInput(FairParIo* inp1)
 {
     // sets the first input pointer
     firstInput = inp1;
-    if (inp1->check() == kTRUE) {
+    if (inp1->check()) {
         inp1->setInputNumber(1);
         resetInputVersions();
         if (output && firstInput != output) {
@@ -680,7 +680,7 @@ Bool_t FairRuntimeDb::setSecondInput(FairParIo* inp2)
 {
     // sets the second input pointer
     secondInput = inp2;
-    if (inp2->check() == kTRUE) {
+    if (inp2->check()) {
         inp2->setInputNumber(2);
         resetInputVersions();
         if (output && firstInput != output) {
@@ -697,7 +697,7 @@ Bool_t FairRuntimeDb::setOutput(FairParIo* op)
 {
     // sets the output pointer
     output = op;
-    if (output->check() == kTRUE) {
+    if (output->check()) {
         resetOutputVersions();
         if (strcmp(output->IsA()->GetName(), "FairParRootFileIo") == 0) {
             ioType = RootFileOutput;

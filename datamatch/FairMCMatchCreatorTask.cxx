@@ -100,7 +100,7 @@ void FairMCMatchCreatorTask::Exec(Option_t* /*opt*/)
     fMCMatch->LoadInMCLists(fMCLink);
 
     for (int i = 0; i < fMCMatch->GetNMCStages(); i++) {
-        if (fMCMatch->GetMCStage(i)->GetFill() == kTRUE && fMCMatch->GetMCStage(i)->GetLoaded() == kFALSE) {
+        if (fMCMatch->GetMCStage(i)->GetFill() && !fMCMatch->GetMCStage(i)->GetLoaded()) {
             TClonesArray* clArray = fBranches[fMCMatch->GetMCStage(i)->GetBranchName()];
             for (int j = 0; j < clArray->GetEntries(); j++) {
                 FairMultiLinkedData* myData = static_cast<FairMultiLinkedData*>(clArray->At(j));

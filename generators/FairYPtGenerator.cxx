@@ -46,7 +46,7 @@ void FairYPtGenerator::SetYPt(const TH2D &yPt)
 
 Bool_t FairYPtGenerator::Init()
 {
-    if (FairBaseMCGenerator::Init() == kFALSE)
+    if (!FairBaseMCGenerator::Init())
         return kFALSE;
     fYPt.ResetStats();
     for (int i = 1; i <= fYPt.GetNbinsX(); i++) {

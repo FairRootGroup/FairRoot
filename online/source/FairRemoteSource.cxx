@@ -43,10 +43,7 @@ Bool_t FairRemoteSource::Init()
     fBuffer->RevStatus(0);
     fSocket = fBuffer->RevOpen(fNode, 6003, 0);
     fBuffer->RevStatus(0);
-    if (!fSocket) {
-        return kFALSE;
-    }
-    return kTRUE;
+    return fSocket != nullptr;
 }
 
 Int_t FairRemoteSource::ReadEvent(UInt_t)

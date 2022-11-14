@@ -79,13 +79,7 @@ class FairRecoEventHeader : public TNamed
         return false;
     }
 
-    virtual bool operator==(const FairRecoEventHeader& tempObj) const
-    {
-        if (fEventTime == tempObj.GetEventTime()) {
-            return true;
-        }
-        return false;
-    }
+    virtual bool operator==(const FairRecoEventHeader& tempObj) const { return fEventTime == tempObj.GetEventTime(); }
 
     /**
      * Destructor

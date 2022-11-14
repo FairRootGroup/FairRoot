@@ -217,10 +217,7 @@ bool ParameterMQServer::ProcessUpdate(fair::mq::MessagePtr& update, int /*index*
                         [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
                         text));
 
-    if (Send(msg, fUpdateChannelName) < 0) {
-        return false;
-    }
-    return true;
+    return Send(msg, fUpdateChannelName) >= 0;
 }
 
 ParameterMQServer::~ParameterMQServer() { delete fRtdb; }
