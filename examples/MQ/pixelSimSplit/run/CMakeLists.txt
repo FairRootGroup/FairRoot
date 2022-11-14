@@ -52,7 +52,7 @@ add_executable(pixel-sim-gen runMQGen.cxx)
 target_link_libraries(pixel-sim-gen PRIVATE
   ${exe_dependencies}
   FairRoot::Base # FairModule, FairPrimaryGenerator
-  FairRoot::Gen # FairBoxGenerator
+  FairRoot::Generators # FairBoxGenerator
 
   ROOT::Core # TSystem
   ROOT::MathCore # TRandom

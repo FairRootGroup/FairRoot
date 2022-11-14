@@ -40,7 +40,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::ParBase
   FairRoot::ExPassive
   FairRoot::ExMCStack
-  FairRoot::Gen
+  FairRoot::Generators
 
   Boost::program_options
 
