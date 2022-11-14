@@ -39,7 +39,7 @@ target_include_directories(${target} PUBLIC
 )
 
 target_link_libraries(${target} PUBLIC
-  FairRoot::FairTools
+  FairRoot::Tools
   FairRoot::Base
   FairRoot::ParBase
   $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
