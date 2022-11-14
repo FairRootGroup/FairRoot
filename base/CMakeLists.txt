@@ -100,7 +100,7 @@ target_include_directories(${target} PUBLIC
 
 target_link_libraries(${target} PUBLIC
   FairRoot::Alignment
-  FairRoot::FairTools
+  FairRoot::Tools
   FairRoot::ParBase
   FairRoot::GeoBase
   $<$<TARGET_EXISTS:Boost::serialization>:Boost::serialization>
