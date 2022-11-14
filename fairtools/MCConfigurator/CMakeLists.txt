@@ -25,7 +25,7 @@ target_include_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::Tools
   FairRoot::Base # FairGenericVMCConfig
-  FairRoot::FairFastSim # FairFastSimRunConfiguration
+  FairRoot::FastSim # FairFastSimRunConfiguration
 
   geant321
   geant4vmc
