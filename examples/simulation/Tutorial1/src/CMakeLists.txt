@@ -33,7 +33,7 @@ target_include_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::Tools # FairLogger
-  FairRoot::FairFastSim
+  FairRoot::FastSim
   FairRoot::ParBase
   FairRoot::ExPassive
   FairRoot::ExMCStack
