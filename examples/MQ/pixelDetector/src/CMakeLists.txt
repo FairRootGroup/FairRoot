@@ -71,7 +71,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::BaseMQ # Serialization policies
   FairRoot::Tools # FairLogger
-  FairRoot::Gen # FairBoxGenerator
+  FairRoot::Generators # FairBoxGenerator
   FairRoot::GeoBase
   FairRoot::ParBase # FairParGenericSet
   FairRoot::ExMCStack
