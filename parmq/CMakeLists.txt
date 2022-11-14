@@ -29,7 +29,7 @@ target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::BaseMQ # Serialization policies
   FairRoot::ParBase # FairRuntimeDb, ...
-  FairRoot::FairTools # FairLogger
+  FairRoot::Tools # FairLogger
   FairRoot::FairMQ
 
   ROOT::Core
