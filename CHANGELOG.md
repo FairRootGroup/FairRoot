@@ -87,6 +87,7 @@ file an issue, so that we can see how to handle this.
   | ---              | ---                   |
   | TrkBase          | `FairRoot::TrackBase` |
   | FairDataMatch    | `FairRoot::DataMatch` |
+  | FairTools        | `FairRoot::Tools`     |
 
   All those not listed here have the library name prefixed
   with `FairRoot::` as the target name.
