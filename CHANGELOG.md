@@ -142,6 +142,7 @@ file an issue, so that we can see how to handle this.
   | Old Library Name | Target Name           |
   | ---              | ---                   |
   | TrkBase          | `FairRoot::TrackBase` |
+  | FairDataMatch    | `FairRoot::DataMatch` |
 
   All those not listed here have the library name prefixed
   with `FairRoot::` as the target name.
