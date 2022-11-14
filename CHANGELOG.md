@@ -83,12 +83,13 @@ file an issue, so that we can see how to handle this.
   for libraries are now exported.
   Some have names different from the filesystem library name.
 
-  | Old Library Name | Target Name           |
-  | ---              | ---                   |
-  | TrkBase          | `FairRoot::TrackBase` |
-  | FairDataMatch    | `FairRoot::DataMatch` |
-  | FairTools        | `FairRoot::Tools`     |
-  | FairFastSim      | `FairRoot::FastSim`   |
+  | Old Library Name | Target Name              |
+  | ---              | ---                      |
+  | TrkBase          | `FairRoot::TrackBase`    |
+  | FairDataMatch    | `FairRoot::DataMatch`    |
+  | FairTools        | `FairRoot::Tools`        |
+  | FairFastSim      | `FairRoot::FastSim`      |
+  | FairMCStepLogger | `FairRoot::MCStepLogger` |
 
   All those not listed here have the library name prefixed
   with `FairRoot::` as the target name.
