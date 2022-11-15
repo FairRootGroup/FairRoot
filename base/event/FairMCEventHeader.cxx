@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -19,7 +19,6 @@
 FairMCEventHeader::FairMCEventHeader()
     : TNamed("MCEvent", "MC")
     , fRunId(0)
-    , fEventId(-1)
     , fX(0.)
     , fY(0.)
     , fZ(0.)
@@ -35,7 +34,6 @@ FairMCEventHeader::FairMCEventHeader()
 FairMCEventHeader::FairMCEventHeader(UInt_t runId)
     : TNamed("MCEvent", "MC")
     , fRunId(runId)
-    , fEventId(-1)
     , fX(0.)
     , fY(0.)
     , fZ(0.)
@@ -48,7 +46,7 @@ FairMCEventHeader::FairMCEventHeader(UInt_t runId)
     , fRotZ(0.)
 {}
 
-FairMCEventHeader::FairMCEventHeader(Int_t iEvent,
+FairMCEventHeader::FairMCEventHeader(EventID iEvent,
                                      Double_t x,
                                      Double_t y,
                                      Double_t z,
@@ -74,7 +72,7 @@ FairMCEventHeader::~FairMCEventHeader() {}
 
 void FairMCEventHeader::Reset()
 {
-    fEventId = -1;
+    fEventId = NoEventID;
     fNPrim = 0;
     fX = fY = fZ = fT = fB = 0.;
     fIsSet = kFALSE;

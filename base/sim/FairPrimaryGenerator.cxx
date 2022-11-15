@@ -1,9 +1,9 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
- *              This software is distributed under the terms of the *
+ *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
- *                  copied verbatim in the file "LICENSE" *
+ *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
 #include "FairPrimaryGenerator.h"
@@ -271,7 +271,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack *pStack)
         // Screen output
 
         // Set the event number if not set already by one of the dedicated generators
-        if (-1 == fEvent->GetEventID()) {
+        if (!fEvent->HasEventID()) {
             fEventNr++;
             fEvent->SetEventID(fEventNr);
         }
