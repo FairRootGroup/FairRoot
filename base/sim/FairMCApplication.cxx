@@ -233,6 +233,8 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
         fEvGen = rhs.fEvGen->ClonePrimaryGenerator();
     }
 
+    fMCEventHeader = rhs.fMCEventHeader->CloneMCEventHeader();
+
     // Create a Task list
     // Let's try without it
     // fFairTaskList= new FairTask("Task List", 1);
@@ -488,6 +490,7 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
     auto workerRun = std::make_unique<FairRunSim>(kFALSE);
     workerRun->SetName(fRun->GetName());   // Transport engine
     workerRun->SetSink(std::unique_ptr<FairSink>{fRun->GetSink()->CloneSink()});
+    workerRun->SetMCEventHeader(fRun->GetMCEventHeader()->CloneMCEventHeader());
 
     // Trajectories filter is created explicitly as we do not call
     // FairRunSim::Init on workers
@@ -900,7 +903,6 @@ void FairMCApplication::RegisterOutput()
     } else {
         LOG(warn) << "Stack is not registered ";
     }
-
     /** SetSpecialPhysicsCuts for FairDetector objects and all passive modules inheriting from FairModule */
     // initialize and register FairDetector objects in addition
     // Note: listActiveDetectors or fActiveDetectors not used to include passive modules in the same loop.
@@ -923,6 +925,13 @@ void FairMCApplication::RegisterOutput()
         }
     }
     fModIter->Reset();
+
+    if (fRootManager) {
+        fMCEventHeader->Register();
+    }
+    if (fEvGen) {
+        fEvGen->SetEvent(fMCEventHeader);
+    }
 }
 
 //_____________________________________________________________________________
@@ -943,19 +952,6 @@ void FairMCApplication::InitGeometry()
     Int_t id = 0;
     fModIter->Reset();
 
-    // Register stack
-    if (fRootManager && !fParent) {
-        RegisterOutput();
-    }
-
-    /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the
-     * tree*/
-    /// There is always a Main Task  !
-    /// so .. always a InitTasks() is called <D.B>
-    if (fFairTaskList) {
-        InitTasks();
-    }
-
     // store the EventHeader Info
     // Get and register EventHeader
     UInt_t runId = fRun->GetRunId();
@@ -965,13 +961,7 @@ void FairMCApplication::InitGeometry()
     // Get and register the MCEventHeader
     fMCEventHeader = fRun->GetMCEventHeader();
     fMCEventHeader->SetRunID(runId);
-    if (fRootManager) {
-        fMCEventHeader->Register();
-    }
 
-    if (fEvGen) {
-        fEvGen->SetEvent(fMCEventHeader);
-    }
     fTrajFilter = FairTrajFilter::Instance();
     if (nullptr != fTrajFilter) {
         fTrajFilter->Init();
@@ -986,9 +976,18 @@ void FairMCApplication::InitGeometry()
         fRadGridMan->Init();
     }
 
-    // save Geo Params in Output file
+    // Register output
     if (fRootManager && !fParent) {
+        RegisterOutput();
         fRootManager->WriteFolder();
+    }
+
+    /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the
+     * tree*/
+    /// There is always a Main Task  !
+    /// so .. always a InitTasks() is called <D.B>
+    if (fFairTaskList) {
+        InitTasks();
     }
 
     // Get static thread local svList

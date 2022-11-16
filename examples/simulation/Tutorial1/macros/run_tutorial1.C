@@ -172,7 +172,10 @@ int run_tutorial1(int nEvents = 10, string mcEngine = "TGeant3", bool isMT = tru
     auto nofE = chain.GetEntries();
     auto nofT = chain.Draw("MCTrack.fPx", "", "goff");
     auto nofP = chain.Draw("TutorialDetPoint.fX", "", "goff");
-    cout << "Output chain has " << nofE << " events, " << nofT << " tracks, " << nofP << " points." << endl;
+    auto nofB = (chain.GetListOfBranches())->GetEntries();
+    auto nofL = (chain.GetListOfLeaves())->GetEntries();
+    cout << "Output chain has " << nofE << " events, " << nofT << " tracks, " << nofP << " points in " << nofB
+         << " branches, " << nofL << " leaves." << endl;
     if (nofE < nEvents) {
         std::cerr << "Not enough events (" << nofE << " < " << nEvents << ") in the output chain." << endl;
         return 1;
@@ -183,6 +186,14 @@ int run_tutorial1(int nEvents = 10, string mcEngine = "TGeant3", bool isMT = tru
     }
     if (nofP < nEvents * nofPart) {
         std::cerr << "Not enough points (" << nofP << " < " << nEvents * nofPart << ") in the output chain." << endl;
+        return 1;
+    }
+    if (nofB != 3) {
+        std::cerr << "Wrong number of branches (" << nofB << " instead of 3) in the output chain." << endl;
+        return 1;
+    }
+    if (nofL != 46) {
+        std::cerr << "Wrong number of leaves (" << nofL << " instead of 46) in the output chain." << endl;
         return 1;
     }
     cout << "Simulation successful." << endl;
