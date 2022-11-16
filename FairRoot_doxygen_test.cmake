@@ -61,6 +61,8 @@ else()
   if (midpart AND IS_DIRECTORY "${WEB_PATH}")
     get_filename_component(parent "${WEB_PATH}/${midpart}" DIRECTORY)
     file(MAKE_DIRECTORY "${parent}")
+    # Just in case, remove the target directory
+    file(REMOVE_RECURSE "${WEB_PATH}/${midpart}")
     # In theory we should "install with component Doxygen".
     # Copying a few thousand files via NFS isn't fun.
     # We run on the same FS anyhow. Let's move.
