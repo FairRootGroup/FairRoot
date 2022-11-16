@@ -485,6 +485,11 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
     std::lock_guard guard(mtx);
     LOG(info) << "FairMCApplication::CloneForWorker ";
 
+    if (fRun->GetNTasks() >= 1) {
+        LOG(fatal) << "Adding tasks to simulation in multithreaded mode currently unavailable. Contact FairRoot "
+                      "developers for possible solutions.";
+    }
+
     // Create new FairRunSim object on worker
     // and pass some data from master FairRunSim object
     auto workerRun = std::make_unique<FairRunSim>(kFALSE);
