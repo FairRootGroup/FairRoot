@@ -174,7 +174,7 @@ void FairRunAnaProof::Init()
 
         GetEventHeader();
 
-        fRootManager->FillEventHeader(fEvtHeader);
+        FillEventHeader();
 
         fRunId = fEvtHeader->GetRunId();
 
@@ -245,7 +245,7 @@ void FairRunAnaProof::InitContainers()
         if (nullptr == fEvtHeader)
             LOG(fatal) << "Could not read event header.";
 
-        fRootManager->FillEventHeader(fEvtHeader);
+        FillEventHeader();
 
         fRunId = fEvtHeader->GetRunId();
 
@@ -287,7 +287,7 @@ void FairRunAnaProof::RunOneEvent(Long64_t entry)
         UInt_t tmpId = 0;
         fRootManager->ReadEvent(entry);
 
-        fRootManager->FillEventHeader(fEvtHeader);
+        FillEventHeader();
 
         tmpId = fEvtHeader->GetRunId();
         if (tmpId != fRunId) {
