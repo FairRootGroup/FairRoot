@@ -44,12 +44,7 @@ class TRefArray;
 class TTask;
 class TVirtualMC;
 
-enum class FairMCApplicationState
-{
-    kUnknownState,
-    kConstructGeometry,
-    kInitGeometry
-};
+enum class FairMCApplicationState { kUnknownState, kConstructGeometry, kInitGeometry };
 
 /**
  * The Main Application ( Interface to MonteCarlo application )
@@ -86,7 +81,11 @@ class FairMCApplication : public TVirtualMCApplication
     virtual void AddDecayModes();
     /**  Add user defined particles (optional) */
     void AddParticles() override;   // MC Application
-    /** Add user defined ions (optional) */
+    /** Add user defined ions (optional)
+        Called by TVirtualMC.
+        TGeant3 calls AddIons() first, then InitGeometry().
+        TGeant4 calls InitGeometry() first, then AddIons().
+        This function also initializes event generators.*/
     void AddIons() override;   // MC Application
     /**
      *Add user defined Tasks to be executed after each event (optional)
@@ -121,7 +120,11 @@ class FairMCApplication : public TVirtualMCApplication
     TTask* GetListOfTasks();
     FairGenericStack* GetStack();
     TChain* GetChain();
-    /** Initialize geometry */
+    /** Initialize geometry
+        Called by TVirtualMC.
+        TGeant3 calls AddIons() first, then InitGeometry().
+        TGeant4 calls InitGeometry() first, then AddIons().
+        This function also registers detectors.*/
     void InitGeometry() override;   // MC Application
     /** Initialize MC engine */
     void InitMC(const char* setup, const char* cuts);
@@ -280,7 +283,7 @@ class FairMCApplication : public TVirtualMCApplication
     /** Track position*/
     /**dispatcher internal use RadLeng*/
     std::map<Int_t, Int_t> fModVolMap;   //!
-    TLorentzVector fTrkPos;                         //!
+    TLorentzVector fTrkPos;              //!
     /** Flag for Radiation length register mode  */
     Bool_t fRadLength;   //!
 
