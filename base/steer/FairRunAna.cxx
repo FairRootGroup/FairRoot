@@ -208,7 +208,7 @@ void FairRunAna::Init()
         //    fEvtHeader = GetEventHeader();
         GetEventHeader();
 
-        fRootManager->FillEventHeader(fEvtHeader);
+        FillEventHeader();
 
         fRunId = fEvtHeader->GetRunId();
 
@@ -342,7 +342,7 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
                 break;
             }
 
-            fRootManager->FillEventHeader(fEvtHeader);
+            FillEventHeader();
 
             tmpId = fEvtHeader->GetRunId();
             if (tmpId != fRunId) {
@@ -434,7 +434,7 @@ void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
         fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
         fTask->ExecuteTask("");
 
-        fRootManager->FillEventHeader(fEvtHeader);
+        FillEventHeader();
         // Fill();
         fTask->FinishEvent();
 
@@ -460,7 +460,7 @@ void FairRunAna::Run(Double_t delta_t)
 {
     while (fRootManager->ReadNextEvent(delta_t)) {
         fTask->ExecuteTask("");
-        fRootManager->FillEventHeader(fEvtHeader);
+        FillEventHeader();
         Fill();
         fRootManager->DeleteOldWriteoutBufferData();
         fTask->FinishEvent();
@@ -494,7 +494,7 @@ void FairRunAna::RunMQ(Long64_t entry)
         }
     }
     fTask->ExecuteTask("");
-    fRootManager->FillEventHeader(fEvtHeader);
+    FillEventHeader();
     fTask->FinishTask();
 }
 //_____________________________________________________________________________
@@ -513,7 +513,7 @@ void FairRunAna::Run(Long64_t entry)
         }
     }
     fTask->ExecuteTask("");
-    fRootManager->FillEventHeader(fEvtHeader);
+    FillEventHeader();
     fTask->FinishTask();
     Fill();
     fRootManager->DeleteOldWriteoutBufferData();
@@ -535,7 +535,7 @@ void FairRunAna::RunTSBuffers()
             fRootManager->ReadNonTimeBasedEventFromBranches(globalEvent++);
         }
         fTask->ExecuteTask("");
-        fRootManager->FillEventHeader(fEvtHeader);
+        FillEventHeader();
         Fill();
         fRootManager->DeleteOldWriteoutBufferData();
         fTask->FinishEvent();
@@ -564,7 +564,7 @@ void FairRunAna::RunOnLmdFiles(UInt_t NStart, UInt_t NStop)
         }
 
         fTask->ExecuteTask("");
-        fRootManager->FillEventHeader(fEvtHeader);
+        FillEventHeader();
         Fill();
     }
 
@@ -588,11 +588,10 @@ void FairRunAna::RunOnTBData()
 //_____________________________________________________________________________
 void FairRunAna::DummyRun(Int_t Ev_start, Int_t Ev_end)
 {
-
     /** This methode is just for testing, if you are not sure about what you do, don't use it */
     for (int i = Ev_start; i < Ev_end; i++) {
         fTask->ExecuteTask("");
-        fRootManager->FillEventHeader(fEvtHeader);
+        FillEventHeader();
         Fill();
     }
     fTask->FinishTask();
