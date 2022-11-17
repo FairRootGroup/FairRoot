@@ -13,18 +13,26 @@ set(maxTestTime 60)
 
 add_test(NAME runPropagatorMC
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/runMC.sh)
-set_tests_properties(runPropagatorMC PROPERTIES TIMEOUT ${maxTestTime})
-set_tests_properties(runPropagatorMC PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
+set_tests_properties(runPropagatorMC PROPERTIES
+  TIMEOUT ${maxTestTime}
+  PASS_REGULAR_EXPRESSION "Macro finished successfully"
+  FIXTURES_SETUP fixtures.ex_adv_propagator_sim
+)
 
 add_test(NAME runPropagator
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/runProp.sh)
-set_tests_properties(runPropagator PROPERTIES DEPENDS runPropagatorMC)
-set_tests_properties(runPropagator PROPERTIES TIMEOUT ${maxTestTime})
-set_tests_properties(runPropagator PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
+set_tests_properties(runPropagator PROPERTIES
+  FIXTURES_REQUIRED fixtures.ex_adv_propagator_sim
+  TIMEOUT ${maxTestTime}
+  PASS_REGULAR_EXPRESSION "Macro finished successfully"
+  FIXTURES_SETUP fixtures.ex_adv_propagator_prop
+)
 
 add_test(NAME runPropagatorPull
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/runPull.sh)
-set_tests_properties(runPropagatorPull PROPERTIES DEPENDS runPropagator)
-set_tests_properties(runPropagatorPull PROPERTIES TIMEOUT ${maxTestTime})
-set_tests_properties(runPropagatorPull PROPERTIES PASS_REGULAR_EXPRESSION "Macro finished successfully")
+set_tests_properties(runPropagatorPull PROPERTIES
+  FIXTURES_REQUIRED fixtures.ex_adv_propagator_prop
+  TIMEOUT ${maxTestTime}
+  PASS_REGULAR_EXPRESSION "Macro finished successfully"
+)
 
