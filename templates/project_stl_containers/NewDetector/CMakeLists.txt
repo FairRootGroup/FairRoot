@@ -1,5 +1,5 @@
  ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ # Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             # 
  #              GNU Lesser General Public Licence (LGPL) version 3,             #  
@@ -40,7 +40,9 @@ Set(LINKDEF NewDetectorLinkDef.h)
 Set(LIBRARY_NAME NewDetector)
 Set(DEPENDENCIES
     MyProjData
-    Base GeoBase ParBase
+    FairRoot::Base
+    FairRoot::GeoBase
+    FairRoot::ParBase
     FairLogger::FairLogger
     ${VMCLIB}
 )
