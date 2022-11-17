@@ -21,20 +21,22 @@ foreach(mcEngine IN LISTS mcEngine_list)
   set_tests_properties(ex_sim_tutorial4_${mcEngine} PROPERTIES
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
+    FIXTURES_SETUP fixtures.ex_sim_tutorial4_sim_${mcEngine}
   )
 
   add_test(NAME ex_sim_tutorial4_reco_${mcEngine}
            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_reco.sh \"${mcEngine}\")
   set_tests_properties(ex_sim_tutorial4_reco_${mcEngine} PROPERTIES
-    DEPENDS ex_sim_tutorial4_${mcEngine}
+    FIXTURES_REQUIRED fixtures.ex_sim_tutorial4_sim_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
+    FIXTURES_SETUP fixtures.ex_sim_tutorial4_reco_${mcEngine}
   )
 
   add_test(NAME ex_sim_tutorial4_plots_${mcEngine}
            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/plots.sh 1000 1 \"align_${mcEngine}\")
   set_tests_properties(ex_sim_tutorial4_plots_${mcEngine} PROPERTIES
-    DEPENDS ex_sim_tutorial4_reco_${mcEngine}
+    FIXTURES_REQUIRED fixtures.ex_sim_tutorial4_reco_${mcEngine}
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
   )
