@@ -20,20 +20,22 @@ add_test(NAME ex_sim_tutorial2
 set_tests_properties(ex_sim_tutorial2 PROPERTIES
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
+  FIXTURES_SETUP fixtures.ex_sim_tutorial2_sim
 )
 
 add_test(NAME ex_sim_tutorial2_create_digis
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/create_digis.sh)
 set_tests_properties(ex_sim_tutorial2_create_digis PROPERTIES
-  DEPENDS ex_sim_tutorial2
+  FIXTURES_REQUIRED fixtures.ex_sim_tutorial2_sim
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
+  FIXTURES_SETUP fixtures.ex_sim_tutorial2_digi
 )
 
 add_test(NAME ex_sim_tutorial2_read_digis
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/read_digis.sh)
 set_tests_properties(ex_sim_tutorial2_read_digis PROPERTIES
-  DEPENDS ex_sim_tutorial2_create_digis
+  FIXTURES_REQUIRED fixtures.ex_sim_tutorial2_digi
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
 )
@@ -41,31 +43,31 @@ set_tests_properties(ex_sim_tutorial2_read_digis PROPERTIES
 add_test(NAME ex_sim_tutorial2_run_background
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_background.sh)
 set_tests_properties(ex_sim_tutorial2_run_background PROPERTIES
-  DEPENDS ex_sim_tutorial2_read_digis
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
+  FIXTURES_SETUP fixtures.ex_sim_tutorial2_back
 )
 
 add_test(NAME ex_sim_tutorial2_run_signal1
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_signal.sh 1 10)
 set_tests_properties(ex_sim_tutorial2_run_signal1 PROPERTIES
-  DEPENDS ex_sim_tutorial2_run_background
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
+  FIXTURES_SETUP fixtures.ex_sim_tutorial2_sig1
 )
 
 add_test(NAME ex_sim_tutorial2_run_signal2
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_signal.sh 2 20)
 set_tests_properties(ex_sim_tutorial2_run_signal2 PROPERTIES
-  DEPENDS ex_sim_tutorial2_run_signal1
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
+  FIXTURES_SETUP fixtures.ex_sim_tutorial2_sig2
 )
 
 add_test(NAME ex_sim_tutorial2_create_digis_mixed
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/create_digis_mixed.sh)
 set_tests_properties(ex_sim_tutorial2_create_digis_mixed PROPERTIES
-  DEPENDS ex_sim_tutorial2_run_signal2
+  FIXTURES_REQUIRED "fixtures.ex_sim_tutorial2_back;fixtures.ex_sim_tutorial2_sig1;fixtures.ex_sim_tutorial2_sig2"
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
 )
