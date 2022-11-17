@@ -20,7 +20,7 @@ void create_digis_mixed()
     /** Choice of the parameter file should be consistence with the call to
        UseRunIdFromBG or UseRunIdFromSG*/
 
-    TString parFile = "./tutorial2_pions.params_p2.000_t0_n10.root";
+    TString parFile = "./tutorial2_pions.params_p2.000_t0_n10.sg1.root";
 
     TString outFile = "./digis.mix.mc.root";
 
