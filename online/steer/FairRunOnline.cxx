@@ -126,7 +126,7 @@ void FairRunOnline::Init()
 
     GetEventHeader();
 
-    fRootManager->FillEventHeader(fEvtHeader);
+    FillEventHeader();
 
     if (0 == fRunId)   // Run ID was not set in run manager
     {
@@ -243,7 +243,7 @@ Int_t FairRunOnline::EventLoop()
     gSystem->IgnoreInterrupt();
     signal(SIGINT, handler_ctrlc);
 
-    fRootManager->FillEventHeader(fEvtHeader);
+    FillEventHeader();
     auto const tmpId = fEvtHeader->GetRunId();
 
     if (tmpId != fRunId) {
@@ -256,7 +256,7 @@ Int_t FairRunOnline::EventLoop()
 
     fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
     fTask->ExecuteTask("");
-    fRootManager->FillEventHeader(fEvtHeader);
+    FillEventHeader();
     Fill();
     fRootManager->DeleteOldWriteoutBufferData();
     fTask->FinishEvent();

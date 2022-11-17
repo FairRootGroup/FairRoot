@@ -241,6 +241,14 @@ class FairRun : public TNamed
     std::unique_ptr<FairSource> fSource{};   //!
 
     void AlignGeometry() const;
+    /**
+     * Call FillEventHeader on the source
+     */
+    void FillEventHeader()
+    {
+        if (fSource)
+            fSource->FillEventHeader(fEvtHeader);
+    }
 
     ClassDefOverride(FairRun, 5);
 };
