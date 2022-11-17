@@ -183,7 +183,7 @@ class FairRootManager : public TObject
     /** Replace the time based branch name list*/
     void SetTimeBasedBranchNameList(TList* list);
 
-    /** \deprecated Deprecated in v19, will be removed in v20. */
+    /** \deprecated Deprecated in v18.8, will be removed in v20. */
     [[deprecated]] void FillEventHeader(FairEventHeader* feh)
     {
         if (fSource)
