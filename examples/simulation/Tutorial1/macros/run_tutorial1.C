@@ -196,6 +196,15 @@ int run_tutorial1(int nEvents = 10, string mcEngine = "TGeant3", bool isMT = tru
         std::cerr << "Wrong number of leaves (" << nofL << " instead of 46) in the output chain." << endl;
         return 1;
     }
+    chain.Draw("MCEventHeader.fRunId>>hRunId", "", "goff");
+    auto hRunId = gDirectory->Get<TH1F>("hRunId");
+    auto runId = run->GetRunId();
+    int mRunId = hRunId->GetMean();
+    if (runId != mRunId) {
+        std::cerr << "The simulation run id " << runId << " was not properly stored in the output trees, read "
+                  << mRunId << endl;
+        return 1;
+    }
     cout << "Simulation successful." << endl;
 
     return 0;
