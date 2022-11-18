@@ -82,21 +82,7 @@ class FairMCEventHeader : public TNamed
     void Reset();
 
     /** Clone this object (used in MT mode only) */
-    FairMCEventHeader* CloneMCEventHeader() const
-    {
-        FairMCEventHeader* clonedHeader = new FairMCEventHeader();
-        clonedHeader->SetRunID(fRunId);
-        clonedHeader->SetEventID(fEventId);
-        clonedHeader->SetVertex(fX, fY, fZ);
-        clonedHeader->SetTime(fT);
-        clonedHeader->SetB(fB);
-        clonedHeader->SetNPrim(fNPrim);
-        clonedHeader->MarkSet(fIsSet);
-        clonedHeader->SetRotX(fRotX);
-        clonedHeader->SetRotY(fRotY);
-        clonedHeader->SetRotZ(fRotZ);
-        return clonedHeader;
-    }
+    FairMCEventHeader* CloneMCEventHeader() const { return new FairMCEventHeader(*this); }
 
     /** Register the class as data branch to the output */
     virtual void Register();

@@ -495,7 +495,6 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
     auto workerRun = std::make_unique<FairRunSim>(kFALSE);
     workerRun->SetName(fRun->GetName());   // Transport engine
     workerRun->SetSink(std::unique_ptr<FairSink>{fRun->GetSink()->CloneSink()});
-    workerRun->SetMCEventHeader(fRun->GetMCEventHeader()->CloneMCEventHeader());
 
     // Trajectories filter is created explicitly as we do not call
     // FairRunSim::Init on workers
