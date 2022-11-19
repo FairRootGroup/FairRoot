@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -9,9 +9,36 @@
 //*-- Created : 20/10/2004
 
 /////////////////////////////////////////////////////////////
-//  FairRuntimeDb
-//
-//  Administration class for parameter input/output
+// from: https://fairroot.gsi.de/index.html%3Fq=node%252F53.html
+/**
+ * \page parbase_runtimedb Runtime database
+ *
+ * The runtime database is not a database in the classical
+ * sense.  Instead, it is a parameter manager.  It knows the
+ * I/Os defined by the user in the macro and all parameter
+ * containers needed for the actual analysis.  It manages the
+ * automatic initialization and saving to an output and
+ * contains, after all initialization and saving is done, a
+ * complete list of runs and related parameter input and
+ * output versions.
+ * \n
+ * It is represented by the class FairRuntimeDb and
+ * instantiated in the macro.It holds two lists: the list
+ * of parameter containers, and the list of runs and
+ * related parameter versions.  The containers can be
+ * initialized automatically from one or two inputs, and
+ * written out to one output.  Possible inputs/output are
+ *
+ * * ROOT file
+ * * ascii file
+ * * Data Base (under construction)
+ *
+ * If a container can not or only partly be initialized
+ * from the first input, the missing information is taken
+ * automatically from the second input.  Any combination of
+ * inputs is possible.  In case of a ROOT file, the first
+ * input and the output might be identical.
+ */
 /////////////////////////////////////////////////////////////
 #include "FairRuntimeDb.h"
 
