@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -21,6 +21,11 @@ class FairRtdbRun;
 
 static TList contFactories;   //! list of container factories
 
+/**
+ * \ingroup parbase
+ *
+ * See Also: \ref parbase_runtimedb
+ */
 class FairRuntimeDb : public TObject
 {
   private:
@@ -54,7 +59,7 @@ class FairRuntimeDb : public TObject
 
   public:
     static FairRuntimeDb* instance(void);
-    ~FairRuntimeDb(void);
+    ~FairRuntimeDb() override;
 
     Bool_t addParamContext(const char*);
     void printParamContexts();
