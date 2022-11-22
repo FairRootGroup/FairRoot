@@ -15,6 +15,10 @@
 #ifndef FAIRMCDATACRAWLER_H_
 #define FAIRMCDATACRAWLER_H_
 
+#ifndef FAIR_SILENCE_DATAMATCH_DEPRECATION
+#warning "FairRoot::DataMatch is deprecated and will be removed in a future major release"
+#endif
+
 #include "FairMultiLinkedData.h"   // for FairMultiLinkedData
 
 #include <Rtypes.h>    // for Int_t, Bool_t, etc
