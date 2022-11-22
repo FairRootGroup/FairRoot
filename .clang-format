@@ -28,7 +28,6 @@ ColumnLimit: 120
 ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 4
 Cpp11BracedListStyle: true
-DerivePointerAlignment: true
 FixNamespaceComments: true
 IndentWidth: 4
 IndentWrappedFunctionNames: true
