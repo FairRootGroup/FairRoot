@@ -15,6 +15,10 @@
 #ifndef FAIRMCSTAGE_H_
 #define FAIRMCSTAGE_H_
 
+#ifndef FAIR_SILENCE_DATAMATCH_DEPRECATION
+#warning "FairRoot::DataMatch is deprecated and will be removed in a future major release"
+#endif
+
 #include "FairMCObject.h"   // for FairMCObject
 
 #include <Rtypes.h>   // for Bool_t, Double_t, etc
