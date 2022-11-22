@@ -271,6 +271,13 @@ class FairRootManager : public TObject
     Int_t GetInstanceId() const { return fId; }
     void UpdateFileName(TString& fileName);
 
+    // vvvvvvvvvv depracted functions, replaced by FairSink vvvvvvvvvv
+    /** Return a pointer to the output File of type TFile */
+    TFile* GetOutFile();
+    /** Return a pointer to the output tree of type TTree */
+    TTree* GetOutTree();
+    // ^^^^^^^^^^ depracted functions, replaced by FairSink ^^^^^^^^^^
+
     /**Read one event from source to find out which RunId to use*/
     Bool_t SpecifyRunId();
 
