@@ -112,3 +112,5 @@ file an issue, so that we can see how to handle this.
   those tests have a probability > 0 for failing.
   If you want to run them anyways, pass
   `-DENABLE_GEANT3_TESTING=ON` to CMake.
+* Undeprecate `FairRootManager::GetOut{File,Tree}`
+  It has been deprecated since 18.0.0.
