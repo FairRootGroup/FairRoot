@@ -19,6 +19,10 @@
 #ifndef FAIRMCMATCHCREATORTASK_H
 #define FAIRMCMATCHCREATORTASK_H
 
+#ifndef FAIR_SILENCE_DATAMATCH_DEPRECATION
+#warning "FairRoot::DataMatch is deprecated and will be removed in a future major release"
+#endif
+
 #include "FairTask.h"   // for InitStatus, FairTask
 
 #include <Rtypes.h>   // for Bool_t, etc
