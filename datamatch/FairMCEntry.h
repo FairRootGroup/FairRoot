@@ -15,6 +15,10 @@
 #ifndef FAIRMCENTRY_H_
 #define FAIRMCENTRY_H_
 
+#ifndef FAIR_SILENCE_DATAMATCH_DEPRECATION
+#warning "FairRoot::DataMatch is deprecated and will be removed in a future major release"
+#endif
+
 #include "FairLink.h"              // for FairLink
 #include "FairMultiLinkedData.h"   // for FairMultiLinkedData
 

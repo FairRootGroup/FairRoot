@@ -39,6 +39,10 @@ target_link_libraries(${target} PUBLIC
   ROOT::Core
 )
 
+target_compile_definitions(${target} PRIVATE
+  FAIR_SILENCE_DATAMATCH_DEPRECATION
+)
+
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF LinkDef.h

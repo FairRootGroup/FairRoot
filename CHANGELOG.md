@@ -145,6 +145,9 @@ file an issue, so that we can see how to handle this.
 * Many items were already deprecated in prior versions.
   Marked them with proper C++14 deprecation warnings.
   Scheduled them for removal in v20.
+* Deprecated DataMatch library
+  * Contact the developers should you need it.
+  * Scheduled to remove without replacement in a future major release of FairRoot.
 
 ### Other Notable Changes
 * CMake [targets](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html)
