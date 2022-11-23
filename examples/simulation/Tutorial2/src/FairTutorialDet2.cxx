@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -22,8 +22,6 @@
 #ifdef NDEBUG
 #undef NDEBUG
 #endif
-
-FairTutorialDet2Geo* FairTutorialDet2::fgGeo;   //!
 
 FairTutorialDet2::FairTutorialDet2()
     : FairDetector("TutorialDet", kTRUE, kTutDet)
@@ -159,7 +157,7 @@ void FairTutorialDet2::ConstructGeometry()
       just copy this and use it for your detector, otherwise you can
       implement here you own way of constructing the geometry. */
 
-    ConstructASCIIGeometry<FairTutorialDet2Geo, FairTutorialDet2GeoPar>(fgGeo, "FairTutorialDet2GeoPar");
+    ConstructASCIIGeometry<FairTutorialDet2Geo, FairTutorialDet2GeoPar>("FairTutorialDet2GeoPar");
 }
 
 FairTutorialDet2Point* FairTutorialDet2::AddHit(Int_t trackID,

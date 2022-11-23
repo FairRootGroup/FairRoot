@@ -82,8 +82,6 @@ class FairTutorialDet1 : public FairDetector
     Bool_t IsSensitive(const std::string& name) override;
 
   private:
-    static FairTutorialDet1Geo* fgGeo;   //!
-
     /** Track information to be stored until the track leaves the
     active volume.
     */
