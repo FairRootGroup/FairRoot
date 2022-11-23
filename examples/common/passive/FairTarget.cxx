@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -27,9 +27,7 @@ FairTarget::FairTarget(const FairTarget& rhs)
 
 void FairTarget::ConstructGeometry()
 {
-    FairGeoTarget* MGeo = new FairGeoTarget();
-
-    ConstructASCIIGeometry<FairGeoTarget, FairGeoPassivePar>(MGeo, "FairGeoPassivePar");
+    ConstructASCIIGeometry<FairGeoTarget, FairGeoPassivePar>("FairGeoPassivePar");
 }
 
 FairModule* FairTarget::CloneModule() const { return new FairTarget(*this); }

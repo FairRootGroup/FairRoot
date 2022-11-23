@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2019-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -146,8 +146,7 @@ void FairTutPropDet::ConstructGeometry()
         just copy this and use it for your detector, otherwise you can
         implement here you own way of constructing the geometry. */
 
-    FairTutPropGeo* Geo = new FairTutPropGeo();
-    ConstructASCIIGeometry<FairTutPropGeo, FairTutPropGeoPar>(Geo, "FairTutPropGeoPar");
+    ConstructASCIIGeometry<FairTutPropGeo, FairTutPropGeoPar>("FairTutPropGeoPar");
 }
 
 FairTutPropPoint* FairTutPropDet::AddHit(Int_t trackID,
