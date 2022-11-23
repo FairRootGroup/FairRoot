@@ -35,7 +35,7 @@ class FairContainer : public TNamed
     void addContext(const char*);
     Bool_t setActualContext(const char* c);
     const char* getDefaultContext();
-    const char* getActualContext() { return actualContext.Data(); }
+    const char* getActualContext() const { return actualContext.Data(); }
     void print();
     TString getConcatName();
     const char* getContext();

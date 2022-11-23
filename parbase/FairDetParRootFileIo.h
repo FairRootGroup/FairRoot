@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -28,8 +28,8 @@ class FairDetParRootFileIo : public FairDetParIo
     Int_t write(FairParSet*) override;
 
   protected:
-    Int_t findInputVersion(Text_t* contName);
-    Int_t getMaxVersion(Text_t* contName);
+    Int_t findInputVersion(const char* contName);
+    Int_t getMaxVersion(const char* contName);
     TObject* findContainer(Text_t* contName, Int_t version);
 
   private:
