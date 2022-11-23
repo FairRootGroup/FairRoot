@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -38,7 +38,7 @@ using std::setw;
 ClassImp(FairParVersion);
 ClassImp(FairRtdbRun);
 
-FairParVersion::FairParVersion(Text_t* name)
+FairParVersion::FairParVersion(const char* name)
     : TNamed(name, "version info")
     , rootVersion(0)
 {

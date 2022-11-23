@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -55,7 +55,7 @@ class FairParIo : public TObject
 
     // set and get for flag autoWritable
     void setAutoWritable(Bool_t f = kTRUE) { autoWritable = f; }
-    Bool_t isAutoWritable() { return autoWritable; }
+    Bool_t isAutoWritable() const { return autoWritable; }
 
   private:
     FairParIo(const FairParIo&);

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -51,7 +51,7 @@ FairDetParRootFileIo::FairDetParRootFileIo(FairParRootFile *f)
 Bool_t FairDetParRootFileIo::read(FairParSet *pPar)
 {
     // generic read function for parameter containers
-    Text_t *name = const_cast<char *>(pPar->GetName());
+    auto name = pPar->GetName();
     Int_t version = findInputVersion(name);
 
     // cout << "-I- FairDetParRootFileIo#  " << name << " : " << version <<  endl;
@@ -85,7 +85,7 @@ Int_t FairDetParRootFileIo::write(FairParSet *pPar)
     if (pFile) {
         pFile->cd();
         if (pFile->IsWritable()) {
-            Text_t *name = const_cast<char *>(pPar->GetName());
+            auto name = pPar->GetName();
             pPar->Write(name);
             pPar->setChanged(kFALSE);
             FairRuntimeDb::instance()->setVersionsChanged(kTRUE);
@@ -98,7 +98,7 @@ Int_t FairDetParRootFileIo::write(FairParSet *pPar)
     return -1;
 }
 
-Int_t FairDetParRootFileIo::getMaxVersion(Text_t *name)
+Int_t FairDetParRootFileIo::getMaxVersion(const char* name)
 {
     // returns the maximum version of the container given by name in the ROOT
     // file (return -1 if not found)
@@ -110,7 +110,7 @@ Int_t FairDetParRootFileIo::getMaxVersion(Text_t *name)
     }
 }
 
-Int_t FairDetParRootFileIo::findInputVersion(Text_t *name)
+Int_t FairDetParRootFileIo::findInputVersion(const char* name)
 {
     // finds the input version to initialize the container given by name;
     // returns -1 if the version cannot be determined
