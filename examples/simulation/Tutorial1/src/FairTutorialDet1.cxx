@@ -20,8 +20,6 @@
 #include <TVirtualMC.h>        // for TVirtualMC
 #include <TVirtualMCStack.h>   // for TVirtualMCStack
 
-FairTutorialDet1Geo* FairTutorialDet1::fgGeo = nullptr;
-
 FairTutorialDet1::FairTutorialDet1()
     : FairDetector("TutorialDet", kTRUE, kTutDet)
 {}
@@ -129,7 +127,7 @@ void FairTutorialDet1::ConstructGeometry()
       just copy this and use it for your detector, otherwise you can
       implement here you own way of constructing the geometry. */
 
-    ConstructASCIIGeometry<FairTutorialDet1Geo, FairTutorialDet1GeoPar>(fgGeo, "FairTutorialDet1GeoPar");
+    ConstructASCIIGeometry<FairTutorialDet1Geo, FairTutorialDet1GeoPar>("FairTutorialDet1GeoPar");
 }
 
 FairTutorialDet1Point* FairTutorialDet1::AddHit(Int_t trackID,

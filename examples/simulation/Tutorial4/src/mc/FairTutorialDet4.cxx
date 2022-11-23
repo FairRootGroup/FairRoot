@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -24,8 +24,6 @@
 #include <TString.h>           // for TString, operator<<, Form
 #include <TVirtualMC.h>        // for TVirtualMC
 #include <TVirtualMCStack.h>   // for TVirtualMCStack
-
-FairTutorialDet4Geo* FairTutorialDet4::fgGeo;   //!
 
 FairTutorialDet4::FairTutorialDet4()
     : FairDetector("TutorialDet", kTRUE, kTutDet)
@@ -261,7 +259,7 @@ void FairTutorialDet4::ConstructASCIIGeometry()
       just copy this and use it for your detector, otherwise you can
       implement here you own way of constructing the geometry. */
 
-    FairModule::ConstructASCIIGeometry<FairTutorialDet4Geo, FairTutorialDet4GeoPar>(fgGeo, "FairTutorialDet4GeoPar");
+    FairModule::ConstructASCIIGeometry<FairTutorialDet4Geo, FairTutorialDet4GeoPar>("FairTutorialDet4GeoPar");
 }
 
 std::map<std::string, TGeoHMatrix> FairTutorialDet4::getMisalignmentMatrices()

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -18,8 +18,6 @@
 #include <TClonesArray.h>      // for TClonesArray
 #include <TVirtualMC.h>        // for TVirtualMC
 #include <TVirtualMCStack.h>   // for TVirtualMCStack
-
-FairRutherfordGeo* FairRutherford::fgGeo = nullptr;
 
 FairRutherford::FairRutherford()
     : FairDetector("FairRutherford", kTRUE, kFairRutherford)
@@ -124,7 +122,7 @@ void FairRutherford::ConstructGeometry()
       just copy this and use it for your detector, otherwise you can
       implement here you own way of constructing the geometry. */
 
-    ConstructASCIIGeometry<FairRutherfordGeo, FairRutherfordGeoPar>(fgGeo, "FairRutherfordGeoPar");
+    ConstructASCIIGeometry<FairRutherfordGeo, FairRutherfordGeoPar>("FairRutherfordGeoPar");
 }
 
 FairRutherfordPoint* FairRutherford::AddHit(Int_t trackID,
