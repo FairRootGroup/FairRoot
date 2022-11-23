@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -90,9 +90,14 @@ class FairModule : public TNamed
     /** Finish worker run (used in MT mode only) */
     virtual void FinishWorkerRun() const { ; }
 
-    /**template function to construct geometry. to be used in derived classes.*/
+    /** @deprecated template function to construct geometry. to be used in derived classes.
+     * The first and the third argument are meaningless, just pass nullptr */
     template<class T, class U>
-    void ConstructASCIIGeometry(T* dataType1, TString containerName = "", U* datatype2 = nullptr);
+    [[deprecated("Broken signature, use ConstructASCIIGeometry(TString) instead")]] void
+        ConstructASCIIGeometry(T*, TString containerName = "", U* = nullptr);
+    /** Helper function to construct geometry. */
+    template<class T, class U>
+    void ConstructASCIIGeometry(TString containerName = "");
 
     /**Set the sensitivity flag for volumes, called from ConstructASCIIRootGeometry(), and has to be implimented for
      * detectors which use ConstructASCIIRootGeometry() to build the geometry */
@@ -169,14 +174,14 @@ class FairModule : public TNamed
 };
 
 template<class T, class U>
-void FairModule::ConstructASCIIGeometry(T* dataType1, TString containerName, U*)
+void FairModule::ConstructASCIIGeometry(TString containerName)
 {
     FairGeoLoader* loader = FairGeoLoader::Instance();
     FairGeoInterface* GeoInterface = loader->getGeoInterface();
     T* MGeo = new T();
     MGeo->print();
     MGeo->setGeomFile(GetGeometryFileName());
-    GeoInterface->addGeoModule(MGeo);
+    GeoInterface->addGeoModule(MGeo);   // takes ownership!
     Bool_t rc = GeoInterface->readSet(MGeo);
     if (rc) {
         MGeo->create(loader->getGeoBuilder());
@@ -186,8 +191,6 @@ void FairModule::ConstructASCIIGeometry(T* dataType1, TString containerName, U*)
     // store geo parameter
     FairRun* fRun = FairRun::Instance();
     FairRuntimeDb* rtdb = FairRun::Instance()->GetRuntimeDb();
-
-    dataType1 = MGeo;
 
     if ("" != containerName) {
         LOG(info) << "Add GeoNodes for " << MGeo->getDescription() << " to container " << containerName;
@@ -213,6 +216,12 @@ void FairModule::ConstructASCIIGeometry(T* dataType1, TString containerName, U*)
         par->setChanged();
         par->setInputVersion(fRun->GetRunId(), 1);
     }
+}
+
+template<class T, class U>
+void FairModule::ConstructASCIIGeometry(T*, TString containerName, U*)
+{
+    ConstructASCIIGeometry<T, U>(containerName);
 }
 
 #endif   // FAIRMODULE_H
