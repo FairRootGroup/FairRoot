@@ -110,7 +110,7 @@ FairRuntimeDb::~FairRuntimeDb()
         TIter next(containerList);
         FairParSet* cont;
         while ((cont = static_cast<FairParSet*>(next()))) {
-            Text_t* name = const_cast<char*>(cont->GetName());
+            auto name = cont->GetName();
             if (!cont->isOwned()) {
                 removeContainer(name);
             }
@@ -175,10 +175,9 @@ void FairRuntimeDb::printParamContexts()
 
 Bool_t FairRuntimeDb::addContainer(FairParSet* container)
 {
-
     // adds a container to the list of containers
     // cout << "-I- name parset # " << container->GetName()<< endl;
-    Text_t* name = const_cast<char*>(container->GetName());
+    auto name = container->GetName();
 
     if (!containerList->FindObject(name)) {
         containerList->Add(container);
@@ -229,7 +228,7 @@ FairParSet* FairRuntimeDb::findContainer(const char* name)
     return static_cast<FairParSet*>((containerList->FindObject(name)));
 }
 
-void FairRuntimeDb::removeContainer(Text_t* name)
+void FairRuntimeDb::removeContainer(const char* name)
 {
     // removes the container from the list and deletes it
     TObject* c = containerList->FindObject(name);
@@ -263,7 +262,7 @@ FairRtdbRun* FairRuntimeDb::addRun(Int_t runId, Int_t refId)
         FairParSet* cont;
         FairParVersion* vers;
         while ((cont = static_cast<FairParSet*>(next()))) {
-            vers = new FairParVersion((const_cast<char*>(cont->GetName())));
+            vers = new FairParVersion(cont->GetName());
             run->addParVersion(vers);
         }
         runs->Add(run);
@@ -282,7 +281,7 @@ FairRtdbRun* FairRuntimeDb::getRun(Int_t id)
     return static_cast<FairRtdbRun*>((runs->FindObject(name)));
 }
 
-FairRtdbRun* FairRuntimeDb::getRun(Text_t* name)
+FairRtdbRun* FairRuntimeDb::getRun(const char* name)
 {
     // returns a pointer to the run called by name
     return static_cast<FairRtdbRun*>((runs->FindObject(name)));
@@ -509,7 +508,7 @@ Bool_t FairRuntimeDb::readAll()
 Bool_t FairRuntimeDb::initContainers(void)
 {
     // private function
-    Text_t* refRunName = const_cast<char*>(currentRun->getRefRun());
+    auto refRunName = currentRun->getRefRun();
     Int_t len = strlen(refRunName);
     if (len < 1) {
         if (firstInput) {

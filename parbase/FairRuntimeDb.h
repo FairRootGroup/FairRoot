@@ -70,8 +70,8 @@ class FairRuntimeDb : public TObject
     Bool_t addContainer(FairParSet*);
     FairParSet* getContainer(const Text_t*);
     FairParSet* findContainer(const char*);
-    void removeContainer(Text_t*);
-    void removeAllContainers(void);
+    void removeContainer(const char*);
+    void removeAllContainers();
     Bool_t initContainers(UInt_t runId, Int_t refId = -1, const Text_t* fileName = "");
     void setContainersStatic(Bool_t f = kTRUE);
     Bool_t writeContainers(void);
@@ -79,7 +79,7 @@ class FairRuntimeDb : public TObject
 
     FairRtdbRun* addRun(Int_t runId, Int_t refId = -1);
     FairRtdbRun* getRun(Int_t);
-    FairRtdbRun* getRun(Text_t*);
+    FairRtdbRun* getRun(const char*);
     FairRtdbRun* getCurrentRun(void) { return currentRun; }
     Text_t const* getCurrentFileName() { return currentFileName.Data(); }
     void clearRunList(void);
