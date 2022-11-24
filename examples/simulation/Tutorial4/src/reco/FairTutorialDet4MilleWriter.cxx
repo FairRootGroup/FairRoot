@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -31,19 +31,6 @@ FairTutorialDet4MilleWriter::FairTutorialDet4MilleWriter()
 FairTutorialDet4MilleWriter::~FairTutorialDet4MilleWriter()
 {
     LOG(debug) << "Destructor of FairTutorialDet4MilleWriter";
-}
-
-void FairTutorialDet4MilleWriter::SetParContainers()
-{
-    LOG(debug) << "SetParContainers of FairTutorialDet4MilleWriter";
-    // Load all necessary parameter containers from the runtime data base
-    /*
-  FairRunAna* ana = FairRunAna::Instance();
-  FairRuntimeDb* rtdb=ana->GetRuntimeDb();
-
-  <FairTutorialDet4MilleWriterDataMember> = (<ClassPointer>*)
-    (rtdb->getContainer("<ContainerName>"));
-  */
 }
 
 InitStatus FairTutorialDet4MilleWriter::Init()

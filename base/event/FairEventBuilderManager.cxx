@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -32,7 +32,6 @@
 
 #include "FairRecoEventHeader.h"
 #include "FairRootManager.h"
-#include "FairRunAna.h"
 
 #include <TMath.h>
 #include <iostream>
@@ -131,20 +130,6 @@ void FairEventBuilderManager::AddEventBuilder(FairEventBuilder* eventBuilder)
     fPossibleEvents.push_back(tcArray);
     //  if (fVerbose)
     cout << "*** FairEventBuilderManager. Registered " << eventBuilder->GetName() << endl;
-}
-
-void FairEventBuilderManager::SetParContainers()
-{
-    // Get run and runtime database
-    FairRunAna* run = FairRunAna::Instance();
-    if (!run) {
-        Fatal("SetParContainers", "No analysis run");
-    } else {
-        FairRuntimeDb* db = run->GetRuntimeDb();
-        if (!db) {
-            Fatal("SetParContainers", "No runtime database");
-        }
-    }
 }
 
 InitStatus FairEventBuilderManager::Init()

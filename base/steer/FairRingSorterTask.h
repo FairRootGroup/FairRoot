@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -93,8 +93,6 @@ class FairRingSorterTask : public FairTask
     void Exec(Option_t* opt) override;
     void FinishEvent() override;
     void FinishTask() override;
-
-    void SetParContainers() override {}
 
     void SetPersistance(Bool_t p = kTRUE) { fPersistance = p; };
     Bool_t GetPersistance() { return fPersistance; };

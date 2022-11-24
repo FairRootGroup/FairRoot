@@ -32,9 +32,6 @@ class FairTestDetectorHitProducerSmearing : public FairTask
     /** Executed for each event. **/
     void Exec(Option_t* opt) override;
 
-    /** Load the parameter container from the runtime database **/
-    void SetParContainers() override;
-
     /** Finish task called at the end of the run **/
     void Finish() override;
 

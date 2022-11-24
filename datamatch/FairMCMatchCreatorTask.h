@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -41,8 +41,6 @@ class FairMCMatchCreatorTask : public FairTask
     /** Destructor **/
     virtual ~FairMCMatchCreatorTask();
 
-    /** Virtual method Init **/
-    virtual void SetParContainers();
     void SetPersistance(Bool_t pers) { fPersistance = pers; }
     Bool_t GetPersistance() { return fPersistance; }
 
