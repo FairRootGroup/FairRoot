@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -118,8 +118,6 @@ void FairPointSetDraw::Exec(Option_t* /*option*/)
 // TObject* FairPointSetDraw::GetValue(TObject* /*obj*/, Int_t i) { return new TNamed(Form("Point %d", i), ""); }
 
 FairPointSetDraw::~FairPointSetDraw() { delete (fDataSource); }
-
-void FairPointSetDraw::SetParContainers() {}
 
 /** Action after each event**/
 void FairPointSetDraw::Finish() {}

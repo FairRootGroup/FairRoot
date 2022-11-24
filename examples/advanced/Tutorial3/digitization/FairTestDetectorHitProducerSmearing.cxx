@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -29,19 +29,6 @@ FairTestDetectorHitProducerSmearing::~FairTestDetectorHitProducerSmearing()
     LOG(debug) << "Destructor of FairTestDetectorHitProducerSmearing";
     fHitsArray->Delete();
     delete fHitsArray;
-}
-
-void FairTestDetectorHitProducerSmearing::SetParContainers()
-{
-    LOG(debug) << "SetParContainers of FairTestDetectorHitProducerSmearing";
-    // Load all necessary parameter containers from the runtime data base
-    /*
-    FairRunAna* ana = FairRunAna::Instance();
-    FairRuntimeDb* rtdb=ana->GetRuntimeDb();
-
-    <FairTestDetectorHitProducerSmearingDataMember> = (<ClassPointer>*)
-      (rtdb->getContainer("<ContainerName>"));
-    */
 }
 
 InitStatus FairTestDetectorHitProducerSmearing::Init()

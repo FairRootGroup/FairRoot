@@ -53,9 +53,6 @@ class PixelDigiWriteToBinFile : public FairTask
     Int_t fNofOutputFiles;
     std::ofstream fOutputFiles[12];   // no more than 12 output files....
 
-    /** Get parameter containers **/
-    void SetParContainers() override {}
-
     Int_t fDivideLevel;
 
     Int_t fRunId;
