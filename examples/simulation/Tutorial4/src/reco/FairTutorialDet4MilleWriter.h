@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -36,9 +36,6 @@ class FairTutorialDet4MilleWriter : public FairTask
 
     /** Executed for each event. **/
     virtual void Exec(Option_t* opt);
-
-    /** Load the parameter container from the runtime database **/
-    virtual void SetParContainers();
 
     /** Finish task called at the end of the run **/
     virtual void Finish();
