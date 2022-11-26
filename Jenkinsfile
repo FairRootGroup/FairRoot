@@ -124,6 +124,9 @@ pipeline{
             [os: 'macos',      ver: '12',    arch: 'arm64',  compiler: 'apple-clang-13',  fairsoft: '22.4'],
             [os: 'macos',      ver: '12',    arch: 'x86_64', compiler: 'apple-clang-13',  fairsoft: '22.4'],
             [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-13',  fairsoft: '22.4'],
+            [os: 'macos',      ver: '12',    arch: 'arm64',  compiler: 'apple-clang-13',  fairsoft: '22.11'],
+            [os: 'macos',      ver: '12',    arch: 'x86_64', compiler: 'apple-clang-13',  fairsoft: '22.11'],
+            [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-13',  fairsoft: '22.11'],
           ])
 
           def checks = jobMatrix('alfa-ci', 'check', [
