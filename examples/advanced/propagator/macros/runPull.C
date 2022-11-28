@@ -15,7 +15,7 @@ int runPull(std::string propName = "rk", bool drawHist = false)
     gROOT->Reset();
     gStyle->SetOptFit(1);
 
-    TFile *f = new TFile(Form("prop.%s.cal.root", propName.data()));
+    TFile *f = new TFile(Form("prop.%s.cal.root", propName.c_str()));
     TTree *simtree = (TTree *)f->Get("cbmsim");
 
     TClonesArray *fTrackParProp = new TClonesArray("FairTrackParP");

@@ -54,7 +54,7 @@ void FairMQRunDevice::SendObject(TObject* obj, const std::string& chan)
     if (Send(mess, chan) > 0) {
         if (Receive(rep, chan) > 0) {
             std::string repString{static_cast<char*>(rep->GetData()), rep->GetSize()};
-            LOG(info) << " -> " << repString.data();
+            LOG(info) << " -> " << repString.c_str();
         }
     }
 }
@@ -68,7 +68,7 @@ void FairMQRunDevice::SendBranches()
     TObjString* ObjStr;
 
     for (auto& mi : fChannels) {
-        LOG(debug) << "trying channel >" << mi.first.data() << "<";
+        LOG(debug) << "trying channel >" << mi.first.c_str() << "<";
 
         fair::mq::Parts parts;
 
@@ -95,7 +95,7 @@ void FairMQRunDevice::SendBranches()
                             auto mess(NewMessage());
                             RootSerializer().Serialize(*mess, objClone);
                             parts.AddPart(std::move(mess));
-                            LOG(debug) << "channel >" << mi.first.data() << "< --> >" << ObjStr->GetString().Data()
+                            LOG(debug) << "channel >" << mi.first.c_str() << "< --> >" << ObjStr->GetString().Data()
                                        << "<";
                         }
                     } else {
@@ -110,7 +110,7 @@ void FairMQRunDevice::SendBranches()
                         auto mess(NewMessage());
                         RootSerializer().Serialize(*mess, objClone);
                         parts.AddPart(std::move(mess));
-                        LOG(debug) << "channel >" << mi.first.data() << "< --> >" << ObjStr->GetString().Data() << "<";
+                        LOG(debug) << "channel >" << mi.first.c_str() << "< --> >" << ObjStr->GetString().Data() << "<";
                     } else {
                         LOG(fatal) << "Object " << ObjStr->GetString() << " NOT FOUND!!!";
                     }
@@ -119,7 +119,7 @@ void FairMQRunDevice::SendBranches()
         }
         if (parts.Size() > 0) {
             std::unique_lock<std::mutex> lock(mtx);
-            Send(parts, mi.first.data());
+            Send(parts, mi.first.c_str());
         }
     }
 }

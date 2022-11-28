@@ -576,7 +576,7 @@ double FairRKPropagator::OneStepRungeKutta(double charge, double step, double* v
         }
 
         if (fMagField) {
-            fMagField->GetFieldValue(vout, magneticfield.data());
+            fMagField->GetFieldValue(vout, magneticfield.c_str());
         }
 
         // * start of integration
@@ -625,7 +625,7 @@ double FairRKPropagator::OneStepRungeKutta(double charge, double step, double* v
         xyzt[2] = zt;
 
         if (fMagField) {
-            fMagField->GetFieldValue(xyzt, magneticfield.data());
+            fMagField->GetFieldValue(xyzt, magneticfield.c_str());
         }
 
         double at = a + secxs[0];
@@ -666,7 +666,7 @@ double FairRKPropagator::OneStepRungeKutta(double charge, double step, double* v
         xyzt[2] = zt;
 
         if (fMagField) {
-            fMagField->GetFieldValue(xyzt, magneticfield.data());
+            fMagField->GetFieldValue(xyzt, magneticfield.c_str());
         }
 
         z = z + (c + (seczs[0] + seczs[1] + seczs[2]) * kthird) * h;

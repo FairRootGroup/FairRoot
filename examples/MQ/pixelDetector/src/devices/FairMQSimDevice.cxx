@@ -58,7 +58,7 @@ void FairMQSimDevice::InitTask()
             rtdb->setSecondInput(fSecondParameter);
     }
 
-    fRunSim->SetName(fTransportName.data());
+    fRunSim->SetName(fTransportName.c_str());
     //  fRunSim->SetSimulationConfig(new FairVMCConfig());
     fRunSim->SetIsMT(kFALSE);
 
@@ -68,7 +68,7 @@ void FairMQSimDevice::InitTask()
         fRunSim->SetUserCuts(fUserCuts);
 
     // -----   Create media   -------------------------------------------------
-    fRunSim->SetMaterials(fMaterialsFile.data());
+    fRunSim->SetMaterials(fMaterialsFile.c_str());
 
     // -----   Magnetic field   -------------------------------------------
     if (fMagneticField)
@@ -97,7 +97,7 @@ void FairMQSimDevice::InitializeRun()
     if (Send(req, fUpdateChannelName) > 0) {
         if (Receive(rep, fUpdateChannelName) > 0) {
             std::string repString{static_cast<char*>(rep->GetData()), rep->GetSize()};
-            LOG(info) << " -> " << repString.data();
+            LOG(info) << " -> " << repString.c_str();
             runId = stoi(repString);
             repString = repString.substr(repString.find_first_of('_') + 1, repString.length());
             fSimDeviceId = stoi(repString);
@@ -154,7 +154,7 @@ void FairMQSimDevice::UpdateParameterServer()
     while ((cont = static_cast<FairParSet*>(next()))) {
         std::string ridString = std::string("RUNID") + std::to_string(fRunSim->GetRunId()) + std::string("RUNID")
                                 + std::string(cont->getDescription());
-        cont->setDescription(ridString.data());
+        cont->setDescription(ridString.c_str());
         FairMQRunDevice::SendObject(cont, fUpdateChannelName);
     }
 
