@@ -55,8 +55,8 @@ InitStatus FairTutPropTrackFinder::Init()
     FairRootManager* ioman = FairRootManager::Instance();
 
     // Get a pointer to the previous already existing data level
-    fHitsArray1 = static_cast<TClonesArray*>(ioman->GetObject(fHitsArray1Name.data()));
-    fHitsArray2 = static_cast<TClonesArray*>(ioman->GetObject(fHitsArray2Name.data()));
+    fHitsArray1 = static_cast<TClonesArray*>(ioman->GetObject(fHitsArray1Name.c_str()));
+    fHitsArray2 = static_cast<TClonesArray*>(ioman->GetObject(fHitsArray2Name.c_str()));
     if (!fHitsArray1 || !fHitsArray2) {
         LOG(error) << "No InputData array!";
         LOG(error) << "FairTutPropTrackFinder will be inactive";
