@@ -187,7 +187,7 @@ bool ParameterMQServer::ProcessUpdate(fair::mq::MessagePtr& update, int /*index*
         uint runId = 0;
         if (parDescr.find("RUNID") != std::string::npos) {
             parDescr.erase(0, parDescr.find("RUNID") + 5);
-            runId = atoi(parDescr.c_str());
+            runId = stoi(parDescr);
             if (parDescr.find("RUNID") != std::string::npos) {
                 parDescr.erase(0, parDescr.find("RUNID") + 5);
             }
