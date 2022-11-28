@@ -36,13 +36,9 @@ void PixelContFact::setAllContainers()
   */
 
     FairContainer* p = new FairContainer("PixelGeoPar", "Pixel Geometry Parameters", "TestDefaultContext");
-    p->addContext("TestNonDefaultContext");
-
     containers->Add(p);
 
     FairContainer* p2 = new FairContainer("PixelDigiParameters", "Pixel digi parameters", "TestDefaultContext");
-    p2->addContext("TestNonDefaultContext");
-
     containers->Add(p2);
 }
 

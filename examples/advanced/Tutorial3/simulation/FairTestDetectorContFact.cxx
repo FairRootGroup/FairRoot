@@ -36,10 +36,8 @@ void FairTestDetectorContFact::setAllContainers()
 
     FairContainer* p =
         new FairContainer("FairTestDetectorGeoPar", "FairTestDetector Geometry Parameters", "TestDefaultContext");
-    p->addContext("TestNonDefaultContext");
 
     FairContainer* p1 = new FairContainer("FairConstPar", "Constant Field Parameters", "TestDefaultContext");
-    p1->addContext("TestNonDefaultContext");
 
     containers->Add(p);
     containers->Add(p1);

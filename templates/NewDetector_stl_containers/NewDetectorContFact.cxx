@@ -30,8 +30,6 @@ void NewDetectorContFact::setAllContainers()
   */
 
     FairContainer* p = new FairContainer("NewDetectorGeoPar", "NewDetector Geometry Parameters", "TestDefaultContext");
-    p->addContext("TestNonDefaultContext");
-
     containers->Add(p);
 }
 

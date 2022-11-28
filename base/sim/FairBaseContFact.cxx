@@ -39,11 +39,9 @@ void FairBaseContFact::setAllContainers()
     /** Creates the Container objects with all accepted contexts and adds them to
      *  the list of containers for the base library.*/
     FairContainer* pTest = new FairContainer("FairBaseParSet", "class for parameter io", "DefaultContext");
-    pTest->addContext("TestNonDefaultContext");
     containers->Add(pTest);
 
     FairContainer* pGeo = new FairContainer("FairGeoParSet", "class for Geo parameter", "DefaultContext");
-    pTest->addContext("TestNonDefaultContext");
     containers->Add(pGeo);
 }
 
