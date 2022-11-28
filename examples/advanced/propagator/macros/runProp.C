@@ -41,7 +41,7 @@ int runProp(std::string propName = "rk")
     TString parFile = "prop.par.root";
 
     // Output file
-    TString outFile = Form("prop.%s.cal.root", propName.data());
+    TString outFile = Form("prop.%s.cal.root", propName.c_str());
 
     // -----   Timer   --------------------------------------------------------
     TStopwatch timer;
