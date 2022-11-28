@@ -24,8 +24,6 @@ void FairMQExParamsContFact::setAllContainers()
 {
     FairContainer* container =
         new FairContainer("FairMQExParamsParOne", "FairMQExParamsParOne Parameters", "TestDefaultContext");
-    container->addContext("TestNonDefaultContext");
-
     containers->Add(container);
 }
 
