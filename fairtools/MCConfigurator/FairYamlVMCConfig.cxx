@@ -109,7 +109,7 @@ void FairYamlVMCConfig::SetupPostInit(const char* mcEngine)
         for ( const auto& value: g4commands ) {
             LOG(info) << " execute command \"" << value << "\"";
             TGeant4* geant4 = dynamic_cast<TGeant4*>(TVirtualMC::GetMC());
-            geant4->ProcessGeantCommand(value.data());
+            geant4->ProcessGeantCommand(value.c_str());
         }
     }
 
@@ -210,7 +210,7 @@ void FairYamlVMCConfig::SetupGeant4()
         std::vector<std::string> g4commands = fYamlConfig["Geant4_Commands"].as<std::vector<std::string>>();
         for (const auto& value : g4commands) {
             LOG(info) << " execute command \"" << value << "\"";
-            geant4->ProcessGeantCommand(value.data());
+            geant4->ProcessGeantCommand(value.c_str());
         }
     }
 

@@ -57,7 +57,7 @@ InitStatus FairTutPropHitProducer::Init()
     FairRootManager* ioman = FairRootManager::Instance();
 
     // Get a pointer to the previous already existing data level
-    fPointsArray = static_cast<TClonesArray*>(ioman->GetObject(fPointsArrayName.data()));
+    fPointsArray = static_cast<TClonesArray*>(ioman->GetObject(fPointsArrayName.c_str()));
     fTracksArray = static_cast<TClonesArray*>(ioman->GetObject("MCTrack"));
     if (!fPointsArray || !fTracksArray) {
         LOG(error) << "No InputDataLevelName array!";
@@ -67,7 +67,7 @@ InitStatus FairTutPropHitProducer::Init()
 
     // Create the TClonesArray for the output data and register
     // it in the IO manager
-    ioman->Register(fHitsArrayName.data(), "TutProp", fHitsArray, kTRUE);
+    ioman->Register(fHitsArrayName.c_str(), "TutProp", fHitsArray, kTRUE);
 
     // Do whatever else is needed at the initilization stage
     // Create histograms to be filled
