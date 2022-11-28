@@ -32,8 +32,6 @@ void FairTutPropContFact::setAllContainers()
     */
 
     FairContainer* p = new FairContainer("FairTutPropGeoPar", "FairTutProp Geometry Parameters", "TestDefaultContext");
-    p->addContext("TestNonDefaultContext");
-
     containers->Add(p);
 }
 

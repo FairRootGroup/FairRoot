@@ -32,14 +32,10 @@ void FairTutorialDet2ContFact::setAllContainers()
 
     FairContainer* p1 =
         new FairContainer("FairTutorialDet2GeoPar", "FairTutorialDet2 Geometry Parameters", "TestDefaultContext");
-    p1->addContext("TestNonDefaultContext");
-
     containers->Add(p1);
 
     FairContainer* p2 =
         new FairContainer("FairTutorialDet2DigiPar", "Tutorial Det Digi Parameters", "TestDefaultContext");
-    p2->addContext("TestNonDefaultContext");
-
     containers->Add(p2);
 }
 

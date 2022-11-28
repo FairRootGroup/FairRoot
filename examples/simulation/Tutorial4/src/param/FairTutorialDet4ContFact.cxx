@@ -36,14 +36,10 @@ void FairTutorialDet4ContFact::setAllContainers()
 
     FairContainer* p =
         new FairContainer("FairTutorialDet4GeoPar", "FairTutorialDet4 Geometry Parameters", "TestDefaultContext");
-    p->addContext("TestNonDefaultContext");
-
     containers->Add(p);
 
     FairContainer* p1 = new FairContainer(
         "FairTutorialDet4MissallignPar", "FairTutorialDet4 Missallignment Parameters", "TestDefaultContext");
-    p1->addContext("TestNonDefaultContext");
-
     containers->Add(p1);
 }
 

@@ -34,8 +34,6 @@ void FairRutherfordContFact::setAllContainers()
   */
 
     auto p = new FairContainer("FairRutherfordGeoPar", "FairRutherford Geometry Parameters", "TestDefaultContext");
-    p->addContext("TestNonDefaultContext");
-
     containers->Add(p);
 }
 
