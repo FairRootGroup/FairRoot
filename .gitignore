@@ -51,3 +51,6 @@ html/
 
 # VS Code directory
 .vscode
+
+# clangd cache
+.cache
