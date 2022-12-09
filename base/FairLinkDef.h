@@ -18,7 +18,7 @@
 //#pragma link C++ class FairDoubleHit+;
 #pragma link C++ class FairEventBuilder+;
 #pragma link C++ class FairEventBuilderManager+;
-#pragma link C++ class FairEventHeader;
+#pragma link C++ class FairEventHeader+;
 #pragma link C++ class FairFileHeader+;
 #pragma link C++ class FairGeaneApplication+;
 #pragma link C++ class FairGenerator+;
