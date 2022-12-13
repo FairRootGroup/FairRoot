@@ -128,7 +128,13 @@ int plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "align_TGeant
     }   // event loop end
 
     auto pullx_Ent = pullx->GetEntries();
+    auto pullx_Mea = pullx->GetMean();
+    auto pully_Mea = pully->GetMean();
+    auto pullz_Mea = pullz->GetMean();
     auto pullx_Dev = pullx->GetStdDev();
+    auto pully_Dev = pully->GetStdDev();
+    auto pullz_Dev = pullz->GetStdDev();
+    cout << "Mean (" << pullx_Mea << ", " << pully_Mea << ", " << pullz_Mea << ") " << endl;
 
     // save histos to file
     // TFile *fHist = TFile::Open("data/auaumbias.hst.root","RECREATE");
@@ -164,13 +170,13 @@ int plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "align_TGeant
     cout << "Parameter file is " << ParFile << endl;
     cout << "Real time " << rtime << " s, CPU time " << ctime << "s" << endl << endl;
 
-    if (nevent >= 10 && pullx_Ent > nevent * 35 && abs(pullx_Dev - 0.1) < 0.03)
+    if (nevent >= 10 && pullx_Ent > nevent * 35 && abs(pullx_Dev - 0.1) < 0.03 && abs(pully_Dev - 0.1) < 0.04)
         cout << "Macro finished successfully. Number of events (" << nevent << "), hist entries (" << pullx_Ent
-             << ") and deviation (" << pullx_Dev << ") inside limits." << endl;
+             << ") and deviation (" << pullx_Dev << ", " << pully_Dev << ", " << pullz_Dev << ") inside limits."
+             << endl;
     else
         cout << "Macro failed. Number of events (" << nevent << "), hist entries (" << pullx_Ent << ") or deviation ("
-             << pullx_Dev << ") too far off." << endl;
-
+             << pullx_Dev << ", " << pully_Dev << ", " << pullz_Dev << ") too far off." << endl;
     // ------------------------------------------------------------------------
 
     return 0;
