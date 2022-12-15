@@ -36,19 +36,23 @@ target_include_directories(${target} PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_link_libraries(${target} PUBLIC
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Base # FairRunIdGenerator
-  FairRoot::Tools # FairLogger
   FairRoot::ParBase
+  FairRoot::GeoBase
+  FairRoot::Tools # FairLogger
   FairRoot::BaseMQ # Serialization policies
-  FairRoot::ExPixel
   FairRoot::FairMQ
+  FairRoot::ExPixel
+
+  ROOT::Core
+
+  PRIVATE
+  FairLogger::FairLogger
 
   ROOT::Tree
-  ROOT::RIO # TFile
-  ROOT::Core
   ROOT::MathCore # Sqrt
-  ROOT::Physics # TVector3
   ROOT::Geom # TGeo...
 )
 

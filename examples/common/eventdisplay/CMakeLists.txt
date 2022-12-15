@@ -25,16 +25,21 @@ target_include_directories(${target} PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_link_libraries(${target} PUBLIC
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Base # FairRunIdGenerator
-  FairRoot::GeoBase
-  FairRoot::ParBase
   FairRoot::EventDisplay
-  FairRoot::ExMCStack
   FairRoot::TrackBase
 
   ROOT::Core
+  ROOT::Gui
+  ROOT::Ged
+
+  FairRoot::ExMCStack
+
   ROOT::Eve
+  ROOT::EG
+  ROOT::Physics
 )
 
 fairroot_target_root_dictionary(${target}

@@ -38,14 +38,18 @@ target_include_directories(${target} PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_link_libraries(${target} PUBLIC
-  FairRoot::Tools
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Base
+
+  ROOT::Core
+
+  PRIVATE
+  FairRoot::Tools
   FairRoot::ParBase
   $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
 
   ROOT::RHTTP # THttpServer
-  ROOT::Core
   ROOT::Geom
   ROOT::Net # TSocket
 )

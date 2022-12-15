@@ -39,18 +39,13 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/splitMC-topology.xml ${CMAKE_
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMC.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMC.sh @ONLY)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/test-splitMQ.sh.in   ${CMAKE_CURRENT_BINARY_DIR}/test-splitMQ.sh @ONLY)
 
-set(exe_dependencies
-  FairRoot::ExSimMQ
-  FairRoot::FairMQ
-  Boost::program_options
-)
-
 add_executable(pixel-sim-chunk-merger runMQChunkMerger.cxx)
-target_link_libraries(pixel-sim-chunk-merger PRIVATE ${exe_dependencies})
+target_link_libraries(pixel-sim-chunk-merger PRIVATE FairRoot::ExSimMQ FairRoot::FairMQ)
 
 add_executable(pixel-sim-gen runMQGen.cxx)
 target_link_libraries(pixel-sim-gen PRIVATE
-  ${exe_dependencies}
+  FairRoot::ExSimMQ
+  FairRoot::FairMQ
   FairRoot::Base # FairModule, FairPrimaryGenerator
   FairRoot::Generators # FairBoxGenerator
 
@@ -60,7 +55,8 @@ target_link_libraries(pixel-sim-gen PRIVATE
 
 add_executable(pixel-sim-transport runMQTrans.cxx)
 target_link_libraries(pixel-sim-transport PRIVATE
-  ${exe_dependencies}
+  FairRoot::ExSimMQ
+  FairRoot::FairMQ
   FairRoot::Base # FairModule, FairPrimaryGenerator
   FairRoot::ParBase # FairParAsciiFileIo
   FairRoot::ExPassive # FairCave

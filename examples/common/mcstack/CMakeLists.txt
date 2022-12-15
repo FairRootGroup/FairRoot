@@ -28,15 +28,19 @@ target_include_directories(${target} PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_link_libraries(${target} PUBLIC
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Base # FairRunIdGenerator
-  FairRoot::Tools # FairLogger
 
   ROOT::Core
   ROOT::Physics # TLorentzVector, TVector3
   ROOT::MathCore # TMath
-  ROOT::EG # TDatabasePDG, TParticle
   ${VMCLIB} # TMCProcess
+
+  PRIVATE
+  FairRoot::Tools # FairLogger
+
+  ROOT::EG # TDatabasePDG, TParticle
 )
 
 fairroot_target_root_dictionary(${target}

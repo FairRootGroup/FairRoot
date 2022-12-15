@@ -115,22 +115,28 @@ target_include_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::BaseMQ # Serialization policies
-  FairRoot::Tools # FairLogger
   FairRoot::GeoBase # FairGeoSet
-  FairRoot::ExMCStack
   FairRoot::ParBase # FairRuntimeDb, FairContFact, FairParamList
   FairRoot::FairMQ
 
+  FairLogger::FairLogger
+
   Boost::serialization
+
   $<$<BOOL:${Protobuf_FOUND}>:protobuf::libprotobuf>
   $<$<BOOL:${Flatbuffers_FOUND}>:${flatbuffers_lib}>
   $<$<BOOL:${msgpack_FOUND}>:msgpackc>
 
-  ROOT::Core # Rtypes
-  ROOT::MathCore # TRandom
   ROOT::Physics # TVector3, TLorentzVector
+  ROOT::Core # Rtypes
   ROOT::RIO # TFile
-  ROOT::Tree # TTree
+
+  PRIVATE
+  FairRoot::ExMCStack
+  FairRoot::Tools # FairLogger
+
+  ROOT::MathCore # TRandom
+  ${VMCLIB}
 )
 
 fairroot_target_root_dictionary(${target}
