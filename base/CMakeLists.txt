@@ -98,24 +98,26 @@ target_include_directories(${target} PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_link_libraries(${target} PUBLIC
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Alignment
   FairRoot::Tools
   FairRoot::ParBase
   FairRoot::GeoBase
 
   ROOT::Core
-  ROOT::EG
   ROOT::Geom
   ROOT::GeomPainter # TGeoTrack
   ROOT::Hist
   ROOT::MathCore
   ROOT::Matrix
-  ROOT::Net # TSocket
   ROOT::Physics
   ROOT::RIO
   ROOT::Tree
   ${VMCLIB}
+
+  PRIVATE
+  ROOT::EG
   $<$<BOOL:${ROOT_gdml_FOUND}>:ROOT::Gdml>
 )
 
@@ -126,7 +128,7 @@ target_compile_definitions(${target}
 )
 
 if(BUILD_PROOF_SUPPORT)
-  target_link_libraries(${target} PUBLIC ROOT::Proof)
+  target_link_libraries(${target} PRIVATE ROOT::Proof)
   target_compile_definitions(${target} PRIVATE BUILD_PROOF_SUPPORT)
 endif()
 

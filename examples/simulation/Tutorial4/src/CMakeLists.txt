@@ -49,17 +49,21 @@ target_include_directories(${target} PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_link_libraries(${target} PUBLIC
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Base # FairRunIdGenerator
-  FairRoot::Tools # FairLogger
-  FairRoot::ExMCStack
   FairRoot::GeoBase
   FairRoot::ParBase
-  FairRoot::Generators
-  $<$<BOOL:${ROOT_opengl_FOUND}>:FairRoot::EventDisplay>
 
   ROOT::Core
   ROOT::Physics
+
+  PRIVATE
+  FairRoot::ExMCStack
+  $<$<BOOL:${ROOT_HAS_OPENGL}>:FairRoot::EventDisplay>
+  FairRoot::Tools # FairLogger
+  FairRoot::EventDisplay
+
   ROOT::Geom
   ${VMCLIB}
   ROOT::MathCore

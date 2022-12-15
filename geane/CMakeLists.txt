@@ -23,17 +23,22 @@ target_include_directories(${target} PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_link_libraries(${target} PUBLIC
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Base # FairField, FairTask, FairPropagator
   FairRoot::TrackBase # FairTrackPar
 
   geant321
 
   ROOT::Core
+  ROOT::Physics
+
+  PRIVATE
+  FairRoot::Tools
+
   ROOT::EG
   ROOT::Geom
   ${VMCLIB}
-  ROOT::Physics
   ROOT::MathCore
 )
 
