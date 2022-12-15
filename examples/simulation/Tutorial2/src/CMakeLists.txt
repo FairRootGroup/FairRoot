@@ -33,15 +33,19 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_libraries(${target} PUBLIC
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Base # FairRunIdGenerator
-  FairRoot::Tools # FairLogger
   FairRoot::GeoBase # FairContFact
-  FairRoot::ExMCStack
   FairRoot::ParBase # FairContFact
 
   ROOT::Core
   ROOT::Physics
+
+  PRIVATE
+  FairRoot::ExMCStack
+  FairRoot::Tools # FairLogger
+
   ${VMCLIB}
 )
 

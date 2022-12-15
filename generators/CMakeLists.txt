@@ -35,14 +35,19 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_libraries(${target} PUBLIC
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Base # FairPrimaryGenerator, FairGenerator, FairIon, FairParticle, FairRunSim
-  FairRoot::Tools
 
   ROOT::Core
+  ROOT::Hist
+
+
+  PRIVATE
+  FairRoot::Tools
+
   ROOT::EG
   ROOT::MathCore
-  ROOT::Hist
   ROOT::Physics
 )
 

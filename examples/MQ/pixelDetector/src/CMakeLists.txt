@@ -67,24 +67,26 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_libraries(${target} PUBLIC
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::BaseMQ # Serialization policies
-  FairRoot::Tools # FairLogger
-  FairRoot::Generators # FairBoxGenerator
   FairRoot::GeoBase
   FairRoot::ParBase # FairParGenericSet
-  FairRoot::ExMCStack
-  FairRoot::ExPassive # FairCave
   FairRoot::FairMQ
 
   Boost::serialization
 
   ROOT::Core
-  ROOT::MathCore
   ROOT::RIO
   ROOT::Tree
   ROOT::Physics
+
+  PRIVATE
+  FairRoot::Tools # FairLogger
+  FairRoot::ExMCStack
+
+  ROOT::MathCore
   ROOT::Geom
   ROOT::Hist
   ${VMCLIB}

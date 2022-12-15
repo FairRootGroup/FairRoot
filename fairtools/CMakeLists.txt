@@ -35,10 +35,12 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_libraries(${target} PUBLIC
+target_link_libraries(${target}
+  PUBLIC
   FairLogger::FairLogger
-
   ROOT::Core
+
+  PRIVATE
   ROOT::Graf
   ROOT::Hist
   ROOT::Gpad

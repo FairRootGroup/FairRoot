@@ -56,11 +56,14 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_libraries(${target} PUBLIC
-  FairRoot::Tools
-
+target_link_libraries(${target}
+  PUBLIC
   ROOT::Core
   ROOT::MathCore
+
+  PRIVATE
+  FairRoot::Tools
+
   ROOT::Geom
   ROOT::Graf3d # TRotMatrix
 )

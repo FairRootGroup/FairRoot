@@ -25,10 +25,13 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_libraries(${target} PUBLIC
+target_link_libraries(${target}
+  PUBLIC
+  ROOT::Geom
+
+  PRIVATE
   FairRoot::Tools
 
-  ROOT::Geom
 )
 
 fairroot_target_root_dictionary(${target}

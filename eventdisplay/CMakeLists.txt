@@ -57,23 +57,28 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_libraries(${target} PUBLIC
-  FairRoot::Tools
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Base # FairRootManager, FairRunAna, FairTSBufferFunctional, FairTimeStamp, FairEventManager
 
+  FairLogger::FairLogger
+
   ROOT::Core
-  ROOT::EG          # TDatabasePDG
   ROOT::Eve         # TEveBoxSet
   ROOT::Ged         # TGedFrame
-  ROOT::Geom        # TGeoManager, TGeoNode, TGeoVolume
   ROOT::GeomPainter # TGeoTrack
+  ROOT::XMLIO       # TXMLEngine
+
+  PRIVATE
+  ROOT::Graf3d
+  ROOT::EG          # TDatabasePDG
+  ROOT::Geom        # TGeoManager, TGeoNode, TGeoVolume
   ROOT::Gui         # TGFrame, TGNumberEntry, TGWindow
   ROOT::MathCore    # TMathBase
   ROOT::Physics     # TVector3
   ROOT::RGL         # TGLViewer, TGLCameraOverlay, TGLClip, TGLLightSet
   ROOT::Tree        # TChain
   ROOT::RIO
-  ROOT::XMLIO       # TXMLEngine
   ROOT::XMLParser   # TXMLNode, TXMLAttr, TDOMParser
 )
 

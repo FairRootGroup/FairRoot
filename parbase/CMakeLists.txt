@@ -38,11 +38,15 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_libraries(${target} PUBLIC
-  FairRoot::Tools
-
+target_link_libraries(${target}
+  PUBLIC
   ROOT::Core
   ROOT::RIO
+
+  PRIVATE
+  FairRoot::Tools
+
+  FairLogger::FairLogger
 )
 
 fairroot_target_root_dictionary(${target}

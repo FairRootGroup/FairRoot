@@ -25,14 +25,17 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_libraries(${target} PUBLIC
-  FairRoot::Tools
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Base # FairGenericVMCConfig
+  yaml-cpp
+
+  PRIVATE
+  FairRoot::Tools
   FairRoot::FastSim # FairFastSimRunConfiguration
 
   geant321
   geant4vmc
-  yaml-cpp
 
   ROOT::Core
   ${VMCLIB}

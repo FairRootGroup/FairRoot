@@ -57,12 +57,15 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR} # TClonesArray, TMessage, etc
 )
 
-target_link_libraries(${target} PUBLIC
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Base # FairTask, FairRunAna, FairRootFileSink, FairFileSource
+  FairRoot::FairMQ
+
+  INTERFACE
   FairRoot::ParBase # FairParRootFileIo, FairRuntimeDb
   FairRoot::Tools
   $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
-  FairRoot::FairMQ
 
   Boost::serialization
   Boost::filesystem

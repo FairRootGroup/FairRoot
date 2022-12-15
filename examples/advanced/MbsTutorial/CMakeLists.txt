@@ -30,11 +30,18 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_libraries(${target} PUBLIC
+target_link_libraries(${target}
+  PUBLIC
+  FairRoot::Base
   FairRoot::Online
-  FairRoot::Tools # FairLogger
 
   ROOT::Core
+
+  PRIVATE
+  FairRoot::Tools # FairLogger
+
+  ROOT::Gpad
+  ROOT::Hist
 )
 
 fairroot_target_root_dictionary(${target}

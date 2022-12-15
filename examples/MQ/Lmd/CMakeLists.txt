@@ -28,12 +28,14 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_libraries(${target} PUBLIC
-  FairRoot::Base # FairRunIdGenerator
-  FairRoot::BaseMQ # Serialization policies
-  FairRoot::Tools # FairLogger
+target_link_libraries(${target}
+  PUBLIC
+  FairRoot::Online
+
+  PRIVATE
   FairRoot::ExMbs
-  FairRoot::FairMQ
+
+  FairLogger::FairLogger
 
   ROOT::Core
 )
@@ -54,7 +56,7 @@ add_executable(ex-lmd-mbs-unpacker runMBSMQUnpacker.cxx)
 target_link_libraries(ex-lmd-mbs-unpacker PRIVATE FairRoot::ExLmd FairRoot::BaseMQ FairRoot::FairMQ)
 
 add_executable(ex-lmd-mbs-sink runMBSSink.cxx)
-target_link_libraries(ex-lmd-mbs-sink PRIVATE FairRoot::ExLmd FairRoot::BaseMQ ROOT::Core FairRoot::ExMbs FairRoot::FairMQ)
+target_link_libraries(ex-lmd-mbs-sink PRIVATE FairRoot::ExLmd FairRoot::BaseMQ FairRoot::ExMbs FairRoot::FairMQ)
 
 install(TARGETS ex-lmd-sampler ex-lmd-mbs-unpacker ex-lmd-mbs-sink
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/Lmd/bin

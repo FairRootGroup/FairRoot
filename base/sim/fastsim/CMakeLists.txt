@@ -37,16 +37,19 @@ else()
   set(targetG4processes Geant4::G4processes)
 endif()
 
-target_link_libraries(${target} PUBLIC
-  FairRoot::Tools
+target_link_libraries(${target}
+  PUBLIC
   FairRoot::Base # FairDetector,
-  FairRoot::GeoBase
+
+  ROOT::Core # Rtypes
 
   ${targetG4processes}
   geant4vmc
 
+  PRIVATE
+  FairRoot::Tools
+  FairRoot::GeoBase
   ROOT::Geom # TGeoManager
-  ROOT::Core # Rtypes
   ${VMCLIB} # TVirtualMC
   ROOT::EG # TParticle
   ROOT::Physics # TVector

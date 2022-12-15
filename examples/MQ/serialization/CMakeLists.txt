@@ -21,11 +21,7 @@ add_library(FairRoot::${target} ALIAS ${target})
 set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 
 target_include_directories(${target} PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/1-simple>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/2-multipart>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/data>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/data_generator>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
   # TODO: DELETE ME ONCE USING root targets
@@ -35,18 +31,10 @@ target_include_directories(${target} PUBLIC
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::BaseMQ # Serialization policies
-  FairRoot::Tools # FairLogger
-  FairRoot::ParBase
-  FairRoot::FairMQ
 
   Boost::serialization
 
   ROOT::Core
-  ROOT::MathCore
-  ROOT::RIO
-  ROOT::Tree
-  ROOT::RooFit
-  ROOT::RooFitCore
 )
 
 fairroot_target_root_dictionary(${target}
@@ -77,7 +65,14 @@ add_executable(ex-serialization2-sink 2-multipart/runEx2Sink.cxx)
 target_link_libraries(ex-serialization2-sink PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
 
 add_executable(ex-serialization-generate-data data_generator/runGenerateData.cxx)
-target_link_libraries(ex-serialization-generate-data PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
+target_link_libraries(ex-serialization-generate-data
+  PRIVATE
+  FairRoot::ExSerialization
+  FairRoot::FairMQ
+  ROOT::Gpad
+  ROOT::RooFit
+  ROOT::RooFitCore
+)
 
 # Create a directory that will hold root input/output data file
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data_io)

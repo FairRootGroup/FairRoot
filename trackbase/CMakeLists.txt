@@ -33,12 +33,16 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_libraries(${target} PUBLIC
-  FairRoot::Tools
-  FairRoot::Base # FairRunAna, FairField
-
+target_link_libraries(${target}
+  PUBLIC
   ROOT::Core
   ROOT::Physics
+
+  PRIVATE
+  FairRoot::Base # FairRunAna, FairField
+
+  FairLogger::FairLogger
+
   ROOT::MathCore
   ROOT::Matrix
 )
