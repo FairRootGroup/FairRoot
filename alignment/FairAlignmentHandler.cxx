@@ -1,18 +1,14 @@
 #include "FairAlignmentHandler.h"
 
-#include "FairLogger.h"
-
+#include <TCollection.h>
 #include <TGeoManager.h>
 #include <TGeoPhysicalNode.h>
 #include <TGeoShapeAssembly.h>
-
-FairAlignmentHandler::FairAlignmentHandler() {}
-
-FairAlignmentHandler::~FairAlignmentHandler() {}
+#include <fairlogger/Logger.h>
 
 void FairAlignmentHandler::AlignGeometry() const
 {
-    if (fAlignmentMatrices.size() > 0) {
+    if (!fAlignmentMatrices.empty()) {
         LOG(info) << "aligning the geometry...";
 
         LOG(info) << "aligning in total " << fAlignmentMatrices.size() << " volumes.";
@@ -50,7 +46,7 @@ void FairAlignmentHandler::AlignGeometryByFullPath() const
 
         TGeoHMatrix local_volume_matrix = TGeoHMatrix(*volume_matrix);
 
-        TGeoHMatrix* new_volume_matrix = new TGeoHMatrix(local_volume_matrix * alignment_entry.second);
+        auto new_volume_matrix = new TGeoHMatrix(local_volume_matrix * alignment_entry.second);
         // new matrix, representing real position (from new local mis RS to the global one)
 
         TGeoPhysicalNode* pn = gGeoManager->MakePhysicalNode(volume_path);
@@ -68,13 +64,13 @@ void FairAlignmentHandler::AlignGeometryBySymlink() const
     for (auto const& alignment_entry : fAlignmentMatrices) {
         volume_path = alignment_entry.first;
 
-        TGeoPhysicalNode* node = NULL;
+        TGeoPhysicalNode* node = nullptr;
         TGeoPNEntry* entry = gGeoManager->GetAlignableEntry(volume_path);
         if (entry) {
             node = gGeoManager->MakeAlignablePN(entry);
         }
 
-        TGeoMatrix* volume_matrix = NULL;
+        TGeoMatrix* volume_matrix = nullptr;
         if (node) {
             volume_matrix = node->GetMatrix();
         } else {
@@ -84,7 +80,7 @@ void FairAlignmentHandler::AlignGeometryBySymlink() const
         // it is implimnted now in TGeoHMatrix
         TGeoHMatrix local_volume_matrix = TGeoHMatrix(*volume_matrix);
 
-        TGeoHMatrix* new_volume_matrix = new TGeoHMatrix(local_volume_matrix * alignment_entry.second);
+        auto new_volume_matrix = new TGeoHMatrix(local_volume_matrix * alignment_entry.second);
         // new matrix, representing real position (from new local mis RS to the global one)
         node->Align(new_volume_matrix);
     }
@@ -106,14 +102,9 @@ void FairAlignmentHandler::RecomputePhysicalAssmbBbox() const
 {
     TObjArray* pPhysNodesArr = gGeoManager->GetListOfPhysicalNodes();
 
-    TGeoPhysicalNode* pPhysNode = nullptr;
-    TGeoShapeAssembly* pShapeAsb = nullptr;
-
-    Int_t iNbNodes = pPhysNodesArr->GetEntriesFast();
-    for (Int_t iInd = 0; iInd < iNbNodes; ++iInd) {
-        pPhysNode = dynamic_cast<TGeoPhysicalNode*>(pPhysNodesArr->At(iInd));
+    for (auto pPhysNode : TRangeDynCast<TGeoPhysicalNode>(pPhysNodesArr)) {
         if (pPhysNode) {
-            pShapeAsb = dynamic_cast<TGeoShapeAssembly*>(pPhysNode->GetShape());
+            auto pShapeAsb = dynamic_cast<TGeoShapeAssembly*>(pPhysNode->GetShape());
             if (pShapeAsb) {
                 // Should reach here only if the original node was a TGeoShapeAssembly
                 pShapeAsb->ComputeBBox();
