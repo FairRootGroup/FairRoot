@@ -26,6 +26,7 @@
 
 #include <TBuffer.h>           // for TBuffer, operator<<, etc
 #include <TCollection.h>       // for TIter
+#include <TDirectory.h>        // for TDirectory::TContext
 #include <TFile.h>             // for TFile
 #include <TGeoManager.h>       // for TGeoManager, gGeoManager
 #include <TGeoMaterial.h>      // for TGeoMaterial
@@ -466,7 +467,7 @@ void FairModule::ConstructRootGeometry(TGeoMatrix* shiftM)
 void FairModule::ConstructGDMLGeometry(__attribute__((unused)) TGeoMatrix* posrot)
 {
     // Parse the GDML file
-    TFile* old = gFile;
+    TDirectory::TContext restorecwd{};
     TGDMLParse parser;
     TGeoVolume* gdmlTop;
     gdmlTop = parser.GDMLReadFile(GetGeometryFileName());
@@ -477,7 +478,6 @@ void FairModule::ConstructGDMLGeometry(__attribute__((unused)) TGeoMatrix* posro
     // Add volume to the cave and go through it recursively
     gGeoManager->GetTopVolume()->AddNode(gdmlTop, 1, posrot);
     ExpandNodeForGDML(gGeoManager->GetTopVolume()->GetNode(gGeoManager->GetTopVolume()->GetNdaughters() - 1));
-    gFile = old;
 }
 
 void FairModule::ExpandNodeForGDML(TGeoNode* curNode)

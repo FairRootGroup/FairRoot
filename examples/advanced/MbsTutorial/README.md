@@ -1,4 +1,4 @@
-# MBS Tutorial
+# MBS Tutorial {#ex_mbstut}
 
 
 ## Quick start

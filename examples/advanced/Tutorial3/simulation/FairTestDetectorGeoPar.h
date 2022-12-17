@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -27,10 +27,10 @@ class FairTestDetectorGeoPar : public FairParGenericSet
     FairTestDetectorGeoPar(const char* name = "FairTestDetectorGeoPar",
                            const char* title = "FairTestDetector Geometry Parameters",
                            const char* context = "TestDefaultContext");
-    ~FairTestDetectorGeoPar(void);
-    void clear(void);
-    void putParams(FairParamList*);
-    Bool_t getParams(FairParamList*);
+    ~FairTestDetectorGeoPar() override;
+    void clear() override;
+    void putParams(FairParamList*) override;
+    Bool_t getParams(FairParamList*) override;
     TObjArray* GetGeoSensitiveNodes() { return fGeoSensNodes; }
     TObjArray* GetGeoPassiveNodes() { return fGeoPassNodes; }
 
@@ -38,7 +38,7 @@ class FairTestDetectorGeoPar : public FairParGenericSet
     FairTestDetectorGeoPar(const FairTestDetectorGeoPar&);
     FairTestDetectorGeoPar& operator=(const FairTestDetectorGeoPar&);
 
-    ClassDef(FairTestDetectorGeoPar, 1);
+    ClassDefOverride(FairTestDetectorGeoPar, 1);
 };
 
 #endif /* FAIRTESTDETECTORGEOPAR_H_ */

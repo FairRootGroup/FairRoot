@@ -1,9 +1,9 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
- *              This software is distributed under the terms of the *
+ *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
- *                  copied verbatim in the file "LICENSE" *
+ *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
 #include "FairPrimaryGenerator.h"
@@ -144,13 +144,22 @@ FairPrimaryGenerator::FairPrimaryGenerator(const FairPrimaryGenerator &rhs)
 Bool_t FairPrimaryGenerator::Init()
 {
     /** Initialize list of generators*/
-    for (Int_t i = 0; i < fGenList->GetEntries(); i++) {
-        FairGenerator *gen = static_cast<FairGenerator *>(fGenList->At(i));
-        if (gen) {
-            gen->Init();
-        }
+    for (auto gen : TRangeDynCast<FairGenerator>(fGenList)) {
+        if (!gen)
+            continue;
+        gen->Init();
     }
     return kTRUE;
+}
+
+void FairPrimaryGenerator::Finish()
+{
+    /** Finalize list of generators*/
+    for (auto gen : TRangeDynCast<FairGenerator>(fGenList)) {
+        if (!gen)
+            continue;
+        gen->Finish();
+    }
 }
 
 FairPrimaryGenerator::~FairPrimaryGenerator()
@@ -262,7 +271,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack *pStack)
         // Screen output
 
         // Set the event number if not set already by one of the dedicated generators
-        if (-1 == fEvent->GetEventID()) {
+        if (!fEvent->HasEventID()) {
             fEventNr++;
             fEvent->SetEventID(fEventNr);
         }

@@ -20,11 +20,7 @@ ${CMAKE_SOURCE_DIR}/tutorial/NewDetector
 
 include_directories( ${INCLUDE_DIRECTORIES})
 
-set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
-) 
 
-link_directories( ${LINK_DIRECTORIES})
 Include_Directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(SRCS

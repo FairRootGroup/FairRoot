@@ -18,9 +18,9 @@ FairRutherfordGeoPar ::FairRutherfordGeoPar(const char* name, const char* title,
     , fGeoPassNodes(new TObjArray())
 {}
 
-FairRutherfordGeoPar::~FairRutherfordGeoPar(void) {}
+FairRutherfordGeoPar::~FairRutherfordGeoPar() {}
 
-void FairRutherfordGeoPar::clear(void)
+void FairRutherfordGeoPar::clear()
 {
     delete fGeoSensNodes;
     delete fGeoPassNodes;

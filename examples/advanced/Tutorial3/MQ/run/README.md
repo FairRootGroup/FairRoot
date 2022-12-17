@@ -1,4 +1,4 @@
-## Data Format
+# Data Format {#ex_tutorial3_mq_dataformat}
 
 Each device in this example implements several serialization approaches:
 

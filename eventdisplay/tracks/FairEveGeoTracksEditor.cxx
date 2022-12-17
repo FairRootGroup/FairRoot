@@ -35,9 +35,9 @@ FairEveGeoTracksEditor::FairEveGeoTracksEditor(const TGWindow *p,
     SetName("MCtracksEditor");
 
     TGVerticalFrame *kinFrame = CreateEditorTabSubFrame("Kin");
-    fPtCut.reset(new FairEveMinMaxCut(this, kinFrame, "Pt", width));
-    fEtaCut.reset(new FairEveMinMaxCut(this, kinFrame, "Eta", width));
-    fEnergyCut.reset(new FairEveMinMaxCut(this, kinFrame, "E", width));
+    fPtCut = std::make_unique<FairEveMinMaxCut>(this, kinFrame, "Pt", width);
+    fEtaCut = std::make_unique<FairEveMinMaxCut>(this, kinFrame, "Eta", width);
+    fEnergyCut = std::make_unique<FairEveMinMaxCut>(this, kinFrame, "E", width);
     fPtCut->Init();
     fEtaCut->Init();
     fEnergyCut->Init();
@@ -45,13 +45,13 @@ FairEveGeoTracksEditor::FairEveGeoTracksEditor(const TGWindow *p,
 
     TGVerticalFrame *statFrame = CreateEditorTabSubFrame("Status");
 
-    fPrimary.reset(new FairEveBoolCut(this, statFrame, "Primary", width));
+    fPrimary = std::make_unique<FairEveBoolCut>(this, statFrame, "Primary", width);
     fPrimary->UpdateWhenChanged();
     fPrimary->SetInitStatus(kTRUE);
-    fSecondary.reset(new FairEveBoolCut(this, statFrame, "Secondary", width));
+    fSecondary = std::make_unique<FairEveBoolCut>(this, statFrame, "Secondary", width);
     fSecondary->SetInitStatus(kTRUE);
     fSecondary->UpdateWhenChanged();
-    fPdgCut.reset(new FairEveIntCut(this, statFrame, "PDG", width));
+    fPdgCut = std::make_unique<FairEveIntCut>(this, statFrame, "PDG", width);
     fPrimary->Init();
     fSecondary->Init();
     fPdgCut->Init();

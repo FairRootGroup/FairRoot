@@ -1,62 +1,119 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -e
 
 source @CMAKE_BINARY_DIR@/config.sh -p
 
-if [ -f @splitmc_file_location@/MQ.simulation_TGeant3.data.root ]; then
-    echo "File @splitmc_file_location@/MQ.simulation_TGeant3.data.root exists. Deleting"
-    rm -rf @splitmc_file_location@/MQ.simulation_TGeant3.data.root
+# Define Parameters ###########################################################
+INPUT_EVENTS="100"
+INPUT_EVENTS_OPT="--nof-events $INPUT_EVENTS"
+CHUNK_SIZE="--chunk-size 10"
+DATA_FILE="@splitmc_file_location@/MQ.simulation_@pixel_simulation_engine@.data.root"
+DATA_FILE_OPT="--file-name $DATA_FILE"
+PARS_FILE="--output-name @splitmc_file_location@/MQ.simulation_@pixel_simulation_engine@.pars.root"
+DETECTOR_LIB="--detector-library @CMAKE_BINARY_DIR@/lib/libExPixel.@example_library_extension@"
+RUNNING_MODE="--running-mode pp"
+TRANSPORT_NAME="--transport-name @pixel_simulation_engine@"
+COMMON_OPTS="--transport zeromq --severity debug --control static --color false"
+
+# Declare Channels ############################################################
+declare -A CH_ADDR
+declare -A CH_NAME
+declare -A CHANNEL
+
+CH_NAME[PRIMARIES]="primariesChannel"
+CH_ADDR[PRIMARIES]="ipc://${CH_NAME[PRIMARIES]}"
+CHANNEL[PRIMARIES]="--channel-config name=${CH_NAME[PRIMARIES]},address=${CH_ADDR[PRIMARIES]},rateLogging=1"
+
+CH_NAME[DATA]="data#all#"
+CH_ADDR[DATA]="ipc://dataAll"
+CHANNEL[DATA]="--channel-config name=${CH_NAME[DATA]},address=${CH_ADDR[DATA]},rateLogging=1"
+
+CH_NAME[DATAOUT]="dataOut"
+CH_ADDR[DATAOUT]="ipc://${CH_NAME[DATAOUT]}"
+CHANNEL[DATAOUT]="--channel-config name=${CH_NAME[DATAOUT]},address=${CH_ADDR[DATAOUT]},rateLogging=1"
+
+CH_NAME[UPDATE]="updateChannel"
+CH_ADDR[UPDATE]="ipc://${CH_NAME[UPDATE]}"
+CHANNEL[UPDATE]="--channel-config name=${CH_NAME[UPDATE]},address=${CH_ADDR[UPDATE]},rateLogging=1"
+
+CH_NAME[ACK]="ack"
+CH_ADDR[ACK]="ipc://${CH_NAME[ACK]}"
+CHANNEL[ACK]="--channel-config name=${CH_NAME[ACK]},address=${CH_ADDR[ACK]},rateLogging=1"
+
+# Declare Devices ############################################################
+declare -A DEVICES
+
+set -x
+DEVICES[GENERATOR]="@splitmc_bin_location@/pixel-sim-gen --id generator \
+  --ack-channel ${CH_NAME[ACK]} ${CHANNEL[ACK]},type=pull,method=bind \
+  ${CHANNEL[PRIMARIES]},type=push,method=bind \
+  $CHUNK_SIZE $INPUT_EVENTS_OPT $RUNNING_MODE $COMMON_OPTS"
+
+DEVICES[TRANSPORTER]="@splitmc_bin_location@/pixel-sim-transport --id transporter \
+  ${CHANNEL[DATA]},type=push,method=connect \
+  ${CHANNEL[PRIMARIES]},type=pull,method=connect \
+  ${CHANNEL[UPDATE]},type=req,method=connect \
+  $DETECTOR_LIB $RUNNING_MODE $TRANSPORT_NAME $COMMON_OPTS"
+
+DEVICES[MERGER]="@splitmc_bin_location@/pixel-sim-chunk-merger --id merger \
+  --in-channel ${CH_NAME[DATA]} ${CHANNEL[DATA]},type=pull,method=bind \
+  --out-channel ${CH_NAME[DATAOUT]} ${CHANNEL[DATAOUT]},type=push,method=bind \
+  $COMMON_OPTS"
+
+DEVICES[FILESINK]="@pixel_bin_dir@/pixel-sink --id filesink \
+  --ack-channel ${CH_NAME[ACK]} ${CHANNEL[ACK]},type=push,method=connect \
+  --in-channel ${CH_NAME[DATAOUT]} ${CHANNEL[DATAOUT]},type=pull,method=connect \
+  $DATA_FILE_OPT $COMMON_OPTS"
+
+DEVICES[PARMQSERVER]="@fairroot_bin_dir@/parmq-server --id parmq-server \
+  --update-channel-name ${CH_NAME[UPDATE]} ${CHANNEL[UPDATE]},type=rep,method=bind \
+  $PARS_FILE $COMMON_OPTS"
+set +x
+
+# Run Controller ##############################################################
+echo "Starting topology ..."
+
+rm -rf $DATA_FILE # Make sure there is no data file from previous run
+
+declare -A PIDS
+declare -A LOGS
+for DEVICE in "${!DEVICES[@]}"
+do
+  LOGS[$DEVICE]="$(pwd)/$DEVICE.log"
+  printf "%12s: " $DEVICE
+  ${DEVICES[$DEVICE]} > ${LOGS[$DEVICE]} 2>&1 &  # Run device
+  PIDS[$DEVICE]=$!
+  echo "PID=${PIDS[$DEVICE]}, LOG=${LOGS[$DEVICE]}"
+done
+
+echo "... topology running."
+
+RC=0
+echo "Waiting for GENERATOR(${PIDS[GENERATOR]}) to finish ... "
+wait ${PIDS[GENERATOR]} || { ret=$?; echo "GENERATOR failed with exit code $ret"; RC=$(($RC + $ret)); }
+sleep 1
+echo "... finished (RC=$RC)."
+
+echo "Terminating topology ..."
+kill ${PIDS[TRANSPORTER]} ${PIDS[MERGER]} ${PIDS[PARMQSERVER]} ${PIDS[FILESINK]}
+for DEVICE in TRANSPORTER MERGER PARMQSERVER FILESINK
+do
+  wait ${PIDS[$DEVICE]} || { ret=$?; echo "$DEVICE failed with exit code $ret"; RC=$(($RC + $ret)); }
+done
+echo "... terminated (RC=$RC)."
+
+if [[ "$RC" -ne "0" ]]; then
+  exit $RC
 fi
 
-INPUT_EVENTS="100"
-
-GENERATOR="@splitmc_bin_location@/pixel-sim-gen --id pixSplit-gen --channel-config name=primariesChannel,type=push,method=bind,rateLogging=1,address=tcp://*:5901 --running-mode pp --severity DEBUG --nof-events $INPUT_EVENTS --chunk-size 10 --ack-channel ack --channel-config name=ack,type=pull,method=bind,rateLogging=1,address=tcp://*:5905 --control static --color false"
-
-TRANSPORTER="@splitmc_bin_location@/pixel-sim-transport --config-key pixSplit-trans --id splitMC-trans_%taskIndex% --channel-config name=updateChannel,type=req,method=connect,rateLogging=1,address=tcp://localhost:5904 --channel-config name=primariesChannel,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5901 --channel-config name=data#all#,type=push,method=connect,rateLogging=1,address=tcp://localhost:5902 --transport-name TGeant3 --running-mode pp --severity DEBUG --detector-library @CMAKE_BINARY_DIR@/lib/libExPixel.@example_library_extension@ --control static --color false"
-
-MERGER="@splitmc_bin_location@/pixel-sim-chunk-merger --id pixSplit-merger --in-channel data#all# --channel-config name=data#all#,type=pull,method=bind,rateLogging=1,address=tcp://*:5902 --out-channel dataOut --channel-config name=dataOut,type=push,method=bind,rateLogging=1,address=tcp://*:5903 --transport zeromq --severity DEBUG --control static --color false"
-
-FILESINK="@pixel_bin_dir@/pixel-sink --id pixSplit-sink --in-channel dataOut --severity DEBUG --channel-config name=dataOut,type=pull,method=connect,rateLogging=1,address=tcp://localhost:5903 --file-name @splitmc_file_location@/MQ.simulation_TGeant3.data.root --ack-channel ack --channel-config name=ack,type=push,method=connect,rateLogging=1,address=tcp://localhost:5905 --control static --color false"
-
-PARMQSERVER="@fairroot_bin_dir@/parmq-server zeromq --id pixSplit-parmq-server --channel-config name=updateChannel,type=rep,method=bind,rateLogging=1,address=tcp://*:5904 --severity DEBUG --update-channel-name updateChannel --output-name @splitmc_file_location@/MQ.simulation_TGeant3.pars.root --control static --color false"
-
-#xterm +aw -geometry 100x25+0+0     -hold -e $GENERATOR &
-#xterm +aw -geometry 100x25+0+350   -hold -e $TRANSPORTER &
-#xterm +aw -geometry 100x25+500+0   -hold -e $MERGER &
-#xterm +aw -geometry 100x25+500+350 -hold -e $FILESINK &
-#xterm +aw -geometry 100x25+500+700 -hold -e $PARMQSERVER &
-
-echo "Start devices"
-$GENERATOR   &> gen_log.dat &
-GENERATOR_PID=$!
-$TRANSPORTER &> tra_log.dat &
-TRANSPORTER_PID=$!
-$MERGER      &> mer_log.dat &
-MERGER_PID=$!
-$FILESINK    &> sin_log.dat &
-FILESINK_PID=$!
-$PARMQSERVER &> par_log.dat &
-PARMQSERVER_PID=$!
-
-# ps -p $$ --ppid $$ --forest
-
-echo "Wait for generator to finish"
-wait $GENERATOR_PID
-
-sleep 1
-
-echo "Kill other devices"
-kill $TRANSPORTER_PID
-kill $MERGER_PID
-kill $PARMQSERVER_PID
-kill $FILESINK_PID
-
-OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | @ROOT_EXECUTABLE@ -l -b @splitmc_file_location@/MQ.simulation_TGeant3.data.root | tail -1)"
-
-echo "There are $OUTPUT_EVENTS events in the output file."
-
-if [ "$OUTPUT_EVENTS" -eq "$INPUT_EVENTS" ];
+# Test Results ################################################################
+echo "Checking results ..."
+OUTPUT_EVENTS="$(echo "cout<<cbmsim->GetEntries()<<endl;" | @ROOT_EXECUTABLE@ -l -b $DATA_FILE | tail -1)"
+if [[ "$OUTPUT_EVENTS" -eq "$INPUT_EVENTS" ]]
 then
-    echo "Shell script finished successfully.";
+  echo " ==> There are $OUTPUT_EVENTS/$INPUT_EVENTS events in the data file. :-)"
 else
-    echo "Shell script failed.";
+  echo " ==> Found only $OUTPUT_EVENTS/$INPUT_EVENTS in data file. :-("
+  exit 1
 fi

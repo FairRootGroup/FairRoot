@@ -1,13 +1,18 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TObjString.h>
+#include <TStopwatch.h>
+#include <TSystem.h>
+#include <memory>
+
 void run_tutorial4(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t doAlign = true, Bool_t isMT = false)
 {
-
     TString dir = getenv("VMCWORKDIR");
 
     TString tut_configdir = dir + "/simulation/Tutorial4/gconfig";
@@ -21,6 +26,7 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t doAl
     Double_t theta = 2.;
 
     TString outDir = "./data/";
+    gSystem->MakeDirectory(outDir);
 
     // Output file name
     TString outFile{""};
@@ -66,7 +72,7 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t doAl
     FairRunSim* run = new FairRunSim();
     run->SetName(mcEngine);                        // Transport engine
     run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
-    run->SetSink(new FairRootFileSink(outFile));   // Output file
+    run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------
 

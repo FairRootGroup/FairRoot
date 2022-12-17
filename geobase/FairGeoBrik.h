@@ -21,9 +21,9 @@ class FairGeoBrik : public FairGeoBasicShape
   public:
     FairGeoBrik();
     ~FairGeoBrik();
-    TArrayD* calcVoluParam(FairGeoVolume*);
-    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&);
-    ClassDef(FairGeoBrik, 0);   // class for geometry shape BOX or BRIK
+    TArrayD* calcVoluParam(FairGeoVolume*) override;
+    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&) override;
+    ClassDefOverride(FairGeoBrik, 0);   // class for geometry shape BOX or BRIK
 };
 
 #endif /* !FAIRGEOBRIK_H */

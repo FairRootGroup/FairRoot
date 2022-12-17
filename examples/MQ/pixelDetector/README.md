@@ -1,4 +1,4 @@
-# Move from root to FairMQ
+# Move from root to FairMQ {#ex_mq_pixel_detector}
 
 This example uses standard FairRoot analysis chain:
 

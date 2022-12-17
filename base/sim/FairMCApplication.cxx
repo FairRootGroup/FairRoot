@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -64,12 +64,10 @@ class TParticle;
 #include <float.h>    // for DBL_MAX
 #include <mutex>      // std::mutex
 #include <stdlib.h>   // for getenv, exit
-#include <utility>    // for pair
+#include <utility>    // for pair, move
 std::mutex mtx;       // mutex for critical section
 
 using std::pair;
-
-FairMCApplication* FairMCApplication::fgMasterInstance = 0;
 
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication(const char* name, const char* title, TObjArray* ModList, const char*)
@@ -77,7 +75,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     , fActiveDetectors(nullptr)
     , fFairTaskList(nullptr)
     , fDetectors(nullptr)
-    , fDetMap(nullptr)
     , fModIter(nullptr)
     , fModules(nullptr)
     , fNoSenVolumes(0)
@@ -94,28 +91,24 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     , fUserDecay(kFALSE)
     , fUserDecayConfig("")
     , fDebug(kFALSE)
-    , fDisVol(nullptr)
-    , fDisDet(nullptr)
     , fVolMap()
-    , fVolIter()
     , fModVolMap()
-    , fModVolIter()
     , fTrkPos(TLorentzVector(0, 0, 0, 0))
     , fRadLength(kFALSE)
     , fRadLenMan(nullptr)
     , fRadMap(kFALSE)
     , fRadMapMan(nullptr)
-    , fRadGridMan(nullptr)
     , fEventHeader(nullptr)
     , fMCEventHeader(nullptr)
     , listActiveDetectors()
     , listDetectors()
     , fMC(nullptr)
-    , fRun(nullptr)
+    , fRun(FairRunSim::Instance())
     , fSaveCurrentEvent(kTRUE)
     , fState(FairMCApplicationState::kUnknownState)
     , fRunInfo()
     , fGeometryIsInitialized(kFALSE)
+    , fWorkerRunSim()
 {
     // Standard Simulation constructor
 
@@ -123,7 +116,7 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
 
     LOG(debug) << "FairMCApplication-ctor " << this;
 
-    fRun = FairRunSim::Instance();
+    fRootManager = &fRun->GetRootManager();
     fModules = ModList;
     fModIter = fModules->MakeIterator();
     // Create and fill a list of active detectors
@@ -153,21 +146,14 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     fMcVersion = -1;
     // Initialise fTrajFilter pointer
     fTrajFilter = nullptr;
-    fDetMap = new TRefArray(1000);
-    fDisVol = 0;
-    fDisDet = 0;
-
-    // This ctor is used to construct the application on master
-    fgMasterInstance = this;
 }
 
 //_____________________________________________________________________________
-FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
+FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_ptr<FairRunSim> otherRunSim)
     : TVirtualMCApplication(rhs.GetName(), rhs.GetTitle())
     , fActiveDetectors(nullptr)
     , fFairTaskList(nullptr)
     , fDetectors(nullptr)
-    , fDetMap(nullptr)
     , fModIter(nullptr)
     , fModules(nullptr)
     , fNoSenVolumes(0)
@@ -184,33 +170,32 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
     , fUserDecay(kFALSE)
     , fUserDecayConfig(rhs.fUserDecayConfig)
     , fDebug(rhs.fDebug)
-    , fDisVol(nullptr)
-    , fDisDet(nullptr)
     , fVolMap()
-    , fVolIter()
     , fModVolMap()
-    , fModVolIter()
     , fTrkPos(rhs.fTrkPos)
     , fRadLength(kFALSE)
     , fRadLenMan(nullptr)
     , fRadMap(kFALSE)
     , fRadMapMan(nullptr)
-    , fRadGridMan(nullptr)
     , fEventHeader(nullptr)
     , fMCEventHeader(nullptr)
     , listActiveDetectors()
     , listDetectors()
     , fMC(nullptr)
-    , fRun(nullptr)
     , fSaveCurrentEvent(kTRUE)
     , fState(FairMCApplicationState::kUnknownState)
     , fRunInfo()
     , fGeometryIsInitialized(kFALSE)
+    , fWorkerRunSim(std::move(otherRunSim))
 {
     // Copy constructor
     // Do not create Root manager
 
     LOG(debug) << "FairMCApplication-copy-ctor " << this;
+
+    fParent = &rhs;
+    fRun = fWorkerRunSim.get();
+    fRootManager = &fRun->GetRootManager();
 
     // Create an ObjArray of Modules and its iterator
     fModules = new TObjArray();
@@ -247,12 +232,14 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs)
     // Clone stack
     fStack = rhs.fStack->CloneStack();
 
+    if (rhs.fEvGen) {
+        fEvGen = rhs.fEvGen->ClonePrimaryGenerator();
+    }
+
     // Create a Task list
     // Let's try without it
     // fFairTaskList= new FairTask("Task List", 1);
     // gROOT->GetListOfBrowsables()->Add(fFairTaskList);
-
-    fDetMap = new TRefArray(1000);
 }
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication()
@@ -260,7 +247,6 @@ FairMCApplication::FairMCApplication()
     , fActiveDetectors(0)
     , fFairTaskList(0)
     , fDetectors(0)
-    , fDetMap(0)
     , fModIter(0)
     , fModules(0)
     , fNoSenVolumes(0)
@@ -277,28 +263,23 @@ FairMCApplication::FairMCApplication()
     , fUserDecay(kFALSE)
     , fUserDecayConfig("")
     , fDebug(kFALSE)
-    , fDisVol(0)
-    , fDisDet(0)
     , fVolMap()
-    , fVolIter()
     , fModVolMap()
-    , fModVolIter()
     , fTrkPos(TLorentzVector(0, 0, 0, 0))
     , fRadLength(kFALSE)
     , fRadLenMan(nullptr)
     , fRadMap(kFALSE)
     , fRadMapMan(nullptr)
-    , fRadGridMan(nullptr)
     , fEventHeader(nullptr)
     , fMCEventHeader(nullptr)
     , listActiveDetectors()
     , listDetectors()
     , fMC(nullptr)
-    , fRun(nullptr)
     , fSaveCurrentEvent(kTRUE)
     , fState(FairMCApplicationState::kUnknownState)
     , fRunInfo()
     , fGeometryIsInitialized(kFALSE)
+    , fWorkerRunSim()
 {
     // Default constructor
 }
@@ -314,97 +295,6 @@ FairMCApplication::~FairMCApplication()
     delete fModIter;
     //  LOG(debug3) << "Leave Destructor of FairMCApplication";
     delete fMC;
-}
-
-//_____________________________________________________________________________
-FairMCApplication& FairMCApplication::operator=(const FairMCApplication& rhs)
-{
-    // Assignment operator
-
-    // check assignment to self
-    if (this != &rhs) {
-
-        // base class assignment
-        TVirtualMCApplication::operator=(rhs);
-
-        fActiveDetectors = nullptr;
-        fFairTaskList = nullptr;
-        fDetectors = nullptr;
-        fDetMap = nullptr;
-        fModIter = nullptr;
-        fModules = nullptr;
-        fNoSenVolumes = 0;
-        fPythiaDecayer = kFALSE;
-        fPythiaDecayerConfig = rhs.fPythiaDecayerConfig;
-        fStack = nullptr;
-        fRootManager = nullptr;
-        fSenVolumes = nullptr;
-        fxField = rhs.fxField;
-        fEvGen = nullptr;
-        fMcVersion = rhs.fMcVersion;
-        fTrajFilter = nullptr;
-        fTrajAccepted = kFALSE;
-        fUserDecay = kFALSE;
-        fUserDecayConfig = rhs.fUserDecayConfig;
-        fDebug = rhs.fDebug;
-        fDisVol = nullptr;
-        fDisDet = nullptr;
-        fTrkPos = rhs.fTrkPos;
-        fRadLength = kFALSE;
-        fRadLenMan = nullptr;
-        fRadMap = kFALSE;
-        fRadMapMan = nullptr;
-        fRadGridMan = nullptr;
-        fEventHeader = nullptr;
-        fMCEventHeader = nullptr;
-        fGeometryIsInitialized = kFALSE;
-
-        // Do not create Root manager
-
-        // Create an ObjArray of Modules and its iterator
-        fModules = new TObjArray();
-        fModIter = fModules->MakeIterator();
-        // Clone modules
-        TObject* obj;
-        while ((obj = rhs.fModIter->Next())) {
-            fModules->Add(static_cast<FairModule*>(obj)->CloneModule());
-        }
-
-        // Create and fill a list of active detectors
-        fDetectors = new TRefArray;
-        fActiveDetectors = new TRefArray();
-        fModIter->Reset();
-        FairDetector* detector;
-        while ((obj = fModIter->Next())) {
-            if (obj->InheritsFrom("FairDetector")) {
-                detector = dynamic_cast<FairDetector*>(obj);
-                if (detector) {
-                    fDetectors->Add(detector);
-                    listDetectors.push_back(detector);
-                    if (detector->IsActive()) {
-                        fActiveDetectors->Add(detector);
-                        listActiveDetectors.push_back(detector);
-                    }
-                } else {
-                    LOG(error) << "Dynamic cast fails.";
-                }
-            }
-        }
-
-        // Clone stack
-        fStack = rhs.fStack->CloneStack();
-
-        // Create a Task list
-        // Let's try without it
-        // fFairTaskList= new FairTask("Task List", 1);
-        // gROOT->GetListOfBrowsables()->Add(fFairTaskList);
-
-        fDetMap = new TRefArray(1000);
-
-        fState = rhs.fState;
-    }
-
-    return *this;
 }
 
 //_____________________________________________________________________________
@@ -427,7 +317,6 @@ void FairMCApplication::InitMC(const char*, const char*)
     }
     fMC->SetMagField(fxField);
 
-    fRootManager = FairRootManager::Instance();
     // fRootManager->SetDebug(true);
 
     fMC->Init();
@@ -481,7 +370,7 @@ void FairMCApplication::FinishRun()
     }
     // fRootManager->Fill();
 
-    FairPrimaryGenerator* gen = FairRunSim::Instance()->GetPrimaryGenerator();
+    FairPrimaryGenerator* gen = fRun->GetPrimaryGenerator();
     // FairMCEventHeader* header = gen->GetEvent();
     Int_t nprimary = gen->GetTotPrimary();
     TObjArray* meshlist = nullptr;
@@ -521,13 +410,17 @@ void FairMCApplication::FinishRun()
     }
 
     // Save histograms with memory and runtime information in the output file
-    if (FairRunSim::Instance()->IsRunInfoGenerated()) {
+    if (fRun->IsRunInfoGenerated()) {
         fRunInfo.WriteInfo();
     }
 
     if (!fRadGridMan && fRootManager) {
         fRootManager->Write();
         fRootManager->CloseSink();
+    }
+
+    if (fEvGen) {
+        fEvGen->Finish();
     }
 
     if (!fMC->IsMT()) {
@@ -589,14 +482,14 @@ void FairMCApplication::PreTrack()
 //_____________________________________________________________________________
 TVirtualMCApplication* FairMCApplication::CloneForWorker() const
 {
-    mtx.lock();
+    std::lock_guard guard(mtx);
     LOG(info) << "FairMCApplication::CloneForWorker ";
 
     // Create new FairRunSim object on worker
     // and pass some data from master FairRunSim object
-    FairRunSim* workerRun = new FairRunSim(kFALSE);
+    auto workerRun = std::make_unique<FairRunSim>(kFALSE);
     workerRun->SetName(fRun->GetName());   // Transport engine
-    workerRun->SetSink(fRun->GetSink()->CloneSink());
+    workerRun->SetSink(std::unique_ptr<FairSink>{fRun->GetSink()->CloneSink()});
 
     // Trajectories filter is created explicitly as we do not call
     // FairRunSim::Init on workers
@@ -605,24 +498,13 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
     }
 
     // Create new FairMCApplication object on worker
-    FairMCApplication* workerApplication = new FairMCApplication(*this);
-    workerApplication->SetGenerator(fEvGen->ClonePrimaryGenerator());
-
-    mtx.unlock();
-
-    return workerApplication;
+    return new FairMCApplication(*this, std::move(workerRun));
 }
 
 //_____________________________________________________________________________
 void FairMCApplication::InitOnWorker()
 {
-    // Create Root manager
-    fRootManager = FairRootManager::Instance();
-
     LOG(info) << "FairMCApplication::InitForWorker " << fRootManager->GetInstanceId() << " " << this;
-
-    // Set FairRunSim worker(just for consistency, not needed on worker)
-    fRun = FairRunSim::Instance();
 
     // Generate per-thread file name
     // and create a new sink on worker
@@ -673,49 +555,47 @@ void FairMCApplication::Stepping()
     // In any case call the ProcessHits function for this specific detector.
     Int_t copyNo;
     Int_t id = fMC->CurrentVolID(copyNo);
-    Bool_t InMap = kFALSE;
-    fDisVol = 0;
-    fDisDet = 0;
-    Int_t fCopyNo = 0;
-    fVolIter = fVolMap.find(id);
+    auto voliter = fVolMap.find(id);
 
-    if (fVolIter != fVolMap.end()) {
+    if (voliter != fVolMap.end()) {
+        Bool_t InMap = kFALSE;
+        FairVolume* disvol = nullptr;
+        FairDetector* disdet = nullptr;
 
         // Call Process hits for FairVolume with this id, copyNo
         do {
-            fDisVol = fVolIter->second;
-            fCopyNo = fDisVol->getCopyNo();
-            if (copyNo == fCopyNo) {
-                fDisDet = fDisVol->GetDetector();
-                if (fDisDet) {
-                    fDisDet->ProcessHits(fDisVol);
+            disvol = voliter->second;
+            if (copyNo == disvol->getCopyNo()) {
+                disdet = disvol->GetDetector();
+                if (disdet) {
+                    disdet->ProcessHits(disvol);
                 }
                 InMap = kTRUE;
                 break;
             }
-            ++fVolIter;
-        } while (fVolIter != fVolMap.upper_bound(id));
+            ++voliter;
+        } while (voliter != fVolMap.upper_bound(id));
 
-        //    if (fDisVol && !InMap) { // fDisVolume is set previously, no check needed
+        //    if (disvol && !InMap) { // fDisVolume is set previously, no check needed
 
         // Create new FairVolume with this id, copyNo.
         // Use the FairVolume with the same id found in the map to get
         // the link to the detector.
         // Seems that this never happens (?)
         if (!InMap) {
-            // cout << "Volume not in map; fDisVol ? " << fDisVol << endl
+            // cout << "Volume not in map; disvol ? " << disvol << endl
             FairVolume* fNewV = new FairVolume(fMC->CurrentVolName(), id);
             fNewV->setMCid(id);
-            fNewV->setModId(fDisVol->getModId());
-            fNewV->SetModule(fDisVol->GetModule());
+            fNewV->setModId(disvol->getModId());
+            fNewV->SetModule(disvol->GetModule());
             fNewV->setCopyNo(copyNo);
             fVolMap.insert(pair<Int_t, FairVolume*>(id, fNewV));
-            fDisDet = fDisVol->GetDetector();
+            disdet = disvol->GetDetector();
 
             // LOG(info) << "FairMCApplication::Stepping: new fair volume"
-            //    << id << " " << copyNo << " " <<  fDisDet;
-            if (fDisDet) {
-                fDisDet->ProcessHits(fNewV);
+            //    << id << " " << copyNo << " " <<  disdet;
+            if (disdet) {
+                disdet->ProcessHits(fNewV);
             }
         }
     }
@@ -736,15 +616,15 @@ void FairMCApplication::Stepping()
             fTrajFilter->GetCurrentTrk()->AddPoint(fTrkPos.X(), fTrkPos.Y(), fTrkPos.Z(), fTrkPos.T());
         }
     }
-    if (fRadLenMan) {
+    if (fRadLenMan || fRadMapMan) {
         id = fMC->CurrentVolID(copyNo);
-        fModVolIter = fgMasterInstance->fModVolMap.find(id);
-        fRadLenMan->AddPoint(fModVolIter->second);
-    }
-    if (fRadMapMan) {
-        id = fMC->CurrentVolID(copyNo);
-        fModVolIter = fgMasterInstance->fModVolMap.find(id);
-        fRadMapMan->AddPoint(fModVolIter->second);
+        auto modvoliter = (fParent ? fParent : this)->fModVolMap.find(id);
+        if (fRadLenMan) {
+            fRadLenMan->AddPoint(fMC, modvoliter->second);
+        }
+        if (fRadMapMan) {
+            fRadMapMan->AddPoint(fMC, modvoliter->second);
+        }
     }
     if (fRadGridMan) {
         fRadGridMan->FillMeshList();
@@ -848,7 +728,7 @@ void FairMCApplication::FinishEvent()
 
     // Store information about runtime for one event and memory consuption
     // for later usage.
-    if ((FairRunSim::Instance()->IsRunInfoGenerated()) && !gMC->IsMT()) {
+    if (fRun->IsRunInfoGenerated() && !gMC->IsMT()) {
         fRunInfo.StoreInfo();
     }
 }
@@ -1063,12 +943,12 @@ void FairMCApplication::InitGeometry()
 
     // store the EventHeader Info
     // Get and register EventHeader
-    UInt_t runId = FairRunSim::Instance()->GetRunId();
+    UInt_t runId = fRun->GetRunId();
 
     LOG(info) << "Simulation RunID: " << runId;
 
     // Get and register the MCEventHeader
-    fMCEventHeader = FairRunSim::Instance()->GetMCEventHeader();
+    fMCEventHeader = fRun->GetMCEventHeader();
     fMCEventHeader->SetRunID(runId);
     if (fRootManager) {
         fMCEventHeader->Register();
@@ -1087,7 +967,7 @@ void FairMCApplication::InitGeometry()
     if (nullptr != fRadMapMan) {
         fRadMapMan->Init();
     }
-    if (nullptr != fRadGridMan) {
+    if (fRadGridMan) {
         fRadGridMan->Init();
     }
 
@@ -1378,7 +1258,7 @@ TTask* FairMCApplication::GetListOfTasks() { return fFairTaskList; }
 void FairMCApplication::SetParTask()
 {
     // Only RTDB init when more than Main Task list
-    if (FairRun::Instance()->GetNTasks() >= 1) {
+    if (fRun->GetNTasks() >= 1) {
         fFairTaskList->SetParTask();
     }
     fModIter->Reset();
@@ -1386,15 +1266,14 @@ void FairMCApplication::SetParTask()
     while ((Mod = dynamic_cast<FairModule*>(fModIter->Next()))) {
         Mod->SetParContainers();
     }
-    FairRuntimeDb* fRTdb = FairRun::Instance()->GetRuntimeDb();
-    fRTdb->initContainers(FairRunSim::Instance()->GetRunId());
+    FairRuntimeDb* fRTdb = fRun->GetRuntimeDb();
+    fRTdb->initContainers(fRun->GetRunId());
 }
 //_____________________________________________________________________________
 void FairMCApplication::InitTasks()
 {
-
     // Only RTDB init when more than Main Task list
-    if (FairRun::Instance()->GetNTasks() >= 1) {
+    if (fRun->GetNTasks() >= 1) {
         LOG(info) << "Initialize Tasks--------------------------";
         fFairTaskList->InitTask();
     }
@@ -1433,7 +1312,7 @@ void FairMCApplication::SetRadiationMapReg(Bool_t RadMap)
 void FairMCApplication::AddMeshList(TObjArray* meshList)
 {
     if (!fRadGridMan) {
-        fRadGridMan = new FairRadGridManager();
+        fRadGridMan = std::make_unique<FairRadGridManager>();
     }
     fRadGridMan->AddMeshList(meshList);
 }

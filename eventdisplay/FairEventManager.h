@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -121,6 +121,8 @@ class FairEventManager : public TEveEventManager
     Bool_t GetUseTimeOfEvent() const { return fUseTimeOfEvent; }
     Bool_t GetDrawAnimatedTracks() const { return fAnimatedTracks; }
     Bool_t GetClearHandler() const { return fClearHandler; }
+    FairRootManager& GetRootManager() { return fRootManager; }
+    FairRootManager const& GetRootManager() const { return fRootManager; }
 
     /**
      *
@@ -148,15 +150,15 @@ class FairEventManager : public TEveEventManager
     Int_t StringToColor(TString color) const;
 
   private:
-    FairRootManager *fRootManager;                    //!
+    FairRunAna* fRunAna;                              //!
+    FairRootManager& fRootManager;                    //!
     Int_t fEntry;                                     //!
     Double_t fWorldSizeX, fWorldSizeY, fWorldSizeZ;   //!
     Double_t fTimeMin, fTimeMax;                      //!
     Bool_t fUseTimeOfEvent;                           //!
     Double_t fTimeEvent;                              //!
-    Bool_t fAnimatedTracks;							  //!
-    Bool_t fClearHandler;							  //!
-    FairRunAna *fRunAna;                              //!
+    Bool_t fAnimatedTracks;                           //!
+    Bool_t fClearHandler;                             //!
     TGListTreeItem *fEvent;                           //!
     Double_t fRPhiPlane[4];                           //!
     Double_t fRhoZPlane[4];                           //!
@@ -173,8 +175,8 @@ class FairEventManager : public TEveEventManager
     TEveProjectionManager *fRhoZProjManager;          //!
     TEveProjectionAxes *fAxesPhi;                     //!
     TEveProjectionAxes *fAxesRho;                     //!
-    TEveText *fEventTimeText;						  //!
-	TEveText *fEventNumberText;						  //!
+    TEveText* fEventTimeText{nullptr};                //!
+    TEveText* fEventNumberText{nullptr};              //!
     TString fXMLConfig;
     std::map<int, int> fPDGToColor;
     void SetTransparencyForLayer(TGeoNode *node, Int_t depth, Char_t transparency);

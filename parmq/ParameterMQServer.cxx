@@ -26,7 +26,7 @@
 #include <cstdlib>   // getenv
 #include <fairlogger/Logger.h>
 
-using namespace std;
+using std::string;
 
 ParameterMQServer::ParameterMQServer()
     : fRtdb(FairRuntimeDb::instance())
@@ -77,11 +77,11 @@ void ParameterMQServer::InitTask()
         if (fFirstInputName != "") {
             if (fFirstInputType == "ROOT") {
                 FairParRootFileIo* par1R = new FairParRootFileIo();
-                par1R->open(fFirstInputName.data(), "UPDATE");
+                par1R->open(fFirstInputName.c_str(), "UPDATE");
                 fRtdb->setFirstInput(par1R);
             } else if (fFirstInputType == "ASCII") {
                 FairParAsciiFileIo* par1A = new FairParAsciiFileIo();
-                par1A->open(fFirstInputName.data(), "in");
+                par1A->open(fFirstInputName.c_str(), "in");
                 fRtdb->setFirstInput(par1A);
             }
         }
@@ -90,11 +90,11 @@ void ParameterMQServer::InitTask()
         if (fSecondInputName != "") {
             if (fSecondInputType == "ROOT") {
                 FairParRootFileIo* par2R = new FairParRootFileIo();
-                par2R->open(fSecondInputName.data(), "UPDATE");
+                par2R->open(fSecondInputName.c_str(), "UPDATE");
                 fRtdb->setSecondInput(par2R);
             } else if (fSecondInputType == "ASCII") {
                 FairParAsciiFileIo* par2A = new FairParAsciiFileIo();
-                par2A->open(fSecondInputName.data(), "in");
+                par2A->open(fSecondInputName.c_str(), "in");
                 fRtdb->setSecondInput(par2A);
             }
         }
@@ -104,7 +104,7 @@ void ParameterMQServer::InitTask()
             if (fOutputName != "") {
                 if (fOutputType == "ROOT") {
                     FairParRootFileIo* parOut = new FairParRootFileIo(kTRUE);
-                    parOut->open(fOutputName.data());
+                    parOut->open(fOutputName.c_str());
                     fRtdb->setOutput(parOut);
                 }
 
@@ -175,7 +175,7 @@ bool ParameterMQServer::ProcessUpdate(fair::mq::MessagePtr& update, int /*index*
             FairRunIdGenerator genid;
             fRunId = genid.generateId();
         }
-        string messageToSend = to_string(fRunId) + "_" + to_string(fNofSimDevices);
+        string messageToSend = std::to_string(fRunId) + "_" + std::to_string(fNofSimDevices);
         text = new string(messageToSend);
         fNofSimDevices += 1;
         LOG(info) << "Replying with \"" << messageToSend << "\"";
@@ -187,7 +187,7 @@ bool ParameterMQServer::ProcessUpdate(fair::mq::MessagePtr& update, int /*index*
         uint runId = 0;
         if (parDescr.find("RUNID") != std::string::npos) {
             parDescr.erase(0, parDescr.find("RUNID") + 5);
-            runId = atoi(parDescr.data());
+            runId = stoi(parDescr);
             if (parDescr.find("RUNID") != std::string::npos) {
                 parDescr.erase(0, parDescr.find("RUNID") + 5);
             }
@@ -206,7 +206,7 @@ bool ParameterMQServer::ProcessUpdate(fair::mq::MessagePtr& update, int /*index*
 
         Bool_t kParameterMerged = kTRUE;
         FairParRootFileIo* parOut = new FairParRootFileIo(kParameterMerged);
-        parOut->open(fOutputName.data());
+        parOut->open(fOutputName.c_str());
         fRtdb->setOutput(parOut);
         fRtdb->saveOutput();
         fRtdb->closeOutput();
@@ -217,10 +217,7 @@ bool ParameterMQServer::ProcessUpdate(fair::mq::MessagePtr& update, int /*index*
                         [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
                         text));
 
-    if (Send(msg, fUpdateChannelName) < 0) {
-        return false;
-    }
-    return true;
+    return Send(msg, fUpdateChannelName) >= 0;
 }
 
 ParameterMQServer::~ParameterMQServer() { delete fRtdb; }

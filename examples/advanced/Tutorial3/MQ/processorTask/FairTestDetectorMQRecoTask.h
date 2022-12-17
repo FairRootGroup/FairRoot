@@ -33,7 +33,7 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
     FairTestDetectorMQRecoTask(const FairTestDetectorMQRecoTask&) = delete;
     FairTestDetectorMQRecoTask operator=(const FairTestDetectorMQRecoTask&) = delete;
 
-    virtual ~FairTestDetectorMQRecoTask()
+    ~FairTestDetectorMQRecoTask() override
     {
         if (fRecoTask.fDigiArray) {
             fRecoTask.fDigiArray->Delete();
@@ -45,7 +45,7 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
         }
     }
 
-    virtual InitStatus Init()
+    InitStatus Init() override
     {
         fRecoTask.SetStreamProcessing(kTRUE);
         fRecoTask.fDigiArray = new TClonesArray("FairTestDetectorDigi");
@@ -54,7 +54,7 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
         return kSUCCESS;
     }
 
-    virtual void Exec(Option_t* opt = "0");
+    void Exec(Option_t* opt = "0") override;
 
   private:
     FairTestDetectorRecoTask fRecoTask;

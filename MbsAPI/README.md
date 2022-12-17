@@ -1,6 +1,0 @@
-MbsAPI
-========
-
-The [Multi Branch System (MBS)](https://www.gsi.de/work/organisation/wissenschaftlich_technologische_abteilungen/experiment_elektronik/datenverarbeitung/datenerfassung/mbs.htm) is the standard Data Acquisition System at GSI. 
-
-The classes in the directory provide interface to this system.

@@ -4,6 +4,7 @@
 
 #include <TGeoManager.h>
 #include <TGeoPhysicalNode.h>
+#include <TGeoShapeAssembly.h>
 
 FairAlignmentHandler::FairAlignmentHandler() {}
 
@@ -20,6 +21,13 @@ void FairAlignmentHandler::AlignGeometry() const
         } else {
             AlignGeometryByFullPath();
         }
+
+        // --- Force BoundingBox recomputation for AssemblyVolumes as they may have been corrupted by alignment
+        // FIXME: will hopefully be fixed in Root in near future, temp fix in meantime
+        RecomputePhysicalAssmbBbox();
+
+        LOG(info) << "Refreshing geometry...";
+        gGeoManager->RefreshPhysicalNodes(kFALSE);
 
         LOG(info) << "alignment finished!";
     }
@@ -91,5 +99,25 @@ void FairAlignmentHandler::AddAlignmentMatrices(const std::map<std::string, TGeo
             fAlignmentMatrices[m.first] *= m.second.Inverse();
         else
             fAlignmentMatrices[m.first] *= m.second;
+    }
+}
+
+void FairAlignmentHandler::RecomputePhysicalAssmbBbox() const
+{
+    TObjArray* pPhysNodesArr = gGeoManager->GetListOfPhysicalNodes();
+
+    TGeoPhysicalNode* pPhysNode = nullptr;
+    TGeoShapeAssembly* pShapeAsb = nullptr;
+
+    Int_t iNbNodes = pPhysNodesArr->GetEntriesFast();
+    for (Int_t iInd = 0; iInd < iNbNodes; ++iInd) {
+        pPhysNode = dynamic_cast<TGeoPhysicalNode*>(pPhysNodesArr->At(iInd));
+        if (pPhysNode) {
+            pShapeAsb = dynamic_cast<TGeoShapeAssembly*>(pPhysNode->GetShape());
+            if (pShapeAsb) {
+                // Should reach here only if the original node was a TGeoShapeAssembly
+                pShapeAsb->ComputeBBox();
+            }
+        }
     }
 }

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -109,7 +109,6 @@ TClonesArray* FairTSBufferFunctional::GetData(Double_t stopParameter)
                       << " into fOutputArray" << std::endl;
         }
         fOutputArray->AbsorbObjects(fBufferArray, 0, posBuffer - 1);
-        posBuffer = 0;
         return fOutputArray;
     }
     if (fVerbose > 1) {
@@ -275,16 +274,12 @@ void FairTSBufferFunctional::ReadInEntry(Int_t number)
 
 Bool_t FairTSBufferFunctional::AllDataProcessed()
 {
-    if (fTerminate == kTRUE) {
+    if (fTerminate) {
         return kTRUE;
     }
     if (fBranchIndex + 1 >= fBranch->GetEntries()) {
         if (fBufferArray->GetEntriesFast() == 0) {
-            if (fOutputArray->GetEntriesFast() == 0) {
-                return kTRUE;
-            } else {
-                return kFALSE;
-            }
+            return fOutputArray->GetEntriesFast() == 0;
         } else {
             return kFALSE;
         }

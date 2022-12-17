@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,13 +12,6 @@
 
 #include <Rtypes.h>     // for Double_t, Int_t, Double32_t, etc
 #include <TVector3.h>   // for TVector3
-
-namespace boost {
-namespace serialization {
-class access;
-}
-}   // namespace boost
-#include <boost/serialization/base_object.hpp>
 
 /**
  * Abstract base class for reconstructed hits in the FAIR detectors.
@@ -67,23 +60,7 @@ class FairHit : public FairTimeStamp
     /*** Output to screen */
     virtual void Print(const Option_t*) const { ; }
 
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int)
-    {
-        ar& boost::serialization::base_object<FairTimeStamp>(*this);
-        ar& fDetectorID;
-        ar& fRefIndex;
-        ar& fX;
-        ar& fY;
-        ar& fZ;
-        ar& fDx;
-        ar& fDy;
-        ar& fDz;
-    }
-
   protected:
-    friend class boost::serialization::access;
-
     Double32_t fDx, fDy, fDz;   ///< Errors of position [cm]
     Int_t fRefIndex;            ///< Index of FairMCPoint for this hit
     Int_t fDetectorID;          ///< Detector unique identifier
@@ -124,4 +101,4 @@ inline void FairHit::SetPosition(const TVector3& pos)
     fZ = pos.Z();
 }
 
-#endif
+#endif   // FAIRHIT_H

@@ -1,0 +1,17 @@
+/**
+\defgroup base_source Base | Source
+\ingroup base
+
+source
+========
+
+The input to the `FairRunOnline` is deriving from `FairSource`.
+Several implementations are provided:
+* from LMD (GSI specific data storage file)
+* from MBS (GSI specific DAQ output, Multi Branch System)
+* from the ROOT file (with the `TTree` *cbmsim*)
+* from the remote DAQ server (derive from MbsSource)
+
+The abstract unpacker class to transform the data into ROOT compliant data.
+
+ */

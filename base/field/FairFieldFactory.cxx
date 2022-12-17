@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,15 +12,24 @@
 
 #include "FairFieldFactory.h"
 
-FairFieldFactory* FairFieldFactory::fgRinstance = 0;
+FairFieldFactory* FairFieldFactory::fgRinstance = nullptr;
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 FairFieldFactory::FairFieldFactory()
-    : fCreator(0)
+    : fCreator(nullptr)
 {
     fgRinstance = this;
 }
+#pragma GCC diagnostic pop
 
-FairFieldFactory::~FairFieldFactory() {}
+FairFieldFactory::~FairFieldFactory()
+{
+    if (fgRinstance == this) {
+        // Do not point to a destructed object!
+        fgRinstance = nullptr;
+    }
+}
 
 FairFieldFactory* FairFieldFactory::Instance() { return fgRinstance; }
 

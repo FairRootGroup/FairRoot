@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -41,13 +41,14 @@
 
 ClassImp(FairEventManager);
 
-FairEventManager *FairEventManager::fgRinstance = 0;
+FairEventManager *FairEventManager::fgRinstance = nullptr;
 
 FairEventManager *FairEventManager::Instance() { return fgRinstance; }
 
 FairEventManager::FairEventManager()
     : TEveEventManager("FairEventManager", "")
-    , fRootManager(FairRootManager::Instance())
+    , fRunAna(FairRunAna::Instance())
+    , fRootManager(fRunAna->GetRootManager())
     , fEntry(0)
     , fWorldSizeX(2000)
     , fWorldSizeY(2000)
@@ -58,7 +59,6 @@ FairEventManager::FairEventManager()
     , fTimeEvent(-1.)
     , fAnimatedTracks(kFALSE)
     , fClearHandler(kTRUE)
-    , fRunAna(FairRunAna::Instance())
     , fEvent(0)
     , fRPhiPlane{0, 0, 10, 0}
     , fRhoZPlane{-1, 0, 0, 0}
@@ -157,20 +157,10 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
     fAxesPhi = new TEveProjectionAxes(fRPhiProjManager);
     fAxesRho = new TEveProjectionAxes(fRhoZProjManager);
 
-    TEveWindowSlot *RPhiSlot = TEveWindow::CreateWindowInTab(gEve->GetBrowser()->GetTabRight());
-    TEveWindowPack *RPhiPack = RPhiSlot->MakePack();
-    RPhiPack->SetElementName("RPhi View");
-    RPhiPack->SetShowTitleBar(kFALSE);
-    RPhiPack->NewSlot()->MakeCurrent();
     fRPhiView = gEve->SpawnNewViewer("RPhi View", "");
     fRPhiScene = gEve->SpawnNewScene("RPhi", "Scene holding axis.");
     fRPhiScene->AddElement(fAxesPhi);
 
-    TEveWindowSlot *RhoZSlot = TEveWindow::CreateWindowInTab(gEve->GetBrowser()->GetTabRight());
-    TEveWindowPack *RhoZPack = RhoZSlot->MakePack();
-    RhoZPack->SetElementName("RhoZ View");
-    RhoZPack->SetShowTitleBar(kFALSE);
-    RhoZPack->NewSlot()->MakeCurrent();
     fRhoZView = gEve->SpawnNewViewer("RhoZ View", "");
     fRhoZScene = gEve->SpawnNewScene("RhoZ", "Scene holding axis.");
     fRhoZScene->AddElement(fAxesRho);
@@ -234,7 +224,13 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
 
 void FairEventManager::UpdateEditor() {}
 
-FairEventManager::~FairEventManager() {}
+FairEventManager::~FairEventManager()
+{
+    if (fgRinstance == this) {
+        // Do not point to a destructed object!
+        fgRinstance = nullptr;
+    }
+}
 
 void FairEventManager::Open() {}
 
@@ -488,7 +484,7 @@ Int_t FairEventManager::StringToColor(TString color) const
 
 void FairEventManager::SetTransparency(Bool_t use_xml, Int_t trans)
 {
-    if (use_xml == kFALSE) {   // high transparency
+    if (!use_xml) {   // high transparency
         Int_t vis_level = gGeoManager->GetVisLevel();
         TGeoNode *top = gGeoManager->GetTopNode();
         SetTransparencyForLayer(top, vis_level, trans);
@@ -569,8 +565,8 @@ void FairEventManager::MakeScreenshot(FairEveAnimationControl::eScreenshotType p
 
 Float_t FairEventManager::GetEvtTime()
 {
-    if (fUseTimeOfEvent == kTRUE) {
-        fTimeEvent = FairRootManager::Instance()->GetEventTime();
+    if (fUseTimeOfEvent) {
+        fTimeEvent = fRootManager.GetEventTime();
     }
     return fTimeEvent;
 }

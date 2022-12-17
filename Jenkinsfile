@@ -18,11 +18,13 @@ def jobMatrix(String prefix, String type, List specs) {
     def os = spec.os
     def ver = spec.ver
     def arch = spec.arch
-    def check = spec.check
+    def check = spec.getOrDefault("check", null)
+    def extra = spec.getOrDefault("extra", null)
 
     nodes[label] = {
       node(selector) {
         githubNotify(context: "${prefix}/${label}", description: 'Building ...', status: 'PENDING')
+        def logpattern = 'build/Testing/Temporary/*.log'
         try {
           deleteDir()
           checkout scm
@@ -33,6 +35,9 @@ def jobMatrix(String prefix, String type, List specs) {
           if (type == 'check') {
             ctestcmd = "ctest -S FairRoot_${check}_test.cmake -VV"
             sh "echo \"export FAIRROOT_FORMAT_BASE=origin/\${CHANGE_TARGET}\" >> ${jobscript}"
+          }
+          if (extra) {
+            ctestcmd = ctestcmd + " " + extra
           }
           if (selector =~ /^macos/) {
             sh "echo \"export SIMPATH=\$(brew --prefix fairsoft@${fairsoft})\" >> ${jobscript}"
@@ -60,10 +65,32 @@ def jobMatrix(String prefix, String type, List specs) {
             sh "cat ${jobscript}"
             sh "./slurm-submit.sh \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
           }
+          if (check == "warnings" || check == "doxygen") {
+            discoverGitReferenceBuild()
+          }
+          if (check == "warnings") {
+            recordIssues(tools: [clangTidy(pattern: logpattern)],
+                         filters: [excludeFile('build/.*/G__.*[.]cxx')],
+                         ignoreFailedBuilds: false,
+                         skipBlames: true)
+            archiveArtifacts(artifacts: logpattern, allowEmptyArchive: true, fingerprint: true)
+          }
+          if (check == "doxygen") {
+            recordIssues(tools: [doxygen()],
+                         ignoreFailedBuilds: false,
+                         skipBlames: true)
+            def result_url = readFile(file: 'build/generated-doxygen.url')
+            publishChecks(name: 'Doxygen-Preview',
+                          title: 'Doxygen Preview',
+                          summary: result_url)
+          }
 
           deleteDir()
           githubNotify(context: "${prefix}/${label}", description: 'Success', status: 'SUCCESS')
         } catch (e) {
+          if (check == "warnings") {
+            archiveArtifacts(artifacts: logpattern, allowEmptyArchive: true, fingerprint: true)
+          }
           deleteDir()
           githubNotify(context: "${prefix}/${label}", description: 'Error', status: 'ERROR')
           throw e
@@ -81,28 +108,37 @@ pipeline{
       steps{
         script {
           def builds = jobMatrix('alfa-ci', 'build', [
-            [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'nov20_patches'],
-            [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'nov20_patches_mt'],
             [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'apr21_patches'],
             [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'apr21_patches_mt'],
-            [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'nov20_patches'],
-            [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'nov20_patches_mt'],
             [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches'],
             [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches_mt'],
+            [os: 'debian',     ver: '11',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches'],
+            [os: 'debian',     ver: '11',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches_mt'],
+            [os: 'debian',     ver: '11',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr22_patches'],
+            [os: 'debian',     ver: '11',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr22_patches_mt'],
             [os: 'ubuntu',     ver: '20.04', arch: 'x86_64', compiler: 'gcc-9',           fairsoft: 'apr21_patches'],
             [os: 'ubuntu',     ver: '20.04', arch: 'x86_64', compiler: 'gcc-9',           fairsoft: 'apr21_patches_mt'],
+            [os: 'ubuntu',   ver: 'rolling', arch: 'x86_64', compiler: 'current',         fairsoft: 'dev',
+                             check: 'warnings',
+                             extra: '-DUSE_CLANG_TIDY=ON -DBUILD_MBS=OFF'],
             [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches'],
             [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches_mt'],
-            // [os: 'macos',      ver: '10.15', arch: 'x86_64', compiler: 'apple-clang-11',  fairsoft: '20.11'],
-            // [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-12',  fairsoft: '20.11'],
-            [os: 'macos',      ver: '10.15', arch: 'x86_64', compiler: 'apple-clang-11',  fairsoft: '21.4'],
-            [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-12',  fairsoft: '21.4'],
+            [os: 'macos',      ver: '12',    arch: 'arm64',  compiler: 'apple-clang-13',  fairsoft: '22.4'],
+            [os: 'macos',      ver: '12',    arch: 'x86_64', compiler: 'apple-clang-13',  fairsoft: '22.4'],
+            [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-13',  fairsoft: '22.4'],
+            [os: 'macos',      ver: '12',    arch: 'arm64',  compiler: 'apple-clang-13',  fairsoft: '22.11'],
+            [os: 'macos',      ver: '12',    arch: 'x86_64', compiler: 'apple-clang-13',  fairsoft: '22.11'],
+            [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-13',  fairsoft: '22.11'],
           ])
 
-          def checks = [:]
+          def checks = jobMatrix('alfa-ci', 'check', [
+            [os: 'ubuntu',   ver: 'rolling', arch: 'x86_64', compiler: 'current',         fairsoft: 'dev',
+                             check: 'doxygen'],
+          ])
           if (env.CHANGE_ID != null) { // only run checks for PRs
-            checks = jobMatrix('alfa-ci', 'check', [
-              [os: 'debian', ver: '10', arch: 'x86_64', check: 'format', fairsoft: 'nov20_patches'],
+            checks += jobMatrix('alfa-ci', 'check', [
+              [os: 'ubuntu',   ver: 'rolling', arch: 'x86_64', compiler: 'current',         fairsoft: 'dev',
+                               check: 'format'],
             ])
           }
 

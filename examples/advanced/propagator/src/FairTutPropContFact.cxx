@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2019-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -7,7 +7,6 @@
  ********************************************************************************/
 #include "FairTutPropContFact.h"
 
-#include "FairRuntimeDb.h"       // for FairRuntimeDb
 #include "FairTutPropGeoPar.h"   // for FairTutPropGeoPar
 #include "TList.h"               // for TList
 #include "TString.h"             // for TString
@@ -19,13 +18,10 @@ class FairParSet;
 static FairTutPropContFact gFairTutPropContFact;
 
 FairTutPropContFact::FairTutPropContFact()
-    : FairContFact()
+    : FairContFact("FairTutPropContFact", "Factory for parameter containers in libFairTutProp")
 {
     /** Constructor (called when the library is loaded) */
-    fName = "FairTutPropContFact";
-    fTitle = "Factory for parameter containers in libFairTutProp";
     setAllContainers();
-    FairRuntimeDb::instance()->addContFactory(this);
 }
 
 void FairTutPropContFact::setAllContainers()

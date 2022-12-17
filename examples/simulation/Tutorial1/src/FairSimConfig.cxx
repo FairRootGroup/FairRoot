@@ -12,7 +12,8 @@
 #include <iostream>
 #include <vector>
 
-using namespace std;
+using std::string;
+using std::vector;
 
 FairSimConfig::FairSimConfig()
     : fDescription("Options")
@@ -80,6 +81,6 @@ int FairSimConfig::ParseCommandLine(int argc, char* argv[])
     return 0;
 }
 
-void FairSimConfig::PrintHelpMessage() { cout << fDescription << endl; }
+void FairSimConfig::PrintHelpMessage() { std::cout << fDescription << std::endl; }
 
 ClassImp(FairSimConfig);

@@ -15,6 +15,10 @@
 #ifndef FAIRMCMATCH_H_
 #define FAIRMCMATCH_H_
 
+#ifndef FAIR_SILENCE_DATAMATCH_DEPRECATION
+#warning "FairRoot::DataMatch is deprecated and will be removed in a future major release"
+#endif
+
 #include "FairMCEntry.h"           // for FairMCEntry
 #include "FairMCResult.h"          // for FairMCResult
 #include "FairMCStage.h"           // for FairMCStage
@@ -105,7 +109,7 @@ class FairMCMatch : public TNamed
     friend std::ostream& operator<<(std::ostream& out, const FairMCMatch& match)
     {
         for (int i = 0; i < match.GetNMCStages(); i++) {
-            if (match.GetMCStage(i)->GetLoaded() == kTRUE) {
+            if (match.GetMCStage(i)->GetLoaded()) {
                 match.GetMCStage(i)->PrintInfo(out);
                 out << std::endl;
             }

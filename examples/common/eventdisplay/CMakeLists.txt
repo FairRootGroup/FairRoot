@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -27,24 +27,22 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
-)
-
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::GeoBase
   FairRoot::ParBase
   FairRoot::EventDisplay
   FairRoot::ExMCStack
-  FairRoot::TrkBase
-  Core
-  Eve
+  FairRoot::TrackBase
+
+  ROOT::Core
+  ROOT::Eve
 )
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF EventDisplayExampleLinkDef.h
+  EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})

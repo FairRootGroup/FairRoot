@@ -209,13 +209,6 @@ MACRO (CHECK_INSTALL_DIRECTORY)
 EndMacro (CHECK_INSTALL_DIRECTORY)
 ################################################################################
 
-MACRO(CHECK_EXTERNAL_PACKAGE_INSTALL_DIR)
-  If(IS_DIRECTORY ${SIMPATH}/bin)
-    Set(FAIRSOFT_EXTERN TRUE)
-  Else(IS_DIRECTORY ${SIMPATH}/bin)
-    Set(FAIRSOFT_EXTERN FALSE)
-  EndIf(IS_DIRECTORY ${SIMPATH}/bin)
-EndMacro(CHECK_EXTERNAL_PACKAGE_INSTALL_DIR)
 MACRO(UNIQUE var_name list)
 ################################################################################
 # Make the given list have only one instance of each unique element and
@@ -312,7 +305,7 @@ EndMacro(Generate_Exe_Script)
 ################################################################################
 
 Macro (Generate_Version_Info)
-IF(FAIRROOT_FOUND)
+ if(FairRoot_FOUND)
 
   Add_Custom_Target(svnheader ALL)
 
@@ -323,7 +316,7 @@ IF(FAIRROOT_FOUND)
                      -DFAIRROOT=${FAIRROOT_CMAKEMOD_DIR}
                      -P ${FAIRROOT_CMAKEMOD_DIR}/modules/GenerateVersionInfo.cmake
                       )
-ELSE(FAIRROOT_FOUND)
+ else()
   Add_Custom_Target(svnheader ALL)
   Add_Custom_Command(TARGET svnheader
                      COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${CMAKE_SOURCE_DIR}
@@ -331,15 +324,21 @@ ELSE(FAIRROOT_FOUND)
                      -DINCLUDE_OUTPUT_DIRECTORY=${INCLUDE_OUTPUT_DIRECTORY}
                      -P ${CMAKE_SOURCE_DIR}/cmake/modules/GenerateVersionInfo.cmake
 		     )
-ENDIF(FAIRROOT_FOUND)
-
+ endif()
 EndMacro (Generate_Version_Info)
 ################################################################################
 
 Macro (SetBasicVariables)
-IF(FAIRROOT_FOUND)
+if(FairRoot_FOUND)
+  if(TARGET fmt::fmt)
+    get_target_property(FMT_INCLUDE_DIR fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
+  endif()
   Set(BASE_INCLUDE_DIRECTORIES
     ${FAIRROOT_INCLUDE_DIR}
+    ${VMC_INCLUDE_DIRS}
+    ${ROOT_INCLUDE_DIRS}
+    ${FairLogger_INCDIR}
+    ${FMT_INCLUDE_DIR}
   )
   Set(SYSTEM_INCLUDE_DIRECTORIES
     ${ROOT_INCLUDE_DIR}
@@ -349,51 +348,16 @@ IF(FAIRROOT_FOUND)
       ${FAIRROOT_INCLUDE_DIR}
      )
 
-ELSE(FAIRROOT_FOUND)
-  Set(BASE_INCLUDE_DIRECTORIES
-    ${CMAKE_SOURCE_DIR}/logger
-    ${CMAKE_SOURCE_DIR}/fairtools
-    ${CMAKE_SOURCE_DIR}/geobase
-    ${CMAKE_SOURCE_DIR}/parbase
-    ${CMAKE_SOURCE_DIR}/base
-    ${CMAKE_SOURCE_DIR}/base/steer
-    ${CMAKE_SOURCE_DIR}/base/event
-    ${CMAKE_SOURCE_DIR}/base/field
-    ${CMAKE_SOURCE_DIR}/base/sim
-    ${CMAKE_SOURCE_DIR}/base/sink
-    ${CMAKE_SOURCE_DIR}/base/source
-    ${CMAKE_SOURCE_DIR}/dbase
-    ${CMAKE_SOURCE_DIR}/dbase/dbInterface
-    ${CMAKE_SOURCE_DIR}/dbase/dbValidation
-    ${CMAKE_SOURCE_DIR}/dbase/dbUtils
-    ${CMAKE_SOURCE_DIR}/input/db
-    ${CMAKE_SOURCE_DIR}/dbase/dbInput
-    ${CMAKE_SOURCE_DIR}/dbase/dbIO
-    ${CMAKE_SOURCE_DIR}/alignment
-  )
-  Set(SYSTEM_INCLUDE_DIRECTORIES
-    ${ROOT_INCLUDE_DIR}
-    ${Boost_INCLUDE_DIRS}
-  )
-  Set(ROOT_INCLUDE_PATH
-      ${BASE_INCLUDE_DIRECTORIES}
-  )
-ENDIF(FAIRROOT_FOUND)
-
-Set(BASE_LINK_DIRECTORIES
-    ${ROOT_LIBRARY_DIR}
-)
-
-IF(FAIRROOT_FOUND)
   Set(FAIRLIBDIR ${FAIRROOT_LIBRARY_DIR})
-ELSE(FAIRROOT_FOUND)
+else()
   Set(FAIRLIBDIR ${CMAKE_BINARY_DIR}/lib)
-ENDIF(FAIRROOT_FOUND)
+endif()
 Set(LD_LIBRARY_PATH  ${FAIRLIBDIR} ${LD_LIBRARY_PATH})
 
-include_directories(${BASE_INCLUDE_DIRECTORIES})
-include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
-link_directories(${BASE_LINK_DIRECTORIES})
+if(FairRoot_FOUND)
+  include_directories(${BASE_INCLUDE_DIRECTORIES})
+  include_directories(SYSTEM ${SYSTEM_INCLUDE_DIRECTORIES})
+endif()
 
 EndMacro (SetBasicVariables)
 

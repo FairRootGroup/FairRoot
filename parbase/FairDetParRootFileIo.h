@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -25,19 +25,18 @@ class FairDetParRootFileIo : public FairDetParIo
     FairDetParRootFileIo(FairParRootFile* f);
     virtual ~FairDetParRootFileIo() {}
     virtual Bool_t read(FairParSet*);
-    Int_t write(FairParSet*);
-    // Bool_t read(HDetGeomPar*,Int_t*);
+    Int_t write(FairParSet*) override;
 
   protected:
-    Int_t findInputVersion(Text_t* contName);
-    Int_t getMaxVersion(Text_t* contName);
+    Int_t findInputVersion(const char* contName);
+    Int_t getMaxVersion(const char* contName);
     TObject* findContainer(Text_t* contName, Int_t version);
 
   private:
     FairDetParRootFileIo(const FairDetParRootFileIo&);
     FairDetParRootFileIo& operator=(const FairDetParRootFileIo&);
 
-    ClassDef(FairDetParRootFileIo, 0);   // detector base class for parameter I/O from ROOT file
+    ClassDefOverride(FairDetParRootFileIo, 0);   // detector base class for parameter I/O from ROOT file
 };
 
 #endif /* !FAIRDETPARROOTFILEIO_H */

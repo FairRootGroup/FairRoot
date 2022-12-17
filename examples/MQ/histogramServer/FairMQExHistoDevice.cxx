@@ -56,7 +56,7 @@ bool FairMQExHistoDevice::ConditionalRun()
     RootSerializer().Serialize(*message, &fArrayHisto);
 
     for (auto& channel : fChannels) {
-        Send(message, channel.first.data());
+        Send(message, channel.first);
     }
 
     fh_histo1.Reset();

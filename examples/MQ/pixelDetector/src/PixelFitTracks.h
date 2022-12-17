@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -36,10 +36,10 @@ class PixelFitTracks : public FairTask
     PixelFitTracks(const char* name, Int_t iVerbose);
 
     /** Destructor **/
-    virtual ~PixelFitTracks();
+    ~PixelFitTracks() override;
 
     /** Execution **/
-    virtual void Exec(Option_t* opt);
+    void Exec(Option_t* opt) override;
 
     virtual void GetParList(TList* tempList);
     virtual void InitMQ(TList* tempList);
@@ -71,24 +71,24 @@ class PixelFitTracks : public FairTask
                               Double_t& errA1);
 
     /** Get parameter containers **/
-    virtual void SetParContainers();
+    void SetParContainers() override;
 
     /** Intialisation **/
-    virtual InitStatus Init();
+    InitStatus Init() override;
 
     /** Reinitialisation **/
-    virtual InitStatus ReInit();
+    InitStatus ReInit() override;
 
     /** Reset eventwise counters **/
     void Reset();
 
     /** Finish at the end of each event **/
-    virtual void Finish();
+    void Finish() override;
 
     PixelFitTracks(const PixelFitTracks&);
     PixelFitTracks& operator=(const PixelFitTracks&);
 
-    ClassDef(PixelFitTracks, 1);
+    ClassDefOverride(PixelFitTracks, 1);
 };
 
 #endif

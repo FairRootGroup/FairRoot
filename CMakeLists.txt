@@ -1,43 +1,19 @@
  ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ # Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             #
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-# The name of our project is "FairRoot".  CMakeLists files in this project can
-# refer to the root source directory of the project as ${FAIRROOT_SOURCE_DIR} or
-# as ${CMAKE_SOURCE_DIR} and to the root binary directory of the project as
-# ${FAIRROOT_BINARY_DIR} or ${CMAKE_BINARY_DIR}.
-# This difference is important for the base classes which are in FAIRROOT
-# and the subproject (i.e: CbmRoot, Pandaroot,... etc).
+cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
+cmake_policy(VERSION 3.15...3.23)
 
-# Check if cmake has the required version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0 FATAL_ERROR)
-cmake_policy(VERSION 3.11...3.19)
+set(PROJECT_MIN_CXX_STANDARD 17)
 
-set(CMAKE_INSTALL_MESSAGE LAZY)
-# Set project version
-SET(FAIRROOT_MAJOR_VERSION 18)
-SET(FAIRROOT_MINOR_VERSION 6)
-SET(FAIRROOT_PATCH_VERSION 9)
+project(FairRoot VERSION 18.8.0)
 
-if(APPLE)
-  if(NOT DEFINED CMAKE_C_COMPILER)
-    set(CMAKE_C_COMPILER clang)
-  endif()
-  if(NOT DEFINED CMAKE_CXX_COMPILER)
-    set(CMAKE_CXX_COMPILER clang++)
-  endif()
-endif()
-
-# Set name of our project to "FAIRROOT".
-# Has to be done after check of cmake version
-# This also sets ${FAIRROOT_VERSION} to the provided VERSION value, which would be empty if not set here explicitly
-project(FAIRROOT VERSION ${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION})
-# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
-# is checked
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
+list(PREPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
+list(PREPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/private")
 
 # Generate compile_commands.json file (https://clang.llvm.org/docs/JSONCompilationDatabase.html)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -47,7 +23,6 @@ include(GNUInstallDirs)
 include(FairRootTargetRootDictionary)
 
 # Define install dirs
-set(PROJECT_INSTALL_BINDIR ${CMAKE_INSTALL_BINDIR})
 set(PROJECT_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR})
 set(PROJECT_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/fairbase) # TODO: change 'fairbase' to ${PROJECT_NAME_LOWER}
 
@@ -67,6 +42,9 @@ endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} "-Wl,--enable-new-dtags")
   set(CMAKE_SHARED_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS} "-Wl,--enable-new-dtags")
+  set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -z defs")
+  set(CMAKE_MODULE_LINKER_FLAGS  "${CMAKE_MODULE_LINKER_FLAGS} -z defs")
+  set(CMAKE_SHARED_LINKER_FLAGS  "${CMAKE_SHARED_LINKER_FLAGS} -z defs")
 endif()
 
 if(CMAKE_GENERATOR STREQUAL "Ninja" AND
@@ -81,12 +59,18 @@ endif()
 if(NOT DEFINED BUILD_SHARED_LIBS)
   set(BUILD_SHARED_LIBS ON)
 endif()
+if(NOT DEFINED CMAKE_INSTALL_MESSAGE)
+  set(CMAKE_INSTALL_MESSAGE LAZY)
+endif()
 
 SET(VMCWORKDIR ${CMAKE_SOURCE_DIR}/examples)
 
 include(CheckSymbolExists)
 
 # Load some basic macros which are needed later on
+include(FairRootTargets)
+include(FairRootPackage)
+include(FairRootSummary)
 include(FairMacros)
 include(WriteConfigFile)
 include(Dart)
@@ -96,17 +80,6 @@ include(CheckCompiler)
 Check_Compiler()
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
-
-Option(USE_PATH_INFO "Information from PATH and LD_LIBRARY_PATH are used." OFF)
-
-If(USE_PATH_INFO)
-  Set(PATH $ENV{PATH})
-  If (APPLE)
-    Set(LD_LIBRARY_PATH $ENV{DYLD_LIBRARY_PATH})
-  Else (APPLE)
-    Set(LD_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
-  EndIf (APPLE)
-EndIf(USE_PATH_INFO)
 
 # Check if the user wants to build the project in the source
 # directory and if the install directory is different from the build
@@ -133,12 +106,16 @@ If(FAIRSOFT_CONFIG)
   SET(SIMPATH $ENV{SIMPATH})
 endif()
 
-# Check if the external packages are installed into a separate install
-# directory
-CHECK_EXTERNAL_PACKAGE_INSTALL_DIR()
-
 # Set option(s)
 option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
+option(ENABLE_GEANT3_TESTING "Enable tests utilizing Geant3" OFF)
+option(BUILD_PROOF_SUPPORT "Support ROOT::Proof (deprecated)" ON)
+option(BUILD_ONLINE "Build the online library" ON)
+option(BUILD_MBS "Build MBS" ON)
+if (BUILD_MBS)
+  set(BUILD_ONLINE ON)
+endif()
+option(BUILD_BASEMQ "Build the 'FairRoot::BaseMQ' library" ON)
 
 # searches for needed packages
 # REQUIRED means that cmake will stop if this packages are not found
@@ -148,6 +125,12 @@ option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
 if(SIMPATH)
   set(CMAKE_PREFIX_PATH ${SIMPATH} ${CMAKE_PREFIX_PATH})
   set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${SIMPATH}/lib)
+endif()
+
+if(CMAKE_CXX_CLANG_TIDY)
+  # Force clang-tidy to the same C++ Standard
+  list(APPEND CMAKE_CXX_CLANG_TIDY
+       "--extra-arg=-std=c++${CMAKE_CXX_STANDARD}")
 endif()
 
 # FairRoot only supports ROOT6, so check which version is available
@@ -191,44 +174,44 @@ if(NOT DEFINED GTEST_ROOT)
   set(GTEST_ROOT ${SIMPATH})
 endif()
 
-find_package2(PUBLIC FairMQ VERSION 1.4.0)
+if(BUILD_BASEMQ)
+  find_package2(PUBLIC FairMQ VERSION 1.4.0 REQUIRED)
+endif()
+
 find_package2(PUBLIC DDS)
 
-If(FAIRSOFT_EXTERN)
-  set(BOOST_ROOT ${SIMPATH})
-  set(GSL_DIR ${SIMPATH})
-Else(FAIRSOFT_EXTERN)
-  set(BOOST_ROOT ${SIMPATH}/basics/boost)
-  set(GSL_DIR ${SIMPATH}/basics/gsl)
-EndIf(FAIRSOFT_EXTERN)
+if(BUILD_BASEMQ OR BUILD_UNITTESTS OR BUILD_EXAMPLES)
+  if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
+    Set(Boost_NO_SYSTEM_PATHS TRUE)
+  endif()
+  if(Boost_NO_BOOST_CMAKE)
+    # If an older version of boost is found both of the variables below are
+    # cached and in a second cmake run, a good boost version is found even
+    # if the version is to old.
+    # To overcome this problem both variables are cleared before checking
+    # for boost.
+    Unset(Boost_INCLUDE_DIR CACHE)
+    Unset(Boost_LIBRARY_DIRS CACHE)
+  endif()
 
-if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
-  Set(Boost_NO_SYSTEM_PATHS TRUE)
-endif()
-if(NOT DEFINED Boost_NO_BOOST_CMAKE AND CMAKE_VERSION VERSION_LESS 3.15)
-  Set(Boost_NO_BOOST_CMAKE TRUE)
-endif()
-if(Boost_NO_BOOST_CMAKE)
-  # If an older version of boost is found both of the variables below are
-  # cached and in a second cmake run, a good boost version is found even
-  # if the version is to old.
-  # To overcome this problem both variables are cleared before checking
-  # for boost.
-  Unset(Boost_INCLUDE_DIR CACHE)
-  Unset(Boost_LIBRARY_DIRS CACHE)
-endif()
+  set(boost_dependencies)
+  if(BUILD_BASEMQ)
+    list(APPEND boost_dependencies filesystem serialization program_options)
+  endif()
+  if(BUILD_UNITTESTS)
+    list(APPEND boost_dependencies unit_test_framework)
+  endif()
+  if(BUILD_EXAMPLES)
+    list(APPEND boost_dependencies program_options)
+  endif()
 
-list(APPEND boost_dependencies filesystem serialization)
-
-if(BUILD_UNITTESTS)
- list(APPEND boost_dependencies unit_test_framework)
+  find_package2(PUBLIC Boost
+    VERSION 1.67
+    COMPONENTS ${boost_dependencies}
+    ADD_REQUIREMENTS_OF FairMQ FairLogger
+    REQUIRED
+  )
 endif()
-
-find_package2(PUBLIC Boost
-  VERSION 1.67
-  COMPONENTS ${boost_dependencies}
-  ADD_REQUIREMENTS_OF FairMQ
-)
 
 If (Boost_FOUND)
   Set(Boost_Avail 1)
@@ -236,11 +219,9 @@ Else (Boost_FOUND)
   Set(Boost_Avail 0)
 EndIf (Boost_FOUND)
 
-set(FAIRROOT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES}
-  VERSION "${FAIRROOT_VERSION}"
-  SOVERSION "${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}"
+set(PROJECT_LIBRARY_PROPERTIES ${PROJECT_LIBRARY_PROPERTIES}
+  VERSION "${PROJECT_VERSION}"
 )
-set(PROJECT_LIBRARY_PROPERTIES ${FAIRROOT_LIBRARY_PROPERTIES})
 
 find_package2(PUBLIC yaml-cpp)
 # Workaround missing exported include directories
@@ -258,7 +239,7 @@ if(    yaml-cpp_FOUND
   )
 endif()
 
-configure_file(${CMAKE_SOURCE_DIR}/cmake/scripts/FairRootConfigVersion.cmake.in "${CMAKE_BINARY_DIR}/FairRootConfigVersion.cmake" @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/cmake/private/FairRootConfigVersion.cmake.in "${CMAKE_BINARY_DIR}/FairRootConfigVersion.cmake" @ONLY)
 
 # Load the macro to generate the needed version info at compile time
 Generate_Version_Info()
@@ -271,11 +252,18 @@ SetBasicVariables()
 # the project's entire directory structure.
 add_subdirectory(fairtools)
 add_subdirectory(alignment)
-option(BUILD_MBS "Build MBS" ON)
 add_subdirectory(base)
 add_subdirectory(geobase)
 add_subdirectory(parbase)
 add_subdirectory(generators)
+
+if(BUILD_MBS)
+  add_subdirectory(MbsAPI)
+endif()
+if(BUILD_ONLINE)
+  add_subdirectory(online)
+endif()
+
 If(Geant3_FOUND)
  add_subdirectory(geane)
  add_subdirectory(trackbase)
@@ -291,24 +279,27 @@ else()
   Set(ROOT_HAS_OPENGL FALSE)
 endif()
 
-if(BUILD_MBS)
-  add_subdirectory(MbsAPI)
-endif()
 add_subdirectory(datamatch)
 
 add_subdirectory(templates)
 
-If (FairMQ_FOUND AND Boost_FOUND)
-  add_subdirectory(base/MQ)
+if(BUILD_BASEMQ)
+  add_subdirectory(fairmq)
+  add_subdirectory(basemq)
   add_subdirectory(parmq)
-Else ()
-  Message(STATUS "base/MQ and parmq will not be built, because FairMQ and/or Boost was not found.")
-EndIf ()
+endif()
 
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)
 if(BUILD_DOXYGEN)
-  MESSAGE(STATUS "*** Building the Doxygen documentation ***")
-  add_subdirectory(doxygen)
+  find_package2(PRIVATE Doxygen COMPONENTS dot)
+  if (Doxygen_FOUND)
+    if (NOT Doxygen_VERSION AND DOXYGEN_VERSION)
+      set(Doxygen_VERSION "${DOXYGEN_VERSION}")
+    endif()
+    add_subdirectory(doxygen)
+  else()
+    message(WARNING "BUILD_DOXYGEN requested, but Doxygen not found")
+  endif()
 endif(BUILD_DOXYGEN)
 
 Option(BUILD_EXAMPLES "Build Examples" ON)
@@ -323,7 +314,10 @@ endif(IWYU_FOUND)
 find_package2(PRIVATE ClangFormat)
 if(ClangFormat_FOUND)
   add_custom_target(FormatCheck
-    ${CMAKE_COMMAND} -E env FAIRROOT_GIT_CLANG_FORMAT_BIN=${GIT_CLANG_FORMAT_BIN} ${CMAKE_SOURCE_DIR}/check-format.sh
+    ${CMAKE_COMMAND} -E env
+      FAIRROOT_GIT_CLANG_FORMAT_BIN=${GIT_CLANG_FORMAT_BIN}
+      FAIRROOT_CLANG_FORMAT_BIN=${CLANG_FORMAT_BIN}
+      ${CMAKE_SOURCE_DIR}/check-format.sh
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   )
 endif()
@@ -339,33 +333,24 @@ endif()
 add_subdirectory(test/tgeo)
 
 
-if(BUILD_EXAMPLES)
-  install(DIRECTORY
-    examples/common/gconfig
-    examples/common/geometry
-    DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/common
-  )
-endif(BUILD_EXAMPLES)
+add_subdirectory(cmake)
 
 install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
-  DESTINATION bin
+  DESTINATION ${CMAKE_INSTALL_BINDIR}
   RENAME FairRootConfig.sh
 )
 install(FILES ${CMAKE_BINARY_DIR}/check_system.sh
-  DESTINATION bin
+  DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}
 )
 install(FILES ${CMAKE_BINARY_DIR}/FairVersion.h
   DESTINATION include
 )
 install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
-  DESTINATION bin
+  DESTINATION ${CMAKE_INSTALL_BINDIR}
   RENAME FairRootConfig.csh
 )
 install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
-  DESTINATION bin
-)
-install(DIRECTORY cmake
-  DESTINATION ${PROJECT_INSTALL_DATADIR}
+  DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}
 )
 
 find_package(Git)
@@ -373,12 +358,12 @@ set (Git_VERSION ${GIT_VERSION_STRING})
 string(REPLACE "git" " " Git_ROOT ${GIT_EXECUTABLE} )
 If(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
   Execute_Process(COMMAND ${GIT_EXECUTABLE} describe --tags
-                  OUTPUT_VARIABLE FAIRROOT_GIT_VERSION
+                  OUTPUT_VARIABLE PROJECT_GIT_VERSION
                   OUTPUT_STRIP_TRAILING_WHITESPACE
                   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                  )
 Else()
-  Set(FAIRROOT_GIT_VERSION v${FAIRROOT_MAJOR_VERSION}.${FAIRROOT_MINOR_VERSION}.${FAIRROOT_PATCH_VERSION})
+  set(PROJECT_GIT_VERSION "v${PROJECT_VERSION}")
 EndIf()
 Configure_File(${CMAKE_SOURCE_DIR}/cmake/scripts/fairroot-config.in ${CMAKE_BINARY_DIR}/fairroot-config @ONLY)
 
@@ -394,178 +379,15 @@ SET(ROOT_INCLUDE_PATH ${CMAKE_INSTALL_PREFIX}/include)
 WRITE_CONFIG_FILE(config.sh_install)
 WRITE_CONFIG_FILE(config.csh_install)
 
+install_cmake_package()
+
 # Summary ######################################################################
-if(CMAKE_CXX_FLAGS)
-  message(STATUS "  ")
-  message(STATUS "  ${Cyan}GLOBAL CXX FLAGS${CR}  ${BGreen}${CMAKE_CXX_FLAGS}${CR}")
-endif()
-if(CMAKE_CXX_STANDARD)
-  message(STATUS "  ")
-  message(STATUS "  ${Cyan}GLOBAL CXX STANDARD${CR}  ${BGreen}c++${CMAKE_CXX_STANDARD}${CR}")
-endif()
-if(CMAKE_CONFIGURATION_TYPES)
-  message(STATUS "  ")
-  message(STATUS "  ${Cyan}BUILD TYPE         CXX FLAGS${CR}")
-  string(TOUPPER "${CMAKE_BUILD_TYPE}" selected_type)
-  foreach(type IN LISTS CMAKE_CONFIGURATION_TYPES)
-    string(TOUPPER "${type}" type_upper)
-    if(type_upper STREQUAL selected_type)
-      pad("${type}" 18 " " type_padded)
-      message(STATUS "${BGreen}* ${type_padded}${CMAKE_CXX_FLAGS_${type_upper}}${CR}")
-    else()
-      pad("${type}" 18 " " type_padded)
-      message(STATUS "  ${BWhite}${type_padded}${CR}${CMAKE_CXX_FLAGS_${type_upper}}")
-    endif()
-    unset(type_padded)
-    unset(type_upper)
-  endforeach()
-  message(STATUS "  ")
-  message(STATUS "  (Change the build type with ${BMagenta}-DCMAKE_BUILD_TYPE=...${CR})")
-endif()
-
-################################################################################
-if(PROJECT_PACKAGE_DEPENDENCIES)
-  message(STATUS "  ")
-  message(STATUS "  ${Cyan}DEPENDENCY FOUND     VERSION                   PREFIX${CR}")
-  foreach(dep IN LISTS PROJECT_PACKAGE_DEPENDENCIES)
-    if(${dep}_VERSION)
-      if(${dep} STREQUAL DDS)
-        if(DDS_VERSION)
-          set(version_str "${BGreen}${${dep}_VERSION}${CR}")
-        else()
-          set(version_str "${BGreen}${${dep}_MAJOR_VERSION}.${${dep}_MINOR_VERSION}${CR}")
-        endif()
-      elseif(${dep} STREQUAL Boost)
-        if(Boost_VERSION_MAJOR)
-          set(version_str "${BGreen}${${dep}_VERSION_MAJOR}.${${dep}_VERSION_MINOR}${CR}")
-        else()
-          set(version_str "${BGreen}${${dep}_MAJOR_VERSION}.${${dep}_MINOR_VERSION}${CR}")
-        endif()
-      else()
-        set(version_str "${BGreen}${${dep}_VERSION}${CR}")
-      endif()
-    else()
-      set(version_str "${BYellow}unknown${CR}")
-    endif()
-    if(PROJECT_${dep}_VERSION)
-      set(version_req_str " (>= ${PROJECT_${dep}_VERSION})")
-    endif()
-    pad(${dep} 20 " " dep_padded)
-    if(DISABLE_COLOR)
-      pad("${version_str}${version_req_str}" 25 " " version_padded)
-    else()
-      pad("${version_str}${version_req_str}" 25 " " version_padded COLOR 1)
-    endif()
-    set(prefix ${${dep}_PREFIX})
-    if(${dep} STREQUAL Boost)
-      if(TARGET Boost::headers)
-        get_target_property(boost_include Boost::headers INTERFACE_INCLUDE_DIRECTORIES)
-      else()
-        get_target_property(boost_include Boost::boost INTERFACE_INCLUDE_DIRECTORIES)
-      endif()
-      get_filename_component(prefix ${boost_include}/.. ABSOLUTE)
-    elseif(${dep} STREQUAL Protobuf)
-      get_filename_component(prefix ${Protobuf_INCLUDE_DIRS}/.. ABSOLUTE)
-    elseif(${dep} STREQUAL msgpack)
-      get_target_property(msgpack_include msgpackc INTERFACE_INCLUDE_DIRECTORIES)
-      get_filename_component(prefix ${msgpack_include}/.. ABSOLUTE)
-    elseif(${dep} STREQUAL Pythia6)
-      get_filename_component(prefix ${PYTHIA6_LIBRARY_DIR}/.. ABSOLUTE)
-    elseif(${dep} STREQUAL Pythia8)
-      get_filename_component(prefix ${PYTHIA8_LIB_DIR}/.. ABSOLUTE)
-    elseif(${dep} STREQUAL FairLogger)
-      if(FairLogger_PREFIX)
-        set(prefix ${FairLogger_PREFIX})
-      else()
-        set(prefix ${FairLogger_ROOT})
-      endif()
-    elseif(${dep} STREQUAL FairMQ)
-      if(FairMQ_PREFIX)
-        set(prefix ${FairMQ_PREFIX})
-      else()
-        set(prefix ${FairMQ_ROOT})
-      endif()
-    elseif(${dep} STREQUAL yaml-cpp)
-      get_filename_component(prefix ${YAML_CPP_INCLUDE_DIR}/.. ABSOLUTE)
-    elseif(${dep} STREQUAL Geant4VMC)
-      string(REPLACE ":" ";" geant4vmc_include ${Geant4VMC_INCLUDE_DIRS})
-      list(GET geant4vmc_include 0 geant4vmc_include)
-      get_filename_component(prefix ${geant4vmc_include}/../.. ABSOLUTE)
-    elseif(${dep} STREQUAL Geant3)
-      get_target_property(geant3_include geant321 INTERFACE_INCLUDE_DIRECTORIES)
-      string(REPLACE ":" ";" geant3_include ${geant3_include})
-      list(GET geant3_include 0 geant3_include)
-      get_filename_component(prefix ${geant3_include}/../.. ABSOLUTE)
-    elseif(${dep} STREQUAL Geant4)
-      list(GET Geant4_INCLUDE_DIRS 0 geant4_include)
-      get_filename_component(prefix ${geant4_include}/../.. ABSOLUTE)
-    elseif(${dep} STREQUAL VGM)
-      string(REPLACE ":" ";" vgm_include ${VGM_INCLUDE_DIRS})
-      list(GET vgm_include 0 vgm_include)
-      get_filename_component(prefix ${vgm_include}/.. ABSOLUTE)
-    elseif(${dep} STREQUAL ROOT)
-      set(prefix ${ROOT_INSTALL_DIR})
-    elseif(${dep} STREQUAL IWYU)
-      get_filename_component(prefix ${IWYU_BINARY}/.. ABSOLUTE)
-    elseif(${dep} STREQUAL yaml-cpp)
-      get_filename_component(prefix ${YAML_CPP_INCLUDE_DIR}/.. ABSOLUTE)
-    elseif(${dep} STREQUAL fmt)
-      get_target_property(fmt_include fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
-      get_filename_component(prefix ${fmt_include}/.. ABSOLUTE)
-    elseif(${dep} STREQUAL VMC)
-      get_target_property(vmc_include VMCLibrary INTERFACE_INCLUDE_DIRECTORIES)
-      get_filename_component(prefix ${vmc_include}/.. ABSOLUTE)
-    elseif(${dep} STREQUAL Flatbuffers)
-      if(TARGET flatbuffers::flatbuffers)
-        get_target_property(flatbuffers_include flatbuffers::flatbuffers INTERFACE_INCLUDE_DIRECTORIES)
-      else()
-        get_target_property(flatbuffers_include flatbuffers::flatbuffers_shared INTERFACE_INCLUDE_DIRECTORIES)
-      endif()
-      get_filename_component(prefix ${flatbuffers_include}/.. ABSOLUTE)
-    elseif(${dep} STREQUAL DDS)
-      set(prefix ${DDS_INSTALL_PREFIX})
-    endif()
-
-    message(STATUS "  ${BWhite}${dep_padded}${CR}${version_padded}${prefix}")
-
-    if(${dep} STREQUAL Geant3)
-      message(STATUS "                                          G3SYS: ${Geant3_SYSTEM_DIR}")
-    endif()
-    if(${dep} STREQUAL Geant4)
-      foreach(dataset IN LISTS Geant4_DATASETS)
-        pad(${Geant4_DATASET_${dataset}_ENVVAR} 20 " " envvar_padded LEFT)
-        message(STATUS "                          ${envvar_padded}: ${Geant4_DATASET_${dataset}_PATH}")
-      endforeach()
-    endif()
-
-    unset(version_str)
-    unset(version_padded)
-    unset(version_req_str)
-  endforeach()
-endif()
-message(STATUS "  ")
-
-message(STATUS "  ${Cyan}COMPONENT           BUILT?  INFO${CR}")
-if(BUILD_EXAMPLES)
-  set(examples_summary "${BGreen}YES${CR}    (default, disable with ${BMagenta}-DBUILD_EXAMPLES=OFF${CR})")
-else()
-  set(examples_summary "${BRed} NO${CR}    (enable with ${BMagenta}-DBBUILD_EXAMPLES=ON${CR})")
-endif()
-message(STATUS "  ${BWhite}Examples${CR}             ${examples_summary}")
-
-if(BUILD_DOXYGEN)
-  set(doxygen_summary "${BGreen}YES${CR}    (default, disable with ${BMagenta}-DBUILD_DOXYGENS=OFF${CR})")
-else()
-  set(doxygen_summary "${BRed} NO${CR}     (enable with ${BMagenta}-DBUILD_DOXYGEN=ON${CR})")
-endif()
-message(STATUS "  ${BWhite}Doxygen${CR}             ${doxygen_summary}")
-
-if(BUILD_UNITTESTS)
-  set(unittests_summary "${BGreen} YES${CR}    (disable with ${BMagenta}-DBUILD_UNITTESTS=OFF${CR})")
-else()
-  set(unittests_summary "${BRed} NO${CR}     (default, enable with ${BMagenta}-DBUILD_UNITTESTS=ON${CR})")
-endif()
-message(STATUS "  ${BWhite}Unit tests${CR}          ${unittests_summary}")
+fairroot_summary_header()
+fairroot_summary_install_prefix()
+fairroot_summary_global_cxx_flags_standard()
+fairroot_summary_build_types()
+fairroot_summary_package_dependencies()
+fairroot_summary_components()
 
 message(STATUS "  ")
 ################################################################################

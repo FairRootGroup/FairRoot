@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -30,20 +30,17 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
-)
-
 target_link_libraries(${target} PUBLIC
-  FairRoot::Base
-  FairRoot::FairTools # FairLogger
+  FairRoot::Online
+  FairRoot::Tools # FairLogger
 
-  Core
+  ROOT::Core
 )
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF MbsTutorialLinkDef.h
+  EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
@@ -53,7 +50,8 @@ install(FILES unpack_mbs.C DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/advan
 
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/unpack_mbs.C)
 
-add_test(ex_unpack_mbs ${CMAKE_CURRENT_BINARY_DIR}/unpack_mbs.sh)
+add_test(NAME ex_unpack_mbs
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/unpack_mbs.sh)
 set_tests_properties(ex_unpack_mbs PROPERTIES
   TIMEOUT "30"
   PASS_REGULAR_EXPRESSION "Macro finished successfully"

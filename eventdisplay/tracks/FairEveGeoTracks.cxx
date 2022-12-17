@@ -48,9 +48,11 @@ FairEveGeoTracks::FairEveGeoTracks()
 InitStatus FairEveGeoTracks::Init()
 {
     FairRootManager *mngr = FairRootManager::Instance();
-    fContainer = (TClonesArray *)mngr->GetObject("GeoTracks");
-    if (fContainer == nullptr)
-        return kFATAL;
+    fContainer = dynamic_cast<TClonesArray *>(mngr->GetObject("GeoTracks"));
+    if (!fContainer) {
+        LOG(warning) << "Geo tracks not found ! FairGeoTracksDraw will be deactivated.";
+        return kERROR;
+    }
     fBranch = mngr->GetInTree()->GetBranch("GeoTracks");
     FairGetEventTime::Instance().Init();
     return FairEveTracks::Init();
@@ -99,8 +101,8 @@ void FairEveGeoTracks::DrawAnimatedTrack(TGeoTrack *tr, double t0)
     FairEveTrack *track = new FairEveTrack(p, p->GetPdgCode(), trList->GetPropagator());
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p->Px(), p->Py(), p->Pz()));
     track->SetMainColor(color);
-    Double_t x, y, z, t;       // currentPoint
-    Double_t xp, yp, zp, tp;   // previousPoint
+    Double_t x, y, z, t;                       // currentPoint
+    Double_t xp = 0, yp = 0, zp = 0, tp = 0;   // previousPoint
     bool firstPoint = true;
     bool previousPoint = false;
     for (int i = 0; i < tr->GetNpoints(); i++) {
@@ -159,7 +161,7 @@ void FairEveGeoTracks::Repaint()
         } else {
             fBranch->GetEvent(evt.first);
         }
-        if (FairEventManager::Instance()->GetClearHandler() == kTRUE) {
+        if (FairEventManager::Instance()->GetClearHandler()) {
             fGeoTrackHandler.Reset();
         }
         if (evt.first > -1)

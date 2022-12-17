@@ -24,5 +24,5 @@ void addCustomOptions(bpo::options_description& options)
 
 std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& /*config*/)
 {
-    return std::unique_ptr<FairMQPixAltFileSinkBin>(new FairMQPixAltFileSinkBin());
+    return std::make_unique<FairMQPixAltFileSinkBin>();
 }

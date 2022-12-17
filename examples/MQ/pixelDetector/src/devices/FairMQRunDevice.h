@@ -17,25 +17,37 @@
 #define FAIRMQRUNDEVICE_H_
 
 #include "FairMQ.h"   // for fair::mq::Device
+#include "FairRun.h"
 
+#include <TObject.h>
 #include <string>
 
-class TObject;
+class FairOnlineSink;
 
 class FairMQRunDevice : public fair::mq::Device
 {
   public:
-    FairMQRunDevice() {}
-    virtual ~FairMQRunDevice() {}
+    FairMQRunDevice();
+    FairMQRunDevice(const FairMQRunDevice&) = delete;
+    FairMQRunDevice& operator=(const FairMQRunDevice&) = delete;
+    ~FairMQRunDevice() override;
 
     virtual void SendBranches();
 
+    void SetSink(std::unique_ptr<FairOnlineSink> sink);
+
   protected:
     void SendObject(TObject* obj, const std::string& chan);
+    /**
+     * Setup the run's Sink from the sink from SetSink()
+     */
+    void SetupRunSink(FairRun& run);
 
   private:
-    FairMQRunDevice(const FairMQRunDevice&);
-    FairMQRunDevice& operator=(const FairMQRunDevice&);
+    /**
+     * Handle ownership for the sink correctly
+     */
+    std::unique_ptr<FairOnlineSink> fSink;
 };
 
 #endif /* FAIRMQRUNDEVICE_H_ */

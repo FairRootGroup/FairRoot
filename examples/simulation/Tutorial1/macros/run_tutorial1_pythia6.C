@@ -1,13 +1,18 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+#include <memory>
+
 void run_tutorial1_pythia6(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 {
-
     TString dir = getenv("VMCWORKDIR");
     TString tutdir = dir + "/simulation/Tutorial1";
 
@@ -64,7 +69,7 @@ void run_tutorial1_pythia6(Int_t nEvents = 10, TString mcEngine = "TGeant3")
     // -----   Create simulation run   ----------------------------------------
     FairRunSim* run = new FairRunSim();
     run->SetName(mcEngine);                        // Transport engine
-    run->SetSink(new FairRootFileSink(outFile));   // Output file
+    run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     run->SetPythiaDecayer(pythia6Config);          // Define Pythia6 as decayer
 
     FairRuntimeDb* rtdb = run->GetRuntimeDb();

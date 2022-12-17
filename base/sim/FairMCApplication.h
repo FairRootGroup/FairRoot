@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -13,6 +13,7 @@
 #ifndef FAIR_MC_APPLICATION_H
 #define FAIR_MC_APPLICATION_H
 
+#include "FairRadGridManager.h"
 #include "FairRunInfo.h"   // for FairRunInfo
 
 #include <Rtypes.h>                  // for Int_t, Bool_t, Double_t, etc
@@ -21,6 +22,7 @@
 #include <TVirtualMCApplication.h>   // for TVirtualMCApplication
 #include <list>                      // for list
 #include <map>                       // for map, multimap, etc
+#include <memory>                    // for std::unique_ptr
 
 class FairDetector;
 class FairEventHeader;
@@ -28,7 +30,6 @@ class FairField;
 class FairGenericStack;
 class FairMCEventHeader;
 class FairPrimaryGenerator;
-class FairRadGridManager;
 class FairRadLenManager;
 class FairRadMapManager;
 class FairRootManager;
@@ -43,12 +44,7 @@ class TRefArray;
 class TTask;
 class TVirtualMC;
 
-enum class FairMCApplicationState
-{
-    kUnknownState,
-    kConstructGeometry,
-    kInitGeometry
-};
+enum class FairMCApplicationState { kUnknownState, kConstructGeometry, kInitGeometry };
 
 /**
  * The Main Application ( Interface to MonteCarlo application )
@@ -70,40 +66,50 @@ class FairMCApplication : public TVirtualMCApplication
     /** default constructor
      */
     FairMCApplication();
+
+    FairMCApplication(const FairMCApplication&) = delete;
+    FairMCApplication& operator=(const FairMCApplication&) = delete;
+    FairMCApplication(FairMCApplication&&) = delete;
+    FairMCApplication& operator=(FairMCApplication&&) = delete;
+
     /** default destructor
      */
-    virtual ~FairMCApplication();
+    ~FairMCApplication() override;
     /** Singelton instance
      */
     static FairMCApplication* Instance();
     virtual void AddDecayModes();
     /**  Add user defined particles (optional) */
-    virtual void AddParticles();   // MC Application
-    /** Add user defined ions (optional) */
-    virtual void AddIons();   // MC Application
+    void AddParticles() override;   // MC Application
+    /** Add user defined ions (optional)
+        Called by TVirtualMC.
+        TGeant3 calls AddIons() first, then InitGeometry().
+        TGeant4 calls InitGeometry() first, then AddIons().
+        This function also initializes event generators.*/
+    void AddIons() override;   // MC Application
     /**
      *Add user defined Tasks to be executed after each event (optional)
      * @param fTask: Task that has to be excuted during simulation
      */
     void AddTask(TTask* fTask);
     /** Define actions at the beginning of the event */
-    virtual void BeginEvent();   // MC Application
+    void BeginEvent() override;   // MC Application
     /** Define actions at the beginning of primary track */
-    virtual void BeginPrimary();   // MC Application
+    void BeginPrimary() override;   // MC Application
     /** Construct user geometry */
-    virtual void ConstructGeometry();   // MC Application
+    void ConstructGeometry() override;   // MC Application
     /** Align or misalign geometry before actual run       */
-    virtual Bool_t MisalignGeometry();
+    Bool_t MisalignGeometry() override;
     /** Define parameters for optical processes (optional) */
-    virtual void ConstructOpGeometry();   // MC Application
+    void ConstructOpGeometry() override;   // MC Application
     /** Define actions at the end of event */
-    virtual void FinishEvent();   // MC Application
+    void FinishEvent() override;   // MC Application
     /** Define actions at the end of primary track */
-    virtual void FinishPrimary();   // MC Application
+    void FinishPrimary() override;   // MC Application
     /** Define actions at the end of run */
     void FinishRun();
     /** Generate primary particles */
-    virtual void GeneratePrimaries();   // MC Application
+    void GeneratePrimaries() override;   // MC Application
     /** Return detector by name  */
     FairDetector* GetDetector(const char* DetName);
     /** Return Field used in simulation*/
@@ -114,25 +120,29 @@ class FairMCApplication : public TVirtualMCApplication
     TTask* GetListOfTasks();
     FairGenericStack* GetStack();
     TChain* GetChain();
-    /** Initialize geometry */
-    virtual void InitGeometry();   // MC Application
+    /** Initialize geometry
+        Called by TVirtualMC.
+        TGeant3 calls AddIons() first, then InitGeometry().
+        TGeant4 calls InitGeometry() first, then AddIons().
+        This function also registers detectors.*/
+    void InitGeometry() override;   // MC Application
     /** Initialize MC engine */
     void InitMC(const char* setup, const char* cuts);
     /** Initialize Tasks if any*/
     void InitTasks();
     /**Define actions at the end of each track */
-    virtual void PostTrack();   // MC Application
+    void PostTrack() override;   // MC Application
     /** Define actions at the beginning of each track*/
-    virtual void PreTrack();   // MC Application
+    void PreTrack() override;   // MC Application
 
     /** Clone for worker (used in MT mode only) */
-    virtual TVirtualMCApplication* CloneForWorker() const;
+    TVirtualMCApplication* CloneForWorker() const override;
 
     /** Init application on worker (used in MT mode only) */
-    virtual void InitOnWorker();
+    void InitOnWorker() override;
 
     /** Finish run on worker (used in MT mode only) */
-    virtual void FinishRunOnWorker();
+    void FinishRunOnWorker() override;
 
     /** Run the MC engine
      * @param nofEvents : number of events to simulate
@@ -185,15 +195,15 @@ class FairMCApplication : public TVirtualMCApplication
      */
     void SetUserDecayConfig(const TString decayerConf) { fUserDecayConfig = decayerConf; }
     /** Define action at each step, dispatch the action to the corresponding detectors */
-    virtual void Stepping();   // MC Application
+    void Stepping() override;   // MC Application
     /** Stop the run*/
     virtual void StopRun();
     /** Stop the run*/
     virtual void StopMCRun();
     /**Define maximum radius for tracking (optional) */
-    virtual Double_t TrackingRmax() const;   // MC Application
+    Double_t TrackingRmax() const override;   // MC Application
     /** Define maximum z for tracking (optional) */
-    virtual Double_t TrackingZmax() const;   // MC Application
+    Double_t TrackingZmax() const override;   // MC Application
 
     void AddMeshList(TObjArray* meshList);
 
@@ -209,6 +219,11 @@ class FairMCApplication : public TVirtualMCApplication
      */
     FairMCApplicationState GetState() const { return fState; }
 
+    /**
+     * Return non-owning pointer to FairRadGridManager
+     */
+    auto GetRadGridMan() { return fRadGridMan.get(); }
+
   private:
     // methods
     Int_t GetIonPdg(Int_t z, Int_t a) const;
@@ -217,14 +232,20 @@ class FairMCApplication : public TVirtualMCApplication
 
   protected:
     // data members
+    /**
+     * \brief Main instance
+     *
+     * Only set for instances created by \ref CloneForWorker
+     * and points to the instance from which the clone was
+     * created
+     */
+    const FairMCApplication* fParent{nullptr};   //!
     /**List of active detector */
     TRefArray* fActiveDetectors;
     /**List of FairTask*/
     FairTask* fFairTaskList;   //!
     /**detector list (Passive and Active)*/
     TRefArray* fDetectors;
-    /**Map used for dispatcher*/
-    TRefArray* fDetMap;
     /**Iterator for Module list*/
     TIterator* fModIter;   //!
     /**Module list in simulation*/
@@ -258,19 +279,11 @@ class FairMCApplication : public TVirtualMCApplication
     /** Debug flag*/
     Bool_t fDebug;   //!
     /**dispatcher internal use */
-    FairVolume* fDisVol;
-    /**dispatcher internal use */
-    FairDetector* fDisDet;
-    /**dispatcher internal use */
     std::multimap<Int_t, FairVolume*> fVolMap;   //!
-    /**dispatcher internal use */
-    std::multimap<Int_t, FairVolume*>::iterator fVolIter;   //!
     /** Track position*/
     /**dispatcher internal use RadLeng*/
     std::map<Int_t, Int_t> fModVolMap;   //!
-    /**dispatcher internal use RadLen*/
-    std::map<Int_t, Int_t>::iterator fModVolIter;   //!
-    TLorentzVector fTrkPos;                         //!
+    TLorentzVector fTrkPos;              //!
     /** Flag for Radiation length register mode  */
     Bool_t fRadLength;   //!
 
@@ -281,7 +294,7 @@ class FairMCApplication : public TVirtualMCApplication
     /**Radiation Map Manager*/
     FairRadMapManager* fRadMapMan;   //!
     /**Radiation map Grid Manager*/
-    FairRadGridManager* fRadGridMan;   //!
+    std::unique_ptr<FairRadGridManager> fRadGridMan{};   //!
 
     FairEventHeader* fEventHeader;   //!
 
@@ -293,8 +306,8 @@ class FairMCApplication : public TVirtualMCApplication
     /** Pointer to the current MC engine //!
      */
     TVirtualMC* fMC;
-    /** Pointer to FairRunSim //! */
-    FairRunSim* fRun;
+
+    FairRunSim* fRun{nullptr};   //!
 
     /** Flag if the current event should be saved */
     Bool_t fSaveCurrentEvent;
@@ -302,18 +315,19 @@ class FairMCApplication : public TVirtualMCApplication
     /** Current state */
     FairMCApplicationState fState;   //!
 
-    ClassDef(FairMCApplication, 4);
+    ClassDefOverride(FairMCApplication, 5);
 
   private:
-    /** Protected copy constructor */
-    FairMCApplication(const FairMCApplication&);
-    /** Protected assignment operator */
-    FairMCApplication& operator=(const FairMCApplication&);
+    /** Private special copy constructor, needed for CloneForWorker */
+    FairMCApplication(const FairMCApplication&, std::unique_ptr<FairRunSim>);
 
     FairRunInfo fRunInfo;   //!
     Bool_t fGeometryIsInitialized;
 
-    static FairMCApplication* fgMasterInstance;
+    /**
+     * Clean up the FairRunSim created in CloneForWorker
+     */
+    std::unique_ptr<FairRunSim> fWorkerRunSim;   //!
 };
 
 // inline functions

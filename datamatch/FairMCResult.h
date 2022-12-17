@@ -15,6 +15,10 @@
 #ifndef FAIRMCRESULT_H_
 #define FAIRMCRESULT_H_
 
+#ifndef FAIR_SILENCE_DATAMATCH_DEPRECATION
+#warning "FairRoot::DataMatch is deprecated and will be removed in a future major release"
+#endif
+
 #include "FairMCEntry.h"    // for FairMCEntry
 #include "FairMCObject.h"   // for FairMCObject
 

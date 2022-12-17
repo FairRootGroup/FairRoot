@@ -16,15 +16,11 @@
 
 #include "RootSerializer.h"
 
-#include <TFile.h>
 #include <TObject.h>
-#include <TTree.h>
 #include <cstdlib>
 #include <fairlogger/Logger.h>
 #include <memory>
 #include <vector>
-
-using namespace std;
 
 FairMQPixelFileSink::FairMQPixelFileSink()
     : FairMQDevice()
@@ -33,12 +29,6 @@ FairMQPixelFileSink::FairMQPixelFileSink()
     , fFileName()
     , fTreeName()
     , fFileOption()
-    , fFlowMode(false)
-    , fWrite(false)
-    , fOutFile(nullptr)
-    , fTree(nullptr)
-    , fNObjects(0)
-    , fOutputObjects(new TObject*[1000])
 {}
 
 void FairMQPixelFileSink::InitTask()
@@ -59,7 +49,7 @@ void FairMQPixelFileSink::InitTask()
         }
     }
 
-    fOutFile = TFile::Open(fFileName.c_str(), fFileOption.c_str());
+    fOutFile.reset(TFile::Open(fFileName.c_str(), fFileOption.c_str()));
 
     OnData(fInputChannelName, &FairMQPixelFileSink::StoreData);
 }
@@ -67,31 +57,30 @@ void FairMQPixelFileSink::InitTask()
 bool FairMQPixelFileSink::StoreData(fair::mq::Parts& parts, int /*index*/)
 {
     bool creatingTree = false;
-    std::vector<TObject*> tempObjects;
+    auto numParts = parts.Size();
+    std::vector<std::unique_ptr<TObject>> cleanup;
+    std::vector<TObject*> objectsForBranches;
+
     if (!fTree) {
         creatingTree = true;
-        fTree = new TTree(fTreeName.c_str(), "/cbmout");
+        fTree = std::make_unique<TTree>(fTreeName.c_str(), "/cbmout");
     }
 
-    for (int ipart = 0; ipart < parts.Size(); ipart++) {
-        fOutputObjects[ipart] = nullptr;
-        RootSerializer().Deserialize(*parts.At(ipart), fOutputObjects[ipart]);
-        tempObjects.push_back(fOutputObjects[ipart]);
-        if (creatingTree)
-            fTree->Branch(tempObjects.back()->GetName(), tempObjects.back()->ClassName(), &fOutputObjects[ipart]);
-        fTree->SetBranchAddress(tempObjects.back()->GetName(), &fOutputObjects[ipart]);
+    cleanup.reserve(numParts);
+    objectsForBranches.resize(numParts, nullptr);
+    for (int ipart = 0; ipart < numParts; ipart++) {
+        auto curobj = RootSerializer().DeserializeTo<TObject>(*parts.At(ipart));
+        objectsForBranches.at(ipart) = curobj.get();
+        if (creatingTree) {
+            fTree->Branch(curobj->GetName(), curobj->ClassName(), &objectsForBranches[ipart]);
+        }
+        fTree->SetBranchAddress(curobj->GetName(), &objectsForBranches[ipart]);
+        cleanup.emplace_back(std::move(curobj));
     }
     //   LOG(INFO) << "Finished branches";
     fTree->Fill();
 
-    for (unsigned int ipart = 0; ipart < tempObjects.size(); ipart++) {
-        if (tempObjects[ipart]) {
-            delete tempObjects[ipart];
-        }
-    }
-    tempObjects.clear();
-
-    if (fAckChannelName != "") {
+    if (!fAckChannelName.empty()) {
         auto msg(NewMessage());
         Send(msg, fAckChannelName);
     }
@@ -102,6 +91,8 @@ void FairMQPixelFileSink::ResetTask()
 {
     if (fTree) {
         fTree->Write();
+        // Delete the tree, because we're going to close the file
+        fTree.reset();
     }
 
     if (fOutFile) {
@@ -111,13 +102,4 @@ void FairMQPixelFileSink::ResetTask()
     }
 }
 
-FairMQPixelFileSink::~FairMQPixelFileSink()
-{
-    if (fTree) {
-        delete fTree;
-    }
-
-    if (fOutFile) {
-        delete fOutFile;
-    }
-}
+FairMQPixelFileSink::~FairMQPixelFileSink() = default;

@@ -1,0 +1,10 @@
+/**
+\defgroup base_Event Base | Event
+\ingroup base
+
+event
+========
+
+Base data classes of FairRoot, for event headers, Monte Carlo points, hits, radiation length measurements.
+
+ */

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -30,16 +30,15 @@
 #include <TBranch.h>        // for TBranch
 #include <TClonesArray.h>   // for TClonesArray
 #include <TCollection.h>    // for TCollection, TIter
+#include <TDirectory.h>     // for TDirectory::TContext
 #include <TFile.h>          // for TFile
 #include <TFolder.h>        // for TFolder
 #include <TGeoManager.h>    // for TGeoManager, gGeoManager
-#include <TIterator.h>      // for TIterator
 #include <TList.h>          // for TList
 #include <TMCAutoLock.h>
 #include <TNamed.h>       // for TNamed
 #include <TObjArray.h>    // for TObjArray
 #include <TObjString.h>   // for TObjString
-#include <TRefArray.h>    // for TRefArray
 #include <TTree.h>        // for TTree
 #include <algorithm>      // for find
 #include <cassert>
@@ -48,6 +47,7 @@
 #include <iostream>   // for operator<<, basic_ostream, etc
 #include <list>       // for _List_iterator, list, etc
 #include <map>        // for map, _Rb_tree_iterator, etc
+#include <memory>     // for unique_ptr
 #include <set>        // for set, set<>::iterator
 #include <stdlib.h>   // for exit
 #include <utility>    // for pair
@@ -93,10 +93,8 @@ FairRootManager::FairRootManager()
     , fTSBufferMap()
     , fWriteoutBufferMap()
     , fInputBranchMap()
-    , fTimeStamps(kFALSE)
     , fBranchPerMap(kFALSE)
     , fBrPerMap()
-    , fBrPerMapIter()
     , fCurrentEntryNo(0)
     , fTimeforEntryNo(0)
     , fFillLastData(kFALSE)
@@ -108,10 +106,6 @@ FairRootManager::FairRootManager()
     , fSink(nullptr)
     , fUseFairLinks(kFALSE)
     , fFinishRun(kFALSE)
-    , fListOfBranchesFromInput(0)
-    , fListOfBranchesFromInputIter(0)
-    , fListOfNonTimebasedBranches(new TRefArray())
-    , fListOfNonTimebasedBranchesIter(0)
     , fId(0)
 {
     LOG(debug) << "FairRootManager::FairRootManager: going to lock " << this;
@@ -166,17 +160,16 @@ Bool_t FairRootManager::InitSource()
     LOG(debug) << "Call the initialiazer for the FairSource in FairRootManager ";
     if (fSource) {
         Bool_t sourceInitBool = fSource->Init();
-        fListOfBranchesFromInput = fSourceChain->GetListOfBranches();
+        TObjArray* listofbranchesfrominput = fSourceChain->GetListOfBranches();
         TObject* obj;
-        if (fListOfBranchesFromInput) {
-            fListOfBranchesFromInputIter = fListOfBranchesFromInput->MakeIterator();
-            while ((obj = fListOfBranchesFromInputIter->Next())) {
+        if (listofbranchesfrominput) {
+            TIter branchiter{listofbranchesfrominput};
+            while ((obj = branchiter())) {
                 if ((fTimeBasedBranchNameList->FindObject(obj->GetName())) == 0)
-                    fListOfNonTimebasedBranches->Add(obj);
+                    fListOfNonTimebasedBranches.Add(obj);
             }
         }
         LOG(debug) << "Source is intialized and the list of branches is created in FairRootManager ";
-        fListOfNonTimebasedBranchesIter = fListOfNonTimebasedBranches->MakeIterator();
         return sourceInitBool;
     }
     return kFALSE;
@@ -217,7 +210,7 @@ void FairRootManager::RegisterImpl(const char* name, const char* folderName, T* 
     AddMemoryBranch(name, obj);
     AddBranchToList(name);
 
-    if (toFile == kFALSE) {
+    if (!toFile) {
         FairLinkManager::Instance()->AddIgnoreType(GetBranchId(name));
     }
 }
@@ -366,8 +359,8 @@ void FairRootManager::TerminateAllTSBuffer()
 Bool_t FairRootManager::AllDataProcessed()
 {
     for (auto& mi : fTSBufferMap) {
-        if (mi.second->AllDataProcessed() == kFALSE && mi.second->TimeOut() == kFALSE) {
-            return kFALSE;
+        if (!mi.second->AllDataProcessed() && !mi.second->TimeOut()) {
+            return false;
         }
     }
     return kTRUE;
@@ -414,13 +407,10 @@ void FairRootManager::CreateGeometryFile(const char* geofile)
      *  framework. The geomanager used by the framework is still
      *  stored in the parameter file or database
      */
-    TFile* oldfile = gFile;
-    TFile* file = TFile::Open(geofile, "RECREATE");
-    file->cd();
-    gGeoManager->Write();
+    TDirectory::TContext restorecwd{};
+    std::unique_ptr<TFile> file{TFile::Open(geofile, "RECREATE")};
+    file->WriteTObject(gGeoManager);
     file->Close();
-    file->Delete();
-    gFile = oldfile;
 }
 
 void FairRootManager::WriteFolder()
@@ -502,8 +492,8 @@ Int_t FairRootManager::ReadNonTimeBasedEventFromBranches(Int_t Entry)
 {
     if (fSource) {
         TObject* Obj;
-        fListOfNonTimebasedBranchesIter->Reset();
-        while ((Obj = fListOfNonTimebasedBranchesIter->Next())) {
+        TIter branchiter{&fListOfNonTimebasedBranches};
+        while ((Obj = branchiter())) {
             fSource->ReadBranchEvent(Obj->GetName(), Entry);
             fSource->FillEventHeader(fEventHeader);
             fCurrentTime = fEventHeader->GetEventTime();
@@ -523,7 +513,6 @@ Bool_t FairRootManager::ReadNextEvent(Double_t)
 
 TObject* FairRootManager::GetObject(const char* BrName)
 {
-    fReqBrNames.emplace_back(BrName);
     /**Get Data object by name*/
     TObject* Obj = nullptr;
     LOG(debug2) << " Try to find if the object " << BrName << " is already activated by another task or call";
@@ -720,9 +709,9 @@ Int_t FairRootManager::CheckBranch(const char* BrName)
         CreatePerMap();
         return CheckBranchSt(BrName);
     } else {
-        fBrPerMapIter = fBrPerMap.find(BrName);
-        if (fBrPerMapIter != fBrPerMap.end()) {
-            return fBrPerMapIter->second;
+        auto brpermapiter = fBrPerMap.find(BrName);
+        if (brpermapiter != fBrPerMap.end()) {
+            return brpermapiter->second;
         } else {
             return 0;
         }
@@ -1059,7 +1048,6 @@ void FairRootManager::UpdateFileName(TString& fileName)
 
 TFile* FairRootManager::GetOutFile()
 {
-    LOG(warning) << "FairRootManager::GetOutFile() deprecated. Use separate file to store additional data.";
     auto sink = GetSink();
     assert(sink->GetSinkType() == kFILESINK);
     auto rootFileSink = static_cast<FairRootFileSink*>(sink);
@@ -1068,7 +1056,6 @@ TFile* FairRootManager::GetOutFile()
 
 TTree* FairRootManager::GetOutTree()
 {
-    LOG(warning) << "FairRootManager::GetOutTree() deprecated. Use separate file to store additional data.";
     auto sink = GetSink();
     assert(sink->GetSinkType() == kFILESINK);
     auto rootFileSink = static_cast<FairRootFileSink*>(sink);

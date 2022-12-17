@@ -1,5 +1,5 @@
  ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ # Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             # 
  #              GNU Lesser General Public Licence (LGPL) version 3,             #  
@@ -21,7 +21,6 @@ include_directories(${INCLUDE_DIRECTORIES})
 include_directories(${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
 
 ) 
@@ -40,7 +39,12 @@ NewDetectorPoint.cxx
 Set(LINKDEF NewDetectorLinkDef.h)
 Set(LIBRARY_NAME NewDetector)
 Set(DEPENDENCIES
-    Base
+    MyProjData
+    FairRoot::Base
+    FairRoot::GeoBase
+    FairRoot::ParBase
+    FairLogger::FairLogger
+    ${VMCLIB}
 )
 
 GENERATE_LIBRARY()

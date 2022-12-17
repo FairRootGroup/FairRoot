@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -60,8 +60,8 @@ size_t FairSystemInfo::GetCurrentMemory()
 
 #elif defined(__linux__) || defined(__linux) || defined(linux) || defined(__gnu_linux__)
     /* Linux ---------------------------------------------------- */
-    long rss = 0L;
-    long pagesize = sysconf(_SC_PAGESIZE);
+    unsigned long rss = 0L;
+    unsigned long pagesize = static_cast<unsigned long>(sysconf(_SC_PAGESIZE));
     FILE* fp = NULL;
     if ((fp = fopen("/proc/self/statm", "r")) == NULL)
         return (size_t)0L; /* Can't open? */

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -15,17 +15,16 @@
 
 class FairRutherfordGeo : public FairGeoSet
 {
-
   protected:
     char modName[22];   // name of module
-    char eleName[20];   // substring for elements in module
+    char eleName[22];   // substring for elements in module
   public:
     FairRutherfordGeo();
-    ~FairRutherfordGeo() {}
-    const char* getModuleName(Int_t);
-    const char* getEleName(Int_t);
-    inline Int_t getModNumInMod(const TString&);
-    ClassDef(FairRutherfordGeo, 1);
+    ~FairRutherfordGeo() override {}
+    const char* getModuleName(Int_t) override;
+    const char* getEleName(Int_t) override;
+    inline Int_t getModNumInMod(const TString&) override;
+    ClassDefOverride(FairRutherfordGeo, 1);
 };
 
 inline Int_t FairRutherfordGeo::getModNumInMod(const TString& name)

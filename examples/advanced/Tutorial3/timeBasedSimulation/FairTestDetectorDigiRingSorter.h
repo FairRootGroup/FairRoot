@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -26,11 +26,11 @@ class FairTestDetectorDigiRingSorter : public FairRingSorter
     FairTestDetectorDigiRingSorter(int size = 100, double width = 10)
         : FairRingSorter(size, width)
     {}
-    virtual ~FairTestDetectorDigiRingSorter();
+    ~FairTestDetectorDigiRingSorter() override;
 
-    virtual FairTimeStamp* CreateElement(FairTimeStamp* data);
+    FairTimeStamp* CreateElement(FairTimeStamp* data) override;
 
-    ClassDef(FairTestDetectorDigiRingSorter, 1);
+    ClassDefOverride(FairTestDetectorDigiRingSorter, 1);
 };
 
 #endif /* FairTestDetectorDigiRingSorter_H_ */

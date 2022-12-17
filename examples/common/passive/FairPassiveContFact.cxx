@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -18,7 +18,6 @@
 #include "FairPassiveContFact.h"
 
 #include "FairGeoPassivePar.h"   // for FairGeoPassivePar
-#include "FairRuntimeDb.h"       // for FairRuntimeDb
 
 #include <TList.h>     // for TList
 #include <TString.h>   // for TString
@@ -26,20 +25,15 @@
 
 class FairParSet;
 
-using namespace std;
-
 ClassImp(FairPassiveContFact);
 
 static FairPassiveContFact gFairPassiveContFact;
 
 FairPassiveContFact::FairPassiveContFact()
-    : FairContFact()
+    : FairContFact("FairPassiveContFact", "Factory for parameter containers in libPassive")
 {
     // Constructor (called when the library is loaded)
-    fName = "FairPassiveContFact";
-    fTitle = "Factory for parameter containers in libPassive";
     setAllContainers();
-    FairRuntimeDb::instance()->addContFactory(this);
 }
 
 void FairPassiveContFact::setAllContainers()

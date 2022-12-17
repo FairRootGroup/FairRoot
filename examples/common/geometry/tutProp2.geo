@@ -1,5 +1,5 @@
 //*********************************   PIXEL  z=  500 mm
-Pixel101
+Pixel5
 cave
 TUBE
 silicon
@@ -10,7 +10,7 @@ silicon
 0. 0. 500.
 1.  0.  0.  0.  1.  0.  0.  0.  1.
 //*********************************   PIXEL  z= 600 mm
-Pixel102
+Pixel6
 cave
 TUBE
 silicon
@@ -21,7 +21,7 @@ silicon
 0. 0. 600.0
 1.  0.  0.  0.  1.  0.  0.  0.  1.
 //*********************************   PIXEL  z= 700 mm
-Pixel103
+Pixel7
 cave
 TUBE
 silicon
@@ -32,7 +32,7 @@ silicon
 0. 0. 700.0
 1.  0.  0.  0.  1.  0.  0.  0.  1.
 //*********************************   PIXEL  z= 800 mm
-Pixel104
+Pixel8
 cave
 TUBE
 silicon

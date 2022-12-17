@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2017 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2017-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -21,6 +21,7 @@
 #include <Rtypes.h>
 #include <TString.h>
 #include <cstdint>
+#include <memory>
 #include <string>
 
 class FairRunSim;
@@ -28,13 +29,12 @@ class FairField;
 class FairParIo;
 class FairPrimaryGenerator;
 class TObjArray;
-class FairSink;
 
 class FairMQSimDevice : public FairMQRunDevice
 {
   public:
     FairMQSimDevice();
-    virtual ~FairMQSimDevice() {}
+    ~FairMQSimDevice() override = default;
 
     virtual void SetParamUpdateChannelName(const TString& tString) { fUpdateChannelName = tString; }
 
@@ -51,18 +51,17 @@ class FairMQSimDevice : public FairMQRunDevice
     void SetSecondParameter(FairParIo* par) { fSecondParameter = par; }
     void SetUserConfig(const TString& Config) { fUserConfig = Config; }
     void SetUserCuts(const TString& Cuts) { fUserCuts = Cuts; }
-    void SetSink(FairSink* sink) { fSink = sink; }
     // ------ ---------- -------- ------
 
     void InitializeRun();
 
-    virtual void SendBranches();
+    void SendBranches() override;
 
   protected:
-    virtual void InitTask();
-    virtual void PreRun();
-    virtual void PostRun() {}
-    virtual bool ConditionalRun();
+    void InitTask() override;
+    void PreRun() override;
+    void PostRun() override {}
+    bool ConditionalRun() override;
 
   private:
     UInt_t fSimDeviceId;
@@ -84,7 +83,6 @@ class FairMQSimDevice : public FairMQRunDevice
     FairParIo* fSecondParameter;   // second input (used if not found in first input)
     TString fUserConfig;           //!                  /** Macro for geant configuration*/
     TString fUserCuts;             //!                  /** Macro for geant cuts*/
-    FairSink* fSink;
     // ------ ---------- -------- ------
 
     void UpdateParameterServer();

@@ -26,8 +26,6 @@
 #include <fairlogger/Logger.h>
 #include <vector>
 
-using namespace std;
-
 FairMQChunkMerger::FairMQChunkMerger()
     : FairMQDevice()
     , fInputChannelName("data-in")
@@ -100,11 +98,11 @@ bool FairMQChunkMerger::MergeData(fair::mq::Parts& parts, int /*index*/)
         // LOG(info) << "not all parts are yet here (got " << nofReceivedParts << " out of " << nofExpectedParts <<
         // ")... adding to (size = " << fObjectMap.size() << ")"; LOG(info) << "+" << fMCSplitEventHeader->GetName() <<
         // "[" << fEvRIPair.second << "][" << fEvRIPair.first << "][" << fEvCOPair.first << "]";
-        for (int iarray = 0; iarray < tcaVector.size(); ++iarray) {
+        for (auto tca_elem : tcaVector) {
             LOG(debug) << "+ [" << fEvRIPair.second << "][" << fEvRIPair.first << "][" << fEvCOPair.first << "] "
-                       << tcaVector[iarray]->GetName();
-            fEvCOPair.second = (dynamic_cast<TObject*>(tcaVector[iarray]));
-            fObjectMap.insert(std::pair<std::pair<int, int>, std::pair<int, TObject*>>(fEvRIPair, fEvCOPair));
+                       << tca_elem->GetName();
+            fEvCOPair.second = tca_elem;
+            fObjectMap.insert(std::make_pair(fEvRIPair, fEvCOPair));
         }
         //        LOG(info) << "                 now we have fObjectMap (size = " << fObjectMap.size() << ")";
         if (printInfo)
@@ -113,58 +111,56 @@ bool FairMQChunkMerger::MergeData(fair::mq::Parts& parts, int /*index*/)
                       << " // Buffered: " << fObjectMap.size() << " // Sent: " << fNofSentMessages << " <<";
     } else {
         // got all the parts of the event, have to combine and send message, consisting of objects from fObjectMap
-        [[gnu::unused]] int currentEventPart = fMCSplitEventHeader->GetChunkStart();
         fRet = fObjectMap.equal_range(fEvRIPair);
         std::vector<int> trackShift;
         LOG(debug) << "- [" << fEvRIPair.second << "][" << fEvRIPair.first << "][ALL]";
-        for (int iarray = 0; iarray < tcaVector.size(); ++iarray) {
-            if (strcmp(tcaVector[iarray]->GetName(), "MCTrack") != 0)
+        for (auto tca_elem : tcaVector) {
+            if (strcmp(tca_elem->GetName(), "MCTrack") != 0)
                 continue;   //  want only MCTrack array to renumber tracks and get track shifts...
-            //  LOG(info) << "BEFORE ADDING, TCA \"" << tcaVector[iarray]->GetName() << "\" has " <<
-            //  tcaVector[iarray]->GetEntries() << " entries.";
-            TClonesArray* arrayToAdd;
+            //  LOG(info) << "BEFORE ADDING, TCA \"" << tca_elem->GetName() << "\" has " <<
+            //  tca_elem->GetEntries() << " entries.";
             for (auto& it = fRet.first; it != fRet.second; ++it) {
                 if (it->second.first == fMCSplitEventHeader->GetChunkStart())
                     continue;
-                if (strcmp(tcaVector[iarray]->GetName(), it->second.second->GetName()) == 0) {
-                    trackShift.push_back(tcaVector[iarray]->GetEntries());
-                    arrayToAdd = dynamic_cast<TClonesArray*>(it->second.second);
-                    for (int iobj = 0; iobj < arrayToAdd->GetEntries(); ++iobj) {
-                        FairMCTrack* temp = dynamic_cast<FairMCTrack*>(arrayToAdd->At(iobj));
-                        if (temp->GetMotherId() >= 0) {
-                            temp->SetMotherId(temp->GetMotherId() + trackShift.back());
+                if (strcmp(tca_elem->GetName(), it->second.second->GetName()) == 0) {
+                    trackShift.push_back(tca_elem->GetEntries());
+                    if (auto arrayToAdd = dynamic_cast<TClonesArray*>(it->second.second)) {
+                        for (auto iobj = 0; iobj < arrayToAdd->GetEntries(); ++iobj) {
+                            if (auto temp = dynamic_cast<FairMCTrack*>(arrayToAdd->At(iobj))) {
+                                if (temp->GetMotherId() >= 0) {
+                                    temp->SetMotherId(temp->GetMotherId() + trackShift.back());
+                                }
+                            }
                         }
+                        tca_elem->AbsorbObjects(arrayToAdd);
                     }
-                    tcaVector[iarray]->AbsorbObjects(arrayToAdd);
-                    //      LOG(info) << "FOUND ONE!, TCA has now " << tcaVector[iarray]->GetEntries() << " entries.";
                 }
             }
         }
 
-        for (int iarray = 0; iarray < tcaVector.size(); ++iarray) {
-            if (strcmp(tcaVector[iarray]->GetName(), "MCTrack") == 0)
+        for (auto tca_elem : tcaVector) {
+            if (strcmp(tca_elem->GetName(), "MCTrack") == 0)
                 continue;   // MCTrack already done, renumber all _other_ arrays...
-            //            LOG(info) << "BEFORE ADDING, TCA \"" << tcaVector[iarray]->GetName() << "\" has " <<
-            //            tcaVector[iarray]->GetEntries() << " entries.";
+            //            LOG(info) << "BEFORE ADDING, TCA \"" << tca_elem->GetName() << "\" has " <<
+            //            tca_elem->GetEntries() << " entries.";
+            fRet = fObjectMap.equal_range(fEvRIPair);
             int addedArray = 0;
-            TClonesArray* arrayToAdd;
-
             for (auto& it = fRet.first; it != fRet.second; ++it) {
                 if (it->second.first == fMCSplitEventHeader->GetChunkStart())
                     continue;
-                if (strcmp(tcaVector[iarray]->GetName(), it->second.second->GetName()) == 0) {
+                if (strcmp(tca_elem->GetName(), it->second.second->GetName()) == 0) {
                     int objShift = trackShift[addedArray++];
-                    //     LOG(INFO) << "trying to add " << tcaVector[iarray]->GetName() << " and " <<
+                    //     LOG(INFO) << "trying to add " << tca_elem->GetName() << " and " <<
                     //     it->second.second->GetName() << "(shift = " << objShift << ")";
-                    arrayToAdd = dynamic_cast<TClonesArray*>(it->second.second);
-                    for (int iobj = 0; iobj < arrayToAdd->GetEntries(); ++iobj) {
-                        FairMCPoint* temp = dynamic_cast<FairMCPoint*>(arrayToAdd->At(iobj));
-                        temp->SetTrackID(temp->GetTrackID() + objShift);
+                    if (auto arrayToAdd = dynamic_cast<TClonesArray*>(it->second.second)) {
+                        for (auto iobj = 0; iobj < arrayToAdd->GetEntries(); ++iobj) {
+                            if (auto temp = dynamic_cast<FairMCPoint*>(arrayToAdd->At(iobj))) {
+                                temp->SetTrackID(temp->GetTrackID() + objShift);
+                            }
+                        }
+                        tca_elem->AbsorbObjects(arrayToAdd);
                     }
                 }
-                tcaVector[iarray]->AbsorbObjects(arrayToAdd);
-                //                LOG(info) << "FOUND ONE!, TCA has now " << tcaVector[iarray]->GetEntries() << "
-                //                entries.";
             }
         }
         fObjectMap.erase(fRet.first, fRet.second);
@@ -178,9 +174,9 @@ bool FairMQChunkMerger::MergeData(fair::mq::Parts& parts, int /*index*/)
         RootSerializer().Serialize(*messEH, fMCSplitEventHeader);
         partsOut.AddPart(std::move(messEH));
 
-        for (int iarray = 0; iarray < tcaVector.size(); ++iarray) {
+        for (auto tca_elem : tcaVector) {
             auto mess(NewMessage());
-            RootSerializer().Serialize(*mess, tcaVector[iarray]);
+            RootSerializer().Serialize(*mess, tca_elem);
             partsOut.AddPart(std::move(mess));
         }
         // LOG(info) << "created output message with " << partsOut.Size() << " parts.";

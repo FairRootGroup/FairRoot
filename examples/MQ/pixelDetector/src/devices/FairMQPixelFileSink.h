@@ -17,17 +17,18 @@
 
 #include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
 
+#include <TFile.h>
+#include <TTree.h>
+#include <memory>
 #include <string>
 
-class TFile;
 class TObject;
-class TTree;
 
 class FairMQPixelFileSink : public fair::mq::Device
 {
   public:
     FairMQPixelFileSink();
-    virtual ~FairMQPixelFileSink();
+    ~FairMQPixelFileSink() override;
 
     void SetOutputFileName(const std::string& tempString) { fFileName = tempString; }
     std::string GetOutputFileName() { return fFileName; }
@@ -48,13 +49,9 @@ class FairMQPixelFileSink : public fair::mq::Device
     std::string fTreeName;
 
     std::string fFileOption;
-    bool fFlowMode;
-    bool fWrite;
 
-    TFile* fOutFile;
-    TTree* fTree;
-    unsigned int fNObjects;
-    TObject** fOutputObjects;
+    std::unique_ptr<TFile> fOutFile{};
+    std::unique_ptr<TTree> fTree{};
 
     FairMQPixelFileSink(const FairMQPixelFileSink&);
     FairMQPixelFileSink& operator=(const FairMQPixelFileSink&);

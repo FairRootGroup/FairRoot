@@ -42,30 +42,17 @@ FairGeoOldAsciiIo::FairGeoOldAsciiIo()
     , filename("")
     , filedir("")
     , writable(kFALSE)
-    , file(nullptr)
 {
     // Constructor
 }
 
-FairGeoOldAsciiIo::~FairGeoOldAsciiIo()
-{
-    // Destructor
-    close();
-    if (file) {
-        delete file;
-        file = 0;
-    }
-}
+FairGeoOldAsciiIo::~FairGeoOldAsciiIo() {}
 
 Bool_t FairGeoOldAsciiIo::open(const char* fname, const Text_t* status)
 {
     // Opens the file fname
     close();
-    if (!file) {
-        file = new std::fstream();
-    } else {
-        (file->clear());
-    }
+    file.clear();
     if (!filedir.IsNull()) {
         filename = filedir + "/" + fname;
     } else {
@@ -73,18 +60,18 @@ Bool_t FairGeoOldAsciiIo::open(const char* fname, const Text_t* status)
     }
     filename = filename.Strip();
     if (strcmp(status, "in") == 0) {
-        file->open(filename, ios::in);
+        file.open(filename, ios::in);
         writable = kFALSE;
     } else {
         if (strcmp(status, "out") == 0) {
-            file->open(filename, ios::in);
+            file.open(filename, ios::in);
             if (!isOpen()) {
-                file->close();
-                file->clear();
-                file->open(filename, ios::out);
+                file.close();
+                file.clear();
+                file.open(filename, ios::out);
                 writable = kTRUE;
             } else {
-                file->close();
+                file.close();
                 Error("open", "Output file %s exists already and will not be recreated.", filename.Data());
                 return kFALSE;
             }
@@ -92,7 +79,7 @@ Bool_t FairGeoOldAsciiIo::open(const char* fname, const Text_t* status)
             Error("open", "Invalid file option!");
         }
     }
-    if (file->rdbuf()->is_open() == 0) {
+    if (!file.is_open()) {
         Error("open", "Failed to open file %s", filename.Data());
         return kFALSE;
     }
@@ -101,27 +88,19 @@ Bool_t FairGeoOldAsciiIo::open(const char* fname, const Text_t* status)
 
 Bool_t FairGeoOldAsciiIo::isOpen()
 {
-    // Returns kTRUE, if the file is open
-    if (file && file->rdbuf()->is_open() == 1) {
-        return kTRUE;
-    }
-    return kFALSE;
+    return file.is_open();
 }
 
 Bool_t FairGeoOldAsciiIo::isWritable()
 {
-    // Returns kTRUE, if the file is open and writable
-    if (isOpen() && writable) {
-        return kTRUE;
-    }
-    return kFALSE;
+    return isOpen() && writable;
 }
 
 void FairGeoOldAsciiIo::close()
 {
     // Closes the file
     if (isOpen()) {
-        file->close();
+        file.close();
         filename = "";
     }
 }
@@ -146,7 +125,7 @@ Bool_t FairGeoOldAsciiIo::read(FairGeoSet* set, FairGeoMedia* media)
     if (!isOpen() || writable || set == 0) {
         return kFALSE;
     }
-    std::fstream& fin = *file;
+    std::fstream& fin = file;
     fin.clear();
     fin.seekg(0, ios::beg);
     FairGeoNode* volu = 0;

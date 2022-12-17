@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -7,7 +7,6 @@
  ********************************************************************************/
 #include "FairRutherfordContFact.h"
 
-#include "FairRuntimeDb.h"          // for FairRuntimeDb
 #include "FairRutherfordGeoPar.h"   // for FairRutherfordGeoPar
 
 #include <TList.h>     // for TList
@@ -21,13 +20,10 @@ ClassImp(FairRutherfordContFact);
 static FairRutherfordContFact gFairRutherfordContFact;
 
 FairRutherfordContFact::FairRutherfordContFact()
-    : FairContFact()
+    : FairContFact("FairRutherfordContFact", "Factory for parameter containers in libFairRutherford")
 {
     /** Constructor (called when the library is loaded) */
-    fName = "FairRutherfordContFact";
-    fTitle = "Factory for parameter containers in libFairRutherford";
     setAllContainers();
-    FairRuntimeDb::instance()->addContFactory(this);
 }
 
 void FairRutherfordContFact::setAllContainers()
@@ -37,8 +33,7 @@ void FairRutherfordContFact::setAllContainers()
       the list of containers for the FairRutherford library.
   */
 
-    FairContainer* p =
-        new FairContainer("FairRutherfordGeoPar", "FairRutherford Geometry Parameters", "TestDefaultContext");
+    auto p = new FairContainer("FairRutherfordGeoPar", "FairRutherford Geometry Parameters", "TestDefaultContext");
     p->addContext("TestNonDefaultContext");
 
     containers->Add(p);

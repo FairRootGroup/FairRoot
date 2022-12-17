@@ -16,7 +16,7 @@
  ** @author M.Al-Turany <m.al/turany@gsi.de>
  ** @author V.Friese <v.friese@gsi.de>
  ** @since 06.01.2004
- ** @version1.0
+ ** @version 1.0
  **
  ** Abstract base class for magnetic fields in FAIR
  ** Concrete field should implement the pure virtual methods
@@ -64,7 +64,7 @@ class FairField : public TVirtualMagField
     /** Get x component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBx(Double_t, Double_t, Double_t)
+    virtual Double_t GetBx([[maybe_unused]] Double_t x, [[maybe_unused]] Double_t y, [[maybe_unused]] Double_t z)
     {
         LOG(warn) << "FairField::GetBx Should be implemented in User class";
         return 0;
@@ -73,7 +73,7 @@ class FairField : public TVirtualMagField
     /** Get y component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBy(Double_t, Double_t, Double_t)
+    virtual Double_t GetBy([[maybe_unused]] Double_t x, [[maybe_unused]] Double_t y, [[maybe_unused]] Double_t z)
     {
         LOG(warn) << "FairField::GetBy Should be implemented in User class";
         return 0;
@@ -82,7 +82,7 @@ class FairField : public TVirtualMagField
     /** Get z component of magnetic field [kG]
      ** @param x,y,z    Position [cm]
      **/
-    virtual Double_t GetBz(Double_t, Double_t, Double_t)
+    virtual Double_t GetBz([[maybe_unused]] Double_t x, [[maybe_unused]] Double_t y, [[maybe_unused]] Double_t z)
     {
         LOG(warn) << "FairField::GetBz Should be implemented in User class";
         return 0;

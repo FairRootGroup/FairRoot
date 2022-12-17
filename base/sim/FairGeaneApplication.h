@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -35,7 +35,7 @@ class FairGeaneApplication : public TVirtualMCApplication
      *@param Debug    true to print step info*/
     FairGeaneApplication(Bool_t Debug);
     /** default destructor */
-    virtual ~FairGeaneApplication();
+    ~FairGeaneApplication() override;
     /** Return Field used in simulation*/
     FairField* GetField() { return fxField; }
     /** Initialize MC engine */
@@ -46,23 +46,28 @@ class FairGeaneApplication : public TVirtualMCApplication
      */
     void SetField(FairField* field);
     /** Define action at each step, dispatch the action to the corresponding detectors */
-    void GeaneStepping();   // MC Application
-    void ConstructGeometry();
-    /** Singelton instance
+    void GeaneStepping() override;   // MC Application
+    void ConstructGeometry() override;
+    /**
+     * Singelton instance
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
-    static FairGeaneApplication* Instance();
+    [[deprecated]] static FairGeaneApplication* Instance()
+    {
+        return static_cast<FairGeaneApplication*>(TVirtualMCApplication::Instance());
+    }
 
     /**pure virtual functions that hasve to be implimented */
 
-    void InitGeometry() { ; }
-    void GeneratePrimaries() { ; }
-    void BeginEvent() { ; }
-    void BeginPrimary() { ; }
-    void PreTrack() { ; }
-    void PostTrack() { ; }
-    void FinishPrimary() { ; }
-    void FinishEvent() { ; }
-    void Stepping() { ; }
+    void InitGeometry() override { ; }
+    void GeneratePrimaries() override { ; }
+    void BeginEvent() override { ; }
+    void BeginPrimary() override { ; }
+    void PreTrack() override { ; }
+    void PostTrack() override { ; }
+    void FinishPrimary() override { ; }
+    void FinishEvent() override { ; }
+    void Stepping() override { ; }
     void StopRun() { ; }
 
   private:
@@ -76,18 +81,11 @@ class FairGeaneApplication : public TVirtualMCApplication
     TLorentzVector fTrkPos;   //!
 
     // Interface to MonteCarlo application
-    ClassDef(FairGeaneApplication, 1);
+    ClassDefOverride(FairGeaneApplication, 1);
 
   private:
     FairGeaneApplication(const FairGeaneApplication&);
     FairGeaneApplication& operator=(const FairGeaneApplication&);
 };
-
-// inline functions
-
-inline FairGeaneApplication* FairGeaneApplication::Instance()
-{
-    return static_cast<FairGeaneApplication*>(TVirtualMCApplication::Instance());
-}
 
 #endif

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -30,10 +30,10 @@ class FairRutherfordGeoPar : public FairParGenericSet
     FairRutherfordGeoPar(const char* name = "FairRutherfordGeoPar",
                          const char* title = "FairRutherford Geometry Parameters",
                          const char* context = "TestDefaultContext");
-    ~FairRutherfordGeoPar(void);
-    void clear(void);
-    void putParams(FairParamList*);
-    Bool_t getParams(FairParamList*);
+    ~FairRutherfordGeoPar() override;
+    void clear() override;
+    void putParams(FairParamList*) override;
+    Bool_t getParams(FairParamList*) override;
     TObjArray* GetGeoSensitiveNodes() { return fGeoSensNodes; }
     TObjArray* GetGeoPassiveNodes() { return fGeoPassNodes; }
 
@@ -41,7 +41,7 @@ class FairRutherfordGeoPar : public FairParGenericSet
     FairRutherfordGeoPar(const FairRutherfordGeoPar&);
     FairRutherfordGeoPar& operator=(const FairRutherfordGeoPar&);
 
-    ClassDef(FairRutherfordGeoPar, 1);
+    ClassDefOverride(FairRutherfordGeoPar, 1);
 };
 
 #endif

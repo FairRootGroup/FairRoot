@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -9,17 +9,20 @@
 #define FAIRRUN_H
 
 #include "FairAlignmentHandler.h"
-#include "FairRootManager.h"
+#include "FairSink.h"
+#include "FairSource.h"
 
 #include <Rtypes.h>   // for Int_t, Bool_t, etc
 #include <TMCtls.h>   // for multi-threading
 #include <TNamed.h>   // for TNamed
 #include <TString.h>
 #include <map>
+#include <memory>
 #include <string>
 
 class FairEventHeader;
 class FairFileHeader;
+class FairRootManager;
 class FairRuntimeDb;
 class FairSink;
 class FairTask;
@@ -46,7 +49,7 @@ class FairRun : public TNamed
     /**
      * default dtor
      */
-    virtual ~FairRun();
+    ~FairRun() override;
     /**
      * static instance
      */
@@ -77,20 +80,16 @@ class FairRun : public TNamed
     /**
      * return a pointer to the RuntimeDB
      */
-    FairRuntimeDb* GetRuntimeDb(void) { return fRtdb; }
+    FairRuntimeDb* GetRuntimeDb() { return fRtdb; }
     /**
      * Set the sink
      */
-    void SetSink(FairSink* tempSink)
-    {
-        fSink = tempSink;
-        fRootManager->SetSink(tempSink);
-        fUserOutputFileName = fSink->GetFileName();
-    }
+    void SetSink(std::unique_ptr<FairSink> newsink);
+    void SetSink(FairSink* tempSink);
     /**
-     * return a pointer to the sink
+     * return a non-owning pointer to the sink
      */
-    FairSink* GetSink() { return fSink; }
+    FairSink* GetSink() { return fSink.get(); }
     /**
      * return the run ID for the actul run
      */
@@ -124,14 +123,22 @@ class FairRun : public TNamed
     /**Create a new file and save the TGeoManager to it*/
     void CreateGeometryFile(const char* geofile);
 
-    //** Set if RunInfo file should be written */
-    void SetWriteRunInfoFile(Bool_t write);
+    /**
+     * Set if RunInfo file should be written
+     * \deprecated Use SetGenerateRunInfo() instead.
+     *   Deprecated pre-v19, will be removed in v20.
+     */
+    [[deprecated]] void SetWriteRunInfoFile(Bool_t write);
 
     //** Set if RunInfo should be generated */
     void SetGenerateRunInfo(Bool_t write) { fGenerateRunInfo = write; }
 
-    //** Get info if RunInfo file is written */
-    Bool_t GetWriteRunInfoFile();
+    /**
+     * Get info if RunInfo file is written
+     * \deprecated Use \ref IsRunInfoGenerated() instead.
+     *   Deprecated pre-v19, will be removed in v20.
+     */
+    [[deprecated]] Bool_t GetWriteRunInfoFile();
 
     //** Get info if RunInfo file is written */
     Bool_t IsRunInfoGenerated() { return fGenerateRunInfo; }
@@ -151,21 +158,29 @@ class FairRun : public TNamed
     //** Set option string */
     void SetOptions(const TString& s) { fOptions = s; };
 
-    // vvvvvvvvvv depracted functions, replaced by FairSink vvvvvvvvvv
     /**
      * Set the output file name for analysis or simulation
+     * \deprecated Use \ref FairSink and \ref SetSink().
+     *   Deprecated pre-v19, will be removed in v20.
      */
-    virtual void SetOutputFile(const char* fname);
+    [[deprecated]] virtual void SetOutputFile(const char* fname);
     /**
      * Set the output file for analysis or simulation
+     * \deprecated Use \ref FairSink and \ref SetSink().
+     *   Deprecated pre-v19, will be removed in v20.
      */
-    virtual void SetOutputFile(TFile* f);
+    [[deprecated]] virtual void SetOutputFile(TFile* f);
     /**
      * Set the  output file name without creating the file
+     * \deprecated Use \ref FairSink and \ref SetSink().
+     *   Deprecated pre-v19, will be removed in v20.
      */
-    void SetOutputFileName(const TString& name);
-    TFile* GetOutputFile();
-    // ^^^^^^^^^^ depracted functions, replaced by FairSink ^^^^^^^^^^
+    [[deprecated]] void SetOutputFileName(const TString& name);
+    /**
+     * \deprecated Use \ref FairSink and \ref SetSink().
+     *   Deprecated pre-v19, will be removed in v20.
+     */
+    [[deprecated]] TFile* GetOutputFile();
 
     /**
      * New functions which allow to postpone creating a new Sink in MT
@@ -175,6 +190,17 @@ class FairRun : public TNamed
     TString GetUserOutputFileName() const;
 
     void AddAlignmentMatrices(const std::map<std::string, TGeoHMatrix>& alignmentMatrices, bool invertMatrices = false);
+
+    /**
+     * \brief Set the input signal file
+     *
+     * Takes an owning pointer!
+     */
+    virtual void SetSource(FairSource* tempSource);
+    /** Return non-owning pointer to source **/
+    FairSource* GetSource() { return fSource.get(); }
+    FairRootManager& GetRootManager() { return *fRootManager; }
+    FairRootManager const& GetRootManager() const { return *fRootManager; }
 
   private:
     FairRun(const FairRun& M);
@@ -192,7 +218,7 @@ class FairRun : public TNamed
     /**IO manager */
     FairRootManager* fRootManager;
     /**Output sink*/
-    FairSink* fSink;
+    std::unique_ptr<FairSink> fSink{};   //!
     /**Output file name set by user*/
     TString fUserOutputFileName;
     /**Options for derived classes, to be set & parsed by user*/
@@ -214,8 +240,18 @@ class FairRun : public TNamed
 
     FairAlignmentHandler fAlignmentHandler;
 
-    void AlignGeometry() const;
+    std::unique_ptr<FairSource> fSource{};   //!
 
-    ClassDef(FairRun, 5);
+    void AlignGeometry() const;
+    /**
+     * Call FillEventHeader on the source
+     */
+    void FillEventHeader()
+    {
+        if (fSource)
+            fSource->FillEventHeader(fEvtHeader);
+    }
+
+    ClassDefOverride(FairRun, 5);
 };
 #endif   // FAIRRUN_H

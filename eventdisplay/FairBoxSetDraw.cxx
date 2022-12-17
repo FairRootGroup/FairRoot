@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -74,7 +74,7 @@ void FairBoxSetDraw::Exec(Option_t* /*option*/)
         Reset();
         //  cout<<  "FairBoxSetDraw::Init() Exec! " << fList->GetEntriesFast() << endl;
         CreateBoxSet();
-        if (FairEventManager::Instance()->GetClearHandler() == kTRUE) {
+        if (FairEventManager::Instance()->GetClearHandler()) {
             fDataSource->Reset();
         }
         fDataSource->RetrieveData(fEventManager->GetEvtTime());
@@ -129,8 +129,6 @@ void FairBoxSetDraw::SetTimeWindowMinus(Double_t val) { fTimeWindowMinus = val; 
 void FairBoxSetDraw::SetTimeWindowPlus(Double_t val) { fTimeWindowPlus = val; }
 
 FairBoxSetDraw::~FairBoxSetDraw() {}
-
-void FairBoxSetDraw::SetParContainers() {}
 
 /** Action after each event**/
 void FairBoxSetDraw::Finish() {}

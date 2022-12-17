@@ -67,13 +67,13 @@ FairMultiLinkedData* FairMultiLinkedData_Interface::CreateFairMultiLinkedData()
 {
     if (FairRootManager::Instance() != nullptr) {
         if (FairRootManager::Instance()->GetUseFairLinks()) {
-            if (fLink == nullptr) {
-                fLink.reset(new FairMultiLinkedData());
+            if (!fLink) {
+                fLink = std::make_unique<FairMultiLinkedData>();
             }
             return fLink.get();
         }
     }
-    return 0;
+    return nullptr;
 }
 
 std::set<FairLink> FairMultiLinkedData_Interface::GetLinks() const

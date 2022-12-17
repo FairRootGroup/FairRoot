@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -115,14 +115,10 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
-)
-
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::BaseMQ # Serialization policies
-  FairRoot::FairTools # FairLogger
+  FairRoot::Tools # FairLogger
   FairRoot::GeoBase # FairGeoSet
   FairRoot::ExMCStack
   FairRoot::ParBase # FairRuntimeDb, FairContFact, FairParamList
@@ -133,16 +129,17 @@ target_link_libraries(${target} PUBLIC
   $<$<BOOL:${Flatbuffers_FOUND}>:${flatbuffers_lib}>
   $<$<BOOL:${msgpack_FOUND}>:msgpackc>
 
-  Core # Rtypes
-  MathCore # TRandom
-  Physics # TVector3, TLorentzVector
-  RIO # TFile
-  Tree # TTree
+  ROOT::Core # Rtypes
+  ROOT::MathCore # TRandom
+  ROOT::Physics # TVector3, TLorentzVector
+  ROOT::RIO # TFile
+  ROOT::Tree # TTree
 )
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF FairTestDetectorLinkDef.h
+  EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})

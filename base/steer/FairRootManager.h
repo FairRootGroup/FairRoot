@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,12 +12,12 @@
 #include "FairSink.h"
 #include "FairSource.h"
 
-#include <Rtypes.h>    // for Bool_t, Int_t, UInt_t, etc
-#include <TChain.h>    // for TChain
-#include <TMCtls.h>    // for multi-threading
-#include <TObject.h>   // for TObject
-#include <TString.h>   // for TString, operator<
-#include <map>         // for map, multimap, etc
+#include <Rtypes.h>      // for Bool_t, Int_t, UInt_t, etc
+#include <TChain.h>      // for TChain
+#include <TObject.h>     // for TObject
+#include <TRefArray.h>   // for TRefArray
+#include <TString.h>     // for TString, operator<
+#include <map>           // for map, multimap, etc
 #include <memory>
 #include <string>
 #include <type_traits>   // is_pointer, remove_pointer, is_const, remove...
@@ -36,10 +36,8 @@ class TObjArray;
 class TCollection;
 class TFile;
 class TFolder;
-class TIterator;
 class TList;
 class TNamed;
-class TRefArray;
 class TTree;
 
 /**
@@ -53,7 +51,7 @@ class FairRootManager : public TObject
 {
   public:
     /**dtor*/
-    virtual ~FairRootManager();
+    ~FairRootManager() override;
     Bool_t AllDataProcessed();
     /** Add a branch name to the Branchlist and give it an id*/
     Int_t AddBranchToList(const char* name);
@@ -90,8 +88,6 @@ class FairRootManager : public TObject
 
     /**Return a TList of TObjString of branch names available in this session*/
     TList* GetBranchNameList() { return fBranchNameList; }
-    /**Return the vector of branch names that were requested by tasks as input*/
-    const std::vector<std::string>& GetReqBranchNames() const { return fReqBrNames; }
 
     /**  Get the Object (container) for the given branch name,
          this method can be used to access the data of
@@ -168,10 +164,6 @@ class FairRootManager : public TObject
     /** create a new branch based on an arbitrary type T (for which a dictionary must exist) **/
     template<typename T>
     void RegisterAny(const char* name, T*& obj, Bool_t toFile);
-    /// for branches which are not managed by folders, we need a special function
-    /// to trigger persistent branch creation
-    /// return true if successful; false if problem
-    bool CreatePersistentBranchesAny();
 
     void RegisterInputObject(const char* name, TObject* obj);
 
@@ -181,15 +173,18 @@ class FairRootManager : public TObject
     FairWriteoutBuffer* RegisterWriteoutBuffer(TString branchName, FairWriteoutBuffer* buffer);
     /**Update the list of time based branches in the output file*/
     void UpdateListOfTimebasedBranches();
-    /**Use time stamps to read data and not tree entries*/
-    void RunWithTimeStamps() { fTimeStamps = kTRUE; }
+    /**Use time stamps to read data and not tree entries
+     * \deprecated Deprecated in v18.8, will be removed in v20.
+     */
+    [[deprecated]] void RunWithTimeStamps() {}
 
     /**Set the branch name list*/
     void SetBranchNameList(TList* list);
     /** Replace the time based branch name list*/
     void SetTimeBasedBranchNameList(TList* list);
 
-    void FillEventHeader(FairEventHeader* feh)
+    /** \deprecated Deprecated in v18.8, will be removed in v20. */
+    [[deprecated]] void FillEventHeader(FairEventHeader* feh)
     {
         if (fSource)
             fSource->FillEventHeader(feh);
@@ -201,7 +196,7 @@ class FairRootManager : public TObject
      * this method truncate the full path from the branch names
      */
 
-    Int_t Write(const char* name = 0, Int_t option = 0, Int_t bufsize = 0);
+    Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) override;
     /** Write the current TGeoManager to file*/
     void WriteGeometry();
     /**Write the file header object to the output file*/
@@ -276,12 +271,10 @@ class FairRootManager : public TObject
     Int_t GetInstanceId() const { return fId; }
     void UpdateFileName(TString& fileName);
 
-    // vvvvvvvvvv depracted functions, replaced by FairSink vvvvvvvvvv
     /** Return a pointer to the output File of type TFile */
     TFile* GetOutFile();
     /** Return a pointer to the output tree of type TTree */
     TTree* GetOutTree();
-    // ^^^^^^^^^^ depracted functions, replaced by FairSink ^^^^^^^^^^
 
     /**Read one event from source to find out which RunId to use*/
     Bool_t SpecifyRunId();
@@ -364,15 +357,11 @@ class FairRootManager : public TObject
     /// used for branches registered with RegisterAny; use of ptr here
     /// since type_info cannot be copied
     std::map<std::string, std::unique_ptr<TypeAddressPair const>> fAnyBranchMap;   //!
-    /// keeps track of branches which are supposed to be persistified
-    std::vector<std::string> fPersistentBranchesAny;
 
     /**Branch id for this run */
     Int_t fBranchSeqId;
     /**List of branch names as TObjString*/
     TList* fBranchNameList;   //!
-    /**Vector of (not necessarily unique) branch names requested per GetObject / InitObjectAs */
-    std::vector<std::string> fReqBrNames;   //!
 
     /**The branch ID for the special (required) MCTrack branch**/
     Int_t fMCTrackBranchId;   //!
@@ -385,14 +374,10 @@ class FairRootManager : public TObject
     std::map<TString, FairTSBufferFunctional*> fTSBufferMap;     //!
     std::map<TString, FairWriteoutBuffer*> fWriteoutBufferMap;   //!
     std::map<Int_t, TBranch*> fInputBranchMap;                   //!    //Map of input branch ID with TBranch pointer
-    /**if kTRUE Read data according to time and not entries*/
-    Bool_t fTimeStamps;
     /**Flag for creation of Map for branch persistency list  */
     Bool_t fBranchPerMap;
     /** Map for branch persistency list */
     std::map<TString, Int_t> fBrPerMap;   //!
-    /**Iterator for the fBrPerMap  Map*/
-    std::map<TString, Int_t>::iterator fBrPerMapIter;
 
     /** for internal use, to return the same event time for the same entry*/
     UInt_t fCurrentEntryNo;   //!
@@ -414,14 +399,8 @@ class FairRootManager : public TObject
 
     Bool_t fUseFairLinks;   //!
     Bool_t fFinishRun;      //!
-    /** List of branches from input Chain or Tree*/
-    TObjArray* fListOfBranchesFromInput;   //!
-    /** Iterator for the list of branches from input Chain or Tree */
-    TIterator* fListOfBranchesFromInputIter;   //!
     /** List of branches used with no-time stamp in time-based session */
-    TRefArray* fListOfNonTimebasedBranches;   //!
-    /** Iterator for the list of branches used with no-time stamp in time-based session */
-    TIterator* fListOfNonTimebasedBranchesIter;   //!
+    TRefArray fListOfNonTimebasedBranches{};   //!
 
     /**private Members for multi-threading */
     // global static data members
@@ -429,7 +408,7 @@ class FairRootManager : public TObject
     // data members
     Int_t fId;   // This manager ID
 
-    ClassDef(FairRootManager, 12);
+    ClassDefOverride(FairRootManager, 14);
 };
 
 // FIXME: move to source since we can make it non-template dependent
@@ -514,9 +493,6 @@ TPtr FairRootManager::InitObjectAs(const char* brname)
     }
     // add into branch list
     AddMemoryBranchAny<T>(brname, addr);
-    // register as a **requested** branch
-    // (duplications are explicitely allowed)
-    fReqBrNames.emplace_back(brname);
 
     // NOTE: ideally we would do proper resource management for addr and *addr
     // since the FairRootManager becomes owner of these pointers/instances; Unfortunately this

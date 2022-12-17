@@ -32,7 +32,6 @@ class FairRadGridManager
     /**
      * Default constructor.
      * Creates the singleton object of FairRadGridManager class.
-     * The pointer to this object can be reached via FairRadGridManager::Instance().
      */
     FairRadGridManager();
     /**
@@ -90,8 +89,6 @@ class FairRadGridManager
     /** output file name */
     TString fOutputFileName;
 
-    static Double_t fLtmp;
-
   public:
     TObjArray* GetMeshList() { return fMeshList; }
     void AddMeshList(TObjArray* list)
@@ -114,8 +111,9 @@ class FairRadGridManager
      * This function is used to access the methods of the class.
      * @return Pointer to the singleton FairRadGridManager object, created
      * with FairRadGridManager::FairRadGridManager().
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
-    static FairRadGridManager* Instance();
+    [[deprecated("Maybe use FairMCApplcation::GetRadGridMan()")]] static FairRadGridManager* Instance();
 };
 
 #endif

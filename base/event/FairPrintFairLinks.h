@@ -29,9 +29,6 @@ class FairPrintFairLinks : public FairTask
     /** Destructor **/
     virtual ~FairPrintFairLinks();
 
-    /** Virtual method Init **/
-    virtual void SetParContainers();
-
     virtual void AddBranchName(const TString& name) { fSelectedBranches->AddLast(new TObjString(name.Data())); }
 
     virtual void PrintBranchNameList(TList* branches);

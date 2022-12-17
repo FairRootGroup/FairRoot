@@ -1,5 +1,5 @@
  ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ # Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             #
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -55,13 +55,12 @@ set(sources
   sink/FairRootFileSink.cxx
   sink/FairSink.cxx
 
+  source/FairFileSourceBase.cxx
   source/FairFileSource.cxx
   source/FairMixedSource.cxx
-  source/FairOnlineSource.cxx
   source/FairSource.cxx
   source/FairUnpack.cxx
 
-  steer/FairAnaSelector.cxx
   steer/FairLinkManager.cxx
   steer/FairRadGridManager.cxx
   steer/FairRadLenManager.cxx
@@ -71,8 +70,6 @@ set(sources
   steer/FairRootManager.cxx
   steer/FairRun.cxx
   steer/FairRunAna.cxx
-  steer/FairRunAnaProof.cxx
-  steer/FairRunOnline.cxx
   steer/FairRunSim.cxx
   steer/FairTask.cxx
   steer/FairTrajFilter.cxx
@@ -80,24 +77,17 @@ set(sources
   steer/FairWriteoutBuffer.cxx
 )
 
-if(BUILD_MBS)
+if(BUILD_PROOF_SUPPORT)
   list(APPEND sources
-    source/exitCli.c
-    source/FairLmdSource.cxx
-    source/FairMbsSource.cxx
-    source/FairMbsStreamSource.cxx
-    source/FairRemoteSource.cxx
-    source/MRevBuffer.cxx
-    source/rclose.c
-    source/swaplw.c
+    steer/FairAnaSelector.cxx
+    steer/FairRunAnaProof.cxx
   )
 endif()
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
 add_library(${target} SHARED ${sources} ${headers})
-add_library(FairRoot::${target} ALIAS ${target})
-set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+fairroot_library_settings(${target})
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/steer>
@@ -114,39 +104,41 @@ target_include_directories(${target} PUBLIC
 
 target_link_libraries(${target} PUBLIC
   FairRoot::Alignment
-  FairRoot::FairTools
+  FairRoot::Tools
   FairRoot::ParBase
   FairRoot::GeoBase
-  Boost::serialization
-  $<$<BOOL:${BUILD_MBS}>:FairRoot::MbsAPI>
 
-  RHTTP # THttpServer
-  Core
-  EG
-  Geom
-  GeomPainter # TGeoTrack
-  Hist
-  MathCore
-  Matrix
-  Net # TSocket
-  Physics
-  Proof
-  RIO
-  Tree
+  ROOT::Core
+  ROOT::EG
+  ROOT::Geom
+  ROOT::GeomPainter # TGeoTrack
+  ROOT::Hist
+  ROOT::MathCore
+  ROOT::Matrix
+  ROOT::Net # TSocket
+  ROOT::Physics
+  ROOT::RIO
+  ROOT::Tree
   ${VMCLIB}
-  $<$<BOOL:${ROOT_GDML_FOUND}>:Gdml>
+  $<$<BOOL:${ROOT_GDML_FOUND}>:ROOT::Gdml>
 )
 
-target_compile_definitions(${target} PRIVATE
-  $<$<BOOL:${BUILD_MBS}>:BUILD_MBS>
+target_compile_definitions(${target}
+  PRIVATE
   $<$<BOOL:${ROOT_GDML_FOUND}>:ROOT_HAS_GDML>
   # $<$<PLATFORM_ID:Linux>:Linux>
 )
 
+if(BUILD_PROOF_SUPPORT)
+  target_link_libraries(${target} PUBLIC ROOT::Proof)
+  target_compile_definitions(${target} PRIVATE BUILD_PROOF_SUPPORT)
+endif()
+
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF FairLinkDef.h
+  EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
-install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+fairroot_install_exported(TARGETS ${target})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

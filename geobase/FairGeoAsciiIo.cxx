@@ -37,28 +37,17 @@ FairGeoAsciiIo::FairGeoAsciiIo()
     , filename("")
     , filedir("")
     , writable(kFALSE)
-    , file(nullptr)
 {
     // Constructor
 }
 
-FairGeoAsciiIo::~FairGeoAsciiIo()
-{
-    // Destructor
-    close();
-    delete file;
-    file = 0;
-}
+FairGeoAsciiIo::~FairGeoAsciiIo() {}
 
 Bool_t FairGeoAsciiIo::open(const char* fname, const Text_t* status)
 {
     // Opens the file fname
     close();
-    if (!file) {
-        file = new std::fstream();
-    } else {
-        (file->clear());
-    }
+    file.clear();
     if (!filedir.IsNull()) {
         filename = filedir + "/" + fname;
     } else {
@@ -66,18 +55,18 @@ Bool_t FairGeoAsciiIo::open(const char* fname, const Text_t* status)
     }
     filename = filename.Strip();
     if (strcmp(status, "in") == 0) {
-        file->open(filename, ios::in);
+        file.open(filename, ios::in);
         writable = kFALSE;
     } else {
         if (strcmp(status, "out") == 0) {
-            file->open(filename, ios::in);
+            file.open(filename, ios::in);
             if (!isOpen()) {
-                file->close();
-                file->clear();
-                file->open(filename, ios::out);
+                file.close();
+                file.clear();
+                file.open(filename, ios::out);
                 writable = kTRUE;
             } else {
-                file->close();
+                file.close();
                 Error("open", "Output file %s exists already and will not be recreated.", filename.Data());
                 return kFALSE;
             }
@@ -85,7 +74,7 @@ Bool_t FairGeoAsciiIo::open(const char* fname, const Text_t* status)
             Error("open", "Invalid file option!");
         }
     }
-    if (file->rdbuf()->is_open() == 0) {
+    if (!file.is_open()) {
         Fatal("open", "Failed to open file %s", filename.Data());
         return kFALSE;
     }
@@ -94,27 +83,19 @@ Bool_t FairGeoAsciiIo::open(const char* fname, const Text_t* status)
 
 Bool_t FairGeoAsciiIo::isOpen()
 {
-    // Returns kTRUE, if the file is open
-    if (file && file->rdbuf()->is_open() == 1) {
-        return kTRUE;
-    }
-    return kFALSE;
+    return file.is_open();
 }
 
 Bool_t FairGeoAsciiIo::isWritable()
 {
-    // Returns kTRUE, if the file is open and writable
-    if (isOpen() && writable) {
-        return kTRUE;
-    }
-    return kFALSE;
+    return isOpen() && writable;
 }
 
 void FairGeoAsciiIo::close()
 {
     // Closes the file
     if (isOpen()) {
-        file->close();
+        file.close();
         filename = "";
     }
 }
@@ -139,7 +120,7 @@ Bool_t FairGeoAsciiIo::read(FairGeoMedia* media)
     if (!isOpen() || writable || media == 0) {
         return kFALSE;
     }
-    media->read(*file);
+    media->read(file);
     return kTRUE;
 }
 
@@ -149,7 +130,7 @@ Bool_t FairGeoAsciiIo::read(FairGeoSet* set, FairGeoMedia* media)
     if (!isOpen() || writable || set == 0) {
         return kFALSE;
     }
-    set->read(*file, media);
+    set->read(file, media);
     return kTRUE;
 }
 
@@ -159,7 +140,7 @@ Bool_t FairGeoAsciiIo::write(FairGeoMedia* media)
     if (!isOpen() || !writable || media == 0) {
         return kFALSE;
     }
-    media->write(*file);
+    media->write(file);
     return kTRUE;
 }
 
@@ -169,7 +150,7 @@ Bool_t FairGeoAsciiIo::write(FairGeoSet* set)
     if (!isOpen() || !writable || set == 0) {
         return kFALSE;
     }
-    set->write(*file);
+    set->write(file);
     return kTRUE;
 }
 
@@ -182,8 +163,8 @@ Bool_t FairGeoAsciiIo::readGeomConfig(FairGeoInterface* interface)
     TString buf(256);
     TString simRefRun, historyDate;
     Int_t k = -1;
-    while (!(*file).eof()) {
-        buf.ReadLine(*file);
+    while (!file.eof()) {
+        buf.ReadLine(file);
         buf = buf.Strip(buf.kBoth);
         if (!buf.IsNull() && buf(0, 2) != "//" && buf(0, 1) != "*") {
             if (buf.Contains(".geo") || buf.Contains("_gdb")) {
@@ -236,8 +217,8 @@ Bool_t FairGeoAsciiIo::readDetectorSetup(FairGeoInterface* interface)
     Int_t maxModules = 0, secNo = -1;
     Int_t* mod = 0;
     const char d[] = " ";
-    while (!(*file).eof()) {
-        (*file).getline(buf, maxbuf);
+    while (!file.eof()) {
+        file.getline(buf, maxbuf);
         if (strlen(buf) >= 3 && buf[1] != '/') {
             if (buf[0] == '[') {
                 set = 0;

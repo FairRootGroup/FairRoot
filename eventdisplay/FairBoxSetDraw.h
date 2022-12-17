@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -86,7 +86,6 @@ class FairBoxSetDraw : public FairTask
 
   protected:
     Int_t fVerbose;   //  Verbosity level
-    virtual void SetParContainers();
     virtual InitStatus Init();
     /** Action after each event**/
     virtual void Finish();

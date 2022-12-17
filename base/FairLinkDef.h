@@ -1,12 +1,10 @@
-/********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
- *                                                                              *
- *              This software is distributed under the terms of the             * 
- *              GNU Lesser General Public Licence (LGPL) version 3,             *  
- *                  copied verbatim in the file "LICENSE"                       *
- ********************************************************************************/
-// $Id: FairLinkDef.h,v 1.4 2006/09/15 12:43:35 turany Exp $
-
+/*************************************************************************************
+ *    Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ *                                                                                   *
+ *                 This software is distributed under the terms of the               *
+ *                 GNU Lesser General Public Licence (LGPL) version 3,               *
+ *                     copied verbatim in the file "LICENSE"                         *
+ *************************************************************************************/
 #ifdef __CINT__
 
 #pragma link off all globals;
@@ -42,7 +40,6 @@
 #pragma link C++ class FairRootManager+;
 #pragma link C++ class FairRun+;
 #pragma link C++ class FairRunAna;
-#pragma link C++ class FairRunAnaProof;
 #pragma link C++ class FairRunIdGenerator;
 #pragma link C++ class FairRunSim;
 #pragma link C++ class FairGenericVMCConfig;
@@ -67,27 +64,20 @@
 #pragma link C++ class FairWriteoutBuffer;
 #pragma link C++ class FairRingSorter;
 #pragma link C++ class FairRingSorterTask;
-#pragma link C++ class FairAnaSelector+;
 #pragma link C++ class FairLinkManager+;
 #pragma link C++ class FairPrintFairLinks;
 
 
-#pragma link C++ class FairRunOnline;
 #pragma link C++ class FairSource;
+#pragma link C++ class FairFileSourceBase;
 #pragma link C++ class FairFileSource;
 #pragma link C++ class FairMixedSource;
-#pragma link C++ class FairOnlineSource;
-#pragma link C++ class FairUnpack;
 
 #pragma link C++ class FairSink;
 #pragma link C++ class FairRootFileSink;
-#ifdef BUILD_MBS
-#pragma link C++ class FairMbsSource;
-#pragma link C++ class FairRemoteSource;
-#pragma link C++ class FairMbsStreamSource;
-#pragma link C++ class FairLmdSource;
-#pragma link C++ class MRevBuffer;
-#pragma link C++ class REvent;
+#ifdef BUILD_PROOF_SUPPORT
+#pragma link C++ class FairAnaSelector+;
+#pragma link C++ class FairRunAnaProof;
 #endif
 
 #endif

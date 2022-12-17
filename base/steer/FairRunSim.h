@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -8,6 +8,7 @@
 #ifndef FAIRRUNSIM_H
 #define FAIRRUNSIM_H
 
+#include "FairGenericVMCConfig.h"
 #include "FairIon.h"             // for FairIon
 #include "FairMCApplication.h"   // for FairMCApplication
 #include "FairParticle.h"        // for FairParticle
@@ -18,13 +19,14 @@
 #include <TObjArray.h>   // for TObjArray
 #include <TString.h>     // for TString
 #include <functional>
+#include <memory>
+#include <utility>
 
 class FairField;
 class FairMCEventHeader;
 class FairMesh;
 class FairModule;
 class FairPrimaryGenerator;
-class FairGenericVMCConfig;
 
 /**
  * Configure the Simulation session
@@ -38,7 +40,7 @@ class FairRunSim : public FairRun
     /** default ctor*/
     FairRunSim(Bool_t isMaster = kTRUE);
     /** default dtor*/
-    virtual ~FairRunSim();
+    ~FairRunSim() override;
     /** Singelton instance*/
     static FairRunSim* Instance();
     /**
@@ -65,11 +67,11 @@ class FairRunSim : public FairRun
     /**
      *       Initialize the Simulation
      */
-    virtual void Init();
+    void Init() override;
     /**
      *       run the  simulation
      */
-    virtual void Run(Int_t NEvents = 0, Int_t NotUsed = 0);
+    void Run(Int_t NEvents = 0, Int_t NotUsed = 0) override;
     /**
      *       Set the magnetic that has to be used for simulation field
      */
@@ -109,7 +111,7 @@ class FairRunSim : public FairRun
     TString* GetGeoModel() { return fLoaderName; }
 
     /**Get the field used in simulation*/
-    FairField* GetField() { return fField; }
+    FairField* GetField() override { return fField; }
 
     /**Get the detector specific event header*/
     FairMCEventHeader* GetMCEventHeader();
@@ -178,8 +180,11 @@ class FairRunSim : public FairRun
         fUseSimSetupPostInitFunction = true;
     }
 
-    void SetSimulationConfig(FairGenericVMCConfig* tconf) { fSimulationConfig = tconf; }
-    FairGenericVMCConfig* GetSimulationConfig() { return fSimulationConfig; }
+    void SetSimulationConfig(std::unique_ptr<FairGenericVMCConfig> tconf) { fSimulationConfig = std::move(tconf); }
+    /**
+     * Get non-owning pointer
+     */
+    FairGenericVMCConfig* GetSimulationConfig() { return fSimulationConfig.get(); }
 
     void SetIsMT(Bool_t isMT) { fIsMT = isMT; }
     Bool_t IsMT() const { return fIsMT; }
@@ -188,6 +193,11 @@ class FairRunSim : public FairRun
     Bool_t IsImportTGeoToVMC() const { return fImportTGeoToVMC; }
 
     void StopMCRun() { fApp->StopMCRun(); }
+
+    /**
+     * Get non-owning pointer to FairMCApplication
+     */
+    auto GetMCApplication() { return fApp; }
 
   private:
     FairRunSim(const FairRunSim& M);
@@ -229,9 +239,9 @@ class FairRunSim : public FairRun
     std::function<void()> fSimSetupPostInit;   //!                          /** A user provided function to do sim setup
                                                //!                          / instead of using macros **/
     bool fUseSimSetupPostInitFunction = false;
-    FairGenericVMCConfig* fSimulationConfig;   //!                 /** Simulation configuration */
+    std::unique_ptr<FairGenericVMCConfig> fSimulationConfig{};   //!                 /** Simulation configuration */
 
-    ClassDef(FairRunSim, 2);
+    ClassDefOverride(FairRunSim, 2);
 };
 
 #endif   // FAIRRUNSIM_H

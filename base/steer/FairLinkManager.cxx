@@ -45,7 +45,7 @@ FairLinkManager::~FairLinkManager()
 
 void FairLinkManager::AddIgnoreType(Int_t type)
 {
-    if (fIgnoreSetting == kFALSE) {
+    if (!fIgnoreSetting) {
         LOG(debug) << "AddIgnoreType ignored because of IncludeType setting";
         return;
     }
@@ -56,8 +56,8 @@ void FairLinkManager::AddIgnoreType(Int_t type)
 void FairLinkManager::AddIncludeType(Int_t type)
 {
     LOG(debug) << "AddIgnoreType";
-    if (fIgnoreSetting == kTRUE) {
-        fIgnoreSetting = kFALSE;
+    if (fIgnoreSetting) {
+        fIgnoreSetting = false;
         fIgnoreTypes.clear();
     }
     fIgnoreTypes.insert(type);

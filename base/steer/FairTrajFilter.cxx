@@ -24,7 +24,8 @@
 #include <TParticle.h>   // for TParticle
 #include <iostream>      // for operator<<, basic_ostream, etc
 
-using namespace std;
+using std::cout;
+using std::endl;
 
 ClassImp(FairTrajFilter);
 
@@ -120,11 +121,11 @@ Bool_t FairTrajFilter::IsAccepted(const TParticle* p) const
 
     // Apply generation cut
     if (-1 == p->GetFirstMother()) {
-        if (kFALSE == fStorePrim) {
+        if (!fStorePrim) {
             return kFALSE;
         }
     } else {
-        if (kFALSE == fStoreSec) {
+        if (!fStoreSec) {
             return kFALSE;
         }
     }

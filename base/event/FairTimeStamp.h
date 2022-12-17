@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -13,13 +13,6 @@
 #include <Rtypes.h>   // for Double_t, etc
 #include <iosfwd>     // for ostream
 #include <iostream>   // for ostream, cout
-
-namespace boost {
-namespace serialization {
-class access;
-}
-}   // namespace boost
-#include <boost/serialization/base_object.hpp>
 
 class TObject;
 
@@ -79,25 +72,9 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
         return out;
     }
 
-    virtual bool operator<(const FairTimeStamp* rValue) const
-    {
-        if (GetTimeStamp() < rValue->GetTimeStamp())
-            return true;
-        else
-            return false;
-    }
-
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int)
-    {
-        // ar & boost::serialization::base_object<FairMultiLinkedData>(*this);
-        ar& fTimeStamp;
-        ar& fTimeStampError;
-    }
+    virtual bool operator<(const FairTimeStamp* rValue) const { return GetTimeStamp() < rValue->GetTimeStamp(); }
 
   protected:
-    friend class boost::serialization::access;
-
     Double_t fTimeStamp;      /** Time of digit or Hit  [ns] */
     Double_t fTimeStampError; /** Error on time stamp */
 
@@ -124,4 +101,4 @@ inline FairTimeStamp::FairTimeStamp(Double_t time, Double_t timeerror)
     , fTimeStampError(timeerror)
 {}
 
-#endif
+#endif   // FAIRTIMESTAMP_H

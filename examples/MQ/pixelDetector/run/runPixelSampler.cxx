@@ -14,6 +14,7 @@
 #include "FairRunFairMQDevice.h"
 
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -37,7 +38,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
     std::string samplerType = config.GetValue<std::string>("sampler-type");
     std::vector<std::string> filename = config.GetValue<std::vector<std::string>>("file-name");
 
-    auto sampler = std::unique_ptr<FairMQPixelSampler>(new FairMQPixelSampler());
+    auto sampler = std::make_unique<FairMQPixelSampler>();
 
     if (samplerType == "FairFileSource") {
     } else if (samplerType == "PixelDigiSource") {

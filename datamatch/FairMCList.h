@@ -15,6 +15,10 @@
 #ifndef FAIRMCLIST_H_
 #define FAIRMCLIST_H_
 
+#ifndef FAIR_SILENCE_DATAMATCH_DEPRECATION
+#warning "FairRoot::DataMatch is deprecated and will be removed in a future major release"
+#endif
+
 #include <Rtypes.h>    // for Int_t, FairMCList::Class, etc
 #include <TObject.h>   // for TObject
 #include <vector>      // for vector

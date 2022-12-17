@@ -16,7 +16,7 @@
 #ifndef __FAIRROOT__FairMixedSource__
 #define __FAIRROOT__FairMixedSource__
 
-#include "FairSource.h"
+#include "FairFileSourceBase.h"
 
 #include <TArrayI.h>
 #include <TChain.h>
@@ -24,18 +24,18 @@
 #include <TFile.h>
 #include <list>
 #include <map>
+#include <memory>
 
 class FairEventHeader;
 class FairFileHeader;
 class FairMCEventHeader;
 class TString;
-class FairRuntimeDb;
 class TFolder;
 class TObject;
 
 class FairRootManager;
 
-class FairMixedSource : public FairSource
+class FairMixedSource : public FairFileSourceBase
 {
   public:
     FairMixedSource(TFile* f, const char* Title = "InputRootFile", UInt_t identifier = 0);
@@ -45,36 +45,26 @@ class FairMixedSource : public FairSource
                     const char* Title = "InputRootFile",
                     UInt_t identifier = 0);
     //  FairMixedSource(const FairMixedSource& file);
-    virtual ~FairMixedSource();
+    ~FairMixedSource() override;
 
-    Bool_t Init();
-    Int_t ReadEvent(UInt_t i = 0);
-    void Close();
-    void Reset();
-
-    virtual Source_Type GetSourceType() { return kFILE; }
-
-    virtual void SetParUnpackers() {}
-
-    virtual Bool_t InitUnpackers() { return kTRUE; }
-
-    virtual Bool_t ReInitUnpackers() { return kTRUE; }
+    Bool_t Init() override;
+    Int_t ReadEvent(UInt_t i = 0) override;
+    void Close() override;
 
     /**Check the maximum event number we can run to*/
-    virtual Int_t CheckMaxEventNo(Int_t EvtEnd = 0);
+    Int_t CheckMaxEventNo(Int_t EvtEnd = 0) override;
     /**Read the tree entry on one branch**/
-    void ReadBranchEvent(const char* BrName);
+    void ReadBranchEvent(const char* BrName) override;
     /** Read specific tree entry on one branch**/
-    void ReadBranchEvent(const char* BrName, Int_t Entry);
+    void ReadBranchEvent(const char* BrName, Int_t Entry) override;
 
-    void FillEventHeader(FairEventHeader* feh);
+    void FillEventHeader(FairEventHeader* feh) override;
 
     const TFile* GetRootFile() { return fRootFile; }
     /** Add a friend file (input) by name)*/
 
-    virtual Bool_t ActivateObject(TObject** obj, const char* BrName);
-
-    virtual Bool_t ActivateObjectAny(void**, const std::type_info&, const char*);
+    Bool_t ActivateObject(TObject** obj, const char* BrName) override;
+    Bool_t ActivateObjectAny(void**, const std::type_info&, const char*) override;
 
     void ReadBKEvent(UInt_t i = 0);
 
@@ -121,9 +111,6 @@ class FairMixedSource : public FairSource
     void SetFileHeader(FairFileHeader* f) { fFileHeader = f; }
     Double_t GetEventTime();
 
-    /**Add ROOT file to input, the file will be chained to already added files*/
-    Bool_t CompareBranchList(TFile* fileHandle, TString inputLevel);
-    /**Set the input tree when running on PROOF worker*/
     TObjArray* GetListOfFolders() { return fListFolder; }
     TFolder* GetBranchDescriptionFolder() { return fCbmroot; }
     UInt_t GetEntries() { return fNoOfEntries; }
@@ -154,13 +141,10 @@ class FairMixedSource : public FairSource
     std::list<TString> fFriendFileList;                                 //!
     std::list<TString> fInputChainList;                                 //!
     std::map<TString, TChain*> fFriendTypeList;                         //!
-    std::map<TString, std::list<TString>*> fCheckInputBranches;         //!
     std::list<TString> fInputLevel;                                     //!
     std::map<TString, std::multimap<TString, TArrayI>> fRunIdInfoAll;   //!
     /** list of folders from all input (and friends) files*/
     TObjArray* fListFolder;   //!
-    /** RuntimeDb*/
-    FairRuntimeDb* fRtdb;
     /**folder structure of output*/
     TFolder* fCbmout;
     /**folder structure of input*/
@@ -214,7 +198,7 @@ class FairMixedSource : public FairSource
     /** EventMean time used (P(t)=1/fEventMeanTime*Exp(-t/fEventMeanTime) */
     Double_t fEventMeanTime;   //!
     /** used to generate random numbers for event time; */
-    TF1* fTimeProb;   //!
+    std::unique_ptr<TF1> fTimeProb;   //!
 
     /**holds the SB ratio by number*/
     std::map<UInt_t, Double_t> fSignalBGN;   //!
@@ -243,13 +227,13 @@ class FairMixedSource : public FairSource
     UInt_t fRunIdFromSG_identifier;   //!
 
     /**Read one event from source to find out which RunId to use*/
-    Bool_t SpecifyRunId();
+    Bool_t SpecifyRunId() override;
 
     FairMixedSource(const FairMixedSource&);
     FairMixedSource& operator=(const FairMixedSource&);
 
   public:
-    ClassDef(FairMixedSource, 0);
+    ClassDefOverride(FairMixedSource, 0);
 };
 
 #endif /* defined(__FAIRROOT__FairMixedSource__) */

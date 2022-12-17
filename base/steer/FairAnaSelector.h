@@ -47,23 +47,23 @@ class FairAnaSelector : public TSelector
         , fCurrentDirectory("")
     {}
 
-    virtual ~FairAnaSelector() {}
-    virtual Int_t Version() const { return 1; }
-    virtual void Begin(TTree* tree);
-    virtual void SlaveBegin(TTree* tree);
-    virtual void Init(TTree* tree);
-    virtual Bool_t Notify();
-    virtual Bool_t Process(Long64_t entry);
-    virtual Int_t GetEntry(Long64_t entry, Int_t getall = 0)
+    ~FairAnaSelector() override {}
+    Int_t Version() const override { return 1; }
+    void Begin(TTree* tree) override;
+    void SlaveBegin(TTree* tree) override;
+    void Init(TTree* tree) override;
+    Bool_t Notify() override;
+    Bool_t Process(Long64_t entry) override;
+    Int_t GetEntry(Long64_t entry, Int_t getall = 0) override
     {
         return fChain ? fChain->GetTree()->GetEntry(entry, getall) : 0;
     }
-    virtual void SetOption(const char* option) { fOption = option; }
-    virtual void SetObject(TObject* obj) { fObject = obj; }
-    virtual void SetInputList(TList* input) { fInput = input; }
-    virtual TList* GetOutputList() const { return fOutput; }
-    virtual void SlaveTerminate();
-    virtual void Terminate();
+    void SetOption(const char* option) override { fOption = option; }
+    void SetObject(TObject* obj) override { fObject = obj; }
+    void SetInputList(TList* input) override { fInput = input; }
+    TList* GetOutputList() const override { return fOutput; }
+    void SlaveTerminate() override;
+    void Terminate() override;
 
     void SetFairRunAnaProof(FairRunAnaProof* runAna) { fRunAna = runAna; }
 
@@ -75,7 +75,7 @@ class FairAnaSelector : public TSelector
 
     TString fCurrentDirectory;
 
-    ClassDef(FairAnaSelector, 0);
+    ClassDefOverride(FairAnaSelector, 0);
 };
 
 #endif   // FAIRANASELECTOR_H

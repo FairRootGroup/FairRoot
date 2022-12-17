@@ -17,6 +17,7 @@
 
 #include "FairMQ.h"   // for fair::mq::Device
 
+#include <Rtypes.h>   // for UInt_t
 #include <map>
 #include <string>
 #include <utility>   // pair
@@ -24,7 +25,7 @@
 class TObject;
 class FairMCSplitEventHeader;
 
-typedef std::multimap<std::pair<int, int>, std::pair<int, TObject*>> MultiMapDef;
+typedef std::multimap<std::pair<UInt_t, UInt_t>, std::pair<UInt_t, TObject*>> MultiMapDef;
 
 class FairMQChunkMerger : public fair::mq::Device
 {
@@ -45,8 +46,8 @@ class FairMQChunkMerger : public fair::mq::Device
     std::map<std::pair<int, int>, int> fNofPartsPerEventMap;   // number of parts for pair<event number,run id>
     MultiMapDef fObjectMap;   // TObjects for given pair<pair<event number, run,id>part>
 
-    std::pair<int, int> fEvRIPair;
-    std::pair<int, TObject*> fEvCOPair;
+    std::pair<UInt_t, UInt_t> fEvRIPair;
+    std::pair<UInt_t, TObject*> fEvCOPair;
     std::pair<MultiMapDef::iterator, MultiMapDef::iterator> fRet;
 
     int fNofReceivedMessages;

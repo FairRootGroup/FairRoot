@@ -1,0 +1,17 @@
+################################################################################
+#    Copyright (C) 2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
+
+@PACKAGE_INIT@
+
+set_and_check(@PROJECT_NAME@_PREFIX "@PACKAGE_CMAKE_INSTALL_PREFIX@")
+set(@PROJECT_NAME@_BINDIR "@PACKAGE_CMAKE_INSTALL_FULL_BINDIR@")
+set(@PROJECT_NAME@_CXX_STANDARD "@CMAKE_CXX_STANDARD@")
+
+check_required_components(@PROJECT_NAME@)
+
+include(@PACKAGE_PACKAGE_INSTALL_DESTINATION@/@PROJECT_NAME@Targets.cmake)

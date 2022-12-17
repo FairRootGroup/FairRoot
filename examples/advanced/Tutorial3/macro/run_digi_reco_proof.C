@@ -1,25 +1,18 @@
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+#include <iostream>
+#include <memory>
+
 void run_digi_reco_proof(Int_t nofFiles, TString mcEngine = "TGeant3")
 {
     FairLogger* logger = FairLogger::GetLogger();
-    // logger->SetLogFileName("MyLog.log");
-    // logger->SetLogToScreen(kTRUE);
-    //  logger->SetLogToFile(kTRUE);
     logger->SetLogVerbosityLevel("LOW");
-    //  logger->SetLogFileLevel("DEBUG4");
-    //  logger->SetLogScreenLevel("DEBUG");
 
     TString workDir = gSystem->WorkingDirectory();
 
     // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
-    Int_t iVerbose = 0;   // just forget about it, for the moment
-
-    // Input file (MC events)
-    //  TString inFile = "data/testrun_";
-    //  inFile = inFile + mcEngine + ".root";
-
-    // Parameter file
-    //  TString parFile = "data/testparams_";
-    //  parFile = parFile + mcEngine + ".root";
+    Int_t iVerbose = 0;
 
     // Output file
     TString outFile = Form("data/testDiRePr_%df_", nofFiles);
@@ -32,15 +25,17 @@ void run_digi_reco_proof(Int_t nofFiles, TString mcEngine = "TGeant3")
 
     // -----   Reconstruction run   -------------------------------------------
     FairRunAnaProof* fRun = new FairRunAnaProof("workers=4");
+
     TString inFile = Form("file://%s/data/testrun_%s_f%d.root", workDir.Data(), mcEngine.Data(), 0);
     if (nofFiles == 1)
         inFile = Form("file://%s/data/testrun_%s.root", workDir.Data(), mcEngine.Data());
     FairFileSource* fFileSource = new FairFileSource(inFile);
-    fRun->SetSource(fFileSource);
     for (Int_t ifile = 1; ifile < nofFiles; ifile++)
         fFileSource->AddFile(Form("file://%s/data/testrun_%s_f%d.root", workDir.Data(), mcEngine.Data(), ifile));
+    fRun->SetSource(fFileSource);
 
-    fRun->SetSink(new FairRootFileSink(outFile));
+    fRun->SetSink(std::make_unique<FairRootFileSink>(outFile));
+
     fRun->SetProofOutputStatus("merge");
 
     FairRuntimeDb* rtdb = fRun->GetRuntimeDb();

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -35,12 +35,12 @@ class FairTestDetectorDigiSorterTask : public FairRingSorterTask
                                    TString folderName)
         : FairRingSorterTask(numberOfCells, widthOfCells, inputBranch, outputBranch, folderName){};
 
-    virtual ~FairTestDetectorDigiSorterTask();
+    ~FairTestDetectorDigiSorterTask() override;
 
-    virtual void AddNewDataToTClonesArray(FairTimeStamp* data);
-    virtual FairRingSorter* InitSorter(Int_t numberOfCells, Double_t widthOfCells) const;
+    void AddNewDataToTClonesArray(FairTimeStamp* data) override;
+    FairRingSorter* InitSorter(Int_t numberOfCells, Double_t widthOfCells) const override;
 
-    ClassDef(FairTestDetectorDigiSorterTask, 1);
+    ClassDefOverride(FairTestDetectorDigiSorterTask, 1);
 };
 
 #endif /* FairTestDetectorDigiSorterTask_H_ */

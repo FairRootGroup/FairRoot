@@ -35,22 +35,19 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
-)
-
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::GeoBase
   FairRoot::ParBase
 
-  Geom
-  Core
+  ROOT::Geom
+  ROOT::Core
 )
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF PassiveLinkDef.h
+  EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})

@@ -37,8 +37,8 @@ void FairTutPropTrack::Print()
     LOG(info) << "FirstTrackPar:";
     fTrackParamFirst.Print();
     LOG(info) << "hits:";
-    for (int ih = 0; ih < fHitsIndices.size(); ih++) {
-        LOG(info) << fHitsIndices[ih].first << " / " << fHitsIndices[ih].second;
+    for (const auto &hitind_elem : fHitsIndices) {
+        LOG(info) << hitind_elem.first << " / " << hitind_elem.second;
     }
     LOG(info) << "-------------------";
 }

@@ -1,10 +1,21 @@
 /********************************************************************************
- *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2019-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+#include <iostream>
+#include <memory>
+#include <string>
+
+using std::cout;
+using std::endl;
+
 int runProp(std::string propName = "rk")
 {
     if (propName != "geane" && propName != "rk") {
@@ -30,7 +41,7 @@ int runProp(std::string propName = "rk")
     TString parFile = "prop.par.root";
 
     // Output file
-    TString outFile = Form("prop.%s.cal.root", propName.data());
+    TString outFile = Form("prop.%s.cal.root", propName.c_str());
 
     // -----   Timer   --------------------------------------------------------
     TStopwatch timer;
@@ -38,7 +49,7 @@ int runProp(std::string propName = "rk")
     // -----   Reconstruction run   -------------------------------------------
     FairRunAna* fRun = new FairRunAna();
     fRun->SetSource(new FairFileSource(inFile));
-    fRun->SetSink(new FairRootFileSink(outFile));
+    fRun->SetSink(std::make_unique<FairRootFileSink>(outFile));
 
     FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
     FairParRootFileIo* parInput1 = new FairParRootFileIo();

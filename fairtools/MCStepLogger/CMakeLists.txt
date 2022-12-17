@@ -1,7 +1,14 @@
+################################################################################
+#    Copyright (C) 2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
 # @author Sandro Wenzel
 # @brief  cmake setup for module Utilities/MCStepLogger
 
-set(target FairMCStepLogger)
+set(target MCStepLogger)
 
 set(sources
   MCStepInterceptor.cxx
@@ -9,8 +16,9 @@ set(sources
 )
 
 add_library(${target} SHARED ${sources})
-add_library(FairRoot::${target} ALIAS ${target})
-set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+fairroot_library_settings(${target})
+# Keep old filesystem name
+set_target_properties(${target} PROPERTIES OUTPUT_NAME FairMCStepLogger)
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -20,18 +28,16 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
-)
-
 target_link_libraries(${target} PUBLIC
   FairRoot::Base
 
-  Core
-  Tree
-  Hist
-  RIO
+  ROOT::Core
+  ROOT::Tree
+  ROOT::Hist
+  ROOT::RIO
   ${VMCLIB}
+
+  ${CMAKE_DL_LIBS}
 )
 
-install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+fairroot_install_exported(TARGETS ${target})

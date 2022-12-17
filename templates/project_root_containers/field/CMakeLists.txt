@@ -11,7 +11,6 @@ include_directories( ${INCLUDE_DIRECTORIES})
 include_directories(${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
 
 )
@@ -27,8 +26,10 @@ MyFieldPar.cxx
 set(LINKDEF FieldLinkDef.h)
 Set(LIBRARY_NAME Field)
 Set(DEPENDENCIES
-    Base 
+    FairRoot::Base
+    FairRoot::ParBase
+    FairLogger::FairLogger
+    ROOT::Core
 )
 
 GENERATE_LIBRARY()
-

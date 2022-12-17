@@ -22,7 +22,10 @@ class FairGeoVector : public TObject
     Double_t x;
     Double_t y;
     Double_t z;
-    inline void round(Double_t d, Int_t n);
+    /**
+     * \deprecated Deprecated in v18.8, will be removed in v20.
+     */
+    [[deprecated("This method never did anything")]] void round(Double_t, Int_t) {}
 
   public:
     FairGeoVector(Double_t dx = 0, Double_t dy = 0, Double_t dz = 0)
@@ -37,7 +40,7 @@ class FairGeoVector : public TObject
         , y(v.getY())
         , z(v.getZ())
     {}
-    ~FairGeoVector() {}
+    ~FairGeoVector() override = default;
     Double_t& X() { return x; }
     Double_t& Y() { return y; }
     Double_t& Z() { return z; }
@@ -96,10 +99,13 @@ class FairGeoVector : public TObject
     Double_t length() const { return sqrt(x * x + y * y + z * z); }
     void clear() { x = y = z = 0.; }
     void print() const { printf("%10.3f%10.3f%10.3f\n", x, y, z); }
-    inline void round(Int_t n);
+    /**
+     * \deprecated Deprecated in v18.8, will be removed in v20.
+     */
+    [[deprecated("This method never did anything")]] void round(Int_t) {}
     inline friend std::ostream& operator<<(std::ostream& put, const FairGeoVector& v);
     inline friend std::istream& operator>>(std::istream& get, FairGeoVector& v);
-    ClassDef(FairGeoVector, 1);   // vector with 3 components
+    ClassDefOverride(FairGeoVector, 1);   // vector with 3 components
 };
 
 // -------------------- inlines ---------------------------
@@ -149,21 +155,33 @@ inline FairGeoVector& FairGeoVector::operator=(const FairGeoVector& v)
 
 inline Bool_t FairGeoVector::operator==(const FairGeoVector& v) const
 {
-    return ((v.getX() != x || v.getY() != y || v.getZ() != z) ? kFALSE : kTRUE);
+    return (!(v.getX() != x || v.getY() != y || v.getZ() != z));
 }
 
 inline Bool_t FairGeoVector::operator!=(const FairGeoVector& v) const
 {
-    return (v.getX() != x || v.getY() != y || v.getZ() != z) ? kTRUE : kFALSE;
+    return v.getX() != x || v.getY() != y || v.getZ() != z;
 }
 /// check with ilse
-inline Bool_t FairGeoVector::operator<(const Double_t a) { return (x >= a || y >= a || z >= a) ? kFALSE : kTRUE; }
+inline Bool_t FairGeoVector::operator<(const Double_t a)
+{
+    return !(x >= a || y >= a || z >= a);
+}
 
-inline Bool_t FairGeoVector::operator<=(const Double_t a) { return (x > a || y > a || z > a) ? kFALSE : kTRUE; }
+inline Bool_t FairGeoVector::operator<=(const Double_t a)
+{
+    return !(x > a || y > a || z > a);
+}
 
-inline Bool_t FairGeoVector::operator>(const Double_t a) { return (x <= a || y <= a || z <= a) ? kFALSE : kTRUE; }
+inline Bool_t FairGeoVector::operator>(const Double_t a)
+{
+    return !(x <= a || y <= a || z <= a);
+}
 
-inline Bool_t FairGeoVector::operator>=(const Double_t a) { return (x < a || y < a || z < a) ? kFALSE : kTRUE; }
+inline Bool_t FairGeoVector::operator>=(const Double_t a)
+{
+    return !(x < a || y < a || z < a);
+}
 
 inline FairGeoVector& FairGeoVector::operator+=(const Double_t a)
 {
@@ -242,24 +260,6 @@ inline FairGeoVector FairGeoVector::vectorProduct(const FairGeoVector& v) const
 {
     FairGeoVector p(y * v.getZ() - z * v.getY(), z * v.getX() - x * v.getZ(), x * v.getY() - y * v.getX());
     return p;
-}
-
-inline void FairGeoVector::round(Double_t d, Int_t n)
-{
-    // rounds d to a precision with n digits
-    if (d > 0) {
-        d = floor(d * pow(10., n) + 0.5) / pow(10., n);
-    } else {
-        d = -floor((-d) * pow(10., n) + 0.5) / pow(10., n);
-    }
-}
-
-inline void FairGeoVector::round(Int_t n)
-{
-    // rounds every component to a precision with n digits
-    round(x, n);
-    round(y, n);
-    round(z, n);
 }
 
 inline std::ostream& operator<<(std::ostream& put, const FairGeoVector& v)

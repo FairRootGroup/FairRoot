@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -28,7 +28,7 @@ class FairParVersion : public TNamed
         : TNamed()
         , rootVersion(0)
     {}
-    FairParVersion(Text_t* name);
+    FairParVersion(const char* name);
     ~FairParVersion() {}
     void setInputVersion(Int_t v = -1, Int_t i = 0)
     {
@@ -36,7 +36,7 @@ class FairParVersion : public TNamed
             inputVersions[i] = v;
         }
     }
-    Int_t getInputVersion(Int_t i)
+    Int_t getInputVersion(Int_t i) const
     {
         if (i >= 0 && i < 3) {
             return inputVersions[i];
@@ -51,8 +51,8 @@ class FairParVersion : public TNamed
         }
     }
     void setRootVersion(Int_t v) { rootVersion = v; }
-    Int_t getRootVersion() { return rootVersion; }
-    ClassDef(FairParVersion, 1);   // Class for parameter versions
+    Int_t getRootVersion() const { return rootVersion; }
+    ClassDefOverride(FairParVersion, 1);   // Class for parameter versions
 };
 
 class FairRtdbRun : public TNamed
@@ -82,7 +82,7 @@ class FairRtdbRun : public TNamed
   private:
     FairRtdbRun& operator=(const FairRtdbRun&);
 
-    ClassDef(FairRtdbRun, 1);   // Class for parameter version management of a run
+    ClassDefOverride(FairRtdbRun, 1);   // Class for parameter version management of a run
 };
 
 // -------------------- inlines ---------------------------

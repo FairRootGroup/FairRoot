@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x -e
+
 CURRENT_DIR=`pwd`
 SOURCE_DIR=@CMAKE_SOURCE_DIR@
 MYTMPDIR=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
@@ -12,8 +14,18 @@ mkdir build
 cd build
 export SIMPATH=@SIMPATH@
 export FAIRROOTPATH=@CMAKE_INSTALL_PREFIX@
-cmake -DUSE_DIFFERENT_COMPILER=true ..
+cmake -DUSE_DIFFERENT_COMPILER=true -DCMAKE_CXX_STANDARD=@CMAKE_CXX_STANDARD@ ..
+
+if [ "$1" = "--double-configure" ]
+then
+    echo "*** Calling cmake configure again:"
+    # Check if all the cache variables
+    # are good for a reconfiguration step
+    cmake -DCMAKE_CXX_STANDARD=@CMAKE_CXX_STANDARD@ ..
+fi
+
 make
+
 if [ $? -eq 0 ]; then
     echo 'Test successful.'
 fi

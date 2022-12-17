@@ -15,6 +15,8 @@ class FairAlignmentHandler
 
     void AddAlignmentMatrices(const std::map<std::string, TGeoHMatrix>& alignmentMatrices, bool invertMatrices);
 
+    void RecomputePhysicalAssmbBbox() const;
+
   public:
     FairAlignmentHandler();
     virtual ~FairAlignmentHandler();

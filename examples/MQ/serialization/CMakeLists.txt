@@ -32,30 +32,27 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
-)
-
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::BaseMQ # Serialization policies
-  FairRoot::FairTools # FairLogger
+  FairRoot::Tools # FairLogger
   FairRoot::ParBase
   FairRoot::FairMQ
 
   Boost::serialization
 
-  Core
-  MathCore
-  RIO
-  Tree
-  RooFit
-  RooFitCore
+  ROOT::Core
+  ROOT::MathCore
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::RooFit
+  ROOT::RooFitCore
 )
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF SerializationExampleLinkDef.h
+  EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})

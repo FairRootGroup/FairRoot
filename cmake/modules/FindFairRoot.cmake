@@ -1,5 +1,5 @@
  ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ # Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             # 
  #              GNU Lesser General Public Licence (LGPL) version 3,             #  
@@ -8,59 +8,57 @@
 # Find FairRoot installation 
 # Check the environment variable "FAIRROOTPATH"
 
-if(FairRoot_DIR)
-  set(FAIRROOTPATH ${FairRoot_DIR})
-else()
-  if(NOT DEFINED ENV{FAIRROOTPATH})
-    set(user_message "You did not define the environment variable FAIRROOTPATH which is needed to find FairRoot.\
-         Please set this variable and execute cmake again." )
-    if(FairRoot_FIND_REQUIRED)
-      MESSAGE(FATAL_ERROR ${user_message})
-    else(FairRoot_FIND_REQUIRED)
-      MESSAGE(WARNING ${user_message})
-      return()
-    endif(FairRoot_FIND_REQUIRED)
-  endif(NOT DEFINED ENV{FAIRROOTPATH})
+include(FindPackageHandleStandardArgs)
 
-  set(FAIRROOTPATH $ENV{FAIRROOTPATH})
+if(NOT FAIRROOTPATH)
+  set(FAIRROOTPATH "$ENV{FAIRROOTPATH}")
 endif()
 
+if(FAIRROOTPATH)
+  list(PREPEND CMAKE_PREFIX_PATH "${FAIRROOTPATH}")
+else()
+  message(STATUS "INFO: FAIRROOTPATH not set, CMAKE_PREFIX_PATH should have the needed entries")
+endif()
+
+# recursive config mode find_package to
+# find the new main config mode package
+find_package(FairRoot CONFIG)
+
+if(NOT FairRoot_FOUND)
+  message(STATUS "FairRoot not found in config mode. Why?")
+  message(STATUS "CMAKE_PREFIX_PATH = ${CMAKE_PREFIX_PATH}")
+  find_package_handle_standard_args(FairRoot CONFIG_MODE)
+  return()
+endif()
+set(FAIRROOTPATH "${FairRoot_PREFIX}")
+
 MESSAGE(STATUS "Setting FairRoot environment:")
+message(STATUS "  FairRoot Version           : ${FairRoot_VERSION}")
+message(STATUS "  FairRoot CXX Standard      : ${FairRoot_CXX_STANDARD}")
+message(STATUS "  FairRoot prefix            : ${FairRoot_PREFIX}")
 
 FIND_PATH(FAIRROOT_INCLUDE_DIR NAMES FairRun.h PATHS
   ${FAIRROOTPATH}/include
-  NO_DEFAULT_PATH
 )
 
 FIND_PATH(FAIRROOT_LIBRARY_DIR NAMES libBase.so libBase.dylib PATHS
    ${FAIRROOTPATH}/lib
    ${FAIRROOTPATH}/lib64
-  NO_DEFAULT_PATH
 )
 
-FIND_PATH(FAIRROOT_CMAKEMOD_DIR NAMES CMakeLists.txt  PATHS
-   ${FAIRROOTPATH}/share/fairbase/cmake
-  NO_DEFAULT_PATH
+FIND_PATH(FAIRROOT_CMAKEMOD_DIR
+  NAMES modules/FindFairRoot.cmake modules/ROOTMacros.cmake
+  PATHS ${FAIRROOTPATH}/share/fairbase/cmake
 )
 
-# look for exported FairMQ targets and include them
-find_file(_fairroot_fairmq_cmake
-    NAMES FairMQ.cmake
-    HINTS ${FAIRROOTPATH}/include/cmake
-)
-if(_fairroot_fairmq_cmake)
-    include(${_fairroot_fairmq_cmake})
-endif()
-
-if(FAIRROOT_INCLUDE_DIR AND FAIRROOT_LIBRARY_DIR)
+find_package_handle_standard_args(FairRoot CONFIG_MODE
+                                  REQUIRED_VARS FAIRROOT_INCLUDE_DIR
+                                                FAIRROOT_LIBRARY_DIR)
+if(FairRoot_FOUND)
    set(FAIRROOT_FOUND TRUE)
-   MESSAGE(STATUS "  FairRoot prefix            : ${FAIRROOTPATH}")
    MESSAGE(STATUS "  FairRoot Library directory : ${FAIRROOT_LIBRARY_DIR}")
    MESSAGE(STATUS "  FairRoot Include path      : ${FAIRROOT_INCLUDE_DIR}")
    MESSAGE(STATUS "  FairRoot Cmake Modules     : ${FAIRROOT_CMAKEMOD_DIR}")
-
-else(FAIRROOT_INCLUDE_DIR AND FAIRROOT_LIBRARY_DIR)
+else()
    set(FAIRROOT_FOUND FALSE)
-   MESSAGE(FATAL_ERROR "FairRoot installation not found")
-endif (FAIRROOT_INCLUDE_DIR AND FAIRROOT_LIBRARY_DIR)
-
+endif()

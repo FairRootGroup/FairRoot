@@ -16,6 +16,7 @@
 
 class TClonesArray;
 class TMap;
+class TVirtualMC;
 
 /**
  * @class FairRadMapManager
@@ -27,7 +28,6 @@ class FairRadMapManager
     /**
      * Default constructor.
      * Creates the singleton object of FairRadMapManager class.
-     * The pointer to this object can be reached via FairRadMapManager::Instance().
      */
     FairRadMapManager();
 
@@ -94,7 +94,11 @@ class FairRadMapManager
 
   public:
     /**Add point to collection*/
-    void AddPoint(Int_t& ModuleId);
+    void AddPoint(TVirtualMC* aMC, const Int_t);
+    /**
+     * \deprecated Deprecated in v18.8, will be removed in v20.
+     */
+    [[deprecated("Use AddPoint(TVirtualMC*, ...)")]] void AddPoint(const Int_t ModuleId);
     /**initialize the manager*/
     void Init();
     /**reset*/
@@ -103,8 +107,9 @@ class FairRadMapManager
      * This function is used to access the methods of the class.
      * @return Pointer to the singleton FairRadMapManager object, created
      * with FairRadMapManager::FairRadMapManager().
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
-    static FairRadMapManager* Instance();
+    [[deprecated]] static FairRadMapManager* Instance();
     //  void GetGeoManager();
 };
 

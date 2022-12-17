@@ -14,7 +14,7 @@
 #   TAR_PROG=@TAR@                (INCLUDE(FindCygwin.cmake))
 #   WGET_PROG=@WGET@              (INCLUDE(FindWget.cmake))
 #
-export DOXYGEN_PROG="@DOXYGEN@"        # Doxygen
+export DOXYGEN_PROG="@DOXYGEN_EXECUTABLE@" # Doxygen
 export GZIP_PROG="@GZIP@"              # gzip (Unix-like 'gzip compressor')
 export GNUPLOT_PROG="@GNUPLOT@"        # gnuplot (data plotting program)
 export HHC_PROG="@HTML_HELP_COMPILER@" # HTML Help Compiler

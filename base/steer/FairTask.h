@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -21,8 +21,6 @@
 #ifndef FAIRTASK_H
 #define FAIRTASK_H
 
-#include "FairRootManager.h"   // for FairRootManager
-
 #include <Rtypes.h>    // for Int_t, FairTask::Class, etc
 #include <TString.h>   // for TString
 #include <TTask.h>     // for TTask
@@ -37,6 +35,9 @@ enum InitStatus
     kFATAL
 };
 
+/**
+ * \ingroup base_steer
+ */
 class FairTask : public TTask
 {
   public:
@@ -49,8 +50,13 @@ class FairTask : public TTask
      **/
     FairTask(const char* name, Int_t iVerbose = 1);
 
+    FairTask(const FairTask&) = delete;
+    FairTask& operator=(const FairTask&) = delete;
+    FairTask(FairTask&&) = delete;
+    FairTask& operator=(FairTask&&) = delete;
+
     /** Destructor **/
-    virtual ~FairTask();
+    ~FairTask() override;
 
     /** Initialisation at begin of run. For this task and all of the subtasks.
         Method used internally in FairRoot. **/
@@ -74,15 +80,20 @@ class FairTask : public TTask
     /** Set verbosity level. For this task and all of the subtasks. **/
     void SetVerbose(Int_t iVerbose);
 
-    void SetInputPersistance(Bool_t val) { fInputPersistance = val; }
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    /**
+     * \deprecated Deprecated in v18.8, will be removed in v20.
+     */
+    [[deprecated]] void SetInputPersistance(Bool_t val) { fInputPersistance = val; }
+#pragma GCC diagnostic pop
 
-    void CheckInputPersistance(TString branchName)
-    {
-        FairRootManager* ioman = FairRootManager::Instance();
-        fInputPersistance = ioman->CheckBranch(branchName);
-    }
+    /**
+     * \deprecated Deprecated in v18.8, will be removed in v20.
+     */
+    [[deprecated]] void CheckInputPersistance(TString branchName);
 
-    virtual void ExecuteTask(Option_t* option = "0");   // *MENU*
+    void ExecuteTask(Option_t* option = "0") override;   // *MENU*
 
     /** Set persistency of branch with given name true or false
      *  In case is is set to false the branch will not be written to the output.
@@ -97,18 +108,18 @@ class FairTask : public TTask
     void SetStreamProcessing(Bool_t val = kTRUE) { fStreamProcessing = val; }
 
   protected:
-    Int_t fVerbose;            //  Verbosity level
-    Int_t fInputPersistance;   ///< Indicates if input branch is persistant
-    FairLogger* fLogger;       //!
+    Int_t fVerbose;                           //  Verbosity level
+    [[deprecated]] Int_t fInputPersistance;   ///< \deprecated Deprecated in v18.8, will be removed in v20.
+    FairLogger* fLogger;                      //!
     Bool_t fStreamProcessing;
 
     /** Intialisation at begin of run. To be implemented in the derived class.
-     *@value  Success   If not kSUCCESS, task will be set inactive.
+     * \retval  kSUCCESS   If not kSUCCESS, task will be set inactive.
      **/
     virtual InitStatus Init() { return kSUCCESS; };
 
     /** Reinitialisation. To be implemented in the derived class.
-     *@value  Success   If not kSUCCESS, task will be set inactive.
+     * \retval  kSUCCESS   If not kSUCCESS, task will be set inactive.
      **/
     virtual InitStatus ReInit() { return kSUCCESS; };
 
@@ -128,7 +139,7 @@ class FairTask : public TTask
     /** Recursive reinitialisation of subtasks **/
     void ReInitTasks();
 
-    virtual void ExecuteTasks(Option_t* option);
+    void ExecuteTasks(Option_t* option) override;
 
     /** Recursive parameter initialisation for subtasks **/
     void SetParTasks();
@@ -142,10 +153,7 @@ class FairTask : public TTask
   private:
     std::map<TString, Bool_t> fOutputPersistance;
 
-    FairTask(const FairTask&);
-    FairTask& operator=(const FairTask&);
-
-    ClassDef(FairTask, 4);
+    ClassDefOverride(FairTask, 4);
 };
 
 #endif

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,16 +12,15 @@
 #ifndef FAIRGEANEPRO_H
 #define FAIRGEANEPRO_H 1
 
-#include "FairLogger.h"
 #include "FairPropagator.h"   // for TNamed
-#include "TGeant3.h"          // for Ertrio_t, etc
-#include "TString.h"          // for TString
-#include "TVector3.h"         // for TVector3
+
+#include <TGeant3.h>   // for Ertrio_t, etc
+#include <TString.h>
+#include <TVector3.h>
 
 class FairTrackPar;
 class FairTrackParP;
 class FairTrackParH;
-class FairGeaneApplication;
 class TDatabasePDG;
 
 class FairGeanePro : public FairPropagator
@@ -31,58 +30,63 @@ class FairGeanePro : public FairPropagator
     FairGeanePro();
 
     /** Destructor **/
-    ~FairGeanePro();
+    ~FairGeanePro() override;
 
     /* Old methods that still should be working */
-    virtual bool Propagate(FairTrackParH* TStart, FairTrackParH* TEnd, int PDG);
-    virtual bool Propagate(FairTrackParP* TStart, FairTrackParH* TEnd, int PDG);
-    virtual bool Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, int PDG);
-    virtual bool Propagate(FairTrackParH* TStart, FairTrackParP* TEnd, int PDG);
-    virtual bool Propagate(float* x1, float* p1, float* x2, float* p2, int PDG);
+    bool Propagate(FairTrackParH* TStart, FairTrackParH* TEnd, int PDG) override;
+    bool Propagate(FairTrackParP* TStart, FairTrackParH* TEnd, int PDG) override;
+    bool Propagate(FairTrackParP* TStart, FairTrackParP* TEnd, int PDG) override;
+    bool Propagate(FairTrackParH* TStart, FairTrackParP* TEnd, int PDG) override;
+    bool Propagate(float* x1, float* p1, float* x2, float* p2, int PDG) override;
 
     /* Old methods that still should be working */
 
     /**New method to set the plane to propagate particles to
      @v0 v1 v2  Plane defining vectors
     */
-    virtual bool SetDestinationPlane(const TVector3& v0, const TVector3& v1, const TVector3& v2);
+    bool SetDestinationPlane(const TVector3& v0, const TVector3& v1, const TVector3& v2) override;
 
     /**New method to set the plane to propagate particles from
      @v0 v1     Plane defining vectors
     */
-    virtual bool SetOriginPlane(const TVector3& v0, const TVector3& v1);
+    bool SetOriginPlane(const TVector3& v0, const TVector3& v1) override;
 
     /**New method to set the volume to propagate particles to
        @volName Volume name
        @copyNo  Copy number
        @option  Option
     */
-    virtual bool SetDestinationVolume(std::string volName, int copyNo, int option);
+    bool SetDestinationVolume(std::string volName, int copyNo, int option) override;
 
     /**New method to set the length to propagate particles to
        @length  Track length
     */
-    virtual bool SetDestinationLength(float length);
+    bool SetDestinationLength(float length) override;
 
     /**New method to set to propagate only parameters
      */
-    virtual bool SetPropagateOnlyParameters();
+    bool SetPropagateOnlyParameters() override;
 
     /* ====== Depracated functions ====== */
-    __attribute__((deprecated("Function PropagateToPlane depracated, use SetDestinationPlane."))) bool
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function PropagateToPlane depracated, use SetDestinationPlane.")]] bool
         PropagateToPlane(const TVector3& v0, const TVector3& v1, const TVector3& v2);
-    __attribute__((deprecated("Function PropagateFromPlane depracated, use SetOriginPlane."))) bool PropagateFromPlane(
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function PropagateFromPlane depracated, use SetOriginPlane.")]] bool PropagateFromPlane(
         const TVector3& v1,
         const TVector3& v2);
-    __attribute__((deprecated("Function PropagateToVolume depracated, use SetDestinationVolume."))) bool
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function PropagateToVolume depracated, use SetDestinationVolume.")]] bool
         PropagateToVolume(TString VolName, int CopyNo, int option);
-    __attribute__((deprecated("Function PropagateToLength depracated, use SetDestinationLength."))) bool
-        PropagateToLength(float length);
-    __attribute__((deprecated("Function PropagateOnlyParameters depracated, use SetPropagateOnlyParameters."))) bool
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function PropagateToLength depracated, use SetDestinationLength.")]] bool PropagateToLength(
+        float length);
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function PropagateOnlyParameters depracated, use SetPropagateOnlyParameters.")]] bool
         PropagateOnlyParameters();
     /* ====== ====== ====== ====== ====== */
 
-    void Init(FairTrackPar* TParam);
+    void Init(FairTrackPar* TParam) override;
     bool Propagate(int PDG);
 
   private:
@@ -125,8 +129,9 @@ class FairGeanePro : public FairPropagator
 
   public:
     /* ====== Depracated functions ====== */
-    __attribute__((deprecated("Function FindPCA(many parameters) depracated, it is replaced by PCAOutputStruct "
-                              "FindPCA(pca, PDGCode, point, wire1, wire2, maxdistance)."))) int
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function FindPCA(many parameters) depracated, it is replaced by PCAOutputStruct "
+                 "FindPCA(pca, PDGCode, point, wire1, wire2, maxdistance).")]] int
         FindPCA(int pca,
                 int PDGCode,
                 TVector3 point,
@@ -139,62 +144,61 @@ class FairGeanePro : public FairPropagator
                 double& Di,
                 float& trklength);
 
-    __attribute__((deprecated("Function SetWire depracated, contact FairRoot group if you need it."))) bool SetWire(
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function SetWire depracated, contact FairRoot group if you need it.")]] bool SetWire(
         TVector3 extremity1,
         TVector3 extremity2);
-    __attribute__((deprecated("Function SetPoint depracated, contact FairRoot group if you need it."))) bool SetPoint(
-        TVector3 pnt);
-    __attribute__((deprecated("Function PropagateToPCA depracated, use SetPCAPropagation."))) bool PropagateToPCA(
-        int pca);
-    __attribute__((deprecated("Function PropagateToPCA depracated, use SetPCAPropagation."))) bool PropagateToPCA(
-        int pca,
-        int dir);
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function SetPoint depracated, contact FairRoot group if you need it.")]] bool SetPoint(TVector3 pnt);
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function PropagateToPCA depracated, use SetPCAPropagation.")]] bool PropagateToPCA(int pca);
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function PropagateToPCA depracated, use SetPCAPropagation.")]] bool PropagateToPCA(int pca, int dir);
     // function to call the FindPCA alone to retrieve
     // the PCA.
-    __attribute__((deprecated("Function ActualFindPCA depracated, use SetPCAPropagation."))) bool
-        ActualFindPCA(int pca, FairTrackParP* par, int dir);
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function ActualFindPCA depracated, use SetPCAPropagation.")]] bool ActualFindPCA(int pca,
+                                                                                                   FairTrackParP* par,
+                                                                                                   int dir);
 
-    TVector3 GetPCAOnWire()
-        __attribute__((deprecated("Function GetPCAOnWire obsolete, contact FairRoot group if you need it.")))
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function GetPCAOnWire obsolete, contact FairRoot group if you need it.")]] TVector3 GetPCAOnWire()
     {
         return fvwi;
     }
-    TVector3 GetPCAOnTrack()
-        __attribute__((deprecated("Function GetPCAOnTrack obsolete, contact FairRoot group if you need it.")))
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function GetPCAOnTrack obsolete, contact FairRoot group if you need it.")]] TVector3 GetPCAOnTrack()
     {
         return fvpf;
     }
-    float GetLengthAtPCA()
-        __attribute__((deprecated("Function GetLengthAtPCA obsolete, contact FairRoot group if you need it.")))
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function GetLengthAtPCA obsolete, contact FairRoot group if you need it.")]] float GetLengthAtPCA()
     {
         return ftrklength;
     }
-    float GetTimeAtPCA()
-        __attribute__((deprecated("Function GetTimeAtPCA obsolete, contact FairRoot group if you need it.")))
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function GetTimeAtPCA obsolete, contact FairRoot group if you need it.")]] float GetTimeAtPCA()
     {
         return ftrktime;
     }
 
-    __attribute__((
-        deprecated("Function PropagateToVirtualPlaneAtPCA questionable, contact FairRoot if you need it."))) bool
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function PropagateToVirtualPlaneAtPCA questionable, contact FairRoot if you need it.")]] bool
         PropagateToVirtualPlaneAtPCA(int pca);
-    __attribute__((deprecated("Function BackTrackToVertex questionable, contact FairRoot if you need it."))) bool
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function BackTrackToVertex questionable, contact FairRoot if you need it.")]] bool
         BackTrackToVertex();
-    __attribute__((
-        deprecated("Function BackTrackToVirtualPlaneAtPCA questionable, contact FairRoot if you need it."))) bool
+    /** \deprecated Deprecated pre-v18.8, will be removed in v20. */
+    [[deprecated("Function BackTrackToVirtualPlaneAtPCA questionable, contact FairRoot if you need it.")]] bool
         BackTrackToVirtualPlaneAtPCA(int pca);
     /* ====== ====== ====== ====== ====== */
 
     void setBackProp() { fPropOption = "BPE"; }
 
-    virtual bool SetPCAPropagation(int pca, int dir = 1, FairTrackParP* par = nullptr);
+    bool SetPCAPropagation(int pca, int dir = 1, FairTrackParP* par = nullptr) override;
 
-    virtual PCAOutputStruct FindPCA(int PCA,
-                                    int PDGCode,
-                                    TVector3 Point,
-                                    TVector3 Wire1,
-                                    TVector3 Wire2,
-                                    double MaxDistance);
+    PCAOutputStruct FindPCA(int PCA, int PDGCode, TVector3 Point, TVector3 Wire1, TVector3 Wire2, double MaxDistance)
+        override;
 
     // transport matrix
     void GetTransportMatrix(double trm[5][5]);
@@ -236,7 +240,6 @@ class FairGeanePro : public FairPropagator
     float ftrklength;
     float ftrktime;
     int flag;
-    FairGeaneApplication* fApp;
     double trpmat[5][5];
 
     // if kFALSE --> do not print the ABORT messages
@@ -245,7 +248,7 @@ class FairGeanePro : public FairPropagator
     FairGeanePro(const FairGeanePro&);
     FairGeanePro& operator=(const FairGeanePro&);
 
-    ClassDef(FairGeanePro, 2);
+    ClassDefOverride(FairGeanePro, 2);
 };
 
 #endif

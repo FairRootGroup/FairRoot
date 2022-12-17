@@ -31,7 +31,7 @@ class FairMQPixAltSamplerBin : public fair::mq::Device
 {
   public:
     FairMQPixAltSamplerBin();
-    virtual ~FairMQPixAltSamplerBin();
+    ~FairMQPixAltSamplerBin() override;
 
     void AddInputFileName(const std::string& tempString) { fFileNames.push_back(tempString); }
 
@@ -45,10 +45,10 @@ class FairMQPixAltSamplerBin : public fair::mq::Device
     void SetAggregateFactor(int nal) { fAggregateLevel = nal; }
 
   protected:
-    virtual bool ConditionalRun();
-    virtual void PreRun();
-    virtual void PostRun();
-    virtual void InitTask();
+    bool ConditionalRun() override;
+    void PreRun() override;
+    void PostRun() override;
+    void InitTask() override;
 
     bool ReadBinFile();
     bool ReadRootFile();

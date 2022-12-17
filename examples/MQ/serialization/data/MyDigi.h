@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -16,8 +16,8 @@
 #ifndef MYDIGIDATA_H
 #define MYDIGIDATA_H
 
-#include "FairTimeStamp.h"   // for FairTimeStamp
-
+#include <FairTimeStamp.h>   // for FairTimeStamp
+#include <FairTimeStampBoostSerializationSupport.h>
 #include <Rtypes.h>   // for Int_t, etc
 #include <iosfwd>     // for ostream
 #include <iostream>   // for operator<<, basic_ostream, etc
@@ -34,7 +34,7 @@ class MyDigi : public FairTimeStamp
   public:
     MyDigi();
     MyDigi(Int_t x, Int_t y, Int_t z, Double_t timeStamp, Double_t timeStampError = 0.0);
-    virtual ~MyDigi();
+    ~MyDigi() override;
 
     void SetXYZ(Int_t x, Int_t y, Int_t z)
     {
@@ -51,7 +51,7 @@ class MyDigi : public FairTimeStamp
     Int_t GetZ() const { return fZ; }
 
     // temporary to avoid serialisation of the parent class
-    virtual bool equal(FairTimeStamp* data)
+    bool equal(FairTimeStamp* data) override
     {
         MyDigi* myDigi = dynamic_cast<MyDigi*>(data);
         if (myDigi != 0) {
@@ -108,7 +108,7 @@ class MyDigi : public FairTimeStamp
     Int_t fY;
     Int_t fZ;
 
-    ClassDef(MyDigi, 1);
+    ClassDefOverride(MyDigi, 1);
 };
 
 #endif /* MYDIGIDATA_H */

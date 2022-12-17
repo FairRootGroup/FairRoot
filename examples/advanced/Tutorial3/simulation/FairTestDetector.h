@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -31,27 +31,27 @@ class FairTestDetector : public FairDetector
     FairTestDetector();
 
     /**       destructor     */
-    virtual ~FairTestDetector();
+    ~FairTestDetector() override;
 
     /**      Initialization of the detector is done here    */
-    virtual void Initialize();
+    void Initialize() override;
 
     /**       this method is called for each step during simulation
      *       (see FairMCApplication::Stepping())
      */
-    virtual Bool_t ProcessHits(FairVolume* v = 0);
+    Bool_t ProcessHits(FairVolume* v = 0) override;
 
     /**       Registers the produced collections in FAIRRootManager.     */
-    virtual void Register();
+    void Register() override;
 
     /** Gets the produced collections */
-    virtual TClonesArray* GetCollection(Int_t iColl) const;
+    TClonesArray* GetCollection(Int_t iColl) const override;
 
     /**      has to be called after each event to reset the containers      */
-    virtual void Reset();
+    void Reset() override;
 
     /**      Create the detector geometry        */
-    void ConstructGeometry();
+    void ConstructGeometry() override;
 
     /**      This method is an example of how to add your own point
      *       of type FairTestDetectorPoint to the clones array
@@ -76,14 +76,14 @@ class FairTestDetector : public FairDetector
         ;
     }
 */
-    virtual void SetSpecialPhysicsCuts() { ; }
-    virtual void EndOfEvent();
-    virtual void FinishPrimary() { ; }
-    virtual void FinishRun() { ; }
-    virtual void BeginPrimary() { ; }
-    virtual void PostTrack() { ; }
-    virtual void PreTrack() { ; }
-    virtual void BeginEvent() { ; }
+    void SetSpecialPhysicsCuts() override { ; }
+    void EndOfEvent() override;
+    void FinishPrimary() override { ; }
+    void FinishRun() override { ; }
+    void BeginPrimary() override { ; }
+    void PostTrack() override { ; }
+    void PreTrack() override { ; }
+    void BeginEvent() override { ; }
 
   private:
     /** Track information to be stored until the track leaves the
@@ -107,7 +107,7 @@ class FairTestDetector : public FairDetector
     FairTestDetector(const FairTestDetector&);
     FairTestDetector& operator=(const FairTestDetector&);
 
-    ClassDef(FairTestDetector, 1);
+    ClassDefOverride(FairTestDetector, 1);
 };
 
 #endif /* FAIRTESTDETECTOR_H_ */

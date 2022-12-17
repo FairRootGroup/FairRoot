@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -9,9 +9,36 @@
 //*-- Created : 20/10/2004
 
 /////////////////////////////////////////////////////////////
-//  FairRuntimeDb
-//
-//  Administration class for parameter input/output
+// from: https://fairroot.gsi.de/index.html%3Fq=node%252F53.html
+/**
+ * \page parbase_runtimedb Runtime database
+ *
+ * The runtime database is not a database in the classical
+ * sense.  Instead, it is a parameter manager.  It knows the
+ * I/Os defined by the user in the macro and all parameter
+ * containers needed for the actual analysis.  It manages the
+ * automatic initialization and saving to an output and
+ * contains, after all initialization and saving is done, a
+ * complete list of runs and related parameter input and
+ * output versions.
+ * \n
+ * It is represented by the class FairRuntimeDb and
+ * instantiated in the macro.It holds two lists: the list
+ * of parameter containers, and the list of runs and
+ * related parameter versions.  The containers can be
+ * initialized automatically from one or two inputs, and
+ * written out to one output.  Possible inputs/output are
+ *
+ * * ROOT file
+ * * ascii file
+ * * Data Base (under construction)
+ *
+ * If a container can not or only partly be initialized
+ * from the first input, the missing information is taken
+ * automatically from the second input.  Any combination of
+ * inputs is possible.  In case of a ROOT file, the first
+ * input and the output might be identical.
+ */
 /////////////////////////////////////////////////////////////
 #include "FairRuntimeDb.h"
 
@@ -83,7 +110,7 @@ FairRuntimeDb::~FairRuntimeDb()
         TIter next(containerList);
         FairParSet* cont;
         while ((cont = static_cast<FairParSet*>(next()))) {
-            Text_t* name = const_cast<char*>(cont->GetName());
+            auto name = cont->GetName();
             if (!cont->isOwned()) {
                 removeContainer(name);
             }
@@ -148,10 +175,9 @@ void FairRuntimeDb::printParamContexts()
 
 Bool_t FairRuntimeDb::addContainer(FairParSet* container)
 {
-
     // adds a container to the list of containers
     // cout << "-I- name parset # " << container->GetName()<< endl;
-    Text_t* name = const_cast<char*>(container->GetName());
+    auto name = container->GetName();
 
     if (!containerList->FindObject(name)) {
         containerList->Add(container);
@@ -202,7 +228,7 @@ FairParSet* FairRuntimeDb::findContainer(const char* name)
     return static_cast<FairParSet*>((containerList->FindObject(name)));
 }
 
-void FairRuntimeDb::removeContainer(Text_t* name)
+void FairRuntimeDb::removeContainer(const char* name)
 {
     // removes the container from the list and deletes it
     TObject* c = containerList->FindObject(name);
@@ -236,7 +262,7 @@ FairRtdbRun* FairRuntimeDb::addRun(Int_t runId, Int_t refId)
         FairParSet* cont;
         FairParVersion* vers;
         while ((cont = static_cast<FairParSet*>(next()))) {
-            vers = new FairParVersion((const_cast<char*>(cont->GetName())));
+            vers = new FairParVersion(cont->GetName());
             run->addParVersion(vers);
         }
         runs->Add(run);
@@ -255,7 +281,7 @@ FairRtdbRun* FairRuntimeDb::getRun(Int_t id)
     return static_cast<FairRtdbRun*>((runs->FindObject(name)));
 }
 
-FairRtdbRun* FairRuntimeDb::getRun(Text_t* name)
+FairRtdbRun* FairRuntimeDb::getRun(const char* name)
 {
     // returns a pointer to the run called by name
     return static_cast<FairRtdbRun*>((runs->FindObject(name)));
@@ -365,7 +391,6 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
     const Text_t* c = cont->GetName();
     LOG(debug) << "RuntimeDb: write container: " << cont->GetName();
     FairParVersion* vers = run->getParVersion(c);
-    Bool_t rc = kTRUE;
     Int_t cv = 0;
     if (getOutput() && output->check() && output->isAutoWritable()) {
         switch (ioType) {
@@ -433,10 +458,10 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
             refVers->setRootVersion(cv);
         }
     }
-    return rc;
+    return kTRUE;
 }
 
-Bool_t FairRuntimeDb::initContainers(Int_t runId, Int_t refId, const Text_t* fileName)
+Bool_t FairRuntimeDb::initContainers(UInt_t runId, Int_t refId, const Text_t* fileName)
 {
     // loops over the list of containers and calls the init() function of each
     // container if it is not static
@@ -483,7 +508,7 @@ Bool_t FairRuntimeDb::readAll()
 Bool_t FairRuntimeDb::initContainers(void)
 {
     // private function
-    Text_t* refRunName = const_cast<char*>(currentRun->getRefRun());
+    auto refRunName = currentRun->getRefRun();
     Int_t len = strlen(refRunName);
     if (len < 1) {
         if (firstInput) {
@@ -664,7 +689,7 @@ Bool_t FairRuntimeDb::setFirstInput(FairParIo* inp1)
 {
     // sets the first input pointer
     firstInput = inp1;
-    if (inp1->check() == kTRUE) {
+    if (inp1->check()) {
         inp1->setInputNumber(1);
         resetInputVersions();
         if (output && firstInput != output) {
@@ -681,7 +706,7 @@ Bool_t FairRuntimeDb::setSecondInput(FairParIo* inp2)
 {
     // sets the second input pointer
     secondInput = inp2;
-    if (inp2->check() == kTRUE) {
+    if (inp2->check()) {
         inp2->setInputNumber(2);
         resetInputVersions();
         if (output && firstInput != output) {
@@ -698,7 +723,7 @@ Bool_t FairRuntimeDb::setOutput(FairParIo* op)
 {
     // sets the output pointer
     output = op;
-    if (output->check() == kTRUE) {
+    if (output->check()) {
         resetOutputVersions();
         if (strcmp(output->IsA()->GetName(), "FairParRootFileIo") == 0) {
             ioType = RootFileOutput;

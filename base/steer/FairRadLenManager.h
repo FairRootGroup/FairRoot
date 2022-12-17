@@ -16,6 +16,7 @@
 #include <TLorentzVector.h>   // for TLorentzVector
 
 class TClonesArray;
+class TVirtualMC;
 
 /**
  * @class FairRadLenManager
@@ -27,7 +28,6 @@ class FairRadLenManager
     /**
      * Default constructor.
      * Creates the singleton object of FairRadLenManager class.
-     * The pointer to this object can be reached via FairRadLenManager::Instance().
      */
     FairRadLenManager();
 
@@ -82,7 +82,11 @@ class FairRadLenManager
 
   public:
     /**Add point to collection*/
-    void AddPoint(Int_t& ModuleId);
+    void AddPoint(TVirtualMC* aMC, const Int_t ModuleId);
+    /**
+     * \deprecated Deprecated in v18.8, will be removed in v20.
+     */
+    [[deprecated("Use AddPoint(TVirtualMC*, ...)")]] void AddPoint(const Int_t ModuleId);
     /**initialize the manager*/
     void Init();
     /**reset*/
@@ -91,8 +95,9 @@ class FairRadLenManager
      * This function is used to access the methods of the class.
      * @return Pointer to the singleton FairRadLenManager object, created
      * with FairRadLenManager::FairRadLenManager().
+     * \deprecated Deprecated in v18.8, will be removed in v20.
      */
-    static FairRadLenManager* Instance();
+    [[deprecated]] static FairRadLenManager* Instance();
 };
 
 #endif

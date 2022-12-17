@@ -1,10 +1,17 @@
 /********************************************************************************
- *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2019-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TRandom.h>
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+#include <memory>
+
 int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = false)
 {
     UInt_t randomSeed = 123456;
@@ -52,7 +59,7 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = fals
     run->SetName(mcEngine);   // Transport engine
     //  run->SetSimulationConfig(new FairVMCConfig());
     run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
-    run->SetSink(new FairRootFileSink(outFile));   // Output file
+    run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------
 
@@ -70,7 +77,7 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = fals
     det->SetGeometryFileName("tutProp.geo");
     run->AddModule(det);
 
-    FairTutPropDet* det2 = new FairTutPropDet("TutPropDetector", kTRUE);
+    FairTutPropDet* det2 = new FairTutPropDet("TutPropDetector2", kTRUE);
     det2->SetGeometryFileName("tutProp2.geo");
     det2->SetPointsArrayName("FairTutPropPoint2");
     run->AddModule(det2);

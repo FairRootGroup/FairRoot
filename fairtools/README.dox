@@ -1,0 +1,23 @@
+/**
+\defgroup fairtools Tools
+
+# Tools
+
+## FairLogger
+
+FairRoot::FairLogger is a minimal wrapper around [fair::Logger](https://github.com/FairRootGroup/FairLogger) to provide some backwards-compatibility features. Refer to fair::Logger documentation for description of all logging features.
+
+This implementation is available since FairSoft may18 and FairRoot v18. Some notable changes are:
+
+We recommend using fair::Logger directly. Upgrade notes:
+
+- Replace `#include <FairLogger.h>` with `#include <fairlogger/Logger.h>`.
+- Call to `gLogger`or `FairLogger::GetLogger();` is no longer needed to initialize to logger, you can use it directly after the include. Exception to this is if you need the keep the feature of FairLogger to throw an exception on calls to `LOG(FATAL)` (and generation of ROOT stack trace).
+- No longer need to add `FairLogger::endl` to get end of line - each LOG macro call will add endl() automatically. `FairLogger::endl` only adds a space character to your output.
+- All severity names are now available in lower case. Uppercase variants are deprecated and will be removed in future versions to avoid confusion with MACRO_NAMES. Refer to fair::Logger docs for full list of all severity names.
+- Replace `Debug4(...)` style functions with `LOG(debug4) << content;` calls.
+- Replace `FairLogger::IsLogNeeded(<severity>)` with `fair::Logger::Logging(<severity>)`.
+
+The CMake target name for this library is `FairRoot::Tools`.
+
+ */

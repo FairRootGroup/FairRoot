@@ -19,8 +19,8 @@
 #include "FairLogger.h"
 #include "FairMCEventHeader.h"
 #include "FairRootManager.h"
-#include "FairRuntimeDb.h"   // for FairRuntimeDb
 
+#include <TDirectory.h>   // for TDirectory::TContext
 #include <TFolder.h>
 #include <TList.h>
 #include <TObjArray.h>
@@ -30,25 +30,18 @@
 #include <TRandom.h>   // for TRandom, gRandom
 #include <TString.h>
 #include <cmath>   // floor, fmod
-#include <map>
-#include <set>
-
-using std::map;
-using std::set;
 
 FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
-    : FairSource()
+    : FairFileSourceBase()
     , fRootManager(0)
     , fInputTitle(Title)
     , fRootFile(f)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
-    , fCheckInputBranches()
     , fInputLevel()
     , fRunIdInfoAll()
     , fListFolder(new TObjArray(16))
-    , fRtdb(FairRuntimeDb::instance())
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -70,7 +63,6 @@ FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
     , fBeamTime(-1.)
     , fGapTime(-1.)
     , fEventMeanTime(0.)
-    , fTimeProb(0)
     , fSignalBGN()
     , fSBRatiobyN(kFALSE)
     , fSBRatiobyT(kFALSE)
@@ -83,7 +75,7 @@ FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
     , fRunIdFromSG(kFALSE)
     , fRunIdFromSG_identifier(0)
 {
-    if (fRootFile->IsZombie()) {
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
     LOG(info) << "FairMixedSource created------------";
@@ -92,18 +84,16 @@ FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
 }
 
 FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title, UInt_t)
-    : FairSource()
+    : FairFileSourceBase()
     , fRootManager(0)
     , fInputTitle(Title)
     , fRootFile(0)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
-    , fCheckInputBranches()
     , fInputLevel()
     , fRunIdInfoAll()
     , fListFolder(new TObjArray(16))
-    , fRtdb(FairRuntimeDb::instance())
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -125,7 +115,6 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
     , fBeamTime(-1.)
     , fGapTime(-1.)
     , fEventMeanTime(0.)
-    , fTimeProb(0)
     , fSignalBGN()
     , fSBRatiobyN(kFALSE)
     , fSBRatiobyT(kFALSE)
@@ -139,7 +128,7 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
     , fRunIdFromSG_identifier(0)
 {
     fRootFile = TFile::Open(RootFileName->Data());
-    if (fRootFile->IsZombie()) {
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
     fRootManager = FairRootManager::Instance();
@@ -147,18 +136,16 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
 }
 
 FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalId, const char* Title, UInt_t)
-    : FairSource()
+    : FairFileSourceBase()
     , fRootManager(0)
     , fInputTitle(Title)
     , fRootFile(0)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
-    , fCheckInputBranches()
     , fInputLevel()
     , fRunIdInfoAll()
     , fListFolder(new TObjArray(16))
-    , fRtdb(FairRuntimeDb::instance())
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -180,7 +167,6 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     , fBeamTime(-1.)
     , fGapTime(-1.)
     , fEventMeanTime(0.)
-    , fTimeProb(0)
     , fSignalBGN()
     , fSBRatiobyN(kFALSE)
     , fSBRatiobyT(kFALSE)
@@ -194,6 +180,9 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     , fRunIdFromSG_identifier(0)
 {
     fRootFile = TFile::Open(RootFileName.Data());
+    if ((!fRootFile) || fRootFile->IsZombie()) {
+        LOG(fatal) << "Error opening the Input file";
+    }
 
     if (signalId == 0) {
         SetBackgroundFile(RootFileName);
@@ -209,7 +198,8 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     // }
 }
 
-FairMixedSource::~FairMixedSource() {}
+FairMixedSource::~FairMixedSource() = default;
+
 Bool_t FairMixedSource::Init()
 {
     fOutHeader = new FairEventHeader();
@@ -231,11 +221,11 @@ Bool_t FairMixedSource::Init()
 
     // Get the folder structure from file which describes the input tree.
     // There are two different names possible, so check both.
-    fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get(FairRootManager::GetFolderName()));
+    fCbmroot = fRootFile->Get<TFolder>(FairRootManager::GetFolderName());
     if (!fCbmroot) {
-        fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get("cbmroot"));
+        fCbmroot = fRootFile->Get<TFolder>("cbmroot");
         if (!fCbmroot) {
-            fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get("cbmout"));
+            fCbmroot = fRootFile->Get<TFolder>("cbmout");
             if (!fCbmroot) {
                 fCbmroot = gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
             } else {
@@ -256,14 +246,13 @@ Bool_t FairMixedSource::Init()
     // with a different branch structure but the same tree name. ROOT
     // probably only checks if the name of the tree is the same.
 
-    TList* list = dynamic_cast<TList*>(fRootFile->Get("BranchList"));
+    auto list = fRootFile->Get<TList>("BranchList");
     if (list == 0)
         LOG(fatal) << "No Branch list in input file";
     TString chainName = fInputTitle;
-    TString ObjName;
     fInputLevel.push_back(chainName);
-    fCheckInputBranches[chainName] = new std::list<TString>;
     if (list) {
+        TString ObjName;
         TObjString* Obj = 0;
         LOG(info) << "Enteries in the list " << list->GetEntries();
         for (Int_t i = 0; i < list->GetEntries(); i++) {
@@ -271,7 +260,7 @@ Bool_t FairMixedSource::Init()
             if (Obj != 0) {
                 ObjName = Obj->GetString();
                 LOG(info) << "Branch name " << ObjName.Data();
-                fCheckInputBranches[chainName]->push_back(ObjName.Data());
+                fCheckInputBranches[chainName].push_back(ObjName);
 
                 FairRootManager::Instance()->AddBranchToList(ObjName.Data());
             }
@@ -289,35 +278,34 @@ Bool_t FairMixedSource::Init()
     //  GetRunIdInfo(fInFile->GetName(), chainName);
 
     // Add all additional input files to the input chain and do a consitency check
-    for (auto fileName : fInputChainList) {
-        // Store global gFile pointer for safety reasons.
-        // Set gFile to old value at the end of the routine.R
-        TFile* temp = gFile;
+    {
+        TDirectory::TContext restorecwd{};
 
-        // Temporarily open the input file to extract information which
-        // is needed to bring the friend trees in the correct order
-        TFile* inputFile = TFile::Open(fileName);
-        if (inputFile->IsZombie()) {
-            LOG(fatal) << "Error opening the file " << fileName.Data()
-                       << " which should be added to the input chain or as friend chain";
+        for (auto fileName : fInputChainList) {
+            // Temporarily open the input file to extract information which
+            // is needed to bring the friend trees in the correct order
+            TFile* inputFile = TFile::Open(fileName);
+            if (inputFile->IsZombie()) {
+                LOG(fatal) << "Error opening the file " << fileName.Data()
+                           << " which should be added to the input chain or as friend chain";
+            }
+
+            // Check if the branchlist is the same as for the first input file.
+            Bool_t isOk = CompareBranchList(inputFile, chainName);
+            if (!isOk) {
+                LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName()
+                           << " and the file to be added " << fileName.Data();
+                return kFALSE;
+            }
+
+            // Add the runid information for all files in the chain.
+            // GetRunIdInfo(inputFile->GetName(), chainName);
+            // Add the file to the input chain
+            fBackgroundChain->Add(fileName);
+
+            // Close the temporarly file
+            inputFile->Close();
         }
-
-        // Check if the branchlist is the same as for the first input file.
-        Bool_t isOk = CompareBranchList(inputFile, chainName);
-        if (!isOk) {
-            LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName() << " and the file to be added "
-                       << fileName.Data();
-            return kFALSE;
-        }
-
-        // Add the runid information for all files in the chain.
-        // GetRunIdInfo(inputFile->GetName(), chainName);
-        // Add the file to the input chain
-        fBackgroundChain->Add(fileName);
-
-        // Close the temporarly file and restore the gFile pointer.
-        inputFile->Close();
-        gFile = temp;
     }
     fNoOfEntries = fBackgroundChain->GetEntries();
     FairRootManager::Instance()->SetInChain(fBackgroundChain, 0);
@@ -419,8 +407,6 @@ Int_t FairMixedSource::ReadEvent(UInt_t i)
 
 void FairMixedSource::Close() {}
 
-void FairMixedSource::Reset() {}
-
 void FairMixedSource::FillEventHeader(FairEventHeader* feh)
 {
     feh->SetEventTime(fOutHeader->GetEventTime());
@@ -431,52 +417,6 @@ void FairMixedSource::FillEventHeader(FairEventHeader* feh)
                << " -> Run id = " << fOutHeader->GetRunId() << " event#" << feh->GetMCEntryNumber() << " from file#"
                << fOutHeader->GetInputFileId();
     return;
-}
-
-Bool_t FairMixedSource::CompareBranchList(TFile* fileHandle, TString inputLevel)
-{
-    // fill a set with the original branch structure
-    // This allows to use functions find and erase
-    std::set<TString> branches;
-    for (auto li : (*fCheckInputBranches[inputLevel])) {
-        branches.insert(li);
-    }
-
-    // To do so we have to loop over the branches in the file and to compare
-    // the branches in the file with the information stored in
-    // fCheckInputBranches["InputChain"]. If both lists are equal everything
-    // is okay
-
-    // Get The list of branches from the input file one by one and compare
-    // it to the reference list of branches which is defined for this tree.
-    // If a branch with the same name is found, this branch is removed from
-    // the list. If in the end no branch is left in the list everything is
-    // fine.
-    set<TString>::iterator iter1;
-    TList* list = dynamic_cast<TList*>(fileHandle->Get("BranchList"));
-    if (list) {
-        TObjString* Obj = 0;
-        for (Int_t i = 0; i < list->GetEntries(); i++) {
-            Obj = dynamic_cast<TObjString*>(list->At(i));
-            iter1 = branches.find(Obj->GetString().Data());
-            if (iter1 != branches.end()) {
-                branches.erase(iter1);
-            } else {
-                // Not found is an error because branch structure is
-                // different. It is impossible to add to tree with a
-                // different branch structure
-                return kFALSE;
-            }
-        }
-    }
-    // If the size of branches is !=0 after removing all branches also in the
-    // reference list, this is also a sign that both branch list are not the
-    // same
-    if (branches.size() != 0) {
-        return kFALSE;
-    }
-
-    return kTRUE;
 }
 
 void FairMixedSource::SetSignalFile(TString name, UInt_t identifier)
@@ -548,11 +488,11 @@ Bool_t FairMixedSource::OpenBackgroundChain()
 {
     // Get the folder structure from file which describes the input tree.
     // There are two different names possible, so check both.
-    fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get(FairRootManager::GetFolderName()));
+    fCbmroot = fRootFile->Get<TFolder>(FairRootManager::GetFolderName());
     if (!fCbmroot) {
-        fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get("cbmroot"));
+        fCbmroot = fRootFile->Get<TFolder>("cbmroot");
         if (!fCbmroot) {
-            fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get("cbmout"));
+            fCbmroot = fRootFile->Get<TFolder>("cbmout");
             if (!fCbmroot) {
                 fCbmroot = gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
             } else {
@@ -574,15 +514,14 @@ Bool_t FairMixedSource::OpenBackgroundChain()
     // with a different branch structure but the same tree name. ROOT
     // probably only checks if the name of the tree is the same.
 
-    TList* list = dynamic_cast<TList*>(fRootFile->Get("BranchList"));
+    auto list = fRootFile->Get<TList>("BranchList");
     TString chainName = "BGInChain";
     fInputLevel.push_back(chainName);
-    fCheckInputBranches[chainName] = new std::list<TString>;
     if (list) {
         TObjString* Obj = 0;
         for (Int_t i = 0; i < list->GetEntries(); i++) {
             Obj = dynamic_cast<TObjString*>(list->At(i));
-            fCheckInputBranches[chainName]->push_back(Obj->GetString().Data());
+            fCheckInputBranches[chainName].push_back(Obj->GetString());
             FairRootManager::Instance()->AddBranchToList(Obj->GetString().Data());
         }
     }
@@ -717,15 +656,7 @@ Int_t FairMixedSource::CheckMaxEventNo(Int_t EvtEnd)
 void FairMixedSource::SetEventMeanTime(Double_t mean)
 {
     fEventMeanTime = mean;
-    /*
-  TString form="(1/";
-  form+= mean;
-  form+=")*exp(-x/";
-  form+=mean;
-  form+=")";
-  fTimeProb= new TF1("TimeProb", form.Data(), 0., mean*10);
-*/
-    fTimeProb = new TF1("TimeProb", "(1/[0])*exp(-x/[0])", 0., mean * 10);
+    fTimeProb = std::make_unique<TF1>("TimeProb", "(1/[0])*exp(-x/[0])", 0., mean * 10);
     fTimeProb->SetParameter(0, mean);
     fTimeProb->GetRandom();
     fEventTimeInMCHeader = kFALSE;
@@ -733,6 +664,8 @@ void FairMixedSource::SetEventMeanTime(Double_t mean)
 
 void FairMixedSource::SetEventTimeInterval(Double_t min, Double_t max)
 {
+    // disable fTimeProb for the uniform distribution
+    fTimeProb.reset();
     fEventTimeMin = min;
     fEventTimeMax = max;
     fEventMeanTime = (fEventTimeMin + fEventTimeMax) / 2;
@@ -763,7 +696,7 @@ void FairMixedSource::SetEventTime()
 Double_t FairMixedSource::GetDeltaEventTime()
 {
     Double_t deltaTime = 0;
-    if (fTimeProb != 0) {
+    if (fTimeProb) {
         deltaTime = fTimeProb->GetRandom();
         LOG(debug) << "Time set via sampling method : " << deltaTime;
     } else {

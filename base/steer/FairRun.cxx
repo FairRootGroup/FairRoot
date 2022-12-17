@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -29,9 +29,10 @@
 #endif
 #include <TList.h>     // for TList
 #include <TObject.h>   // for TObject
+#include <TROOT.h>     // fot gROOT
 #include <cassert>     // for... well, assert
 
-TMCThreadLocal FairRun* FairRun::fRunInstance = 0;
+TMCThreadLocal FairRun* FairRun::fRunInstance = nullptr;
 
 FairRun* FairRun::Instance() { return fRunInstance; }
 
@@ -41,7 +42,6 @@ FairRun::FairRun(Bool_t isMaster)
     , fRtdb(FairRuntimeDb::instance())
     , fTask(new FairTask("FairTaskList"))
     , fRootManager(0)
-    , fSink(0)
     , fUserOutputFileName()
     , fRunId(0)
     , fAna(kFALSE)
@@ -85,10 +85,26 @@ FairRun::FairRun(Bool_t isMaster)
 FairRun::~FairRun()
 {
     LOG(debug) << "Enter Destructor of FairRun";
-    delete fTask;   // There is another tasklist in MCApplication,
+
+    // So that FairRootManager does not try to delete these, because we will do that:
+    fRootManager->SetSource(nullptr);
+    fRootManager->SetSink(nullptr);
+
+    if (fTask) {
+        // FairRunAna added it, but let's remove it here, because we own it
+        gROOT->GetListOfBrowsables()->Remove(fTask);
+        delete fTask;   // There is another tasklist in MCApplication,
+    }
     // but this should be independent
-    delete fRtdb;   // who is responsible for the RuntimeDataBase
+    if (fIsMaster) {
+        // who is responsible for the RuntimeDataBase?
+        delete fRtdb;
+    }
     delete fEvtHeader;
+    if (fRunInstance == this) {
+        // Do not point to a destructed object!
+        fRunInstance = nullptr;
+    }
     LOG(debug) << "Leave Destructor of FairRun";
 }
 
@@ -146,7 +162,7 @@ void FairRun::SetUseFairLinks(Bool_t val) { fRootManager->SetUseFairLinks(val); 
 
 void FairRun::SetWriteRunInfoFile(Bool_t write)
 {
-    LOG(warn) << "Function FairRun::SetWriteRunInfoFile(Bool_t) is depcrecated and will vanish in future versions of "
+    LOG(warn) << "Function FairRun::SetWriteRunInfoFile(Bool_t) is deprecated and will vanish in future versions of "
                  "FairRoot.\n";
     LOG(warn) << "Please use FairRun::SetGenerateRunInfo(Bool_t) instead.";
 
@@ -156,37 +172,47 @@ void FairRun::SetWriteRunInfoFile(Bool_t write)
 Bool_t FairRun::GetWriteRunInfoFile()
 {
     LOG(warn)
-        << "Function FairRun::GetWriteRunInfoFile() is depcrecated and will vanish in future versions of FairRoot.\n";
+        << "Function FairRun::GetWriteRunInfoFile() is deprecated and will vanish in future versions of FairRoot.\n";
     LOG(warn) << "Please use FairRun::IsRunInfoGenerated() instead.";
 
     return fGenerateRunInfo;
 }
 
+void FairRun::SetSink(std::unique_ptr<FairSink> newsink)
+{
+    fSink = std::move(newsink);
+    fRootManager->SetSink(fSink.get());
+    fUserOutputFileName = fSink->GetFileName();
+}
+
+void FairRun::SetSink(FairSink* tempSink)
+{
+    fSink.reset(tempSink);
+    fRootManager->SetSink(fSink.get());
+    fUserOutputFileName = fSink->GetFileName();
+}
+
 void FairRun::SetOutputFile(const char* fname)
 {
     LOG(warning) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
-    fSink = new FairRootFileSink(fname);
+    fSink = std::make_unique<FairRootFileSink>(fname);
     if (fRootManager)
-        fRootManager->SetSink(fSink);
+        fRootManager->SetSink(fSink.get());
     fUserOutputFileName = fname;
 }
 
 void FairRun::SetOutputFile(TFile* f)
 {
     LOG(warning) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
-    fSink = new FairRootFileSink(f);
-    if (fRootManager)
-        fRootManager->SetSink(fSink);
-    if (f)
-        fUserOutputFileName = f->GetName();
+    SetSink(std::make_unique<FairRootFileSink>(f));
 }
 
 void FairRun::SetOutputFileName(const TString& name)
 {
     LOG(warning) << "FairRun::SetOutputFileName() deprecated. Use FairRootFileSink.";
-    fSink = new FairRootFileSink(name);
+    fSink = std::make_unique<FairRootFileSink>(name);
     if (fRootManager)
-        fRootManager->SetSink(fSink);
+        fRootManager->SetSink(fSink.get());
     fUserOutputFileName = name;
 }
 
@@ -208,6 +234,12 @@ void FairRun::AlignGeometry() const { fAlignmentHandler.AlignGeometry(); }
 void FairRun::AddAlignmentMatrices(const std::map<std::string, TGeoHMatrix>& alignmentMatrices, bool invertMatrices)
 {
     fAlignmentHandler.AddAlignmentMatrices(alignmentMatrices, invertMatrices);
+}
+
+void FairRun::SetSource(FairSource* othersource)
+{
+    fRootManager->SetSource(othersource);
+    fSource.reset(othersource);
 }
 
 ClassImp(FairRun);

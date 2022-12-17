@@ -9,7 +9,6 @@ include_directories( ${INCLUDE_DIRECTORIES})
 include_directories(${SYSTEM_INCLUDE_DIRECTORIES})
 
 set(LINK_DIRECTORIES
-${ROOT_LIBRARY_DIR}
 ${FAIRROOT_LIBRARY_DIR}
 ${CMAKE_SOURCE_DIR}/MyProjData
 
@@ -25,7 +24,12 @@ MyProjMCTrack.cxx
 Set(HEADERS )
 Set(LINKDEF MCStackLinkDef.h)
 Set(LIBRARY_NAME MyProjData)
-Set(DEPENDENCIES Base EG Physics Core)
+Set(DEPENDENCIES
+    FairRoot::Base
+    FairLogger::FairLogger
+    ${VMCLIB}
+    ROOT::EG
+    ROOT::Physics
+    ROOT::Core)
 
 GENERATE_LIBRARY()
-

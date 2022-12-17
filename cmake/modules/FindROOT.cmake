@@ -80,6 +80,15 @@ If(ROOT_CONFIG_EXECUTABLE)
   String(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" ROOT_VERSION_MINOR "${ROOT_VERSION_STRING}")
   String(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+).*" "\\1" ROOT_VERSION_PATCH "${ROOT_VERSION_STRING}")
 
+  if(NOT ROOT_FIND_VERSION_MAJOR)
+    set(ROOT_FIND_VERSION_MAJOR 0)
+  endif()
+  if(NOT ROOT_FIND_VERSION_MINOR)
+    set(ROOT_FIND_VERSION_MINOR 0)
+  endif()
+  if(NOT ROOT_FIND_VERSION_PATCH)
+    set(ROOT_FIND_VERSION_PATCH 0)
+  endif()
   # compute overall version numbers which can be compared at once
   Math(EXPR req_vers "${ROOT_FIND_VERSION_MAJOR}*10000 + ${ROOT_FIND_VERSION_MINOR}*100 + ${ROOT_FIND_VERSION_PATCH}")
   Math(EXPR found_vers "${ROOT_VERSION_MAJOR}*10000 + ${ROOT_VERSION_MINOR}*100 + ${ROOT_VERSION_PATCH}")
@@ -180,8 +189,8 @@ If(ROOT_FOUND)
 
     Include(ROOTMacros)
 
-  # Setup targets for ROOT libraries (needed by VMC)
-  set(__root_targets_list Core RIO Tree Rint Physics MathCore Thread Geom EG EGPythia6)
+  # Aliases for imported VMC packages ROOT dependencies
+  set(__root_targets_list VMC Core RIO Tree Rint Physics MathCore Thread Geom EG EGPythia6 Gpad Hist RHTTP Proof Net Matrix GeomPainter Graf3d Graf RooFit RooFitCore XMLParser XMLIO Eve RGL Gui Ged Gdml)
   if(ROOT_vmc_FOUND)
     list(APPEND __root_targets_list VMC)
   endif()

@@ -38,10 +38,10 @@ class FairParAsciiFileIo : public FairParIo
     Bool_t open(const TList* fnamelist, const Text_t* status = "in");
 
     // closes file
-    void close();
+    void close() override;
 
     // returns kTRUE if file is open
-    Bool_t check()
+    Bool_t check() override
     {
         if (file) {
             return (file->rdbuf()->is_open() == 1);
@@ -51,7 +51,7 @@ class FairParAsciiFileIo : public FairParIo
     }
 
     // prints information about the file and the detector I/Os
-    void print();
+    void print() override;
 
     std::fstream* getFile();
 
@@ -59,7 +59,7 @@ class FairParAsciiFileIo : public FairParIo
     FairParAsciiFileIo(const FairParAsciiFileIo&);
     FairParAsciiFileIo& operator=(const FairParAsciiFileIo&);
 
-    ClassDef(FairParAsciiFileIo, 0);   // Parameter I/O from ASCII files
+    ClassDefOverride(FairParAsciiFileIo, 0);   // Parameter I/O from ASCII files
 };
 
 #endif /* !FAIRPARASCIIFILEIO_H */

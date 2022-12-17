@@ -67,15 +67,11 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
-)
-
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::BaseMQ # Serialization policies
-  FairRoot::FairTools # FairLogger
-  FairRoot::Gen # FairBoxGenerator
+  FairRoot::Tools # FairLogger
+  FairRoot::Generators # FairBoxGenerator
   FairRoot::GeoBase
   FairRoot::ParBase # FairParGenericSet
   FairRoot::ExMCStack
@@ -84,19 +80,20 @@ target_link_libraries(${target} PUBLIC
 
   Boost::serialization
 
-  Core
-  MathCore
-  RIO
-  Tree
-  Physics
-  Geom
-  Hist
+  ROOT::Core
+  ROOT::MathCore
+  ROOT::RIO
+  ROOT::Tree
+  ROOT::Physics
+  ROOT::Geom
+  ROOT::Hist
   ${VMCLIB}
 )
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF PixelLinkDef.h
+  EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})

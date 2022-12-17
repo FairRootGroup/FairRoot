@@ -56,7 +56,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
     boxGen->SetPhiRange(0, 360);
     primGen->AddGenerator(boxGen);
 
-    auto mqDevice = std::unique_ptr<FairMQPrimaryGeneratorDevice>(new FairMQPrimaryGeneratorDevice());
+    auto mqDevice = std::make_unique<FairMQPrimaryGeneratorDevice>();
     LOG(info) << "Going to generate " << config.GetValue<int64_t>("nof-events") << " events.";
     mqDevice->SetChunkSize(config.GetValue<int64_t>("chunk-size"));
     mqDevice->RunInPushMode(true);

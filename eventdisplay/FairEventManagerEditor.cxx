@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -62,9 +62,8 @@ void FairEventManagerEditor::SwitchBackground(Bool_t light_background) { fManage
 
 void FairEventManagerEditor::Init()
 {
-    FairRootManager* rootManager = FairRootManager::Instance();
-    TChain* chain = rootManager->GetInChain();
-    Int_t Entries = chain->GetEntriesFast();
+    auto const* chain = fManager->GetRootManager().GetInChain();
+    auto const Entries = chain->GetEntriesFast();
 
     MakeTitle("FairEventManager  Editor");
     TGVerticalFrame* fInfoFrame = CreateEditorTabSubFrame("Info");
@@ -72,8 +71,7 @@ void FairEventManagerEditor::Init()
         new TGCompositeFrame(fInfoFrame, 250, 10, kVerticalFrame | kLHintsExpandX | kFixedWidth | kOwnBackground);
 
     TString Infile = "Input file : ";
-    //  TFile* file =FairRunAna::Instance()->GetInputFile();
-    TFile* file = FairRootManager::Instance()->GetInChain()->GetFile();
+    auto const* file = chain->GetFile();
     Infile += file->GetName();
     TGLabel* TFName = new TGLabel(title1, Infile.Data());
     title1->AddFrame(TFName);
@@ -128,7 +126,6 @@ void FairEventManagerEditor::Init()
 
     //=============== graphics =============================
     TGVerticalFrame* scene_conf = CreateEditorTabSubFrame("Graphics");
-    TGHorizontalFrame* transparency_frame = new TGHorizontalFrame(scene_conf);
 
     std::unique_ptr<FairEveTransparencyControl> transparency(
         new FairEveTransparencyControl(scene_conf, "Global transparency"));
@@ -229,15 +226,14 @@ void FairEventManagerEditor::StartAnimation()
             FairTask* pMainTask = ana->GetMainTask();
             TList* taskList = pMainTask->GetListOfTasks();
 
-            Int_t ntask = ana->GetNTasks();
             Bool_t runOnce = true;
             for (Double_t i = start; i < end; i += step) {
-                if (runOnce == true) {   // Clear the buffer at the beginning of an animation run
-                    if (fAnimation->GetClearBuffer() == kTRUE || fAnimation->GetRunContinuous() == kFALSE)
+                if (runOnce) {   // Clear the buffer at the beginning of an animation run
+                    if (fAnimation->GetClearBuffer() || !fAnimation->GetRunContinuous())
                         FairEventManager::Instance()->SetClearHandler(kTRUE);
                     runOnce = false;
                 } else {
-                    if (fAnimation->GetRunContinuous() == kFALSE) {
+                    if (!fAnimation->GetRunContinuous()) {
                         FairEventManager::Instance()->SetClearHandler(kTRUE);
                     } else {
                         FairEventManager::Instance()->SetClearHandler(kFALSE);

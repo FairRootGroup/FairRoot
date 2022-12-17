@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -24,12 +24,13 @@
 #include "FairTask.h"
 #include "FairTrajFilter.h"
 
+#include <TDirectory.h>   // for TDirectory::TContext
 #include <TGeoManager.h>
 #include <TKey.h>
 #include <TProof.h>
 #include <TROOT.h>
 
-FairRunAnaProof* FairRunAnaProof::fRAPInstance = 0;
+FairRunAnaProof* FairRunAnaProof::fRAPInstance = nullptr;
 
 FairRunAnaProof* FairRunAnaProof::Instance() { return fRAPInstance; }
 
@@ -58,7 +59,13 @@ FairRunAnaProof::FairRunAnaProof(const char* proofName)
     fAna = kTRUE;
 }
 
-FairRunAnaProof::~FairRunAnaProof() {}
+FairRunAnaProof::~FairRunAnaProof()
+{
+    if (fRAPInstance == this) {
+        // Do not point to a destructed object!
+        fRAPInstance = nullptr;
+    }
+}
 
 void FairRunAnaProof::Init()
 {
@@ -111,7 +118,7 @@ void FairRunAnaProof::Init()
             // check that the geometry was loaded if not try all connected files!
             if (fLoadGeo && gGeoManager == 0) {
                 LOG(info) << "Geometry was not found in the input file we will look in the friends if any!";
-                TFile* currentfile = gFile;
+                TDirectory::TContext restorecwd{};
                 TFile* nextfile = 0;
                 TSeqCollection* fileList = gROOT->GetListOfFiles();
                 for (Int_t k = 0; k < fileList->GetEntries(); k++) {
@@ -123,7 +130,6 @@ void FairRunAnaProof::Init()
                         break;
                     }
                 }
-                gFile = currentfile;
             }
         }
     } else {   //  if(fInputFile )
@@ -156,11 +162,6 @@ void FairRunAnaProof::Init()
     fRtdb = GetRuntimeDb();
     FairBaseParSet* par = static_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
 
-    /**Set the IO Manager to run with time stamps*/
-    if (fTimeStamps) {
-        fRootManager->RunWithTimeStamps();
-    }
-
     // create the output tree after tasks initialisation
     fRootManager->InitSink();
 
@@ -173,7 +174,7 @@ void FairRunAnaProof::Init()
 
         GetEventHeader();
 
-        fRootManager->FillEventHeader(fEvtHeader);
+        FillEventHeader();
 
         fRunId = fEvtHeader->GetRunId();
 
@@ -244,7 +245,7 @@ void FairRunAnaProof::InitContainers()
         if (nullptr == fEvtHeader)
             LOG(fatal) << "Could not read event header.";
 
-        fRootManager->FillEventHeader(fEvtHeader);
+        FillEventHeader();
 
         fRunId = fEvtHeader->GetRunId();
 
@@ -268,7 +269,7 @@ void FairRunAnaProof::SetSource(FairSource* tempSource)
     if (strncmp(tempSource->GetName(), "FairFileSource", 14) != 0) {
         LOG(warn) << "FairRunAnaProof. Seems you are trying to set different source than FairFileSource";
     }
-    fRootManager->SetSource(tempSource);
+    FairRunAna::SetSource(tempSource);
     fProofFileSource = static_cast<FairFileSource*>(tempSource);
 }
 
@@ -286,7 +287,7 @@ void FairRunAnaProof::RunOneEvent(Long64_t entry)
         UInt_t tmpId = 0;
         fRootManager->ReadEvent(entry);
 
-        fRootManager->FillEventHeader(fEvtHeader);
+        FillEventHeader();
 
         tmpId = fEvtHeader->GetRunId();
         if (tmpId != fRunId) {
@@ -332,7 +333,7 @@ void FairRunAnaProof::RunOnProof(Int_t NStart, Int_t NStop)
     fProof->AddInput(fTask);
 
     // get file name from FairSink
-    TString fileName = fRootManager->GetSink()->GetFileName();
+    TString fileName = GetSink()->GetFileName();
     LOG(info) << " outputFileName = " << fileName.Data();
     if (fileName.Length() < 5)
         fileName = "proofOutput.root";
@@ -370,19 +371,4 @@ void FairRunAnaProof::RunOnProof(Int_t NStart, Int_t NStop)
     return;
 }
 
-// // void FairRunAnaProof::SetOutputFile(const char* fname)
-// {
-//   fOutname=fname;
-// }
-//
-// // void FairRunAnaProof::SetOutputFile(TFile* f)
-// {
-//   if (! fRootManager) return;
-
-//   fOutname=f->GetName();
-//   fRootManager->OpenOutFile(f);
-//   fOutFile = f;
-
-// }
-//
 ClassImp(FairRunAnaProof);

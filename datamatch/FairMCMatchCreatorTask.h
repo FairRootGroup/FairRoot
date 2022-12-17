@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -19,6 +19,10 @@
 #ifndef FAIRMCMATCHCREATORTASK_H
 #define FAIRMCMATCHCREATORTASK_H
 
+#ifndef FAIR_SILENCE_DATAMATCH_DEPRECATION
+#warning "FairRoot::DataMatch is deprecated and will be removed in a future major release"
+#endif
+
 #include "FairTask.h"   // for InitStatus, FairTask
 
 #include <Rtypes.h>   // for Bool_t, etc
@@ -37,8 +41,6 @@ class FairMCMatchCreatorTask : public FairTask
     /** Destructor **/
     virtual ~FairMCMatchCreatorTask();
 
-    /** Virtual method Init **/
-    virtual void SetParContainers();
     void SetPersistance(Bool_t pers) { fPersistance = pers; }
     Bool_t GetPersistance() { return fPersistance; }
 

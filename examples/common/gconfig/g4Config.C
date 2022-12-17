@@ -42,7 +42,7 @@ void Config()
 
     /// Create the G4 VMC
     TGeant4* geant4 = new TGeant4("TGeant4", "The Geant4 Monte Carlo", runConfiguration);
-    cout << "Geant4 has been created." << endl;
+    LOG(info) << "Geant4 has been created.";
 
     /// create the Specific stack
     FairStack* stack = new FairStack(1000);
@@ -61,7 +61,7 @@ void Config()
 
     TString configm(gSystem->Getenv("VMCWORKDIR"));
     TString configm1 = configm + "/common/gconfig/g4config.in";
-    cout << " -I g4Config() using g4conf  macro: " << configm1 << endl;
+    LOG(info) << " -I g4Config() using g4conf  macro: " << configm1;
 
     // set geant4 specific stuff
     geant4->SetMaxNStep(10000);   // default is 30000

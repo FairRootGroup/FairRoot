@@ -70,13 +70,9 @@ class FairLink
 
     bool operator==(const FairLink& link) const
     {
-        if ((GetFile() == link.GetFile() || link.GetFile() == -1)
-            && (GetEntry() == link.GetEntry() || link.GetEntry() == -1) && GetType() == link.GetType()
-            && GetIndex() == link.GetIndex()) {
-            return true;
-        } else {
-            return false;
-        }
+        return (GetFile() == link.GetFile() || link.GetFile() == -1)
+               && (GetEntry() == link.GetEntry() || link.GetEntry() == -1) && GetType() == link.GetType()
+               && GetIndex() == link.GetIndex();
     }
 
     bool operator<(const FairLink& link) const

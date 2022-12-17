@@ -22,7 +22,7 @@
 -->
 
     <decltask id="Sampler">
-        <exe reachable="true">@pixel_bin_dir@/pixel-sampler --id sampler --severity DEBUG --file-name @pixel_file_dir@/macros/pixel_TGeant3.digi.root --branch-name PixelDigis --branch-name EventHeader. --color false --channel-config name=data1,type=push,method=bind --out-channel data1 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds</exe>
+        <exe reachable="true">@pixel_bin_dir@/pixel-sampler --id sampler --severity DEBUG --file-name @pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.digi.root --branch-name PixelDigis --branch-name EventHeader. --color false --channel-config name=data1,type=push,method=bind --out-channel data1 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds</exe>
 <!--        <requirement>SamplerWorker</requirement> -->
         <properties>
             <id access="write">data1</id>
@@ -40,7 +40,7 @@
     </decltask>
 
     <decltask id="Sink">
-        <exe reachable="true">@pixel_bin_dir@/pixel-sink --id sink --severity DEBUG --file-name @pixel_file_dir@/macros/DDS.pixel_TGeant3.hits.root --class-name FairEventHeader --branch-name EventHeader. --class-name "TClonesArray(PixelHit)" --branch-name PixelHits --color false --channel-config name=data2,type=pull,method=bind --in-channel data2 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds</exe>
+        <exe reachable="true">@pixel_bin_dir@/pixel-sink --id sink --severity DEBUG --file-name @pixel_file_dir@/macros/DDS.pixel_@pixel_simulation_engine@.hits.root --class-name FairEventHeader --branch-name EventHeader. --class-name "TClonesArray(PixelHit)" --branch-name PixelHits --color false --channel-config name=data2,type=pull,method=bind --in-channel data2 -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds</exe>
 <!--        <requirement>SinkWorker</requirement> -->
         <properties>
             <id access="write">data2</id>
@@ -48,7 +48,7 @@
     </decltask>
 
     <decltask id="ParamServer">
-        <exe reachable="true">@fairroot_bin_dir@/parmq-server --id parmq-server --severity DEBUG --first-input-name @pixel_file_dir@/macros/pixel_TGeant3.params.root --second-input-name @pixel_file_dir@/param/pixel_digi.par --second-input-type ASCII --color false --channel-config name=data,type=rep,method=bind -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --channel-name data</exe>
+        <exe reachable="true">@fairroot_bin_dir@/parmq-server --id parmq-server --severity DEBUG --first-input-name @pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.params.root --second-input-name @pixel_file_dir@/param/pixel_digi.par --second-input-type ASCII --color false --channel-config name=data,type=rep,method=bind -S "&lt;@CMAKE_BINARY_DIR@/lib" -P dds --channel-name data</exe>
 <!--        <requirement>ParamServerWorker</requirement> -->
         <properties>
             <id access="write">data</id>

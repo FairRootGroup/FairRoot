@@ -41,11 +41,14 @@ install(TARGETS pixalt-sampler-bin pixalt-sink-bin pixalt-processor-bin
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelAlternative/bin
 )
 
-set(maxTestTime 30)
+if(TARGET FairMQ::fairmq-dds-command-ui)
+  set(maxTestTime 30)
 
-add_test(ex_MQ_pixel_alt_static ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixAlt.sh --work-dir ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector --max-index 10000 --aggregate 100 --processors 5 --command static --force-kill true)
-set_tests_properties(ex_MQ_pixel_alt_static PROPERTIES
-  DEPENDS ex_MQ_pixel_static
-  TIMEOUT ${maxTestTime}
-  PASS_REGULAR_EXPRESSION "Shell script finished successfully"
-)
+  add_test(NAME ex_MQ_pixel_alt_static
+           COMMAND ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixAlt.sh --work-dir ${CMAKE_BINARY_DIR}/examples/MQ/pixelDetector --max-index 1000 --aggregate 10 --processors 5 --command static --force-kill true)
+  set_tests_properties(ex_MQ_pixel_alt_static PROPERTIES
+    FIXTURES_REQUIRED fixtures.ex_MQ_pixel_static
+    TIMEOUT ${maxTestTime}
+    PASS_REGULAR_EXPRESSION "Shell script finished successfully"
+  )
+endif()

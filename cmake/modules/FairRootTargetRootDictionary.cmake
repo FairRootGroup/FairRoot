@@ -47,7 +47,7 @@ function(fairroot_target_root_dictionary target)
                         A
                         ""
                         "LINKDEF"
-                        "HEADERS;BASENAME")
+                        "HEADERS;BASENAME;EXTRA_INCLUDE_DIRS")
   if(A_UNPARSED_ARGUMENTS)
     message(
       FATAL_ERROR "Unexpected unparsed arguments: ${A_UNPARSED_ARGUMENTS}")
@@ -73,12 +73,8 @@ function(fairroot_target_root_dictionary target)
     endif()
   endforeach()
 
-  # convert all relative paths to absolute ones. LINKDEF must be the last one.
   unset(headers)
-  foreach(h ${A_HEADERS} ${A_LINKDEF})
-    get_filename_component(habs ${CMAKE_CURRENT_SOURCE_DIR}/${h} ABSOLUTE)
-    list(APPEND headers ${habs})
-  endforeach()
+  list(APPEND headers ${A_HEADERS} ${A_LINKDEF})
 
   # check all given filepaths actually exist
   foreach(h ${headers})
@@ -124,6 +120,12 @@ function(fairroot_target_root_dictionary target)
   endif()
 
   set(includeDirs $<TARGET_PROPERTY:${target},INCLUDE_DIRECTORIES>)
+  set(includeDirs "$<REMOVE_DUPLICATES:${includeDirs}>")
+
+  if(A_EXTRA_INCLUDE_DIRS)
+    list(JOIN A_EXTRA_INCLUDE_DIRS ";-I" extra_includes)
+    string(PREPEND extra_includes "-I")
+  endif()
 
   # add a custom command to generate the dictionary using rootcling
   # cmake-format: off
@@ -138,6 +140,8 @@ function(fairroot_target_root_dictionary target)
       -rmf ${rootmapFile}
       -rml $<TARGET_FILE_NAME:${target}>
       -I$<JOIN:${includeDirs},$<SEMICOLON>-I>
+      ${extra_includes}
+      -excludePath "${CMAKE_BINARY_DIR}"
       $<$<BOOL:${prop}>:-D$<JOIN:${prop},$<SEMICOLON>-D>>
       ${headers}
     COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/${pcmBase} ${pcmFile}
@@ -149,12 +153,10 @@ function(fairroot_target_root_dictionary target)
   target_sources(${target} PRIVATE ${dictionaryFile})
 
   get_property(libs TARGET ${target} PROPERTY INTERFACE_LINK_LIBRARIES)
-  if(NOT RIO IN_LIST libs)
-  # if(NOT ROOT::RIO IN_LIST libs)
+  if(NOT ROOT::RIO IN_LIST libs)
     # add ROOT::IO if not already there as a target that has a Root dictionary
     # has to depend on ... Root
-    target_link_libraries(${target} PUBLIC RIO)
-    # target_link_libraries(${target} PUBLIC ROOT::RIO)
+    target_link_libraries(${target} PUBLIC ROOT::RIO)
   endif()
 
   # Get the list of include directories that will be required to compile the

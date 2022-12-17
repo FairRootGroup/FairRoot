@@ -105,13 +105,13 @@ add_executable(pixel-sim runMQSim.cxx)
 target_link_libraries(pixel-sim PRIVATE
   ${exe_dependencies}
   FairRoot::Base # FairModule, FairPrimaryGenerator
-  FairRoot::Gen # FairBoxGenerator
+  FairRoot::Generators # FairBoxGenerator
   FairRoot::ParBase # FairParAsciiFileIo
   FairRoot::ExPassive # FairCave
-  Core # TSystem
-  MathCore # TRandom
+
+  ROOT::Core # TSystem
+  ROOT::MathCore # TRandom
 )
-target_link_directories(pixel-sim PRIVATE ${ROOT_LIBRARY_DIR})
 
 install(TARGETS pixel-sampler pixel-processor pixel-sink pixel-sampler-bin pixel-processor-bin pixel-sink-bin pixel-merger pixel-sim
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/pixelDetector/bin
@@ -120,19 +120,23 @@ install(TARGETS pixel-sampler pixel-processor pixel-sink pixel-sampler-bin pixel
 set(maxTestTime 100)
 
 if(DDS_VERSION VERSION_GREATER_EQUAL 3.5
-   AND FairMQ_VERSION VERSION_GREATER_EQUAL 1.4.23)
-  add_test(ex_MQ_pixel_simulation ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim.sh)
+   AND FairMQ_VERSION VERSION_GREATER_EQUAL 1.4.23
+   AND TARGET FairMQ::fairmq-dds-command-ui)
+  add_test(NAME ex_MQ_pixel_simulation
+           COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test-pixelSim.sh)
   set_tests_properties(ex_MQ_pixel_simulation PROPERTIES
-    DEPENDS ex_MQ_pixel_static
+    FIXTURES_REQUIRED fixtures.ex_MQ_pixel_static
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Shell script finished successfully"
 )
 endif()
 
-add_test(ex_MQ_pixel_static ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixel.sh --work-dir ${CMAKE_CURRENT_BINARY_DIR}/../ -p 3 --command static --force-kill true)
+add_test(NAME ex_MQ_pixel_static
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixel.sh --work-dir ${CMAKE_CURRENT_BINARY_DIR}/../ -p 3 --command static --force-kill true)
 set_tests_properties(ex_MQ_pixel_static PROPERTIES
-  DEPENDS ex_pixel_digi_to_bin_TGeant3
+  FIXTURES_REQUIRED fixtures.ex_pixel_digi_to_bin_${pixel_simulation_engine}
   TIMEOUT ${maxTestTime}
   RUN_SERIAL ON
   PASS_REGULAR_EXPRESSION "Shell script finished successfully"
+  FIXTURES_SETUP fixtures.ex_MQ_pixel_static
 )

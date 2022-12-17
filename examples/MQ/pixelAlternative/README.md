@@ -1,4 +1,4 @@
-# Move from root to FairMQ continued
+# Move from root to FairMQ continued {#ex_mq_pixel_alternative}
 
 This example bases on examples/MQ/pixelDetector.
 

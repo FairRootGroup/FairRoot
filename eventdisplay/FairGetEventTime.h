@@ -21,6 +21,11 @@
 class FairGetEventTime : public TObject
 {
   public:
+    FairGetEventTime() = default;
+    ~FairGetEventTime() override = default;
+    FairGetEventTime(const FairGetEventTime&) = delete;
+    FairGetEventTime& operator=(const FairGetEventTime&) = delete;
+
     static FairGetEventTime& Instance()
     {
         static FairGetEventTime instance;
@@ -39,16 +44,10 @@ class FairGetEventTime : public TObject
     std::vector<double> GetTimes() const { return fEventTime; }
 
   private:
-    FairGetEventTime() = default;
-    ~FairGetEventTime() = default;
-    FairGetEventTime(const FairGetEventTime&) = delete;
-    FairGetEventTime& operator=(const FairGetEventTime&) = delete;
-
-  private:
     std::vector<double> fEventTime;
     bool fRunOnce{true};
 
-    ClassDef(FairGetEventTime, 1);
+    ClassDefOverride(FairGetEventTime, 1);
 };
 
 #endif /*PndGetEventTimeTask_H_*/

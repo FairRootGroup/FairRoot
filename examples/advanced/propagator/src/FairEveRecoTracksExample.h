@@ -24,6 +24,7 @@
 
 class FairRKPropagator;
 class FairTutPropTrack;
+class TClonesArray;
 class TDatabasePDG;
 
 class FairEveRecoTracksExample : public FairEveTracks

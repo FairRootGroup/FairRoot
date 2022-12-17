@@ -88,13 +88,6 @@ void FairPrintFairLinks::PrintBranchNameList(TList* branches)
     LOG(info) << "\n";
 }
 
-void FairPrintFairLinks::SetParContainers()
-{
-    // Get Base Container
-    // FairRun* ana = FairRun::Instance();
-    // FairRuntimeDb* rtdb=ana->GetRuntimeDb();
-}
-
 void FairPrintFairLinks::Exec(Option_t*)
 {
     LOG(info) << "\n--------------------- Event " << FairRootManager::Instance()->GetEntryNr() << " at "

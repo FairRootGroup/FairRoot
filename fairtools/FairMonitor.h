@@ -29,6 +29,7 @@ class TTask;
 class FairMonitor : public TNamed
 {
   public:
+    ~FairMonitor() override;
     static FairMonitor* GetMonitor();
 
     void EnableMonitor(Bool_t tempBool = kTRUE, TString fileName = "")
@@ -63,8 +64,8 @@ class FairMonitor : public TNamed
 
     void SetCurrentTask(TTask* tTask) { fCurrentTask = tTask; }
 
-    virtual void Print(Option_t* option = "") const;
-    virtual void Draw(Option_t* option = "");
+    void Print(Option_t* option = "") const override;
+    void Draw(Option_t* option = "") override;
 
     void PrintTask(TString specString) const;
     void PrintTask(TTask* tempTask, Int_t taskLevel = 0) const;
@@ -77,7 +78,6 @@ class FairMonitor : public TNamed
   private:
     static FairMonitor* instance;
     FairMonitor();
-    ~FairMonitor();
     FairMonitor(const FairMonitor&);
     FairMonitor& operator=(const FairMonitor&);
 
@@ -113,7 +113,7 @@ class FairMonitor : public TNamed
     void GetTaskMap(TTask* tempTask);
     void AnalyzeObjectMap(TTask* tempTask);
 
-    ClassDef(FairMonitor, 0);
+    ClassDefOverride(FairMonitor, 0);
 };
 
 extern FairMonitor* gMonitor;

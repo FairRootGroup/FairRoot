@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -8,7 +8,7 @@
 /** FairConstField.h
  ** @author M.Al-Turany <m.al/turany@gsi.de>
  ** @since 30.01.2007
- ** @version1.0
+ ** @version 1.0
  ** A constant  magnetic field
  **/
 
@@ -49,9 +49,9 @@ class FairConstField : public FairField
     FairConstField(FairConstPar* fieldPar);
 
     /** Destructor **/
-    virtual ~FairConstField();
+    ~FairConstField() override;
 
-    void FillParContainer();
+    void FillParContainer() override;
 
     /** Set the field region
      ** @param xMin,xMax   x region of field (global coordinates)
@@ -65,12 +65,9 @@ class FairConstField : public FairField
      **/
     void SetField(Double_t bX, Double_t bY, Double_t bZ);
 
-    /** Get components of field at a given point
-     ** @param x,y,z   Point coordinates [cm]
-     **/
-    virtual Double_t GetBx(Double_t x, Double_t y, Double_t z);
-    virtual Double_t GetBy(Double_t x, Double_t y, Double_t z);
-    virtual Double_t GetBz(Double_t x, Double_t y, Double_t z);
+    Double_t GetBx(Double_t x, Double_t y, Double_t z) override;
+    Double_t GetBy(Double_t x, Double_t y, Double_t z) override;
+    Double_t GetBz(Double_t x, Double_t y, Double_t z) override;
 
     /** Accessors to field region **/
     Double_t GetXmin() const { return fXmin; }
@@ -86,9 +83,9 @@ class FairConstField : public FairField
     Double_t GetBz() const { return fBz; }
 
     /** Screen output **/
-    virtual void Print(Option_t*) const;
+    void Print(Option_t*) const override;
 
-    ClassDef(FairConstField, 1);
+    ClassDefOverride(FairConstField, 1);
 
   private:
     /** Limits of the field region **/

@@ -19,13 +19,12 @@
 #include "FairLogger.h"
 #include "FairMCEventHeader.h"
 #include "FairRootManager.h"
-#include "FairRuntimeDb.h"   // for FairRuntimeDb
 
 #include <TChain.h>
 #include <TChainElement.h>
 #include <TClass.h>
 #include <TCollection.h>   // for TIter
-#include <TF1.h>
+#include <TDirectory.h>    // for TDirectory::TContext
 #include <TFolder.h>
 #include <TList.h>
 #include <TObjArray.h>
@@ -40,27 +39,22 @@
 #include <cstdlib>     // exit
 #include <list>        // for _List_iterator, list, etc
 #include <map>         // multimap
-#include <set>
 #include <typeinfo>
 #include <vector>
 
-using std::set;
-
 FairFileSource::FairFileSource(TFile* f, const char* Title, UInt_t)
-    : FairSource()
+    : FairFileSourceBase()
     , fInputTitle(Title)
     , fRootFile(f)
     , fCurrentEntryNr(0)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
-    , fCheckInputBranches()
     , fInputLevel()
     , fRunIdInfoAll()
     , fInChain(0)
     , fInTree(0)
     , fListFolder(new TObjArray(16))
-    , fRtdb(FairRuntimeDb::instance())
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -79,30 +73,27 @@ FairFileSource::FairFileSource(TFile* f, const char* Title, UInt_t)
     , fBeamTime(-1.)
     , fGapTime(-1.)
     , fEventMeanTime(0.)
-    , fTimeProb(0)
     , fCheckFileLayout(kTRUE)
 {
-    if (fRootFile->IsZombie()) {
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
     LOG(debug) << "FairFileSource created------------";
 }
 
 FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, UInt_t)
-    : FairSource()
+    : FairFileSourceBase()
     , fInputTitle(Title)
     , fRootFile(0)
     , fCurrentEntryNr(0)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
-    , fCheckInputBranches()
     , fInputLevel()
     , fRunIdInfoAll()
     , fInChain(0)
     , fInTree(0)
     , fListFolder(new TObjArray(16))
-    , fRtdb(FairRuntimeDb::instance())
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -121,31 +112,28 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
     , fBeamTime(-1.)
     , fGapTime(-1.)
     , fEventMeanTime(0.)
-    , fTimeProb(0)
     , fCheckFileLayout(kTRUE)
 {
     fRootFile = TFile::Open(RootFileName->Data());
-    if (fRootFile->IsZombie()) {
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
     LOG(debug) << "FairFileSource created------------";
 }
 
 FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UInt_t)
-    : FairSource()
+    : FairFileSourceBase()
     , fInputTitle(Title)
     , fRootFile(0)
     , fCurrentEntryNr(0)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
-    , fCheckInputBranches()
     , fInputLevel()
     , fRunIdInfoAll()
     , fInChain(0)
     , fInTree(0)
     , fListFolder(new TObjArray(16))
-    , fRtdb(FairRuntimeDb::instance())
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -164,17 +152,16 @@ FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UI
     , fBeamTime(-1.)
     , fGapTime(-1.)
     , fEventMeanTime(0.)
-    , fTimeProb(0)
     , fCheckFileLayout(kTRUE)
 {
     fRootFile = TFile::Open(RootFileName.Data());
-    if (fRootFile->IsZombie()) {
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
     LOG(debug) << "FairFileSource created------------";
 }
 
-FairFileSource::~FairFileSource() {}
+FairFileSource::~FairFileSource() = default;
 
 Bool_t FairFileSource::Init()
 {
@@ -191,11 +178,11 @@ Bool_t FairFileSource::Init()
 
     // Get the folder structure from file which describes the input tree.
     // There are two different names possible, so check both.
-    fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get(FairRootManager::GetFolderName()));
+    fCbmroot = fRootFile->Get<TFolder>(FairRootManager::GetFolderName());
     if (!fCbmroot) {
-        fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get("cbmroot"));
+        fCbmroot = fRootFile->Get<TFolder>("cbmroot");
         if (!fCbmroot) {
-            fCbmroot = dynamic_cast<TFolder*>(fRootFile->Get("cbmout"));
+            fCbmroot = fRootFile->Get<TFolder>("cbmout");
             if (!fCbmroot) {
                 fCbmroot = gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
             } else {
@@ -216,15 +203,14 @@ Bool_t FairFileSource::Init()
     // branch structure. Without this check it is possible to add trees
     // with a different branch structure but the same tree name. ROOT
     // probably only checks if the name of the tree is the same.
-    TList* list = dynamic_cast<TList*>(fRootFile->Get("BranchList"));
+    auto list = fRootFile->Get<TList>("BranchList");
     if (list == 0) {
         LOG(fatal) << "No Branch list in input file";
     }
     TString chainName = fInputTitle;
-    TString ObjName;
     fInputLevel.push_back(chainName);
-    fCheckInputBranches[chainName] = new std::list<TString>;
     if (list) {
+        TString ObjName;
         TObjString* Obj = 0;
         LOG(debug) << "Enteries in the list " << list->GetEntries();
         for (Int_t i = 0; i < list->GetEntries(); i++) {
@@ -232,7 +218,7 @@ Bool_t FairFileSource::Init()
             if (Obj != 0) {
                 ObjName = Obj->GetString();
                 LOG(debug) << "Branch name " << ObjName.Data();
-                fCheckInputBranches[chainName]->push_back(ObjName.Data());
+                fCheckInputBranches[chainName].push_back(ObjName);
 
                 FairRootManager::Instance()->AddBranchToList(ObjName.Data());
             }
@@ -251,37 +237,36 @@ Bool_t FairFileSource::Init()
 
     // Add all additional input files to the input chain and do a
     // consitency check
-    for (auto fileName : fInputChainList) {
-        // Store global gFile pointer for safety reasons.
-        // Set gFile to old value at the end of the routine.R
-        TFile* temp = gFile;
+    {
+        TDirectory::TContext restorecwd{};
 
-        // Temporarily open the input file to extract information which
-        // is needed to bring the friend trees in the correct order
-        TFile* inputFile = TFile::Open(fileName);
-        if (inputFile->IsZombie()) {
-            LOG(fatal) << "Error opening the file " << fileName.Data()
-                       << " which should be added to the input chain or as friend chain";
-        }
-
-        if (fCheckFileLayout) {
-            // Check if the branchlist is the same as for the first input file.
-            Bool_t isOk = CompareBranchList(inputFile, chainName);
-            if (!isOk) {
-                LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName()
-                           << " and the file to be added " << fileName.Data() << " are different.";
-                return kFALSE;
+        for (auto fileName : fInputChainList) {
+            // Temporarily open the input file to extract information which
+            // is needed to bring the friend trees in the correct order
+            TFile* inputFile = TFile::Open(fileName);
+            if (inputFile->IsZombie()) {
+                LOG(fatal) << "Error opening the file " << fileName.Data()
+                           << " which should be added to the input chain or as friend chain";
             }
+
+            if (fCheckFileLayout) {
+                // Check if the branchlist is the same as for the first input file.
+                Bool_t isOk = CompareBranchList(inputFile, chainName);
+                if (!isOk) {
+                    LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName()
+                               << " and the file to be added " << fileName.Data() << " are different.";
+                    return kFALSE;
+                }
+            }
+
+            // Add the runid information for all files in the chain.
+            // GetRunIdInfo(inputFile->GetName(), chainName);
+            // Add the file to the input chain
+            fInChain->Add(fileName);
+
+            // Close the temporarly file
+            inputFile->Close();
         }
-
-        // Add the runid information for all files in the chain.
-        // GetRunIdInfo(inputFile->GetName(), chainName);
-        // Add the file to the input chain
-        fInChain->Add(fileName);
-
-        // Close the temporarly file and restore the gFile pointer.
-        inputFile->Close();
-        gFile = temp;
     }
     fNoOfEntries = fInChain->GetEntries();
 
@@ -303,7 +288,7 @@ Bool_t FairFileSource::Init()
 
     AddFriendsToChain();
 
-    TList* timebasedlist = dynamic_cast<TList*>(fRootFile->Get("TimeBasedBranchList"));
+    auto timebasedlist = fRootFile->Get<TList>("TimeBasedBranchList");
     if (timebasedlist == 0) {
         LOG(warn) << "No time based branch list in input file";
     } else {
@@ -336,15 +321,10 @@ Int_t FairFileSource::ReadEvent(UInt_t i)
 Bool_t FairFileSource::SpecifyRunId()
 {
     /**Read the first entry in Chain to fill the event header and get the RunID*/
-    if (fInChain->GetEntry(0))
-        return true;
-
-    return false;
+    return fInChain->GetEntry(0) != 0;
 }
 
 void FairFileSource::Close() { CloseInFile(); }
-
-void FairFileSource::Reset() {}
 
 void FairFileSource::AddFriend(TString fName) { fFriendFileList.push_back(fName); }
 
@@ -375,7 +355,7 @@ void FairFileSource::AddFriendsToChain()
     // TODO: print a warning if it was neccessary to remove a filname from the
     // list. This can be chacked by comparing the size of both list
 
-    TFile* temp = gFile;
+    TDirectory::TContext restorecwd{};
 
     Int_t friendType = 1;
     // Loop over all files which have been added as friends
@@ -416,7 +396,6 @@ void FairFileSource::AddFriendsToChain()
         TChain* chain = static_cast<TChain*>(fFriendTypeList[inputLevel]);
         chain->AddFile(fileName, 1234567890, FairRootManager::GetTreeName());
     }
-    gFile = temp;
 
     // Check if all friend chains have the same runids and the same
     // number of event numbers as the corresponding input chain
@@ -538,21 +517,20 @@ void FairFileSource::CheckFriendChains()
 
 void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
 {
-    TFile* temp = gFile;
+    TDirectory::TContext restorecwd{};
     TFile* f = TFile::Open(inputFile);
 
-    TFolder* added = nullptr;
     TString folderName1 = FairRootManager::GetFolderName();
     TString folderName = Form("/%s", folderName1.Data());
-    added = dynamic_cast<TFolder*>(f->Get(folderName1));
+    auto added = f->Get<TFolder>(folderName1);
     if (!added) {
         folderName = "/cbmout";
         folderName1 = "cbmout";
-        added = dynamic_cast<TFolder*>(f->Get("cbmout"));
+        added = f->Get<TFolder>("cbmout");
         if (!added) {
             folderName = "/cbmroot";
             folderName1 = "cbmroot";
-            added = dynamic_cast<TFolder*>(f->Get("cbmroot"));
+            added = f->Get<TFolder>("cbmroot");
             if (!added) {
                 LOG(fatal) << "Could not find folder cbmout nor cbmroot.";
                 exit(-1);
@@ -564,15 +542,14 @@ void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
     fListFolder->Add(added);
 
     /**Get The list of branches from the friend file and add it to the actual list*/
-    TList* list = dynamic_cast<TList*>(f->Get("BranchList"));
+    auto list = f->Get<TList>("BranchList");
     TString chainName = inputLevel;
     fInputLevel.push_back(chainName);
-    fCheckInputBranches[chainName] = new std::list<TString>;
     if (list) {
         TObjString* Obj = 0;
         for (Int_t i = 0; i < list->GetEntries(); i++) {
             Obj = dynamic_cast<TObjString*>(list->At(i));
-            fCheckInputBranches[chainName]->push_back(Obj->GetString().Data());
+            fCheckInputBranches[chainName].push_back(Obj->GetString());
             FairRootManager::Instance()->AddBranchToList(Obj->GetString().Data());
         }
     }
@@ -581,56 +558,6 @@ void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
     fFriendTypeList[inputLevel] = chain;
 
     f->Close();
-    gFile = temp;
-}
-
-Bool_t FairFileSource::CompareBranchList(TFile* fileHandle, TString inputLevel)
-{
-    // fill a set with the original branch structure
-    // This allows to use functions find and erase
-    std::set<TString> branches;
-    for (auto li : *(fCheckInputBranches[inputLevel])) {
-        branches.insert(li);
-    }
-
-    // To do so we have to loop over the branches in the file and to compare
-    // the branches in the file with the information stored in
-    // fCheckInputBranches["InputChain"]. If both lists are equal everything
-    // is okay
-
-    // Get The list of branches from the input file one by one and compare
-    // it to the reference list of branches which is defined for this tree.
-    // If a branch with the same name is found, this branch is removed from
-    // the list. If in the end no branch is left in the list everything is
-    // fine.
-    set<TString>::iterator iter1;
-    TList* list = dynamic_cast<TList*>(fileHandle->Get("BranchList"));
-    if (list) {
-        TObjString* Obj = 0;
-        for (Int_t i = 0; i < list->GetEntries(); i++) {
-            Obj = dynamic_cast<TObjString*>(list->At(i));
-            iter1 = branches.find(Obj->GetString().Data());
-            if (iter1 != branches.end()) {
-                branches.erase(iter1);
-            } else {
-                // Not found is an error because branch structure is
-                // different. It is impossible to add to tree with a
-                // different branch structure
-                return kFALSE;
-            }
-        }
-    }
-    // If the size of branches is !=0 after removing all branches also in the
-    // reference list, this is also a sign that both branch list are not the
-    // same
-    if (branches.size() != 0) {
-        LOG(info) << "Compare Branch List will return kFALSE. The list has " << branches.size() << " branches:";
-        for (auto branchName : branches)
-            LOG(info) << "  -> " << branchName;
-        return kFALSE;
-    }
-
-    return kTRUE;
 }
 
 Bool_t FairFileSource::ActivateObject(TObject** obj, const char* BrName)
@@ -682,15 +609,7 @@ Int_t FairFileSource::CheckMaxEventNo(Int_t EvtEnd)
 void FairFileSource::SetEventMeanTime(Double_t mean)
 {
     fEventMeanTime = mean;
-    /*
-    TString form="(1/";
-    form+= mean;
-    form+=")*exp(-x/";
-    form+=mean;
-    form+=")";
-    fTimeProb= new TF1("TimeProb.", form.Data(), 0., mean*10);
-    */
-    fTimeProb = new TF1("TimeProb", "(1/[0])*exp(-x/[0])", 0., mean * 10);
+    fTimeProb = std::make_unique<TF1>("TimeProb", "(1/[0])*exp(-x/[0])", 0., mean * 10);
     fTimeProb->SetParameter(0, mean);
     fTimeProb->GetRandom();
     fEventTimeInMCHeader = kFALSE;
@@ -698,6 +617,8 @@ void FairFileSource::SetEventMeanTime(Double_t mean)
 
 void FairFileSource::SetEventTimeInterval(Double_t min, Double_t max)
 {
+    // disable fTimeProb for the uniform distribution
+    fTimeProb.reset();
     fEventTimeMin = min;
     fEventTimeMax = max;
     fEventMeanTime = (fEventTimeMin + fEventTimeMax) / 2;
@@ -731,7 +652,7 @@ void FairFileSource::SetEventTime()
 Double_t FairFileSource::GetDeltaEventTime()
 {
     Double_t deltaTime = 0;
-    if (fTimeProb != 0) {
+    if (fTimeProb) {
         deltaTime = fTimeProb->GetRandom();
         LOG(debug) << "Time set via sampling method : " << deltaTime;
     } else {

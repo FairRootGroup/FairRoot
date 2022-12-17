@@ -54,7 +54,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
         tut_configdir = dir + "/common/gconfig";
     gSystem->Setenv("CONFIG_DIR", tut_configdir.Data());
 
-    auto run = std::unique_ptr<FairMQTransportDevice>(new FairMQTransportDevice());
+    auto run = std::make_unique<FairMQTransportDevice>();
     run->RunInPullMode(true);
     if (config.GetValue<std::string>("running-mode") == "rr") {
         LOG(info) << "Going to request data.";
@@ -65,9 +65,9 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 
     //  TString outputfilename = Form("outputfile_%d.root",(int)(getpid()));
     //  FairRootFileSink* sink = new FairRootFileSink(outputfilename);
-    FairOnlineSink* sink = new FairOnlineSink();
+    auto sink = std::make_unique<FairOnlineSink>();
     sink->SetMQRunDevice(run.get());
-    run->SetSink(sink);
+    run->SetSink(std::move(sink));
 
     run->SetParamUpdateChannelName(config.GetValue<std::string>("param-channel-name"));
 
@@ -85,7 +85,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 
     run->SetStoreTraj(false);
 
-    if ((config.GetValue<bool>("run-digi-tasks")) == true) {
+    if (config.GetValue<bool>("run-digi-tasks")) {
         // Attach tasks if needed
         TString digParFile = tutdir + "/param/pixel_digi.par";
         FairParAsciiFileIo* parIo1 = new FairParAsciiFileIo();

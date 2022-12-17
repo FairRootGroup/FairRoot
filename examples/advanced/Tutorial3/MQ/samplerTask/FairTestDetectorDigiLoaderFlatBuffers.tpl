@@ -12,8 +12,6 @@
 #include "FairTestDetectorPayloadDigi_generated.h"
 #include "flatbuffers/flatbuffers.h"
 
-using namespace TestDetectorFlat;
-
 template<>
 void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>::Exec(Option_t* /*opt*/)
 {
@@ -28,7 +26,7 @@ void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayl
             continue;
         }
 
-        DigiBuilder db(*builder);
+        TestDetectorFlat::DigiBuilder db(*builder);
         db.add_x(digi->GetX());                             // x:int
         db.add_y(digi->GetY());                             // y:int
         db.add_z(digi->GetZ());                             // z:int

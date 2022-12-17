@@ -1,15 +1,25 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void eventDisplay(TString mcEngine = "TGeant3")
+
+#include <TString.h>
+
+void eventDisplay(TString mcEngine = "TGeant3", bool alignDone = true)
 {
     //-----User Settings:-----------------------------------------------
-    TString InputFile = "testrun_" + mcEngine + ".root";
-    TString ParFile = "testparams_" + mcEngine + ".root";
+    TString InputFile = "data/testrun_";
+    TString ParFile = "data/testparams_";
+    if (alignDone) {
+        InputFile += "align_";
+        ParFile += "align_";
+    }
+    InputFile += mcEngine + ".root";
+    ParFile += mcEngine + ".root";
+
     TString OutFile = "tst.root";
     //------------------------------------------------------------------
 

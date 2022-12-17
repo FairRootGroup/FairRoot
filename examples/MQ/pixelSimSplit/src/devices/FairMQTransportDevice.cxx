@@ -36,8 +36,6 @@
 #include <iostream>
 #include <vector>
 
-using namespace std;
-
 FairMQTransportDevice::FairMQTransportDevice()
     : FairMQRunDevice()
     , fRunId(0)
@@ -58,7 +56,6 @@ FairMQTransportDevice::FairMQTransportDevice()
     , fTaskArray(nullptr)
     , fFirstParameter(nullptr)
     , fSecondParameter(nullptr)
-    , fSink(nullptr)
     , fMCSplitEventHeader(nullptr)
 {}
 
@@ -76,7 +73,7 @@ void FairMQTransportDevice::InitTask()
     fRunSim->SetMCEventHeader(fMCSplitEventHeader);
     fRunSim->SetRunId(fRunSim->GetMCEventHeader()->GetRunID());
 
-    fRunSim->SetSink(fSink);
+    SetupRunSink(*fRunSim);
 
     if (fFirstParameter || fSecondParameter) {
         FairRuntimeDb* rtdb = fRunSim->GetRuntimeDb();
@@ -86,7 +83,7 @@ void FairMQTransportDevice::InitTask()
             rtdb->setSecondInput(fSecondParameter);
     }
 
-    fRunSim->SetName(fTransportName.data());
+    fRunSim->SetName(fTransportName.c_str());
 
     if (fUserConfig.Length() > 0)
         fRunSim->SetUserConfig(fUserConfig);
@@ -94,7 +91,7 @@ void FairMQTransportDevice::InitTask()
         fRunSim->SetUserCuts(fUserCuts);
 
     // -----   Create media   -------------------------------------------------
-    fRunSim->SetMaterials(fMaterialsFile.data());
+    fRunSim->SetMaterials(fMaterialsFile.c_str());
 
     // -----   Magnetic field   -------------------------------------------
     if (fMagneticField)
@@ -147,17 +144,17 @@ void FairMQTransportDevice::InitializeRun()
     // -----      via the fUpdateChannelName   --------------------------------
     // -----      ask the fParamMQServer   ------------------------------------
     // -----      receive the run number and sampler id   ---------------------
-    std::string* askForRunNumber = new string("ReportSimDevice");
+    std::string* askForRunNumber = new std::string("ReportSimDevice");
     auto req(NewMessage(const_cast<char*>(askForRunNumber->c_str()),
                         askForRunNumber->length(),
-                        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                        [](void* /*data*/, void* object) { delete static_cast<std::string*>(object); },
                         askForRunNumber));
     auto rep(NewMessage());
 
     if (Send(req, fUpdateChannelName) > 0) {
         if (Receive(rep, fUpdateChannelName) > 0) {
-            std::string repString = string(static_cast<char*>(rep->GetData()), rep->GetSize());
-            LOG(info) << " -> " << repString.data();
+            std::string repString{static_cast<char*>(rep->GetData()), rep->GetSize()};
+            LOG(info) << " -> " << repString;
             fRunId = stoi(repString);
             fMCSplitEventHeader->SetRunID(fRunId);
             repString = repString.substr(repString.find_first_of('_') + 1, repString.length());
@@ -204,10 +201,10 @@ bool FairMQTransportDevice::ConditionalRun()
     if (!fRunConditional)
         return false;
 
-    std::string* requestString = new string("RequestData");
+    std::string* requestString = new std::string("RequestData");
     auto req(NewMessage(const_cast<char*>(requestString->c_str()),
                         requestString->length(),
-                        [](void* /*data*/, void* object) { delete static_cast<string*>(object); },
+                        [](void* /*data*/, void* object) { delete static_cast<std::string*>(object); },
                         requestString));
     fair::mq::Parts parts;
     //    FairMQMessagePtr rep(NewMessage());
@@ -264,7 +261,7 @@ void FairMQTransportDevice::UpdateParameterServer()
     while ((cont = static_cast<FairParSet*>(next()))) {
         std::string ridString = std::string("RUNID") + std::to_string(fRunSim->GetRunId()) + std::string("RUNID")
                                 + std::string(cont->getDescription());
-        cont->setDescription(ridString.data());
+        cont->setDescription(ridString.c_str());
         SendObject(cont, fUpdateChannelName);
     }
 

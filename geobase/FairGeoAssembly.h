@@ -22,13 +22,13 @@ class FairGeoAssembly : public FairGeoBasicShape
   public:
     FairGeoAssembly();
     ~FairGeoAssembly();
-    TArrayD* calcVoluParam(FairGeoVolume*);
-    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&);
-    Int_t readPoints(std::fstream* pFile, FairGeoVolume* volu);
-    Bool_t writePoints(std::fstream*, FairGeoVolume*);
-    void printPoints(FairGeoVolume* volu);
+    TArrayD* calcVoluParam(FairGeoVolume*) override;
+    void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&) override;
+    Int_t readPoints(std::fstream* pFile, FairGeoVolume* volu) override;
+    Bool_t writePoints(std::fstream*, FairGeoVolume*) override;
+    void printPoints(FairGeoVolume* volu) override;
 
-    ClassDef(FairGeoAssembly, 0);   // class for geometry shape ASSEMBLY
+    ClassDefOverride(FairGeoAssembly, 0);   // class for geometry shape ASSEMBLY
 };
 
 #endif /* !FAIRGEOASSEMBLY_H */

@@ -69,7 +69,6 @@ else( WIN32 AND NOT CYGWIN AND NOT MSYS )
   if( UNIX OR MSYS )
     find_program( GSL_CONFIG_EXECUTABLE gsl-config
       ${GSL_DIR}/bin
-      NO_DEFAULT_PATH
     )
 
     if( GSL_CONFIG_EXECUTABLE )

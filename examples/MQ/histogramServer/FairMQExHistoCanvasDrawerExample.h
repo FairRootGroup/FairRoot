@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -19,11 +19,11 @@ class FairMQExHistoCanvasDrawerExample : public FairMQExHistoCanvasDrawer
 {
   public:
     FairMQExHistoCanvasDrawerExample();
-    virtual ~FairMQExHistoCanvasDrawerExample();
+    ~FairMQExHistoCanvasDrawerExample() override;
 
-    void CreateCanvases(THttpServer&);
+    void CreateCanvases(THttpServer&) override;
 
-    void DrawHistograms(TObjArray&);
+    void DrawHistograms(TObjArray&) override;
 
   private:
     FairMQExHistoCanvasDrawerExample(const FairMQExHistoCanvasDrawerExample&);

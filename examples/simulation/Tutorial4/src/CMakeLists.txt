@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -52,31 +52,28 @@ target_include_directories(${target} PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
-)
-
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
-  FairRoot::FairTools # FairLogger
+  FairRoot::Tools # FairLogger
   FairRoot::ExMCStack
   FairRoot::GeoBase
   FairRoot::ParBase
-  FairRoot::Gen
+  FairRoot::Generators
   $<$<BOOL:${ROOT_HAS_OPENGL}>:FairRoot::EventDisplay>
 
-  Core
-  Physics
-  Geom
+  ROOT::Core
+  ROOT::Physics
+  ROOT::Geom
   ${VMCLIB}
-  MathCore
-  Hist
-  $<$<BOOL:${ROOT_HAS_OPENGL}>:Eve>
+  ROOT::MathCore
+  ROOT::Hist
+  $<$<BOOL:${ROOT_HAS_OPENGL}>:ROOT::Eve>
 )
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF Tutorial4LinkDef.h
+  EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})

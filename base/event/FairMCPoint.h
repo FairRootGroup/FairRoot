@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -17,13 +17,6 @@
 
 #include <Rtypes.h>     // for Double_t, Double32_t, Int_t, etc
 #include <TVector3.h>   // for TVector3
-
-namespace boost {
-namespace serialization {
-class access;
-}
-}   // namespace boost
-#include <boost/serialization/base_object.hpp>
 
 class FairMCPoint : public FairMultiLinkedData_Interface
 {
@@ -86,27 +79,7 @@ class FairMCPoint : public FairMultiLinkedData_Interface
     /** Output to screen **/
     virtual void Print(const Option_t* opt = 0) const;
 
-    template<class Archive>
-    void serialize(Archive& ar, const unsigned int)
-    {
-        // ar & boost::serialization::base_object<FairMultiLinkedData>(*this);
-        ar& fTrackID;
-        ar& fEventId;
-        ar& fDetectorID;
-        ar& fX;
-        ar& fY;
-        ar& fZ;
-        ar& fPx;
-        ar& fPy;
-        ar& fPz;
-        ar& fTime;
-        ar& fLength;
-        ar& fELoss;
-    }
-
   protected:
-    friend class boost::serialization::access;
-
     Int_t fTrackID;             ///< Track index
     UInt_t fEventId;            ///< MC Event id
     Double32_t fPx, fPy, fPz;   ///< Momentum components [GeV]
@@ -140,4 +113,4 @@ inline void FairMCPoint::SetPosition(const TVector3& pos)
     fZ = pos.Z();
 }
 
-#endif
+#endif   // FAIRMCPOINT_H

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -21,22 +21,19 @@ class FairTestDetectorHitProducerSmearing : public FairTask
     FairTestDetectorHitProducerSmearing();
 
     /** Destructor **/
-    ~FairTestDetectorHitProducerSmearing();
+    ~FairTestDetectorHitProducerSmearing() override;
 
     /** Initiliazation of task at the beginning of a run **/
-    virtual InitStatus Init();
+    InitStatus Init() override;
 
     /** ReInitiliazation of task when the runID changes **/
-    virtual InitStatus ReInit();
+    InitStatus ReInit() override;
 
     /** Executed for each event. **/
-    virtual void Exec(Option_t* opt);
-
-    /** Load the parameter container from the runtime database **/
-    virtual void SetParContainers();
+    void Exec(Option_t* opt) override;
 
     /** Finish task called at the end of the run **/
-    virtual void Finish();
+    void Finish() override;
 
   private:
     /** Input array from previous already existing data level **/
@@ -48,7 +45,7 @@ class FairTestDetectorHitProducerSmearing : public FairTask
     FairTestDetectorHitProducerSmearing(const FairTestDetectorHitProducerSmearing&);
     FairTestDetectorHitProducerSmearing operator=(const FairTestDetectorHitProducerSmearing&);
 
-    ClassDef(FairTestDetectorHitProducerSmearing, 1);
+    ClassDefOverride(FairTestDetectorHitProducerSmearing, 1);
 };
 
 #endif /* FAIRTESTDETECTORHITPRODUCERSMEARING_H_ */

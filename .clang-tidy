@@ -1,0 +1,16 @@
+---
+HeaderFilterRegex: '.*'
+# disable clang-analyzer-core.UndefinedBinaryOperatorResult
+#   ROOT throws lots of them in their headers
+# enable cppcoreguidelines-virtual-class-destructor
+#   Avoid undefined behaviour
+# enable google-build-using-namespace
+#   "using namespace" imports a changing amount of symbols, avoid it
+# improve readability:
+#   readability-simplify-boolean-expr
+Checks: >-
+  -clang-analyzer-core.UndefinedBinaryOperatorResult,
+  cppcoreguidelines-virtual-class-destructor,
+  modernize-make-unique,
+  google-build-using-namespace,
+  readability-simplify-boolean-expr

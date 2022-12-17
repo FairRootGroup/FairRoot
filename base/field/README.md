@@ -1,7 +1,0 @@
-field
-========
-
-The `FairField` base class allows implementation of the experiment
-specific magnetic field.
-
-The propagation through the magnetic field may be performed by the `FairRKPropagator`.

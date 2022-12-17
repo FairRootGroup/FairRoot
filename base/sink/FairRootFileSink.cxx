@@ -46,7 +46,7 @@ FairRootFileSink::FairRootFileSink(TFile* f, const char* Title)
     , fIsInitialized(kFALSE)
     , fFileHeader(0)
 {
-    if (fRootFile->IsZombie()) {
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
     LOG(debug) << "FairRootFileSink created------------";
@@ -63,7 +63,7 @@ FairRootFileSink::FairRootFileSink(const TString* RootFileName, const char* Titl
     , fFileHeader(0)
 {
     fRootFile = TFile::Open(RootFileName->Data(), "recreate");
-    if (fRootFile->IsZombie()) {
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Output file";
     }
     LOG(debug) << "FairRootFileSink created------------";
@@ -80,8 +80,8 @@ FairRootFileSink::FairRootFileSink(const TString RootFileName, const char* Title
     , fFileHeader(0)
 {
     fRootFile = TFile::Open(RootFileName.Data(), "recreate");
-    if (fRootFile->IsZombie()) {
-        LOG(fatal) << "Error opening the Input file";
+    if ((!fRootFile) || fRootFile->IsZombie()) {
+        LOG(fatal) << "Error opening file " << RootFileName;
     }
     LOG(debug) << "FairRootFileSink created------------";
 }
@@ -248,6 +248,11 @@ void FairRootFileSink::RegisterImpl(const char* /* name */, const char* folderNa
 
 void FairRootFileSink::RegisterAny(const char* brname, const std::type_info& oi, const std::type_info& pi, void* obj)
 {
+    if (fPersistentBranchesDone) {
+        LOG(warning) << "FairRootFileSink::RegisterAny called for branch \"" << brname
+                     << "\" after FairRootFileSink::CreatePersistentBranchesAny has already completed. "
+                        "The branch will not be registered.";
+    }
     fPersistentBranchesMap[brname] = std::unique_ptr<TypeAddressPair const>(new TypeAddressPair(oi, pi, obj));
 }
 
@@ -303,6 +308,7 @@ bool FairRootFileSink::CreatePersistentBranchesAny()
         LOG(info) << "Creating branch for " << iter.first.c_str() << " with address " << obj;
         fOutTree->Branch(iter.first.c_str(), tname.c_str(), obj);
     }
+    fPersistentBranchesDone = true;
     return true;
 }
 
@@ -312,11 +318,7 @@ void FairRootFileSink::WriteObject(TObject* f, const char* name, Int_t option)
     f->Write(name, option);
 }
 
-void FairRootFileSink::WriteGeometry()
-{
-    fRootFile->cd();
-    gGeoManager->Write();
-}
+void FairRootFileSink::WriteGeometry() { fRootFile->WriteTObject(gGeoManager); }
 
 void FairRootFileSink::Fill()
 {
@@ -342,8 +344,7 @@ Int_t FairRootFileSink::Write(const char*, Int_t, Int_t)
         fRootFile = fOutTree->GetCurrentFile();
         FairMonitor::GetMonitor()->StoreHistograms(fRootFile);
         LOG(debug) << "FairRootFileSink::Write to file: " << fRootFile->GetName();
-        fRootFile->cd();
-        fOutTree->Write();
+        fRootFile->WriteTObject(fOutTree);
     } else {
         LOG(info) << "No Output Tree";
     }

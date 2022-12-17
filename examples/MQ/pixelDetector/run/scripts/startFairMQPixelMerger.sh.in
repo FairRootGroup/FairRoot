@@ -33,7 +33,7 @@ done
 
 ########################### Define some variables
 # ASCII and ROOT parameter files for the processor device
-ROOTPARAM="@pixel_file_dir@/macros/pixel_TGeant3.params.root"
+ROOTPARAM="@pixel_file_dir@/macros/pixel_@pixel_simulation_engine@.params.root"
 ASCIIPARAM="@pixel_file_dir@/param/pixel_digi.par"
 
 # input file and branch for the sampler device
@@ -53,7 +53,7 @@ INPUTBRANCH="PixelDigis"
 FAIRTASKNAME="--task-name PixelFindHits"
 
 # output file for sink
-OUTPUTFILE="@pixel_file_dir@/macros/MQ.pixel_TGeant3.hitsFromBinary.root"
+OUTPUTFILE="@pixel_file_dir@/macros/MQ.pixel_@pixel_simulation_engine@.hitsFromBinary.root"
 OUTPUTCLASS="TClonesArray(PixelHit)"
 OUTPUTBRANCH="PixelHits"
 

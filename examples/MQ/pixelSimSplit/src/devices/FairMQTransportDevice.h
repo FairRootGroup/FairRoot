@@ -21,6 +21,7 @@
 #include <Rtypes.h>
 #include <TString.h>
 #include <cstdint>
+#include <memory>
 #include <string>
 
 class FairMCSplitEventHeader;
@@ -28,7 +29,6 @@ class FairRunSim;
 class FairField;
 class FairParIo;
 class TObjArray;
-class FairSink;
 class FairMCApplication;
 class FairGenericStack;
 class TVirtualMC;
@@ -37,7 +37,7 @@ class FairMQTransportDevice : public FairMQRunDevice
 {
   public:
     FairMQTransportDevice();
-    virtual ~FairMQTransportDevice();
+    ~FairMQTransportDevice() override;
 
     // ------ FairRunSim setters ------
     void SetNofEvents(int64_t nofev) { fNofEvents = nofev; };
@@ -51,7 +51,6 @@ class FairMQTransportDevice : public FairMQRunDevice
     void SetSecondParameter(FairParIo* par) { fSecondParameter = par; };
     void SetUserConfig(const TString& Config) { fUserConfig = Config; }
     void SetUserCuts(const TString& Cuts) { fUserCuts = Cuts; }
-    void SetSink(FairSink* sink) { fSink = sink; }
     // ------ ---------- -------- ------
 
     void InitializeRun();
@@ -64,11 +63,11 @@ class FairMQTransportDevice : public FairMQRunDevice
   protected:
     bool TransportData(fair::mq::Parts&, int);
     //  bool TransportData(fair::mq::MessagePtr&, int);
-    virtual void Init();
-    virtual void InitTask();
-    virtual void PreRun();
-    virtual void PostRun();
-    virtual bool ConditionalRun();
+    void Init() override;
+    void InitTask() override;
+    void PreRun() override;
+    void PostRun() override;
+    bool ConditionalRun() override;
 
   private:
     UInt_t fRunId;
@@ -95,7 +94,6 @@ class FairMQTransportDevice : public FairMQRunDevice
     FairParIo* fSecondParameter;   // second input (used if not found in first input)
     TString fUserConfig;           //!                  /** Macro for geant configuration*/
     TString fUserCuts;             //!                  /** Macro for geant cuts*/
-    FairSink* fSink;
     // ------ ---------- -------- ------
 
     FairMCSplitEventHeader* fMCSplitEventHeader;

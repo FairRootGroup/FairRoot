@@ -27,8 +27,6 @@
 #include <fairlogger/Logger.h>
 #include <utility>   // move
 
-using namespace std;
-
 FairMQPixelSamplerBin::FairMQPixelSamplerBin()
     : FairMQDevice()
     , fOutputChannelName("data-out")
@@ -79,7 +77,7 @@ void FairMQPixelSamplerBin::PreRun()
 {
     LOG(info) << "FairMQPixelSampler::PreRun() started!";
 
-    fAckListener = thread(&FairMQPixelSamplerBin::ListenForAcks, this);
+    fAckListener = std::thread(&FairMQPixelSamplerBin::ListenForAcks, this);
 }
 
 bool FairMQPixelSamplerBin::ConditionalRun()

@@ -59,7 +59,7 @@ class FairWriteoutBuffer : public TObject
         , fVerbose(0)
         , fLogger(FairLogger::GetLogger()){};
     FairWriteoutBuffer(TString branchName, TString className, TString folderName, Bool_t persistance);
-    virtual ~FairWriteoutBuffer(){};
+    ~FairWriteoutBuffer() override {}
 
     virtual void SaveDataToTree(Bool_t val = kTRUE)
     {
@@ -143,7 +143,7 @@ class FairWriteoutBuffer : public TObject
     FairWriteoutBuffer(const FairWriteoutBuffer&);
     FairWriteoutBuffer& operator=(const FairWriteoutBuffer&);
 
-    ClassDef(FairWriteoutBuffer, 1);
+    ClassDefOverride(FairWriteoutBuffer, 1);
 };
 
 #endif /* FairWriteoutBuffer_H_ */

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -8,7 +8,6 @@
 
 #if !defined(__CLING__) || defined(__ROOTCLING__)
 #include <iostream>
-using namespace std;
 #include "FairBoxGenerator.h"
 #include "FairCave.h"
 #include "FairParRootFileIo.h"
@@ -21,6 +20,9 @@ using namespace std;
 
 #include <TRandom3.h>
 #include <TStopwatch.h>
+
+using std::cout;
+using std::endl;
 #endif
 
 void run_tutorial1_main(const FairSimConfig& config);
@@ -77,7 +79,7 @@ void run_tutorial1_main(const FairSimConfig& config)
     FairRunSim run;
     run.SetName(config.GetEngine());              // Transport engine
     run.SetIsMT(config.IsMultiThreaded());        // Multi-threading mode (Geant4 only)
-    run.SetSink(new FairRootFileSink(outFile));   // Output file
+    run.SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run.GetRuntimeDb();
     // ------------------------------------------------------------------------
 

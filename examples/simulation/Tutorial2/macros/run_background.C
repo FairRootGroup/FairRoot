@@ -1,7 +1,11 @@
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+#include <memory>
+
 void run_background(Int_t nEvents = 130)
 {
     TString dir = getenv("VMCWORKDIR");
-    TString tutdir = dir + "/simulation/Tutorial2";
 
     TString tut_geomdir = dir + "/common/geometry";
     gSystem->Setenv("GEOMPATH", tut_geomdir.Data());
@@ -48,9 +52,9 @@ void run_background(Int_t nEvents = 130)
     // ------------------------------------------------------------------------
 
     // -----   Create simulation run   ----------------------------------------
-    FairRunSim* run = new FairRunSim();
-    run->SetName("TGeant3");                       // Transport engine
-    run->SetSink(new FairRootFileSink(outFile));   // Output file
+    auto run = std::make_unique<FairRunSim>();
+    run->SetName("TGeant4");                       // Transport engine
+    run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -44,48 +44,44 @@ set(sources
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
 add_library(${target} SHARED ${sources} ${headers})
-add_library(FairRoot::${target} ALIAS ${target})
-set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
+fairroot_library_settings(${target})
 
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/tracks
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/gui
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/datasource
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/tracks>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/gui>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/datasource>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 
   # TODO: DELETE ME ONCE USING root targets
   ${ROOT_INCLUDE_DIR}
 )
 
-target_link_directories(${target} PUBLIC
-  ${ROOT_LIBRARY_DIR}
-)
-
 target_link_libraries(${target} PUBLIC
-  FairRoot::FairTools
+  FairRoot::Tools
   FairRoot::Base # FairRootManager, FairRunAna, FairTSBufferFunctional, FairTimeStamp, FairEventManager
 
-  Core
-  EG          # TDatabasePDG
-  Eve         # TEveBoxSet
-  Ged         # TGedFrame
-  Geom        # TGeoManager, TGeoNode, TGeoVolume
-  GeomPainter # TGeoTrack
-  Gui         # TGFrame, TGNumberEntry, TGWindow
-  MathCore    # TMathBase
-  Physics     # TVector3
-  RGL         # TGLViewer, TGLCameraOverlay, TGLClip, TGLLightSet
-  Tree        # TChain
-  RIO
-  XMLIO       # TXMLEngine
-  XMLParser   # TXMLNode, TXMLAttr, TDOMParser
+  ROOT::Core
+  ROOT::EG          # TDatabasePDG
+  ROOT::Eve         # TEveBoxSet
+  ROOT::Ged         # TGedFrame
+  ROOT::Geom        # TGeoManager, TGeoNode, TGeoVolume
+  ROOT::GeomPainter # TGeoTrack
+  ROOT::Gui         # TGFrame, TGNumberEntry, TGWindow
+  ROOT::MathCore    # TMathBase
+  ROOT::Physics     # TVector3
+  ROOT::RGL         # TGLViewer, TGLCameraOverlay, TGLClip, TGLLightSet
+  ROOT::Tree        # TChain
+  ROOT::RIO
+  ROOT::XMLIO       # TXMLEngine
+  ROOT::XMLParser   # TXMLNode, TXMLAttr, TDOMParser
 )
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
   LINKDEF EventDisplayLinkDef.h
+  EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
-install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+fairroot_install_exported(TARGETS ${target})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

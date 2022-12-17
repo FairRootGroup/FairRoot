@@ -18,5 +18,5 @@ void addCustomOptions(bpo::options_description& /*options*/) {}
 
 std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions&)
 {
-    return std::unique_ptr<FairMQPixelMerger>(new FairMQPixelMerger());
+    return std::make_unique<FairMQPixelMerger>();
 }
