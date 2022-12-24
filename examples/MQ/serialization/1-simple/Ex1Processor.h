@@ -21,7 +21,8 @@
 class Ex1Processor : public fair::mq::Device
 {
   public:
-    Ex1Processor() {}
+    Ex1Processor() = default;
+    ~Ex1Processor() override = default;
 
     void Run() override
     {
@@ -35,8 +36,11 @@ class Ex1Processor : public fair::mq::Device
                 receivedMsgs++;
 
                 // Deserialize
-                std::unique_ptr<TClonesArray> digis(nullptr);
-                RootSerializer().Deserialize(*msgIn, digis);
+                auto digis = RootSerializer().DeserializeTo<TClonesArray>(*msgIn);
+                if (!digis) {
+                    LOG(warn) << "Deserialization FAILED, skipping";
+                    continue;
+                }
 
                 // Compute
                 TClonesArray hits = FindHits(*digis);
@@ -54,22 +58,21 @@ class Ex1Processor : public fair::mq::Device
         LOG(info) << "Received " << receivedMsgs << " and sent " << sentMsgs << " messages!";
     }
 
+  private:
     // do some random dummy task
     TClonesArray FindHits(const TClonesArray& digis)
     {
         TClonesArray hits("MyHit");
+        const TVector3 dpos(1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12));
+        const Int_t fDetID = 0;
+        const Int_t fMCIndex = 0;
 
         for (int i = 0; i < digis.GetEntriesFast(); i++) {
-            TVector3 pos;
-            TVector3 dpos;
             // Double_t timestamp = 0;
             // Double_t timestampErr = 0;
-            Int_t fDetID = 0;
-            Int_t fMCIndex = 0;
-            MyDigi* digi = static_cast<MyDigi*>(digis.At(i));
-            pos.SetXYZ(digi->GetX() + 0.5, digi->GetY() + 0.5, digi->GetZ() + 0.5);
-            dpos.SetXYZ(1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12));
-            MyHit* hit = new ((hits)[i]) MyHit(fDetID, fMCIndex, pos, dpos);
+            auto digi = static_cast<MyDigi const*>(digis.At(i));
+            const TVector3 pos(digi->GetX() + 0.5, digi->GetY() + 0.5, digi->GetZ() + 0.5);
+            auto hit = new ((hits)[i]) MyHit(fDetID, fMCIndex, pos, dpos);
             hit->SetTimeStamp(digi->GetTimeStamp());
             hit->SetTimeStampError(digi->GetTimeStampError());
         }
