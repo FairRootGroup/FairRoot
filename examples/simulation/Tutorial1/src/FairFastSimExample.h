@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -29,9 +29,6 @@ class FairFastSimExample : public FairFastSimDetector
 
     /**       destructor     */
     virtual ~FairFastSimExample();
-
-    /**      Initialization of the detector is done here    */
-    virtual void Initialize();
 
     /**       Registers the produced collections in FAIRRootManager.     */
     virtual void Register();

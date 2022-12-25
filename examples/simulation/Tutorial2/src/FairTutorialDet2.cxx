@@ -70,15 +70,6 @@ FairTutorialDet2::~FairTutorialDet2()
     }
 }
 
-void FairTutorialDet2::Initialize()
-{
-    FairDetector::Initialize();
-    /*
-  FairRuntimeDb* rtdb= FairRun::Instance()->GetRuntimeDb();
-  FairTutorialDet2GeoPar* par=(FairTutorialDet2GeoPar*)(rtdb->getContainer("FairTutorialDet2GeoPar"));
-*/
-}
-
 Bool_t FairTutorialDet2::ProcessHits(FairVolume* vol)
 {
     /** This method is called from the MC stepping */

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -24,8 +24,6 @@ class FairFastSimDetector : public FairDetector
     FairFastSimDetector(const char* name, Int_t DetId = 0);
 
     ~FairFastSimDetector() override;
-
-    void Initialize() override = 0;
 
     Bool_t ProcessHits(FairVolume* vol = 0) override final;
 

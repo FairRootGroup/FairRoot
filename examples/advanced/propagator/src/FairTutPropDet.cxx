@@ -62,8 +62,6 @@ FairTutPropDet::~FairTutPropDet()
     }
 }
 
-void FairTutPropDet::Initialize() { FairDetector::Initialize(); }
-
 Bool_t FairTutPropDet::ProcessHits(FairVolume* vol)
 {
 
