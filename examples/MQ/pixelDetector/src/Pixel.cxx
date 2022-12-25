@@ -73,8 +73,6 @@ Pixel::~Pixel()
     }
 }
 
-void Pixel::Initialize() { FairDetector::Initialize(); }
-
 Bool_t Pixel::ProcessHits(FairVolume* vol)
 {
     /** This method is called from the MC stepping */
