@@ -12,8 +12,12 @@ HeaderFilterRegex: '.*'
 #   readability-simplify-boolean-expr
 Checks: >-
   -clang-analyzer-core.UndefinedBinaryOperatorResult,
-  bugprone-copy-constructor-init,
-  bugprone-sizeof-expression,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-narrowing-conversions,
+  -bugprone-virtual-near-miss,
+  -bugprone-unhandled-self-assignment,
+  -bugprone-reserved-identifier,
   cppcoreguidelines-virtual-class-destructor,
   modernize-make-unique,
   google-build-using-namespace,
