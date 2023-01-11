@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2019-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2019-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -21,11 +21,7 @@ FairTutPropContFact::FairTutPropContFact()
     : FairContFact("FairTutPropContFact", "Factory for parameter containers in libFairTutProp")
 {
     /** Constructor (called when the library is loaded) */
-    setAllContainers();
-}
 
-void FairTutPropContFact::setAllContainers()
-{
     /** Creates the Container objects with all accepted
         contexts and adds them to
         the list of containers for the FairTutProp library.

@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -20,11 +20,7 @@ FairTutorialDet2ContFact::FairTutorialDet2ContFact()
     : FairContFact("FairTutorialDet2ContFact", "Factory for parameter containers in libTutorial1")
 {
     /** Constructor (called when the library is loaded) */
-    setAllContainers();
-}
 
-void FairTutorialDet2ContFact::setAllContainers()
-{
     /** Creates the Container objects with all accepted
       contexts and adds them to
       the list of containers for the Tutorial1 library.

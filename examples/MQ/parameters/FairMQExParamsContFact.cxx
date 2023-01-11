@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -16,11 +16,6 @@ static FairMQExParamsContFact gFairMQExParamsContFact;
 
 FairMQExParamsContFact::FairMQExParamsContFact()
     : FairContFact("FairMQExParamsContFact", "Factory for parameter containers in FairMQ Example 7")
-{
-    setAllContainers();
-}
-
-void FairMQExParamsContFact::setAllContainers()
 {
     FairContainer* container =
         new FairContainer("FairMQExParamsParOne", "FairMQExParamsParOne Parameters", "TestDefaultContext");

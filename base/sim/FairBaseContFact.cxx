@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -31,11 +31,7 @@ FairBaseContFact::FairBaseContFact()
     : FairContFact("FairBaseContFact", "Factory for parameter containers in libSts")
 {
     // Constructor (called when the library is loaded)
-    setAllContainers();
-}
 
-void FairBaseContFact::setAllContainers()
-{
     /** Creates the Container objects with all accepted contexts and adds them to
      *  the list of containers for the base library.*/
     FairContainer* pTest = new FairContainer("FairBaseParSet", "class for parameter io", "DefaultContext");

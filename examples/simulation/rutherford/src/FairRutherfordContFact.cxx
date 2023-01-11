@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -23,11 +23,7 @@ FairRutherfordContFact::FairRutherfordContFact()
     : FairContFact("FairRutherfordContFact", "Factory for parameter containers in libFairRutherford")
 {
     /** Constructor (called when the library is loaded) */
-    setAllContainers();
-}
 
-void FairRutherfordContFact::setAllContainers()
-{
     /** Creates the Container objects with all accepted
       contexts and adds them to
       the list of containers for the FairRutherford library.
