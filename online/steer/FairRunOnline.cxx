@@ -43,7 +43,10 @@ using std::endl;
 
 FairRunOnline* FairRunOnline::fgRinstance = nullptr;
 
-FairRunOnline* FairRunOnline::Instance() { return fgRinstance; }
+FairRunOnline* FairRunOnline::Instance()
+{
+    return fgRinstance;
+}
 
 FairRunOnline::FairRunOnline()
     : FairRun()
@@ -96,7 +99,10 @@ FairRunOnline::~FairRunOnline()
 
 Bool_t gIsInterrupted;
 
-void handler_ctrlc(int) { gIsInterrupted = kTRUE; }
+void handler_ctrlc(int)
+{
+    gIsInterrupted = kTRUE;
+}
 
 void FairRunOnline::Init()
 {
@@ -189,7 +195,10 @@ void FairRunOnline::Init()
     fRootManager->Register("EventHeader.", "Event", fEvtHeader, (nullptr != GetSink()));
     fEvtHeader->SetRunId(fRunId);
 
-    GetSource()->InitUnpackers();
+    if (!GetSource()->InitUnpackers()) {
+        LOG(fatal) << "FairRunOnline->Init() InitUnpackers() failed!";
+        return;
+    }
 
     // Now call the User initialize for Tasks
     fTask->InitTask();
@@ -250,7 +259,10 @@ Int_t FairRunOnline::EventLoop()
         LOG(info) << "FairRunOnline::EventLoop() Call Reinit due to changed RunID (from " << fRunId << " to " << tmpId;
         fRunId = tmpId;
         Reinit(fRunId);
-        GetSource()->ReInitUnpackers();
+        if (!GetSource()->ReInitUnpackers()) {
+            LOG(fatal) << "FairRunOnline->EventLoop() ReInitUnpackers() failed!";
+            return 1;
+        }
         fTask->ReInitTask();
     }
 

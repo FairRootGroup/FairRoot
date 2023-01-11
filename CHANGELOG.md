@@ -58,6 +58,13 @@ file an issue, so that we can see how to handle this.
 * https://github.com/R3BRootGroup/R3BRoot/pull/413
 
 
+## 18.8.1 (UNRELEASED) - 2023-01-XX
+
+### Bug fixes
+* Check the return value of `source->InitUnpackers()`/`source->ReinitUnpackers()`
+  in `FairRunOnline`. Stop run if `false` returned.
+
+
 ## 18.8 (UNRELEASED) - 2022-11-XX
 
 ### Breaking Changes
@@ -111,7 +118,6 @@ file an issue, so that we can see how to handle this.
   ```
   There is also a convenience header `<FairBoostSerializationSupport.h>` which includes all
   class-based support headers currently offered.
-
 
 ### Deprecations
 
