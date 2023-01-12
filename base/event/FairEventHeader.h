@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -25,19 +25,24 @@ class FairEventHeader : public TNamed
 {
   public:
     /** Default constructor */
-    FairEventHeader();
+    FairEventHeader() = default;
+
+    /**
+     * Destructor
+     */
+    ~FairEventHeader() override = default;
 
     /** Get the run ID for this run*/
-    UInt_t GetRunId() { return fRunId; }
+    UInt_t GetRunId() const { return fRunId; }
 
     /** Get the MC time for this event*/
-    Double_t GetEventTime() { return fEventTime; }
+    Double_t GetEventTime() const { return fEventTime; }
 
     /** Get the MC input file Id for this event*/
-    Int_t GetInputFileId() { return fInputFileId; }
+    Int_t GetInputFileId() const { return fInputFileId; }
 
     /**The entry number in the original MC chain */
-    Int_t GetMCEntryNumber() { return fMCEntryNo; }
+    Int_t GetMCEntryNumber() const { return fMCEntryNo; }
 
     /** Set the run ID for this run
      * @param runid : unique run id
@@ -55,23 +60,19 @@ class FairEventHeader : public TNamed
     /**The entry number in the original MC chain */
     void SetMCEntryNumber(Int_t id) { fMCEntryNo = id; }
 
-    /**
-     * Destructor
-     */
-    virtual ~FairEventHeader();
     virtual void Register(Bool_t Persistance = kTRUE);
 
   protected:
     /** Run Id */
-    UInt_t fRunId;
+    UInt_t fRunId{0};
     /** Event Time **/
-    Double_t fEventTime;
+    Double_t fEventTime{-1.};
     /** Input file identifier, the file description is in the File header*/
-    Int_t fInputFileId;
+    Int_t fInputFileId{0};
     /**MC entry number from input chain*/
-    Int_t fMCEntryNo;
+    Int_t fMCEntryNo{0};
 
-    ClassDef(FairEventHeader, 3);
+    ClassDefOverride(FairEventHeader, 3);
 };
 
 #endif
