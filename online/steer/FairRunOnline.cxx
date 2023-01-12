@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -136,7 +136,7 @@ void FairRunOnline::Init()
 
     if (0 == fRunId)   // Run ID was not set in run manager
     {
-        if (0 == fEvtHeader->GetRunId())   // Run ID was not set in source
+        if (0 == GetEvtHeaderRunId())   // Run ID was not set in source
         {
             // Generate unique Run ID
             FairRunIdGenerator genid;
@@ -144,7 +144,7 @@ void FairRunOnline::Init()
             GetSource()->SetRunId(fRunId);
         } else {
             // Use Run ID from source
-            fRunId = fEvtHeader->GetRunId();
+            fRunId = GetEvtHeaderRunId();
         }
     } else {
         // Run ID was set in the run manager - propagate to source
@@ -211,7 +211,6 @@ void FairRunOnline::Init()
 
 void FairRunOnline::InitContainers()
 {
-
     fRtdb = GetRuntimeDb();
     FairBaseParSet* par = static_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
     LOG(info) << "FairRunOnline::InitContainers: par = " << par;
@@ -221,7 +220,7 @@ void FairRunOnline::InitContainers()
     if (par) {
         fEvtHeader = static_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
 
-        fRunId = fEvtHeader->GetRunId();
+        fRunId = GetEvtHeaderRunId();
 
         // Copy the Event Header Info to Output
         fEvtHeader->Register();
@@ -253,7 +252,7 @@ Int_t FairRunOnline::EventLoop()
     signal(SIGINT, handler_ctrlc);
 
     FillEventHeader();
-    auto const tmpId = fEvtHeader->GetRunId();
+    auto const tmpId = GetEvtHeaderRunId();
 
     if (tmpId != fRunId) {
         LOG(info) << "FairRunOnline::EventLoop() Call Reinit due to changed RunID (from " << fRunId << " to " << tmpId;

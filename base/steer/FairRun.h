@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -9,6 +9,7 @@
 #define FAIRRUN_H
 
 #include "FairAlignmentHandler.h"
+#include "FairEventHeader.h"
 #include "FairSink.h"
 #include "FairSource.h"
 
@@ -251,6 +252,11 @@ class FairRun : public TNamed
         if (fSource)
             fSource->FillEventHeader(fEvtHeader);
     }
+
+    /**
+     * Get the RunId of the Event Header
+     */
+    UInt_t GetEvtHeaderRunId() const { return fEvtHeader->GetRunId(); }
 
     ClassDefOverride(FairRun, 5);
 };

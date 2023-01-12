@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -210,7 +210,7 @@ void FairRunAna::Init()
 
         FillEventHeader();
 
-        fRunId = fEvtHeader->GetRunId();
+        fRunId = GetEvtHeaderRunId();
 
         // Copy the Event Header Info to Output
         fEvtHeader->Register(fStoreEventHeader);
@@ -281,7 +281,6 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
     if (fTimeStamps) {
         RunTSBuffers();
     } else {
-        UInt_t tmpId = 0;
         //  if (fInputFile==0) {
         if (!fInFileIsOpen) {
             DummyRun(Ev_start, Ev_end);
@@ -344,7 +343,7 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 
             FillEventHeader();
 
-            tmpId = fEvtHeader->GetRunId();
+            auto const tmpId = GetEvtHeaderRunId();
             if (tmpId != fRunId) {
                 fRunId = tmpId;
                 if (!fStatic) {
@@ -483,9 +482,8 @@ void FairRunAna::RunMQ(Long64_t entry)
    This methode is only needed and used with ZeroMQ
    it read a certain event and call the task exec, but no output is written
    */
-    UInt_t tmpId = 0;
     fRootManager->ReadEvent(entry);
-    tmpId = fEvtHeader->GetRunId();
+    auto const tmpId = GetEvtHeaderRunId();
     if (tmpId != fRunId) {
         fRunId = tmpId;
         if (!fStatic) {
@@ -502,9 +500,8 @@ void FairRunAna::RunMQ(Long64_t entry)
 //_____________________________________________________________________________
 void FairRunAna::Run(Long64_t entry)
 {
-    UInt_t tmpId = 0;
     fRootManager->ReadEvent(entry);
-    tmpId = fEvtHeader->GetRunId();
+    auto const tmpId = GetEvtHeaderRunId();
     if (tmpId != fRunId) {
         fRunId = tmpId;
         if (!fStatic) {
