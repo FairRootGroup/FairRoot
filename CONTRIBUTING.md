@@ -12,22 +12,12 @@ Create a [Github Pull Request](https://github.com/FairRootGroup/FairRoot/compare
    branch and base your PR against it.
    * In rare cases (e.g. backports, some hotfixes) base against the appropriate
      branch.
-2. Follow [the seven rules of a great Git commit message](https://cbea.ms/git-commit/#seven-rules)!
-   * Use a meaningful commit granularity, e.g. do not mix
-     unrelated changes in a single commit and vice verse squash related commits
-     into one.
-   * Expect that a reviewer will ask you for restructuring your commits! This
-     usually happens towards the end of the lifetime of a PR when it matured
-     enough for merging.
-   * Utilize [the commit message body to explain *what* and *why* and not *how*](https://cbea.ms/git-commit/#why-not-how).
-     Aim your message body content to be meaningful (concise, but complete
-     enough) to a reader in the future!
-   * Utilize [reference keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)
-     both in commit messages as well as in PR comments if applicable.
-3. If you are a first time contributor, add a separate commit in your PR which
+2. If you are a first time contributor, add a separate commit in your PR which
    adds your name to the [`CONTRIBUTORS`](CONTRIBUTORS) file.
-4. Follow our [Coding Guidelines](#coding-guidelines).
-5. Address failed CI checks.
+3. Follow our [Coding Guidelines](#coding-guidelines).
+4. Expect that a reviewer will ask you for restructuring your commits! This
+   usually happens towards the end of the lifetime of a PR when it matured
+   enough for merging.
 
 # Coding Guidelines
 
@@ -62,6 +52,17 @@ This shall be an evolving list of explicitely adopted C++ Core Guidelines:
 * [CPPCG::I.11: Never transfer ownership by a raw pointer (`T*`) or reference (`T&`)](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#i11-never-transfer-ownership-by-a-raw-pointer-t-or-reference-t)
    * If an owning raw pointer cannot be avoided for legacy reasons,
      **you must add a comment documenting the ownership semantics!**
+
+### G.3 Write a good Git history
+   * Follow [the seven rules of a great Git commit message](https://cbea.ms/git-commit/#seven-rules)!
+   * Use a meaningful commit granularity, e.g. do not mix
+     unrelated changes in a single commit and vice verse squash related commits
+     into one.
+   * Utilize [the commit message body to explain *what* and *why* and not *how*](https://cbea.ms/git-commit/#why-not-how).
+     Aim your message to be meaningful (concise, but complete
+     enough) to a reader in the future!
+   * Utilize [reference keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)
+     both in commit messages as well as in PR comments if applicable.
 
 ## D - Documentation
 
