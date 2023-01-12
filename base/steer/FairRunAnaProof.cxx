@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -176,7 +176,7 @@ void FairRunAnaProof::Init()
 
         FillEventHeader();
 
-        fRunId = fEvtHeader->GetRunId();
+        fRunId = GetEvtHeaderRunId();
 
         // Copy the Event Header Info to Output
         fEvtHeader->Register(kTRUE);
@@ -247,7 +247,7 @@ void FairRunAnaProof::InitContainers()
 
         FillEventHeader();
 
-        fRunId = fEvtHeader->GetRunId();
+        fRunId = GetEvtHeaderRunId();
 
         // Copy the Event Header Info to Output
         fEvtHeader->Register();
@@ -284,12 +284,11 @@ void FairRunAnaProof::RunOneEvent(Long64_t entry)
     if (fTimeStamps) {
         RunTSBuffers();
     } else {
-        UInt_t tmpId = 0;
         fRootManager->ReadEvent(entry);
 
         FillEventHeader();
 
-        tmpId = fEvtHeader->GetRunId();
+        auto const tmpId = GetEvtHeaderRunId();
         if (tmpId != fRunId) {
             fRunId = tmpId;
             if (!fStatic) {
