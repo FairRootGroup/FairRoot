@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -26,7 +26,7 @@ class FairParRootFile : public TNamed
     FairRtdbRun* run;   //! pointer to current run in ROOT file
     FairParRootFile(const Text_t* fname, Option_t* option = "READ", const Text_t* ftitle = "", Int_t compress = 1);
     FairParRootFile(TFile* f);
-    ~FairParRootFile();
+    ~FairParRootFile() override;
     FairRtdbRun* getRun() { return run; }
     void readVersions(FairRtdbRun*);
 
@@ -81,7 +81,7 @@ class FairParRootFileIo : public FairParIo
   public:
     FairParRootFileIo();
     FairParRootFileIo(Bool_t merged);
-    ~FairParRootFileIo();
+    ~FairParRootFileIo() override;
     Bool_t open(const Text_t* fname, Option_t* option = "READ", const Text_t* ftitle = "", Int_t compress = 1);
     Bool_t open(const TList* fnamelist, Option_t* option = "READ", const Text_t* ftitle = "", Int_t compress = 1);
     static void MergeFiles(TFile* newParFile, const TList* fnamelist);
@@ -115,6 +115,7 @@ class FairParRootFileIo : public FairParIo
   private:
     FairParRootFileIo(const FairParRootFileIo&);
     FairParRootFileIo& operator=(const FairParRootFileIo&);
+    void ActivateSelf();
 
     ClassDefOverride(FairParRootFileIo, 0);   // Parameter I/O from ROOT files
 };

@@ -42,11 +42,7 @@
 /////////////////////////////////////////////////////////////
 #include "FairRuntimeDb.h"
 
-#include "FairContFact.h"            // for FairContFact
-#include "FairDetParAsciiFileIo.h"   // for FairDetParAsciiFileIo
-#include "FairDetParRootFileIo.h"    // for FairDetParRootFileIo
-#include "FairGenericParAsciiFileIo.h"   // for FairGenericParAsciiFileIo
-#include "FairGenericParRootFileIo.h"    // for FairGenericParRootFileIo
+#include "FairContFact.h"         // for FairContFact
 #include "FairLogger.h"           // for FairLogger, MESSAGE_ORIGIN
 #include "FairParAsciiFileIo.h"   // for FairParAsciiFileIo
 #include "FairParIo.h"            // for FairParIo
@@ -61,8 +57,6 @@
 #include <cstring>         // for strcmp, strlen
 #include <iomanip>         // for setw, operator<<
 #include <iostream>        // for operator<<, basic_ostream, etc
-
-class FairDetParIo;
 
 using std::cout;
 using std::endl;
@@ -816,24 +810,6 @@ void FairRuntimeDb::closeOutput()
 void FairRuntimeDb::activateParIo(FairParIo* io)
 {
     // activates the detector I/O
-    const char* ioName = io->IsA()->GetName();
-    FairDetParIo* po = io->getDetParIo("FairGenericParIo");
-    if (!po) {
-        if (strcmp(ioName, "FairParRootFileIo") == 0) {
-            FairDetParRootFileIo* pn =
-                new FairGenericParRootFileIo((static_cast<FairParRootFileIo*>(io))->getParRootFile());
-            io->setDetParIo(pn);
-        } else if (strcmp(ioName, "FairParAsciiFileIo") == 0) {
-            FairDetParAsciiFileIo* pn =
-                new FairGenericParAsciiFileIo((static_cast<FairParAsciiFileIo*>(io))->getFile());
-            io->setDetParIo(pn);
-        }
-        // else if(strcmp(ioName,"FairParTSQLIo") == 0) {
-        //  std::cout << "\n\n\n\t TSQL versie is called en nu de rest \n\n";
-        //  FairDetParTSQLIo* pn = new FairGenericParTSQLIo();
-        //  io->setDetParIo(pn);
-        //}
-    }
     TIter next(&contFactories);
     FairContFact* fact;
     while ((fact = static_cast<FairContFact*>(next()))) {
