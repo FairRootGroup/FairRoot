@@ -20,7 +20,7 @@
 #include "FairParAsciiFileIo.h"
 
 #include "FairDetParIo.h"   // for FairDetParIo
-#include "FairLogger.h"
+#include "FairGenericParAsciiFileIo.h"
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
 
 #include <TCollection.h>   // for TIter
@@ -28,8 +28,9 @@
 #include <TObjString.h>    // for TObjString
 #include <TString.h>       // for TString, operator<<
 #include <TSystem.h>       // for TSystem, gSystem
-#include <iostream>        // for cout, cerr
-#include <string.h>        // for strcmp
+#include <cstring>         // for strcmp
+#include <fairlogger/Logger.h>
+#include <iostream>
 
 using std::cerr;
 using std::cout;
@@ -46,6 +47,15 @@ FairParAsciiFileIo::~FairParAsciiFileIo()
 {
     // default destructor closes an open file and deletes list of I/Os
     close();
+}
+
+void FairParAsciiFileIo::ActivateSelf()
+{
+    if (getDetParIo("FairGenericParIo")) {
+        return;
+    }
+    auto pn = new FairGenericParAsciiFileIo(getFile());
+    setDetParIo(pn);
 }
 
 Bool_t FairParAsciiFileIo::open(const Text_t* fname, const Text_t* status)
@@ -69,6 +79,7 @@ Bool_t FairParAsciiFileIo::open(const Text_t* fname, const Text_t* status)
     filebuf* buf = file->rdbuf();
     if (file && (buf->is_open() == 1)) {
         filename = fname;
+        ActivateSelf();
         FairRuntimeDb::instance()->activateParIo(this);
         return kTRUE;
     }

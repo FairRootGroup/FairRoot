@@ -81,6 +81,7 @@ class FairParAsciiFileIo : public FairParIo
   private:
     FairParAsciiFileIo(const FairParAsciiFileIo&);
     FairParAsciiFileIo& operator=(const FairParAsciiFileIo&);
+    void ActivateSelf();
 
     ClassDefOverride(FairParAsciiFileIo, 0);   // Parameter I/O from ASCII files
 };

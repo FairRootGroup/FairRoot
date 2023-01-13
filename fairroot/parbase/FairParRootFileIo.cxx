@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -25,6 +25,7 @@
 #include "FairParRootFileIo.h"
 
 #include "FairDetParIo.h"    // for FairDetParIo
+#include "FairGenericParRootFileIo.h"
 #include "FairRtdbRun.h"     // for FairRtdbRun
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
 
@@ -115,6 +116,15 @@ FairParRootFileIo::~FairParRootFileIo()
     close();
 }
 
+void FairParRootFileIo::ActivateSelf()
+{
+    if (getDetParIo("FairGenericParIo")) {
+        return;
+    }
+    auto pn = new FairGenericParRootFileIo(getParRootFile());
+    setDetParIo(pn);
+}
+
 Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option, const Text_t* ftitle, Int_t compress)
 {
     // It opens a ROOT file (default option "READ"). An open file will be closed.
@@ -141,6 +151,7 @@ Bool_t FairParRootFileIo::open(const Text_t* fname, Option_t* option, const Text
 
     if (file && file->IsOpen()) {
         filename = fname;
+        ActivateSelf();
         FairRuntimeDb::instance()->activateParIo(this);
         return kTRUE;
     }
@@ -234,6 +245,7 @@ Bool_t FairParRootFileIo::open(TFile* f)
     file = new FairParRootFile(f);
     if (file && file->IsOpen()) {
         filename = file->GetName();
+        ActivateSelf();
         FairRuntimeDb::instance()->activateParIo(this);
         return kTRUE;
     }
