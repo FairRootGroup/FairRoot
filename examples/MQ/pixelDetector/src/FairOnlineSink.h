@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2017-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2017-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -24,14 +24,13 @@
 
 class FairEventHeader;
 class FairMQRunDevice;
-class TObject;
-class TTree;
 
 class FairOnlineSink : public FairSink
 {
   public:
-    FairOnlineSink();
+    FairOnlineSink() = default;
     ~FairOnlineSink() override = default;
+    FairOnlineSink& operator=(const FairOnlineSink&) = delete;
 
     Bool_t InitSink() override { return kTRUE; }
     void Close() override {}
@@ -70,13 +69,13 @@ class FairOnlineSink : public FairSink
     T GetPersistentBranchAny(const char* name) const;
 
   private:
-    FairMQRunDevice* fMQRunDevice;
+    FairMQRunDevice* fMQRunDevice{nullptr};
 
     // private helper function to emit a warning
     void EmitPersistentBranchWrongTypeWarning(const char* brname, const char* typen1, const char* typen2) const;
 
-    FairOnlineSink(const FairOnlineSink&);
-    FairOnlineSink& operator=(const FairOnlineSink&);
+    /// internal helper function for CloneSink()
+    FairOnlineSink(const FairOnlineSink&) = default;
 };
 
 // try to retrieve an object address from the registered branches/names
