@@ -65,7 +65,7 @@ file an issue, so that we can see how to handle this.
   in `FairRunOnline`. Stop run if `false` returned.
 
 
-## 18.8 (UNRELEASED) - 2022-11-XX
+## 18.8.0 - 2022-12-16
 
 ### Breaking Changes
 * Move online related code into the new Online library
