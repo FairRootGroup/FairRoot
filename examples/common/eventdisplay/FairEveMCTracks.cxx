@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2020-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2020-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -36,17 +36,15 @@
 
 FairEveMCTracks::FairEveMCTracks()
     : FairEveTracks(kFALSE)
-    , fContainer(nullptr)
     , fShowPrimary(kTRUE)
     , fShowSecondary(kTRUE)
     , fUsePdg(kFALSE)
     , fPdgCut(0)
-    , fPDG(nullptr)
 {
     SetElementNameTitle("FairMCTracks", "FairMCTracks");
 }
 
-Bool_t FairEveMCTracks::CheckCuts(FairMCTrack *tr)
+Bool_t FairEveMCTracks::CheckCuts(FairMCTrack* tr)
 {
     TLorentzVector mom;
     tr->Get4Momentum(mom);
@@ -87,11 +85,11 @@ void FairEveMCTracks::DrawTrack(Int_t id)
     if (!fRK)
         return;
 
-    FairMCTrack *tr = (FairMCTrack *)fContainer->UncheckedAt(id);
+    auto tr = static_cast<FairMCTrack*>(fContainer->UncheckedAt(id));
     if (!CheckCuts(tr))
         return;
     Color_t color = GetEventManager()->Color(tr->GetPdgCode());
-    TEveTrackList *trList = FindTrackGroup(Form("%i", tr->GetPdgCode()), color);
+    TEveTrackList* trList = FindTrackGroup(Form("%i", tr->GetPdgCode()), color);
     TParticle p(tr->GetPdgCode(),
                 0,
                 0,
@@ -106,14 +104,14 @@ void FairEveMCTracks::DrawTrack(Int_t id)
                 tr->GetStartY(),
                 tr->GetStartZ(),
                 tr->GetStartT());
-    FairEveTrack *track = new FairEveTrack(&p, tr->GetPdgCode(), trList->GetPropagator());
+    auto track = new FairEveTrack(&p, tr->GetPdgCode(), trList->GetPropagator());
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p.Px(), p.Py(), p.Pz()));
     track->SetMainColor(color);
     TVector3 pos(p.Vx(), p.Vy(), p.Vz());
     TVector3 mom(p.Px(), p.Py(), p.Pz());
     track->SetFirstPoint(mom, pos);
 
-    TParticlePDG *part = fPDG->GetParticle(tr->GetPdgCode());
+    TParticlePDG* part = fPDG->GetParticle(tr->GetPdgCode());
 
     Double_t charge = 0;
     if (part) {
@@ -147,20 +145,21 @@ void FairEveMCTracks::Repaint()
 
 InitStatus FairEveMCTracks::Init()
 {
-    FairRootManager *mngr = FairRootManager::Instance();
-    fContainer = dynamic_cast<TClonesArray *>(mngr->GetObject("MCTrack"));
+    FairEventManager* eveManager = GetEventManager();
+    FairRootManager* mngr = &(eveManager->GetRootManager());
+    fContainer = dynamic_cast<TClonesArray*>(mngr->GetObject("MCTrack"));
     if (!fContainer) {
         LOG(warning) << "MCTrack branch not found ! FairMCTrackDraw will be deactivated.";
         return kERROR;
     }
-    TClass *classTrack = fContainer->GetClass();
+    TClass* classTrack = fContainer->GetClass();
     if (classTrack && !classTrack->InheritsFrom("FairMCTrack")) {
         LOG(warning)
             << "MCTrack branch found but does not contain FairMCTrack objects! FairMCTrackDraw will be deactivated.";
         return kERROR;
     }
-    FairRunAna *ana = FairRunAna::Instance();
-    FairField *field = ana->GetField();
+    FairRunAna* ana = FairRunAna::Instance();
+    FairField* field = ana->GetField();
     if (field == nullptr) {
         LOG(warning) << "Lack of magnetic field map!";
     }

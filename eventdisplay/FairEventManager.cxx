@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -41,9 +41,12 @@
 
 ClassImp(FairEventManager);
 
-FairEventManager *FairEventManager::fgRinstance = nullptr;
+FairEventManager* FairEventManager::fgRinstance = nullptr;
 
-FairEventManager *FairEventManager::Instance() { return fgRinstance; }
+FairEventManager* FairEventManager::Instance()
+{
+    return fgRinstance;
+}
 
 FairEventManager::FairEventManager()
     : TEveEventManager("FairEventManager", "")
@@ -59,22 +62,10 @@ FairEventManager::FairEventManager()
     , fTimeEvent(-1.)
     , fAnimatedTracks(kFALSE)
     , fClearHandler(kTRUE)
-    , fEvent(0)
     , fRPhiPlane{0, 0, 10, 0}
     , fRhoZPlane{-1, 0, 0, 0}
     , fRphiCam(TGLViewer::kCameraOrthoXOY)
     , fRhoCam(TGLViewer::kCameraOrthoZOY)
-    , fRPhiView(nullptr)
-    , fRhoZView(nullptr)
-    , fMultiView(nullptr)
-    , fMultiRPhiView(nullptr)
-    , fMultiRhoZView(nullptr)
-    , fRPhiScene(nullptr)
-    , fRhoZScene(nullptr)
-    , fRPhiProjManager(nullptr)
-    , fRhoZProjManager(nullptr)
-    , fAxesPhi(nullptr)
-    , fAxesRho(nullptr)
     , fXMLConfig("")
 {
     fgRinstance = this;
@@ -136,9 +127,9 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
     fRunAna->Init();
     if (gGeoManager == nullptr)
         return;
-    TGeoNode *N = gGeoManager->GetTopNode();
-    TEveGeoTopNode *TNod = new TEveGeoTopNode(gGeoManager, N, visopt, vislvl, maxvisnds);
-    TGeoBBox *box = dynamic_cast<TGeoBBox *>(gGeoManager->GetTopNode()->GetVolume()->GetShape());
+    TGeoNode* N = gGeoManager->GetTopNode();
+    auto TNod = new TEveGeoTopNode(gGeoManager, N, visopt, vislvl, maxvisnds);
+    auto box = dynamic_cast<TGeoBBox*>(gGeoManager->GetTopNode()->GetVolume()->GetShape());
     if (box) {
         fWorldSizeX = box->GetDX();
         fWorldSizeY = box->GetDY();
@@ -167,8 +158,8 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
 
     SetViewers(fRPhiView, fRhoZView);
 
-    TEveWindowSlot *MultiSlot = TEveWindow::CreateWindowInTab(gEve->GetBrowser()->GetTabRight());
-    TEveWindowPack *MultiPack = MultiSlot->MakePack();
+    TEveWindowSlot* MultiSlot = TEveWindow::CreateWindowInTab(gEve->GetBrowser()->GetTabRight());
+    TEveWindowPack* MultiPack = MultiSlot->MakePack();
     MultiPack->SetElementName("Multi View");
     MultiPack->SetHorizontal();
     MultiPack->SetShowTitleBar(kFALSE);
@@ -274,7 +265,7 @@ void FairEventManager::AddParticlesToPdgDataBase(Int_t /*pdg*/)
 {
     // Add particles to the PDG data base
 
-    TDatabasePDG *pdgDB = TDatabasePDG::Instance();
+    TDatabasePDG* pdgDB = TDatabasePDG::Instance();
 
     const Double_t kAu2Gev = 0.9314943228;
     const Double_t khSlash = 1.0545726663e-27;
@@ -307,9 +298,12 @@ void FairEventManager::AddParticlesToPdgDataBase(Int_t /*pdg*/)
         pdgDB->AddParticle("FeedbackPhoton", "FeedbackPhoton", 0, kFALSE, 0, 0, "Special", 50000051);
 }
 
-TVector3 FairEventManager::GetWorldSize() const { return TVector3(fWorldSizeX, fWorldSizeY, fWorldSizeZ); }
+TVector3 FairEventManager::GetWorldSize() const
+{
+    return TVector3(fWorldSizeX, fWorldSizeY, fWorldSizeZ);
+}
 
-void FairEventManager::SetViewers(TEveViewer *RPhi, TEveViewer *RhoZ)
+void FairEventManager::SetViewers(TEveViewer* RPhi, TEveViewer* RhoZ)
 {
     RPhi->GetGLViewer()->SetCurrentCamera(fRphiCam);
     // set clip plane and camera parameters
@@ -486,14 +480,14 @@ void FairEventManager::SetTransparency(Bool_t use_xml, Int_t trans)
 {
     if (!use_xml) {   // high transparency
         Int_t vis_level = gGeoManager->GetVisLevel();
-        TGeoNode *top = gGeoManager->GetTopNode();
+        TGeoNode* top = gGeoManager->GetTopNode();
         SetTransparencyForLayer(top, vis_level, trans);
     } else {   // normal transparency
         if (fXMLConfig != "") {
             LoadXMLSettings();
         } else {
             Int_t vis_level = gGeoManager->GetVisLevel();
-            TGeoNode *top = gGeoManager->GetTopNode();
+            TGeoNode* top = gGeoManager->GetTopNode();
             SetTransparencyForLayer(top, vis_level, 0);
         }
     }
@@ -504,15 +498,18 @@ void FairEventManager::SetTransparency(Bool_t use_xml, Int_t trans)
     }
 }
 
-void FairEventManager::SwitchBackground(Bool_t light) { gEve->GetViewers()->SwitchColorSet(); }
+void FairEventManager::SwitchBackground(Bool_t /*light*/)
+{
+    gEve->GetViewers()->SwitchColorSet();
+}
 
-void FairEventManager::SetTransparencyForLayer(TGeoNode *node, Int_t depth, Char_t transparency)
+void FairEventManager::SetTransparencyForLayer(TGeoNode* node, Int_t depth, Char_t transparency)
 {
     node->GetVolume()->SetTransparency(transparency);
     if (depth <= 0)
         return;
     for (int i = 0; i < node->GetNdaughters(); i++) {
-        TGeoNode *dau = node->GetDaughter(i);
+        TGeoNode* dau = node->GetDaughter(i);
         SetTransparencyForLayer(dau, depth - 1, transparency);
     }
 }
@@ -521,7 +518,7 @@ void FairEventManager::MakeScreenshot(FairEveAnimationControl::eScreenshotType p
 {
     TString filename;
     if (path == "") {
-        const char *filetypes[] = {"PNG", "*.png", "JPG", "*.jpg", 0, 0};
+        const char* filetypes[] = {"PNG", "*.png", "JPG", "*.jpg", nullptr, nullptr};
         TGFileInfo fi;
         fi.fFileTypes = filetypes;
         fi.fIniDir = StrDup(".");
@@ -537,13 +534,13 @@ void FairEventManager::MakeScreenshot(FairEveAnimationControl::eScreenshotType p
             gEve->GetDefaultGLViewer()->SavePicture(filename);
         } break;
         case FairEveAnimationControl::eScreenshotType::kXY: {
-            TEveViewer *view = GetRPhiView();
-            TGLViewer *gl = view->GetGLViewer();
+            TEveViewer* view = GetRPhiView();
+            TGLViewer* gl = view->GetGLViewer();
             gl->SavePicture(filename);
         } break;
         case FairEveAnimationControl::eScreenshotType::kZ: {
-            TEveViewer *view = GetRhoZView();
-            TGLViewer *gl = view->GetGLViewer();
+            TEveViewer* view = GetRhoZView();
+            TGLViewer* gl = view->GetGLViewer();
             gl->SavePicture(filename);
         } break;
         case FairEveAnimationControl::eScreenshotType::kAll: {
@@ -553,8 +550,8 @@ void FairEventManager::MakeScreenshot(FairEveAnimationControl::eScreenshotType p
             TString filenameRphi = Form("%s_XY.%s", filename_path.Data(), filename_ext.Data());
             TString filenameRhoz = Form("%s_Z.%s", filename_path.Data(), filename_ext.Data());
             gEve->GetDefaultGLViewer()->SavePicture(filename3d);
-            TEveViewer *view = GetRPhiView();
-            TGLViewer *gl = view->GetGLViewer();
+            TEveViewer* view = GetRPhiView();
+            TGLViewer* gl = view->GetGLViewer();
             gl->SavePicture(filenameRphi);
             view = GetRhoZView();
             gl = view->GetGLViewer();

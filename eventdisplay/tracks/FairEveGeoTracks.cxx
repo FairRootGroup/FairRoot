@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2020-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -47,27 +47,28 @@ FairEveGeoTracks::FairEveGeoTracks()
 
 InitStatus FairEveGeoTracks::Init()
 {
-    FairRootManager *mngr = FairRootManager::Instance();
-    fContainer = dynamic_cast<TClonesArray *>(mngr->GetObject("GeoTracks"));
+    FairEventManager* eveManager = GetEventManager();
+    auto& mngr = eveManager->GetRootManager();
+    fContainer = dynamic_cast<TClonesArray*>(mngr.GetObject("GeoTracks"));
     if (!fContainer) {
         LOG(warning) << "Geo tracks not found ! FairGeoTracksDraw will be deactivated.";
         return kERROR;
     }
-    fBranch = mngr->GetInTree()->GetBranch("GeoTracks");
+    fBranch = mngr.GetInTree()->GetBranch("GeoTracks");
     FairGetEventTime::Instance().Init();
     return FairEveTracks::Init();
 }
 
 void FairEveGeoTracks::DrawTrack(Int_t id)
 {
-    TGeoTrack *tr = (TGeoTrack *)fContainer->UncheckedAt(id);
+    auto tr = static_cast<TGeoTrack*>(fContainer->UncheckedAt(id));
     if (!CheckCuts(tr))
         return;
-    TParticle *p = (TParticle *)tr->GetParticle();
+    auto p = static_cast<TParticle*>(tr->GetParticle());
     Color_t color = GetEventManager()->Color(p->GetPdgCode());
-    TEveTrackList *trList = FindTrackGroup(p->GetName(), color);
+    TEveTrackList* trList = FindTrackGroup(p->GetName(), color);
 
-    FairEveTrack *track = new FairEveTrack(p, p->GetPdgCode(), trList->GetPropagator());
+    auto track = new FairEveTrack(p, p->GetPdgCode(), trList->GetPropagator());
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p->Px(), p->Py(), p->Pz()));
     track->SetMainColor(color);
     Double_t x, y, z, t;
@@ -84,7 +85,7 @@ void FairEveGeoTracks::DrawTrack(Int_t id)
     trList->AddElement(track);
 }
 
-void FairEveGeoTracks::DrawAnimatedTrack(TGeoTrack *tr, double t0)
+void FairEveGeoTracks::DrawAnimatedTrack(TGeoTrack* tr, double t0)
 {
     const Double_t timeScale = 1E+9;
     if (!CheckCuts(tr))
@@ -95,10 +96,10 @@ void FairEveGeoTracks::DrawAnimatedTrack(TGeoTrack *tr, double t0)
         return;   // last point before tmin
     if (tr->GetPoint(0)[3] * timeScale + t0 > fTMax)
         return;   // first point after tmax
-    TParticle *p = (TParticle *)tr->GetParticle();
+    auto p = static_cast<TParticle*>(tr->GetParticle());
     Color_t color = GetEventManager()->Color(p->GetPdgCode());
-    TEveTrackList *trList = FindTrackGroup(p->GetName(), color);
-    FairEveTrack *track = new FairEveTrack(p, p->GetPdgCode(), trList->GetPropagator());
+    TEveTrackList* trList = FindTrackGroup(p->GetName(), color);
+    auto track = new FairEveTrack(p, p->GetPdgCode(), trList->GetPropagator());
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p->Px(), p->Py(), p->Pz()));
     track->SetMainColor(color);
     Double_t x, y, z, t;                       // currentPoint
@@ -182,13 +183,13 @@ void FairEveGeoTracks::Repaint()
         }
     } else {
         for (int iTrack = 0; iTrack < nTracks; iTrack++) {
-            TGeoTrack *track;
+            TGeoTrack* track;
             double t0 = .0;
             if (useGeoTrackHandler) {
                 track = fGeoTrackHandler.GetData()[iTrack].first;
                 t0 = fGeoTrackHandler.GetData()[iTrack].second;
             } else {
-                track = (TGeoTrack *)fContainer->At(iTrack);
+                track = static_cast<TGeoTrack*>(fContainer->At(iTrack));
             }
             DrawAnimatedTrack(track, t0);
         }
@@ -196,9 +197,9 @@ void FairEveGeoTracks::Repaint()
     gEve->Redraw3D(kFALSE);
 }
 
-Bool_t FairEveGeoTracks::CheckCuts(TGeoTrack *tr)
+Bool_t FairEveGeoTracks::CheckCuts(TGeoTrack* tr)
 {
-    TParticle *p = (TParticle *)tr->GetParticle();
+    auto p = static_cast<TParticle*>(tr->GetParticle());
     if (UsePtCut()) {
         if (p->Pt() < GetPtMin())
             return kFALSE;

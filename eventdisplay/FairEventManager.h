@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -37,7 +37,7 @@ class TGListTreeItem;
 class FairEventManager : public TEveEventManager
 {
   public:
-    static FairEventManager *Instance();
+    static FairEventManager* Instance();
     FairEventManager();
     virtual ~FairEventManager();
     virtual void SetXMLConfig(TString xml_config) { fXMLConfig = xml_config; };
@@ -48,7 +48,7 @@ class FairEventManager : public TEveEventManager
     virtual void Close();
     virtual void DisplaySettings();   //  *Menu*
     virtual Int_t Color(Int_t pdg);
-    void AddTask(FairTask *t) { fRunAna->AddTask(t); }
+    void AddTask(FairTask* t) { fRunAna->AddTask(t); }
     virtual void Init(Int_t visopt = 1, Int_t vislvl = 3, Int_t maxvisnds = 10000);
     virtual Int_t GetCurrentEvent() { return fEntry; }
     /**
@@ -80,7 +80,7 @@ class FairEventManager : public TEveEventManager
         fTimeMin = min;
         fTimeMax = max;
     };
-    void GetTimeLimits(Double_t &min, Double_t &max)
+    void GetTimeLimits(Double_t& min, Double_t& max)
     {
         min = fTimeMin;
         max = fTimeMax;
@@ -117,7 +117,8 @@ class FairEventManager : public TEveEventManager
     virtual Float_t GetMaxEnergy() { return 1E+9; }
     virtual Float_t GetMinEnergy() { return 0; }
     TVector3 GetWorldSize() const;
-    Float_t GetEvtTime();			///< current time in ns to display in the event display. Either set value or event time taken from FairRootManager. Controlled via fUseTimeOfEvent
+    Float_t GetEvtTime();   ///< current time in ns to display in the event display. Either set value or event time
+                            ///< taken from FairRootManager. Controlled via fUseTimeOfEvent
     Bool_t GetUseTimeOfEvent() const { return fUseTimeOfEvent; }
     Bool_t GetDrawAnimatedTracks() const { return fAnimatedTracks; }
     Bool_t GetClearHandler() const { return fClearHandler; }
@@ -134,56 +135,56 @@ class FairEventManager : public TEveEventManager
     ClassDef(FairEventManager, 1);
 
   protected:
-    TEveViewer *GetRPhiView() const { return fRPhiView; };
-    TEveViewer *GetRhoZView() const { return fRhoZView; };
-    TEveViewer *GetMultiView() const { return fMultiView; };
-    TEveViewer *GetMultiRPhiView() const { return fMultiRPhiView; };
-    TEveViewer *GetMultiRhoZView() const { return fMultiRhoZView; };
-    TEveScene *GetRhoZScene() const { return fRhoZScene; };
-    TEveScene *GetRPhiScene() const { return fRPhiScene; };
-    TEveProjectionManager *GetRhoZProjManager() const { return fRhoZProjManager; };
-    TEveProjectionManager *GetRPhiProjManager() const { return fRPhiProjManager; };
-    TEveProjectionAxes *GetRPhiAxes() const { return fAxesPhi; };
-    TEveProjectionAxes *GetRhoZAxes() const { return fAxesRho; };
+    TEveViewer* GetRPhiView() const { return fRPhiView; };
+    TEveViewer* GetRhoZView() const { return fRhoZView; };
+    TEveViewer* GetMultiView() const { return fMultiView; };
+    TEveViewer* GetMultiRPhiView() const { return fMultiRPhiView; };
+    TEveViewer* GetMultiRhoZView() const { return fMultiRhoZView; };
+    TEveScene* GetRhoZScene() const { return fRhoZScene; };
+    TEveScene* GetRPhiScene() const { return fRPhiScene; };
+    TEveProjectionManager* GetRhoZProjManager() const { return fRhoZProjManager; };
+    TEveProjectionManager* GetRPhiProjManager() const { return fRPhiProjManager; };
+    TEveProjectionAxes* GetRPhiAxes() const { return fAxesPhi; };
+    TEveProjectionAxes* GetRhoZAxes() const { return fAxesRho; };
     virtual void LoadXMLSettings();
-    void LoadXMLDetector(TGeoNode *node, FairXMLNode *xml, Int_t depth = 0);
+    void LoadXMLDetector(TGeoNode* node, FairXMLNode* xml, Int_t depth = 0);
     Int_t StringToColor(TString color) const;
 
   private:
-    FairRunAna* fRunAna;                              //!
-    FairRootManager& fRootManager;                    //!
-    Int_t fEntry;                                     //!
-    Double_t fWorldSizeX, fWorldSizeY, fWorldSizeZ;   //!
-    Double_t fTimeMin, fTimeMax;                      //!
-    Bool_t fUseTimeOfEvent;                           //!
-    Double_t fTimeEvent;                              //!
-    Bool_t fAnimatedTracks;                           //!
-    Bool_t fClearHandler;                             //!
-    TGListTreeItem *fEvent;                           //!
-    Double_t fRPhiPlane[4];                           //!
-    Double_t fRhoZPlane[4];                           //!
-    TGLViewer::ECameraType fRphiCam;                  //!
-    TGLViewer::ECameraType fRhoCam;                   //!
-    TEveViewer *fRPhiView;                            //!
-    TEveViewer *fRhoZView;                            //!
-    TEveViewer *fMultiView;                           //!
-    TEveViewer *fMultiRPhiView;                       //!
-    TEveViewer *fMultiRhoZView;                       //!
-    TEveScene *fRPhiScene;                            //!
-    TEveScene *fRhoZScene;                            //!
-    TEveProjectionManager *fRPhiProjManager;          //!
-    TEveProjectionManager *fRhoZProjManager;          //!
-    TEveProjectionAxes *fAxesPhi;                     //!
-    TEveProjectionAxes *fAxesRho;                     //!
-    TEveText* fEventTimeText{nullptr};                //!
-    TEveText* fEventNumberText{nullptr};              //!
+    FairRunAna* fRunAna;                                //!
+    FairRootManager& fRootManager;                      //!
+    Int_t fEntry;                                       //!
+    Double_t fWorldSizeX, fWorldSizeY, fWorldSizeZ;     //!
+    Double_t fTimeMin, fTimeMax;                        //!
+    Bool_t fUseTimeOfEvent;                             //!
+    Double_t fTimeEvent;                                //!
+    Bool_t fAnimatedTracks;                             //!
+    Bool_t fClearHandler;                               //!
+    TGListTreeItem* fEvent{nullptr};                    //!
+    Double_t fRPhiPlane[4];                             //!
+    Double_t fRhoZPlane[4];                             //!
+    TGLViewer::ECameraType fRphiCam;                    //!
+    TGLViewer::ECameraType fRhoCam;                     //!
+    TEveViewer* fRPhiView{nullptr};                     //!
+    TEveViewer* fRhoZView{nullptr};                     //!
+    TEveViewer* fMultiView{nullptr};                    //!
+    TEveViewer* fMultiRPhiView{nullptr};                //!
+    TEveViewer* fMultiRhoZView{nullptr};                //!
+    TEveScene* fRPhiScene{nullptr};                     //!
+    TEveScene* fRhoZScene{nullptr};                     //!
+    TEveProjectionManager* fRPhiProjManager{nullptr};   //!
+    TEveProjectionManager* fRhoZProjManager{nullptr};   //!
+    TEveProjectionAxes* fAxesPhi{nullptr};              //!
+    TEveProjectionAxes* fAxesRho{nullptr};              //!
+    TEveText* fEventTimeText{nullptr};                  //!
+    TEveText* fEventNumberText{nullptr};                //!
     TString fXMLConfig;
     std::map<int, int> fPDGToColor;
-    void SetTransparencyForLayer(TGeoNode *node, Int_t depth, Char_t transparency);
-    static FairEventManager *fgRinstance;   //!
-    FairEventManager(const FairEventManager &);
-    FairEventManager &operator=(const FairEventManager &);
-    void SetViewers(TEveViewer *RPhi, TEveViewer *RhoZ);
+    void SetTransparencyForLayer(TGeoNode* node, Int_t depth, Char_t transparency);
+    static FairEventManager* fgRinstance;   //!
+    FairEventManager(const FairEventManager&);
+    FairEventManager& operator=(const FairEventManager&);
+    void SetViewers(TEveViewer* RPhi, TEveViewer* RhoZ);
 };
 
 #endif
