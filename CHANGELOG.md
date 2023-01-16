@@ -4,7 +4,7 @@ All notable changes to FairRoot will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## 18.8 (UNRELEASED) - 2022-11-XX
+## 18.8.0 - 2022-12-16
 
 ### Breaking Changes
 * Move online related code into the new Online library
