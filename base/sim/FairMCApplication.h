@@ -251,16 +251,12 @@ class FairMCApplication : public TVirtualMCApplication
     FairTask* fFairTaskList;   //!
     /**Module list in simulation*/
     TObjArray* fModules;
-    /**Number of sensetive volumes in simulation session*/
-    Int_t fNoSenVolumes;   //!
     /**flag for using Pythia as external decayer */
     Bool_t fPythiaDecayer;
     /** Pythia decay config macro*/
     TString fPythiaDecayerConfig;   //!
     /**Pointer to thr I/O Manager */
     FairRootManager* fRootManager;   //!
-    /**List of sensetive volumes in all detectors*/
-    TRefArray* fSenVolumes;   //!
     /**Magnetic Field Pointer*/
     FairField* fxField;   //
     /**Primary generator*/
