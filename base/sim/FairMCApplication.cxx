@@ -75,11 +75,9 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     , fActiveDetectors(nullptr)
     , fFairTaskList(nullptr)
     , fModules(ModList)
-    , fNoSenVolumes(0)
     , fPythiaDecayer(kFALSE)
     , fPythiaDecayerConfig("")
     , fRootManager(nullptr)
-    , fSenVolumes(nullptr)
     , fxField(nullptr)
     , fEvGen(nullptr)
     , fMcVersion(-1)
@@ -149,11 +147,9 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
     , fActiveDetectors(nullptr)
     , fFairTaskList(nullptr)
     , fModules(nullptr)
-    , fNoSenVolumes(0)
     , fPythiaDecayer(kFALSE)
     , fPythiaDecayerConfig(rhs.fPythiaDecayerConfig)
     , fRootManager(nullptr)
-    , fSenVolumes(nullptr)
     , fxField(rhs.fxField)
     , fEvGen(nullptr)
     , fMcVersion(rhs.fMcVersion)
@@ -233,11 +229,9 @@ FairMCApplication::FairMCApplication()
     , fActiveDetectors(0)
     , fFairTaskList(0)
     , fModules(0)
-    , fNoSenVolumes(0)
     , fPythiaDecayer(kFALSE)
     , fPythiaDecayerConfig("")
     , fRootManager(0)
-    , fSenVolumes(0)
     , fxField(0)
     , fEvGen(0)
     , fMcVersion(-1)
@@ -774,7 +768,6 @@ void FairMCApplication::ConstructGeometry()
 {
     // Construct geometry and also fill following member data:
     // - fModVolMap: (volId,moduleId)
-    // - fSenVolumes: list of sensitive volumes
     if (!gGeoManager) {
         LOG(fatal) << "gGeoManager not initialized at FairMCApplication::ConstructGeometry\n";
     }
@@ -874,10 +867,6 @@ void FairMCApplication::InitGeometry()
 
     /// Initialize geometry
 
-    /** Register stack and detector collections*/
-    FairVolume* fv = 0;
-    Int_t id = 0;
-
     // Register stack
     if (fEvGen && fStack && fRootManager) {
         fStack->Register();
@@ -946,20 +935,15 @@ void FairMCApplication::InitGeometry()
     }
 
     // Get static thread local svList
-    fSenVolumes = FairModule::svList;
-    if (fSenVolumes) {
-        fNoSenVolumes = fSenVolumes->GetEntries();
-    }
+    auto sen_volumes = FairModule::svList;
 
     // Fill sensitive volumes in fVolMap
-    for (Int_t i = 0; i < fNoSenVolumes; i++) {
-
-        fv = dynamic_cast<FairVolume*>(fSenVolumes->At(i));
+    for (auto fv : TRangeDynCast<FairVolume>(sen_volumes)) {
         if (!fv) {
-            LOG(error) << "No FairVolume in fSenVolumes at position " << i;
+            LOG(error) << "Not a FairVolume in FairModule::svList";
             continue;
         }
-        id = fv->getMCid();
+        auto id = fv->getMCid();
         if (fv->getGeoNode() == 0) {
             TGeoNode* fN = 0;
             TGeoVolume* v = gGeoManager->GetVolume(fv->GetName());
@@ -974,23 +958,23 @@ void FairMCApplication::InitGeometry()
                         LOG(error) << "No TGeoNode in fNs at position " << k;
                         continue;
                     }
-                    FairVolume* fNewV = new FairVolume(fv->GetName(), id);
+                    auto fNewV = new FairVolume(fv->GetName(), id);
                     fNewV->setModId(fv->getModId());
                     fNewV->SetModule(fv->GetModule());
                     fNewV->setCopyNo(fN->GetNumber());
                     fNewV->setMCid(id);
-                    fVolMap.insert(pair<Int_t, FairVolume*>(id, fNewV));
+                    fVolMap.emplace(id, fNewV);
                 }
             } else {
-                FairVolume* fNewV = new FairVolume(fv->GetName(), id);
+                auto fNewV = new FairVolume(fv->GetName(), id);
                 fNewV->setModId(fv->getModId());
                 fNewV->SetModule(fv->GetModule());
                 fNewV->setCopyNo(1);
                 fNewV->setMCid(id);
-                fVolMap.insert(pair<Int_t, FairVolume*>(id, fNewV));
+                fVolMap.emplace(id, fNewV);
             }
         } else {
-            fVolMap.insert(pair<Int_t, FairVolume*>(id, fv));
+            fVolMap.emplace(id, fv);
         }
     }   // end off loop Fill sensitive volumes
 
