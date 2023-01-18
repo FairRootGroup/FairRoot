@@ -78,7 +78,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     , fNoSenVolumes(0)
     , fPythiaDecayer(kFALSE)
     , fPythiaDecayerConfig("")
-    , fStack(nullptr)
     , fRootManager(nullptr)
     , fSenVolumes(nullptr)
     , fxField(nullptr)
@@ -153,7 +152,6 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
     , fNoSenVolumes(0)
     , fPythiaDecayer(kFALSE)
     , fPythiaDecayerConfig(rhs.fPythiaDecayerConfig)
-    , fStack(nullptr)
     , fRootManager(nullptr)
     , fSenVolumes(nullptr)
     , fxField(rhs.fxField)
@@ -218,7 +216,7 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
     }
 
     // Clone stack
-    fStack = rhs.fStack->CloneStack();
+    fStack.reset(rhs.fStack->CloneStack());
 
     if (rhs.fEvGen) {
         fEvGen = rhs.fEvGen->ClonePrimaryGenerator();
@@ -238,7 +236,6 @@ FairMCApplication::FairMCApplication()
     , fNoSenVolumes(0)
     , fPythiaDecayer(kFALSE)
     , fPythiaDecayerConfig("")
-    , fStack(0)
     , fRootManager(0)
     , fSenVolumes(0)
     , fxField(0)
@@ -275,7 +272,6 @@ FairMCApplication::~FairMCApplication()
 {
     // Destructor
     //   LOG(debug3) << "Enter Destructor of FairMCApplication";
-    delete fStack;
     delete fActiveDetectors;   // don't do fActiveDetectors->Delete() here
     // the modules are already deleted in FairRunSim
     //  LOG(debug3) << "Leave Destructor of FairMCApplication";
@@ -296,8 +292,8 @@ void FairMCApplication::InitMC(const char*, const char*)
         LOG(fatal) << "No MC engine defined";
     }
 
-    fStack = dynamic_cast<FairGenericStack*>(fMC->GetStack());
-    if (fStack == nullptr) {
+    fStack.reset(dynamic_cast<FairGenericStack*>(fMC->GetStack()));
+    if (!fStack) {
         LOG(fatal) << "No Stack defined.";
     }
     fMC->SetMagField(fxField);
@@ -501,7 +497,7 @@ void FairMCApplication::InitOnWorker()
     fMC = gMC;
 
     // Set data to MC
-    fMC->SetStack(fStack);
+    fMC->SetStack(fStack.get());
     fMC->SetMagField(fxField);
 
     LOG(info) << "Monte Carlo Engine Worker Initialisation  with: " << fMC->GetName();
@@ -1012,7 +1008,7 @@ void FairMCApplication::GeneratePrimaries()
 
     if (fEvGen) {
         //    LOG(debug) << "FairMCApplication::GeneratePrimaries()";
-        if (!fEvGen->GenerateEvent(fStack)) {
+        if (!fEvGen->GenerateEvent(fStack.get())) {
             StopRun();
         }
     }
@@ -1222,7 +1218,10 @@ void FairMCApplication::AddTask(TTask* fTask)
 }
 
 //_____________________________________________________________________________
-FairGenericStack* FairMCApplication::GetStack() { return fStack; }
+FairGenericStack* FairMCApplication::GetStack()
+{
+    return fStack.get();
+}
 
 //_____________________________________________________________________________
 TTask* FairMCApplication::GetListOfTasks() { return fFairTaskList; }

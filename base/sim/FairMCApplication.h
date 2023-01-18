@@ -232,6 +232,9 @@ class FairMCApplication : public TVirtualMCApplication
 
     void UndoGeometryModifications();
 
+    /** Simulation Stack  */
+    std::unique_ptr<FairGenericStack> fStack;   //!
+
   protected:
     // data members
     /**
@@ -254,8 +257,6 @@ class FairMCApplication : public TVirtualMCApplication
     Bool_t fPythiaDecayer;
     /** Pythia decay config macro*/
     TString fPythiaDecayerConfig;   //!
-    /** Simulation Stack  */
-    FairGenericStack* fStack;   //!
     /**Pointer to thr I/O Manager */
     FairRootManager* fRootManager;   //!
     /**List of sensetive volumes in all detectors*/
