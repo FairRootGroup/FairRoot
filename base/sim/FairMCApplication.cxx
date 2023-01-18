@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -74,7 +74,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     : TVirtualMCApplication(name, title)
     , fActiveDetectors(nullptr)
     , fFairTaskList(nullptr)
-    , fModIter(nullptr)
     , fModules(ModList)
     , fNoSenVolumes(0)
     , fPythiaDecayer(kFALSE)
@@ -117,10 +116,8 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     LOG(debug) << "FairMCApplication-ctor " << this;
 
     fRootManager = &fRun->GetRootManager();
-    fModIter = fModules->MakeIterator();
     // Create and fill a list of active detectors
     fActiveDetectors = new TRefArray();
-    fModIter->Reset();
 
     fListModules.reserve(fModules->GetEntriesFast());
     for (auto module : TRangeDynCast<FairModule>(fModules)) {
@@ -152,7 +149,6 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
     : TVirtualMCApplication(rhs.GetName(), rhs.GetTitle())
     , fActiveDetectors(nullptr)
     , fFairTaskList(nullptr)
-    , fModIter(nullptr)
     , fModules(nullptr)
     , fNoSenVolumes(0)
     , fPythiaDecayer(kFALSE)
@@ -198,7 +194,6 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
 
     // Create an ObjArray of Modules and its iterator
     fModules = new TObjArray();
-    fModIter = fModules->MakeIterator();
     // Clone modules
     fListModules.reserve(rhs.fListModules.size());
     fOwnedModules.reserve(rhs.fListModules.size());
@@ -239,7 +234,6 @@ FairMCApplication::FairMCApplication()
     : TVirtualMCApplication()
     , fActiveDetectors(0)
     , fFairTaskList(0)
-    , fModIter(0)
     , fModules(0)
     , fNoSenVolumes(0)
     , fPythiaDecayer(kFALSE)
@@ -284,7 +278,6 @@ FairMCApplication::~FairMCApplication()
     delete fStack;
     delete fActiveDetectors;   // don't do fActiveDetectors->Delete() here
     // the modules are already deleted in FairRunSim
-    delete fModIter;
     //  LOG(debug3) << "Leave Destructor of FairMCApplication";
     delete fMC;
 }

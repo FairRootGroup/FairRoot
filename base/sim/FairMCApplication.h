@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -246,8 +246,6 @@ class FairMCApplication : public TVirtualMCApplication
     TRefArray* fActiveDetectors;
     /**List of FairTask*/
     FairTask* fFairTaskList;   //!
-    /**Iterator for Module list*/
-    TIterator* fModIter;   //!
     /**Module list in simulation*/
     TObjArray* fModules;
     /**Number of sensetive volumes in simulation session*/
