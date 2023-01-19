@@ -43,7 +43,7 @@ It is also possible to set the folder/tree names using corresponding (`SetFolder
     [setenv SIMPATH ~/fair_install/FairSoft/install]
 
     cd ~/fair_install
-    git clone -b master https://github.com/FairRootGroup/FairRoot.git
+    git clone -b dev https://github.com/FairRootGroup/FairRoot.git
     cd FairRoot
     mkdir build
     cd build

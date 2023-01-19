@@ -59,7 +59,6 @@ set(sources
   source/FairFileSource.cxx
   source/FairMixedSource.cxx
   source/FairSource.cxx
-  source/FairUnpack.cxx
 
   steer/FairLinkManager.cxx
   steer/FairRadGridManager.cxx
