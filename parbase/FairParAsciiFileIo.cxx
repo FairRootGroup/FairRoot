@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -95,6 +95,14 @@ Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status)
     Int_t pid = gSystem->GetPid();
     outFileName += pid;
     outFileName += ".par";
+
+    MergeFiles(outFileName, fnamelist);
+
+    return open(outFileName, status);
+}
+
+void FairParAsciiFileIo::MergeFiles(const char* fname, const TList* fnamelist)
+{
     TString catCommand = "cat ";
     TObjString* string;
     TListIter myIter(fnamelist);
@@ -105,18 +113,13 @@ Bool_t FairParAsciiFileIo::open(const TList* fnamelist, const Text_t* status)
         gSystem->ExpandPathName(strParPath);
         if (gSystem->AccessPathName(strParPath))
             LOG(fatal) << "Parameter file " << strParPath << " does not exist.";
-        //    cout <<  string->GetString() <<endl;
         catCommand += string->GetString();
         catCommand += " ";
     }
     catCommand += "> ";
-    catCommand += outFileName;
-
-    //  cout <<"CAT: "<<catCommand.Data()<<endl;
+    catCommand += fname;
 
     gSystem->Exec(catCommand);
-
-    return open(outFileName, status);
 }
 
 void FairParAsciiFileIo::close()
