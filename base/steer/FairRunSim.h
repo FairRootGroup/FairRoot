@@ -215,7 +215,6 @@ class FairRunSim : public FairRun
     Bool_t fUseBeamMom;                             //!                        /** flag for use Beam Energy  */
     static TMCThreadLocal FairRunSim* fginstance;   //!              /** Singleton Instance */
     FairField* fField;                              /** Magnetic Field */
-    const char* fMapName;                           //!                           /** Input file name map*/
     TObjArray* fIons;                               //!                              /** Array of user defined ions */
     TObjArray* fParticles;                          //!                         /** Array of user defined particles*/
     TObjArray* ListOfModules;                       //!                       /** Array of used modules */
