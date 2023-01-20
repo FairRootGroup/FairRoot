@@ -25,8 +25,8 @@ NewDetectorContFact::NewDetectorContFact()
       the list of containers for the NewDetector library.
   */
 
-    FairContainer* p = new FairContainer("NewDetectorGeoPar", "NewDetector Geometry Parameters", "TestDefaultContext");
-    containers->Add(p);
+    auto p = new FairContainer("NewDetectorGeoPar", "NewDetector Geometry Parameters", "TestDefaultContext");
+    AddContainer(p);
 }
 
 FairParSet* NewDetectorContFact::createContainer(FairContainer* c)

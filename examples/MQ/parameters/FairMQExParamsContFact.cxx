@@ -17,9 +17,8 @@ static FairMQExParamsContFact gFairMQExParamsContFact;
 FairMQExParamsContFact::FairMQExParamsContFact()
     : FairContFact("FairMQExParamsContFact", "Factory for parameter containers in FairMQ Example 7")
 {
-    FairContainer* container =
-        new FairContainer("FairMQExParamsParOne", "FairMQExParamsParOne Parameters", "TestDefaultContext");
-    containers->Add(container);
+    auto container = new FairContainer("FairMQExParamsParOne", "FairMQExParamsParOne Parameters", "TestDefaultContext");
+    AddContainer(container);
 }
 
 FairParSet* FairMQExParamsContFact::createContainer(FairContainer* container)

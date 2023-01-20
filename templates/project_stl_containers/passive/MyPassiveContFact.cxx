@@ -41,8 +41,8 @@ MyPassiveContFact::MyPassiveContFact()
     /** Creates the Container objects with all accepted contexts and adds them to
      *  the list of containers for the STS library.*/
 
-    FairContainer* p = new FairContainer("FairGeoPassivePar", "Passive Geometry Parameters", "TestDefaultContext");
-    containers->Add(p);
+    auto p = new FairContainer("FairGeoPassivePar", "Passive Geometry Parameters", "TestDefaultContext");
+    AddContainer(p);
 }
 
 FairParSet* MyPassiveContFact::createContainer(FairContainer* c)
