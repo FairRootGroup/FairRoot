@@ -31,11 +31,11 @@ PixelContFact::PixelContFact()
       the list of containers for the Pixel library.
   */
 
-    FairContainer* p = new FairContainer("PixelGeoPar", "Pixel Geometry Parameters", "TestDefaultContext");
-    containers->Add(p);
+    auto p = new FairContainer("PixelGeoPar", "Pixel Geometry Parameters", "TestDefaultContext");
+    AddContainer(p);
 
-    FairContainer* p2 = new FairContainer("PixelDigiParameters", "Pixel digi parameters", "TestDefaultContext");
-    containers->Add(p2);
+    auto p2 = new FairContainer("PixelDigiParameters", "Pixel digi parameters", "TestDefaultContext");
+    AddContainer(p2);
 }
 
 FairParSet* PixelContFact::createContainer(FairContainer* c)

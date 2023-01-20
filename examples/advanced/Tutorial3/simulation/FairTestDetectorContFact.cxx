@@ -30,13 +30,11 @@ FairTestDetectorContFact::FairTestDetectorContFact()
         the list of containers for the FairTestDetector library.
     */
 
-    FairContainer* p =
-        new FairContainer("FairTestDetectorGeoPar", "FairTestDetector Geometry Parameters", "TestDefaultContext");
+    auto p = new FairContainer("FairTestDetectorGeoPar", "FairTestDetector Geometry Parameters", "TestDefaultContext");
+    AddContainer(p);
 
-    FairContainer* p1 = new FairContainer("FairConstPar", "Constant Field Parameters", "TestDefaultContext");
-
-    containers->Add(p);
-    containers->Add(p1);
+    auto p1 = new FairContainer("FairConstPar", "Constant Field Parameters", "TestDefaultContext");
+    AddContainer(p1);
 }
 
 FairParSet* FairTestDetectorContFact::createContainer(FairContainer* c)

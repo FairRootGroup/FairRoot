@@ -27,8 +27,8 @@ FairTutPropContFact::FairTutPropContFact()
         the list of containers for the FairTutProp library.
     */
 
-    FairContainer* p = new FairContainer("FairTutPropGeoPar", "FairTutProp Geometry Parameters", "TestDefaultContext");
-    containers->Add(p);
+    auto p = new FairContainer("FairTutPropGeoPar", "FairTutProp Geometry Parameters", "TestDefaultContext");
+    AddContainer(p);
 }
 
 FairParSet* FairTutPropContFact::createContainer(FairContainer* c)
