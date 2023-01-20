@@ -224,7 +224,6 @@ class FairRunSim : public FairRun
     FairMCEventHeader* fMCEvHead;                   //!                          /** MC Event Header */
     static TMCThreadLocal FairRunSim* fginstance;   //!              /** Singleton Instance */
     FairField* fField;                              /** Magnetic Field */
-    const char* fMapName;                           //!                           /** Input file name map*/
     TObjArray* fIons;                               //!                              /** Array of user defined ions */
     TObjArray* fParticles;                          //!                         /** Array of user defined particles*/
     TObjArray* ListOfModules;                       //!                       /** Array of used modules */
