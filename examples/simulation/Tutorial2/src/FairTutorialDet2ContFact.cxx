@@ -26,13 +26,11 @@ FairTutorialDet2ContFact::FairTutorialDet2ContFact()
       the list of containers for the Tutorial1 library.
   */
 
-    FairContainer* p1 =
-        new FairContainer("FairTutorialDet2GeoPar", "FairTutorialDet2 Geometry Parameters", "TestDefaultContext");
-    containers->Add(p1);
+    auto p1 = new FairContainer("FairTutorialDet2GeoPar", "FairTutorialDet2 Geometry Parameters", "TestDefaultContext");
+    AddContainer(p1);
 
-    FairContainer* p2 =
-        new FairContainer("FairTutorialDet2DigiPar", "Tutorial Det Digi Parameters", "TestDefaultContext");
-    containers->Add(p2);
+    auto p2 = new FairContainer("FairTutorialDet2DigiPar", "Tutorial Det Digi Parameters", "TestDefaultContext");
+    AddContainer(p2);
 }
 
 FairParSet* FairTutorialDet2ContFact::createContainer(FairContainer* c)

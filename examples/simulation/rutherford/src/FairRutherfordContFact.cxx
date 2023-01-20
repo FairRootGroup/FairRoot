@@ -30,7 +30,7 @@ FairRutherfordContFact::FairRutherfordContFact()
   */
 
     auto p = new FairContainer("FairRutherfordGeoPar", "FairRutherford Geometry Parameters", "TestDefaultContext");
-    containers->Add(p);
+    AddContainer(p);
 }
 
 FairParSet* FairRutherfordContFact::createContainer(FairContainer* c)
