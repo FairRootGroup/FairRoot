@@ -32,6 +32,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     flexible local code by users.
   * Replace with a local template, `configure_file`, and `execute_process()`
   * In your template consider using `source @FairRoot_BINDIR/FairRootConfig.sh`
+* Renamed our `ROOT_GENERATE_DICTIONARY` to `FAIRROOT_GENERATE_DICTIONARY`.
+  (It's not used in many places anyway, it seems.)
 
 ### Deprecations
 
