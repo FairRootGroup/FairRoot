@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -85,7 +85,7 @@ class FairRunSim : public FairRun
      *       Set the experiment dependent event header
      *       for each Monte Carlo Event
      */
-    void SetMCEventHeader(FairMCEventHeader* McHeader) { fMCEvHead = McHeader; }
+    void SetMCEventHeader(FairMCEventHeader* mcHeader);
 
     /** Set the material file name to be used */
     void SetMaterials(const char* MatFileName);
@@ -120,7 +120,7 @@ class FairRunSim : public FairRun
     TObjArray* GetListOfModules() { return ListOfModules; }
 
     /**Get the used primary generator*/
-    FairPrimaryGenerator* GetPrimaryGenerator() { return fGen; }
+    FairPrimaryGenerator* GetPrimaryGenerator() { return fGen.get(); }
 
     /**switch On/Off external decayer (Pythia) */
     void SetPythiaDecayer(Bool_t decayer) { fPythiaDecayer = decayer; }
@@ -197,7 +197,7 @@ class FairRunSim : public FairRun
     /**
      * Get non-owning pointer to FairMCApplication
      */
-    auto GetMCApplication() { return fApp; }
+    FairMCApplication* GetMCApplication() { return fApp.get(); }
 
   private:
     FairRunSim(const FairRunSim& M);
@@ -205,13 +205,14 @@ class FairRunSim : public FairRun
     void SetMCConfig();
     void CheckFlukaExec();
 
+    std::unique_ptr<FairMCApplication> fApp;        //!   /** Main VMC application */
+    std::unique_ptr<FairPrimaryGenerator> fGen;     //!   /** Primary Event Generator */
+    std::unique_ptr<FairMCEventHeader> fMCEvHead;   //!   /** MC Event Header */
+
   protected:
     Int_t count;                                    //!                               /** Internal counter*/
-    FairMCApplication* fApp;                        //!                              /** Main VMC application */
     Double_t fBeamMom;                              //!                           /** Beam Energy in GeV/c  */
     Bool_t fUseBeamMom;                             //!                        /** flag for use Beam Energy  */
-    FairPrimaryGenerator* fGen;                     //!                               /** Primary Event Generator */
-    FairMCEventHeader* fMCEvHead;                   //!                          /** MC Event Header */
     static TMCThreadLocal FairRunSim* fginstance;   //!              /** Singleton Instance */
     FairField* fField;                              /** Magnetic Field */
     const char* fMapName;                           //!                           /** Input file name map*/

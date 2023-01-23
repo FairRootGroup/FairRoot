@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -49,11 +49,8 @@ ClassImp(FairRunSim);
 FairRunSim::FairRunSim(Bool_t isMaster)
     : FairRun(isMaster)
     , count(0)
-    , fApp(nullptr)
     , fBeamMom(0)
     , fUseBeamMom(kFALSE)
-    , fGen(nullptr)
-    , fMCEvHead(nullptr)
     , fField(nullptr)
     , fMapName("")
     , fIons(new TObjArray())
@@ -88,8 +85,6 @@ FairRunSim::~FairRunSim()
 {
     LOG(debug) << "Enter Destructor of FairRunSim ";
 
-    // delete fApp;
-
     /** List of Modules is filled via AddModule from the macro, but it
    is the responsibility of FairRunSim to call the destructors of
    the modules-
@@ -104,11 +99,8 @@ FairRunSim::~FairRunSim()
     fParticles->Delete();
     delete fParticles;
 
-    delete fApp;
     // delete fField;
     // Not owner of the field
-    delete fGen;
-    delete fMCEvHead;
     if (fginstance == this) {
         // Do not point to a destructed object!
         fginstance = nullptr;
@@ -160,8 +152,8 @@ void FairRunSim::Init()
 
     //  gSystem->cd(flout.Data());
 
-    fApp = new FairMCApplication("Fair", "The Fair VMC App", ListOfModules, MatFname);
-    fApp->SetGenerator(fGen);
+    fApp = std::make_unique<FairMCApplication>("Fair", "The Fair VMC App", ListOfModules, MatFname);
+    fApp->SetGenerator(fGen.get());
 
     // Add a Generated run ID to the FairRunTimeDb
     if (fRunId == 0) {
@@ -308,11 +300,20 @@ void FairRunSim::SetMCConfig()
     }
 }
 
-void FairRunSim::Run(Int_t NEvents, Int_t) { fApp->RunMC(NEvents); }
+void FairRunSim::Run(Int_t nEvents, Int_t)
+{
+    fApp->RunMC(nEvents);
+}
 
-void FairRunSim::SetField(FairField* field) { fField = field; }
+void FairRunSim::SetField(FairField* field)
+{
+    fField = field;
+}
 
-void FairRunSim::SetGenerator(FairPrimaryGenerator* Gen) { fGen = Gen; }
+void FairRunSim::SetGenerator(FairPrimaryGenerator* gen)
+{
+    fGen.reset(gen);
+}
 
 void FairRunSim::SetMaterials(const char* MatFileName)
 {
@@ -361,10 +362,15 @@ void FairRunSim::SetUserDecay(const TString& Config)
 
 FairMCEventHeader* FairRunSim::GetMCEventHeader()
 {
-    if (nullptr == fMCEvHead) {
-        fMCEvHead = new FairMCEventHeader();
+    if (!fMCEvHead) {
+        fMCEvHead = std::make_unique<FairMCEventHeader>();
     }
-    return fMCEvHead;
+    return fMCEvHead.get();
+}
+
+void FairRunSim::SetMCEventHeader(FairMCEventHeader* mcHeader)
+{
+    fMCEvHead.reset(mcHeader);
 }
 
 TMCThreadLocal FairRunSim* FairRunSim::fginstance = nullptr;
