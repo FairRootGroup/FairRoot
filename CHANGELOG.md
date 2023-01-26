@@ -60,10 +60,13 @@ file an issue, so that we can see how to handle this.
 
 ## 18.8.1 (UNRELEASED) - 2023-01-XX
 
+### Breaking Changes
+* The output folder name changed from 'folderName_0' to 'folderName'.
+In the MT mode of Geant4 the folder names changed from 'folderName_1' and 'folderName_2' to 'folderName'.
+
 ### Bug fixes
 * Check the return value of `source->InitUnpackers()`/`source->ReinitUnpackers()`
   in `FairRunOnline`. Stop run if `false` returned.
-
 
 ## 18.8.0 - 2022-12-16
 

@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -186,8 +186,18 @@ class FairRunSim : public FairRun
      */
     FairGenericVMCConfig* GetSimulationConfig() { return fSimulationConfig.get(); }
 
-    void SetIsMT(Bool_t isMT) { fIsMT = isMT; }
-    Bool_t IsMT() const { return fIsMT; }
+    /**
+     * Set the MultiThreaded mode, available only for Geant4
+     */
+    void SetIsMT(bool isMT) { fIsMT = isMT; }
+    /**
+     * Read the MultiThreaded mode
+     */
+    bool IsMT() const { return fIsMT; }
+    /**
+     * Read the used transport MultiThreaded mode
+     */
+    bool WasMT() const { return fWasMT; }
 
     void SetImportTGeoToVMC(Bool_t v) { fImportTGeoToVMC = v; }
     Bool_t IsImportTGeoToVMC() const { return fImportTGeoToVMC; }
@@ -204,6 +214,8 @@ class FairRunSim : public FairRun
     FairRunSim& operator=(const FairRunSim&) { return *this; }
     void SetMCConfig();
     void CheckFlukaExec();
+
+    bool fWasMT{false};   //!                              /** Actual MT mode used */
 
   protected:
     Int_t count;                                    //!                               /** Internal counter*/
@@ -231,7 +243,7 @@ class FairRunSim : public FairRun
     TObjArray* fMeshList;                           //!                          /** radiation grid scoring
     TString fUserConfig;                            //!                        /** Macro for geant configuration*/
     TString fUserCuts;                              //!                          /** Macro for geant cuts*/
-    Bool_t fIsMT;                                   //!                              /** MT mode option (Geant4 only)*/
+    bool fIsMT{false};                              //!                              /** MT mode option (Geant4 only)*/
     Bool_t fImportTGeoToVMC;                        //!                   /** Allow importing TGeometry to VMC */
     std::function<void()> fSimSetup;   //!                          /** A user provided function to do sim setup /
                                        //!                          instead of using macros **/
