@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -18,17 +18,14 @@
 #include "FairSink.h"
 
 #include <Rtypes.h>
+#include <TBranch.h>
 #include <TFile.h>
 #include <TString.h>
+#include <memory>
 #include <typeinfo>
 
 class FairEventHeader;
 class FairFileHeader;
-class TBranch;
-class TObjArray;
-class TObject;
-class TTree;
-class TFolder;
 
 class FairRootFileSink : public FairSink
 {
@@ -48,7 +45,7 @@ class FairRootFileSink : public FairSink
     virtual void FillEventHeader(FairEventHeader* feh);
 
     virtual TFile* OpenRootFile(TString fileName = "");
-    TFile* GetRootFile() { return fRootFile; }
+    TFile* GetRootFile() { return fRootFile.get(); }
     virtual TString GetFileName() { return (fRootFile ? fRootFile->GetName() : ""); }
 
     virtual void SetOutTree(TTree* fTree) { fOutTree = fTree; }
@@ -73,7 +70,7 @@ class FairRootFileSink : public FairSink
     /** Title of input sink, could be input, background or signal*/
     TString fOutputTitle;
     /** ROOT file */
-    TFile* fRootFile;
+    std::unique_ptr<TFile> fRootFile;
     /** Output Tree  */
     TTree* fOutTree;
     /**  list of folders from all input (and friends) files */

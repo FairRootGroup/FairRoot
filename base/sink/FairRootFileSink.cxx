@@ -15,7 +15,6 @@
 #include "FairRootFileSink.h"
 
 #include "FairEventHeader.h"
-#include "FairLogger.h"
 #include "FairMonitor.h"       // to store histograms at the end
 #include "FairRootManager.h"   // to GetTreeName()
 
@@ -33,8 +32,8 @@
 #include <TTree.h>
 #include <cstdlib>    // free
 #include <cxxabi.h>   // __cxa_demangle
-#include <memory>     // unique_ptr
-#include <string>     // string
+#include <fairlogger/Logger.h>
+#include <string>
 
 FairRootFileSink::FairRootFileSink(TFile* f, const char* Title)
     : FairSink()
@@ -55,14 +54,13 @@ FairRootFileSink::FairRootFileSink(TFile* f, const char* Title)
 FairRootFileSink::FairRootFileSink(const TString* RootFileName, const char* Title)
     : FairSink()
     , fOutputTitle(Title)
-    , fRootFile(0)
     , fOutTree(0)
     , fListFolder(new TObjArray(16))
     , fCbmout(0)
     , fIsInitialized(kFALSE)
     , fFileHeader(0)
 {
-    fRootFile = TFile::Open(RootFileName->Data(), "recreate");
+    fRootFile.reset(TFile::Open(RootFileName->Data(), "recreate"));
     if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Output file";
     }
@@ -72,14 +70,13 @@ FairRootFileSink::FairRootFileSink(const TString* RootFileName, const char* Titl
 FairRootFileSink::FairRootFileSink(const TString RootFileName, const char* Title)
     : FairSink()
     , fOutputTitle(Title)
-    , fRootFile(0)
     , fOutTree(0)
     , fListFolder(new TObjArray(16))
     , fCbmout(0)
     , fIsInitialized(kFALSE)
     , fFileHeader(0)
 {
-    fRootFile = TFile::Open(RootFileName.Data(), "recreate");
+    fRootFile.reset(TFile::Open(RootFileName.Data(), "recreate"));
     if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening file " << RootFileName;
     }
@@ -343,8 +340,10 @@ Int_t FairRootFileSink::Write(const char*, Int_t, Int_t)
 
         // fOutTree->Print();
 
-        fRootFile = fOutTree->GetCurrentFile();
-        FairMonitor::GetMonitor()->StoreHistograms(fRootFile);
+        if (fRootFile.get() != fOutTree->GetCurrentFile()) {
+            fRootFile.reset(fOutTree->GetCurrentFile());
+        }
+        FairMonitor::GetMonitor()->StoreHistograms(fRootFile.get());
         LOG(debug) << "FairRootFileSink::Write to file: " << fRootFile->GetName();
         fRootFile->WriteTObject(fOutTree);
     } else {
