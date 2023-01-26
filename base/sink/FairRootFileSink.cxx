@@ -39,11 +39,6 @@ FairRootFileSink::FairRootFileSink(TFile* f, const char* Title)
     : FairSink()
     , fOutputTitle(Title)
     , fRootFile(f)
-    , fOutTree(0)
-    , fListFolder(new TObjArray(16))
-    , fCbmout(0)
-    , fIsInitialized(kFALSE)
-    , fFileHeader(0)
 {
     if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
@@ -54,11 +49,6 @@ FairRootFileSink::FairRootFileSink(TFile* f, const char* Title)
 FairRootFileSink::FairRootFileSink(const TString* RootFileName, const char* Title)
     : FairSink()
     , fOutputTitle(Title)
-    , fOutTree(0)
-    , fListFolder(new TObjArray(16))
-    , fCbmout(0)
-    , fIsInitialized(kFALSE)
-    , fFileHeader(0)
 {
     fRootFile.reset(TFile::Open(RootFileName->Data(), "recreate"));
     if ((!fRootFile) || fRootFile->IsZombie()) {
@@ -70,11 +60,6 @@ FairRootFileSink::FairRootFileSink(const TString* RootFileName, const char* Titl
 FairRootFileSink::FairRootFileSink(const TString RootFileName, const char* Title)
     : FairSink()
     , fOutputTitle(Title)
-    , fOutTree(0)
-    , fListFolder(new TObjArray(16))
-    , fCbmout(0)
-    , fIsInitialized(kFALSE)
-    , fFileHeader(0)
 {
     fRootFile.reset(TFile::Open(RootFileName.Data(), "recreate"));
     if ((!fRootFile) || fRootFile->IsZombie()) {
@@ -82,8 +67,6 @@ FairRootFileSink::FairRootFileSink(const TString RootFileName, const char* Title
     }
     LOG(debug) << "FairRootFileSink created------------";
 }
-
-FairRootFileSink::~FairRootFileSink() {}
 
 TFile* FairRootFileSink::OpenRootFile(TString fileName)
 {
