@@ -33,38 +33,39 @@ class FairRootFileSink : public FairSink
     FairRootFileSink(TFile* f, const char* Title = "OutputRootFile");
     FairRootFileSink(const TString* RootFileName, const char* Title = "OutputRootFile");
     FairRootFileSink(const TString RootFileName, const char* Title = "OutputRootFile");
-    //  FairRootFileSink(const FairRootFileSink& file);
-    virtual ~FairRootFileSink();
+    FairRootFileSink(const FairRootFileSink&) = delete;
+    FairRootFileSink operator=(const FairRootFileSink&) = delete;
+    ~FairRootFileSink() override = default;
 
-    virtual Bool_t InitSink();
-    virtual void Close();
-    virtual void Reset();
+    Bool_t InitSink() override;
+    void Close() override;
+    void Reset() override;
 
-    virtual Sink_Type GetSinkType() { return kFILESINK; }
+    Sink_Type GetSinkType() override { return kFILESINK; }
 
     virtual void FillEventHeader(FairEventHeader* feh);
 
     virtual TFile* OpenRootFile(TString fileName = "");
     TFile* GetRootFile() { return fRootFile.get(); }
-    virtual TString GetFileName() { return (fRootFile ? fRootFile->GetName() : ""); }
+    TString GetFileName() override { return (fRootFile ? fRootFile->GetName() : ""); }
 
-    virtual void SetOutTree(TTree* fTree) { fOutTree = fTree; }
+    void SetOutTree(TTree* fTree) override { fOutTree = fTree; }
     TTree* GetOutTree() { return fOutTree; }
 
-    virtual void Fill();
+    void Fill() override;
 
-    virtual Int_t Write(const char* name = 0, Int_t option = 0, Int_t bufsize = 0);
+    Int_t Write(const char* name = nullptr, Int_t option = 0, Int_t bufsize = 0) override;
 
-    virtual void RegisterImpl(const char*, const char*, void*);
-    virtual void RegisterAny(const char* brname, const std::type_info& oi, const std::type_info& pi, void* obj);
+    void RegisterImpl(const char*, const char*, void*) override;
+    void RegisterAny(const char* brname, const std::type_info& oi, const std::type_info& pi, void* obj) override;
 
-    virtual void WriteFolder();
-    virtual bool CreatePersistentBranchesAny();
+    void WriteFolder() override;
+    bool CreatePersistentBranchesAny() override;
 
-    virtual void WriteObject(TObject* f, const char*, Int_t option = 0);
-    virtual void WriteGeometry();
+    void WriteObject(TObject* f, const char*, Int_t option = 0) override;
+    void WriteGeometry() override;
 
-    virtual FairSink* CloneSink();
+    FairSink* CloneSink() override;
 
   private:
     /** Title of input sink, could be input, background or signal*/
@@ -72,27 +73,20 @@ class FairRootFileSink : public FairSink
     /** ROOT file */
     std::unique_ptr<TFile> fRootFile;
     /** Output Tree  */
-    TTree* fOutTree;
-    /**  list of folders from all input (and friends) files */
-    TObjArray* fListFolder;   //!
-    /** folder structure of output */
-    TFolder* fCbmout;
+    TTree* fOutTree{nullptr};
     /** Initialization flag, true if initialized */
-    Bool_t fIsInitialized;
-
-    FairRootFileSink(const FairRootFileSink&);
-    FairRootFileSink operator=(const FairRootFileSink&);
+    Bool_t fIsInitialized{kFALSE};
 
     void TruncateBranchNames();
     void TruncateBranchNames(TBranch* b, TString ffn);
     // bool CreatePersistentBranchesAny();
 
     /**File Header*/
-    FairFileHeader* fFileHeader;   //!
+    FairFileHeader* fFileHeader{nullptr};   //!
 
     bool fPersistentBranchesDone{false};   //!
 
-    ClassDef(FairRootFileSink, 1);
+    ClassDefOverride(FairRootFileSink, 1);
 };
 
 #endif /* defined(__FAIRROOT__FairRootFileSink__) */
