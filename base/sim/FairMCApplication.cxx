@@ -465,6 +465,8 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
     auto workerRun = std::make_unique<FairRunSim>(kFALSE);
     workerRun->SetName(fRun->GetName());   // Transport engine
     workerRun->SetSink(std::unique_ptr<FairSink>{fRun->GetSink()->CloneSink()});
+    workerRun->SetMCEventHeader(new FairMCEventHeader(*(fRun->GetMCEventHeader())));
+    workerRun->SetRunId(workerRun->GetMCEventHeader()->GetRunID());
 
     // Trajectories filter is created explicitly as we do not call
     // FairRunSim::Init on workers
@@ -485,7 +487,12 @@ void FairMCApplication::InitOnWorker()
     // and create a new sink on worker
     // moved to CloneForWorker and specific sink->CloneSink();
 
-    fRootManager->InitSink();
+    {
+        std::lock_guard guard(mtx);
+        fRootManager->InitSink();
+        RegisterOutput();
+        fRootManager->WriteFolder();
+    }
 
     // Cache thread-local gMC
     fMC = gMC;
@@ -722,7 +729,10 @@ Double_t FairMCApplication::TrackingZmax() const
     return DBL_MAX;
 }
 //_____________________________________________________________________________
-void FairMCApplication::SetField(FairField* field) { fxField = field; }
+void FairMCApplication::SetField(FairField* field)
+{
+    fxField = field;
+}
 //_____________________________________________________________________________
 void FairMCApplication::ConstructOpGeometry()
 {
@@ -867,54 +877,12 @@ void FairMCApplication::InitGeometry()
 
     /// Initialize geometry
 
-    // Register stack
-    if (fEvGen && fStack && fRootManager) {
-        fStack->Register();
-    } else {
-        LOG(warn) << "Stack is not registered ";
-    }
-
-    /** SetSpecialPhysicsCuts for FairDetector objects and all passive modules inheriting from FairModule */
-    // initialize and register FairDetector objects in addition
-    // Note: listActiveDetectors or fActiveDetectors not used to include passive modules in the same loop.
-    for (auto module : fListModules) {
-        auto detector = dynamic_cast<FairDetector*>(module);
-        if (module) {
-            module->SetSpecialPhysicsCuts();
-        }
-        if (detector) {
-            // check whether detector is active
-            if (detector->IsActive()) {
-                detector->Initialize();
-                detector->Register();
-            }
-        }
-    }
-
-    /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in the
-     * tree*/
-    /// There is always a Main Task  !
-    /// so .. always a InitTasks() is called <D.B>
-    if (fFairTaskList) {
-        InitTasks();
-    }
-
     // store the EventHeader Info
     // Get and register EventHeader
     UInt_t runId = fRun->GetRunId();
 
     LOG(info) << "Simulation RunID: " << runId;
 
-    // Get and register the MCEventHeader
-    fMCEventHeader = fRun->GetMCEventHeader();
-    fMCEventHeader->SetRunID(runId);
-    if (fRootManager) {
-        fMCEventHeader->Register();
-    }
-
-    if (fEvGen) {
-        fEvGen->SetEvent(fMCEventHeader);
-    }
     fTrajFilter = FairTrajFilter::Instance();
     if (nullptr != fTrajFilter) {
         fTrajFilter->Init();
@@ -930,9 +898,20 @@ void FairMCApplication::InitGeometry()
     }
 
     /// save Geo Params in Output file
-    if (fRootManager) {
+    if (fRootManager && !fParent) {
+        RegisterOutput();
+
+        /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in
+         * the tree*/
+        /// There is always a Main Task  !
+        /// so .. always a InitTasks() is called <D.B>
+        if (fFairTaskList) {
+            InitTasks();
+        }
+
         fRootManager->WriteFolder();
     }
+    fMCEventHeader->SetRunID(runId);
 
     // Get static thread local svList
     auto sen_volumes = FairModule::svList;
@@ -981,6 +960,43 @@ void FairMCApplication::InitGeometry()
     fGeometryIsInitialized = kTRUE;
 
     fState = FairMCApplicationState::kUnknownState;
+}
+
+//_____________________________________________________________________________
+void FairMCApplication::RegisterOutput()
+{
+    // Register stack
+    if (fEvGen && fStack && fRootManager) {
+        fStack->Register();
+    } else {
+        LOG(warn) << "Stack is not registered ";
+    }
+
+    /** SetSpecialPhysicsCuts for FairDetector objects and all passive modules inheriting from FairModule */
+    // initialize and register FairDetector objects in addition
+    // Note: listActiveDetectors or fActiveDetectors not used to include passive modules in the same loop.
+    for (auto module : fListModules) {
+        auto detector = dynamic_cast<FairDetector*>(module);
+        if (module) {
+            module->SetSpecialPhysicsCuts();
+        }
+        if (detector) {
+            // check whether detector is active
+            if (detector->IsActive()) {
+                detector->Initialize();
+                detector->Register();
+            }
+        }
+    }
+
+    fMCEventHeader = fRun->GetMCEventHeader();
+
+    if (fEvGen) {
+        fEvGen->SetEvent(fMCEventHeader);
+    }
+    if (fRootManager) {
+        fMCEventHeader->Register();
+    }
 }
 
 //_____________________________________________________________________________
@@ -1185,10 +1201,16 @@ void FairMCApplication::AddDecayModes()
 }
 
 //_____________________________________________________________________________
-FairPrimaryGenerator* FairMCApplication::GetGenerator() { return fEvGen; }
+FairPrimaryGenerator* FairMCApplication::GetGenerator()
+{
+    return fEvGen;
+}
 
 //_____________________________________________________________________________
-void FairMCApplication::SetGenerator(FairPrimaryGenerator* pGen) { fEvGen = pGen; }
+void FairMCApplication::SetGenerator(FairPrimaryGenerator* pGen)
+{
+    fEvGen = pGen;
+}
 
 //_____________________________________________________________________________
 void FairMCApplication::AddTask(TTask* fTask)
@@ -1208,7 +1230,10 @@ FairGenericStack* FairMCApplication::GetStack()
 }
 
 //_____________________________________________________________________________
-TTask* FairMCApplication::GetListOfTasks() { return fFairTaskList; }
+TTask* FairMCApplication::GetListOfTasks()
+{
+    return fFairTaskList;
+}
 
 //_____________________________________________________________________________
 void FairMCApplication::SetParTask()

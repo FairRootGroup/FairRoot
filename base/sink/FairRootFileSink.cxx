@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -107,8 +107,7 @@ Bool_t FairRootFileSink::InitSink()
 
     // FairRun* fRun = FairRun::Instance();
     /**Check if a simulation run!*/
-    fOutFolder = gROOT->GetRootFolder()->AddFolder(
-        Form("%s_%d", FairRootManager::GetFolderName(), FairRootManager::Instance()->GetInstanceId()), "Main Folder");
+    fOutFolder = gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
     gROOT->GetListOfBrowsables()->Add(fOutFolder);
 
     LOG(info) << "FairRootFileSink initialized.";
@@ -230,7 +229,7 @@ void FairRootFileSink::Close()
 
 void FairRootFileSink::Reset() {}
 
-void FairRootFileSink::FillEventHeader(FairEventHeader* /* feh */) { return; }
+void FairRootFileSink::FillEventHeader(FairEventHeader* /* feh */) {}
 
 void FairRootFileSink::RegisterImpl(const char* /* name */, const char* folderName, void* obj)
 {
@@ -263,12 +262,12 @@ void FairRootFileSink::WriteFolder()
         fOutFolder->Write(FairRootManager::GetFolderName());
 
         // FairRun* fRun = FairRun::Instance();
-        fOutTree =
-            new TTree(FairRootManager::GetTreeName(),
-                      Form("/%s_%d", FairRootManager::GetFolderName(), FairRootManager::Instance()->GetInstanceId()),
-                      99);
+        fOutTree = new TTree(FairRootManager::GetTreeName(), Form("/%s", FairRootManager::GetFolderName()), 99);
         TruncateBranchNames();
         CreatePersistentBranchesAny();
+
+        // Delete the folder to make place in the gROOT for fOutFolder created by the Geant4MT threads
+        gROOT->GetRootFolder()->Remove(fOutFolder);
     }
 }
 
@@ -318,7 +317,10 @@ void FairRootFileSink::WriteObject(TObject* f, const char* name, Int_t option)
     f->Write(name, option);
 }
 
-void FairRootFileSink::WriteGeometry() { fRootFile->WriteTObject(gGeoManager); }
+void FairRootFileSink::WriteGeometry()
+{
+    fRootFile->WriteTObject(gGeoManager);
+}
 
 void FairRootFileSink::Fill()
 {

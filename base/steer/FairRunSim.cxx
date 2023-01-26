@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -72,7 +72,6 @@ FairRunSim::FairRunSim(Bool_t isMaster)
     , fMeshList(new TObjArray())
     , fUserConfig("")
     , fUserCuts("SetCuts.C")
-    , fIsMT(kFALSE)
     , fImportTGeoToVMC(kTRUE)
 {
     if (fginstance) {
@@ -115,7 +114,10 @@ FairRunSim::~FairRunSim()
     }
 }
 
-FairRunSim* FairRunSim::Instance() { return fginstance; }
+FairRunSim* FairRunSim::Instance()
+{
+    return fginstance;
+}
 
 void FairRunSim::AddModule(FairModule* Mod)
 {
@@ -308,11 +310,21 @@ void FairRunSim::SetMCConfig()
     }
 }
 
-void FairRunSim::Run(Int_t NEvents, Int_t) { fApp->RunMC(NEvents); }
+void FairRunSim::Run(Int_t NEvents, Int_t)
+{
+    fApp->RunMC(NEvents);
+    fWasMT = fApp->GetIsMT();
+}
 
-void FairRunSim::SetField(FairField* field) { fField = field; }
+void FairRunSim::SetField(FairField* field)
+{
+    fField = field;
+}
 
-void FairRunSim::SetGenerator(FairPrimaryGenerator* Gen) { fGen = Gen; }
+void FairRunSim::SetGenerator(FairPrimaryGenerator* Gen)
+{
+    fGen = Gen;
+}
 
 void FairRunSim::SetMaterials(const char* MatFileName)
 {
