@@ -391,7 +391,6 @@ void FairMCApplication::FinishRun()
 
     if (!fRadGridMan && fRootManager) {
         fRootManager->Write();
-        fRootManager->CloseSink();
     }
 
     if (fEvGen) {
@@ -642,7 +641,6 @@ void FairMCApplication::StopRun()
     FinishRun();
     if (fRootManager) {
         fRootManager->Write();
-        fRootManager->CloseSink();
     }
     LOG(warn) << "StopRun() exiting not safetly oopps !!!@@@!!!";
     exit(0);
