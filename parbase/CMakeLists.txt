@@ -51,7 +51,7 @@ target_link_libraries(${target}
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
-  LINKDEF ParBaseLinkDef.h
+  LINKDEF LinkDef.h
   EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
