@@ -15,13 +15,14 @@
 #include "FairLogger.h"
 #include "FairRun.h"         // for FairRun
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
-#include "TVirtualMCSensitiveDetector.h"
 
 #include <Rtypes.h>      // for Bool_t, Int_t, etc
 #include <TList.h>       // for TList (ptr only), TListIter
 #include <TNamed.h>      // for TNamed
 #include <TObjArray.h>   // for TObjArray
 #include <TString.h>     // for TString, operator!=
+#include <TVirtualMCSensitiveDetector.h>
+
 #include <string>        // for string
 
 class FairVolumeList;

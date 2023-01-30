@@ -110,8 +110,6 @@ void FairTutPropDet::ProcessHits()
         FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
         stack->AddPoint(kTutProp);
     }
-
-    return;
 }
 
 void FairTutPropDet::EndOfEvent() { fFairTutPropPointCollection->Clear(); }

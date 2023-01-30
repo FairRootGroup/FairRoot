@@ -336,10 +336,6 @@ class FairMCApplication : public TVirtualMCApplication
     /** Current state */
     FairMCApplicationState fState;   //!
 
-    /** List of sensitive detectors.
-     * To be used with TVirtualMCSensitiveDetector. */
-    std::map<std::string, FairModule*> fMapSensitiveDetectors;
-
     ClassDefOverride(FairMCApplication, 5);
 
   private:
@@ -353,6 +349,12 @@ class FairMCApplication : public TVirtualMCApplication
      * List of modules, mirrors fModules
      */
     std::vector<FairModule*> fListModules{};   //!
+
+    /**
+     * List of sensitive detectors.
+     * To be used with TVirtualMCSensitiveDetector.
+     */
+    std::map<std::string, FairModule*> fMapSensitiveDetectors;
 
     /**
      * Owned Modules (inside the worker)

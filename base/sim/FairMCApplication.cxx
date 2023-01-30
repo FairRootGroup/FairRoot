@@ -196,6 +196,11 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
         auto& clone = fOwnedModules.emplace_back(module->CloneModule());
         fListModules.emplace_back(clone.get());
         fModules->Add(clone.get());
+        for (auto sens : rhs.fMapSensitiveDetectors) {
+            if (sens.second == module) {
+                fMapSensitiveDetectors[sens.first] = clone.get();
+            }
+        }
     }
 
     // Create and fill a list of active detectors
@@ -545,7 +550,6 @@ void FairMCApplication::Stepping()
     if (fRadLenMan || fRadMapMan) {
         Int_t copyNo;
         Int_t id = fMC->CurrentVolID(copyNo);
-        id = fMC->CurrentVolID(copyNo);
         auto modvoliter = (fParent ? fParent : this)->fModVolMap.find(id);
         if (fRadLenMan) {
             fRadLenMan->AddPoint(fMC, modvoliter->second);
@@ -932,7 +936,6 @@ void FairMCApplication::RegisterOutput()
         if (detector) {
             // check whether detector is active
             if (detector->IsActive()) {
-                detector->Initialize();
                 detector->Register();
             }
         }
@@ -1295,8 +1298,7 @@ void FairMCApplication::ConstructSensitiveDetectors()
         std::string volName = x.first;   //.substr(0, x.first.find("#", 0));
         if (volName.find('#') != std::string::npos) {
             volName = volName.substr(0, volName.find("#", 0));
-            std::map<std::string, FairModule*>::iterator it;
-            it = cloneVolumeMap.find(volName);
+            auto it = cloneVolumeMap.find(volName);
             LOG(debug) << "FairMCApplication::ConstructSensitiveDetectors got clone " << x.first << " " << x.second;
             if (it != cloneVolumeMap.end())
                 continue;

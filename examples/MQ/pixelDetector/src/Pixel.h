@@ -36,7 +36,7 @@ class Pixel : public FairDetector
     /**       this method is called for each step during simulation
      *       (see FairMCApplication::Stepping())
      */
-    virtual void ProcessHits();
+    void ProcessHits() override;
 
     /**       Registers the produced collections in FAIRRootManager.     */
     void Register() override;
