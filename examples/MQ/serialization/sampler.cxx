@@ -6,33 +6,40 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef EX2SAMPLER_H
-#define EX2SAMPLER_H
-
-#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
+// this example
+#include "ExHeader.h"
 #include "MyDigi.h"
-#include "RootSerializer.h"
-#include "SerializerExample2.h"
 
+// FairRoot
+#include "BoostSerializer.h"
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
+#include "FairRunFairMQDevice.h"
+#include "RootSerializer.h"
+
+// ROOT
 #include <Rtypes.h>
 #include <TFile.h>
 #include <TTree.h>
+
+// std
 #include <chrono>
+#include <memory>
+#include <string>
 #include <thread>
 
-class Ex2Sampler : public fair::mq::Device
+namespace bpo = boost::program_options;
+
+struct Sampler : fair::mq::Device
 {
-  public:
-    Ex2Sampler()
+    Sampler()
         : fInput(nullptr)
         , fTree(nullptr)
-        , fInputFile(nullptr)
     {}
 
     void Init() override
     {
         fFileName = fConfig->GetValue<std::string>("input-file");
-        fInputFile = TFile::Open(fFileName.c_str(), "READ");
+        fInputFile.reset(TFile::Open(fFileName.c_str(), "READ"));
         if (fInputFile) {
             fTree = fInputFile->Get<TTree>("cbmsim");
             if (fTree) {
@@ -53,11 +60,12 @@ class Ex2Sampler : public fair::mq::Device
 
         for (Long64_t idx = 0; idx < numEvents; idx++) {
             fTree->GetEntry(idx);
-            Ex2Header* header = new Ex2Header();
-            header->EventNumber = idx;
+
+            ExHeader header;
+            header.eventNumber = idx;
 
             auto msgHeader(NewMessage());
-            SerializerEx2().Serialize(*msgHeader, header);
+            BoostSerializer<ExHeader>().Serialize(*msgHeader, header);
 
             auto msg(NewMessage());
             RootSerializer().Serialize(*msg, fInput);
@@ -83,19 +91,22 @@ class Ex2Sampler : public fair::mq::Device
         }
     }
 
-    void Reset() override
-    {
-        if (fInputFile) {
-            fInputFile->Close();
-            delete fInputFile;
-        }
-    }
-
   private:
     TClonesArray* fInput;
     TTree* fTree;
     std::string fFileName;
-    TFile* fInputFile;
+    std::unique_ptr<TFile> fInputFile;
 };
 
-#endif   // EX2SAMPLER_H
+void addCustomOptions(bpo::options_description& options)
+{
+    // clang-format off
+    options.add_options()
+        ("input-file", bpo::value<std::string>(), "Path to the input file");
+    // clang-format on
+}
+
+std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& /*config*/)
+{
+    return std::make_unique<Sampler>();
+}

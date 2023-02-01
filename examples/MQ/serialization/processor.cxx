@@ -6,51 +6,54 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef EX1PROCESSOR_H
-#define EX1PROCESSOR_H
-
-#include "FairMQ.h"   // for fair::mq::Device
+// this example
+#include "ExHeader.h"
 #include "MyDigi.h"
 #include "MyHit.h"
+
+// FairRoot
+#include "BoostSerializer.h"
+#include "FairMQ.h"   // for fair::mq::Device, fair::mq::Parts
+#include "FairRunFairMQDevice.h"
 #include "RootSerializer.h"
 
-#include <TClonesArray.h>
+// ROOT
 #include <TMath.h>
+
+// std
 #include <memory>
 
-class Ex1Processor : public fair::mq::Device
-{
-  public:
-    Ex1Processor() = default;
-    ~Ex1Processor() override = default;
+namespace bpo = boost::program_options;
 
+struct Processor : fair::mq::Device
+{
     void Run() override
     {
         int receivedMsgs = 0;
         int sentMsgs = 0;
 
         while (!NewStatePending()) {
-            // Receive
-            auto msgIn(NewMessageFor("data1", 0));
-            if (Receive(msgIn, "data1") > 0) {
-                receivedMsgs++;
+            fair::mq::Parts partsIn;
 
-                // Deserialize
-                auto digis = RootSerializer().DeserializeTo<TClonesArray>(*msgIn);
+            if (Receive(partsIn, "data1") > 0) {
+                ExHeader header;
+                BoostSerializer<ExHeader>().Deserialize(*(partsIn.At(0)), header);
+                auto digis = RootSerializer().DeserializeTo<TClonesArray>(*(partsIn.At(1)));
                 if (!digis) {
                     LOG(warn) << "Deserialization FAILED, skipping";
                     continue;
                 }
 
-                // Compute
+                receivedMsgs++;
+
                 TClonesArray hits = FindHits(*digis);
 
-                // Serialize
-                auto msgOut(NewMessageFor("data2", 0));
-                RootSerializer().Serialize(*msgOut, &hits);
+                fair::mq::Parts partsOut;
+                partsOut.AddPart(std::move(partsIn.At(0)));
+                partsOut.AddPart(NewMessage());
 
-                // Send
-                if (Send(msgOut, "data2") >= 0) {
+                BoostSerializer<MyHit>().Serialize(*(partsOut.At(1)), &hits);
+                if (Send(partsOut, "data2") >= 0) {
                     sentMsgs++;
                 }
             }
@@ -81,4 +84,15 @@ class Ex1Processor : public fair::mq::Device
     }
 };
 
-#endif   // EX1PROCESSOR_H
+void addCustomOptions(bpo::options_description& options)
+{
+    // clang-format off
+    options.add_options()
+        ("num-msgs", bpo::value<int>()->default_value(0), "Stop after <n> msgs (0 - no limit).");
+    // clang-format on
+}
+
+std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& /*config*/)
+{
+    return std::make_unique<Processor>();
+}
