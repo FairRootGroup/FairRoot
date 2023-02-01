@@ -57,7 +57,6 @@ FairRunSim::FairRunSim(Bool_t isMaster)
     , ListOfModules(new TObjArray())
     , MatFname("")
     , fStoreTraj(kFALSE)
-    , fLoaderName(new TString("TGeo"))
     , fPythiaDecayer(kFALSE)
     , fPythiaDecayerConfig("")
     , fUserDecay(kFALSE)
@@ -152,7 +151,7 @@ void FairRunSim::Init()
     //  fOutFile=fRootManager->OpenOutFile(fOutname);
     LOG(info) << "==============  FairRunSim: Initialising simulation run ==============";
 
-    FairGeoLoader* loader = new FairGeoLoader(fLoaderName->Data(), "Geo Loader");
+    auto loader = new FairGeoLoader(fLoaderName.Data(), "Geo Loader");
     FairGeoInterface* GeoInterFace = loader->getGeoInterface();
     GeoInterFace->SetNoOfSets(ListOfModules->GetEntries());
     GeoInterFace->setMediaFile(MatFname.Data());
@@ -342,11 +341,10 @@ void FairRunSim::SetMaterials(const char* MatFileName)
     LOG(info) << "Media file used: " << MatFname.Data();
 }
 
-void FairRunSim::SetGeoModel(char* name)
+void FairRunSim::SetGeoModel(const char* name)
 {
-    if (strncmp(fName, "TGeant3", 7) == 0) {
-        delete fLoaderName;
-        fLoaderName = new TString(name);
+    if (fName == "TGeant3") {
+        fLoaderName = name;
         LOG(info) << "FairRun::SetGeoModel(): G3 native geometry model used ";
     } else {
         LOG(info) << "FairRun::SetGeoModel(): Geant3 MC engine only !";
