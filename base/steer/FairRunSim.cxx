@@ -46,13 +46,10 @@ using std::endl;
 
 ClassImp(FairRunSim);
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 FairRunSim::FairRunSim(Bool_t isMaster)
     : FairRun(isMaster)
-    , count(0)
-    , fApp(nullptr)
-    , fBeamMom(0)
-    , fUseBeamMom(kFALSE)
-    , fGen(nullptr)
     , fMCEvHead(nullptr)
     , fField(nullptr)
     , fMapName("")
@@ -82,6 +79,7 @@ FairRunSim::FairRunSim(Bool_t isMaster)
     fRunId = 0;
     fAna = kFALSE;
 }
+#pragma GCC diagnostic pop
 
 FairRunSim::~FairRunSim()
 {
@@ -106,7 +104,10 @@ FairRunSim::~FairRunSim()
     delete fApp;
     // delete fField;
     // Not owner of the field
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     delete fGen;
+#pragma GCC diagnostic pop
     delete fMCEvHead;
     if (fginstance == this) {
         // Do not point to a destructed object!
@@ -163,7 +164,10 @@ void FairRunSim::Init()
     //  gSystem->cd(flout.Data());
 
     fApp = new FairMCApplication("Fair", "The Fair VMC App", ListOfModules, MatFname);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     fApp->SetGenerator(fGen);
+#pragma GCC diagnostic pop
 
     // Add a Generated run ID to the FairRunTimeDb
     if (fRunId == 0) {
@@ -326,7 +330,10 @@ void FairRunSim::SetField(FairField* field)
 
 void FairRunSim::SetGenerator(FairPrimaryGenerator* Gen)
 {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     fGen = Gen;
+#pragma GCC diagnostic pop
 }
 
 void FairRunSim::SetMaterials(const char* MatFileName)
