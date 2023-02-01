@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -52,7 +52,7 @@ foreach(mcEngine IN LISTS mcEngine_list)
 endforeach()
 
 add_test(NAME ex_tutorial1_Geant4MT
-         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1.sh 10 \"TGeant4\" true false)
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1.sh 20 \"TGeant4\" true false)
 set_tests_properties(ex_tutorial1_Geant4MT PROPERTIES
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Simulation successful."

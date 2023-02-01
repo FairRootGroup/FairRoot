@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -120,11 +120,9 @@ TClonesArray* FairTutorialDet1::GetCollection(Int_t iColl) const
     }
 }
 
-void FairTutorialDet1::Reset() { fFairTutorialDet1PointCollection->Clear(); }
-
-Bool_t FairTutorialDet1::IsSensitive(const std::string& name)
+void FairTutorialDet1::Reset()
 {
-    return name.find("tutdet") != std::string::npos;
+    fFairTutorialDet1PointCollection->Clear();
 }
 
 void FairTutorialDet1::ConstructGeometry()
@@ -149,6 +147,9 @@ FairTutorialDet1Point* FairTutorialDet1::AddHit(Int_t trackID,
     return new (clref[size]) FairTutorialDet1Point(trackID, detID, pos, mom, time, length, eLoss);
 }
 
-FairModule* FairTutorialDet1::CloneModule() const { return new FairTutorialDet1(*this); }
+FairModule* FairTutorialDet1::CloneModule() const
+{
+    return new FairTutorialDet1(*this);
+}
 
 ClassImp(FairTutorialDet1);
