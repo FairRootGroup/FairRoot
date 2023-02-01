@@ -29,7 +29,8 @@ class FairModule;
 class FairPrimaryGenerator;
 
 /**
- * Configure the Simulation session
+ * \brief Configure the Simulation session
+ * \ingroup base_steer
  * @author M. Al-Turany  D. Bertini
  * @version 0.1
  * @since 12.01.04
@@ -105,10 +106,10 @@ class FairRunSim : public FairRun
     }
 
     /**Set geometry builder*/
-    void SetGeoModel(char* name);
+    void SetGeoModel(const char* name);
 
     /**return the geometry loader used in this session*/
-    TString* GetGeoModel() { return fLoaderName; }
+    TString* GetGeoModel() { return &fLoaderName; }
 
     /**Get the field used in simulation*/
     FairField* GetField() override { return fField; }
@@ -229,7 +230,7 @@ class FairRunSim : public FairRun
     TObjArray* ListOfModules;                       //!                       /** Array of used modules */
     TString MatFname;                               //!                           /** Material file name */
     Bool_t fStoreTraj;                              //!                       /** Trajectory store flags */
-    TString* fLoaderName;                           //!                       /** Geometry Model (TGeo or G3)*/
+    TString fLoaderName{"TGeo"};                    //!< Geometry Model (TGeo or G3)
     Bool_t fPythiaDecayer;                          //!                    /** flag for using Pythia decayer*/
     TString fPythiaDecayerConfig;                   //!               /** Macro for Pythia decay configuration*/
     Bool_t fUserDecay;                              /** flag for setting user decay */
