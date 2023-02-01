@@ -17,12 +17,7 @@
 #pragma link C++ class MyDigi+;
 #pragma link C++ class MyHit+;
 
-#pragma link C++ namespace MyPodData;
 #pragma link C++ nestedclass;
 #pragma link C++ nestedtypedef;
-
-#pragma link C++ class MyPodData::TimeStamp+;
-#pragma link C++ class MyPodData::Digi+;
-#pragma link C++ class MyPodData::Hit+;
 
 #endif

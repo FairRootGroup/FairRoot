@@ -13,8 +13,8 @@
  * Created on November 24, 2014, 1:31 PM
  */
 
-#ifndef MYDIGIDATA_H
-#define MYDIGIDATA_H
+#ifndef MYDIGI_H
+#define MYDIGI_H
 
 #include <FairTimeStamp.h>   // for FairTimeStamp
 #include <FairTimeStampBoostSerializationSupport.h>
@@ -32,9 +32,16 @@ class access;
 class MyDigi : public FairTimeStamp
 {
   public:
-    MyDigi();
-    MyDigi(Int_t x, Int_t y, Int_t z, Double_t timeStamp, Double_t timeStampError = 0.0);
-    ~MyDigi() override;
+    MyDigi() = default;
+
+    MyDigi(Int_t x, Int_t y, Int_t z, Double_t timeStamp, Double_t timeStampError = 0.0)
+        : FairTimeStamp(timeStamp, timeStampError)
+        , fX(x)
+        , fY(y)
+        , fZ(z)
+    {}
+
+    ~MyDigi() override = default;
 
     void SetXYZ(Int_t x, Int_t y, Int_t z)
     {
@@ -104,11 +111,11 @@ class MyDigi : public FairTimeStamp
   private:
     friend class boost::serialization::access;
 
-    Int_t fX;
-    Int_t fY;
-    Int_t fZ;
+    Int_t fX = 0;
+    Int_t fY = 0;
+    Int_t fZ = 0;
 
     ClassDefOverride(MyDigi, 1);
 };
 
-#endif /* MYDIGIDATA_H */
+#endif /* MYDIGI_H */
