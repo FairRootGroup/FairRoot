@@ -1,0 +1,30 @@
+#!/bin/bash
+
+source @CMAKE_BINARY_DIR@/config.sh -p
+
+INPUTFILE="@CMAKE_CURRENT_BINARY_DIR@/data_io/input.root"
+OUTPUTFILE="@CMAKE_CURRENT_BINARY_DIR@/data_io/output.root"
+
+SAMPLER="ex-serialization-sampler"
+SAMPLER+=" --id sampler1"
+SAMPLER+=" --channel-config name=data1,type=push,method=bind,address=tcp://localhost:5565"
+SAMPLER+=" --input-file $INPUTFILE"
+xterm -geometry 100x27+0+200 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$SAMPLER &
+
+PROCESSOR1="ex-serialization-processor"
+PROCESSOR1+=" --id processor1"
+PROCESSOR1+=" --channel-config name=data1,type=pull,method=connect,address=tcp://localhost:5565"
+PROCESSOR1+="                  name=data2,type=push,method=connect,address=tcp://localhost:5570"
+xterm -geometry 100x27+650+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR1 &
+
+PROCESSOR2="ex-serialization-processor"
+PROCESSOR2+=" --id processor2"
+PROCESSOR2+=" --channel-config name=data1,type=pull,method=connect,address=tcp://localhost:5565"
+PROCESSOR2+="                  name=data2,type=push,method=connect,address=tcp://localhost:5570"
+xterm -geometry 100x27+650+400 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR2 &
+
+FILESINK="ex-serialization-sink"
+FILESINK+=" --id sink1"
+FILESINK+=" --channel-config name=data2,type=pull,method=bind,address=tcp://localhost:5570"
+FILESINK+=" --output-file $OUTPUTFILE"
+xterm +aw -geometry 100x27+1300+200 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$FILESINK &

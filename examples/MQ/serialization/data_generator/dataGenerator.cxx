@@ -13,12 +13,12 @@
  * Created on November 27, 2014, 11:26 AM
  */
 
-#include "boost/program_options.hpp"
+// this example
+#include "MyDigi.h"
+#include "RooDataGenerator.h"
 
-#include <csignal>
-#include <iostream>
-#include <memory>
-#include <vector>
+// FairRoot
+#include "RootOutFileManager.h"
 
 // root
 #include <TApplication.h>
@@ -26,15 +26,17 @@
 #include <TH1D.h>
 #include <TH2D.h>
 
-// FairRoot
-#include "RootOutFileManager.h"
-
+// fairlogger
 #include <fairlogger/Logger.h>
 
-// FairRoot - Tutorial 7
-#include "MyDigi.h"
-#include "MyPodData.h"
-#include "RooDataGenerator.h"
+// boost
+#include "boost/program_options.hpp"
+
+// std
+#include <csignal>
+#include <iostream>
+#include <memory>
+#include <vector>
 
 using std::string;
 using std::vector;
@@ -46,8 +48,7 @@ void SaveDataToFile(ManagerType& outMan, RooDataSet* dataset, bool printval = fa
 template<typename T, typename ManagerType>
 void SavePodDataToFile(ManagerType& outMan, RooDataSet* dataset, bool printval = false);
 
-typedef MyDigi TDigi;               // non POD/complex data
-typedef MyPodData::Digi TDigiPod;   // POD/trivial data
+typedef MyDigi TDigi;   // non POD/complex data
 typedef RootOutFileManager<TDigi> RootFileManager;
 
 int main(int argc, char** argv)
@@ -70,7 +71,7 @@ int main(int argc, char** argv)
         // clang-format off
         desc.add_options()
             ("output-file",     po::value<string>(&filename)->required(),                     "Path to the output root file of generated data")
-            ("tree",            po::value<string>(&treename)->default_value("T7SamplerTree"), "Name of the tree")
+            ("tree",            po::value<string>(&treename)->default_value("ExampleTree"),   "Name of the tree")
             ("branch",          po::value<string>(&branchname)->default_value("MyDigi"),      "Name of the Branch")
             ("class-name",      po::value<string>(&classname)->default_value("MyDigi"),       "Name of the Payload class")
             ("rootfile-option", po::value<string>(&fileoption)->default_value("RECREATE"),    "Root file option.")

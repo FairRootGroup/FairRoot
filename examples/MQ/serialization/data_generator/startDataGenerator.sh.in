@@ -1,0 +1,7 @@
+#!/bin/bash
+
+GENERATE="ex-serialization-data-generator"
+GENERATE+=" --output-file @CMAKE_CURRENT_BINARY_DIR@/data_io/input.root"
+GENERATE+=" --tree cbmsim"
+
+@CMAKE_CURRENT_BINARY_DIR@/$GENERATE

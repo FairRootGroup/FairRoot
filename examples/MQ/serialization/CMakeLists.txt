@@ -8,15 +8,12 @@
 
 set(target ExSerialization)
 
-set(sources
-  data/MyDigi.cxx
-  data/MyHit.cxx
-  data/MyPodData.cxx
+set(headers
+  data/MyDigi.h
+  data/MyHit.h
 )
 
-fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
-
-add_library(${target} SHARED ${sources} ${headers})
+add_library(${target} SHARED ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
 set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 
@@ -46,26 +43,17 @@ fairroot_target_root_dictionary(${target}
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-add_executable(ex-serialization1-sampler 1-simple/runEx1Sampler.cxx)
-target_link_libraries(ex-serialization1-sampler PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
+add_executable(ex-serialization-sampler sampler.cxx)
+target_link_libraries(ex-serialization-sampler PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
 
-add_executable(ex-serialization1-processor 1-simple/runEx1Processor.cxx)
-target_link_libraries(ex-serialization1-processor PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
+add_executable(ex-serialization-processor processor.cxx)
+target_link_libraries(ex-serialization-processor PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
 
-add_executable(ex-serialization1-sink 1-simple/runEx1Sink.cxx)
-target_link_libraries(ex-serialization1-sink PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
+add_executable(ex-serialization-sink sink.cxx)
+target_link_libraries(ex-serialization-sink PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
 
-add_executable(ex-serialization2-sampler 2-multipart/runEx2Sampler.cxx)
-target_link_libraries(ex-serialization2-sampler PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
-
-add_executable(ex-serialization2-processor 2-multipart/runEx2Processor.cxx)
-target_link_libraries(ex-serialization2-processor PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
-
-add_executable(ex-serialization2-sink 2-multipart/runEx2Sink.cxx)
-target_link_libraries(ex-serialization2-sink PRIVATE FairRoot::ExSerialization FairRoot::FairMQ)
-
-add_executable(ex-serialization-generate-data data_generator/runGenerateData.cxx)
-target_link_libraries(ex-serialization-generate-data
+add_executable(ex-serialization-data-generator data_generator/dataGenerator.cxx)
+target_link_libraries(ex-serialization-data-generator
   PRIVATE
   FairRoot::ExSerialization
   FairRoot::FairMQ
@@ -78,36 +66,21 @@ target_link_libraries(ex-serialization-generate-data
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/data_io)
 
 # Data generator
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data_generator/startSerializationGenerateData.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startSerializationGenerateData.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/data_generator/startDataGenerator.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startDataGenerator.sh)
 
-# start MQ chains
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/1-simple/startSerializationEx1.sh.in    ${CMAKE_CURRENT_BINARY_DIR}/startSerializationEx1.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/2-multipart/startSerializationEx2.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startSerializationEx2.sh)
+# launch script
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/startSerializationEx.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startSerializationEx.sh)
 
-# test scripts
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/1-simple/testSerializationEx1.sh.in    ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx1.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/2-multipart/testSerializationEx2.sh.in ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx2.sh)
+# test script
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/testSerializationEx.sh.in ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx.sh)
 
 install(TARGETS
-  ex-serialization1-sampler
-  ex-serialization1-processor
-  ex-serialization1-sink
-  ex-serialization2-sampler
-  ex-serialization2-processor
-  ex-serialization2-sink
-  ex-serialization-generate-data
+  ex-serialization-sampler
+  ex-serialization-processor
+  ex-serialization-sink
+  ex-serialization-data-generator
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/MQ/serialization/bin
 )
 
-add_test(NAME ex_MQ_serialization1 COMMAND ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx1.sh)
-set_tests_properties(ex_MQ_serialization1 PROPERTIES
-  TIMEOUT "30"
-  PASS_REGULAR_EXPRESSION "Received 100 messages!"
-)
-
-add_test(NAME ex_MQ_serialization2 COMMAND ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx2.sh)
-set_tests_properties(ex_MQ_serialization2 PROPERTIES
-  DEPENDS ex_MQ_serialization1
-  TIMEOUT "30"
-  PASS_REGULAR_EXPRESSION "Received 100 messages!"
-)
+add_test(NAME ex_MQ_serialization COMMAND ${CMAKE_CURRENT_BINARY_DIR}/testSerializationEx.sh)
+set_tests_properties(ex_MQ_serialization PROPERTIES TIMEOUT "30" PASS_REGULAR_EXPRESSION "Received 100 messages!")
