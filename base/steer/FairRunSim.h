@@ -120,7 +120,10 @@ class FairRunSim : public FairRun
     TObjArray* GetListOfModules() { return ListOfModules; }
 
     /**Get the used primary generator*/
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     FairPrimaryGenerator* GetPrimaryGenerator() { return fGen; }
+#pragma GCC diagnostic pop
 
     /**switch On/Off external decayer (Pythia) */
     void SetPythiaDecayer(Bool_t decayer) { fPythiaDecayer = decayer; }
@@ -206,11 +209,18 @@ class FairRunSim : public FairRun
     void CheckFlukaExec();
 
   protected:
-    Int_t count;                                    //!                               /** Internal counter*/
-    FairMCApplication* fApp;                        //!                              /** Main VMC application */
-    Double_t fBeamMom;                              //!                           /** Beam Energy in GeV/c  */
-    Bool_t fUseBeamMom;                             //!                        /** flag for use Beam Energy  */
-    FairPrimaryGenerator* fGen;                     //!                               /** Primary Event Generator */
+    Int_t count{0};                     //!< Internal counter
+    FairMCApplication* fApp{nullptr};   //!< Main VMC application
+    Double_t fBeamMom{0};               //!< Beam Energy in GeV/c
+    Bool_t fUseBeamMom{kFALSE};         //!< flag for use Beam Energy
+    /**
+     * Primary Event Generator
+     *
+     * \deprecated Use \ref GetPrimaryGenerator() / \ref SetGenerator()
+     * \deprecated Deprecated in v18.8, will be removed in v19.2.
+     */
+    [[deprecated("Use Setter/Getter")]] FairPrimaryGenerator* fGen{nullptr};   //!
+
     FairMCEventHeader* fMCEvHead;                   //!                          /** MC Event Header */
     static TMCThreadLocal FairRunSim* fginstance;   //!              /** Singleton Instance */
     FairField* fField;                              /** Magnetic Field */
