@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -9,13 +9,6 @@
 ### BaseMQ lib
 
 set(target BaseMQ)
-
-set(sources
-  tasks/FairMQProcessorTask.cxx
-  tasks/FairMQSamplerTask.cxx
-)
-
-fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
 list(APPEND headers
   baseMQtools/baseMQtools.h
@@ -38,12 +31,14 @@ list(APPEND headers
   FairHitBoostSerializationSupport.h
   FairMCPointBoostSerializationSupport.h
   FairTimeStampBoostSerializationSupport.h
+  tasks/FairMQProcessorTask.h
+  tasks/FairMQSamplerTask.h
 )
 
-add_library(${target} SHARED ${sources} ${headers})
+add_library(${target} INTERFACE)
 fairroot_library_settings(${target})
 
-target_include_directories(${target} PUBLIC
+target_include_directories(${target} INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/devices>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/tasks>
@@ -55,7 +50,7 @@ target_include_directories(${target} PUBLIC
 )
 
 target_link_libraries(${target}
-  PUBLIC
+  INTERFACE
   FairRoot::Base # FairTask, FairRunAna, FairRootFileSink, FairFileSource
   FairRoot::FairMQ
 
