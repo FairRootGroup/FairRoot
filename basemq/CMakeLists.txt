@@ -11,22 +11,14 @@
 set(target BaseMQ)
 
 list(APPEND headers
-  baseMQtools/baseMQtools.h
   devices/FairMQLmdSampler.h
   devices/FairMQProcessor.h
   devices/FairMQSampler.h
   devices/FairMQUnpacker.h
-  policies/Sampler/FairMQFileSource.h
-  policies/Sampler/FairSourceMQInterface.h
-  policies/Sampler/SimpleTreeReader.h
-  policies/Serialization/BinaryBaseClassSerializer.h
   policies/Serialization/BoostSerializer.h
   policies/Serialization/IOPolicy.h
   policies/Serialization/RootSerializer.h
-  policies/Storage/BinaryOutFileManager.h
-  policies/Storage/BoostDataSaver.h
   policies/Storage/RootOutFileManager.h
-  policies/Storage/TriviallyCopyableDataSaver.h
   FairBoostSerializationSupport.h
   FairHitBoostSerializationSupport.h
   FairMCPointBoostSerializationSupport.h
