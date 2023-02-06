@@ -47,9 +47,13 @@ struct Sink : fair::mq::Device
         while (!NewStatePending()) {
             fair::mq::Parts parts;
             if (Receive(parts, "data2") > 0) {
+                if (parts.Size() != 2) {
+                    LOG(error) << "parts does not have 2 messages; skipping";
+                    continue;
+                }
                 ExHeader header;
-                BoostSerializer<ExHeader>().Deserialize(*(parts.At(0)), header);
-                BoostSerializer<MyHit>().Deserialize(*(parts.At(1)), fInput);
+                BoostSerializer<ExHeader>().Deserialize(parts[0], header);
+                BoostSerializer<MyHit>().Deserialize(parts[1], fInput);
 
                 receivedMsgs++;
                 fTree.SetBranchAddress("MyHit", &fInput);

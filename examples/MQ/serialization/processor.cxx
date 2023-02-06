@@ -36,11 +36,15 @@ struct Processor : fair::mq::Device
             fair::mq::Parts partsIn;
 
             if (Receive(partsIn, "data1") > 0) {
+                if (partsIn.Size() != 2) {
+                    LOG(error) << "partsIn does not have 2 messages; skipping";
+                    continue;
+                }
                 ExHeader header;
-                BoostSerializer<ExHeader>().Deserialize(*(partsIn.At(0)), header);
-                auto digis = RootSerializer().DeserializeTo<TClonesArray>(*(partsIn.At(1)));
+                BoostSerializer<ExHeader>().Deserialize(partsIn[0], header);
+                auto digis = RootSerializer().DeserializeTo<TClonesArray>(partsIn[1]);
                 if (!digis) {
-                    LOG(warn) << "Deserialization FAILED, skipping";
+                    LOG(error) << "Deserialization FAILED, skipping";
                     continue;
                 }
 
@@ -52,7 +56,7 @@ struct Processor : fair::mq::Device
                 partsOut.AddPart(std::move(partsIn.At(0)));
                 partsOut.AddPart(NewMessage());
 
-                BoostSerializer<MyHit>().Serialize(*(partsOut.At(1)), &hits);
+                BoostSerializer<MyHit>().Serialize(partsOut.AtRef(1), &hits);
                 if (Send(partsOut, "data2") >= 0) {
                     sentMsgs++;
                 }
