@@ -4,7 +4,7 @@ All notable changes to FairRoot will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## 19.0 (UNRELEAASED) - 2021-XX-XX
+## 19.0 (UNRELEASED) - 2023-XX-XX
 
 ### Breaking Changes
 * We have moved away from our custom ROOT find module, and now use the native cmake package of ROOT.
@@ -34,6 +34,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   * In your template consider using `source @FairRoot_BINDIR/FairRootConfig.sh`
 * Renamed our `ROOT_GENERATE_DICTIONARY` to `FAIRROOT_GENERATE_DICTIONARY`.
   (It's not used in many places anyway, it seems.)
+* The following files have been deleted. As far as we know they were not used anywhere:
+  * basemq/baseMQtools/baseMQtools.h
+  * basemq/policies/Sampler/FairMQFileSource.h
+  * basemq/policies/Sampler/FairSourceMQInterface.h
+  * basemq/policies/Sampler/SimpleTreeReader.h
+  * basemq/policies/Serialization/BinaryBaseClassSerializer.h
+  * basemq/policies/Storage/BinaryOutFileManager.h
+  * basemq/policies/Storage/BoostDataSaver.h
+  * basemq/policies/Storage/RootOutFileManager.h
+  * basemq/policies/Storage/TriviallyCopyableDataSaver.h
+  * basemq/policies/Serialization/IOPolicy.h
 
 ### Deprecations
 
