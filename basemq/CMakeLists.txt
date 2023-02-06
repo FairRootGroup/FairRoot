@@ -16,7 +16,6 @@ list(APPEND headers
   devices/FairMQSampler.h
   devices/FairMQUnpacker.h
   policies/Serialization/BoostSerializer.h
-  policies/Serialization/IOPolicy.h
   policies/Serialization/RootSerializer.h
   policies/Storage/RootOutFileManager.h
   FairBoostSerializationSupport.h
