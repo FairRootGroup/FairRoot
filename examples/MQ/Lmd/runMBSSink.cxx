@@ -1,53 +1,91 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "BaseMQFileSink.h"
-#include "FairMBSRawItem.h"   // data type for the OutputPolicy
+// this example
+#include "FairMBSRawItem.h"   // data type
+
+// FairRoot
+#include "FairMQ.h"   // for fair::mq::Device
 #include "FairRunFairMQDevice.h"
-#include "IOPolicy.h"             // fair::mq::policy::
-#include "RootOutFileManager.h"   // OutputPolicy
-#include "RootSerializer.h"       // RootSerializer
+#include "RootSerializer.h"   // RootSerializer
 
-#include <TClonesArray.h>   // data type for the InputPolicy
+// ROOT
+#include <TClonesArray.h>
+#include <TFile.h>
+#include <TTree.h>
 
-// InputPolicy - initialize input and deserialize message into it
-using RootDefaultInputPolicy =
-    fair::mq::policy::InputPolicy<RootSerializer,                         // deserializer from msg to input
-                                  TClonesArray,                           // input data type
-                                  fair::mq::policy::PointerType,          // input pointer type (automatically selected)
-                                  fair::mq::policy::OpNewCreator,         // input allocation
-                                  fair::mq::policy::NullptrInitializer,   // input initialization
-                                  fair::mq::policy::RawPtrDeleter>;       // input deleter
+// logger
+#include <fairlogger/Logger.h>
+
+// std
+#include <memory>
+#include <string>
 
 namespace bpo = boost::program_options;
+
+struct MBSSink : fair::mq::Device
+{
+    MBSSink()
+        : fInput(nullptr)
+        , fTree("mbstree", "Test output")
+    {}
+
+    void InitTask() override
+    {
+        fInputChanName = fConfig->GetValue<std::string>("in-chan-name");
+        fFileName = fConfig->GetValue<std::string>("output-file-name");
+        fOutputFile.reset(TFile::Open(fFileName.c_str(), "RECREATE"));
+        fInput = new TClonesArray("FairMBSRawItem");
+        fTree.Branch("FairMBSRawItem", "TClonesArray", &fInput);
+    }
+
+    void Run() override
+    {
+        int receivedMsg = 0;
+        while (!NewStatePending()) {
+            auto msg(NewMessage());
+            if (Receive(msg, fInputChanName) > 0) {
+                RootSerializer().Deserialize(*msg, fInput);
+                fTree.SetBranchAddress("FairMBSRawItem", &fInput);
+                fTree.Fill();
+                ++receivedMsg;
+            }
+        }
+
+        LOG(info) << "Received " << receivedMsg << " messages!";
+    }
+
+    void Reset() override
+    {
+        fTree.Write("", TObject::kOverwrite);
+        if (fInput) {
+            delete fInput;
+        }
+    }
+
+  private:
+    std::string fInputChanName;
+    std::string fFileName;
+    std::unique_ptr<TFile> fOutputFile;
+    TClonesArray* fInput;
+    TTree fTree;
+};
 
 void addCustomOptions(bpo::options_description& options)
 {
     // clang-format off
     options.add_options()
-        ("output-file-name",   bpo::value<std::string>(),                                  "Path to the input file")
-        ("output-file-tree",   bpo::value<std::string>()->default_value("mbstree"),        "Name of the output tree")
-        ("output-file-branch", bpo::value<std::string>()->default_value("FairMBSRawItem"), "Name of the output Branch")
-        ("hit-classname",      bpo::value<std::string>()->default_value("FairMBSRawItem"), "Hit class name for initializing TClonesArray")
-        ("output-file-option", bpo::value<std::string>()->default_value("RECREATE"),       "Root file option : UPDATE, RECREATE etc.")
-        ("use-clones-array",   bpo::value<bool>()->default_value(true),                    "Use TClonesArray")
-        ("flow-mode",          bpo::value<bool>()->default_value(true),                    "Flow mode")
-        ("in-chan-name",       bpo::value<std::string>()->default_value("data"),           "input channel name");
+        ("output-file-name", bpo::value<std::string>(),                        "Path to the output file")
+        ("in-chan-name",     bpo::value<std::string>()->default_value("data"), "Input channel name");
     // clang-format on
 }
 
 std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& config)
 {
-    using Sink = BaseMQFileSink<RootDefaultInputPolicy, RootOutFileManager<FairMBSRawItem>>;
-    auto sink = std::make_unique<Sink>();
-
-    // call function member from deserialization policy
-    sink->InitInputData(config.GetValue<std::string>("hit-classname").c_str());
-
-    return sink;
+    return std::make_unique<MBSSink>();
 }
