@@ -55,7 +55,7 @@ class FairMQProcessor : public fair::mq::Device
         OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
             ++fReceivedMsgs;
             fProcessorTask->SetPayload(msg);
-            fProcessorTask->Exec();
+            fProcessorTask->Exec("0");
             fProcessorTask->GetPayload(msg);
 
             Send(msg, fOutChannelName);
