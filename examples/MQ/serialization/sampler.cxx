@@ -9,6 +9,7 @@
 // this example
 #include "ExHeader.h"
 #include "MyDigi.h"
+#include "MyHit.h"   // temporary for the data check (see below)
 
 // FairRoot
 #include "BoostSerializer.h"
@@ -19,6 +20,7 @@
 // ROOT
 #include <Rtypes.h>
 #include <TFile.h>
+#include <TMath.h>   // temporary for the data check (see below)
 #include <TTree.h>
 
 // std
@@ -64,6 +66,9 @@ struct Sampler : fair::mq::Device
             ExHeader header;
             header.eventNumber = idx;
 
+            // temporarily apply data processing steps to check that they work before & after serialization
+            volatile TClonesArray hits = FindHits(*fInput);
+
             auto msgHeader(NewMessage());
             BoostSerializer<ExHeader>().Serialize(*msgHeader, header);
 
@@ -92,6 +97,25 @@ struct Sampler : fair::mq::Device
     }
 
   private:
+    // temporary method to check data before transfer
+    TClonesArray FindHits(const TClonesArray& digis)
+    {
+        TClonesArray hits("MyHit");
+        const TVector3 dpos(1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12), 1 / TMath::Sqrt(12));
+        const Int_t fDetID = 0;
+        const Int_t fMCIndex = 0;
+
+        for (int i = 0; i < digis.GetEntriesFast(); i++) {
+            auto digi = static_cast<MyDigi const*>(digis.At(i));
+            const TVector3 pos(digi->GetX() + 0.5, digi->GetY() + 0.5, digi->GetZ() + 0.5);
+            auto hit = new ((hits)[i]) MyHit(fDetID, fMCIndex, pos, dpos);
+            hit->SetTimeStamp(digi->GetTimeStamp());
+            hit->SetTimeStampError(digi->GetTimeStampError());
+        }
+
+        return hits;
+    }
+
     TClonesArray* fInput;
     TTree* fTree;
     std::string fFileName;
