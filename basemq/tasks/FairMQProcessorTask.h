@@ -21,8 +21,6 @@ class FairMQProcessorTask : public FairTask
 
     ~FairMQProcessorTask() override = default;
 
-    virtual void Exec(Option_t* opt = "0") {}
-
     void SetPayload(std::unique_ptr<fair::mq::Message>& msg) { fPayload = std::move(msg); }
     void GetPayload(std::unique_ptr<fair::mq::Message>& msg) { msg = std::move(fPayload); }
 
