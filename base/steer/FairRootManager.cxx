@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -82,8 +82,6 @@ FairRootManager::FairRootManager()
     , fOutFolder(0)
     , fRootFolder(0)
     , fCurrentTime(0)
-    , fObj2(new TObject*[1000])
-    , fNObj(-1)
     , fMap()
     , fBranchSeqId(0)
     , fBranchNameList(new TList())
@@ -95,8 +93,6 @@ FairRootManager::FairRootManager()
     , fInputBranchMap()
     , fBranchPerMap(kFALSE)
     , fBrPerMap()
-    , fCurrentEntryNo(0)
-    , fTimeforEntryNo(0)
     , fFillLastData(kFALSE)
     , fEntryNr(0)
     , fListFolder(0)
@@ -128,7 +124,6 @@ FairRootManager::~FairRootManager()
     //
     LOG(debug) << "Enter Destructor of FairRootManager";
 
-    delete[] fObj2;
     fBranchNameList->Delete();
     delete fBranchNameList;
     LOG(debug) << "Leave Destructor of FairRootManager";
@@ -432,7 +427,7 @@ Bool_t FairRootManager::SpecifyRunId()
     LOG(info) << "---FairRootManager::SpecifyRunId --- ";
     return Result;
 }
-Int_t FairRootManager::ReadEvent(Int_t i)
+Int_t FairRootManager::ReadEvent(const Int_t i)
 {
     if (!fSource)
         return 0;
@@ -446,14 +441,12 @@ Int_t FairRootManager::ReadEvent(Int_t i)
         return -1;
     }
 
-    fCurrentEntryNo = i;
-
     Int_t readEventResult = fSource->ReadEvent(i);
 
     fSource->FillEventHeader(fEventHeader);
     fCurrentTime = fEventHeader->GetEventTime();
 
-    LOG(debug) << "--Event number --- " << fCurrentEntryNo << " with t0 time ---- " << fCurrentTime;
+    LOG(debug) << "--Event number --- " << i << " with t0 time ---- " << fCurrentTime;
 
     return readEventResult;
 }
@@ -742,12 +735,11 @@ Double_t FairRootManager::GetEventTime() { return fCurrentTime; }
 
 void FairRootManager::UpdateBranches()
 {
-    for (Int_t iobj = 0; iobj <= fNObj; iobj++) {
-        if (fObj2[iobj]) {
-            LOG(info) << "FairRootManager::UpdateBranches \"" << fObj2[iobj]->GetName() << "\" (\""
-                      << fObj2[iobj]->GetTitle() << "\")";
-            TString tempBranchName = fObj2[iobj]->GetName();
-            fSource->ActivateObject(&fObj2[fNObj], tempBranchName.Data());
+    for (auto& iobj : fObj2) {
+        if (iobj) {
+            const char* objname = iobj->GetName();
+            LOG(info) << "FairRootManager::UpdateBranches \"" << objname << "\" (\"" << iobj->GetTitle() << "\")";
+            fSource->ActivateObject(&iobj, objname);
         }
     }
 }
@@ -762,38 +754,37 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
    calls to activate branch is done , and then just forward the pointer.
    <DB>
    **/
-    fNObj++;
-    fObj2[fNObj] = GetMemoryBranch(BrName);
-    if (fObj2[fNObj]) {
-        return fObj2[fNObj];
+    auto& newentry = fObj2.emplace_back(GetMemoryBranch(BrName));
+    if (newentry) {
+        return newentry;
     }
     /**try to find the object decribing the branch in the folder structure in file*/
     LOG(debug) << "Try to find an object " << BrName << " describing the branch in the folder structure in file";
     if (fListFolder) {
         for (Int_t i = 0; i < fListFolder->GetEntriesFast(); i++) {
             TFolder* fold = static_cast<TFolder*>(fListFolder->At(i));
-            fObj2[fNObj] = fold->FindObjectAny(BrName);
-            if (fObj2[fNObj]) {
+            newentry = fold->FindObjectAny(BrName);
+            if (newentry) {
                 LOG(info) << "Object " << BrName << " describing the branch in the folder structure was found";
                 break;
             }
         }
     }
 
-    if (!fObj2[fNObj]) {
+    if (!newentry) {
         /** if we do not find an object corresponding to the branch in the folder structure
          *  then we have no idea about what type of object is this and we cannot set the branch address
          */
         LOG(info) << " Branch: " << BrName << " not found in Tree.";
         // Fatal(" No Branch in the tree", BrName );
-        return 0;
+        return nullptr;
     } else {
         if (fSource)
-            fSource->ActivateObject(&fObj2[fNObj], BrName);
+            fSource->ActivateObject(&newentry, BrName);
     }
 
-    AddMemoryBranch(BrName, fObj2[fNObj]);
-    return fObj2[fNObj];
+    AddMemoryBranch(BrName, newentry);
+    return newentry;
 }
 
 void FairRootManager::AddMemoryBranch(const char* fName, TObject* pObj)

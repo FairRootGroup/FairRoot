@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -135,7 +135,7 @@ class FairRootManager : public TObject
     static FairRootManager* Instance();
 
     /**Read a single entry from background chain*/
-    Int_t ReadEvent(Int_t i = 0);
+    Int_t ReadEvent(const Int_t i = 0);
     /** Read a single entry from each branch that is not read via TSBuffers*/
     Int_t ReadNonTimeBasedEventFromBranches(Int_t i = 0);
     /**Read the tree entry on one branch**/
@@ -338,9 +338,7 @@ class FairRootManager : public TObject
     TFolder* fRootFolder;
     /** current time in ns*/
     Double_t fCurrentTime;
-    TObject** fObj2;   //!
-    /** Counter for the number of branches activiated */
-    Int_t fNObj;   //!
+    std::vector<TObject*> fObj2{};   //!
     /** A list which hold the pointer to the branch
      * and the name of the branch in memory, it contains all branches (TClonesArrays)
      * persistance and Memory only branches
@@ -379,12 +377,8 @@ class FairRootManager : public TObject
     /** Map for branch persistency list */
     std::map<TString, Int_t> fBrPerMap;   //!
 
-    /** for internal use, to return the same event time for the same entry*/
-    UInt_t fCurrentEntryNo;   //!
-    /** for internal use, to return the same event time for the same entry*/
-    UInt_t fTimeforEntryNo;   //!
-    Bool_t fFillLastData;     //!
-    Int_t fEntryNr;           //!
+    Bool_t fFillLastData;   //!
+    Int_t fEntryNr;         //!
 
     TObjArray* fListFolder;   //!
 
