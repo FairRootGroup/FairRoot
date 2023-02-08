@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -42,7 +42,7 @@ class FairTutorialDet1 : public FairDetector
     /**       this method is called for each step during simulation
      *       (see FairMCApplication::Stepping())
      */
-    Bool_t ProcessHits(FairVolume* v = nullptr) override;
+    void ProcessHits() override;
 
     /**       Registers the produced collections in FAIRRootManager.     */
     void Register() override;
@@ -78,8 +78,6 @@ class FairTutorialDet1 : public FairDetector
     void BeginEvent() override { ; }
 
     FairModule* CloneModule() const override;
-
-    Bool_t IsSensitive(const std::string& name) override;
 
   private:
     /** Track information to be stored until the track leaves the

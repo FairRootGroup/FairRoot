@@ -70,7 +70,7 @@ FairTutorialDet2::~FairTutorialDet2()
     }
 }
 
-Bool_t FairTutorialDet2::ProcessHits(FairVolume* vol)
+void FairTutorialDet2::ProcessHits()
 {
     /** This method is called from the MC stepping */
 
@@ -90,9 +90,10 @@ Bool_t FairTutorialDet2::ProcessHits(FairVolume* vol)
     if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
         || TVirtualMC::GetMC()->IsTrackDisappeared()) {
         fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
-        fVolumeID = vol->getMCid();
+        Int_t copyNo = 0;
+        fVolumeID = TVirtualMC::GetMC()->CurrentVolID(copyNo);
         if (fELoss == 0.) {
-            return kFALSE;
+            return;
         }
         AddHit(fTrackID,
                fVolumeID,
@@ -106,8 +107,6 @@ Bool_t FairTutorialDet2::ProcessHits(FairVolume* vol)
         FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
         stack->AddPoint(kTutDet);
     }
-
-    return kTRUE;
 }
 
 void FairTutorialDet2::EndOfEvent() { Reset(); }

@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -7,8 +7,8 @@
  ********************************************************************************/
 #include "FairTutorialDet1.h"
 
-#include "FairDetectorList.h"         // for DetectorId::kTutDet
-#include "FairLogger.h"               // for logging
+#include "FairDetectorList.h"   // for DetectorId::kTutDet
+#include "FairLogger.h"
 #include "FairRootManager.h"          // for FairRootManager
 #include "FairStack.h"                // for FairStack
 #include "FairTutorialDet1Geo.h"      // for FairTutorialDet1Geo
@@ -50,7 +50,7 @@ void FairTutorialDet1::Initialize()
     fIsInitialised = true;
 }
 
-Bool_t FairTutorialDet1::ProcessHits(FairVolume* vol)
+void FairTutorialDet1::ProcessHits()
 {
     /** This method is called from the MC stepping */
 
@@ -71,9 +71,11 @@ Bool_t FairTutorialDet1::ProcessHits(FairVolume* vol)
     if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
         || TVirtualMC::GetMC()->IsTrackDisappeared()) {
         auto trackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
-        auto volumeID = vol->getMCid();
+        auto copyNo = 0;
+        auto volumeID = TVirtualMC::GetMC()->CurrentVolID(copyNo);
+
         if (fELoss == 0.) {
-            return kFALSE;
+            return;
         }
         AddHit(trackID,
                volumeID,
@@ -87,11 +89,15 @@ Bool_t FairTutorialDet1::ProcessHits(FairVolume* vol)
         auto stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
         stack->AddPoint(kTutDet);
     }
-
-    return kTRUE;
 }
 
-void FairTutorialDet1::EndOfEvent() { fFairTutorialDet1PointCollection->Clear(); }
+void FairTutorialDet1::EndOfEvent()
+{
+
+    LOG(info) << "FairTutorialDet1 : " << fFairTutorialDet1PointCollection->GetEntriesFast() << " points registered.";
+
+    fFairTutorialDet1PointCollection->Clear();
+}
 
 void FairTutorialDet1::Register()
 {
@@ -114,18 +120,16 @@ TClonesArray* FairTutorialDet1::GetCollection(Int_t iColl) const
     }
 }
 
-void FairTutorialDet1::Reset() { fFairTutorialDet1PointCollection->Clear(); }
-
-Bool_t FairTutorialDet1::IsSensitive(const std::string& name)
+void FairTutorialDet1::Reset()
 {
-    return name.find("tutdet") != std::string::npos;
+    fFairTutorialDet1PointCollection->Clear();
 }
 
 void FairTutorialDet1::ConstructGeometry()
 {
     /** If you are using the standard ASCII input for the geometry
-      just copy this and use it for your detector, otherwise you can
-      implement here you own way of constructing the geometry. */
+        just copy this and use it for your detector, otherwise you can
+        implement here you own way of constructing the geometry. */
 
     ConstructASCIIGeometry<FairTutorialDet1Geo, FairTutorialDet1GeoPar>("FairTutorialDet1GeoPar");
 }
@@ -143,6 +147,9 @@ FairTutorialDet1Point* FairTutorialDet1::AddHit(Int_t trackID,
     return new (clref[size]) FairTutorialDet1Point(trackID, detID, pos, mom, time, length, eLoss);
 }
 
-FairModule* FairTutorialDet1::CloneModule() const { return new FairTutorialDet1(*this); }
+FairModule* FairTutorialDet1::CloneModule() const
+{
+    return new FairTutorialDet1(*this);
+}
 
 ClassImp(FairTutorialDet1);

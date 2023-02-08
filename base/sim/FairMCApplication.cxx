@@ -196,6 +196,11 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
         auto& clone = fOwnedModules.emplace_back(module->CloneModule());
         fListModules.emplace_back(clone.get());
         fModules->Add(clone.get());
+        for (auto sens : rhs.fMapSensitiveDetectors) {
+            if (sens.second == module) {
+                fMapSensitiveDetectors[sens.first] = clone.get();
+            }
+        }
     }
 
     // Create and fill a list of active detectors
@@ -525,62 +530,6 @@ void FairMCApplication::Stepping()
         TrackId = fMC->GetStack()->GetCurrentTrackNumber();
     }
 
-    // Check if the volume with id is in the volume multimap.
-    // If it is not in the map the volume is not a sensitive volume
-    // and we do not call nay of our ProcessHits functions.
-
-    // If the volume is in the multimap, check in second step if the current
-    // copy is alredy inside the multimap.
-    // If the volume is not in the multimap add the copy of the volume to the
-    // multimap.
-    // In any case call the ProcessHits function for this specific detector.
-    Int_t copyNo;
-    Int_t id = fMC->CurrentVolID(copyNo);
-    auto voliter = fVolMap.find(id);
-
-    if (voliter != fVolMap.end()) {
-        Bool_t InMap = kFALSE;
-        FairVolume* disvol = nullptr;
-        FairDetector* disdet = nullptr;
-
-        // Call Process hits for FairVolume with this id, copyNo
-        do {
-            disvol = voliter->second;
-            if (copyNo == disvol->getCopyNo()) {
-                disdet = disvol->GetDetector();
-                if (disdet) {
-                    disdet->ProcessHits(disvol);
-                }
-                InMap = kTRUE;
-                break;
-            }
-            ++voliter;
-        } while (voliter != fVolMap.upper_bound(id));
-
-        //    if (disvol && !InMap) { // fDisVolume is set previously, no check needed
-
-        // Create new FairVolume with this id, copyNo.
-        // Use the FairVolume with the same id found in the map to get
-        // the link to the detector.
-        // Seems that this never happens (?)
-        if (!InMap) {
-            // cout << "Volume not in map; disvol ? " << disvol << endl
-            FairVolume* fNewV = new FairVolume(fMC->CurrentVolName(), id);
-            fNewV->setMCid(id);
-            fNewV->setModId(disvol->getModId());
-            fNewV->SetModule(disvol->GetModule());
-            fNewV->setCopyNo(copyNo);
-            fVolMap.insert(pair<Int_t, FairVolume*>(id, fNewV));
-            disdet = disvol->GetDetector();
-
-            // LOG(info) << "FairMCApplication::Stepping: new fair volume"
-            //    << id << " " << copyNo << " " <<  disdet;
-            if (disdet) {
-                disdet->ProcessHits(fNewV);
-            }
-        }
-    }
-
     // If information about the tracks should be stored the information as to be
     // stored for any step.
     // Information about each single step has also to be stored for the other
@@ -598,7 +547,8 @@ void FairMCApplication::Stepping()
         }
     }
     if (fRadLenMan || fRadMapMan) {
-        id = fMC->CurrentVolID(copyNo);
+        Int_t copyNo;
+        Int_t id = fMC->CurrentVolID(copyNo);
         auto modvoliter = (fParent ? fParent : this)->fModVolMap.find(id);
         if (fRadLenMan) {
             fRadLenMan->AddPoint(fMC, modvoliter->second);
@@ -654,13 +604,10 @@ void FairMCApplication::StopMCRun()
 }
 
 //_____________________________________________________________________________
-void FairMCApplication::FinishEvent()
+void FairMCApplication::EndOfEvent()
 {
-    // User actions after finishing of an event
+    // User actions just before finishing of an event
     // ---
-    LOG(debug) << "[" << fRootManager->GetInstanceId()
-               << " FairMCMCApplication::FinishEvent: " << fMCEventHeader->GetEventID() << " (MC "
-               << gMC->CurrentEvent() << ")";
     if (gMC->IsMT()
         && fRun->GetSink()->GetSinkType() == kONLINESINK) {   // fix the rare case when running G4 multithreaded on MQ
         fMCEventHeader->SetEventID(gMC->CurrentEvent() + 1);
@@ -678,18 +625,24 @@ void FairMCApplication::FinishEvent()
         fFairTaskList->FinishEvent();
     }
 
-    for (auto detectorPtr : listActiveDetectors) {
-        detectorPtr->FinishEvent();
-    }
-
     if (fRootManager && fSaveCurrentEvent) {
         fRootManager->Fill();
     } else {
         fSaveCurrentEvent = kTRUE;
     }
+}
+
+//_____________________________________________________________________________
+void FairMCApplication::FinishEvent()
+{
+    // User actions after finishing of an event
+    // ---
+    LOG(debug) << "[" << fRootManager->GetInstanceId()
+               << " FairMCMCApplication::FinishEvent: " << fMCEventHeader->GetEventID() << " (MC "
+               << gMC->CurrentEvent() << ")";
 
     for (auto detectorPtr : listActiveDetectors) {
-        detectorPtr->EndOfEvent();
+        detectorPtr->FinishEvent();
     }
 
     fStack->Reset();
@@ -981,7 +934,6 @@ void FairMCApplication::RegisterOutput()
         if (detector) {
             // check whether detector is active
             if (detector->IsActive()) {
-                detector->Initialize();
                 detector->Register();
             }
         }
@@ -1336,4 +1288,28 @@ void FairMCApplication::UndoGeometryModifications()
     gGeoManager->ClearPhysicalNodes(kFALSE);
 }
 
-ClassImp(FairMCApplication);
+void FairMCApplication::ConstructSensitiveDetectors()
+{
+    std::map<std::string, FairModule*> cloneVolumeMap;
+
+    for (auto const& x : fMapSensitiveDetectors) {
+        std::string volName = x.first;   //.substr(0, x.first.find("#", 0));
+        if (volName.find('#') != std::string::npos) {
+            volName = volName.substr(0, volName.find("#", 0));
+            auto it = cloneVolumeMap.find(volName);
+            LOG(debug) << "FairMCApplication::ConstructSensitiveDetectors got clone " << x.first << " " << x.second;
+            if (it != cloneVolumeMap.end())
+                continue;
+            cloneVolumeMap[volName] = x.second;
+            LOG(debug) << "FairMCApplication::ConstructSensitiveDetectors really do " << volName;
+        }
+        LOG(debug) << "FairMCApplication::ConstructSensitiveDetectors really do " << volName;
+        TVirtualMC::GetMC()->SetSensitiveDetector(volName, x.second);
+    }
+}
+
+void FairMCApplication::AddSensitiveModule(std::string volName, FairModule* module)
+{
+    fMapSensitiveDetectors[volName] = module;
+}
+ClassImp(FairMCApplication)

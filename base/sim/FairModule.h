@@ -21,6 +21,8 @@
 #include <TNamed.h>      // for TNamed
 #include <TObjArray.h>   // for TObjArray
 #include <TString.h>     // for TString, operator!=
+#include <TVirtualMCSensitiveDetector.h>
+
 #include <string>        // for string
 
 class FairVolumeList;
@@ -43,7 +45,7 @@ class TVirtualMC;
  * Changelog: 29.02.2012 [O.Merle] Fixed missing material assignment for top volume.
  *                                 ... and please - add some documentation to your code.
  */
-class FairModule : public TNamed
+class FairModule : public TVirtualMCSensitiveDetector
 {
   public:
     /**default ctor*/
@@ -147,6 +149,12 @@ class FairModule : public TNamed
     TString fMotherVolumeName;                //!
     FairVolume* getFairVolume(FairGeoNode* fNode);
     void AddSensitiveVolume(TGeoVolume* v);
+
+    void EndOfEvent() override {}
+
+    void Initialize() override {}
+
+    void ProcessHits() override {}
 
   private:
     /** Re-implimented from ROOT:  TGeoMatrix::SetDefaultName()  */

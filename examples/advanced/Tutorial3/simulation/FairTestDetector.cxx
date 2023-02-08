@@ -67,7 +67,7 @@ void FairTestDetector::Initialize()
     rtdb->getContainer("FairTestDetectorGeoPar");
 }
 
-Bool_t FairTestDetector::ProcessHits(FairVolume* vol)
+void FairTestDetector::ProcessHits()
 {
     /** This method is called from the MC stepping */
 
@@ -87,11 +87,12 @@ Bool_t FairTestDetector::ProcessHits(FairVolume* vol)
     if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
         || TVirtualMC::GetMC()->IsTrackDisappeared()) {
         fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
-        fVolumeID = vol->getMCid();
+        Int_t copyNo = 0;
+        fVolumeID = TVirtualMC::GetMC()->CurrentVolID(copyNo);
         TVirtualMC::GetMC()->TrackPosition(fPosOut);
         TVirtualMC::GetMC()->TrackMomentum(fMomOut);
         if (fELoss == 0.) {
-            return kFALSE;
+            return;
         }
         AddHit(fTrackID,
                fVolumeID,
@@ -107,8 +108,6 @@ Bool_t FairTestDetector::ProcessHits(FairVolume* vol)
         FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
         stack->AddPoint(kTutDet);
     }
-
-    return kTRUE;
 }
 
 void FairTestDetector::EndOfEvent()

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -45,7 +45,10 @@ FairDetector::FairDetector(const FairDetector& rhs)
     , fLogger(rhs.fLogger)
 {}
 
-FairDetector::~FairDetector() { delete flGeoPar; }
+FairDetector::~FairDetector()
+{
+    delete flGeoPar;
+}
 
 FairDetector& FairDetector::operator=(const FairDetector& rhs)
 {
@@ -70,33 +73,11 @@ FairDetector::FairDetector()
 
 // -------------------------------------------------------------------------
 
-void FairDetector::DefineSensitiveVolumes()
-{
-    LOG(info) << "FairDetector::DefineSensitiveVolumes";
-    TObjArray* volumes = gGeoManager->GetListOfVolumes();
-    TIter next(volumes);
-    TGeoVolume* volume;
-    while ((volume = static_cast<TGeoVolume*>(next()))) {
-        if (IsSensitive(volume->GetName())) {
-            LOG(debug) << "Sensitive Volume " << volume->GetName();
-            AddSensitiveVolume(volume);
-        }
-    }
-}
-
-// -------------------------------------------------------------------------
-
 void FairDetector::Initialize()
 {
     // Registers hits collection in Root manager;
     // sets sensitive volumes.
     // ---
-
-    // Define sensitive volumes if in MT
-    if (gMC->IsMT()) {
-        std::cout << "Define sensitive volume " << std::endl;
-        DefineSensitiveVolumes();
-    }
 
     Int_t NoOfEntries = svList->GetEntries();
     Int_t fMCid;
@@ -123,6 +104,23 @@ void FairDetector::Initialize()
     // Initialize cached pointer to MC (on master in sequential mode)
     fMC = TVirtualMC::GetMC();
 }
+
+// -------------------------------------------------------------------------
+
+void FairDetector::ProcessHits()
+{
+    static const auto printOnce = [this] {
+        LOG(warning) << "Calling depracated Bool_t FairDetector::ProcessHits(FairVolume* vol = 0) for \"" << GetName()
+                     << "\".";
+        LOG(warning) << "        Replace with void FairDetector::ProcessHits(). ";
+        return true;
+    }();
+    (void)printOnce;
+    ProcessHits(NULL);
+    return;
+}
+
+// -------------------------------------------------------------------------
 
 void FairDetector::SaveGeoParams()
 {

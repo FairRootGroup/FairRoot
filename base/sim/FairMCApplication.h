@@ -39,6 +39,7 @@ class FairRootManager;
 class FairTask;
 class FairTrajFilter;
 class FairVolume;
+class FairModule;
 class FairRunSim;
 class TChain;
 class TIterator;
@@ -105,6 +106,12 @@ class FairMCApplication : public TVirtualMCApplication
     Bool_t MisalignGeometry() override;
     /** Define parameters for optical processes (optional) */
     void ConstructOpGeometry() override;   // MC Application
+
+    /** set sensitive detectors following TVirtualMCSensitiveDetector logic */
+    void ConstructSensitiveDetectors() override;   // MC Application
+
+    /** Define actions just before sensitive->EndOfEvent */
+    void EndOfEvent() override;   // MC Application
     /** Define actions at the end of event */
     void FinishEvent() override;   // MC Application
     /** Define actions at the end of primary track */
@@ -223,6 +230,11 @@ class FairMCApplication : public TVirtualMCApplication
     FairMCApplicationState GetState() const { return fState; }
 
     /**
+     * Add module to the list of sensitive detectors.
+     */
+    void AddSensitiveModule(std::string volName, FairModule* module);
+
+    /**
      * Return non-owning pointer to FairRadGridManager
      */
     auto GetRadGridMan() { return fRadGridMan.get(); }
@@ -231,6 +243,11 @@ class FairMCApplication : public TVirtualMCApplication
      * Return the MT state of TVirtualMC
      */
     auto GetIsMT() { return fMC ? fMC->IsMT() : false; }
+
+    /**
+     * Method introduced temporarily. It should go awway with DEPRACATED Bool_t FairDetector::ProcessHits()
+     */
+    FairVolume* GetFairVolume();
 
   private:
     // methods
@@ -332,6 +349,12 @@ class FairMCApplication : public TVirtualMCApplication
      * List of modules, mirrors fModules
      */
     std::vector<FairModule*> fListModules{};   //!
+
+    /**
+     * List of sensitive detectors.
+     * To be used with TVirtualMCSensitiveDetector.
+     */
+    std::map<std::string, FairModule*> fMapSensitiveDetectors;
 
     /**
      * Owned Modules (inside the worker)

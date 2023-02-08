@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -45,9 +45,13 @@ class FairDetector : public FairModule
     */
     virtual void Initialize();
     /**
-      this method is called for each step during simulation (see FairMCApplication::Stepping())
+      this method is called for each step during simulation by the VMC
     */
-    virtual Bool_t ProcessHits(FairVolume* v = 0) = 0;
+    virtual void ProcessHits();
+    /**
+      DEPRACTED method, currently called by void FairDetector::ProcessHits()
+    */
+    virtual Bool_t ProcessHits(FairVolume* v = 0) { return false; }
     /**
       this is called at the end of an event after the call to tree fill in the FairRootManager
     */
@@ -104,8 +108,6 @@ class FairDetector : public FairModule
     FairDetector(const FairDetector&);
     /** Assignment operator */
     FairDetector& operator=(const FairDetector&);
-
-    void DefineSensitiveVolumes();
 
     Int_t fDetId;          // Detector Id has to be set from ctr.
     FairLogger* fLogger;   //! /// FairLogger

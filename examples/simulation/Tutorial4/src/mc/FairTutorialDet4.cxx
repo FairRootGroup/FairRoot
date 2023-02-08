@@ -152,7 +152,7 @@ void FairTutorialDet4::InitParContainers()
     fRotZ = fMisalignPar->GetRotZ();
 }
 
-Bool_t FairTutorialDet4::ProcessHits(FairVolume* /*vol*/)
+void FairTutorialDet4::ProcessHits()
 {
     /** This method is called from the MC stepping */
 
@@ -172,10 +172,10 @@ Bool_t FairTutorialDet4::ProcessHits(FairVolume* /*vol*/)
     if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
         || TVirtualMC::GetMC()->IsTrackDisappeared()) {
         fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
-        // fVolumeID = vol->getMCid();
+        //    fVolumeID = vol->getMCid();
         fVolumeID = fGeoHandler->GetUniqueDetectorId();
         if (fELoss == 0.) {
-            return kFALSE;
+            return;
         }
 
         if (!fGlobalCoordinates) {
@@ -206,8 +206,6 @@ Bool_t FairTutorialDet4::ProcessHits(FairVolume* /*vol*/)
         FairStack* stack = static_cast<FairStack*>(TVirtualMC::GetMC()->GetStack());
         stack->AddPoint(kTutDet);
     }
-
-    return kTRUE;
 }
 
 void FairTutorialDet4::EndOfEvent() { fFairTutorialDet4PointCollection->Clear(); }

@@ -91,7 +91,7 @@ void NewDetector::Initialize()
     (void)par;   // stop warning about unused variable
 }
 
-Bool_t NewDetector::ProcessHits(FairVolume* vol)
+void NewDetector::ProcessHits()
 {
     /** This method is called from the MC stepping */
 
@@ -111,9 +111,10 @@ Bool_t NewDetector::ProcessHits(FairVolume* vol)
     if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
         || TVirtualMC::GetMC()->IsTrackDisappeared()) {
         fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
-        fVolumeID = vol->getMCid();
+        Int_t copyNo = 0;
+        fVolumeID = TVirtualMC::GetMC()->CurrentVolID(copyNo);
         if (fELoss == 0.) {
-            return kFALSE;
+            return;
         }
         AddHit(fTrackID,
                fVolumeID,
@@ -127,8 +128,6 @@ Bool_t NewDetector::ProcessHits(FairVolume* vol)
         MyProjStack* stack = (MyProjStack*)TVirtualMC::GetMC()->GetStack();
         stack->AddPoint(kNewDetector);
     }
-
-    return kTRUE;
 }
 
 void NewDetector::EndOfEvent()
