@@ -35,7 +35,7 @@ IncludeBlocks: Regroup
 NamespaceIndentation: None
 PointerAlignment: Left
 SortIncludes: true
-SpacesBeforeTrailingComments: 3
+SpacesBeforeTrailingComments: 1
 Standard: c++17
 UseTab: Never
 ...
