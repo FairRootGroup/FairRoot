@@ -2,10 +2,15 @@
 
 source @CMAKE_BINARY_DIR@/config.sh -p
 
+session="$(@FairMQ_BINDIR@/fairmq-uuid-gen -h)"
+
 trap 'kill -TERM $GENERATE_PID; kill -TERM $SAMPLER_PID; kill -TERM $PROCESSOR1_PID; kill -TERM $FILESINK_PID; wait $GENERATE_PID; wait $SAMPLER_PID; wait $PROCESSOR1_PID; wait $FILESINK_PID;' TERM
 
-INPUTFILE="@CMAKE_CURRENT_BINARY_DIR@/data_io/testinput.root"
-OUTPUTFILE="@CMAKE_CURRENT_BINARY_DIR@/data_io/testoutput.root"
+mkdir @CMAKE_CURRENT_BINARY_DIR@/testsession_$session
+cd @CMAKE_CURRENT_BINARY_DIR@/testsession_$session
+
+INPUTFILE="testinput.root"
+OUTPUTFILE="testoutput.root"
 
 GENERATE="ex-serialization-data-generator"
 GENERATE+=" --output-file $INPUTFILE"
@@ -16,7 +21,7 @@ wait $GENERATE_PID
 
 SAMPLER="ex-serialization-sampler"
 SAMPLER+=" --id sampler1"
-SAMPLER+=" --channel-config name=data1,type=push,method=bind,address=tcp://localhost:1565"
+SAMPLER+=" --channel-config name=data1,type=push,method=bind,address=ipc://data1"
 SAMPLER+=" --input-file $INPUTFILE"
 SAMPLER+=" --color false"
 SAMPLER+=" --severity debug"
@@ -27,8 +32,8 @@ SAMPLER_PID=$!
 
 PROCESSOR1="ex-serialization-processor"
 PROCESSOR1+=" --id processor1"
-PROCESSOR1+=" --channel-config name=data1,type=pull,method=connect,address=tcp://localhost:1565"
-PROCESSOR1+="                  name=data2,type=push,method=connect,address=tcp://localhost:1566"
+PROCESSOR1+=" --channel-config name=data1,type=pull,method=connect,address=ipc://data1"
+PROCESSOR1+="                  name=data2,type=push,method=connect,address=ipc://data2"
 PROCESSOR1+=" --color false"
 PROCESSOR1+=" --severity debug"
 PROCESSOR1+=" --control static"
@@ -38,7 +43,7 @@ PROCESSOR1_PID=$!
 
 FILESINK="ex-serialization-sink"
 FILESINK+=" --id sink1"
-FILESINK+=" --channel-config name=data2,type=pull,method=bind,address=tcp://localhost:1566"
+FILESINK+=" --channel-config name=data2,type=pull,method=bind,address=ipc://data2"
 FILESINK+=" --color false"
 FILESINK+=" --severity debug"
 FILESINK+=" --control static"
