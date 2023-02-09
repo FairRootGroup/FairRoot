@@ -29,8 +29,6 @@
 
 class FairParSet;
 
-ClassImp(MyPassiveContFact);
-
 static MyPassiveContFact gMyPassiveContFact;
 
 MyPassiveContFact::MyPassiveContFact()

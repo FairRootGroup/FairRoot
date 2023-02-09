@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -73,6 +73,7 @@ InitStatus NewTask::ReInit()
 void NewTask::Exec(Option_t* /*option*/) { LOG(debug) << "Exec of NewTask"; }
 
 // ---- Finish --------------------------------------------------------
-void NewTask::Finish() { LOG(debug) << "Finish of NewTask"; }
-
-ClassImp(NewTask);
+void NewTask::Finish()
+{
+    LOG(debug) << "Finish of NewTask";
+}

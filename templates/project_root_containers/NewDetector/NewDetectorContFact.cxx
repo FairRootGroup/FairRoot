@@ -11,8 +11,6 @@
 
 #include <iostream>
 
-ClassImp(NewDetectorContFact);
-
 static NewDetectorContFact gNewDetectorContFact;
 
 NewDetectorContFact::NewDetectorContFact()
