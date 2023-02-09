@@ -8,12 +8,15 @@
 
 #include "FairMQSampler.h"
 #include "FairRunFairMQDevice.h"
-#include "FairTestDetectorDigiLoader.h"
-#include "FairTestDetectorDigiLoaderBin.h"
-#include "FairTestDetectorDigiLoaderBoost.h"
-#include "FairTestDetectorDigiLoaderFlatBuffers.h"
-#include "FairTestDetectorDigiLoaderProtobuf.h"
-#include "FairTestDetectorDigiLoaderTMessage.h"
+#include "DigiLoader.h"
+#include "DigiLoaderBin.h"
+#include "DigiLoaderBoost.h"
+#include "DigiLoaderFlatBuffers.h"
+#include "DigiLoaderProtobuf.h"
+#include "DigiLoaderTMessage.h"
+
+#include <iomanip>
+#include <stdexcept>
 
 namespace bpo = boost::program_options;
 
@@ -36,39 +39,33 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
     std::string dataFormat = config.GetValue<std::string>("data-format");
 
     if (dataFormat == "binary") {
-        using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorPayload::Digi>>;
-        return std::make_unique<Sampler>();
+        return std::make_unique<FairMQSampler<DigiLoader<TestDetectorBin>>>();
     } else if (dataFormat == "boost") {
-        if (fair::base::serialization::has_BoostSerialization<FairTestDetectorDigi,
-                                                              void(boost::archive::binary_oarchive&,
-                                                                   const unsigned int)>::value
-            == 0) {
-            LOG(error) << "Boost serialization for Output Payload requested, but the output type does not support it. "
-                          "Check the TOut parameter. Aborting.";
-            return {nullptr};
-        }
-        using Sampler =
-            FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, boost::archive::binary_oarchive>>;
-        return std::make_unique<Sampler>();
+        return std::make_unique<FairMQSampler<DigiLoader<TestDetectorBoost>>>();
     } else if (dataFormat == "tmessage") {
-        using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>>;
-        return std::make_unique<Sampler>();
+        return std::make_unique<FairMQSampler<DigiLoader<TestDetectorTMessage>>>();
     }
 #ifdef FLATBUFFERS
     else if (dataFormat == "flatbuffers") {
-        using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>>;
-        return std::make_unique<Sampler>();
+        return std::make_unique<FairMQSampler<DigiLoader<TestDetectorFlatBuffers>>>();
     }
 #endif
 #ifdef PROTOBUF
     else if (dataFormat == "protobuf") {
-        using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>>;
-        return std::make_unique<Sampler>();
+        return std::make_unique<FairMQSampler<DigiLoader<TestDetectorProtobuf>>>();
     }
 #endif
     else {
-        LOG(error)
-            << "No valid data format provided. (--data-format binary|boost|flatbuffers|protobuf|tmessage). ";
-        exit(EXIT_FAILURE);
+        std::stringstream ss;
+        ss << "Invalid valid data format provided (--data-format): " << std::quoted(dataFormat)
+           << ", available are: binary, boost, tmessage"
+#ifdef FLATBUFFERS
+           << ", flatbuffers"
+#endif
+#ifdef PROTOBUF
+           << ", protobuf"
+#endif
+           ;
+        throw std::runtime_error(ss.str());
     }
 }

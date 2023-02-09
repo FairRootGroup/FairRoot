@@ -37,9 +37,9 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         "ignoring return value of 'char* fscanf(char*, int, FILE*)'"
 
         # filter warnings from generated files
-        "FairTestDetectorPayloadDigi_generated.h"
-        "FairTestDetectorPayloadHit_generated.h"
-        "FairTestDetectorPayload.pb"
+        "PayloadDigi_generated.h"
+        "PayloadHit_generated.h"
+        "Payload.pb"
         "MyPayload.pb"
         "G__.*Dict"
 

@@ -5,34 +5,35 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/*
- * File:   FairTestDetectorFileSink.h
- * Author: winckler, A. Rybalchenko
- *
- * Created on March 11, 2014, 12:12 PM
- */
 
-// Implementation of FairTestDetectorFileSink::Run() with pure binary transport data format
+// Implementation of FileSink::Run() with Google Protocol Buffers transport data format
+
+#ifdef PROTOBUF
+
+#include "Payload.h"
+#include "Payload.pb.h"
 
 template<>
-void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::InitTask()
+void FileSink<TestDetectorProtobuf>::InitTask()
 {
     OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
         fOutput->Delete();
 
-        int numEntries = msg->GetSize() / sizeof(TestDetectorPayload::Hit);
+        TestDetectorProto::HitPayload hp;
+        hp.ParseFromArray(msg->GetData(), msg->GetSize());
 
-        TestDetectorPayload::Hit* input = static_cast<TestDetectorPayload::Hit*>(msg->GetData());
+        int numEntries = hp.hit_size();
 
         for (int i = 0; i < numEntries; ++i) {
-            TVector3 pos(input[i].posX, input[i].posY, input[i].posZ);
-            TVector3 dpos(input[i].dposX, input[i].dposY, input[i].dposZ);
-            new ((*fOutput)[i]) FairTestDetectorHit(input[i].detID, input[i].mcindex, pos, dpos);
+            const TestDetectorProto::Hit& hit = hp.hit(i);
+            TVector3 pos(hit.posx(), hit.posy(), hit.posz());
+            TVector3 dpos(hit.dposx(), hit.dposy(), hit.dposz());
+            new ((*fOutput)[i]) FairTestDetectorHit(hit.detid(), hit.mcindex(), pos, dpos);
         }
 
         if (fOutput->IsEmpty()) {
-            LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
+            LOG(error) << "FileSink::Run(): No Output array!";
         }
 
         auto ack(fTransportFactory->CreateMessage());
@@ -43,3 +44,5 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::In
         return true;
     });
 }
+
+#endif /* PROTOBUF */

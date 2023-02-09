@@ -5,24 +5,18 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/*
- * File:   FairTestDetectorMQRecoTask.h
- * Author: winckler
- *
- * Created on March 11, 2014, 11:07 AM
- */
 
-// Implementation of FairTestDetectorMQRecoTask::Exec() with pure binary transport data format
+// Implementation of MQRecoTask::Exec() with pure binary transport data format
+
+#include "Payload.h"
+
 template<>
-void FairTestDetectorMQRecoTask<FairTestDetectorDigi,
-                                FairTestDetectorHit,
-                                TestDetectorPayload::Digi,
-                                TestDetectorPayload::Hit>::Exec(Option_t* opt)
+void MQRecoTask<TestDetectorBin>::Exec(Option_t* opt)
 {
     int inputSize = fPayload->GetSize();
-    int numEntries = inputSize / sizeof(TestDetectorPayload::Digi);
+    int numEntries = inputSize / sizeof(Payload::Digi);
 
-    TestDetectorPayload::Digi* input = static_cast<TestDetectorPayload::Digi*>(fPayload->GetData());
+    Payload::Digi* input = static_cast<Payload::Digi*>(fPayload->GetData());
 
     fRecoTask.fDigiArray->Clear();
 
@@ -33,16 +27,16 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi,
     }
 
     if (!fRecoTask.fDigiArray) {
-        LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
+        LOG(error) << "MQRecoTask::Exec(): No Point array!";
     }
 
     fRecoTask.Exec(opt);
 
-    size_t hitsSize = numEntries * sizeof(TestDetectorPayload::Hit);
+    size_t hitsSize = numEntries * sizeof(Payload::Hit);
 
     fPayload->Rebuild(hitsSize);
 
-    TestDetectorPayload::Hit* output = static_cast<TestDetectorPayload::Hit*>(fPayload->GetData());
+    Payload::Hit* output = static_cast<Payload::Hit*>(fPayload->GetData());
 
     if (inputSize > 0) {
         for (int i = 0; i < numEntries; ++i) {

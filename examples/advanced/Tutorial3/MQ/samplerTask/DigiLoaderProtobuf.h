@@ -5,20 +5,16 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/**
- * File:   FairTestDetectorDigiLoader.h
- * @since 2014-02-08
- * @author: A. Rybalchenko, N. Winckler
- */
 
-// Implementation of FairTestDetectorDigiLoader::Exec() with Google Protocol Buffers transport data format
+// Implementation of DigiLoader::Exec() with Google Protocol Buffers transport data format
 
 #ifdef PROTOBUF
 
-#include "FairTestDetectorPayload.pb.h"
+#include "Payload.h"
+#include "Payload.pb.h"
 
 template<>
-void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>::Exec(Option_t* /*opt*/)
+void DigiLoader<TestDetectorProtobuf>::Exec(Option_t* /*opt*/)
 {
     int nDigis = fInput->GetEntriesFast();
 

@@ -5,22 +5,15 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/*
- * File:   FairTestDetectorDigiLoader.h
- * @since 2014-02-08
- * @author: A. Rybalchenko, N. Winckler
- *
- */
 
-// Default implementation of FairTestDetectorDigiLoader::Exec() with Boost transport data format
+// Implementation of DigiLoader::Exec() with Root TMessage transport data format
 
-#include "BoostSerializer.h"
+#include "Payload.h"
+#include "RootSerializer.h"
 
-// example TOut: FairTestDetectorDigi
-// example TPayloadOut: boost::archive::binary_oarchive
-template<typename TOut, typename TPayloadOut>
-void FairTestDetectorDigiLoader<TOut, TPayloadOut>::Exec(Option_t* /*opt*/)
+template<>
+void DigiLoader<TestDetectorTMessage>::Exec(Option_t* /*opt*/)
 {
     fPayload = fTransportFactory->CreateMessage();
-    BoostSerializer<TOut>().Serialize(*fPayload, fInput);
+    RootSerializer().Serialize(*fPayload, fInput);
 }

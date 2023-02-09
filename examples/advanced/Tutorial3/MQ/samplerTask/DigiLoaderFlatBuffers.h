@@ -5,15 +5,17 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-// Implementation of FairTestDetectorDigiLoader::Exec() with Google FlatBuffers transport data format
+
+// Implementation of DigiLoader::Exec() with Google FlatBuffers transport data format
 
 #ifdef FLATBUFFERS
 
-#include "FairTestDetectorPayloadDigi_generated.h"
+#include "Payload.h"
+#include "PayloadDigi_generated.h"
 #include "flatbuffers/flatbuffers.h"
 
 template<>
-void FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorFlat::DigiPayload>::Exec(Option_t* /*opt*/)
+void DigiLoader<TestDetectorFlatBuffers>::Exec(Option_t* /*opt*/)
 {
     int nDigis = fInput->GetEntriesFast();
 

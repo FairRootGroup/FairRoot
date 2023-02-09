@@ -5,29 +5,26 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/*
- * File:   FairTestDetectorFileSink.h
- * Author: winckler, A. Rybalchenko
- *
- * Created on March 11, 2014, 12:12 PM
- */
 
-// Implementation of FairTestDetectorFileSink::Run() with Root TMessage transport data format
+// Implementation of FileSink::Run() with Boost transport data format
 
-#include "RootSerializer.h"
+#include "Payload.h"
+#include "BoostSerializer.h"
 
 template<>
-void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::InitTask()
+void FileSink<TestDetectorBoost>::InitTask()
 {
     OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
 
-        RootSerializer().Deserialize(*msg, fOutput);
+        BoostSerializer<FairTestDetectorHit>().Deserialize(*msg, fOutput);
 
-        fTree.SetBranchAddress("Output", &fOutput);
+        if (fOutput->IsEmpty()) {
+            LOG(error) << "FileSink::Run(): No Output array!";
+        }
 
-        auto ack(fTransportFactory->CreateMessage());
-        fChannels.at(fAckChannelName).at(0).Send(ack);
+        auto ack(NewMessage());
+        Send(ack, fAckChannelName);
 
         fTree.Fill();
 

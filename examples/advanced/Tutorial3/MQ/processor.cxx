@@ -8,12 +8,12 @@
 
 #include "FairMQProcessor.h"
 #include "FairRunFairMQDevice.h"
-#include "FairTestDetectorMQRecoTask.h"
-#include "FairTestDetectorMQRecoTaskBin.h"
-#include "FairTestDetectorMQRecoTaskBoost.h"
-#include "FairTestDetectorMQRecoTaskFlatBuffers.h"
-#include "FairTestDetectorMQRecoTaskProtobuf.h"
-#include "FairTestDetectorMQRecoTaskTMessage.h"
+#include "MQRecoTask.h"
+#include "MQRecoTaskBin.h"
+#include "MQRecoTaskBoost.h"
+#include "MQRecoTaskFlatBuffers.h"
+#include "MQRecoTaskProtobuf.h"
+#include "MQRecoTaskTMessage.h"
 
 namespace bpo = boost::program_options;
 
@@ -32,59 +32,33 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
     std::string dataFormat = config.GetValue<std::string>("data-format");
 
     if (dataFormat == "binary") {
-        using Processor = FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi,
-                                                                     FairTestDetectorHit,
-                                                                     TestDetectorPayload::Digi,
-                                                                     TestDetectorPayload::Hit>>;
-        return std::make_unique<Processor>();
+        return std::make_unique<FairMQProcessor<MQRecoTask<TestDetectorBin>>>();
     } else if (dataFormat == "boost") {
-        if (fair::base::serialization::has_BoostSerialization<FairTestDetectorDigi,
-                                                              void(boost::archive::binary_iarchive&,
-                                                                   const unsigned int)>::value
-            == 0) {
-            LOG(error) << "Boost serialization for Input Payload requested, but the input type does not support it. "
-                          "Check the TIn parameter. Aborting.";
-            return {nullptr};
-        }
-        if (fair::base::serialization::has_BoostSerialization<FairTestDetectorHit,
-                                                              void(boost::archive::binary_oarchive&,
-                                                                   const unsigned int)>::value
-            == 0) {
-            LOG(error) << "Boost serialization for Output Payload requested, but the output type does not support it. "
-                          "Check the TOut parameter. Aborting.";
-            return {nullptr};
-        }
-        using Processor = FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi,
-                                                                     FairTestDetectorHit,
-                                                                     boost::archive::binary_iarchive,
-                                                                     boost::archive::binary_oarchive>>;
-        return std::make_unique<Processor>();
+        return std::make_unique<FairMQProcessor<MQRecoTask<TestDetectorBoost>>>();
     } else if (dataFormat == "tmessage") {
-        using Processor =
-            FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, TMessage, TMessage>>;
-        return std::make_unique<Processor>();
+        return std::make_unique<FairMQProcessor<MQRecoTask<TestDetectorTMessage>>>();
     }
 #ifdef FLATBUFFERS
     else if (dataFormat == "flatbuffers") {
-        using Processor = FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi,
-                                                                     FairTestDetectorHit,
-                                                                     TestDetectorFlat::DigiPayload,
-                                                                     TestDetectorFlat::HitPayload>>;
-        return std::make_unique<Processor>();
+        return std::make_unique<FairMQProcessor<MQRecoTask<TestDetectorFlatBuffers>>>();
     }
 #endif
 #ifdef PROTOBUF
     else if (dataFormat == "protobuf") {
-        using Processor = FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi,
-                                                                     FairTestDetectorHit,
-                                                                     TestDetectorProto::DigiPayload,
-                                                                     TestDetectorProto::HitPayload>>;
-        return std::make_unique<Processor>();
+        return std::make_unique<FairMQProcessor<MQRecoTask<TestDetectorProtobuf>>>();
     }
 #endif
     else {
-        LOG(error)
-            << "No valid data format provided. (--data-format binary|boost|flatbuffers|protobuf|tmessage). ";
-        return {nullptr};
+        std::stringstream ss;
+        ss << "Invalid valid data format provided (--data-format): " << std::quoted(dataFormat)
+           << ", available are: binary, boost, tmessage"
+#ifdef FLATBUFFERS
+           << ", flatbuffers"
+#endif
+#ifdef PROTOBUF
+           << ", protobuf"
+#endif
+           ;
+        throw std::runtime_error(ss.str());
     }
 }
