@@ -10,12 +10,12 @@ dataFormat="binary"
 if (($# == 1)); then
     dataFormat=$1
 elif (($# > 1)); then
-    echo "Usage: startMQTut3.sh [data_format[=binary]]"
+    echo "Usage: start.sh [data_format[=binary]]"
     exit
 fi
 
 echo "Data format: $dataFormat"
-echo "Session: $session"
+echo "Session ID: $session"
 
 SAMPLER="tut3-sampler"
 SAMPLER+=" --id sampler1"

@@ -77,7 +77,7 @@ else()
   set(FLATBUFFERS_USED false)
 endif()
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/start.sh.in ${CMAKE_CURRENT_BINARY_DIR}/start.sh)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
@@ -136,15 +136,15 @@ fairroot_target_root_dictionary(${target}
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-add_executable(tut3-sampler MQ/run/runTestDetectorSampler.cxx)
+add_executable(tut3-sampler MQ/sampler.cxx)
 target_link_libraries(tut3-sampler PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairRoot::FairMQ)
 target_compile_definitions(tut3-sampler PRIVATE ${defs})
 
-add_executable(tut3-processor MQ/run/runTestDetectorProcessor.cxx)
+add_executable(tut3-processor MQ/processor.cxx)
 target_link_libraries(tut3-processor PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairRoot::FairMQ)
 target_compile_definitions(tut3-processor PRIVATE ${defs})
 
-add_executable(tut3-sink MQ/run/runTestDetectorFileSink.cxx)
+add_executable(tut3-sink MQ/sink.cxx)
 target_link_libraries(tut3-sink PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairRoot::FairMQ)
 target_compile_definitions(tut3-sink PRIVATE ${defs})
 

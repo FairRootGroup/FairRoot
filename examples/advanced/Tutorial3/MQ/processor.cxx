@@ -9,6 +9,11 @@
 #include "FairMQProcessor.h"
 #include "FairRunFairMQDevice.h"
 #include "FairTestDetectorMQRecoTask.h"
+#include "FairTestDetectorMQRecoTaskBin.h"
+#include "FairTestDetectorMQRecoTaskBoost.h"
+#include "FairTestDetectorMQRecoTaskFlatBuffers.h"
+#include "FairTestDetectorMQRecoTaskProtobuf.h"
+#include "FairTestDetectorMQRecoTaskTMessage.h"
 
 namespace bpo = boost::program_options;
 

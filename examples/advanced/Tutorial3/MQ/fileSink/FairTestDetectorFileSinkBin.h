@@ -6,34 +6,29 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
- * File:   FairTestDetectorFileSink.tpl
+ * File:   FairTestDetectorFileSink.h
  * Author: winckler, A. Rybalchenko
  *
  * Created on March 11, 2014, 12:12 PM
  */
 
-// Implementation of FairTestDetectorFileSink::Run() with Google Protocol Buffers transport data format
-
-#ifdef PROTOBUF
-#include "FairTestDetectorPayload.pb.h"
+// Implementation of FairTestDetectorFileSink::Run() with pure binary transport data format
 
 template<>
-void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::InitTask()
+void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::InitTask()
 {
     OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
         fOutput->Delete();
 
-        TestDetectorProto::HitPayload hp;
-        hp.ParseFromArray(msg->GetData(), msg->GetSize());
+        int numEntries = msg->GetSize() / sizeof(TestDetectorPayload::Hit);
 
-        int numEntries = hp.hit_size();
+        TestDetectorPayload::Hit* input = static_cast<TestDetectorPayload::Hit*>(msg->GetData());
 
         for (int i = 0; i < numEntries; ++i) {
-            const TestDetectorProto::Hit& hit = hp.hit(i);
-            TVector3 pos(hit.posx(), hit.posy(), hit.posz());
-            TVector3 dpos(hit.dposx(), hit.dposy(), hit.dposz());
-            new ((*fOutput)[i]) FairTestDetectorHit(hit.detid(), hit.mcindex(), pos, dpos);
+            TVector3 pos(input[i].posX, input[i].posY, input[i].posZ);
+            TVector3 dpos(input[i].dposX, input[i].dposY, input[i].dposZ);
+            new ((*fOutput)[i]) FairTestDetectorHit(input[i].detID, input[i].mcindex, pos, dpos);
         }
 
         if (fOutput->IsEmpty()) {
@@ -48,5 +43,3 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload
         return true;
     });
 }
-
-#endif /* PROTOBUF */

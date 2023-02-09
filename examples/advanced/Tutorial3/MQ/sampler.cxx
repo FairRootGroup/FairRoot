@@ -9,6 +9,11 @@
 #include "FairMQSampler.h"
 #include "FairRunFairMQDevice.h"
 #include "FairTestDetectorDigiLoader.h"
+#include "FairTestDetectorDigiLoaderBin.h"
+#include "FairTestDetectorDigiLoaderBoost.h"
+#include "FairTestDetectorDigiLoaderFlatBuffers.h"
+#include "FairTestDetectorDigiLoaderProtobuf.h"
+#include "FairTestDetectorDigiLoaderTMessage.h"
 
 namespace bpo = boost::program_options;
 

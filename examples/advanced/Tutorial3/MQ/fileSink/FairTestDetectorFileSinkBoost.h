@@ -6,28 +6,32 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
- * File:   FairTestDetectorFileSink.tpl
+ * File:   FairTestDetectorFileSink.h
  * Author: winckler, A. Rybalchenko
  *
  * Created on March 11, 2014, 12:12 PM
  */
 
-// Implementation of FairTestDetectorFileSink::Run() with Root TMessage transport data format
+// Implementation of FairTestDetectorFileSink::Run() with Boost transport data format
 
-#include "RootSerializer.h"
+#include "BoostSerializer.h"
 
-template<>
-void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::InitTask()
+// example TIn: FairTestDetectorHit
+// example TPayloadIn: boost::archive::binary_iarchive
+template<typename TIn, typename TPayloadIn>
+void FairTestDetectorFileSink<TIn, TPayloadIn>::InitTask()
 {
     OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
 
-        RootSerializer().Deserialize(*msg, fOutput);
+        BoostSerializer<TIn>().Deserialize(*msg, fOutput);
 
-        fTree.SetBranchAddress("Output", &fOutput);
+        if (fOutput->IsEmpty()) {
+            LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
+        }
 
-        auto ack(fTransportFactory->CreateMessage());
-        fChannels.at(fAckChannelName).at(0).Send(ack);
+        auto ack(NewMessage());
+        Send(ack, fAckChannelName);
 
         fTree.Fill();
 

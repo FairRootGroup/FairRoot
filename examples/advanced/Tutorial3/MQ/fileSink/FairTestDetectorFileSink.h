@@ -84,11 +84,4 @@ class FairTestDetectorFileSink : public fair::mq::Device
     std::string fAckChannelName;
 };
 
-// Template implementation of Run() in FairTestDetectorFileSink.tpl :
-#include "FairTestDetectorFileSinkBin.tpl"
-#include "FairTestDetectorFileSinkBoost.tpl"
-#include "FairTestDetectorFileSinkFlatBuffers.tpl"
-#include "FairTestDetectorFileSinkProtobuf.tpl"
-#include "FairTestDetectorFileSinkTMessage.tpl"
-
 #endif /* FAIRTESTDETECTORFILESINK_H_ */

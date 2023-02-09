@@ -8,6 +8,11 @@
 
 #include "FairRunFairMQDevice.h"
 #include "FairTestDetectorFileSink.h"
+#include "FairTestDetectorFileSinkBin.h"
+#include "FairTestDetectorFileSinkBoost.h"
+#include "FairTestDetectorFileSinkFlatBuffers.h"
+#include "FairTestDetectorFileSinkProtobuf.h"
+#include "FairTestDetectorFileSinkTMessage.h"
 
 namespace bpo = boost::program_options;
 
