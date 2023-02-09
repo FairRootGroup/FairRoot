@@ -77,13 +77,6 @@ else()
   set(FLATBUFFERS_USED false)
 endif()
 
-if(msgpack_FOUND)
-  set(MSGPACK_USED true)
-  list(APPEND defs MSGPACK)
-else()
-  set(MSGPACK_USED false)
-endif()
-
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3.sh)
 
 add_library(${target} SHARED ${sources} ${headers})
@@ -121,7 +114,6 @@ target_link_libraries(${target} PUBLIC
 
   $<$<BOOL:${Protobuf_FOUND}>:protobuf::libprotobuf>
   $<$<BOOL:${Flatbuffers_FOUND}>:${flatbuffers_lib}>
-  $<$<BOOL:${msgpack_FOUND}>:msgpackc>
 
   ROOT::Physics # TVector3, TLorentzVector
   ROOT::Core # Rtypes

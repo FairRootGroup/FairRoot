@@ -18,7 +18,7 @@ void addCustomOptions(bpo::options_description& options)
     options.add_options()
         ("in-channel",  bpo::value<std::string>()->default_value("data1"),  "Name of the input channel")
         ("out-channel", bpo::value<std::string>()->default_value("data2"),  "Name of the output channel")
-        ("data-format", bpo::value<std::string>()->default_value("binary"), "Data format (binary|boost|flatbuffers|msgpack|protobuf|tmessage)");
+        ("data-format", bpo::value<std::string>()->default_value("binary"), "Data format (binary|boost|flatbuffers|protobuf|tmessage)");
     // clang-format on
 }
 
@@ -68,13 +68,6 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
         return std::make_unique<Processor>();
     }
 #endif
-#ifdef MSGPACK
-    else if (dataFormat == "msgpack") {
-        using Processor =
-            FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi, FairTestDetectorHit, MsgPack, MsgPack>>;
-        return std::make_unique<Processor>();
-    }
-#endif
 #ifdef PROTOBUF
     else if (dataFormat == "protobuf") {
         using Processor = FairMQProcessor<FairTestDetectorMQRecoTask<FairTestDetectorDigi,
@@ -86,7 +79,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 #endif
     else {
         LOG(error)
-            << "No valid data format provided. (--data-format binary|boost|flatbuffers|msgpack|protobuf|tmessage). ";
+            << "No valid data format provided. (--data-format binary|boost|flatbuffers|protobuf|tmessage). ";
         return {nullptr};
     }
 }

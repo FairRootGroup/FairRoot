@@ -4,7 +4,7 @@ mcEngine="TGeant3"
 
 session="$(@FairMQ_BINDIR@/fairmq-uuid-gen -h)"
 
-echo "Supported data formats: binary, boost, boost-text, flatbuffers, msgpack, protobuf, tmessage"
+echo "Supported data formats: binary, boost, flatbuffers, protobuf, tmessage"
 dataFormat="binary"
 
 if (($# == 1)); then

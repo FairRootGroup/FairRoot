@@ -37,7 +37,6 @@ class FairTestDetectorDigiLoader : public FairMQSamplerTask
 #include "FairTestDetectorDigiLoaderBin.tpl"
 #include "FairTestDetectorDigiLoaderBoost.tpl"
 #include "FairTestDetectorDigiLoaderFlatBuffers.tpl"
-#include "FairTestDetectorDigiLoaderMsgpack.tpl"
 #include "FairTestDetectorDigiLoaderProtobuf.tpl"
 #include "FairTestDetectorDigiLoaderTMessage.tpl"
 

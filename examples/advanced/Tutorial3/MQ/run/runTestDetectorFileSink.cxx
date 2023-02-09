@@ -17,7 +17,7 @@ void addCustomOptions(bpo::options_description& options)
     options.add_options()
         ("in-channel",  bpo::value<std::string>()->default_value("data2"),  "Name of the input channel")
         ("ack-channel", bpo::value<std::string>()->default_value("ack"),    "Name of the acknowledgement channel")
-        ("data-format", bpo::value<std::string>()->default_value("binary"), "Data format (binary|boost|flatbuffers|msgpack|protobuf|tmessage)");
+        ("data-format", bpo::value<std::string>()->default_value("binary"), "Data format (binary|boost|flatbuffers|protobuf|tmessage)");
     // clang-format on
 }
 
@@ -49,12 +49,6 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
         return std::make_unique<Sink>();
     }
 #endif
-#ifdef MSGPACK
-    else if (dataFormat == "msgpack") {
-        using Sink = FairTestDetectorFileSink<FairTestDetectorHit, MsgPack>;
-        return std::make_unique<Sink>();
-    }
-#endif
 #ifdef PROTOBUF
     else if (dataFormat == "protobuf") {
         using Sink = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>;
@@ -63,7 +57,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 #endif
     else {
         LOG(error)
-            << "No valid data format provided. (--data-format binary|boost|flatbuffers|msgpack|protobuf|tmessage). ";
+            << "No valid data format provided. (--data-format binary|boost|flatbuffers|protobuf|tmessage). ";
         return {nullptr};
     }
 }

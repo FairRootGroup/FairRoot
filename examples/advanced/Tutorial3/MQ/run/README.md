@@ -6,13 +6,12 @@ Each device in this example implements several serialization approaches:
 - boost::serialization
 - Google FlatBuffers
 - Google Protocol Buffers
-- Msgpack
 - ROOT TMessage
 
 To choose specific format when running the device, provide it to the start script (binary is default):
 
 ```bash
-./startMQTut3All.sh <binary|boost|flatbuffers|msgpack|protobuf|tmessage>
+./startMQTut3All.sh <binary|boost|flatbuffers|protobuf|tmessage>
 ```
 
 ## Topologies
