@@ -6,19 +6,21 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
- * File:   FairTestDetectorDigiLoader.tpl
+ * File:   FairTestDetectorDigiLoader.h
  * @since 2014-02-08
  * @author: A. Rybalchenko, N. Winckler
  *
  */
 
-// Implementation of FairTestDetectorDigiLoader::Exec() with Root TMessage transport data format
+// Default implementation of FairTestDetectorDigiLoader::Exec() with Boost transport data format
 
-#include "RootSerializer.h"
+#include "BoostSerializer.h"
 
-template<>
-void FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* /*opt*/)
+// example TOut: FairTestDetectorDigi
+// example TPayloadOut: boost::archive::binary_oarchive
+template<typename TOut, typename TPayloadOut>
+void FairTestDetectorDigiLoader<TOut, TPayloadOut>::Exec(Option_t* /*opt*/)
 {
     fPayload = fTransportFactory->CreateMessage();
-    RootSerializer().Serialize(*fPayload, fInput);
+    BoostSerializer<TOut>().Serialize(*fPayload, fInput);
 }

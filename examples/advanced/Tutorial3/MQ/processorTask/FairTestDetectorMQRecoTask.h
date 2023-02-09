@@ -60,11 +60,4 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
     FairTestDetectorRecoTask fRecoTask;
 };
 
-// Template implementation of exec in FairTestDetectorMQRecoTask.tpl :
-#include "FairTestDetectorMQRecoTaskBin.tpl"
-#include "FairTestDetectorMQRecoTaskBoost.tpl"
-#include "FairTestDetectorMQRecoTaskFlatBuffers.tpl"
-#include "FairTestDetectorMQRecoTaskProtobuf.tpl"
-#include "FairTestDetectorMQRecoTaskTMessage.tpl"
-
 #endif /* FAIRTESTDETECTORMQRECOTASK_H */

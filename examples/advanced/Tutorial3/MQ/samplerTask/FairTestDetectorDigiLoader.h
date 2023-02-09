@@ -33,11 +33,4 @@ class FairTestDetectorDigiLoader : public FairMQSamplerTask
     void Exec(Option_t* opt) override;
 };
 
-// Template implementation is in FairTestDetectorDigiLoader.tpl :
-#include "FairTestDetectorDigiLoaderBin.tpl"
-#include "FairTestDetectorDigiLoaderBoost.tpl"
-#include "FairTestDetectorDigiLoaderFlatBuffers.tpl"
-#include "FairTestDetectorDigiLoaderProtobuf.tpl"
-#include "FairTestDetectorDigiLoaderTMessage.tpl"
-
 #endif /* FAIRTESTDETECTORDIGILOADER_H */

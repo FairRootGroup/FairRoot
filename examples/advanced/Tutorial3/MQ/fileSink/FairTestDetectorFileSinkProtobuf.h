@@ -6,35 +6,47 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
- * File:   FairTestDetectorFileSink.tpl
+ * File:   FairTestDetectorFileSink.h
  * Author: winckler, A. Rybalchenko
  *
  * Created on March 11, 2014, 12:12 PM
  */
 
-// Implementation of FairTestDetectorFileSink::Run() with Boost transport data format
+// Implementation of FairTestDetectorFileSink::Run() with Google Protocol Buffers transport data format
 
-#include "BoostSerializer.h"
+#ifdef PROTOBUF
+#include "FairTestDetectorPayload.pb.h"
 
-// example TIn: FairTestDetectorHit
-// example TPayloadIn: boost::archive::binary_iarchive
-template<typename TIn, typename TPayloadIn>
-void FairTestDetectorFileSink<TIn, TPayloadIn>::InitTask()
+template<>
+void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>::InitTask()
 {
     OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
+        fOutput->Delete();
 
-        BoostSerializer<TIn>().Deserialize(*msg, fOutput);
+        TestDetectorProto::HitPayload hp;
+        hp.ParseFromArray(msg->GetData(), msg->GetSize());
+
+        int numEntries = hp.hit_size();
+
+        for (int i = 0; i < numEntries; ++i) {
+            const TestDetectorProto::Hit& hit = hp.hit(i);
+            TVector3 pos(hit.posx(), hit.posy(), hit.posz());
+            TVector3 dpos(hit.dposx(), hit.dposy(), hit.dposz());
+            new ((*fOutput)[i]) FairTestDetectorHit(hit.detid(), hit.mcindex(), pos, dpos);
+        }
 
         if (fOutput->IsEmpty()) {
             LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
         }
 
-        auto ack(NewMessage());
-        Send(ack, fAckChannelName);
+        auto ack(fTransportFactory->CreateMessage());
+        fChannels.at(fAckChannelName).at(0).Send(ack);
 
         fTree.Fill();
 
         return true;
     });
 }
+
+#endif /* PROTOBUF */

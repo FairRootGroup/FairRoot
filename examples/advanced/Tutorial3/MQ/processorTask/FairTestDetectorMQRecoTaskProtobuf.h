@@ -6,7 +6,7 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
- * File:   FairTestDetectorMQRecoTask.tpl
+ * File:   FairTestDetectorMQRecoTask.h
  * Author: winckler
  *
  * Created on March 11, 2014, 11:07 AM

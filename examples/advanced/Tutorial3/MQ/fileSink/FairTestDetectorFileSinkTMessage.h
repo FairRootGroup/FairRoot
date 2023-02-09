@@ -6,34 +6,25 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
- * File:   FairTestDetectorFileSink.tpl
+ * File:   FairTestDetectorFileSink.h
  * Author: winckler, A. Rybalchenko
  *
  * Created on March 11, 2014, 12:12 PM
  */
 
-// Implementation of FairTestDetectorFileSink::Run() with pure binary transport data format
+// Implementation of FairTestDetectorFileSink::Run() with Root TMessage transport data format
+
+#include "RootSerializer.h"
 
 template<>
-void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>::InitTask()
+void FairTestDetectorFileSink<FairTestDetectorHit, TMessage>::InitTask()
 {
     OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
-        fOutput->Delete();
 
-        int numEntries = msg->GetSize() / sizeof(TestDetectorPayload::Hit);
+        RootSerializer().Deserialize(*msg, fOutput);
 
-        TestDetectorPayload::Hit* input = static_cast<TestDetectorPayload::Hit*>(msg->GetData());
-
-        for (int i = 0; i < numEntries; ++i) {
-            TVector3 pos(input[i].posX, input[i].posY, input[i].posZ);
-            TVector3 dpos(input[i].dposX, input[i].dposY, input[i].dposZ);
-            new ((*fOutput)[i]) FairTestDetectorHit(input[i].detID, input[i].mcindex, pos, dpos);
-        }
-
-        if (fOutput->IsEmpty()) {
-            LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
-        }
+        fTree.SetBranchAddress("Output", &fOutput);
 
         auto ack(fTransportFactory->CreateMessage());
         fChannels.at(fAckChannelName).at(0).Send(ack);

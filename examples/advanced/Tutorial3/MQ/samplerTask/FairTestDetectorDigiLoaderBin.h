@@ -6,7 +6,7 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
- * File:   FairTestDetectorDigiLoader.tpl
+ * File:   FairTestDetectorDigiLoader.h
  * @since 2014-02-08
  * @author: A. Rybalchenko, N. Winckler
  *
