@@ -84,11 +84,7 @@ else()
   set(MSGPACK_USED false)
 endif()
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3Three.sh.in          ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3Three.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3All.sh.in            ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3All.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3AllProxy.sh.in       ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3AllProxy.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3PushPull.sh.in       ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3PushPull.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3ExtraProcessor.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3ExtraProcessor.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3.sh)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
