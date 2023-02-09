@@ -5,35 +5,35 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-#ifndef FAIRTESTDETECTORMQRECOTASK_H
-#define FAIRTESTDETECTORMQRECOTASK_H
+#ifndef FAIR_TESTDETECTOR_MQRECOTASK_H
+#define FAIR_TESTDETECTOR_MQRECOTASK_H
 
 #include "FairMQProcessorTask.h"
 #include "FairRootManager.h"
 #include "FairTestDetectorDigi.h"
 #include "FairTestDetectorHit.h"
-#include "FairTestDetectorPayload.h"
+#include "Payload.h"
 #include "FairTestDetectorRecoTask.h"
 
 #include <TClonesArray.h>
 #include <fairlogger/Logger.h>
 
-template<typename TIn, typename TOut, typename TPayloadIn, typename TPayloadOut>
-class FairTestDetectorMQRecoTask : public FairMQProcessorTask
+template<typename T>
+class MQRecoTask : public FairMQProcessorTask
 {
   public:
-    FairTestDetectorMQRecoTask()
+    MQRecoTask()
         : fRecoTask()
     {}
 
-    FairTestDetectorMQRecoTask(Int_t /*verbose*/)
+    MQRecoTask(Int_t /*verbose*/)
         : fRecoTask()
     {}
 
-    FairTestDetectorMQRecoTask(const FairTestDetectorMQRecoTask&) = delete;
-    FairTestDetectorMQRecoTask operator=(const FairTestDetectorMQRecoTask&) = delete;
+    MQRecoTask(const MQRecoTask&) = delete;
+    MQRecoTask operator=(const MQRecoTask&) = delete;
 
-    ~FairTestDetectorMQRecoTask() override
+    ~MQRecoTask() override
     {
         if (fRecoTask.fDigiArray) {
             fRecoTask.fDigiArray->Delete();
@@ -60,4 +60,4 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
     FairTestDetectorRecoTask fRecoTask;
 };
 
-#endif /* FAIRTESTDETECTORMQRECOTASK_H */
+#endif /* FAIR_TESTDETECTOR_MQRECOTASK_H */

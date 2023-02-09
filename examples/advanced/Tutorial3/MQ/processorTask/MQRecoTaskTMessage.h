@@ -5,20 +5,16 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/*
- * File:   FairTestDetectorDigiLoader.h
- * @since 2014-02-08
- * @author: A. Rybalchenko, N. Winckler
- *
- */
 
-// Implementation of FairTestDetectorDigiLoader::Exec() with Root TMessage transport data format
+// Implementation of MQRecoTask::Exec() with Root TMessage transport data format
 
+#include "Payload.h"
 #include "RootSerializer.h"
 
 template<>
-void FairTestDetectorDigiLoader<FairTestDetectorDigi, TMessage>::Exec(Option_t* /*opt*/)
+void MQRecoTask<TestDetectorTMessage>::Exec(Option_t* opt)
 {
-    fPayload = fTransportFactory->CreateMessage();
-    RootSerializer().Serialize(*fPayload, fInput);
+    RootSerializer().Deserialize(*fPayload, fRecoTask.fDigiArray);
+    fRecoTask.Exec(opt);
+    RootSerializer().Serialize(*fPayload, fRecoTask.fHitArray);
 }

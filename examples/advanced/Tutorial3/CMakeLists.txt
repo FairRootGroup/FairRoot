@@ -35,9 +35,9 @@ set(sources
   timeBasedSimulation/FairTestDetectorTimeDigiTask.cxx
   timeBasedSimulation/FairTestDetectorTimeRecoTask.cxx
 
-  $<$<BOOL:${Protobuf_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc>
-  $<$<BOOL:${Flatbuffers_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadDigi_generated.h>
-  $<$<BOOL:${Flatbuffers_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadHit_generated.h>
+  $<$<BOOL:${Protobuf_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/Payload.pb.cc>
+  $<$<BOOL:${Flatbuffers_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/PayloadDigi_generated.h>
+  $<$<BOOL:${Flatbuffers_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/PayloadHit_generated.h>
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
@@ -46,8 +46,8 @@ if(Protobuf_FOUND)
   set(PROTOBUF_USED true)
   list(APPEND defs PROTOBUF)
   add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.h ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc
-    COMMAND ${PROTOBUF_PROTOC_EXECUTABLE} -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayload.proto
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/Payload.pb.h ${CMAKE_CURRENT_BINARY_DIR}/Payload.pb.cc
+    COMMAND ${PROTOBUF_PROTOC_EXECUTABLE} -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} Payload.proto
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/MQ/data
   )
 else()
@@ -58,13 +58,13 @@ if(Flatbuffers_FOUND)
   set(FLATBUFFERS_USED true)
   list(APPEND defs FLATBUFFERS)
   add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadDigi_generated.h
-    COMMAND $<TARGET_FILE:flatbuffers::flatc> -c -o ${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayloadDigi.fbs
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/PayloadDigi_generated.h
+    COMMAND $<TARGET_FILE:flatbuffers::flatc> -c -o ${CMAKE_CURRENT_BINARY_DIR} PayloadDigi.fbs
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/MQ/data
   )
   add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadHit_generated.h
-    COMMAND $<TARGET_FILE:flatbuffers::flatc> -c -o ${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayloadHit.fbs
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/PayloadHit_generated.h
+    COMMAND $<TARGET_FILE:flatbuffers::flatc> -c -o ${CMAKE_CURRENT_BINARY_DIR} PayloadHit.fbs
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/MQ/data
   )
 

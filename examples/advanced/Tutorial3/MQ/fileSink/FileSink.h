@@ -5,19 +5,13 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/**
- * FairTestDetectorFileSink.h
- *
- * @since 2013-06-05
- * @author A. Rybalchenko
- */
 
-#ifndef FAIRTESTDETECTORFILESINK_H_
-#define FAIRTESTDETECTORFILESINK_H_
+#ifndef FAIR_TESTDETECTOR_FILESINK_H_
+#define FAIR_TESTDETECTOR_FILESINK_H_
 
 #include "FairMQ.h"   // for fair::mq::Device
 #include "FairTestDetectorHit.h"
-#include "FairTestDetectorPayload.h"
+#include "Payload.h"
 
 #include <Rtypes.h>
 #include <TClonesArray.h>
@@ -30,11 +24,11 @@
 #include <memory>
 #include <string>
 
-template<typename TIn, typename TPayloadIn>
-class FairTestDetectorFileSink : public fair::mq::Device
+template<typename T>
+class FileSink : public fair::mq::Device
 {
   public:
-    FairTestDetectorFileSink()
+    FileSink()
         : fOutput(new TClonesArray("FairTestDetectorHit"))
         , fOutFile(nullptr)
         , fTree("MQOut", "Test output")
@@ -46,20 +40,22 @@ class FairTestDetectorFileSink : public fair::mq::Device
         gSystem->ResetSignal(kSigTermination);
     }
 
-    FairTestDetectorFileSink(const FairTestDetectorFileSink&) = delete;
-    FairTestDetectorFileSink operator=(const FairTestDetectorFileSink&) = delete;
+    FileSink(const FileSink&) = delete;
+    FileSink operator=(const FileSink&) = delete;
 
-    ~FairTestDetectorFileSink() override
+    ~FileSink() override
     {
         fTree.Write();
-        fOutFile->Close();
+        if (fOutput) {
+            delete fOutput;
+        }
     }
 
     virtual void InitOutputFile(const std::string& defaultId = "100")
     {
         std::string filename("filesink_" + defaultId + ".root");
         fOutFile = std::unique_ptr<TFile>(TFile::Open(filename.c_str(), "recreate"));
-        fTree.Branch("Output", "TClonesArray", fOutput.get(), 64000, 99);
+        fTree.Branch("Output", "TClonesArray", fOutput, 64000, 99);
     }
 
   protected:
@@ -76,7 +72,7 @@ class FairTestDetectorFileSink : public fair::mq::Device
     void InitTask() override;
 
   private:
-    std::unique_ptr<TClonesArray> fOutput;
+    TClonesArray* fOutput;
     std::unique_ptr<TFile> fOutFile;
     TTree fTree;
     int fReceivedMsgs;
@@ -84,4 +80,4 @@ class FairTestDetectorFileSink : public fair::mq::Device
     std::string fAckChannelName;
 };
 
-#endif /* FAIRTESTDETECTORFILESINK_H_ */
+#endif /* FAIR_TESTDETECTOR_FILESINK_H_ */

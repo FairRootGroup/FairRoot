@@ -5,23 +5,16 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/*
- * File:   FairTestDetectorMQRecoTask.h
- * Author: winckler
- *
- * Created on March 11, 2014, 11:07 AM
- */
 
-// Implementation of FairTestDetectorMQRecoTask::Exec() with Google Protocol Buffers transport data format
+// Implementation of MQRecoTask::Exec() with Google Protocol Buffers transport data format
 
 #ifdef PROTOBUF
-#include "FairTestDetectorPayload.pb.h"
+
+#include "Payload.h"
+#include "Payload.pb.h"
 
 template<>
-void FairTestDetectorMQRecoTask<FairTestDetectorDigi,
-                                FairTestDetectorHit,
-                                TestDetectorProto::DigiPayload,
-                                TestDetectorProto::HitPayload>::Exec(Option_t* opt)
+void MQRecoTask<TestDetectorProtobuf>::Exec(Option_t* opt)
 {
     fRecoTask.fDigiArray->Clear();
 
@@ -37,7 +30,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi,
     }
 
     if (!fRecoTask.fDigiArray) {
-        LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
+        LOG(error) << "MQRecoTask::Exec(): No Point array!";
     }
 
     fRecoTask.Exec(opt);

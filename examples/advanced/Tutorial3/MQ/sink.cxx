@@ -7,12 +7,12 @@
  ********************************************************************************/
 
 #include "FairRunFairMQDevice.h"
-#include "FairTestDetectorFileSink.h"
-#include "FairTestDetectorFileSinkBin.h"
-#include "FairTestDetectorFileSinkBoost.h"
-#include "FairTestDetectorFileSinkFlatBuffers.h"
-#include "FairTestDetectorFileSinkProtobuf.h"
-#include "FairTestDetectorFileSinkTMessage.h"
+#include "FileSink.h"
+#include "FileSinkBin.h"
+#include "FileSinkBoost.h"
+#include "FileSinkFlatBuffers.h"
+#include "FileSinkProtobuf.h"
+#include "FileSinkTMessage.h"
 
 namespace bpo = boost::program_options;
 
@@ -31,38 +31,33 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
     std::string dataFormat = config.GetValue<std::string>("data-format");
 
     if (dataFormat == "binary") {
-        using Sink = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorPayload::Hit>;
-        return std::make_unique<Sink>();
+        return std::make_unique<FileSink<TestDetectorBin>>();
     } else if (dataFormat == "boost") {
-        if (fair::base::serialization::has_BoostSerialization<FairTestDetectorHit,
-                                                              void(boost::archive::binary_iarchive&,
-                                                                   const unsigned int)>::value
-            == 0) {
-            LOG(error) << "Boost serialization for Input Payload requested, but the input type does not support it. "
-                          "Check the TIn parameter. Aborting.";
-            return {nullptr};
-        }
-        using Sink = FairTestDetectorFileSink<FairTestDetectorHit, boost::archive::binary_iarchive>;
-        return std::make_unique<Sink>();
+        return std::make_unique<FileSink<TestDetectorBoost>>();
     } else if (dataFormat == "tmessage") {
-        using Sink = FairTestDetectorFileSink<FairTestDetectorHit, TMessage>;
-        return std::make_unique<Sink>();
+        return std::make_unique<FileSink<TestDetectorTMessage>>();
     }
 #ifdef FLATBUFFERS
     else if (dataFormat == "flatbuffers") {
-        using Sink = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>;
-        return std::make_unique<Sink>();
+        return std::make_unique<FileSink<TestDetectorFlatBuffers>>();
     }
 #endif
 #ifdef PROTOBUF
     else if (dataFormat == "protobuf") {
-        using Sink = FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorProto::HitPayload>;
-        return std::make_unique<Sink>();
+        return std::make_unique<FileSink<TestDetectorProtobuf>>();
     }
 #endif
     else {
-        LOG(error)
-            << "No valid data format provided. (--data-format binary|boost|flatbuffers|protobuf|tmessage). ";
-        return {nullptr};
+        std::stringstream ss;
+        ss << "Invalid valid data format provided (--data-format): " << std::quoted(dataFormat)
+           << ", available are: binary, boost, tmessage"
+#ifdef FLATBUFFERS
+           << ", flatbuffers"
+#endif
+#ifdef PROTOBUF
+           << ", protobuf"
+#endif
+           ;
+        throw std::runtime_error(ss.str());
     }
 }

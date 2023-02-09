@@ -6,16 +6,17 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /**
- * TestDetectorPayload.h
+ * Payload.h
  *
  *  @since 2013-04-22
  *  @author A. Rybalchenko
  */
 
-#ifndef TESTDETECTORPAYLOAD_H_
-#define TESTDETECTORPAYLOAD_H_
+#ifndef FAIR_TESTDETECTOR_PAYLOAD_H
+#define FAIR_TESTDETECTOR_PAYLOAD_H
 
-namespace TestDetectorPayload {
+namespace Payload {
+
 class TimeStamp
 {
   public:
@@ -43,6 +44,15 @@ class Hit : public TimeStamp
     Double_t dposY;
     Double_t dposZ;
 };
-}   // namespace TestDetectorPayload
 
-#endif /* TESTDETECTORPAYLOAD_H_ */
+// serialization types tags
+
+}   // namespace Payload
+
+struct TestDetectorBin;
+struct TestDetectorBoost;
+struct TestDetectorFlatBuffers;
+struct TestDetectorProtobuf;
+struct TestDetectorTMessage;
+
+#endif /* FAIR_TESTDETECTOR_PAYLOAD_H */

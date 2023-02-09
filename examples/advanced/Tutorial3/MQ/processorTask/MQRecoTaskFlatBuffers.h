@@ -5,19 +5,18 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-// Implementation of FairTestDetectorMQRecoTask::Exec() with Google FlatBuffers transport data format
+
+// Implementation of MQRecoTask::Exec() with Google FlatBuffers transport data format
 
 #ifdef FLATBUFFERS
 
-#include "FairTestDetectorPayloadDigi_generated.h"
-#include "FairTestDetectorPayloadHit_generated.h"
+#include "Payload.h"
+#include "PayloadDigi_generated.h"
+#include "PayloadHit_generated.h"
 #include "flatbuffers/flatbuffers.h"
 
 template<>
-void FairTestDetectorMQRecoTask<FairTestDetectorDigi,
-                                FairTestDetectorHit,
-                                TestDetectorFlat::DigiPayload,
-                                TestDetectorFlat::HitPayload>::Exec(Option_t* opt)
+void MQRecoTask<TestDetectorFlatBuffers>::Exec(Option_t* opt)
 {
     fRecoTask.fDigiArray->Clear();
 
@@ -35,7 +34,7 @@ void FairTestDetectorMQRecoTask<FairTestDetectorDigi,
     }
 
     if (!fRecoTask.fDigiArray) {
-        LOG(error) << "FairTestDetectorMQRecoTask::Exec(): No Point array!";
+        LOG(error) << "MQRecoTask::Exec(): No Point array!";
     }
 
     fRecoTask.Exec(opt);

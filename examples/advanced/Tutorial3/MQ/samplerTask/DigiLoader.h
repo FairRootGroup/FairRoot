@@ -5,32 +5,27 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-/**
- * File:   FairTestDetectorDigiLoader.h
- * @since 2014-02-08
- * @author: A. Rybalchenko, N. Winckler
- */
 
-#ifndef FAIRTESTDETECTORDIGILOADER_H
-#define FAIRTESTDETECTORDIGILOADER_H
+#ifndef FAIR_TESTDETECTOR_DIGILOADER_H
+#define FAIR_TESTDETECTOR_DIGILOADER_H
 
 #include "FairMQSamplerTask.h"
 #include "FairTestDetectorDigi.h"
-#include "FairTestDetectorPayload.h"
+#include "Payload.h"
 
 #include <array>
 #include <fairlogger/Logger.h>
 #include <iostream>
 
-template<typename TOut, typename TPayloadOut>
-class FairTestDetectorDigiLoader : public FairMQSamplerTask
+template<typename T>
+class DigiLoader : public FairMQSamplerTask
 {
   public:
-    FairTestDetectorDigiLoader()
+    DigiLoader()
         : FairMQSamplerTask("Load class TOut")
     {}
 
     void Exec(Option_t* opt) override;
 };
 
-#endif /* FAIRTESTDETECTORDIGILOADER_H */
+#endif /* FAIR_TESTDETECTOR_DIGILOADER_H */

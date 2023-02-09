@@ -5,15 +5,17 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-// Implementation of FairTestDetectorFileSink::Run() with Google FlatBuffers transport data format
+
+// Implementation of FileSink::Run() with Google FlatBuffers transport data format
 
 #ifdef FLATBUFFERS
 
-#include "FairTestDetectorPayloadHit_generated.h"
+#include "Payload.h"
+#include "PayloadHit_generated.h"
 #include "flatbuffers/flatbuffers.h"
 
 template<>
-void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>::InitTask()
+void FileSink<TestDetectorFlatBuffers>::InitTask()
 {
     OnData(fInChannelName, [this](fair::mq::MessagePtr& msg, int /*index*/) {
         ++fReceivedMsgs;
@@ -33,7 +35,7 @@ void FairTestDetectorFileSink<FairTestDetectorHit, TestDetectorFlat::HitPayload>
         }
 
         if (fOutput->IsEmpty()) {
-            LOG(error) << "FairTestDetectorFileSink::Run(): No Output array!";
+            LOG(error) << "FileSink::Run(): No Output array!";
         }
 
         auto ack(fTransportFactory->CreateMessage());
