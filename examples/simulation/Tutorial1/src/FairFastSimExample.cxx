@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -174,6 +174,7 @@ FairTutorialDet1Point* FairFastSimExample::AddHit(Int_t trackID,
 
 Bool_t FairFastSimExample::IsSensitive(const std::string& name) { return name == "fast_sim_vol"; }
 
-FairModule* FairFastSimExample::CloneModule() const { return new FairFastSimExample(*this); }
-
-ClassImp(FairFastSimExample);
+FairModule* FairFastSimExample::CloneModule() const
+{
+    return new FairFastSimExample(*this);
+}

@@ -32,5 +32,3 @@ FairParSet* FairMQExParamsContFact::createContainer(FairContainer* container)
 
     return p;
 }
-
-ClassImp(FairMQExParamsContFact);

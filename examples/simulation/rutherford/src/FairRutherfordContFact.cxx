@@ -13,10 +13,6 @@
 #include <TString.h>   // for TString
 #include <cstring>     // for strcmp
 
-class FairParSet;
-
-ClassImp(FairRutherfordContFact);
-
 static FairRutherfordContFact gFairRutherfordContFact;
 
 FairRutherfordContFact::FairRutherfordContFact()

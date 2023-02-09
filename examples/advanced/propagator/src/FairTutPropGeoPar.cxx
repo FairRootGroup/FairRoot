@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2019-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -11,8 +11,6 @@
 #include "TObjArray.h"
 
 #include <iostream>
-
-ClassImp(FairTutPropGeoPar);
 
 FairTutPropGeoPar ::FairTutPropGeoPar(const char* name, const char* title, const char* context)
     : FairParGenericSet(name, title, context)

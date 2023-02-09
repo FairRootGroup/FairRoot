@@ -14,10 +14,6 @@
 #include <TString.h>   // for TString
 #include <cstring>     // for strcmp
 
-class FairParSet;
-
-ClassImp(FairTestDetectorContFact);
-
 static FairTestDetectorContFact gFairTestDetectorContFact;
 
 FairTestDetectorContFact::FairTestDetectorContFact()

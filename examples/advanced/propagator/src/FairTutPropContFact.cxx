@@ -45,5 +45,3 @@ FairParSet* FairTutPropContFact::createContainer(FairContainer* c)
 
     return nullptr;
 }
-
-ClassImp(FairTutPropContFact);
