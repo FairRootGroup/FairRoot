@@ -88,7 +88,6 @@ class FairTestDetectorFileSink : public fair::mq::Device
 #include "FairTestDetectorFileSinkBin.tpl"
 #include "FairTestDetectorFileSinkBoost.tpl"
 #include "FairTestDetectorFileSinkFlatBuffers.tpl"
-#include "FairTestDetectorFileSinkMsgpack.tpl"
 #include "FairTestDetectorFileSinkProtobuf.tpl"
 #include "FairTestDetectorFileSinkTMessage.tpl"
 

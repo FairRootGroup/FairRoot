@@ -16,7 +16,7 @@ void addCustomOptions(bpo::options_description& options)
 {
     // clang-format off
     options.add_options()
-        ("data-format",    bpo::value<std::string>()->default_value("binary"),               "Data format (binary|boost|flatbuffers|msgpack|protobuf|tmessage)")
+        ("data-format",    bpo::value<std::string>()->default_value("binary"),               "Data format (binary|boost|flatbuffers|protobuf|tmessage)")
         ("input-file",     bpo::value<std::string>()->required(),                            "Path to the input file")
         ("parameter-file", bpo::value<std::string>()->default_value(""),                     "Path to the parameter file")
         ("branch",         bpo::value<std::string>()->default_value("FairTestDetectorDigi"), "Name of the Branch")
@@ -55,12 +55,6 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
         return std::make_unique<Sampler>();
     }
 #endif
-#ifdef MSGPACK
-    else if (dataFormat == "msgpack") {
-        using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, MsgPack>>;
-        return std::make_unique<Sampler>();
-    }
-#endif
 #ifdef PROTOBUF
     else if (dataFormat == "protobuf") {
         using Sampler = FairMQSampler<FairTestDetectorDigiLoader<FairTestDetectorDigi, TestDetectorProto::DigiPayload>>;
@@ -69,7 +63,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 #endif
     else {
         LOG(error)
-            << "No valid data format provided. (--data-format binary|boost|flatbuffers|msgpack|protobuf|tmessage). ";
+            << "No valid data format provided. (--data-format binary|boost|flatbuffers|protobuf|tmessage). ";
         exit(EXIT_FAILURE);
     }
 }

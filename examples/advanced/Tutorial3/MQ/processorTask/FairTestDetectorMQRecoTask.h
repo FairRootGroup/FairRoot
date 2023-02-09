@@ -64,7 +64,6 @@ class FairTestDetectorMQRecoTask : public FairMQProcessorTask
 #include "FairTestDetectorMQRecoTaskBin.tpl"
 #include "FairTestDetectorMQRecoTaskBoost.tpl"
 #include "FairTestDetectorMQRecoTaskFlatBuffers.tpl"
-#include "FairTestDetectorMQRecoTaskMsgpack.tpl"
 #include "FairTestDetectorMQRecoTaskProtobuf.tpl"
 #include "FairTestDetectorMQRecoTaskTMessage.tpl"
 
