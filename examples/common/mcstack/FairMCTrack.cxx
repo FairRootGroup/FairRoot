@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -159,5 +159,3 @@ void FairMCTrack::SetNPoints(Int_t iDet, Int_t nPoints)
     else
         LOG(error) << "Unknown detector ID " << iDet;
 }
-
-ClassImp(FairMCTrack);

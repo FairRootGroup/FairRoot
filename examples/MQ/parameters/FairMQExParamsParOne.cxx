@@ -1,16 +1,17 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
- #include "FairMQExParamsParOne.h"
- #include <TGenericClassInfo.h>  // for TGenericClassInfo
- #include <TString.h>            // for TString
- #include <fairlogger/Logger.h>  // for LOG, Logger
- #include "FairParamList.h"      // for FairParamList
+#include "FairMQExParamsParOne.h"
 
+#include "FairParamList.h"   // for FairParamList
+
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TString.h>             // for TString
+#include <fairlogger/Logger.h>   // for LOG, Logger
 
 FairMQExParamsParOne::FairMQExParamsParOne(const char* name, const char* title, const char* context)
     : FairParGenericSet(name, title, context)
@@ -58,5 +59,3 @@ Bool_t FairMQExParamsParOne::getParams(FairParamList* list)
 
     return kTRUE;
 }
-
-ClassImp(FairMQExParamsParOne);

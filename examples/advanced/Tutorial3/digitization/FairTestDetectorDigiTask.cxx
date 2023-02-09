@@ -1,20 +1,22 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
- #include "FairTestDetectorDigiTask.h"
- #include <TClonesArray.h>           // for TClonesArray
- #include <TGenericClassInfo.h>      // for TGenericClassInfo
- #include <TMath.h>                  // for Sqrt
- #include <TRandom.h>                // for TRandom, gRandom
- #include <iostream>                 // for operator<<, basic_ostream, endl
- #include "FairLink.h"               // for FairLink
- #include "FairRootManager.h"        // for FairRootManager
- #include "FairTestDetectorDigi.h"   // for FairTestDetectorDigi
- #include "FairTestDetectorPoint.h"  // for FairTestDetectorPoint
+#include "FairTestDetectorDigiTask.h"
+
+#include "FairLink.h"                // for FairLink
+#include "FairRootManager.h"         // for FairRootManager
+#include "FairTestDetectorDigi.h"    // for FairTestDetectorDigi
+#include "FairTestDetectorPoint.h"   // for FairTestDetectorPoint
+
+#include <TClonesArray.h>        // for TClonesArray
+#include <TGenericClassInfo.h>   // for TGenericClassInfo
+#include <TMath.h>               // for Sqrt
+#include <TRandom.h>             // for TRandom, gRandom
+#include <iostream>              // for operator<<, basic_ostream, endl
 
 FairTestDetectorDigiTask::FairTestDetectorDigiTask()
     : FairTask("TestDetectorDigTask")
@@ -97,5 +99,3 @@ Double_t FairTestDetectorDigiTask::CalcTimeStamp(Double_t timeOfFlight)
         return result;
     }
 }
-
-ClassImp(FairTestDetectorDigiTask);

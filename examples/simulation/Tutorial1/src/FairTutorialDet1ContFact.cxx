@@ -13,10 +13,6 @@
 #include <TString.h>   // for TString
 #include <cstring>     // for strcmp
 
-class FairParSet;
-
-ClassImp(FairTutorialDet1ContFact);
-
 static FairTutorialDet1ContFact gFairTutorialDet1ContFact;
 
 FairTutorialDet1ContFact::FairTutorialDet1ContFact()

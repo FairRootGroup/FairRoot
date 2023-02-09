@@ -23,10 +23,6 @@
 #include <TString.h>   // for TString
 #include <string.h>    // for strcmp
 
-class FairParSet;
-
-ClassImp(FairPassiveContFact);
-
 static FairPassiveContFact gFairPassiveContFact;
 
 FairPassiveContFact::FairPassiveContFact()

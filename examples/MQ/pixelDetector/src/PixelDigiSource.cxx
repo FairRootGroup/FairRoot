@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -156,5 +156,3 @@ void PixelDigiSource::FillEventHeader(FairEventHeader* feh)
     ((PixelEventHeader*)feh)->SetMCEntryNumber(fMCEntryNo);
     ((PixelEventHeader*)feh)->SetPartNo(fPartNo);
 }
-
-ClassImp(PixelDigiSource);

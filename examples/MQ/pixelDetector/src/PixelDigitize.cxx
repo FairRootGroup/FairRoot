@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -264,5 +264,3 @@ void PixelDigitize::Finish()
               << static_cast<Double_t>(fTNofDigis) / (static_cast<Double_t>(fTNofEvents)) << " per event )";
     LOG(info) << "---------------------------------------------------------------------";
 }
-
-ClassImp(PixelDigitize);
