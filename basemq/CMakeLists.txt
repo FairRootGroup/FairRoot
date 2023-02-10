@@ -12,8 +12,6 @@ set(target BaseMQ)
 
 list(APPEND headers
   devices/FairMQLmdSampler.h
-  devices/FairMQProcessor.h
-  devices/FairMQSampler.h
   devices/FairMQUnpacker.h
   policies/Serialization/BoostSerializer.h
   policies/Serialization/RootSerializer.h
@@ -21,8 +19,6 @@ list(APPEND headers
   FairHitBoostSerializationSupport.h
   FairMCPointBoostSerializationSupport.h
   FairTimeStampBoostSerializationSupport.h
-  tasks/FairMQProcessorTask.h
-  tasks/FairMQSamplerTask.h
 )
 
 add_library(${target} INTERFACE)
@@ -31,11 +27,7 @@ fairroot_library_settings(${target})
 target_include_directories(${target} INTERFACE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/devices>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/tasks>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/baseMQtools>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/policies/Sampler>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/policies/Serialization>
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/policies/Storage>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 

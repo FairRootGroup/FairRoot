@@ -9,7 +9,7 @@
 #ifndef FAIR_TESTDETECTOR_DIGILOADER_H
 #define FAIR_TESTDETECTOR_DIGILOADER_H
 
-#include "FairMQSamplerTask.h"
+#include "SamplerTask.h"
 #include "FairTestDetectorDigi.h"
 #include "Payload.h"
 
@@ -18,11 +18,11 @@
 #include <iostream>
 
 template<typename T>
-class DigiLoader : public FairMQSamplerTask
+class DigiLoader : public SamplerTask
 {
   public:
     DigiLoader()
-        : FairMQSamplerTask("Load class TOut")
+        : SamplerTask("Load class TOut")
     {}
 
     void Exec(Option_t* opt) override;

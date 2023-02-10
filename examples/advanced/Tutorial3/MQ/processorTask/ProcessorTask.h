@@ -6,20 +6,20 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef FAIRMQPROCESSORTASK_H_
-#define FAIRMQPROCESSORTASK_H_
+#ifndef FAIR_TESTDETECTOR_ROCESSORTASK_H
+#define FAIR_TESTDETECTOR_ROCESSORTASK_H
 
 #include "FairMQ.h"   // for fair::mq::Message
 #include "FairTask.h"
 
-class FairMQProcessorTask : public FairTask
+class ProcessorTask : public FairTask
 {
   public:
-    FairMQProcessorTask() = default;
-    FairMQProcessorTask(const FairMQProcessorTask&) = delete;
-    FairMQProcessorTask operator=(const FairMQProcessorTask&) = delete;
+    ProcessorTask() = default;
+    ProcessorTask(const ProcessorTask&) = delete;
+    ProcessorTask operator=(const ProcessorTask&) = delete;
 
-    ~FairMQProcessorTask() override = default;
+    ~ProcessorTask() override = default;
 
     void SetPayload(std::unique_ptr<fair::mq::Message>& msg) { fPayload = std::move(msg); }
     void GetPayload(std::unique_ptr<fair::mq::Message>& msg) { msg = std::move(fPayload); }
@@ -28,4 +28,4 @@ class FairMQProcessorTask : public FairTask
     std::unique_ptr<fair::mq::Message> fPayload;
 };
 
-#endif /* FAIRMQPROCESSORTASK_H_ */
+#endif /* FAIR_TESTDETECTOR_ROCESSORTASK_H */
