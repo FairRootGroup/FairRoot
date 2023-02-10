@@ -36,10 +36,13 @@ void FileSink<TestDetectorProtobuf>::InitTask()
             LOG(error) << "FileSink::Run(): No Output array!";
         }
 
-        auto ack(fTransportFactory->CreateMessage());
-        fChannels.at(fAckChannelName).at(0).Send(ack);
-
         fTree.Fill();
+
+        if (fMaxMsgs != 0) {
+            if (fReceivedMsgs == fMaxMsgs) {
+                return false;
+            }
+        }
 
         return true;
     });

@@ -50,17 +50,13 @@ class Sampler : public fair::mq::Device
     Sampler()
         : fFairRunAna(nullptr)
         , fSamplerTask(nullptr)
-        , fStart()
-        , fEnd()
         , fInputFile()
         , fParFile()
         , fBranch()
         , fOutChannelName("data1")
-        , fAckChannelName("ack")
         , fNumEvents(0)
         , fChainInput(0)
         , fSentMsgs(0)
-        , fAckListener()
     {}
 
     Sampler(const Sampler&) = delete;
@@ -82,13 +78,9 @@ class Sampler : public fair::mq::Device
         fChainInput = fConfig->GetValue<int>("chain-input");
 
         std::string outChannelName = fConfig->GetValue<std::string>("out-channel");
-        std::string ackChannelName = fConfig->GetValue<std::string>("ack-channel");
         // check if the returned value actually exists, for the compatibility with old devices.
         if (outChannelName != "") {
             fOutChannelName = outChannelName;
-        }
-        if (ackChannelName != "") {
-            fAckChannelName = ackChannelName;
         }
 
         fSamplerTask->SetBranch(fBranch);
@@ -120,43 +112,34 @@ class Sampler : public fair::mq::Device
 
         fFairRunAna->Init();
         // fFairRunAna->Run(0, 0);
-        fNumEvents = int((FairRootManager::Instance()->GetInChain())->GetEntries());
+        fNumEvents = FairRootManager::Instance()->GetInChain()->GetEntries();
 
         LOG(info) << "Task initialized.";
         LOG(info) << "Number of events to process: " << fNumEvents;
     }
 
-    virtual void PreRun()
+    virtual void Run()
     {
-        fStart = std::chrono::high_resolution_clock::now();
-        fAckListener = std::thread(&Sampler::ListenForAcks, this);
-    }
+        while (fSentMsgs < fNumEvents) {
+            fair::mq::MessagePtr msg;
 
-    virtual bool ConditionalRun()
-    {
-        fair::mq::MessagePtr msg;
+            fSamplerTask->SetEventIndex(fSentMsgs);
+            fFairRunAna->RunMQ(fSentMsgs);
+            fSamplerTask->GetPayload(msg);
 
-        fSamplerTask->SetEventIndex(fSentMsgs);
-        fFairRunAna->RunMQ(fSentMsgs);
-        fSamplerTask->GetPayload(msg);
+            if (Send(msg, fOutChannelName) >= 0) {
+                ++fSentMsgs;
+            }
 
-        if (Send(msg, fOutChannelName) >= 0) {
-            ++fSentMsgs;
-            if (fSentMsgs == fNumEvents) {
-                return false;
+            if (NewStatePending()) {
+                break;
             }
         }
 
-        return true;
-    }
-
-    virtual void PostRun()
-    {
-        try {
-            fAckListener.join();
-        } catch (std::exception& e) {
-            LOG(error) << "Exception when ending AckListener thread: " << e.what();
-            exit(EXIT_FAILURE);
+        LOG(info) << "Sent " << fSentMsgs << " messages!";
+        // stay in the Running state until a transition to Ready is requested
+        while (!NewStatePending()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     }
 
@@ -168,39 +151,16 @@ class Sampler : public fair::mq::Device
         delete fSamplerTask;
     }
 
-    void ListenForAcks()
-    {
-        uint64_t numAcks = 0;
-        for (Long64_t eventNr = 0; eventNr < fNumEvents; ++eventNr) {
-            auto ack(NewMessage());
-            if (Receive(ack, fAckChannelName) >= 0) {
-                ++numAcks;
-            }
-
-            if (NewStatePending()) {
-                break;
-            }
-        }
-
-        fEnd = std::chrono::high_resolution_clock::now();
-        LOG(info) << "Acknowledged " << numAcks
-                  << " messages in: " << std::chrono::duration<double, std::milli>(fEnd - fStart).count() << "ms.";
-    }
-
   private:
     FairRunAna* fFairRunAna;
     SamplerTask* fSamplerTask;
-    std::chrono::high_resolution_clock::time_point fStart;
-    std::chrono::high_resolution_clock::time_point fEnd;
     std::string fInputFile;   // Filename of a root file containing the simulated digis.
     std::string fParFile;
     std::string fBranch;   // The name of the sub-detector branch to stream the digis from.
     std::string fOutChannelName;
-    std::string fAckChannelName;
-    int fNumEvents;
+    int64_t fNumEvents;
     int fChainInput;
     int fSentMsgs;
-    std::thread fAckListener;
 };
 
 void addCustomOptions(bpo::options_description& options)
@@ -212,7 +172,6 @@ void addCustomOptions(bpo::options_description& options)
         ("parameter-file", bpo::value<std::string>()->default_value(""),                     "Path to the parameter file")
         ("branch",         bpo::value<std::string>()->default_value("FairTestDetectorDigi"), "Name of the Branch")
         ("out-channel",    bpo::value<std::string>()->default_value("data1"),                "Name of the output channel")
-        ("ack-channel",    bpo::value<std::string>()->default_value("ack"),                  "Name of the acknowledgement channel")
         ("chain-input",    bpo::value<int>()->default_value(0),                              "Chain input file more than once (default)");
     // clang-format on
 }
@@ -220,6 +179,8 @@ void addCustomOptions(bpo::options_description& options)
 std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& config)
 {
     std::string dataFormat = config.GetValue<std::string>("data-format");
+
+    LOG(info) << "Starting Sampler with " << dataFormat << " data serialization";
 
     if (dataFormat == "binary") {
         return std::make_unique<Sampler<DigiLoader<TestDetectorBin>>>();

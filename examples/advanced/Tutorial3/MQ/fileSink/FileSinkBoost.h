@@ -23,10 +23,13 @@ void FileSink<TestDetectorBoost>::InitTask()
             LOG(error) << "FileSink::Run(): No Output array!";
         }
 
-        auto ack(NewMessage());
-        Send(ack, fAckChannelName);
-
         fTree.Fill();
+
+        if (fMaxMsgs != 0) {
+            if (fReceivedMsgs == fMaxMsgs) {
+                return false;
+            }
+        }
 
         return true;
     });

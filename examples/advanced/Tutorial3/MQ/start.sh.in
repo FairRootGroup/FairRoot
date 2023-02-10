@@ -25,7 +25,6 @@ SAMPLER+=" --chain-input 99"
 SAMPLER+=" --input-file @CMAKE_CURRENT_BINARY_DIR@/macro/data/testdigi_$mcEngine.root"
 SAMPLER+=" --parameter-file @CMAKE_CURRENT_BINARY_DIR@/macro/data/testparams_$mcEngine.root"
 SAMPLER+=" --channel-config name=data1,type=push,method=bind,address=tcp://localhost:5565"
-SAMPLER+="                  name=ack,type=pull,method=bind,address=tcp://localhost:5999"
 xterm -geometry 80x23+0+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$SAMPLER &
 
 PROCESSOR1="tut3-processor"
@@ -49,5 +48,4 @@ SINK+=" --id sink1"
 SINK+=" --session $session"
 SINK+=" --data-format $dataFormat"
 SINK+=" --channel-config name=data2,type=pull,method=bind,address=tcp://localhost:5570"
-SINK+="                  name=ack,type=push,method=connect,address=tcp://localhost:5999"
 xterm -geometry 80x23+1000+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$SINK &

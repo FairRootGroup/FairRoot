@@ -32,9 +32,7 @@ class FileSink : public fair::mq::Device
         : fOutput(new TClonesArray("FairTestDetectorHit"))
         , fOutFile(nullptr)
         , fTree("MQOut", "Test output")
-        , fReceivedMsgs(0)
         , fInChannelName("data2")
-        , fAckChannelName("ack")
     {
         gSystem->ResetSignal(kSigInterrupt);
         gSystem->ResetSignal(kSigTermination);
@@ -51,20 +49,15 @@ class FileSink : public fair::mq::Device
         }
     }
 
-    virtual void InitOutputFile(const std::string& defaultId = "100")
-    {
-        std::string filename("filesink_" + defaultId + ".root");
-        fOutFile = std::unique_ptr<TFile>(TFile::Open(filename.c_str(), "recreate"));
-        fTree.Branch("Output", "TClonesArray", fOutput, 64000, 99);
-    }
-
-  protected:
     void Init() override
     {
         fInChannelName = fConfig->GetValue<std::string>("in-channel");
-        fAckChannelName = fConfig->GetValue<std::string>("ack-channel");
+        fMaxMsgs = fConfig->GetValue<uint64_t>("max-msgs");
 
-        InitOutputFile(fConfig->GetValue<std::string>("data-format"));
+        std::string format = fConfig->GetValue<std::string>("data-format");
+        std::string filename("filesink_" + format + ".root");
+        fOutFile = std::unique_ptr<TFile>(TFile::Open(filename.c_str(), "recreate"));
+        fTree.Branch("Output", "TClonesArray", fOutput, 64000, 99);
     }
 
     void PostRun() override { LOG(info) << "Received " << fReceivedMsgs << " messages!"; }
@@ -75,9 +68,9 @@ class FileSink : public fair::mq::Device
     TClonesArray* fOutput;
     std::unique_ptr<TFile> fOutFile;
     TTree fTree;
-    int fReceivedMsgs;
+    uint64_t fReceivedMsgs = 0;
+    uint64_t fMaxMsgs = 0;
     std::string fInChannelName;
-    std::string fAckChannelName;
 };
 
 #endif /* FAIR_TESTDETECTOR_FILESINK_H_ */

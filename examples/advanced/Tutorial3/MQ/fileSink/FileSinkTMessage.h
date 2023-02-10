@@ -20,11 +20,13 @@ void FileSink<TestDetectorTMessage>::InitTask()
         RootSerializer().Deserialize(*msg, fOutput);
 
         fTree.SetBranchAddress("Output", &fOutput);
-
-        auto ack(fTransportFactory->CreateMessage());
-        fChannels.at(fAckChannelName).at(0).Send(ack);
-
         fTree.Fill();
+
+        if (fMaxMsgs != 0) {
+            if (fReceivedMsgs == fMaxMsgs) {
+                return false;
+            }
+        }
 
         return true;
     });

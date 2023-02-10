@@ -90,6 +90,8 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 {
     std::string dataFormat = config.GetValue<std::string>("data-format");
 
+    LOG(info) << "Starting Processor with " << dataFormat << " data serialization";
+
     if (dataFormat == "binary") {
         return std::make_unique<Processor<MQRecoTask<TestDetectorBin>>>();
     } else if (dataFormat == "boost") {
