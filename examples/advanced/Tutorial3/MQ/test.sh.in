@@ -1,0 +1,86 @@
+#!/bin/bash
+
+set -e
+
+mcEngine="TGeant3"
+
+session="$(@FairMQ_BINDIR@/fairmq-uuid-gen -h)"
+
+echo "Supported data formats: binary, boost, flatbuffers, protobuf, tmessage"
+dataFormat="binary"
+
+if (($# == 1)); then
+    dataFormat=$1
+elif (($# > 1)); then
+    echo "Usage: start.sh [data_format[=binary]]"
+    exit
+fi
+
+echo "Data format: $dataFormat"
+echo "Session ID: $session"
+
+trap 'kill -TERM $SAMPLER_PID; kill -TERM $P1_PID; kill -TERM $P2_PID; kill -TERM $SINK_PID; wait $SAMPLER_PID; wait $P1_PID; wait $P2_PID; wait $SINK_PID;' TERM
+
+mkdir @CMAKE_CURRENT_BINARY_DIR@/testsession_$session
+cd @CMAKE_CURRENT_BINARY_DIR@/testsession_$session
+
+# launch devices
+
+SAMPLER="tut3-sampler"
+SAMPLER+=" --id sampler1"
+SAMPLER+=" --control static"
+SAMPLER+=" --color false"
+SAMPLER+=" --verbosity veryhigh"
+SAMPLER+=" --session $session"
+SAMPLER+=" --data-format $dataFormat"
+SAMPLER+=" --input-file @CMAKE_CURRENT_BINARY_DIR@/macro/data/testdigi_$mcEngine.root"
+SAMPLER+=" --parameter-file @CMAKE_CURRENT_BINARY_DIR@/macro/data/testparams_$mcEngine.root"
+SAMPLER+=" --channel-config name=data1,type=push,method=bind,address=ipc://data1"
+@CMAKE_CURRENT_BINARY_DIR@/$SAMPLER &
+SAMPLER_PID=$!
+
+PROCESSOR1="tut3-processor"
+PROCESSOR1+=" --id processor1"
+PROCESSOR1+=" --control static"
+PROCESSOR1+=" --color false"
+PROCESSOR1+=" --verbosity veryhigh"
+PROCESSOR1+=" --session $session"
+PROCESSOR1+=" --data-format $dataFormat"
+PROCESSOR1+=" --channel-config name=data1,type=pull,method=connect,address=ipc://data1"
+PROCESSOR1+="                  name=data2,type=push,method=connect,address=ipc://data2"
+@CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR1 &
+P1_PID=$!
+
+PROCESSOR2="tut3-processor"
+PROCESSOR2+=" --id processor2"
+PROCESSOR2+=" --control static"
+PROCESSOR2+=" --color false"
+PROCESSOR2+=" --verbosity veryhigh"
+PROCESSOR2+=" --session $session"
+PROCESSOR2+=" --data-format $dataFormat"
+PROCESSOR2+=" --channel-config name=data1,type=pull,method=connect,address=ipc://data1"
+PROCESSOR2+="                  name=data2,type=push,method=connect,address=ipc://data2"
+@CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR2 &
+P2_PID=$!
+
+SINK="tut3-sink"
+SINK+=" --id sink1"
+SINK+=" --control static"
+SINK+=" --color false"
+SINK+=" --verbosity veryhigh"
+SINK+=" --session $session"
+SINK+=" --data-format $dataFormat"
+SINK+=" --max-msgs 100"
+SINK+=" --channel-config name=data2,type=pull,method=bind,address=ipc://data2"
+@CMAKE_CURRENT_BINARY_DIR@/$SINK &
+SINK_PID=$!
+
+wait $SINK_PID
+
+kill -SIGINT $SAMPLER_PID
+kill -SIGINT $P1_PID
+kill -SIGINT $P2_PID
+
+wait $SAMPLER_PID
+wait $P1_PID
+wait $P2_PID

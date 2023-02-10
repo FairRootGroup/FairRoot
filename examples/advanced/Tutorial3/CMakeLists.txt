@@ -151,3 +151,29 @@ target_compile_definitions(tut3-sink PRIVATE ${defs})
 install(TARGETS tut3-sampler tut3-processor tut3-sink
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/advanced/Tutorial3/bin
 )
+
+# test script
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/test.sh.in ${CMAKE_CURRENT_BINARY_DIR}/test.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/test_data.sh.in ${CMAKE_CURRENT_BINARY_DIR}/test_data.sh)
+
+add_test(NAME ex_tutorial3_mq_data COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test_data.sh)
+set_tests_properties(ex_tutorial3_mq_data PROPERTIES TIMEOUT "30")
+
+add_test(NAME ex_tutorial3_mq_binary COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test.sh binary)
+set_tests_properties(ex_tutorial3_mq_binary PROPERTIES TIMEOUT "30" DEPENDS "ex_tutorial3_mq_data" PASS_REGULAR_EXPRESSION "Received 100 messages!")
+
+add_test(NAME ex_tutorial3_mq_boost COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test.sh boost)
+set_tests_properties(ex_tutorial3_mq_boost PROPERTIES TIMEOUT "30" DEPENDS "ex_tutorial3_mq_data" PASS_REGULAR_EXPRESSION "Received 100 messages!")
+
+if(Flatbuffers_FOUND)
+add_test(NAME ex_tutorial3_mq_flatbuffers COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test.sh flatbuffers)
+set_tests_properties(ex_tutorial3_mq_flatbuffers PROPERTIES TIMEOUT "30" DEPENDS "ex_tutorial3_mq_data" PASS_REGULAR_EXPRESSION "Received 100 messages!")
+endif()
+
+if(Protobuf_FOUND)
+  add_test(NAME ex_tutorial3_mq_protobuf COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test.sh protobuf)
+  set_tests_properties(ex_tutorial3_mq_protobuf PROPERTIES TIMEOUT "30" DEPENDS "ex_tutorial3_mq_data" PASS_REGULAR_EXPRESSION "Received 100 messages!")
+endif()
+
+add_test(NAME ex_tutorial3_mq_tmessage COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test.sh tmessage)
+set_tests_properties(ex_tutorial3_mq_tmessage PROPERTIES TIMEOUT "30" DEPENDS "ex_tutorial3_mq_data" PASS_REGULAR_EXPRESSION "Received 100 messages!")
