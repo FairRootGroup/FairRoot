@@ -6,8 +6,8 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef FAIR_TESTDETECTOR_ROCESSORTASK_H
-#define FAIR_TESTDETECTOR_ROCESSORTASK_H
+#ifndef FAIR_TESTDETECTOR_PROCESSORTASK_H
+#define FAIR_TESTDETECTOR_PROCESSORTASK_H
 
 #include "FairMQ.h"   // for fair::mq::Message
 #include "FairTask.h"
@@ -28,4 +28,4 @@ class ProcessorTask : public FairTask
     std::unique_ptr<fair::mq::Message> fPayload;
 };
 
-#endif /* FAIR_TESTDETECTOR_ROCESSORTASK_H */
+#endif /* FAIR_TESTDETECTOR_PROCESSORTASK_H */

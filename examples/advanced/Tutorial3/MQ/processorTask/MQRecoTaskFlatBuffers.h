@@ -8,6 +8,9 @@
 
 // Implementation of MQRecoTask::Exec() with Google FlatBuffers transport data format
 
+#ifndef FAIR_TESTDETECTOR_PROCESSORTASK_FLATBUFFERS_H
+#define FAIR_TESTDETECTOR_PROCESSORTASK_FLATBUFFERS_H
+
 #ifdef FLATBUFFERS
 
 #include "Payload.h"
@@ -75,4 +78,6 @@ void MQRecoTask<TestDetectorFlatBuffers>::Exec(Option_t* opt)
         builder);
 }
 
-#endif /* FLATBUFFERS */
+#endif   // FLATBUFFERS
+
+#endif   // FAIR_TESTDETECTOR_PROCESSORTASK_FLATBUFFERS_H

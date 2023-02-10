@@ -8,6 +8,9 @@
 
 // Implementation of DigiLoader::Exec() with Root TMessage transport data format
 
+#ifndef FAIR_TESTDETECTOR_DIGILOADER_TMESSAGE_H
+#define FAIR_TESTDETECTOR_DIGILOADER_TMESSAGE_H
+
 #include "Payload.h"
 #include "RootSerializer.h"
 
@@ -17,3 +20,5 @@ void DigiLoader<TestDetectorTMessage>::Exec(Option_t* /*opt*/)
     fPayload = fTransportFactory->CreateMessage();
     RootSerializer().Serialize(*fPayload, fInput);
 }
+
+#endif   // FAIR_TESTDETECTOR_DIGILOADER_TMESSAGE_H

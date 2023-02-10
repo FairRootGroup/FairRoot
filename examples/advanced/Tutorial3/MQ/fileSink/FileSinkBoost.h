@@ -8,8 +8,11 @@
 
 // Implementation of FileSink::Run() with Boost transport data format
 
-#include "Payload.h"
+#ifndef FAIR_TESTDETECTOR_FILESINK_BOOST_H
+#define FAIR_TESTDETECTOR_FILESINK_BOOST_H
+
 #include "BoostSerializer.h"
+#include "Payload.h"
 
 template<>
 void FileSink<TestDetectorBoost>::InitTask()
@@ -34,3 +37,5 @@ void FileSink<TestDetectorBoost>::InitTask()
         return true;
     });
 }
+
+#endif   // FAIR_TESTDETECTOR_FILESINK_BOOST_H

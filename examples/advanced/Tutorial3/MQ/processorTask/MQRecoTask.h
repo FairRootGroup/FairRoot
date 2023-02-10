@@ -9,14 +9,20 @@
 #ifndef FAIR_TESTDETECTOR_MQRECOTASK_H
 #define FAIR_TESTDETECTOR_MQRECOTASK_H
 
-#include "ProcessorTask.h"
-#include "FairRootManager.h"
+// this example
 #include "FairTestDetectorDigi.h"
 #include "FairTestDetectorHit.h"
-#include "Payload.h"
 #include "FairTestDetectorRecoTask.h"
+#include "Payload.h"
+#include "ProcessorTask.h"
 
+// FairRoot
+#include "FairRootManager.h"
+
+// ROOT
 #include <TClonesArray.h>
+
+// logger
 #include <fairlogger/Logger.h>
 
 template<typename T>

@@ -8,6 +8,9 @@
 
 // Implementation of FileSink::Run() with Google FlatBuffers transport data format
 
+#ifndef FAIR_TESTDETECTOR_FILESINK_FLATBUFFERS_H
+#define FAIR_TESTDETECTOR_FILESINK_FLATBUFFERS_H
+
 #ifdef FLATBUFFERS
 
 #include "Payload.h"
@@ -50,4 +53,6 @@ void FileSink<TestDetectorFlatBuffers>::InitTask()
     });
 }
 
-#endif /* FLATBUFFERS */
+#endif   // FLATBUFFERS
+
+#endif   // FAIR_TESTDETECTOR_FILESINK_FLATBUFFERS_H

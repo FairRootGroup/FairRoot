@@ -6,18 +6,26 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "ProcessorTask.h"
+// this example
 #include "MQRecoTask.h"
 #include "MQRecoTaskBin.h"
 #include "MQRecoTaskBoost.h"
 #include "MQRecoTaskFlatBuffers.h"
 #include "MQRecoTaskProtobuf.h"
 #include "MQRecoTaskTMessage.h"
+#include "ProcessorTask.h"
 
-#include "FairRunFairMQDevice.h"
+// FairRoot
 #include "FairMQ.h"   // for fair::mq::Device, fair::mq::MessagePtr
+#include "FairRunFairMQDevice.h"
 
+// logger
 #include <fairlogger/Logger.h>
+
+// std
+#include <iomanip>   // std::quoted
+#include <memory>
+#include <string>
 
 namespace bpo = boost::program_options;
 
@@ -119,7 +127,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 #ifdef PROTOBUF
            << ", protobuf"
 #endif
-           ;
+            ;
         throw std::runtime_error(ss.str());
     }
 }

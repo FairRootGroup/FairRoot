@@ -8,6 +8,9 @@
 
 // Implementation of MQRecoTask::Exec() with Google Protocol Buffers transport data format
 
+#ifndef FAIR_TESTDETECTOR_PROCESSORTASK_PROTOBUF_H
+#define FAIR_TESTDETECTOR_PROCESSORTASK_PROTOBUF_H
+
 #ifdef PROTOBUF
 
 #include "Payload.h"
@@ -63,4 +66,6 @@ void MQRecoTask<TestDetectorProtobuf>::Exec(Option_t* opt)
         str);
 }
 
-#endif /* PROTOBUF */
+#endif   // PROTOBUF
+
+#endif   // FAIR_TESTDETECTOR_PROCESSORTASK_PROTOBUF_H

@@ -8,6 +8,9 @@
 
 // Implementation of MQRecoTask::Exec() with Root TMessage transport data format
 
+#ifndef FAIR_TESTDETECTOR_PROCESSORTASK_TMESSAGE_H
+#define FAIR_TESTDETECTOR_PROCESSORTASK_TMESSAGE_H
+
 #include "Payload.h"
 #include "RootSerializer.h"
 
@@ -18,3 +21,5 @@ void MQRecoTask<TestDetectorTMessage>::Exec(Option_t* opt)
     fRecoTask.Exec(opt);
     RootSerializer().Serialize(*fPayload, fRecoTask.fHitArray);
 }
+
+#endif   // FAIR_TESTDETECTOR_PROCESSORTASK_TMESSAGE_H

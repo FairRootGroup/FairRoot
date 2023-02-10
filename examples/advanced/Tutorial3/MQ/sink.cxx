@@ -6,13 +6,19 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#include "FairRunFairMQDevice.h"
+// this example
 #include "FileSink.h"
 #include "FileSinkBin.h"
 #include "FileSinkBoost.h"
 #include "FileSinkFlatBuffers.h"
 #include "FileSinkProtobuf.h"
 #include "FileSinkTMessage.h"
+
+// FairRoot
+#include "FairRunFairMQDevice.h"
+
+// std
+#include <iomanip>   // std::quoted
 
 namespace bpo = boost::program_options;
 
@@ -59,7 +65,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 #ifdef PROTOBUF
            << ", protobuf"
 #endif
-           ;
+            ;
         throw std::runtime_error(ss.str());
     }
 }

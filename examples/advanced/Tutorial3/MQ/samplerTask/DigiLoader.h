@@ -9,13 +9,13 @@
 #ifndef FAIR_TESTDETECTOR_DIGILOADER_H
 #define FAIR_TESTDETECTOR_DIGILOADER_H
 
-#include "SamplerTask.h"
+// this example
 #include "FairTestDetectorDigi.h"
 #include "Payload.h"
+#include "SamplerTask.h"
 
-#include <array>
+// logger
 #include <fairlogger/Logger.h>
-#include <iostream>
 
 template<typename T>
 class DigiLoader : public SamplerTask
