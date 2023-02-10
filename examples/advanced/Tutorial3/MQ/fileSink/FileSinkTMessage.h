@@ -8,6 +8,9 @@
 
 // Implementation of FileSink::Run() with Root TMessage transport data format
 
+#ifndef FAIR_TESTDETECTOR_FILESINK_TMESSAGE_H
+#define FAIR_TESTDETECTOR_FILESINK_TMESSAGE_H
+
 #include "Payload.h"
 #include "RootSerializer.h"
 
@@ -31,3 +34,5 @@ void FileSink<TestDetectorTMessage>::InitTask()
         return true;
     });
 }
+
+#endif   // FAIR_TESTDETECTOR_FILESINK_TMESSAGE_H

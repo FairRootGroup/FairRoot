@@ -8,6 +8,9 @@
 
 // Implementation of MQRecoTask::Exec() with pure binary transport data format
 
+#ifndef FAIR_TESTDETECTOR_PROCESSORTASK_BIN_H
+#define FAIR_TESTDETECTOR_PROCESSORTASK_BIN_H
+
 #include "Payload.h"
 
 template<>
@@ -53,3 +56,5 @@ void MQRecoTask<TestDetectorBin>::Exec(Option_t* opt)
         }
     }
 }
+
+#endif   // FAIR_TESTDETECTOR_PROCESSORTASK_BIN_H

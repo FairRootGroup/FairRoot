@@ -8,6 +8,9 @@
 
 // Implementation of FileSink::Run() with pure binary transport data format
 
+#ifndef FAIR_TESTDETECTOR_FILESINK_BIN_H
+#define FAIR_TESTDETECTOR_FILESINK_BIN_H
+
 #include "Payload.h"
 
 template<>
@@ -42,3 +45,5 @@ void FileSink<TestDetectorBin>::InitTask()
         return true;
     });
 }
+
+#endif   // FAIR_TESTDETECTOR_FILESINK_BIN_H

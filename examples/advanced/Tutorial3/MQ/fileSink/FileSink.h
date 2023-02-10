@@ -6,21 +6,27 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef FAIR_TESTDETECTOR_FILESINK_H_
-#define FAIR_TESTDETECTOR_FILESINK_H_
+#ifndef FAIR_TESTDETECTOR_FILESINK_H
+#define FAIR_TESTDETECTOR_FILESINK_H
 
-#include "FairMQ.h"   // for fair::mq::Device
+// this example
 #include "FairTestDetectorHit.h"
 #include "Payload.h"
 
+// FairRoot
+#include "FairMQ.h"   // for fair::mq::Device
+
+// ROOT
 #include <Rtypes.h>
 #include <TClonesArray.h>
 #include <TFile.h>
 #include <TSystem.h>
 #include <TTree.h>
-#include <array>
+
+// logger
 #include <fairlogger/Logger.h>
-#include <iostream>
+
+// std
 #include <memory>
 #include <string>
 
@@ -73,4 +79,4 @@ class FileSink : public fair::mq::Device
     std::string fInChannelName;
 };
 
-#endif /* FAIR_TESTDETECTOR_FILESINK_H_ */
+#endif /* FAIR_TESTDETECTOR_FILESINK_H */

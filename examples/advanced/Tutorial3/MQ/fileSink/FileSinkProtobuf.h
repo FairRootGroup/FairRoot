@@ -8,6 +8,9 @@
 
 // Implementation of FileSink::Run() with Google Protocol Buffers transport data format
 
+#ifndef FAIR_TESTDETECTOR_FILESINK_PROTOBUF_H
+#define FAIR_TESTDETECTOR_FILESINK_PROTOBUF_H
+
 #ifdef PROTOBUF
 
 #include "Payload.h"
@@ -48,4 +51,6 @@ void FileSink<TestDetectorProtobuf>::InitTask()
     });
 }
 
-#endif /* PROTOBUF */
+#endif   // PROTOBUF
+
+#endif   // FAIR_TESTDETECTOR_FILESINK_PROTOBUF_H

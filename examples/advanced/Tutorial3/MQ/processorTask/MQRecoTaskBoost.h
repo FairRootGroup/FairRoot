@@ -8,8 +8,11 @@
 
 // Implementation of MQRecoTask::Exec() with Boost transport data format
 
-#include "Payload.h"
+#ifndef FAIR_TESTDETECTOR_PROCESSORTASK_BOOST_H
+#define FAIR_TESTDETECTOR_PROCESSORTASK_BOOST_H
+
 #include "BoostSerializer.h"
+#include "Payload.h"
 
 template<>
 void MQRecoTask<TestDetectorBoost>::Exec(Option_t* opt)
@@ -24,3 +27,5 @@ void MQRecoTask<TestDetectorBoost>::Exec(Option_t* opt)
 
     BoostSerializer<FairTestDetectorHit>().Serialize(*fPayload, fRecoTask.fHitArray);
 }
+
+#endif   // FAIR_TESTDETECTOR_PROCESSORTASK_BOOST_H

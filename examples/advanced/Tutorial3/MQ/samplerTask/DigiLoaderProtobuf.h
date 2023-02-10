@@ -8,6 +8,9 @@
 
 // Implementation of DigiLoader::Exec() with Google Protocol Buffers transport data format
 
+#ifndef FAIR_TESTDETECTOR_DIGILOADER_PROTOBUF_H
+#define FAIR_TESTDETECTOR_DIGILOADER_PROTOBUF_H
+
 #ifdef PROTOBUF
 
 #include "Payload.h"
@@ -36,11 +39,13 @@ void DigiLoader<TestDetectorProtobuf>::Exec(Option_t* /*opt*/)
     std::string* str = new std::string();
     dp.SerializeToString(str);
 
-    fPayload =
-        fTransportFactory->CreateMessage(const_cast<char*>(str->c_str()),
-                                         str->length(),
-                                         [](void* /* data */, void* obj) { delete static_cast<std::string*>(obj); },
-                                         str);
+    fPayload = fTransportFactory->CreateMessage(
+        const_cast<char*>(str->c_str()),
+        str->length(),
+        [](void* /* data */, void* obj) { delete static_cast<std::string*>(obj); },
+        str);
 }
 
-#endif /* PROTOBUF */
+#endif   // PROTOBUF
+
+#endif   // FAIR_TESTDETECTOR_DIGILOADER_PROTOBUF_H

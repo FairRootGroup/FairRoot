@@ -6,6 +6,7 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
+// this example
 #include "DigiLoader.h"
 #include "DigiLoaderBin.h"
 #include "DigiLoaderBoost.h"
@@ -14,6 +15,7 @@
 #include "DigiLoaderTMessage.h"
 #include "SamplerTask.h"
 
+// FairRoot
 #include "FairFileSource.h"
 #include "FairMQ.h"   // for fair::mq::Device, fair::mq::MessagePtr
 #include "FairParRootFileIo.h"
@@ -22,10 +24,12 @@
 #include "FairRunFairMQDevice.h"
 #include "FairRuntimeDb.h"
 
+// logger
 #include <fairlogger/Logger.h>
 
+// std
 #include <chrono>
-#include <iomanip>
+#include <iomanip>   // std::quoted
 #include <stdexcept>
 #include <thread>
 
@@ -209,7 +213,7 @@ std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& con
 #ifdef PROTOBUF
            << ", protobuf"
 #endif
-           ;
+            ;
         throw std::runtime_error(ss.str());
     }
 }

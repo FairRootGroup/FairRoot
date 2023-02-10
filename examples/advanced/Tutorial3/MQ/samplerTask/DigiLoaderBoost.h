@@ -8,8 +8,11 @@
 
 // Implementation of DigiLoader::Exec() with Boost transport data format
 
-#include "Payload.h"
+#ifndef FAIR_TESTDETECTOR_DIGILOADER_BOOST_H
+#define FAIR_TESTDETECTOR_DIGILOADER_BOOST_H
+
 #include "BoostSerializer.h"
+#include "Payload.h"
 
 template<>
 void DigiLoader<TestDetectorBoost>::Exec(Option_t* /*opt*/)
@@ -17,3 +20,5 @@ void DigiLoader<TestDetectorBoost>::Exec(Option_t* /*opt*/)
     fPayload = fTransportFactory->CreateMessage();
     BoostSerializer<FairTestDetectorDigi>().Serialize(*fPayload, fInput);
 }
+
+#endif   // FAIR_TESTDETECTOR_DIGILOADER_BOOST_H

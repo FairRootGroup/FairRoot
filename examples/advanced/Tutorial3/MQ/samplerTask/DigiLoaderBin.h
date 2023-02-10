@@ -8,6 +8,9 @@
 
 // Implementation of DigiLoader::Exec() with pure binary transport data format
 
+#ifndef FAIR_TESTDETECTOR_DIGILOADER_BIN_H
+#define FAIR_TESTDETECTOR_DIGILOADER_BIN_H
+
 #include "Payload.h"
 
 template<>
@@ -34,3 +37,5 @@ void DigiLoader<TestDetectorBin>::Exec(Option_t* /*opt*/)
         digiPayload[i].fTimeStampError = digi->GetTimeStampError();
     }
 }
+
+#endif   // FAIR_TESTDETECTOR_DIGILOADER_BIN_H
