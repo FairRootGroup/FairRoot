@@ -21,14 +21,16 @@ void addCustomOptions(bpo::options_description& options)
     // clang-format off
     options.add_options()
         ("in-channel",  bpo::value<std::string>()->default_value("data2"),  "Name of the input channel")
-        ("ack-channel", bpo::value<std::string>()->default_value("ack"),    "Name of the acknowledgement channel")
-        ("data-format", bpo::value<std::string>()->default_value("binary"), "Data format (binary|boost|flatbuffers|protobuf|tmessage)");
+        ("data-format", bpo::value<std::string>()->default_value("binary"), "Data format (binary|boost|flatbuffers|protobuf|tmessage)")
+        ("max-msgs",    bpo::value<uint64_t>()->default_value(0),           "Stop after <n> msgs (0 - no limit).");
     // clang-format on
 }
 
 std::unique_ptr<fair::mq::Device> fairGetDevice(const fair::mq::ProgOptions& config)
 {
     std::string dataFormat = config.GetValue<std::string>("data-format");
+
+    LOG(info) << "Starting Sink with " << dataFormat << " data serialization";
 
     if (dataFormat == "binary") {
         return std::make_unique<FileSink<TestDetectorBin>>();
