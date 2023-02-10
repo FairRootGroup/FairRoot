@@ -6,8 +6,8 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
-#ifndef FAIRMQSAMPLERTASK_H_
-#define FAIRMQSAMPLERTASK_H_
+#ifndef FAIR_TESTDETECTOR_SAMPLERTASK_H
+#define FAIR_TESTDETECTOR_SAMPLERTASK_H
 
 // FairRoot
 #include "FairEventHeader.h"
@@ -22,19 +22,19 @@
 #include <memory>
 #include <string>
 
-class FairMQSamplerTask : public FairTask
+class SamplerTask : public FairTask
 {
   public:
-    FairMQSamplerTask()
+    SamplerTask()
         : FairTask("Abstract base task used for loading a branch from a root file into memory")
     {}
 
-    FairMQSamplerTask(const Text_t* name, int iVerbose = 1)
+    SamplerTask(const Text_t* name, int iVerbose = 1)
         : FairTask(name, iVerbose)
     {}
 
-    FairMQSamplerTask(const FairMQSamplerTask&) = delete;
-    FairMQSamplerTask operator=(const FairMQSamplerTask&) = delete;
+    SamplerTask(const SamplerTask&) = delete;
+    SamplerTask operator=(const SamplerTask&) = delete;
 
     InitStatus Init() override
     {
@@ -59,4 +59,4 @@ class FairMQSamplerTask : public FairTask
     std::shared_ptr<fair::mq::TransportFactory> fTransportFactory;
 };
 
-#endif /* FAIRMQSAMPLERTASK_H_ */
+#endif /* FAIR_TESTDETECTOR_SAMPLERTASK_H */

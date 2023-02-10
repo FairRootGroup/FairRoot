@@ -8,7 +8,7 @@
 #ifndef FAIR_TESTDETECTOR_MQRECOTASK_H
 #define FAIR_TESTDETECTOR_MQRECOTASK_H
 
-#include "FairMQProcessorTask.h"
+#include "ProcessorTask.h"
 #include "FairRootManager.h"
 #include "FairTestDetectorDigi.h"
 #include "FairTestDetectorHit.h"
@@ -19,7 +19,7 @@
 #include <fairlogger/Logger.h>
 
 template<typename T>
-class MQRecoTask : public FairMQProcessorTask
+class MQRecoTask : public ProcessorTask
 {
   public:
     MQRecoTask()

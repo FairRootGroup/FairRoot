@@ -45,6 +45,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   * basemq/policies/Storage/RootOutFileManager.h
   * basemq/policies/Storage/TriviallyCopyableDataSaver.h
   * basemq/policies/Serialization/IOPolicy.h
+* The following files/classes have been moved to the example where they are used and renamed:
+  * basemq/devices/FairMQProcessor.h -> into examples/advanced/Tutorial3/MQ/processor.cxx
+  * basemq/devices/FairMQSampler.h -> into examples/advanced/Tutorial3/MQ/sampler.cxx>
+  * basemq/tasks/FairMQProcessorTask.h -> examples/advanced/Tutorial3/MQ/processorTask/ProcessorTask.h
+  * basemq/tasks/FairMQSamplerTask.h -> examples/advanced/Tutorial3/MQ/samplerTask/SamplerTask.h
+
 
 ### Deprecations
 
