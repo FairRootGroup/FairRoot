@@ -1,5 +1,5 @@
  ################################################################################
- # Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+ # Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             #
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -270,7 +270,7 @@ else()
   message(STATUS "eventdisplay will not be built, because ROOT has no opengl support.")
 endif()
 
-add_subdirectory(datamatch)
+add_subdirectory(fairroot)
 
 add_subdirectory(templates)
 
