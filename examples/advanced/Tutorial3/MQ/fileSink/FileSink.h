@@ -50,9 +50,7 @@ class FileSink : public fair::mq::Device
     ~FileSink() override
     {
         fTree.Write();
-        if (fOutput) {
-            delete fOutput;
-        }
+        delete fOutput;
     }
 
     void Init() override

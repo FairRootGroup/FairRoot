@@ -29,7 +29,6 @@ void DigiLoader<TestDetectorBin>::Exec(Option_t* /*opt*/)
             continue;
         }
         new (&digiPayload[i]) Payload::Digi();
-        digiPayload[i] = Payload::Digi();
         digiPayload[i].fX = digi->GetX();
         digiPayload[i].fY = digi->GetY();
         digiPayload[i].fZ = digi->GetZ();
