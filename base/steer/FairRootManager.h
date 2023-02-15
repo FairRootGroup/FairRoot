@@ -400,10 +400,8 @@ class FairRootManager : public TObject
     TRefArray fListOfNonTimebasedBranches{};   //!
 
     /**private Members for multi-threading */
-    // global static data members
-    static Int_t fgCounter;   // The counter of instances
     // data members
-    Int_t fId;   // This manager ID
+    Int_t fId{0};   //! This manager ID
 
     ClassDefOverride(FairRootManager, 14);
 };
