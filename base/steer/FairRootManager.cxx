@@ -35,12 +35,12 @@
 #include <TFolder.h>        // for TFolder
 #include <TGeoManager.h>    // for TGeoManager, gGeoManager
 #include <TList.h>          // for TList
-#include <TMCAutoLock.h>
-#include <TNamed.h>       // for TNamed
+#include <TNamed.h>
 #include <TObjArray.h>    // for TObjArray
 #include <TObjString.h>   // for TObjString
 #include <TTree.h>        // for TTree
 #include <algorithm>      // for find
+#include <atomic>
 #include <cassert>
 #include <cstdio>
 #include <cstring>    // for strcmp
@@ -58,13 +58,7 @@ using std::map;
 using std::pair;
 using std::set;
 
-namespace {
-// Define mutexes per operation which modify shared data
-TMCMutex createMutex = TMCMUTEX_INITIALIZER;
-TMCMutex deleteMutex = TMCMUTEX_INITIALIZER;
-}   // namespace
-
-Int_t FairRootManager::fgCounter = 0;
+static std::atomic<int> FRM_fgCounter{0};
 std::string FairRootManager::fFolderName = "";
 std::string FairRootManager::fTreeName = "";
 
@@ -98,21 +92,11 @@ FairRootManager::FairRootManager()
     , fSink(nullptr)
     , fUseFairLinks(kFALSE)
     , fFinishRun(kFALSE)
-    , fId(0)
 {
-    LOG(debug) << "FairRootManager::FairRootManager: going to lock " << this;
-
-    TMCAutoLock lk(&createMutex);
-
     // Set Id
-    fId = fgCounter;
+    fId = FRM_fgCounter.fetch_add(1, std::memory_order_relaxed);
 
-    // Increment counter
-    ++fgCounter;
-
-    lk.unlock();
-
-    LOG(debug) << "Released lock and done FairRootManager::FairRootManager in " << fId << " " << this;
+    LOG(debug) << "FairRootManager::FairRootManager #" << fId << " at " << this;
 }
 
 FairRootManager::~FairRootManager()
@@ -131,16 +115,10 @@ FairRootManager::~FairRootManager()
         delete fSource;
 
     // Global cleanup
-    TMCAutoLock lk(&deleteMutex);
 
-    LOG(debug) << "FairRootManager::~FairRootManager: going to lock " << fId << " " << this;
+    FRM_fgCounter.fetch_sub(1, std::memory_order_relaxed);
 
-    --fgCounter;
-
-    //
-    lk.unlock();
-
-    LOG(debug) << "Released lock and done FairRootManager::~FairRootManager in " << fId << " " << this;
+    LOG(debug) << "FairRootManager::~FairRootManager done #" << fId << " at " << this;
 }
 
 Bool_t FairRootManager::InitSource()
