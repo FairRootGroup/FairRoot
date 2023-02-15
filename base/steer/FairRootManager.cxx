@@ -78,7 +78,6 @@ FairRootManager* FairRootManager::Instance()
 
 FairRootManager::FairRootManager()
     : TObject()
-    , fOldEntryNr(-1)
     , fOutFolder(0)
     , fCurrentTime(0)
     , fBranchSeqId(0)
@@ -1028,5 +1027,3 @@ TTree* FairRootManager::GetOutTree()
     auto rootFileSink = static_cast<FairRootFileSink*>(sink);
     return rootFileSink->GetOutTree();
 }
-
-ClassImp(FairRootManager);

@@ -336,7 +336,7 @@ class FairRootManager : public TObject
     void EmitMemoryBranchWrongTypeWarning(const char* brname, const char* typen1, const char* typen2) const;
 
     /**private Members*/
-    Int_t fOldEntryNr;
+
     /**folder structure of output*/
     TFolder* fOutFolder;
     /** current time in ns*/
