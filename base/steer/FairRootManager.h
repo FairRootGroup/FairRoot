@@ -94,7 +94,8 @@ class FairRootManager : public TObject
          a branch that was created from a different
          analysis task, and not written in the tree yet.
          the user have to cast this pointer to the right type.
-         Return a pointer to the object (collection) saved in the fInChain branch named BrName*/
+         Returns a non-owning pointer to the found object
+         or nullptr if none found*/
     TObject* GetObject(const char* BrName);
 
     /// Initializes and returns a default object for a branch or looks it up when it exists already.
@@ -334,8 +335,6 @@ class FairRootManager : public TObject
     Int_t fOldEntryNr;
     /**folder structure of output*/
     TFolder* fOutFolder;
-    /**folder structure of input*/
-    TFolder* fRootFolder;
     /** current time in ns*/
     Double_t fCurrentTime;
     std::vector<TObject*> fObj2{};   //!

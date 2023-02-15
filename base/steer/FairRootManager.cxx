@@ -80,7 +80,6 @@ FairRootManager::FairRootManager()
     : TObject()
     , fOldEntryNr(-1)
     , fOutFolder(0)
-    , fRootFolder(0)
     , fCurrentTime(0)
     , fMap()
     , fBranchSeqId(0)
@@ -516,22 +515,7 @@ TObject* FairRootManager::GetObject(const char* BrName)
             LOG(debug2) << "Object " << BrName << " was already activated by another task";
         }
     }
-    /**if the object does not exist then it could be a memory branch */
-    if (!Obj) {
-        LOG(debug2) << "Try to find if the object " << BrName << " is a memory branch";
-        Obj = GetMemoryBranch(BrName);
-        if (Obj) {
-            LOG(debug2) << "Object " << BrName << " is a memory branch";
-        }
-    }
-    /**if the object does not exist then look in the input tree */
-    if (fRootFolder && !Obj) {
-        /** there is an input tree and the object was not in memory */
-        LOG(debug2) << "Object " << BrName
-                    << " is not a memory branch and not yet activated, try the Input Tree (Chain)";
-        Obj = fRootFolder->FindObjectAny(BrName);
-        Obj = ActivateBranch(BrName);
-    }
+    /**Get object from memory or source*/
     if (!Obj) {
         Obj = ActivateBranch(BrName);
     }
@@ -731,7 +715,10 @@ void FairRootManager::SetInChain(TChain* tempChain, Int_t ident)
         fSignalChainList[ident] = tempChain;
 }
 
-Double_t FairRootManager::GetEventTime() { return fCurrentTime; }
+Double_t FairRootManager::GetEventTime()
+{
+    return fCurrentTime;
+}
 
 void FairRootManager::UpdateBranches()
 {
@@ -809,11 +796,6 @@ Int_t FairRootManager::CheckBranchSt(const char* BrName)
         fListFolder = new TObjArray(16);
     }
 
-    // cout <<"FairRootManager::CheckBranchSt  :  " <<fRootFolder << endl;
-    if (fRootFolder) {
-        fListFolder->Add(fRootFolder);
-        Obj1 = fRootFolder->FindObjectAny(BrName);
-    }
     if (fOutFolder && !Obj1) {
         fListFolder->Add(fOutFolder);
         Obj1 = fOutFolder->FindObjectAny(BrName);   // Branch in output folder
