@@ -81,7 +81,6 @@ FairRootManager::FairRootManager()
     , fOldEntryNr(-1)
     , fOutFolder(0)
     , fCurrentTime(0)
-    , fMap()
     , fBranchSeqId(0)
     , fBranchNameList(new TList())
     , fMCTrackBranchId(-1)
@@ -784,12 +783,10 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
 void FairRootManager::AddMemoryBranch(const char* fName, TObject* pObj)
 {
     /**branch will be available ionly in Memory, will not be written to disk */
-    map<TString, TObject*>::iterator p;
     TString BrName = fName;
-    p = fMap.find(BrName);
-    if (p != fMap.end()) {
-    } else {
-        fMap.insert(pair<TString, TObject*>(BrName, pObj));
+    auto p = fMap.find(BrName);
+    if (p == fMap.end()) {
+        fMap.emplace(std::move(BrName), pObj);
     }
 }
 
@@ -840,18 +837,16 @@ void FairRootManager::CreatePerMap()
     }
 }
 
-TObject* FairRootManager::GetMemoryBranch(const char* fName)
+TObject* FairRootManager::GetMemoryBranch(const char* fName) const
 {
-
     // return fMap[BrName];
-    TString BrName = fName;
-    map<TString, TObject*>::iterator p;
-    p = fMap.find(BrName);
+    const TString BrName = fName;
+    auto p = fMap.find(BrName);
 
     if (p != fMap.end()) {
         return p->second;
     } else {
-        return 0;
+        return nullptr;
     }
 }
 

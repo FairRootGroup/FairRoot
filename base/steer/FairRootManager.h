@@ -327,7 +327,7 @@ class FairRootManager : public TObject
     Int_t CheckBranchSt(const char* BrName);
     /**Create the Map for the branch persistency status  */
     void CreatePerMap();
-    TObject* GetMemoryBranch(const char*);
+    TObject* GetMemoryBranch(const char*) const;
     //   void                GetRunIdInfo(TString fileName, TString inputLevel);
 
     FairWriteoutBuffer* GetWriteoutBuffer(TString branchName);
