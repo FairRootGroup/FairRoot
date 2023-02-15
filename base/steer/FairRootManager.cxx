@@ -94,7 +94,6 @@ FairRootManager::FairRootManager()
     , fBrPerMap()
     , fFillLastData(kFALSE)
     , fEntryNr(0)
-    , fListFolder(0)
     , fSource(0)
     , fSignalChainList()
     , fEventHeader(new FairEventHeader())
@@ -733,6 +732,23 @@ void FairRootManager::UpdateBranches()
 
 /** Private functions*/
 
+TObject* FairRootManager::ListFolderSearch(const char* brname) const
+{
+    if (!fListFolder) {
+        return nullptr;
+    }
+    for (auto const* fold : TRangeDynCast<TFolder>(fListFolder)) {
+        if (!fold) {
+            continue;
+        }
+        TObject* obj = fold->FindObjectAny(brname);
+        if (obj) {
+            return obj;
+        }
+    }
+    return nullptr;
+}
+
 TObject* FairRootManager::ActivateBranch(const char* BrName)
 {
     /** Set the branch address for a given branch name and return a TObject pointer,
@@ -747,16 +763,7 @@ TObject* FairRootManager::ActivateBranch(const char* BrName)
     }
     /**try to find the object decribing the branch in the folder structure in file*/
     LOG(debug) << "Try to find an object " << BrName << " describing the branch in the folder structure in file";
-    if (fListFolder) {
-        for (Int_t i = 0; i < fListFolder->GetEntriesFast(); i++) {
-            TFolder* fold = static_cast<TFolder*>(fListFolder->At(i));
-            newentry = fold->FindObjectAny(BrName);
-            if (newentry) {
-                LOG(info) << "Object " << BrName << " describing the branch in the folder structure was found";
-                break;
-            }
-        }
-    }
+    newentry = ListFolderSearch(BrName);
 
     if (!newentry) {
         /** if we do not find an object corresponding to the branch in the folder structure
@@ -789,31 +796,23 @@ void FairRootManager::AddMemoryBranch(const char* fName, TObject* pObj)
 Int_t FairRootManager::CheckBranchSt(const char* BrName)
 {
     // cout <<"FairRootManager::CheckBranchSt  :  " << BrName << endl;
-    Int_t returnvalue = 0;
-    TObject* Obj1 = nullptr;
 
     if (fListFolder == 0) {
         fListFolder = new TObjArray(16);
     }
 
-    if (fOutFolder && !Obj1) {
+    TObject* Obj1 = nullptr;
+    if (fOutFolder) {
         fListFolder->Add(fOutFolder);
         Obj1 = fOutFolder->FindObjectAny(BrName);   // Branch in output folder
     }
     if (!Obj1) {
-        for (Int_t i = 0; i < fListFolder->GetEntriesFast(); i++) {
-            // cout << "Search in Folder: " << i << "  " <<  fListFolder->At(i) << endl;
-            TFolder* fold = dynamic_cast<TFolder*>(fListFolder->At(i));
-            if (fold != 0) {
-                Obj1 = fold->FindObjectAny(BrName);
-            }
-            if (Obj1) {
-                break;
-            }
-        }
+        Obj1 = ListFolderSearch(BrName);
     }
-    TObject* Obj2 = nullptr;
-    Obj2 = GetMemoryBranch(BrName);   // Branch in Memory
+
+    TObject* Obj2 = GetMemoryBranch(BrName);   // Branch in Memory
+
+    Int_t returnvalue = 0;
     if (Obj1 != 0) {
         returnvalue = 1;
     } else if (Obj2 != 0) {
