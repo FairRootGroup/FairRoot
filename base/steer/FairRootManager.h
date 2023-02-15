@@ -295,10 +295,14 @@ class FairRootManager : public TObject
     };
 
     /**private methods*/
+
     /**ctor*/
     FairRootManager();
     FairRootManager(const FairRootManager&);
     FairRootManager& operator=(const FairRootManager&);
+
+    TObject* ListFolderSearch(const char* brname) const;
+
     /**  Set the branch address for a given branch name and return
         a TObject pointer, the user have to cast this pointer to the right type.*/
     TObject* ActivateBranch(const char* BrName);
@@ -379,7 +383,7 @@ class FairRootManager : public TObject
     Bool_t fFillLastData;   //!
     Int_t fEntryNr;         //!
 
-    TObjArray* fListFolder;   //!
+    TObjArray* fListFolder{nullptr};   //!
 
     FairSource* fSource;
 
