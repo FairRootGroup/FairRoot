@@ -274,12 +274,6 @@ add_subdirectory(fairroot)
 
 add_subdirectory(templates)
 
-if(BUILD_BASEMQ)
-  add_subdirectory(fairmq)
-  add_subdirectory(basemq)
-  add_subdirectory(parmq)
-endif()
-
 Option(BUILD_DOXYGEN "Build Doxygen" OFF)
 if(BUILD_DOXYGEN)
   find_package2(PRIVATE Doxygen COMPONENTS dot)

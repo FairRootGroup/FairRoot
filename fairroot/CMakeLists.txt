@@ -11,3 +11,9 @@ if(Geant3_FOUND AND Geant4VMC_FOUND AND yaml-cpp_FOUND)
 endif()
 
 add_subdirectory(datamatch)
+
+if(BUILD_BASEMQ)
+  add_subdirectory(fairmq)
+  add_subdirectory(basemq)
+  add_subdirectory(parmq)
+endif()
