@@ -264,12 +264,6 @@ If(Geant3_FOUND)
  add_subdirectory(trackbase)
 EndIf ()
 
-if(ROOT_opengl_FOUND)
-  add_subdirectory(eventdisplay)
-else()
-  message(STATUS "eventdisplay will not be built, because ROOT has no opengl support.")
-endif()
-
 add_subdirectory(fairroot)
 
 add_subdirectory(templates)
