@@ -6,6 +6,13 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+if(BUILD_MBS)
+  add_subdirectory(mbsapi)
+endif()
+if(BUILD_ONLINE)
+  add_subdirectory(online)
+endif()
+
 if(Geant3_FOUND)
  add_subdirectory(geane)
  add_subdirectory(trackbase)
