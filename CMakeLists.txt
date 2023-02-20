@@ -259,11 +259,6 @@ if(BUILD_ONLINE)
   add_subdirectory(online)
 endif()
 
-If(Geant3_FOUND)
- add_subdirectory(geane)
- add_subdirectory(trackbase)
-EndIf ()
-
 add_subdirectory(fairroot)
 
 add_subdirectory(templates)

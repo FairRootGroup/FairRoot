@@ -6,6 +6,11 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+if(Geant3_FOUND)
+ add_subdirectory(geane)
+ add_subdirectory(trackbase)
+endIf()
+
 if(ROOT_opengl_FOUND)
   add_subdirectory(eventdisplay)
 else()
