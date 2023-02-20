@@ -252,13 +252,6 @@ add_subdirectory(geobase)
 add_subdirectory(parbase)
 add_subdirectory(generators)
 
-if(BUILD_MBS)
-  add_subdirectory(MbsAPI)
-endif()
-if(BUILD_ONLINE)
-  add_subdirectory(online)
-endif()
-
 add_subdirectory(fairroot)
 
 add_subdirectory(templates)
