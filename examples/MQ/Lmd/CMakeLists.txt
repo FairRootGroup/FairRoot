@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -23,8 +23,10 @@ set_target_properties(${target} PROPERTIES ${PROJECT_LIBRARY_PROPERTIES})
 target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 
-  # TODO: DELETE ME ONCE USING root targets
+# TODO: DELETE ME ONCE USING root targets
+target_include_directories(${target} SYSTEM PUBLIC
   ${ROOT_INCLUDE_DIR}
 )
 
