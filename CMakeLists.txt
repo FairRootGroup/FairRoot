@@ -249,8 +249,6 @@ add_subdirectory(fairtools)
 add_subdirectory(alignment)
 add_subdirectory(base)
 add_subdirectory(geobase)
-add_subdirectory(parbase)
-add_subdirectory(generators)
 
 add_subdirectory(fairroot)
 

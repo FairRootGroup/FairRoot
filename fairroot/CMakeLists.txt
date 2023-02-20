@@ -6,6 +6,9 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+add_subdirectory(parbase)
+add_subdirectory(generators)
+
 if(BUILD_MBS)
   add_subdirectory(mbsapi)
 endif()
