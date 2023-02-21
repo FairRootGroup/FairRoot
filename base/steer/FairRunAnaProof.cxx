@@ -179,10 +179,7 @@ void FairRunAnaProof::Init()
         fRunId = GetEvtHeaderRunId();
 
         // Copy the Event Header Info to Output
-        fEvtHeader->Register(kTRUE);
-
-        // Copy the Event Header Info to Output
-        fEvtHeader->Register();
+        fEvtHeader->Register(GetSink() ? fStoreEventHeader : false);
 
         // Init the containers in Tasks
 
@@ -196,7 +193,7 @@ void FairRunAnaProof::Init()
     } else {
         LOG(info) << "Initializing without input file or Mixed input";
         FairEventHeader* evt = GetEventHeader();
-        evt->Register();
+        evt->Register(GetSink() ? fStoreEventHeader : false);
         FairRunIdGenerator genid;
         fRunId = genid.generateId();
         fRtdb->addRun(fRunId);

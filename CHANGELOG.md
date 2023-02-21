@@ -4,6 +4,19 @@ All notable changes to FairRoot will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## 18.8.1 (UNRELEASED) - 2023-01-XX
+
+### Breaking Changes
+* The output folder name changed from 'folderName_0' to 'folderName'.
+In the MT mode of Geant4 the folder names changed from 'folderName_1' and 'folderName_2' to 'folderName'.
+
+### Bug fixes
+* Check the return value of `source->InitUnpackers()`/`source->ReinitUnpackers()`
+  in `FairRunOnline`. Stop run if `false` returned.
+
+### Other Notable Changes
+* Allow running without output sink. In this case even persistent branches would not be stored anywhere.
+
 ## 18.8.0 - 2022-12-16
 
 ### Breaking Changes
