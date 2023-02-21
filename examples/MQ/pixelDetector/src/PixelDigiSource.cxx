@@ -15,21 +15,17 @@
 //
 #include "PixelDigiSource.h"
 
-#include "FairLogger.h"
 #include "FairRootManager.h"
 #include "PixelDigi.h"
-#include "PixelEventHeader.h"
 
-#include <TClonesArray.h>
-#include <TString.h>
 #include <cstdlib>
 #include <cstring>
+#include <fairlogger/Logger.h>
 #include <string>
 
 PixelDigiSource::PixelDigiSource(TString inputFileName)
     : FairSource()
-    , fEventHeader(nullptr)
-    , fDigis(nullptr)
+    , fDigis(PixelDigi::Class(), 10000)
     , fNDigis(0)
     , fTNofEvents(0)
     , fTNofDigis(0)
@@ -43,8 +39,6 @@ PixelDigiSource::PixelDigiSource(TString inputFileName)
     LOG(debug) << "PixelDigiSource created------------";
 }
 
-PixelDigiSource::~PixelDigiSource() {}
-
 Bool_t PixelDigiSource::Init()
 {
     // Get input array
@@ -55,12 +49,10 @@ Bool_t PixelDigiSource::Init()
         LOG(fatal) << "No FairRootManager";
 
     // Register output array StsDigi
-    fDigis = new TClonesArray("PixelDigi", 10000);
-    ioman->Register("PixelDigis", "Pixel", fDigis, kFALSE);
+    ioman->Register("PixelDigis", "Pixel", &fDigis, kFALSE);
 
-    fEventHeader = new PixelEventHeader();
-    fEventHeader->SetName("EventHeader.");
-    ioman->Register("EventHeader.", "EvtHeader", fEventHeader, kFALSE);
+    fEventHeader.SetName("EventHeader.");
+    ioman->Register("EventHeader.", "EvtHeader", &fEventHeader, kFALSE);
 
     fInputFile.open(fInputFileName.Data(), std::fstream::in);
 
@@ -82,7 +74,7 @@ int ReadIntFromString(const std::string& wholestr, const std::string& pattern)
 
 Int_t PixelDigiSource::ReadEvent(UInt_t i)
 {
-    fDigis->Delete();
+    fDigis.Delete();
     fNDigis = 0;
 
     if (i == 0) {
@@ -93,7 +85,7 @@ Int_t PixelDigiSource::ReadEvent(UInt_t i)
     fCurrentEntryNo = i;
 
     std::string buffer;
-    LOG(debug) << "PixelDigiSource::ReadEvent() Begin of (" << fDigis->GetEntries() << ")";
+    LOG(debug) << "PixelDigiSource::ReadEvent() Begin of (" << fDigis.GetEntries() << ")";
     do {
         getline(fInputFile, buffer);
         LOG(debug) << "read from file: \"" << buffer << "\"";
@@ -101,9 +93,9 @@ Int_t PixelDigiSource::ReadEvent(UInt_t i)
             fRunId = ReadIntFromString(buffer, "RUNID");
             fMCEntryNo = ReadIntFromString(buffer, "MCENTRYNO");
             fPartNo = ReadIntFromString(buffer, "PARTNO");
-            fEventHeader->SetRunId(fRunId);
-            fEventHeader->SetMCEntryNumber(fMCEntryNo);
-            fEventHeader->SetPartNo(fPartNo);
+            fEventHeader.SetRunId(fRunId);
+            fEventHeader.SetMCEntryNumber(fMCEntryNo);
+            fEventHeader.SetPartNo(fPartNo);
 
             LOG(debug) << "GOT NEW EVENT " << fMCEntryNo << " (part " << fPartNo << ") with run id = " << fRunId;
         }
@@ -120,9 +112,9 @@ Int_t PixelDigiSource::ReadEvent(UInt_t i)
         Double_t charge = atof(buffer.c_str());
         LOG(debug) << "    --/" << fNDigis << "/-->    " << detId << " / " << feId << " / " << col << " / " << row
                    << " / " << charge;
-        new ((*fDigis)[fNDigis]) PixelDigi(-1, detId, feId, col, row, charge, 0.);
+        new (fDigis[fNDigis]) PixelDigi(-1, detId, feId, col, row, charge, 0.);
         fNDigis++;
-    } while (fInputFile && buffer.compare("EVENT END"));
+    } while (fInputFile && (buffer == "EVENT END"));
     LOG(debug) << "PixelDigiSource::ReadEvent() End of";
 
     if (!fInputFile) {
@@ -134,10 +126,10 @@ Int_t PixelDigiSource::ReadEvent(UInt_t i)
 
 Bool_t PixelDigiSource::ActivateObject(TObject** obj, const char* BrName)
 {
-    if (strcmp(BrName, "PixelDigis"))
-        *obj = (TObject*)fDigis;
-    else if (strcmp(BrName, "EventHeader."))
-        *obj = (TObject*)fEventHeader;
+    if (strcmp(BrName, "PixelDigis") == 0)
+        *obj = &fDigis;
+    else if (strcmp(BrName, "EventHeader.") == 0)
+        *obj = &fEventHeader;
     else
         return kFALSE;
 
