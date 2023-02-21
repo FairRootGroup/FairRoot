@@ -148,8 +148,10 @@ Bool_t FairRootManager::InitSink()
 {
     if (fSink) {
         fSink->InitSink();
+        return true;
     }
-    return kTRUE;
+    LOG(info) << "The output sink is not set. No branches will be stored.";
+    return false;
 }
 
 template<typename T>
@@ -173,7 +175,7 @@ void FairRootManager::RegisterImpl(const char* name, const char* folderName, T* 
         if (fSink) {
             fSink->RegisterImpl(name, folderName, obj);
         } else {
-            LOG(fatal) << "The sink does not exist to store persistent branches.";
+            LOG(warning) << "The sink does not exist to store persistent branches (" << name << ").";
         }
     }
     AddMemoryBranch(name, obj);
