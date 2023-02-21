@@ -19,7 +19,6 @@
 #include "FairFileSource.h"
 #include "FairMQ.h"   // for fair::mq::Device, fair::mq::MessagePtr
 #include "FairParRootFileIo.h"
-#include "FairRootFileSink.h"
 #include "FairRunAna.h"
 #include "FairRunFairMQDevice.h"
 #include "FairRuntimeDb.h"
@@ -97,10 +96,6 @@ class Sampler : public fair::mq::Device
         }
 
         fFairRunAna->SetSource(source);
-
-        TString output = fInputFile;
-        output.Append(".out.root");
-        fFairRunAna->SetSink(std::make_unique<FairRootFileSink>(output.Data()));
 
         fFairRunAna->AddTask(fSamplerTask);
 
