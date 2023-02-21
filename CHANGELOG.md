@@ -87,6 +87,9 @@ In the MT mode of Geant4 the folder names changed from 'folderName_1' and 'folde
 * Check the return value of `source->InitUnpackers()`/`source->ReinitUnpackers()`
   in `FairRunOnline`. Stop run if `false` returned.
 
+### Other Notable Changes
+* Allow running without output sink. In this case even persistent branches would not be stored anywhere.
+
 ## 18.8.0 - 2022-12-16
 
 ### Breaking Changes
