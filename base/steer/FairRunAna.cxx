@@ -213,7 +213,7 @@ void FairRunAna::Init()
         fRunId = GetEvtHeaderRunId();
 
         // Copy the Event Header Info to Output
-        fEvtHeader->Register(fStoreEventHeader);
+        fEvtHeader->Register(GetSink() ? fStoreEventHeader : false);
 
         // Init the containers in Tasks
         LOG(info) << "--- Initialize with RunId  --- " << fRunId;
@@ -225,7 +225,7 @@ void FairRunAna::Init()
     } else {   // end----- if(fMixedInput)
         LOG(info) << "Initializing without input file or Mixed input";
         FairEventHeader* evt = GetEventHeader();
-        evt->Register(fStoreEventHeader);
+        evt->Register(GetSink() ? fStoreEventHeader : false);
         FairRunIdGenerator genid;
         fRunId = genid.generateId();
         fRtdb->addRun(fRunId);
@@ -269,7 +269,6 @@ void FairRunAna::Init()
     // create the output tree after tasks initialisation
     fRootManager->WriteFolder();
     fRootManager->WriteFileHeader(fFileHeader);
-
 }
 //_____________________________________________________________________________
 
