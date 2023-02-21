@@ -86,6 +86,7 @@ In the MT mode of Geant4 the folder names changed from 'folderName_1' and 'folde
 ### Bug fixes
 * Check the return value of `source->InitUnpackers()`/`source->ReinitUnpackers()`
   in `FairRunOnline`. Stop run if `false` returned.
+* Remove sink from Tutorial3/MQ/sampler.cxx.
 
 ### Other Notable Changes
 * Allow running without output sink. In this case even persistent branches would not be stored anywhere.
