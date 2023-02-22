@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -44,7 +44,7 @@ class FairGeoMedium : public TNamed
   public:
     FairGeoMedium(const char* name = "");
     FairGeoMedium& operator=(const FairGeoMedium&) { return *this; }
-    ~FairGeoMedium();
+    ~FairGeoMedium() override;
     void setMediumIndex(Int_t i) { medId = i; }
     Int_t getMediumIndex() { return medId; }
     void setAutoFlag(Int_t i) { autoflag = i; }
@@ -86,7 +86,7 @@ class FairGeoMedium : public TNamed
     // TODO: correct copy constructor for FairGeoMedium
     //    FairGeoMedium& operator=(const FairGeoMedium&);
 
-    ClassDef(FairGeoMedium, 1);   //
+    ClassDefOverride(FairGeoMedium, 1);   //
 };
 
 inline Bool_t FairGeoMedium::isSensitive()

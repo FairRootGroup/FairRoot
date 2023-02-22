@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -29,7 +29,7 @@ class FairGeoBasicShape : public TNamed
     FairGeoTransform* position;   // position of the ROOT volume in its ROOT mother
   public:
     FairGeoBasicShape();
-    virtual ~FairGeoBasicShape();
+    ~FairGeoBasicShape() override;
     Int_t getNumPoints() { return nPoints; }
     Int_t getNumParam() { return nParam; }
     TArrayD* getParam() { return param; }
@@ -45,7 +45,7 @@ class FairGeoBasicShape : public TNamed
 
   protected:
     void posInMother(const FairGeoTransform&, const FairGeoTransform&);
-    ClassDef(FairGeoBasicShape, 0);   // base class for all shapes
+    ClassDefOverride(FairGeoBasicShape, 0);   // base class for all shapes
   private:
     FairGeoBasicShape(const FairGeoBasicShape&);
     FairGeoBasicShape& operator=(const FairGeoBasicShape&);

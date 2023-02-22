@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -30,7 +30,7 @@ class FairGeoLoader : public TNamed
   public:
     FairGeoLoader(const char* Name, const char* title);
     FairGeoLoader();
-    virtual ~FairGeoLoader();
+    ~FairGeoLoader() override;
     FairGeoInterface* getGeoInterface() { return fInterface; }
     FairGeoBuilder* getGeoBuilder() { return fGeoBuilder; }
     /** static access method*/
@@ -43,7 +43,7 @@ class FairGeoLoader : public TNamed
     FairGeoInterface* fInterface;       //!  /** Hades Geometry Interface*/
     FairGeoBuilder* fGeoBuilder;        //!   /**Geometry builder*/
 
-    ClassDef(FairGeoLoader, 1);
+    ClassDefOverride(FairGeoLoader, 1);
 };
 
 #endif

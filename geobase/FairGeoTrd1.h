@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -24,7 +24,7 @@ class FairGeoTrd1 : public FairGeoBasicShape
 
   public:
     FairGeoTrd1();
-    ~FairGeoTrd1();
+    ~FairGeoTrd1() override;
     TArrayD* calcVoluParam(FairGeoVolume*) override;
     void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&) override;
 

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -43,7 +43,7 @@ class FairGeoSet : public TNamed
         //          SetName(name);
         //
         //        }
-        ~FairGeoCopyNode() {}
+        ~FairGeoCopyNode() override = default;
 
       private:
         FairGeoCopyNode(const FairGeoCopyNode&);
@@ -69,7 +69,7 @@ class FairGeoSet : public TNamed
     Bool_t readModule(std::fstream&, FairGeoMedia*, TString&, TString&, Bool_t a = kFALSE);
 
   public:
-    virtual ~FairGeoSet();
+    ~FairGeoSet() override;
     void setShapes(FairGeoShapes* s) { pShapes = s; }
     void setMasterNodes(TList* m) { masterNodes = m; }
     void setGeomFile(const char* filename) { geoFile = filename; }
@@ -99,7 +99,7 @@ class FairGeoSet : public TNamed
     virtual void print();
     virtual Bool_t create(FairGeoBuilder*);
     void compare(FairGeoSet&);
-    ClassDef(FairGeoSet, 0);   //
+    ClassDefOverride(FairGeoSet, 0);   //
 
   private:
     FairGeoSet(const FairGeoSet&);

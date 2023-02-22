@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -54,7 +54,7 @@ class FairGeoInterface : public TObject
 
   public:
     FairGeoInterface();
-    ~FairGeoInterface();
+    ~FairGeoInterface() override;
     void setOracleInput(FairGeoIo* p) { oraInput = p; }
     void setOutput(FairGeoIo* p) { output = p; }
     void setGeomBuilder(FairGeoBuilder* p) { geoBuilder = p; }
@@ -93,7 +93,7 @@ class FairGeoInterface : public TObject
     FairGeoIo* connectInput(const char*);
     Bool_t connectOutput(const char*);
 
-    ClassDef(FairGeoInterface, 0);
+    ClassDefOverride(FairGeoInterface, 0);
 };
 
 #endif /* !FAIRGEOINTERFACE_H */
