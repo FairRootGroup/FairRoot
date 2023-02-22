@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -76,8 +76,6 @@
 
 #include <TMath.h>        // for Cos, Sin
 #include <TRotMatrix.h>   // for TRotMatrix
-
-ClassImp(FairGeoRotation);
 
 FairGeoRotation::FairGeoRotation(const Double_t a, const Double_t b, const Double_t c)
     : TObject()
