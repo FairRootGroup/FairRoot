@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -30,7 +30,7 @@ class FairGeoRotation : public TObject
     inline FairGeoRotation(const FairGeoRotation&);
     inline FairGeoRotation(const Double_t*);
     FairGeoRotation(const Double_t, const Double_t, const Double_t);
-    ~FairGeoRotation() {}
+    ~FairGeoRotation() override = default;
     inline void setMatrix(const Double_t*);
     inline void setMatrix(const Float_t*);
     void setEulerAngles(const Double_t, const Double_t, const Double_t);
@@ -54,7 +54,7 @@ class FairGeoRotation : public TObject
     inline void print() const;
     TRotMatrix* createTRotMatrix(const Text_t* name = "", const Text_t* title = "");
 
-    ClassDef(FairGeoRotation, 1);   //
+    ClassDefOverride(FairGeoRotation, 1);   //
 };
 
 // -------------------- inlines ---------------------------

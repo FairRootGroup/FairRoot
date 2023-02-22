@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -36,7 +36,7 @@ class FairGeoIo : public TObject
     virtual Bool_t setHistoryDate(const char*) = 0;
 
   private:
-    ClassDef(FairGeoIo, 0);
+    ClassDefOverride(FairGeoIo, 0);
 };
 
 #endif /* !FAIRGEOIO_H */

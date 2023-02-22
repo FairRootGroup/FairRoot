@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -41,7 +41,7 @@ class FairGeoVolume : public TNamed
   public:
     inline FairGeoVolume();
     FairGeoVolume(FairGeoVolume&);
-    virtual ~FairGeoVolume();
+    ~FairGeoVolume() override;
     const TString& getName() const { return fName; }
     const TString& getShape() const { return shape; }
     const TString& getMother() const { return mother; }
@@ -64,7 +64,7 @@ class FairGeoVolume : public TNamed
     Int_t getMCid() { return fgMCid; }
     void setMCid(Int_t MCid) { fgMCid = MCid; }
 
-    ClassDef(FairGeoVolume, 1);   //
+    ClassDefOverride(FairGeoVolume, 1);   //
 };
 
 // -------------------- inlines --------------------------

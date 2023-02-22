@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -27,7 +27,7 @@ class FairGeoTransform : public TObject
   public:
     FairGeoTransform();
     inline FairGeoTransform(const FairGeoTransform& t);
-    ~FairGeoTransform() {}
+    ~FairGeoTransform() override = default;
     FairGeoTransform& operator=(const FairGeoTransform& t);
     const FairGeoRotation& getRotMatrix() const { return rot; }
     const FairGeoVector& getTransVector() const { return trans; }
@@ -54,7 +54,7 @@ class FairGeoTransform : public TObject
     const FairGeoRotation& getRotation() const { return rot; }
 
     inline void setTransform(const FairGeoTransform& t);
-    ClassDef(FairGeoTransform, 1);   //
+    ClassDefOverride(FairGeoTransform, 1);   //
 };
 
 inline FairGeoTransform::FairGeoTransform(const FairGeoTransform& t)

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -31,13 +31,13 @@ class FairGeoShapes : public TObject
 
   public:
     FairGeoShapes();
-    ~FairGeoShapes();
+    ~FairGeoShapes() override;
     FairGeoBasicShape* selectShape(FairGeoVolume*);
     FairGeoBasicShape* selectShape(const TString&);
     Int_t readPoints(std::fstream*, FairGeoVolume*);
     Bool_t writePoints(std::fstream*, FairGeoVolume*);
     void printPoints(FairGeoVolume* volu);
-    ClassDef(FairGeoShapes, 0);   //
+    ClassDefOverride(FairGeoShapes, 0);   //
 };
 
 #endif /* !FAIRGEOSHAPES_H */

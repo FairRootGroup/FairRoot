@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -23,12 +23,12 @@ class FairGeoMatrix : public TObject
 
   public:
     FairGeoMatrix(void);
-    ~FairGeoMatrix(void);
+    ~FairGeoMatrix() override;
     Double_t& operator()(Int_t i, Int_t j) { return fM[i * 3 + j]; }
     Double_t det(void);
     FairGeoVector operator*(FairGeoVector& v);
     FairGeoMatrix& operator/=(Double_t d);
-    ClassDef(FairGeoMatrix, 0);
+    ClassDefOverride(FairGeoMatrix, 0);
 };
 
 #endif

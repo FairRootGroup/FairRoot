@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -29,7 +29,7 @@ class FairGeoMedia : public TNamed
     TString description; /** description of the version */
   public:
     FairGeoMedia();
-    ~FairGeoMedia();
+    ~FairGeoMedia() override;
     void setInputFile(const char* file) { inputFile = file; }
     const char* getInputFile() { return inputFile; }
     void addMedium(FairGeoMedium* m);
@@ -48,7 +48,7 @@ class FairGeoMedia : public TNamed
     FairGeoMedia(const FairGeoMedia&);
     FairGeoMedia& operator=(const FairGeoMedia&);
 
-    ClassDef(FairGeoMedia, 0);
+    ClassDefOverride(FairGeoMedia, 0);
 };
 
 #endif /* !FAIRGEOMEDIA_H */
