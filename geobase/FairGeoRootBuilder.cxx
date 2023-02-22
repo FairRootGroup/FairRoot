@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -31,8 +31,6 @@
 #include <TString.h>        // for TString
 #include <cstdio>           // for sprintf
 #include <fstream>
-
-ClassImp(FairGeoRootBuilder);
 
 FairGeoRootBuilder::FairGeoRootBuilder()
     : FairGeoBuilder()
