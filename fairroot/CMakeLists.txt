@@ -6,6 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+add_subdirectory(geobase)
 add_subdirectory(parbase)
 add_subdirectory(generators)
 
