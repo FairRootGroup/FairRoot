@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2022-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -14,7 +14,8 @@
 #undef FAIRMQ_VERSION_DEC   // bugged
 #endif
 #if defined FAIRMQ_VERSION_MAJOR && defined FAIRMQ_VERSION_MINOR && defined FAIRMQ_VERSION_PATCH
-#define FAIRMQ_VERSION_DEC (FAIRMQ_VERSION_MAJOR * 100000) + (FAIRMQ_VERSION_MINOR * 1000) + (FAIRMQ_VERSION_PATCH * 10)
+#define FAIRMQ_VERSION_DEC                                                                                             \
+    ((FAIRMQ_VERSION_MAJOR * 100000) + (FAIRMQ_VERSION_MINOR * 1000) + (FAIRMQ_VERSION_PATCH * 10))
 #else
 #define FAIRMQ_VERSION_DEC 9999999
 #endif
