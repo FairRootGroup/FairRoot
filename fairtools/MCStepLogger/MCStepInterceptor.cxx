@@ -28,6 +28,7 @@
 //  @since  2018-10-22
 //  @brief  Modified for FairRoot
 
+// NOLINTBEGIN(bugprone-macro-parentheses) false positive
 // (re)declare symbols to be able to hook into them
 #define DECLARE_INTERCEPT_SYMBOLS(APP)                                                                                 \
     class APP                                                                                                          \
@@ -37,6 +38,7 @@
         void FinishEvent();                                                                                            \
         void FinishRun();                                                                                              \
     };
+// NOLINTEND(bugprone-macro-parentheses)
 
 DECLARE_INTERCEPT_SYMBOLS(FairMCApplication)
 
