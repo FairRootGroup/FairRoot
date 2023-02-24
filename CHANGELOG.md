@@ -4,7 +4,7 @@ All notable changes to FairRoot will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## 18.8.1 (UNRELEASED) - 2023-01-XX
+## 18.8.1 - 2023-02-24
 
 ### Breaking Changes
 * The output folder name changed from 'folderName_0' to 'folderName'.

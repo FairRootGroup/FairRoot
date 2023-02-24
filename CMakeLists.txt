@@ -1,5 +1,5 @@
  ################################################################################
- # Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+ # Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             #
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -10,7 +10,7 @@ cmake_policy(VERSION 3.15...3.23)
 
 set(PROJECT_MIN_CXX_STANDARD 17)
 
-project(FairRoot VERSION 18.8.0)
+project(FairRoot VERSION 18.8.1)
 
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/private")
