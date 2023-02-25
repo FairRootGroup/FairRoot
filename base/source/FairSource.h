@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -14,9 +14,6 @@
 
 #ifndef FAIRSOURCE_H
 #define FAIRSOURCE_H
-
-#include "FairLogger.h"
-#include "TClass.h"
 
 #include <Rtypes.h>
 #include <TObject.h>
@@ -34,7 +31,7 @@ class FairSource : public TObject
   public:
     FairSource();
     FairSource(const FairSource& source);
-    virtual ~FairSource();
+    ~FairSource() override;
     virtual Bool_t Init() = 0;
     virtual Int_t ReadEvent(UInt_t = 0) = 0;
     virtual Bool_t SpecifyRunId() = 0;
@@ -59,42 +56,7 @@ class FairSource : public TObject
     Int_t fRunId;
 
   public:
-    ClassDef(FairSource, 2);
+    ClassDefOverride(FairSource, 2);
 };
-
-namespace {
-
-template<typename S>
-bool ActivateObjectAnyImpl(S* source, void** obj, const std::type_info& info, const char* brname)
-{
-    // we check if the types match at all
-    auto br = source->GetBranch(brname);
-    if (!br) {
-        // branch not found in source
-        return false;
-    }
-
-    // look up the TClass and resulting typeid stored in this branch
-    auto cl = TClass::GetClass(br->GetClassName());
-    if (!cl) {
-        // class not found
-        return false;
-    }
-
-    auto storedtype = cl->GetTypeInfo();
-
-    // check consistency of types
-    if (info.hash_code() != storedtype->hash_code()) {
-        LOG(info) << "Trying to read from branch " << brname << " with wrong type " << info.name()
-                  << " (expected: " << storedtype->name() << ")\n";
-        return false;
-    }
-    source->SetBranchStatus(brname, 1);
-    // force to use the (void*) interface which is non-checking
-    source->SetBranchAddress(brname, (void*)obj);
-    return true;
-}
-
-}   // namespace
 
 #endif
