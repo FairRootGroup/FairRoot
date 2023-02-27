@@ -71,8 +71,6 @@ using std::setw;
 
 static TList contFactories;   //! list of container factories
 
-ClassImp(FairRuntimeDb);
-
 FairRuntimeDb* FairRuntimeDb::gRtdb = 0;
 
 FairRuntimeDb* FairRuntimeDb::instance(void)

@@ -1,9 +1,9 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
- *              This software is distributed under the terms of the *
+ *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
- *                  copied verbatim in the file "LICENSE" *
+ *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 //*-- AUTHOR : Ilse Koenig
 //*-- Created : 21/10/2004
@@ -33,12 +33,8 @@
 #include <iostream>       // for operator<<, basic_ostream, etc
 #include <stdio.h>        // for sprintf
 
-class TObject;
-
 using std::cout;
 using std::endl;
-
-ClassImp(FairDetParRootFileIo);
 
 FairDetParRootFileIo::FairDetParRootFileIo(FairParRootFile *f)
     : FairDetParIo()

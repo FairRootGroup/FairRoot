@@ -44,9 +44,6 @@ using std::cerr;
 using std::cout;
 using std::endl;
 
-ClassImp(FairParRootFile);
-ClassImp(FairParRootFileIo);
-
 FairParRootFile::FairParRootFile(const Text_t* fname, Option_t* option, const Text_t* ftitle, Int_t compress)
     : TNamed(fname, ftitle)
     , run(nullptr)

@@ -37,15 +37,10 @@ using std::endl;
 using std::filebuf;
 using std::ios;
 
-ClassImp(FairParAsciiFileIo);
-
 FairParAsciiFileIo::FairParAsciiFileIo()
     : FairParIo()
     , file(nullptr)
-{
-    // default destructor
-    //  file=0;
-}
+{}
 
 FairParAsciiFileIo::~FairParAsciiFileIo()
 {
