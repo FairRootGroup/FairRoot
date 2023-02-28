@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,13 +12,9 @@
 #ifndef FAIR_FASTSIM_MODEL_H_
 #define FAIR_FASTSIM_MODEL_H_
 
-#include "G4String.hh"   // for G4String
-#include "G4Types.hh"    // for G4bool
-#include "G4VFastSimulationModel.hh"
-class G4FastStep;
-class G4FastTrack;
-class G4ParticleDefinition;
-class G4Region;
+#include <G4String.hh>   // for G4String
+#include <G4Types.hh>    // for G4bool
+#include <G4VFastSimulationModel.hh>
 
 class FairFastSimModel : public G4VFastSimulationModel
 {
@@ -26,13 +22,13 @@ class FairFastSimModel : public G4VFastSimulationModel
     //-------------------------
     // Constructor, destructor
     //-------------------------
-    FairFastSimModel(G4String, G4Region *);
+    FairFastSimModel(G4String, G4Region*);
     FairFastSimModel(G4String);
-    ~FairFastSimModel();
+    ~FairFastSimModel() override;
 
-    virtual G4bool IsApplicable([[gnu::unused]] const G4ParticleDefinition &);
-    virtual G4bool ModelTrigger([[gnu::unused]] const G4FastTrack &);
-    virtual void DoIt(const G4FastTrack &, G4FastStep &);
+    G4bool IsApplicable([[gnu::unused]] const G4ParticleDefinition&) override;
+    G4bool ModelTrigger([[gnu::unused]] const G4FastTrack&) override;
+    void DoIt(const G4FastTrack&, G4FastStep&) override;
 };
 
 #endif /* FAIR_FASTSIM_MODEL_H_ */

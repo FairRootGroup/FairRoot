@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -53,13 +53,18 @@ FairFastSimModel::~FairFastSimModel() {}
 // 	delete parser;
 // }
 
-G4bool FairFastSimModel::IsApplicable([[gnu::unused]] const G4ParticleDefinition& particleType) { return true; }
+G4bool FairFastSimModel::IsApplicable([[gnu::unused]] const G4ParticleDefinition& particleType)
+{
+    return true;
+}
 
-G4bool FairFastSimModel::ModelTrigger([[gnu::unused]] const G4FastTrack& fastTrack) { return true; }
+G4bool FairFastSimModel::ModelTrigger([[gnu::unused]] const G4FastTrack& fastTrack)
+{
+    return true;
+}
 
 void FairFastSimModel::DoIt(const G4FastTrack& fastTrack, G4FastStep& fastStep)
 {
-
     LOG(debug) << "FairFastSimModel::DoIt() called";
     // G4TouchableHandle theTouchable =
     //     fastTrack.GetPrimaryTrack()->GetTouchableHandle();

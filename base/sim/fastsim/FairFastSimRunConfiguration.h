@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -23,10 +23,10 @@ class FairFastSimRunConfiguration : public TG4RunConfiguration
                                 const TString& specialProcess = "stepLimiter",
                                 const bool specialStacking = false,
                                 const bool isMT = false);
-    virtual ~FairFastSimRunConfiguration();
+    ~FairFastSimRunConfiguration() override;
 
     // methods
-    virtual TG4VUserFastSimulation* CreateUserFastSimulation();
+    TG4VUserFastSimulation* CreateUserFastSimulation() override;
 };
 
 #endif   // FAIR_FASTSIM_RUN_CONFIGURATION_H
