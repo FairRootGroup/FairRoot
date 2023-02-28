@@ -6,6 +6,10 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+if(Geant4_FOUND AND Geant4VMC_FOUND)
+  add_subdirectory(fastsim)
+endif()
+
 add_subdirectory(geobase)
 add_subdirectory(parbase)
 add_subdirectory(generators)
