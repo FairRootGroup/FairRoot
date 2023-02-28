@@ -85,7 +85,7 @@ bool FairFileSourceBase::ActivateObjectAnyImpl(TTree* source,
     auto storedtype = cl->GetTypeInfo();
 
     // check consistency of types
-    if (info.hash_code() != storedtype->hash_code()) {
+    if (info != *storedtype) {
         LOG(info) << "Trying to read from branch " << brname << " with wrong type " << info.name()
                   << " (expected: " << storedtype->name() << ")\n";
         return false;

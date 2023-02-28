@@ -426,7 +426,7 @@ T FairRootManager::GetMemoryBranchAny(const char* brname) const
     auto iter = fAnyBranchMap.find(brname);
     if (iter != fAnyBranchMap.end()) {
         // verify type consistency
-        if (typeid(P).hash_code() != iter->second->origtypeinfo.hash_code()) {
+        if (typeid(P) != iter->second->origtypeinfo) {
             EmitMemoryBranchWrongTypeWarning(brname, typeid(P).name(), iter->second->origtypeinfo.name());
             return nullptr;
         }

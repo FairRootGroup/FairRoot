@@ -87,7 +87,7 @@ T FairOnlineSink::GetPersistentBranchAny(const char* brname) const
     auto iter = fPersistentBranchesMap.find(brname);
     if (iter != fPersistentBranchesMap.end()) {
         // verify type consistency
-        if (typeid(P).hash_code() != iter->second->origtypeinfo.hash_code()) {
+        if (typeid(P) != iter->second->origtypeinfo) {
             EmitPersistentBranchWrongTypeWarning(brname, typeid(P).name(), iter->second->origtypeinfo.name());
             return nullptr;
         }
