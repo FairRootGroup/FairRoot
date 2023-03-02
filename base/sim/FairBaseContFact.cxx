@@ -21,10 +21,6 @@
 #include <TString.h>
 #include <string.h>
 
-class FairParSet;
-
-ClassImp(FairBaseContFact);
-
 static FairBaseContFact gFairBaseContFact;
 
 FairBaseContFact::FairBaseContFact()

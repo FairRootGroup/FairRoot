@@ -1335,5 +1335,3 @@ void FairMCApplication::UndoGeometryModifications()
 
     gGeoManager->ClearPhysicalNodes(kFALSE);
 }
-
-ClassImp(FairMCApplication);

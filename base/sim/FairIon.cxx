@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -47,5 +47,3 @@ FairIon::FairIon(const char* name, Int_t z, Int_t a, Int_t q, Double_t e, Double
 }
 
 FairIon::~FairIon(){};
-
-ClassImp(FairIon);

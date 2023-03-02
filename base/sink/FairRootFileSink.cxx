@@ -349,5 +349,3 @@ FairSink* FairRootFileSink::CloneSink()
     return newSink;
 }
 //_____________________________________________________________________________
-
-ClassImp(FairRootFileSink);

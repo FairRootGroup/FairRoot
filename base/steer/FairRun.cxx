@@ -240,5 +240,3 @@ void FairRun::SetSource(FairSource* othersource)
     fRootManager->SetSource(othersource);
     fSource.reset(othersource);
 }
-
-ClassImp(FairRun);

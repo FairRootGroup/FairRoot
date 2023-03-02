@@ -9,8 +9,6 @@
 
 #include "FairRootManager.h"   // for FairRootManager
 
-ClassImp(FairMultiLinkedData_Interface);
-
 FairMultiLinkedData_Interface::FairMultiLinkedData_Interface(FairMultiLinkedData& links, Bool_t)
 {
     SetLinks(links);

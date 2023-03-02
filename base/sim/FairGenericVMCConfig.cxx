@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -224,5 +224,3 @@ void FairGenericVMCConfig::SetupPostInit(const char* mcEngine)
         gROOT->ProcessLine("ConfigPostInit()");
     }
 }
-
-ClassImp(FairGenericVMCConfig);
