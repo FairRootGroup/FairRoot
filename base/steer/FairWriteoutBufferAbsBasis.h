@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -20,12 +20,12 @@
 class FairWriteoutBufferAbsBasis : public TObject
 {
   public:
-    virtual ~FairWriteoutBufferAbsBasis(){};
+    ~FairWriteoutBufferAbsBasis() override = default;
 
     virtual void WriteOutData(double time) = 0;
     virtual void WriteOutAllData() = 0;
 
-    ClassDef(FairWriteoutBufferAbsBasis, 1);
+    ClassDefOverride(FairWriteoutBufferAbsBasis, 1);
 };
 
 #endif /* FAIRWRITEOUTBUFFERABSBASIS_H_ */

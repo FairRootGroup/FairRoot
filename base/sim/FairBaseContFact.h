@@ -12,8 +12,6 @@
 
 #include <Rtypes.h>   // for FairBaseContFact::Class, etc
 
-class FairParSet;
-
 class FairBaseContFact : public FairContFact
 {
     /** Factory for all Base parameter containers */
@@ -21,7 +19,7 @@ class FairBaseContFact : public FairContFact
     /**default ctor*/
     FairBaseContFact();
     /**default dtor*/
-    ~FairBaseContFact() override {}
+    ~FairBaseContFact() override = default;
     /** Calls the constructor of the corresponding parameter container.
      * For an actual context, which is not an empty string and not the default context
      * of this container, the name is concatinated with the context. */

@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -49,10 +49,10 @@ class FairEventBuilderManager : public FairTask
     FairEventBuilderManager(const char* name, Int_t iVerbose = 1);
 
     /** Destructor **/
-    virtual ~FairEventBuilderManager();
+    ~FairEventBuilderManager() override;
 
     /** Execution **/
-    virtual void Exec(Option_t* opt);
+    void Exec(Option_t* opt) override;
 
     /** Adding FairEventBuilder **/
     virtual void AddEventBuilder(FairEventBuilder* eventBuilder);
@@ -72,15 +72,15 @@ class FairEventBuilderManager : public FairTask
 
   private:
     /** Intialisation **/
-    virtual InitStatus Init();
+    InitStatus Init() override;
 
     /** Reinitialisation **/
-    virtual InitStatus ReInit();
+    InitStatus ReInit() override;
 
     /** Finish at the end of each event **/
-    virtual void Finish();
+    void Finish() override;
 
-    ClassDef(FairEventBuilderManager, 1);
+    ClassDefOverride(FairEventBuilderManager, 1);
 };
 
 #endif

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -50,7 +50,7 @@ class FairFileHeader : public TNamed
     /**
      * Destructor
      */
-    virtual ~FairFileHeader();
+    ~FairFileHeader() override;
 
     FairFileInfo* GetFileInfo(UInt_t id, UInt_t ChId);
 
@@ -68,7 +68,7 @@ class FairFileHeader : public TNamed
     FairFileHeader(const FairFileHeader&);
     FairFileHeader& operator=(const FairFileHeader&);
 
-    ClassDef(FairFileHeader, 2);
+    ClassDefOverride(FairFileHeader, 2);
 };
 
 #endif

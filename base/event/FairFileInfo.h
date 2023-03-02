@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -22,14 +22,14 @@ class FairFileInfo : public TNamed
   public:
     FairFileInfo();
     FairFileInfo(TFile* file, UInt_t id, UInt_t ChId);
-    virtual ~FairFileInfo();
+    ~FairFileInfo() override;
 
     TString GetPath() { return fPath; }
     UInt_t GetSize() { return fSize; }
     UInt_t GetIdentifier() { return fIdentifier; }
     UInt_t GetOrderInChain() { return fInChainId; }
 
-    void Print(Option_t* option = "") const;
+    void Print(Option_t* option = "") const override;
 
     void SetPath(TString path) { fPath = path; }
     void SetSize(UInt_t size) { fSize = size; }
@@ -50,7 +50,7 @@ class FairFileInfo : public TNamed
     FairFileInfo(const FairFileInfo&);
     FairFileInfo& operator=(const FairFileInfo&);
 
-    ClassDef(FairFileInfo, 1);
+    ClassDefOverride(FairFileInfo, 1);
 };
 
 #endif   // FAIRFILEINFO_H

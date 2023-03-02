@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -53,7 +53,7 @@ class FairEventBuilder : public FairWriteoutBuffer
     FairEventBuilder(TString branchName, TString className, TString folderName, Bool_t persistance);
 
     /** Destructor **/
-    virtual ~FairEventBuilder();
+    ~FairEventBuilder() override;
 
     virtual void WriteOutAllDeadTimeData();
 
@@ -65,7 +65,7 @@ class FairEventBuilder : public FairWriteoutBuffer
 
     virtual Bool_t Init() = 0;
 
-    virtual void Print(Option_t* option = "") const = 0;
+    void Print(Option_t* option = "") const override = 0;
 
     /** Finish at the end of each event **/
     virtual void Finish();
@@ -85,7 +85,7 @@ class FairEventBuilder : public FairWriteoutBuffer
     Int_t fIdentifier;
     Double_t fMaxAllowedEventCreationTime;
 
-    ClassDef(FairEventBuilder, 1);
+    ClassDefOverride(FairEventBuilder, 1);
 };
 
 #endif

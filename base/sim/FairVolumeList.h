@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -14,8 +14,6 @@
 #include <TObjArray.h>   // for TObjArray
 #include <TObject.h>     // for TObject
 #include <TString.h>     // for TString
-
-// class FairVolume;
 
 /**
  * This Object is only used for internal book keeping!
@@ -33,7 +31,7 @@ class FairVolumeList : public TObject
 
   public:
     FairVolumeList();
-    virtual ~FairVolumeList();
+    ~FairVolumeList() override;
 
     FairVolume* getVolume(TString* name);
     Int_t getVolumeId(TString* name);
@@ -44,7 +42,7 @@ class FairVolumeList : public TObject
     Int_t getEntries() { return fData->GetEntries(); }
     FairVolume* At(Int_t pos) { return (dynamic_cast<FairVolume*>(fData->At(pos))); }
 
-    ClassDef(FairVolumeList, 1);
+    ClassDefOverride(FairVolumeList, 1);
 };
 
 #endif   // FAIR_VOLUMELIST_H

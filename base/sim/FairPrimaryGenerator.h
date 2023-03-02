@@ -1,9 +1,9 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
- *              This software is distributed under the terms of the *
+ *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
- *                  copied verbatim in the file "LICENSE" *
+ *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
 /** FairPrimaryGenerator.h
@@ -47,7 +47,7 @@ class FairPrimaryGenerator : public TNamed
     FairPrimaryGenerator(const char *name, const char *title = "FAIR Generator");
 
     /** Destructor. **/
-    virtual ~FairPrimaryGenerator();
+    ~FairPrimaryGenerator() override;
 
     /** Initialize the generater (if needed!)*/
     virtual Bool_t Init();
@@ -270,7 +270,7 @@ class FairPrimaryGenerator : public TNamed
   **/
     void MakeEventPlane();
 
-    ClassDef(FairPrimaryGenerator, 5);
+    ClassDefOverride(FairPrimaryGenerator, 5);
 };
 
 #endif

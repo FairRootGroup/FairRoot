@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -39,7 +39,7 @@ class FairDetector : public FairModule
     /**
       destructor
     */
-    virtual ~FairDetector();
+    ~FairDetector() override;
     /**
       Initialization of the detector is done here
     */
@@ -110,6 +110,6 @@ class FairDetector : public FairModule
     Int_t fDetId;          // Detector Id has to be set from ctr.
     FairLogger* fLogger;   //! /// FairLogger
 
-    ClassDef(FairDetector, 1);
+    ClassDefOverride(FairDetector, 1);
 };
 #endif   // FAIRDETECTOR_H

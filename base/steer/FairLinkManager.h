@@ -14,7 +14,7 @@ class FairLinkManager : public TObject
     /**ctor*/
     FairLinkManager();
     /**dtor*/
-    virtual ~FairLinkManager();
+    ~FairLinkManager() override;
 
     /** static access method */
     static FairLinkManager* Instance();
@@ -42,7 +42,7 @@ class FairLinkManager : public TObject
 
     FairLogger* fLogger;   //!
 
-    ClassDef(FairLinkManager, 1);
+    ClassDefOverride(FairLinkManager, 1);
 };
 
 #endif   // FAIR_ROOT_MANAGER_H

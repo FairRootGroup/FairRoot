@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -29,7 +29,7 @@ class FairHit : public FairTimeStamp
     FairHit(Int_t detID, const TVector3& pos, const TVector3& dpos, Int_t index);
 
     /** Destructor **/
-    virtual ~FairHit();
+    ~FairHit() override;
 
     /** Accessors **/
     Double_t GetDx() const { return fDx; };
@@ -58,7 +58,7 @@ class FairHit : public FairTimeStamp
     void SetPosition(const TVector3& pos);
 
     /*** Output to screen */
-    virtual void Print(const Option_t*) const { ; }
+    void Print(const Option_t*) const override { ; }
 
   protected:
     Double32_t fDx, fDy, fDz;   ///< Errors of position [cm]
@@ -66,7 +66,7 @@ class FairHit : public FairTimeStamp
     Int_t fDetectorID;          ///< Detector unique identifier
     Double32_t fX, fY, fZ;      ///< Position of hit [cm]
 
-    ClassDef(FairHit, 3);
+    ClassDefOverride(FairHit, 3);
 };
 
 inline void FairHit::PositionError(TVector3& dpos) const { dpos.SetXYZ(fDx, fDy, fDz); }

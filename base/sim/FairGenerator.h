@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -38,7 +38,7 @@ class FairGenerator : public TNamed
     FairGenerator(const char* name, const char* title = "FAIR Generator");
 
     /** Destructor. **/
-    virtual ~FairGenerator();
+    ~FairGenerator() override;
 
     /** Abstract method ReadEvent must be implemented by any derived class.
         It has to handle the generation of input tracks (reading from input
@@ -64,7 +64,7 @@ class FairGenerator : public TNamed
     /** Assignment operator */
     FairGenerator& operator=(const FairGenerator&);
 
-    ClassDef(FairGenerator, 1);
+    ClassDefOverride(FairGenerator, 1);
 };
 
 #endif

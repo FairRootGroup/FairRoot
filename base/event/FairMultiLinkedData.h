@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -45,7 +45,7 @@ class FairMultiLinkedData : public TObject
                         Bool_t bypass = kFALSE,
                         Float_t mult = 1.0);   ///< Constructor
 
-    virtual ~FairMultiLinkedData(){};
+    ~FairMultiLinkedData() override = default;
 
     virtual std::set<FairLink> GetLinks() const { return fLinks; }   ///< returns stored links as FairLinks
     virtual FairLink GetEntryNr() const { return fEntryNr; }         ///< gives back the entryNr
@@ -151,7 +151,7 @@ class FairMultiLinkedData : public TObject
     }
     Int_t fDefaultType;
 
-    ClassDef(FairMultiLinkedData, 4);
+    ClassDefOverride(FairMultiLinkedData, 4);
 };
 
 /**\fn virtual void FairMultiLinkedData::SetLinks(Int_t type, std::vector<Int_t> links)

@@ -40,7 +40,7 @@ class FairMultiLinkedData_Interface : public TObject
                                   Float_t mult = 1.0);   ///< Constructor
     FairMultiLinkedData_Interface(const FairMultiLinkedData_Interface& toCopy);
 
-    ~FairMultiLinkedData_Interface() = default;
+    ~FairMultiLinkedData_Interface() override = default;
 
     FairMultiLinkedData_Interface& operator=(const FairMultiLinkedData_Interface& rhs);
 
@@ -86,7 +86,7 @@ class FairMultiLinkedData_Interface : public TObject
     std::unique_ptr<FairMultiLinkedData> fLink;
     FairMultiLinkedData* CreateFairMultiLinkedData();   ///< returns non-owning pointer
 
-    ClassDef(FairMultiLinkedData_Interface, 6);
+    ClassDefOverride(FairMultiLinkedData_Interface, 6);
 };
 
 /**\fn virtual void FairMultiLinkedData_Interface::SetLinks(Int_t type, std::vector<Int_t> links)

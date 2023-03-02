@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -44,7 +44,7 @@ class BinaryFunctor
     virtual bool TimeOut() { return false; }
     virtual void ResetTimeOut(){};
 
-    virtual ~BinaryFunctor(){};
+    virtual ~BinaryFunctor() = default;
 };
 
 /**
@@ -161,7 +161,7 @@ class FairTSBufferFunctional : public TObject
                            BinaryFunctor* stopFunction,
                            BinaryFunctor* startFunction = 0);
 
-    ~FairTSBufferFunctional() override {}
+    ~FairTSBufferFunctional() override = default;
     TClonesArray* GetData(Double_t stopParameter);
     TClonesArray* GetData(Double_t startParameter, Double_t stopParameter);
     Int_t GetBranchIndex() { return fBranchIndex; }

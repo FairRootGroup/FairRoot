@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -13,8 +13,6 @@
 #include <Rtypes.h>   // for Double_t, etc
 #include <iosfwd>     // for ostream
 #include <iostream>   // for ostream, cout
-
-class TObject;
 
 /**
  * Base class for Time stamp information
@@ -32,14 +30,14 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     FairTimeStamp(Double_t time, Double_t timeerror);
 
     /** Destructor **/
-    virtual ~FairTimeStamp(){};
+    ~FairTimeStamp() override = default;
     /** Accessors **/
     Double_t GetTimeStamp() const { return fTimeStamp; }
     Double_t GetTimeStampError() const { return fTimeStampError; }
     /** Modifiers **/
     void SetTimeStamp(Double_t t) { fTimeStamp = t; }
     void SetTimeStampError(Double_t t) { fTimeStampError = t; }
-    virtual Int_t Compare(const TObject* obj) const
+    Int_t Compare(const TObject* obj) const override
     {
         if (this == obj) {
             return 0;
@@ -59,7 +57,7 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     }
 
     virtual std::ostream& PrintTimeInfo(std::ostream& out = std::cout) const;
-    virtual Bool_t IsSortable() const { return kTRUE; };
+    Bool_t IsSortable() const override { return kTRUE; };
 
     virtual bool equal(FairTimeStamp* data)
     {
@@ -78,7 +76,7 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     Double_t fTimeStamp;      /** Time of digit or Hit  [ns] */
     Double_t fTimeStampError; /** Error on time stamp */
 
-    ClassDef(FairTimeStamp, 4);
+    ClassDefOverride(FairTimeStamp, 4);
 };
 
 // -----   Default constructor   -------------------------------------------

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -31,7 +31,7 @@ class FairMesh : public TObject
     FairMesh(const char*);
 
     /** Destructor **/
-    virtual ~FairMesh();
+    ~FairMesh() override;
 
     /** Accessors **/
     Double_t GetXmin() const { return fXmin; };
@@ -100,7 +100,7 @@ class FairMesh : public TObject
     FairMesh(const FairMesh&);
     FairMesh& operator=(const FairMesh&);
 
-    ClassDef(FairMesh, 1);
+    ClassDefOverride(FairMesh, 1);
 };
 
 #endif

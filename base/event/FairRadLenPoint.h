@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -44,7 +44,7 @@ class FairRadLenPoint : public FairMCPoint
                     Float_t fRadLen);
 
     /** Destructor **/
-    virtual ~FairRadLenPoint();
+    ~FairRadLenPoint() override;
 
     /** Accessors **/
     Float_t GetA() { return fA; }
@@ -59,7 +59,7 @@ class FairRadLenPoint : public FairMCPoint
     void SetDensity(Double_t Density) { fDensity = Density; }
 
     /** Output to screen **/
-    virtual void Print(const Option_t* opt) const;
+    void Print(const Option_t* opt) const override;
 
     Double_t GetXOut() const { return fXOut; };
     Double_t GetYOut() const { return fYOut; };
@@ -84,7 +84,7 @@ class FairRadLenPoint : public FairMCPoint
     Double_t fXOut, fYOut, fZOut;
     Double_t fPxOut, fPyOut, fPzOut;
 
-    ClassDef(FairRadLenPoint, 1);
+    ClassDefOverride(FairRadLenPoint, 1);
 };
 
 #endif
