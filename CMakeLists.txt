@@ -247,7 +247,6 @@ SetBasicVariables()
 # the project's entire directory structure.
 add_subdirectory(fairtools)
 add_subdirectory(alignment)
-add_subdirectory(base)
 
 add_subdirectory(fairroot)
 
