@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -49,10 +49,10 @@ class FairTrackParam : public TObject
     FairTrackParam(const FairTrackParam& param);
 
     /** Destructor **/
-    virtual ~FairTrackParam();
+    ~FairTrackParam() override;
 
     /** Output to screen **/
-    void Print(Option_t* option = "") const;
+    void Print(Option_t* option = "") const override;
 
     /** Accessors **/
     Double_t GetX() const { return fX; };
@@ -100,7 +100,7 @@ class FairTrackParam : public TObject
 
     Double32_t fCovMatrix[15];
 
-    ClassDef(FairTrackParam, 1);
+    ClassDefOverride(FairTrackParam, 1);
 };
 
 #endif

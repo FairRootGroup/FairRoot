@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -34,7 +34,7 @@ class FairLink
     FairLink(TString branchName, Int_t index, Float_t weight = 1.);
     FairLink(Int_t file, Int_t entry, Int_t type, Int_t index, Float_t weight = 1.);
     FairLink(Int_t file, Int_t entry, TString branchName, Int_t index, Float_t weight = 1.);
-    ~FairLink(){};
+    ~FairLink() = default;
 
     void SetLink(Int_t file, Int_t entry, Int_t type, Int_t index, Float_t weight = 1.)
     {

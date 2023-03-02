@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -47,7 +47,7 @@ class FairAnaSelector : public TSelector
         , fCurrentDirectory("")
     {}
 
-    ~FairAnaSelector() override {}
+    ~FairAnaSelector() override = default;
     Int_t Version() const override { return 1; }
     void Begin(TTree* tree) override;
     void SlaveBegin(TTree* tree) override;

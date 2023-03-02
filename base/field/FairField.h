@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -45,7 +45,7 @@ class FairField : public TVirtualMagField
     FairField& operator=(const FairField&) { return *this; }
 
     /** Destructor **/
-    virtual ~FairField();
+    ~FairField() override;
 
     /** Intialisation. E.g. read in the field map. If needed, to be
      ** implemented in the concrete class.
@@ -94,10 +94,10 @@ class FairField : public TVirtualMagField
      **/
     virtual void GetFieldValue(const Double_t point[3], Double_t* bField);
 
-    void Field(const Double_t point[3], Double_t* B) { GetFieldValue(point, B); }
+    void Field(const Double_t point[3], Double_t* B) override { GetFieldValue(point, B); }
 
     /** Screen output. To be implemented in the concrete class. **/
-    virtual void Print(Option_t*) const { ; }
+    void Print(Option_t*) const override { ; }
     virtual void GetBxyz(const Double_t[3], Double_t*)
     {
         LOG(warn) << "FairField::GetBxyz Should be implemented in User class";
@@ -115,7 +115,7 @@ class FairField : public TVirtualMagField
     //    FairField& operator=(const FairField&);
     // TODO: Check why the htrack needs this
 
-    ClassDef(FairField, 4);
+    ClassDefOverride(FairField, 4);
 };
 
 #endif

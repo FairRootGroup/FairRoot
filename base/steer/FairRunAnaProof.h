@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -26,7 +26,7 @@ class FairRunAnaProof : public FairRunAna
   public:
     /** \deprecated Deprecated in v18.8, will be removed in v20. */
     [[deprecated]] static FairRunAnaProof* Instance();
-    virtual ~FairRunAnaProof();
+    ~FairRunAnaProof() override;
     FairRunAnaProof(const char* proofName = "");
 
     /**initialize the run manager*/

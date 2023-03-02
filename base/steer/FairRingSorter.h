@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -36,7 +36,7 @@ class FairRingSorter : public TObject
         , fVerbose(0)
     {}
 
-    virtual ~FairRingSorter(){};
+    ~FairRingSorter() override = default;
 
     virtual FairTimeStamp* CreateElement(FairTimeStamp* data);
 
@@ -70,7 +70,7 @@ class FairRingSorter : public TObject
     double fCellWidth;
     int fVerbose;
 
-    ClassDef(FairRingSorter, 1);
+    ClassDefOverride(FairRingSorter, 1);
 };
 
 #endif /* FairRingSorter_H_ */

@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -44,7 +44,7 @@ class FairMCPoint : public FairMultiLinkedData_Interface
                 UInt_t EventId = 0);
 
     /** Destructor **/
-    virtual ~FairMCPoint();
+    ~FairMCPoint() override;
 
     /** Accessors */
     UInt_t GetEventID() const { return fEventId; }   /// event identifier
@@ -77,7 +77,7 @@ class FairMCPoint : public FairMultiLinkedData_Interface
     void SetPosition(const TVector3& pos);
 
     /** Output to screen **/
-    virtual void Print(const Option_t* opt = 0) const;
+    void Print(const Option_t* opt = nullptr) const override;
 
   protected:
     Int_t fTrackID;             ///< Track index
@@ -89,7 +89,7 @@ class FairMCPoint : public FairMultiLinkedData_Interface
     Int_t fDetectorID;          ///< Detector unique identifier
     Double32_t fX, fY, fZ;      ///< Position of hit [cm]
 
-    ClassDef(FairMCPoint, 5);
+    ClassDefOverride(FairMCPoint, 5);
 };
 
 inline void FairMCPoint::SetMomentum(const TVector3& mom)

@@ -12,13 +12,11 @@
 #ifndef FairPrintFairLinks_H
 #define FairPrintFairLinks_H
 
-// framework includes
 #include "FairTask.h"
-#include "TObjString.h"
 
+#include <TClonesArray.h>
+#include <TObjString.h>
 #include <map>
-
-class TClonesArray;
 
 class FairPrintFairLinks : public FairTask
 {
@@ -27,18 +25,18 @@ class FairPrintFairLinks : public FairTask
     FairPrintFairLinks();
 
     /** Destructor **/
-    virtual ~FairPrintFairLinks();
+    ~FairPrintFairLinks() override;
 
     virtual void AddBranchName(const TString& name) { fSelectedBranches->AddLast(new TObjString(name.Data())); }
 
     virtual void PrintBranchNameList(TList* branches);
 
-    virtual InitStatus Init();
+    InitStatus Init() override;
 
     /** Virtual method Exec **/
-    virtual void Exec(Option_t* opt);
+    void Exec(Option_t* opt) override;
 
-    virtual void Finish();
+    void Finish() override;
 
   protected:
     void InitBranchList(TList* branches);
@@ -51,7 +49,7 @@ class FairPrintFairLinks : public FairTask
     void Reset();
     void ProduceHits();
 
-    ClassDef(FairPrintFairLinks, 1);
+    ClassDefOverride(FairPrintFairLinks, 1);
 };
 
 #endif

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -59,7 +59,7 @@ class FairWriteoutBuffer : public TObject
         , fVerbose(0)
         , fLogger(FairLogger::GetLogger()){};
     FairWriteoutBuffer(TString branchName, TString className, TString folderName, Bool_t persistance);
-    ~FairWriteoutBuffer() override {}
+    ~FairWriteoutBuffer() override = default;
 
     virtual void SaveDataToTree(Bool_t val = kTRUE)
     {

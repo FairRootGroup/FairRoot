@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -84,7 +84,7 @@ class FairRecoEventHeader : public TNamed
     /**
      * Destructor
      */
-    virtual ~FairRecoEventHeader();
+    ~FairRecoEventHeader() override;
 
   protected:
     /** Run Id */
@@ -96,7 +96,7 @@ class FairRecoEventHeader : public TNamed
     /** Event Time Error **/
     Double_t fEventTimeError;
 
-    ClassDef(FairRecoEventHeader, 1);
+    ClassDefOverride(FairRecoEventHeader, 1);
 };
 
 #endif

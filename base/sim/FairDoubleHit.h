@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -26,11 +26,11 @@ class FairDoubleHit : public FairMultiLinkedData
 
   public:
     FairDoubleHit();
-    virtual ~FairDoubleHit();
+    ~FairDoubleHit() override;
 
     // methods
 
-    virtual void Print(const Option_t* opt = 0) const = 0;
+    void Print(const Option_t* opt = 0) const override = 0;
 
     // set methods
     virtual void SetDetectorID(Int_t chamb) = 0;
@@ -63,6 +63,6 @@ class FairDoubleHit : public FairMultiLinkedData
     virtual Double_t dy_out() = 0;
     virtual Double_t dz_out() = 0;
 
-    ClassDef(FairDoubleHit, 1);
+    ClassDefOverride(FairDoubleHit, 1);
 };
 #endif   // FAIRDOUBLEHIT_H

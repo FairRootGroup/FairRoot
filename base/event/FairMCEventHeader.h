@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -45,7 +45,7 @@ class FairMCEventHeader : public TNamed
     FairMCEventHeader(UInt_t runId);
 
     /** Destructor **/
-    virtual ~FairMCEventHeader();
+    ~FairMCEventHeader() override;
 
     /** Accessors **/
     UInt_t GetRunID() const { return fRunId; }        /// run identifier
@@ -98,7 +98,7 @@ class FairMCEventHeader : public TNamed
     Double32_t fRotY;              ///  Rotation around y-axis (beam tilt) [rad]
     Double32_t fRotZ;              ///  Rotation around z-axis (event plane) [rad]
 
-    ClassDef(FairMCEventHeader, 2);
+    ClassDefOverride(FairMCEventHeader, 2);
 };
 
 inline void FairMCEventHeader::SetVertex(Double_t x, Double_t y, Double_t z)
