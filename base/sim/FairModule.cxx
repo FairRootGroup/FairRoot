@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -713,5 +713,3 @@ FairModule* FairModule::CloneModule() const
     Fatal("CloneModule", "Has to be overriden in multi-threading applications.");
     return 0;
 }
-
-ClassImp(FairModule);

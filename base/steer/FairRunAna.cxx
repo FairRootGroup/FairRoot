@@ -657,5 +657,3 @@ void FairRunAna::Fill()
 // }
 //_____________________________________________________________________________
 // ABOVE FUNCTIONS SHOULD BE DELETED AND MOVED TO FairFileSource AND FairMixedSource ONLY
-
-ClassImp(FairRunAna);

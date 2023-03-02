@@ -363,8 +363,4 @@ void FairRunAnaProof::RunOnProof(Int_t NStart, Int_t NStop)
               << nofEventsToAnalyze << "," << NStart << ")";
     inChain->Process("FairAnaSelector", "", nofEventsToAnalyze, NStart);
     LOG(info) << "FairRunAnaProof::RunOnProof(): inChain->Process DONE";
-
-    return;
 }
-
-ClassImp(FairRunAnaProof);

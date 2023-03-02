@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -41,5 +41,3 @@ void FairField::GetFieldValue(const Double_t point[3], Double_t* bField)
     bField[1] = GetBy(point[0], point[1], point[2]);
     bField[2] = GetBz(point[0], point[1], point[2]);
 }
-
-ClassImp(FairField);

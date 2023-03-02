@@ -44,8 +44,6 @@
 using std::cout;
 using std::endl;
 
-ClassImp(FairRunSim);
-
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 FairRunSim::FairRunSim(Bool_t isMaster)

@@ -18,5 +18,3 @@ void FairEventHeader::Register(Bool_t Persistence)
 {
     FairRootManager::Instance()->Register("EventHeader.", "EvtHeader", this, Persistence);
 }
-
-ClassImp(FairEventHeader);

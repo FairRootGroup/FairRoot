@@ -70,5 +70,3 @@ Bool_t FairLinkManager::IsIgnoreType(Int_t type) const
     else
         return !fIgnoreTypes.count(type);
 }
-
-ClassImp(FairLinkManager);

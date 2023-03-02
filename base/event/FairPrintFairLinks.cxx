@@ -106,5 +106,3 @@ void FairPrintFairLinks::Exec(Option_t*)
 }
 
 void FairPrintFairLinks::Finish() {}
-
-ClassImp(FairPrintFairLinks);
