@@ -11,10 +11,9 @@
 #include "FairModule.h"   // for FairModule
 
 #include <Rtypes.h>   // for Int_t, Bool_t, etc
+#include <TClonesArray.h>
 
-class FairLogger;
 class FairVolume;
-class TClonesArray;
 
 /**
  * Base class for constructing detecors
@@ -107,8 +106,7 @@ class FairDetector : public FairModule
 
     void DefineSensitiveVolumes();
 
-    Int_t fDetId;          // Detector Id has to be set from ctr.
-    FairLogger* fLogger;   //! /// FairLogger
+    Int_t fDetId;   // Detector Id has to be set from ctr.
 
     ClassDefOverride(FairDetector, 1);
 };

@@ -10,10 +10,9 @@
 // -------------------------------------------------------------------------
 #include "FairIon.h"
 
-#include "FairLogger.h"
-
 #include <TDatabasePDG.h>
 #include <TParticlePDG.h>
+#include <fairlogger/Logger.h>
 
 FairIon::FairIon()
     : TNamed()
@@ -22,7 +21,6 @@ FairIon::FairIon()
     , fQ(0)
     , fExcEnergy(0)
     , fMass(0)
-    , fLogger(FairLogger::GetLogger())
 {}
 
 FairIon::FairIon(const char* name, Int_t z, Int_t a, Int_t q, Double_t e, Double_t mass)
@@ -32,7 +30,6 @@ FairIon::FairIon(const char* name, Int_t z, Int_t a, Int_t q, Double_t e, Double
     , fQ(q)
     , fExcEnergy(e)
     , fMass(0)
-    , fLogger(FairLogger::GetLogger())
 {
     TDatabasePDG* pdgDB = TDatabasePDG::Instance();
     TParticlePDG* kProton = pdgDB->GetParticle(2212);
@@ -45,5 +42,3 @@ FairIon::FairIon(const char* name, Int_t z, Int_t a, Int_t q, Double_t e, Double
     }
     LOG(info) << "New Ion " << name << " Z=" << z << "  A=" << a << "  Charge=" << q << "  Mass=" << fMass << " GeV ";
 }
-
-FairIon::~FairIon(){};

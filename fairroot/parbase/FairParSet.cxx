@@ -15,9 +15,9 @@
 /////////////////////////////////////////////////////////////
 #include "FairParSet.h"
 
-#include "FairLogger.h"      // for FairLogger, MESSAGE_ORIGIN
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
 
+#include <fairlogger/Logger.h>
 #include <iostream>   // for operator<<, ostream, etc
 
 using std::cout;
@@ -34,7 +34,6 @@ FairParSet::FairParSet(const char* name, const char* title, const char* context,
     , paramContext(context)
     , author("")
     , description("")
-    , fLogger(FairLogger::GetLogger())
 {
     for (Int_t i = 0; i < 3; i++) {
         versions[i] = -1;
@@ -139,7 +138,6 @@ FairParSet::FairParSet(const FairParSet& from)
     , paramContext(from.paramContext)
     , author(from.author)
     , description(from.description)
-    , fLogger(FairLogger::GetLogger())
 {
     /*
  fName    = from.fName;
@@ -155,7 +153,6 @@ FairParSet::FairParSet(const FairParSet& from)
  paramContext = from.paramContext;
  author       = from.author;
  description  = from.description;
- fLogger      = from.fLogger;
 */
 }
 
@@ -177,7 +174,6 @@ FairParSet& FairParSet::operator=(const FairParSet& from)
     paramContext = from.paramContext;
     author = from.author;
     description = from.description;
-    fLogger = from.fLogger;
 
     return *this;
 }

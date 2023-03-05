@@ -7,6 +7,9 @@
  ********************************************************************************/
 #include "NewTask.h"
 
+#include <FairRootManager.h>
+#include <fairlogger/Logger.h>
+
 // ---- Default constructor -------------------------------------------
 NewTask::NewTask()
     : FairTask("NewTask")
@@ -43,7 +46,7 @@ InitStatus NewTask::Init()
     /*
     <InputDataLevel> = (TClonesArray*) ioman->GetObject("InputDataLevelName");
     if ( ! <InputLevel> ) {
-    fLogger->Error(MESSAGE_ORIGIN,"No InputDataLevelName array!\n NewTask will be inactive");
+    LOG(error) << "No InputDataLevelName array!\n NewTask will be inactive";
     return kERROR;
     }
   */

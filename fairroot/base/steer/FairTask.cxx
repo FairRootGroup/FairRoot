@@ -10,7 +10,6 @@
 
 #include "FairTask.h"
 
-#include "FairLogger.h"        // for FairLogger, MESSAGE_ORIGIN
 #include "FairMonitor.h"       // for FairMonitor
 #include "FairRootManager.h"   // for FairRootManager
 
@@ -18,7 +17,8 @@
 #include <TList.h>         // for TList
 #include <TObject.h>       // for TObject
 #include <cstdio>          // printf
-#include <utility>         // pair
+#include <fairlogger/Logger.h>
+#include <utility>   // pair
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -26,7 +26,6 @@ FairTask::FairTask()
     : TTask()
     , fVerbose(0)
     , fInputPersistance(-1)
-    , fLogger(FairLogger::GetLogger())
     , fStreamProcessing(kFALSE)
     , fOutputPersistance()
 {}
@@ -35,7 +34,6 @@ FairTask::FairTask(const char* name, Int_t iVerbose)
     : TTask(name, "FairTask")
     , fVerbose(iVerbose)
     , fInputPersistance(-1)
-    , fLogger(FairLogger::GetLogger())
     , fOutputPersistance()
 {}
 

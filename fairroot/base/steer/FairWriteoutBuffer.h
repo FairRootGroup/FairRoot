@@ -32,7 +32,6 @@
 #ifndef FairWriteoutBuffer_H_
 #define FairWriteoutBuffer_H_
 
-#include "FairLogger.h"        // for FairLogger
 #include "FairRootManager.h"   // for FairRootManager
 #include "FairTimeStamp.h"     // for FairTimeStamp
 
@@ -57,7 +56,7 @@ class FairWriteoutBuffer : public TObject
         , fTreeSave(false)
         , fActivateBuffering(kFALSE)
         , fVerbose(0)
-        , fLogger(FairLogger::GetLogger()){};
+    {}
     FairWriteoutBuffer(TString branchName, TString className, TString folderName, Bool_t persistance);
     ~FairWriteoutBuffer() override = default;
 
@@ -137,7 +136,6 @@ class FairWriteoutBuffer : public TObject
     Bool_t fTreeSave;
     Bool_t fActivateBuffering;
     Int_t fVerbose;
-    FairLogger* fLogger;   //! /// FairLogger
 
   private:
     FairWriteoutBuffer(const FairWriteoutBuffer&);
