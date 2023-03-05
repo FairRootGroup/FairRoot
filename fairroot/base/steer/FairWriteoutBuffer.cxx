@@ -14,7 +14,6 @@
 
 #include "FairWriteoutBuffer.h"
 
-#include "FairLogger.h"        // for FairLogger
 #include "FairRootManager.h"   // for FairRootManager
 
 #include <iostream>   // for operator<<, ostream, cout, etc
@@ -29,7 +28,6 @@ FairWriteoutBuffer::FairWriteoutBuffer(TString branchName, TString className, TS
     , fTreeSave(true)
     , fActivateBuffering(kTRUE)
     , fVerbose(0)
-    , fLogger(FairLogger::GetLogger())
 {
     FairRootManager::Instance()->Register(branchName, className, folderName, persistance);
     fTreeSave = !(fBranchName == "" || fClassName == "");

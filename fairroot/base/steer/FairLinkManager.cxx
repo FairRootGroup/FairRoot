@@ -5,8 +5,7 @@
 
 #include "FairLinkManager.h"
 
-#include "FairLogger.h"
-#include "FairRun.h"
+#include <fairlogger/Logger.h>
 
 TMCThreadLocal FairLinkManager* FairLinkManager::fgInstance = 0;
 
@@ -21,7 +20,6 @@ FairLinkManager::FairLinkManager()
     : TObject()
     , fIgnoreTypes()
     , fIgnoreSetting(kTRUE)
-    , fLogger(0)
 {
     if (fgInstance) {
         Fatal("FairLinkManager", "Singleton instance already exists.");
@@ -29,11 +27,6 @@ FairLinkManager::FairLinkManager()
     }
     //  std::cout << "-I- FairLinkManager::FairLinkManager created!" << std::endl;
     fgInstance = this;
-
-    // Logger only on master - TO DO
-    if (FairRun::Instance()->GetIsMaster()) {
-        fLogger = FairLogger::GetLogger();
-    }
 }
 
 FairLinkManager::~FairLinkManager()

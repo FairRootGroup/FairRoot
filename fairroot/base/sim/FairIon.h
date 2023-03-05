@@ -24,8 +24,6 @@
 #include <Rtypes.h>   // for Int_t, Double_t, etc
 #include <TNamed.h>   // for TNamed
 
-class FairLogger;
-
 class FairIon : public TNamed
 {
   public:
@@ -53,7 +51,7 @@ class FairIon : public TNamed
         fMass = m;
     }
     /** Destructor **/
-    ~FairIon() override;
+    ~FairIon() override = default;
 
     /** Accessors **/
     /**
@@ -92,13 +90,12 @@ class FairIon : public TNamed
     void SetMass(Double_t mass) { fMass = mass; }
 
   private:
-    static Int_t fgNIon;         //! /// Number of ions instantiated. One per generator.
-    Int_t fZ;                    /// Atomic number
-    Int_t fA;                    /// Atomic mass
-    Int_t fQ;                    /// Electric charge
-    Double_t fExcEnergy;         /// Excitation energy [GeV]
-    Double_t fMass;              /// Mass [GeV]
-    FairLogger* fLogger;         //! /// FairLogger
+    static Int_t fgNIon;   //! /// Number of ions instantiated. One per generator.
+    Int_t fZ;              /// Atomic number
+    Int_t fA;              /// Atomic mass
+    Int_t fQ;              /// Electric charge
+    Double_t fExcEnergy;   /// Excitation energy [GeV]
+    Double_t fMass;        /// Mass [GeV]
 
     FairIon(const FairIon&);
     FairIon& operator=(const FairIon&);

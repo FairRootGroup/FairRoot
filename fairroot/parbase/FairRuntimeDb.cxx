@@ -43,7 +43,6 @@
 #include "FairRuntimeDb.h"
 
 #include "FairContFact.h"         // for FairContFact
-#include "FairLogger.h"           // for FairLogger, MESSAGE_ORIGIN
 #include "FairParAsciiFileIo.h"   // for FairParAsciiFileIo
 #include "FairParIo.h"            // for FairParIo
 #include "FairParRootFileIo.h"    // for FairParRootFileIo
@@ -55,8 +54,9 @@
 #include <TFile.h>         // for TFile, gFile
 #include <cstdio>          // for sprintf
 #include <cstring>         // for strcmp, strlen
-#include <iomanip>         // for setw, operator<<
-#include <iostream>        // for operator<<, basic_ostream, etc
+#include <fairlogger/Logger.h>
+#include <iomanip>    // for setw, operator<<
+#include <iostream>   // for operator<<, basic_ostream, etc
 
 using std::cout;
 using std::endl;
@@ -87,7 +87,6 @@ FairRuntimeDb::FairRuntimeDb(void)
     , currentFileName("")
     , versionsChanged(kFALSE)
     , isRootFileOutput(kFALSE)
-    , fLogger(FairLogger::GetLogger())
     , ioType(UNKNOWN_Type)
 {
     gRtdb = this;

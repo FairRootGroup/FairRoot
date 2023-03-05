@@ -25,7 +25,6 @@
 #include <map>
 #include <tuple>
 
-class FairLogger;
 class TParticle;
 class TRefArray;
 class TIterator;
@@ -168,9 +167,6 @@ class FairGenericStack : public TVirtualMCStack
     FairGenericStack(const FairGenericStack&);
     /** Assignment operator */
     FairGenericStack& operator=(const FairGenericStack&);
-
-    /** Fair Logger */
-    FairLogger* fLogger;   //!
 
     /** List of detectors registering hits in the simulation */
     TRefArray* fDetList;   //!

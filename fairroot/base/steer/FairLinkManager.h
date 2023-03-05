@@ -6,8 +6,6 @@
 #include <TObject.h>   // for TObject
 #include <set>         // for set of branch types to ignore
 
-class FairLogger;
-
 class FairLinkManager : public TObject
 {
   public:
@@ -39,8 +37,6 @@ class FairLinkManager : public TObject
 
     /**Singleton instance*/
     static TMCThreadLocal FairLinkManager* fgInstance;
-
-    FairLogger* fLogger;   //!
 
     ClassDefOverride(FairLinkManager, 1);
 };

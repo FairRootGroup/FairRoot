@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -25,8 +25,6 @@
 #include <TString.h>   // for TString
 #include <TTask.h>     // for TTask
 #include <map>
-
-class FairLogger;
 
 enum InitStatus
 {
@@ -110,7 +108,6 @@ class FairTask : public TTask
   protected:
     Int_t fVerbose;                           //  Verbosity level
     [[deprecated]] Int_t fInputPersistance;   ///< \deprecated Deprecated in v18.8, will be removed in v20.
-    FairLogger* fLogger;                      //!
     Bool_t fStreamProcessing;
 
     /** Intialisation at begin of run. To be implemented in the derived class.

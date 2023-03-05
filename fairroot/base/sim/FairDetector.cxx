@@ -13,7 +13,6 @@
 #include "FairDetector.h"
 
 #include "FairGeoNode.h"   // for FairGeoNode
-#include "FairLogger.h"    // for FairLogger, MESSAGE_ORIGIN
 #include "FairModule.h"    // for FairModule::svList, etc
 #include "FairRootManager.h"
 #include "FairVolume.h"   // for FairVolume
@@ -26,11 +25,11 @@
 #include <TRefArray.h>     // for TRefArray
 #include <TString.h>       // for TString
 #include <TVirtualMC.h>    // for TVirtualMC
+#include <fairlogger/Logger.h>
 
 FairDetector::FairDetector(const char* Name, Bool_t Active, Int_t DetId)
     : FairModule(Name, "FAIR Detector", Active)
     , fDetId(DetId)
-    , fLogger(FairLogger::GetLogger())
 {
     flGeoPar = new TList();
     TString lname(GetName());
@@ -42,7 +41,6 @@ FairDetector::FairDetector(const char* Name, Bool_t Active, Int_t DetId)
 FairDetector::FairDetector(const FairDetector& rhs)
     : FairModule(rhs)
     , fDetId(rhs.fDetId)
-    , fLogger(rhs.fLogger)
 {}
 
 FairDetector::~FairDetector() { delete flGeoPar; }
@@ -58,14 +56,12 @@ FairDetector& FairDetector::operator=(const FairDetector& rhs)
 
     // assignment operator
     fDetId = rhs.fDetId;
-    fLogger = rhs.fLogger;
 
     return *this;
 }
 
 FairDetector::FairDetector()
     : fDetId(0)
-    , fLogger(FairLogger::GetLogger())
 {}
 
 // -------------------------------------------------------------------------

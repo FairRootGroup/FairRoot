@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,7 +12,6 @@
 #include <TObject.h>
 #include <TString.h>   // for TString
 
-class FairLogger;
 class FairParIo;
 
 class FairParSet : public TObject
@@ -28,8 +27,6 @@ class FairParSet : public TObject
     TString paramContext;   // Context/purpose for parameters and conditions
     TString author;         // Author of parameters
     TString description;    // Description of parameters
-    /** Fair Logger */
-    FairLogger* fLogger;   //!
 
   public:
     FairParSet(const char* name = "", const char* title = "", const char* context = "", Bool_t owner = kFALSE);

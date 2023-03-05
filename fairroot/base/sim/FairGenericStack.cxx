@@ -11,8 +11,6 @@
 // -------------------------------------------------------------------------
 #include "FairGenericStack.h"
 
-#include "FairLogger.h"   // for FairLogger
-
 #include <TGeoManager.h>
 #include <TLorentzVector.h>
 #include <TMCProcess.h>
@@ -20,10 +18,10 @@
 #include <TString.h>
 #include <TVirtualMC.h>
 #include <cstring>   // strcmp
+#include <fairlogger/Logger.h>
 
 FairGenericStack::FairGenericStack()
     : TVirtualMCStack()
-    , fLogger(FairLogger::GetLogger())
     , fDetList(0)
     , fDetIter(0)
     , fVerbose(1)
@@ -37,7 +35,6 @@ FairGenericStack::FairGenericStack()
 // -----   Constructor with estimated array dimension   --------------------
 FairGenericStack::FairGenericStack(Int_t)
     : TVirtualMCStack()
-    , fLogger(FairLogger::GetLogger())
     , fDetList(0)
     , fDetIter(0)
     , fVerbose(1)
@@ -52,7 +49,6 @@ FairGenericStack::~FairGenericStack() { delete fDetIter; }
 
 FairGenericStack::FairGenericStack(const FairGenericStack& rhs)
     : TVirtualMCStack(rhs)
-    , fLogger(FairLogger::GetLogger())
     , fDetList(rhs.fDetList)
     , fDetIter(0)
     , fVerbose(rhs.fVerbose)
@@ -68,7 +64,6 @@ FairGenericStack& FairGenericStack::operator=(const FairGenericStack& rhs)
     TVirtualMCStack::operator=(rhs);
 
     // assignment oiperator
-    fLogger = 0;
     fDetList = 0;
     fDetIter = 0;
     fVerbose = rhs.fVerbose;

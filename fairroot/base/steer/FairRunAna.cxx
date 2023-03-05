@@ -649,11 +649,3 @@ void FairRunAna::Fill()
     }
 }
 //_____________________________________________________________________________
-
-// void  FairRunAna::SetMixAllInputs(Bool_t Status)
-// {
-//    fLogger->Info(MESSAGE_ORIGIN, "Mixing for all input is choosed, in this mode one event per input file is read per
-//    step"); fRootManager->SetMixAllInputs(Status);
-// }
-//_____________________________________________________________________________
-// ABOVE FUNCTIONS SHOULD BE DELETED AND MOVED TO FairFileSource AND FairMixedSource ONLY
