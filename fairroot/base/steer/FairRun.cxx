@@ -13,7 +13,6 @@
 #include "FairRun.h"
 
 #include "FairFileHeader.h"     // for FairFileHeader
-#include "FairLinkManager.h"    // for FairLinkManager
 #include "FairLogger.h"         // for FairLogger, MESSAGE_ORIGIN
 #include "FairRootFileSink.h"   // only temporary, should be removed after the move to FairSink is finished
 #include "FairRootManager.h"    // for FairRootManager
@@ -77,8 +76,6 @@ FairRun::FairRun(Bool_t isMaster)
 #endif
 
     fRootManager = FairRootManager::Instance();
-
-    new FairLinkManager();
 }
 
 FairRun::~FairRun()

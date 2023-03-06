@@ -10,6 +10,7 @@
 
 #include "FairAlignmentHandler.h"
 #include "FairEventHeader.h"
+#include "FairLinkManager.h"
 #include "FairSink.h"
 #include "FairSource.h"
 
@@ -208,6 +209,8 @@ class FairRun : public TNamed
     FairRun& operator=(const FairRun&) { return *this; }
     /** Number of Tasks added*/
     Int_t fNTasks;
+
+    FairLinkManager fLinkManager{};   //!
 
   protected:
     /** static pointer to this run*/
