@@ -170,7 +170,7 @@ void FairRunAnaProof::Init()
     if (par && fInFileIsOpen) {
 
         LOG(info) << "Parameter and input file are available, Assure that basic info is there for the run!";
-        fRootManager->ReadEvent(0);
+        fRootManager->SpecifyRunId();
 
         GetEventHeader();
 
@@ -182,15 +182,13 @@ void FairRunAnaProof::Init()
         fEvtHeader->Register(GetSink() ? fStoreEventHeader : false);
 
         // Init the containers in Tasks
-
+        LOG(info) << "--- Initialize with RunId  --- " << fRunId;
         fRtdb->initContainers(fRunId);
         fTask->SetParTask();
 
-        fRtdb->initContainers(fRunId);
-        if (gGeoManager == 0) {}
-        //  fRootManager->SetBranchNameList(par->GetBranchNameList());
+        // fRtdb->initContainers( fRunId );
 
-    } else {
+    } else {   // end----- if(fMixedInput)
         LOG(info) << "Initializing without input file or Mixed input";
         FairEventHeader* evt = GetEventHeader();
         evt->Register(GetSink() ? fStoreEventHeader : false);
@@ -235,28 +233,22 @@ void FairRunAnaProof::InitContainers()
     FairBaseParSet* par = dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
 
     if (par && fInFileIsOpen) {
-        fRootManager->ReadEvent(0);
+        fRootManager->SpecifyRunId();
 
-        fEvtHeader = dynamic_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
-
-        if (nullptr == fEvtHeader)
-            LOG(fatal) << "Could not read event header.";
+        GetEventHeader();
 
         FillEventHeader();
 
         fRunId = GetEvtHeaderRunId();
 
+        LOG(info) << "RKGOT FEH " << fEvtHeader << " (" << fRunId << ") FROM FRM " << fRootManager << ".";
+
         // Copy the Event Header Info to Output
-        fEvtHeader->Register();
+        fEvtHeader->Register(GetSink() ? fStoreEventHeader : false);
 
         // Init the containers in Tasks
+        LOG(info) << "--- Initialize with RunId  --- " << fRunId;
         fRtdb->initContainers(fRunId);
-        fTask->ReInitTask();
-        //    fTask->SetParTask();
-        fRtdb->initContainers(fRunId);
-        if (gGeoManager == 0) {
-            //   par->GetGeometry();
-        }
     }
 }
 
