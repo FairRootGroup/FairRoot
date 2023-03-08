@@ -1,4 +1,4 @@
-# FairRoot [![license](https://alfa-ci.gsi.de/shields/badge/license-LGPL--3.0-orange.svg)](COPYRIGHT)
+# FairRoot [![license](https://alfa-ci.gsi.de/shields/badge/license-LGPL--3.0-orange.svg)](COPYRIGHT) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3896282.svg)](https://doi.org/10.5281/zenodo.3896282)
 
 ## The FairRoot framework
 A simulation, reconstruction and analysis framework that is based on the ROOT system.
