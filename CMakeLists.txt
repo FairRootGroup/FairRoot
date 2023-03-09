@@ -242,11 +242,7 @@ Generate_Version_Info()
 # Set some useful variables
 SetBasicVariables()
 
-# Recurse into the given subdirectories.  This does not actually
-# cause another cmake executable to run.  The same process will walk through
-# the project's entire directory structure.
-add_subdirectory(fairtools)
-
+# All the main / public components
 add_subdirectory(fairroot)
 
 add_subdirectory(templates)

@@ -6,6 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+add_subdirectory(tools)
 add_subdirectory(mcsteplogger)
 add_subdirectory(alignment)
 add_subdirectory(base)
