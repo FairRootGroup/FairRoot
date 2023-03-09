@@ -6,8 +6,6 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-add_subdirectory(MCStepLogger)
-
 set(target Tools)
 
 set(sources
