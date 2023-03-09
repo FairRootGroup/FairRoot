@@ -246,7 +246,6 @@ SetBasicVariables()
 # cause another cmake executable to run.  The same process will walk through
 # the project's entire directory structure.
 add_subdirectory(fairtools)
-add_subdirectory(alignment)
 
 add_subdirectory(fairroot)
 

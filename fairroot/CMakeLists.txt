@@ -6,6 +6,7 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+add_subdirectory(alignment)
 add_subdirectory(base)
 
 if(Geant4_FOUND AND Geant4VMC_FOUND)
