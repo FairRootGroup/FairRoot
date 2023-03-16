@@ -32,6 +32,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     flexible local code by users.
   * Replace with a local template, `configure_file`, and `execute_process()`
   * In your template consider using `source @FairRoot_BINDIR/FairRootConfig.sh`
+* Dropped `Generate_Version_Info`
+  * If you just need to generate some files with your version number in it,
+    use the standard `configure_file` CMake command.
+  * Alternatively consider creating a proper CMake Package with
+    `configure_package_config_file()`, and `write_basic_package_version_file()`.
 * Renamed our `ROOT_GENERATE_DICTIONARY` to `FAIRROOT_GENERATE_DICTIONARY`.
   (It's not used in many places anyway, it seems.)
 * The following files have been deleted. As far as we know they were not used anywhere:
