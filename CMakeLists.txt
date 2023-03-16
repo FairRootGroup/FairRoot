@@ -234,11 +234,6 @@ if(    yaml-cpp_FOUND
   )
 endif()
 
-configure_file(${CMAKE_SOURCE_DIR}/cmake/private/FairRootConfigVersion.cmake.in "${CMAKE_BINARY_DIR}/FairRootConfigVersion.cmake" @ONLY)
-
-# Load the macro to generate the needed version info at compile time
-Generate_Version_Info()
-
 # Set some useful variables
 SetBasicVariables()
 
@@ -302,9 +297,6 @@ install(FILES ${CMAKE_BINARY_DIR}/config.sh_install
 install(FILES ${CMAKE_BINARY_DIR}/check_system.sh
   DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}
 )
-install(FILES ${CMAKE_BINARY_DIR}/FairVersion.h
-  DESTINATION include
-)
 install(FILES ${CMAKE_BINARY_DIR}/config.csh_install
   DESTINATION ${CMAKE_INSTALL_BINDIR}
   RENAME FairRootConfig.csh
@@ -313,18 +305,6 @@ install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
   DESTINATION ${CMAKE_INSTALL_LIBEXECDIR}
 )
 
-find_package(Git)
-set (Git_VERSION ${GIT_VERSION_STRING})
-string(REPLACE "git" " " Git_ROOT ${GIT_EXECUTABLE} )
-If(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
-  Execute_Process(COMMAND ${GIT_EXECUTABLE} describe --tags
-                  OUTPUT_VARIABLE PROJECT_GIT_VERSION
-                  OUTPUT_STRIP_TRAILING_WHITESPACE
-                  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-                 )
-Else()
-  set(PROJECT_GIT_VERSION "v${PROJECT_VERSION}")
-EndIf()
 Configure_File(${CMAKE_SOURCE_DIR}/cmake/scripts/fairroot-config.in ${CMAKE_BINARY_DIR}/fairroot-config @ONLY)
 
 install(PROGRAMS ${CMAKE_BINARY_DIR}/fairroot-config

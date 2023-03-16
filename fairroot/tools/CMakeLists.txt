@@ -8,6 +8,10 @@
 
 set(target Tools)
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/FairVersion.h.in ${CMAKE_BINARY_DIR}/FairVersion.h @ONLY)
+list(APPEND extra_headers
+     ${CMAKE_BINARY_DIR}/FairVersion.h)
+
 set(sources
   FairLogger.cxx
   FairMonitor.cxx
@@ -46,4 +50,4 @@ fairroot_target_root_dictionary(${target}
 )
 
 fairroot_install_exported(TARGETS ${target})
-install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(FILES ${headers} ${extra_headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

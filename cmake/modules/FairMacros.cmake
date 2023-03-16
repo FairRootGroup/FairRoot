@@ -233,30 +233,6 @@ ENDMACRO(REMOVE_FROM_LIST)
 ################################################################################
 
 
-Macro (Generate_Version_Info)
- if(FairRoot_FOUND)
-
-  Add_Custom_Target(svnheader ALL)
-
-  Add_Custom_Command(TARGET svnheader
-                     COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${PROJECT_SOURCE_DIR}
-		     -DBINARY_DIR=${CMAKE_BINARY_DIR}
-                     -DINCLUDE_OUTPUT_DIRECTORY=${INCLUDE_OUTPUT_DIRECTORY}
-                     -DFAIRROOT=${FAIRROOT_CMAKEMOD_DIR}
-                     -P ${FAIRROOT_CMAKEMOD_DIR}/modules/GenerateVersionInfo.cmake
-                      )
- else()
-  Add_Custom_Target(svnheader ALL)
-  Add_Custom_Command(TARGET svnheader
-                     COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${CMAKE_SOURCE_DIR}
-		     -DBINARY_DIR=${CMAKE_BINARY_DIR}
-                     -DINCLUDE_OUTPUT_DIRECTORY=${INCLUDE_OUTPUT_DIRECTORY}
-                     -P ${CMAKE_SOURCE_DIR}/cmake/modules/GenerateVersionInfo.cmake
-		     )
- endif()
-EndMacro (Generate_Version_Info)
-################################################################################
-
 Macro (SetBasicVariables)
 if(FairRoot_FOUND)
   if(TARGET fmt::fmt)
