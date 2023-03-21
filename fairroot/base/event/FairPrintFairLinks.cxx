@@ -1,24 +1,25 @@
+/********************************************************************************
+ * Copyright (C) 2018-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 // -------------------------------------------------------------------------
 // -----                FairPrintFairLinks source file             -----
 // -----                  Created 18/07/08  by T.Stockmanns        -----
 // -------------------------------------------------------------------------
-// libc includes
-#include <FairPrintFairLinks.h>
-
-// Root includes
-#include <TClonesArray.h>
+#include "FairPrintFairLinks.h"
 
 // framework includes
-#include "FairLogger.h"
 #include "FairMultiLinkedData_Interface.h"
 #include "FairRootManager.h"
 
-FairPrintFairLinks::FairPrintFairLinks()
-    : FairTask("Creates PndMCMatch")
-    , fSelectedBranches(new TList())
-{}
+#include <fairlogger/Logger.h>
 
-FairPrintFairLinks::~FairPrintFairLinks() {}
+FairPrintFairLinks::FairPrintFairLinks()
+    : FairTask("FairPrintFairLinks")
+{}
 
 InitStatus FairPrintFairLinks::Init()
 {
@@ -30,8 +31,8 @@ InitStatus FairPrintFairLinks::Init()
     }
 
     TList* branchNames;
-    if (fSelectedBranches->GetEntries() > 0) {
-        branchNames = fSelectedBranches;
+    if (fSelectedBranches.GetEntries() > 0) {
+        branchNames = &fSelectedBranches;
     } else {
         branchNames = ioman->GetBranchNameList();
     }
@@ -104,5 +105,3 @@ void FairPrintFairLinks::Exec(Option_t*)
         }
     }
 }
-
-void FairPrintFairLinks::Finish() {}

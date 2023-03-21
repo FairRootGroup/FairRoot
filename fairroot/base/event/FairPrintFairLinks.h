@@ -1,3 +1,10 @@
+/********************************************************************************
+ * Copyright (C) 2018-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
 // -------------------------------------------------------------------------
 // -----                 FairPrintFairLinks header file             -----
 // -----                  Created 20/03/07  by R.Kliemt               -----
@@ -25,9 +32,9 @@ class FairPrintFairLinks : public FairTask
     FairPrintFairLinks();
 
     /** Destructor **/
-    ~FairPrintFairLinks() override;
+    ~FairPrintFairLinks() override = default;
 
-    virtual void AddBranchName(const TString& name) { fSelectedBranches->AddLast(new TObjString(name.Data())); }
+    virtual void AddBranchName(const TString& name) { fSelectedBranches.AddLast(new TObjString(name.Data())); }
 
     virtual void PrintBranchNameList(TList* branches);
 
@@ -36,14 +43,12 @@ class FairPrintFairLinks : public FairTask
     /** Virtual method Exec **/
     void Exec(Option_t* opt) override;
 
-    void Finish() override;
-
   protected:
     void InitBranchList(TList* branches);
 
   private:
     std::map<Int_t, TClonesArray*> fBranches;
-    TList* fSelectedBranches;
+    TList fSelectedBranches;
 
     void Register();
     void Reset();
