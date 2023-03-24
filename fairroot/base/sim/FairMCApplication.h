@@ -47,7 +47,12 @@ class TRefArray;
 class TTask;
 class TVirtualMC;
 
-enum class FairMCApplicationState { kUnknownState, kConstructGeometry, kInitGeometry };
+enum class FairMCApplicationState
+{
+    kUnknownState,
+    kConstructGeometry,
+    kInitGeometry
+};
 
 /**
  * The Main Application ( Interface to MonteCarlo application )
