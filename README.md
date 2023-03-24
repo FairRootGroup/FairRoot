@@ -1,4 +1,6 @@
-# FairRoot [![license](https://alfa-ci.gsi.de/shields/badge/license-LGPL--3.0-orange.svg)](COPYRIGHT) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3896282.svg)](https://doi.org/10.5281/zenodo.3896282) [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/7131/badge)](https://bestpractices.coreinfrastructure.org/projects/7131) [![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B-orange)](https://fair-software.eu)
+# FairRoot
+
+[![license](https://alfa-ci.gsi.de/shields/badge/license-LGPL--3.0-orange.svg)](COPYRIGHT) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3896282.svg)](https://doi.org/10.5281/zenodo.3896282) [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/7131/badge)](https://bestpractices.coreinfrastructure.org/projects/7131) [![fair-software.eu](https://img.shields.io/badge/fair--software.eu-%E2%97%8F%20%20%E2%97%8F%20%20%E2%97%8B%20%20%E2%97%8B%20%20%E2%97%8B-orange)](https://fair-software.eu)
 
 ## The FairRoot framework
 A simulation, reconstruction and analysis framework that is based on the ROOT system.
