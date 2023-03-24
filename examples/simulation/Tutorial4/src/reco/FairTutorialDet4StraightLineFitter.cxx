@@ -7,33 +7,22 @@
  ********************************************************************************/
 #include "FairTutorialDet4StraightLineFitter.h"
 
-#include "FairLogger.h"            // for FairLogger, etc
 #include "FairRootManager.h"       // for FairRootManager
 #include "FairTrackParam.h"        // for FairTrackParam
 #include "FairTutorialDet4Hit.h"   // for FairTutorialDet4Hit
 
-#include <TClonesArray.h>   // for TClonesArray
 #include <TF1.h>            // for TF1
 #include <TGraphErrors.h>   // for TGraphErrors
 #include <TVector3.h>       // for TVector3
-#include <set>              // for set, set<>::iterator, etc
+#include <fairlogger/Logger.h>
+#include <set>
 
 FairTutorialDet4StraightLineFitter::FairTutorialDet4StraightLineFitter()
     : FairTask("FairTutorialDet4StraightLineFitter")
-    , fHits(nullptr)
-    , fTracks(nullptr)
+    , fTracks(FairTrackParam::Class(), 100)
     , fVersion(2)
 {
     LOG(debug) << "Default Constructor of FairTutorialDet4StraightLineFitter";
-}
-
-FairTutorialDet4StraightLineFitter::~FairTutorialDet4StraightLineFitter()
-{
-    LOG(debug) << "Destructor of FairTutorialDet4StraightLineFitter";
-    if (fTracks) {
-        fTracks->Delete();
-        delete fTracks;
-    }
 }
 
 InitStatus FairTutorialDet4StraightLineFitter::Init()
@@ -45,7 +34,7 @@ InitStatus FairTutorialDet4StraightLineFitter::Init()
 
     // Get a pointer to the previous already existing data level
 
-    fHits = static_cast<TClonesArray*>(ioman->GetObject("TutorialDetHit"));
+    fHits = dynamic_cast<TClonesArray const*>(ioman->GetObject("TutorialDetHit"));
     if (!fHits) {
         LOG(error) << "No InputDataLevelName array!\n"
                    << "FairTutorialDet4StraightLineFitter will be inactive";
@@ -54,19 +43,12 @@ InitStatus FairTutorialDet4StraightLineFitter::Init()
 
     // Create the TClonesArray for the output data and register
     // it in the IO manager
-    fTracks = new TClonesArray("FairTrackParam", 100);
-    ioman->Register("TutorialDetTrack", "TutorialDet", fTracks, kTRUE);
+    ioman->Register("TutorialDetTrack", "TutorialDet", &fTracks, kTRUE);
 
     // Do whatever else is needed at the initilization stage
     // Create histograms to be filled
     // initialize variables
 
-    return kSUCCESS;
-}
-
-InitStatus FairTutorialDet4StraightLineFitter::ReInit()
-{
-    LOG(debug) << "Initilization of FairTutorialDet4StraightLineFitter";
     return kSUCCESS;
 }
 
@@ -79,7 +61,6 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
     }
 
     // Declare some variables
-    FairTutorialDet4Hit* hit = nullptr;
     /*
   Int_t detID   = 0;        // Detector ID
   Int_t trackID = 0;        // Track index
@@ -98,7 +79,7 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
     Float_t* YPosErr = new Float_t[nHits];
 
     for (Int_t iHit = 0; iHit < nHits; iHit++) {
-        hit = static_cast<FairTutorialDet4Hit*>(fHits->At(iHit));
+        auto hit = static_cast<FairTutorialDet4Hit const*>(fHits->At(iHit));
         if (!hit) {
             continue;
         }
@@ -111,24 +92,22 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
         YPosErr[iHit] = hit->GetDy();
     }
 
-    TF1* f1 = new TF1("f1", "[0]*x + [1]");
-    TGraphErrors* LineGraph;
-
-    LineGraph = new TGraphErrors(nHits, ZPos, XPos, 0, XPosErr);
-    LineGraph->Fit("f1", "Q");
-    Double_t SlopeX = f1->GetParameter(0);
-    Double_t OffX = f1->GetParameter(1);
-    Double_t Chi2X = f1->GetChisquare();
+    auto f1 = TF1("f1", "[0]*x + [1]");
+    auto linegraphX = TGraphErrors(nHits, ZPos, XPos, nullptr, XPosErr);
+    linegraphX.Fit(&f1, "Q");
+    Double_t SlopeX = f1.GetParameter(0);
+    Double_t OffX = f1.GetParameter(1);
+    Double_t Chi2X = f1.GetChisquare();
     Double_t SlopeY = 0.;
     Double_t OffY = 0.;
     Double_t Chi2Y;
 
     if (2 == fVersion) {
-        LineGraph = new TGraphErrors(nHits, ZPos, YPos, 0, YPosErr);
-        LineGraph->Fit("f1", "Q");
-        SlopeY = f1->GetParameter(0);
-        OffY = f1->GetParameter(1);
-        Chi2Y = f1->GetChisquare();
+        auto linegraphY = TGraphErrors(nHits, ZPos, YPos, nullptr, YPosErr);
+        linegraphY.Fit(&f1, "Q");
+        SlopeY = f1.GetParameter(0);
+        OffY = f1.GetParameter(1);
+        Chi2Y = f1.GetChisquare();
 
         LOG(debug) << XPos[0] << "," << XPos[nHits - 1] << "," << YPos[0] << "," << YPos[nHits - 1] << "," << ZPos[0]
                    << "," << ZPos[nHits - 1];
@@ -141,7 +120,7 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
         LOG(debug) << "Chi2(x,y): " << Chi2X << " ," << Chi2Y;
     }
 
-    FairTrackParam* track = new FairTrackParam();
+    auto track = static_cast<FairTrackParam*>(fTracks.ConstructedAt(0));
     track->SetX(OffX);
     track->SetTx(SlopeX);
     track->SetZ(0.);
@@ -149,7 +128,6 @@ void FairTutorialDet4StraightLineFitter::Exec(Option_t* /*option*/)
         track->SetY(OffY);
         track->SetTy(SlopeY);
     }
-    new ((*fTracks)[0]) FairTrackParam(*track);
     //  const TMatrixFSym matrix;
     //  Double_t Z = 0.;
     //  new ((*fTracks)[0]) FairTrackParam(OffX, OffY, Z, SlopeX, SlopeY, matrix);
@@ -168,15 +146,13 @@ Bool_t FairTutorialDet4StraightLineFitter::IsGoodEvent()
     // event, so we have to check for this.
     // In the end the algorithm should be able to work also with
     // missing hits in some stations
-    FairTutorialDet4Hit* hit;
     std::set<Int_t> detIdSet;
-    std::set<Int_t>::iterator it;
 
     Int_t nHits = fHits->GetEntriesFast();
     for (Int_t iHit = 0; iHit < nHits; ++iHit) {
-        hit = static_cast<FairTutorialDet4Hit*>(fHits->At(iHit));
+        auto hit = static_cast<FairTutorialDet4Hit const*>(fHits->At(iHit));
         Int_t detId = hit->GetDetectorID();
-        it = detIdSet.find(detId);
+        auto it = detIdSet.find(detId);
         if (it == detIdSet.end()) {
             detIdSet.insert(detId);
         } else {
@@ -186,9 +162,4 @@ Bool_t FairTutorialDet4StraightLineFitter::IsGoodEvent()
         }
     }
     return kTRUE;
-}
-
-void FairTutorialDet4StraightLineFitter::Finish()
-{
-    LOG(debug) << "Finish of FairTutorialDet4StraightLineFitter";
 }
