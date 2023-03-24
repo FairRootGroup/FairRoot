@@ -1,6 +1,9 @@
 name: fair-software
 
-on: push
+on:
+  push:
+    paths:
+    - README.md
 
 jobs:
   verify:
