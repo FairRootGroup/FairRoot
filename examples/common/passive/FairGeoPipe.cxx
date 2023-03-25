@@ -22,18 +22,15 @@
 
 #include <TList.h>     // for TList
 #include <TString.h>   // for TString
-#include <string.h>    // for strcpy
 
 FairGeoPipe::FairGeoPipe()
     : FairGeoSet()
 {
     // Constructor
     fName = "pipe";
-    strcpy(modName, "p");
-    strcpy(eleName, "p");
-    maxSectors = 0;
     maxModules = 1;
 }
+
 Bool_t FairGeoPipe::create(FairGeoBuilder* build)
 {
     Bool_t rc = FairGeoSet::create(build);
@@ -45,5 +42,3 @@ Bool_t FairGeoPipe::create(FairGeoBuilder* build)
     }
     return rc;
 }
-
-FairGeoPipe::~FairGeoPipe() {}

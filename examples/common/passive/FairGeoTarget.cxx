@@ -17,16 +17,10 @@
 
 #include "FairGeoTarget.h"
 
-#include <TString.h>   // for TString
-#include <string.h>    // for strcpy
-
 FairGeoTarget::FairGeoTarget()
     : FairGeoSet()
 {
     // Constructor
     fName = "target";
-    strcpy(modName, "t");
-    strcpy(eleName, "t");
-    maxSectors = 0;
     maxModules = 1;
 }

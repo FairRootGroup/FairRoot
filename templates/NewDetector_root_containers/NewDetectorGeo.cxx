@@ -17,9 +17,6 @@ NewDetectorGeo::NewDetectorGeo()
     // fName has to be the name used in the geometry for all volumes.
     // If there is a mismatch the geometry cannot be build.
     fName = "newdetector";
-    strcpy(modName, "NewDetector");
-    strcpy(eleName, "NewDetector");
-    maxSectors = 0;
     maxModules = 10;
 }
 
