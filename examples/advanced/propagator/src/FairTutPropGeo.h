@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2019-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -14,17 +14,16 @@
 
 class FairTutPropGeo : public FairGeoSet
 {
-
   protected:
-    char modName[20];   // name of module
-    char eleName[20];   // substring for elements in module
+    char modName[20]{"Pixel"};   // name of module
+    char eleName[20]{"Pixel"};   // substring for elements in module
   public:
     FairTutPropGeo();
-    ~FairTutPropGeo() {}
-    const char* getModuleName(Int_t);
-    const char* getEleName(Int_t);
-    inline Int_t getModNumInMod(const TString&);
-    ClassDef(FairTutPropGeo, 1);
+    ~FairTutPropGeo() override = default;
+    const char* getModuleName(Int_t) override;
+    const char* getEleName(Int_t) override;
+    inline Int_t getModNumInMod(const TString&) override;
+    ClassDefOverride(FairTutPropGeo, 1);
 };
 
 inline Int_t FairTutPropGeo::getModNumInMod(const TString& name)

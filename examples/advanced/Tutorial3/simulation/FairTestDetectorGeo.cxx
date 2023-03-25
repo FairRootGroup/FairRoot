@@ -16,9 +16,6 @@ FairTestDetectorGeo::FairTestDetectorGeo()
     // fName has to be the name used in the geometry for all volumes.
     // If there is a mismatch the geometry cannot be build.
     fName = "torino";
-    strcpy(modName, "torino");
-    strcpy(eleName, "torino");
-    maxSectors = 0;
     maxModules = 10;
 }
 

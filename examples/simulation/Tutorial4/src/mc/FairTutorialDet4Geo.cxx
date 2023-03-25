@@ -14,9 +14,6 @@ FairTutorialDet4Geo::FairTutorialDet4Geo()
 {
     // Constructor
     fName = "tutdet";
-    strcpy(modName, "tutdet");
-    strcpy(eleName, "tutdet");
-    maxSectors = 0;
     maxModules = 100;
 }
 

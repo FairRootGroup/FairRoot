@@ -17,16 +17,10 @@
 
 #include "FairGeoMagnet.h"
 
-#include <TString.h>   // for TString
-#include <string.h>    // for strcpy
-
 FairGeoMagnet::FairGeoMagnet()
     : FairGeoSet()
 {
     // Constructor
     fName = "magnet";
-    maxSectors = 0;
     maxModules = 1;
-    strcpy(modName, "m");
-    strcpy(eleName, "m");
 }

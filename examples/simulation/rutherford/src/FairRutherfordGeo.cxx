@@ -14,9 +14,6 @@ FairRutherfordGeo::FairRutherfordGeo()
 {
     // Constructor
     fName = "rutherford";
-    strcpy(modName, "rutherford");
-    strcpy(eleName, "rutherford");
-    maxSectors = 0;
     maxModules = 10;
 }
 

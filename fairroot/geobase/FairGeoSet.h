@@ -52,7 +52,7 @@ class FairGeoSet : public TNamed
 
     TList* volumes;         /** list of volumes */
     TList* masterNodes;     /** pointer to list of mother volumes from other detector parts*/
-    Int_t maxSectors;       /** maximum number of sectors (-1 for detectors outside any sector)*/
+    Int_t maxSectors{0};    /** maximum number of sectors (-1 for detectors outside any sector)*/
     Int_t maxKeepinVolumes; /** maximum number of keepin volumes per sector*/
     Int_t maxModules;       /** maximum number of modules per sector*/
     TArrayI* modules;       /** Module's array.*/

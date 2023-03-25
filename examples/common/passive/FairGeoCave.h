@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -14,8 +14,6 @@
 #include <TString.h>   // for TString
 #include <iosfwd>      // for fstream
 
-class FairGeoMedia;
-
 class FairGeoCave : public FairGeoSet
 {
   protected:
@@ -23,14 +21,14 @@ class FairGeoCave : public FairGeoSet
 
   public:
     FairGeoCave();
-    ~FairGeoCave() {}
-    const char* getModuleName(Int_t) { return name.Data(); }
-    Bool_t read(std::fstream&, FairGeoMedia*);
-    void addRefNodes();
-    void write(std::fstream&);
-    void print();
+    ~FairGeoCave() override = default;
+    const char* getModuleName(Int_t) override { return name.Data(); }
+    Bool_t read(std::fstream&, FairGeoMedia*) override;
+    void addRefNodes() override;
+    void write(std::fstream&) override;
+    void print() override;
 
-    ClassDef(FairGeoCave, 0);   // Class for the geometry of CAVE
+    ClassDefOverride(FairGeoCave, 0);   // Class for the geometry of CAVE
 };
 
 #endif /* !FAIRGEOCAVE_H */
