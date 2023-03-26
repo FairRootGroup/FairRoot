@@ -18,6 +18,7 @@
 
 #include <Rtypes.h>                  // for Int_t, Bool_t, Double_t, etc
 #include <TLorentzVector.h>          // for TLorentzVector
+#include <TRefArray.h>               //
 #include <TString.h>                 // for TString
 #include <TVirtualMC.h>              // for TVirtualMC
 #include <TVirtualMCApplication.h>   // for TVirtualMCApplication
@@ -41,11 +42,7 @@ class FairTrajFilter;
 class FairVolume;
 class FairRunSim;
 class TChain;
-class TIterator;
-class TObjArray;
-class TRefArray;
 class TTask;
-class TVirtualMC;
 
 enum class FairMCApplicationState
 {
@@ -260,7 +257,7 @@ class FairMCApplication : public TVirtualMCApplication
      */
     const FairMCApplication* fParent{nullptr};   //!
     /**List of active detector */
-    TRefArray* fActiveDetectors;
+    TRefArray fActiveDetectors;
     /**List of FairTask*/
     FairTask* fFairTaskList;   //!
     /**Module list in simulation*/
@@ -278,9 +275,9 @@ class FairMCApplication : public TVirtualMCApplication
     /**MC Engine 1= Geant3, 2 = Geant4*/
     Int_t fMcVersion;   // mc Version
     /** Track visualization manager */
-    FairTrajFilter* fTrajFilter;   //!
+    std::unique_ptr<FairTrajFilter> fTrajFilter;   //!
     /**Flag for accepted tracks for visualization*/
-    Bool_t fTrajAccepted;   //!
+    bool fTrajAccepted{false};   //!
     /**Flag for using user decay*/
     Bool_t fUserDecay;
     /**User decay config macro*/
@@ -294,14 +291,14 @@ class FairMCApplication : public TVirtualMCApplication
     std::map<Int_t, Int_t> fModVolMap;   //!
     TLorentzVector fTrkPos;              //!
     /** Flag for Radiation length register mode  */
-    Bool_t fRadLength;   //!
+    bool fRadLength{false};   //!
 
     /**Radiation length Manager*/
-    FairRadLenManager* fRadLenMan;   //!
+    std::unique_ptr<FairRadLenManager> fRadLenMan;   //!
     /** Flag for Radiation map register mode  */
-    Bool_t fRadMap;   //!
+    bool fRadMap{false};   //!
     /**Radiation Map Manager*/
-    FairRadMapManager* fRadMapMan;   //!
+    std::unique_ptr<FairRadMapManager> fRadMapMan;   //!
     /**Radiation map Grid Manager*/
     std::unique_ptr<FairRadGridManager> fRadGridMan{};   //!
 

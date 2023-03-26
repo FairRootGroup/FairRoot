@@ -55,24 +55,21 @@
 #include <TObject.h>            // for TObject
 #include <TParticlePDG.h>       // for TParticlePDG
 #include <TROOT.h>              // for TROOT, gROOT
-#include <TRefArray.h>          // for TRefArray
 #include <TSystem.h>            // for TSystem, gSystem
 #include <TVirtualMC.h>         // for TVirtualMC
 #include <TVirtualMCStack.h>    // for TVirtualMCStack
-class TParticle;
+#include <cfloat>               // for DBL_MAX
+#include <cstdlib>              // for getenv, exit
+#include <mutex>                // std::mutex
+#include <utility>              // for pair, move
 
-#include <float.h>    // for DBL_MAX
-#include <mutex>      // std::mutex
-#include <stdlib.h>   // for getenv, exit
-#include <utility>    // for pair, move
-std::mutex mtx;       // mutex for critical section
+std::mutex mtx;   // mutex for critical section
 
 using std::pair;
 
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication(const char* name, const char* title, TObjArray* ModList, const char*)
     : TVirtualMCApplication(name, title)
-    , fActiveDetectors(nullptr)
     , fFairTaskList(nullptr)
     , fModules(ModList)
     , fPythiaDecayer(kFALSE)
@@ -81,18 +78,12 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     , fxField(nullptr)
     , fEvGen(nullptr)
     , fMcVersion(-1)
-    , fTrajFilter(nullptr)
-    , fTrajAccepted(kFALSE)
     , fUserDecay(kFALSE)
     , fUserDecayConfig("")
     , fDebug(kFALSE)
     , fVolMap()
     , fModVolMap()
     , fTrkPos(TLorentzVector(0, 0, 0, 0))
-    , fRadLength(kFALSE)
-    , fRadLenMan(nullptr)
-    , fRadMap(kFALSE)
-    , fRadMapMan(nullptr)
     , fEventHeader(nullptr)
     , fMCEventHeader(nullptr)
     , listActiveDetectors()
@@ -113,8 +104,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     LOG(debug) << "FairMCApplication-ctor " << this;
 
     fRootManager = &fRun->GetRootManager();
-    // Create and fill a list of active detectors
-    fActiveDetectors = new TRefArray();
 
     fListModules.reserve(fModules->GetEntriesFast());
     for (auto module : TRangeDynCast<FairModule>(fModules)) {
@@ -127,7 +116,7 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
         if (detector) {
             listDetectors.push_back(detector);
             if (detector->IsActive()) {
-                fActiveDetectors->Add(detector);
+                fActiveDetectors.Add(detector);
                 listActiveDetectors.push_back(detector);
             }
         }
@@ -137,14 +126,12 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     fFairTaskList = new FairTask("Task List", 1);
     gROOT->GetListOfBrowsables()->Add(fFairTaskList);
     fMcVersion = -1;
-    // Initialise fTrajFilter pointer
-    fTrajFilter = nullptr;
 }
 
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_ptr<FairRunSim> otherRunSim)
     : TVirtualMCApplication(rhs.GetName(), rhs.GetTitle())
-    , fActiveDetectors(nullptr)
+    , fParent(&rhs)
     , fFairTaskList(nullptr)
     , fModules(nullptr)
     , fPythiaDecayer(kFALSE)
@@ -153,18 +140,12 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
     , fxField(rhs.fxField)
     , fEvGen(nullptr)
     , fMcVersion(rhs.fMcVersion)
-    , fTrajFilter(nullptr)
-    , fTrajAccepted(kFALSE)
     , fUserDecay(kFALSE)
     , fUserDecayConfig(rhs.fUserDecayConfig)
     , fDebug(rhs.fDebug)
     , fVolMap()
     , fModVolMap()
     , fTrkPos(rhs.fTrkPos)
-    , fRadLength(kFALSE)
-    , fRadLenMan(nullptr)
-    , fRadMap(kFALSE)
-    , fRadMapMan(nullptr)
     , fEventHeader(nullptr)
     , fMCEventHeader(nullptr)
     , listActiveDetectors()
@@ -182,7 +163,6 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
 
     LOG(debug) << "FairMCApplication-copy-ctor " << this;
 
-    fParent = &rhs;
     fRun = fWorkerRunSim.get();
     fRootManager = &fRun->GetRootManager();
 
@@ -199,13 +179,12 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
     }
 
     // Create and fill a list of active detectors
-    fActiveDetectors = new TRefArray();
     for (auto module : fListModules) {
         auto detector = dynamic_cast<FairDetector*>(module);
         if (detector) {
             listDetectors.push_back(detector);
             if (detector->IsActive()) {
-                fActiveDetectors->Add(detector);
+                fActiveDetectors.Add(detector);
                 listActiveDetectors.push_back(detector);
             }
         }
@@ -226,7 +205,6 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
 //_____________________________________________________________________________
 FairMCApplication::FairMCApplication()
     : TVirtualMCApplication()
-    , fActiveDetectors(0)
     , fFairTaskList(0)
     , fModules(0)
     , fPythiaDecayer(kFALSE)
@@ -235,18 +213,12 @@ FairMCApplication::FairMCApplication()
     , fxField(0)
     , fEvGen(0)
     , fMcVersion(-1)
-    , fTrajFilter(nullptr)
-    , fTrajAccepted(kFALSE)
     , fUserDecay(kFALSE)
     , fUserDecayConfig("")
     , fDebug(kFALSE)
     , fVolMap()
     , fModVolMap()
     , fTrkPos(TLorentzVector(0, 0, 0, 0))
-    , fRadLength(kFALSE)
-    , fRadLenMan(nullptr)
-    , fRadMap(kFALSE)
-    , fRadMapMan(nullptr)
     , fEventHeader(nullptr)
     , fMCEventHeader(nullptr)
     , listActiveDetectors()
@@ -266,7 +238,6 @@ FairMCApplication::~FairMCApplication()
 {
     // Destructor
     //   LOG(debug3) << "Enter Destructor of FairMCApplication";
-    delete fActiveDetectors;   // don't do fActiveDetectors->Delete() here
     // the modules are already deleted in FairRunSim
     //  LOG(debug3) << "Leave Destructor of FairMCApplication";
     delete fMC;
@@ -306,7 +277,9 @@ void FairMCApplication::InitMC(const char*, const char*)
     } else {
         fMcVersion = 3;   // Geane
     }
-    fTrajFilter = FairTrajFilter::Instance();
+    if ((!fTrajFilter) && fRun->GetStoreTraj()) {
+        fTrajFilter = std::make_unique<FairTrajFilter>();
+    }
 
     LOG(info) << "Monte Carlo Engine Initialisation with: " << MCName.Data();
 }
@@ -319,7 +292,7 @@ void FairMCApplication::RunMC(Int_t nofEvents)
     fRunInfo.Reset();
 
     /** Set the list of active detectors to the stack*/
-    fStack->SetDetArrayList(fActiveDetectors);
+    fStack->SetDetArrayList(&fActiveDetectors);
 
     // MC run.
     fMC->ProcessRun(nofEvents);
@@ -436,7 +409,7 @@ void FairMCApplication::PreTrack()
     }
 
     fTrajAccepted = kFALSE;
-    if (nullptr != fTrajFilter) {
+    if (fTrajFilter) {
         // Get the pointer to current track
         TParticle* particle = fStack->GetCurrentTrack();
         //  LOG(debug) << " FairMCApplication::PreTrack(): " << particle;
@@ -466,12 +439,7 @@ TVirtualMCApplication* FairMCApplication::CloneForWorker() const
     workerRun->SetSink(std::unique_ptr<FairSink>{fRun->GetSink()->CloneSink()});
     workerRun->SetMCEventHeader(new FairMCEventHeader(*(fRun->GetMCEventHeader())));
     workerRun->SetRunId(workerRun->GetMCEventHeader()->GetRunID());
-
-    // Trajectories filter is created explicitly as we do not call
-    // FairRunSim::Init on workers
-    if (fRun->GetStoreTraj()) {
-        new FairTrajFilter();
-    }
+    workerRun->SetStoreTraj(fRun->GetStoreTraj());
 
     // Create new FairMCApplication object on worker
     return new FairMCApplication(*this, std::move(workerRun));
@@ -669,7 +637,7 @@ void FairMCApplication::FinishEvent()
     // --> Fill the stack output array
     fStack->FillTrackArray();
     // --> Update track indizes in MCTracks and MCPoints
-    fStack->UpdateTrackIndex(fActiveDetectors);
+    fStack->UpdateTrackIndex(&fActiveDetectors);
     // --> Screen output of stack
     // fStack->Print();
 
@@ -693,16 +661,16 @@ void FairMCApplication::FinishEvent()
     }
 
     fStack->Reset();
-    if (nullptr != fTrajFilter) {
+    if (fTrajFilter) {
         fTrajFilter->Reset();
         //    TObjArray* fListOfTracks=gGeoManager->GetListOfTracks();
         //    fListOfTracks->Delete();
         gGeoManager->GetListOfTracks()->Delete();
     }
-    if (nullptr != fRadLenMan) {
+    if (fRadLenMan) {
         fRadLenMan->Reset();
     }
-    if (nullptr != fRadMapMan) {
+    if (fRadMapMan) {
         fRadMapMan->Reset();
     }
 
@@ -881,14 +849,16 @@ void FairMCApplication::InitGeometry()
 
     LOG(info) << "Simulation RunID: " << runId;
 
-    fTrajFilter = FairTrajFilter::Instance();
-    if (nullptr != fTrajFilter) {
+    if ((!fTrajFilter) && fRun->GetStoreTraj()) {
+        fTrajFilter = std::make_unique<FairTrajFilter>();
+    }
+    if (fTrajFilter) {
         fTrajFilter->Init();
     }
-    if (nullptr != fRadLenMan) {
+    if (fRadLenMan) {
         fRadLenMan->Init();
     }
-    if (nullptr != fRadMapMan) {
+    if (fRadMapMan) {
         fRadMapMan->Init();
     }
     if (fRadGridMan) {
@@ -1272,7 +1242,7 @@ void FairMCApplication::SetRadiationLengthReg(Bool_t RadLen)
 {
     fRadLength = RadLen;
     if (fRadLength) {
-        fRadLenMan = new FairRadLenManager();
+        fRadLenMan = std::make_unique<FairRadLenManager>();
     }
 }
 
@@ -1281,7 +1251,7 @@ void FairMCApplication::SetRadiationMapReg(Bool_t RadMap)
 {
     fRadMap = RadMap;
     if (fRadMap) {
-        fRadMapMan = new FairRadMapManager();
+        fRadMapMan = std::make_unique<FairRadMapManager>();
     }
 }
 
