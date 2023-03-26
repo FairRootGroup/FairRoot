@@ -1,51 +1,51 @@
 {
-    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
-    "@type": "SoftwareSourceCode",
-    "name": "FairRoot",
-    "description": "<p>A simulation, reconstruction and analysis framework that is based on the ROOT system. The user can create simulated data and/or perform analysis with the same framework. Geant3 and Geant4 transport engines are supported, however the user code that creates simulated data do not depend on a particular monte carlo engine. The framework delivers base classes which enable the users to construct their detectors and /or analysis tasks in a simple way, it also delivers some general functionality like track visualization. Moreover an interface for reading magnetic field maps is also implemented.</p>",
-    "license": "https://spdx.org/licenses/LGPL-3.0-only",
-    "version": "v18.2.1",
-    "datePublished": "2012-05-25",
-    "keywords": [
-        "geant4",
-        "c-plus-plus",
-        "cmake",
-        "reconstruction",
-        "vmc",
-        "modular",
-        "analysis",
-        "simulation"
-    ],
-    "contributor": [
-        {
-            "@type": "Person",
-            "familyName": "Al-Turany",
-            "givenName": "Mohammad"
-        },
-        {
-            "@type": "Person",
-            "familyName": "Karabowicz",
-            "givenName": "Radoslaw"
-        },
-        {
-            "@type": "Person",
-            "familyName": "Klein",
-            "givenName": "Dennis"
-        },
-        {
-            "@type": "Person",
-            "familyName": "Kresan",
-            "givenName": "Dmytro"
-        },
-        {
-            "@type": "Person",
-            "familyName": "Rybalchenko",
-            "givenName": "Alexey"
-        },
-        {
-            "@type": "Person",
-            "familyName": "Uhlig",
-            "givenName": "Florian"
-        }
-    ]
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "FairRoot",
+  "description": "<p>A simulation, reconstruction and analysis framework that is based on the ROOT system. The user can create simulated data and/or perform analysis with the same framework. Geant3 and Geant4 transport engines are supported, however the user code that creates simulated data do not depend on a particular monte carlo engine. The framework delivers base classes which enable the users to construct their detectors and /or analysis tasks in a simple way, it also delivers some general functionality like track visualization. Moreover an interface for reading magnetic field maps is also implemented.</p>",
+  "license": "https://spdx.org/licenses/LGPL-3.0-only",
+  "version": "v18.2.1",
+  "datePublished": "2012-05-25",
+  "keywords": [
+    "geant4",
+    "c-plus-plus",
+    "cmake",
+    "reconstruction",
+    "vmc",
+    "modular",
+    "analysis",
+    "simulation"
+  ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "familyName": "Al-Turany",
+      "givenName": "Mohammad"
+    },
+    {
+      "@type": "Person",
+      "familyName": "Karabowicz",
+      "givenName": "Radoslaw"
+    },
+    {
+      "@type": "Person",
+      "familyName": "Klein",
+      "givenName": "Dennis"
+    },
+    {
+      "@type": "Person",
+      "familyName": "Kresan",
+      "givenName": "Dmytro"
+    },
+    {
+      "@type": "Person",
+      "familyName": "Rybalchenko",
+      "givenName": "Alexey"
+    },
+    {
+      "@type": "Person",
+      "familyName": "Uhlig",
+      "givenName": "Florian"
+    }
+  ]
 }
