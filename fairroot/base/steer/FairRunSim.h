@@ -241,7 +241,7 @@ class FairRunSim : public FairRun
     TObjArray* fParticles;                          //!                         /** Array of user defined particles*/
     TObjArray* ListOfModules;                       //!                       /** Array of used modules */
     TString MatFname;                               //!                           /** Material file name */
-    Bool_t fStoreTraj;                              //!                       /** Trajectory store flags */
+    bool fStoreTraj{false};                         //!< Trajectory store flags
     TString fLoaderName{"TGeo"};                    //!< Geometry Model (TGeo or G3)
     Bool_t fPythiaDecayer;                          //!                    /** flag for using Pythia decayer*/
     TString fPythiaDecayerConfig;                   //!               /** Macro for Pythia decay configuration*/

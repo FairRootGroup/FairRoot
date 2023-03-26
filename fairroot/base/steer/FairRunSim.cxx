@@ -28,7 +28,6 @@
 #include "FairRunIdGenerator.h"     // for FairRunIdGenerator
 #include "FairRuntimeDb.h"          // for FairRuntimeDb
 #include "FairTask.h"               // for FairTask
-#include "FairTrajFilter.h"         // for FairTrajFilter
 
 #include <TCollection.h>   // for TIter
 #include <TGeoManager.h>   // for gGeoManager
@@ -54,7 +53,6 @@ FairRunSim::FairRunSim(Bool_t isMaster)
     , fParticles(new TObjArray())
     , ListOfModules(new TObjArray())
     , MatFname("")
-    , fStoreTraj(kFALSE)
     , fPythiaDecayer(kFALSE)
     , fPythiaDecayerConfig("")
     , fUserDecay(kFALSE)
@@ -177,7 +175,7 @@ void FairRunSim::Init()
     /** Add Tasks to simulation if any*/
     fApp->AddTask(fTask);
     /** This call will create the container if it does not exist*/
-    FairBaseParSet* par = dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
+    auto par = dynamic_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
     if (par) {
         par->SetDetList(GetListOfModules());
         par->SetGen(GetPrimaryGenerator());
@@ -185,7 +183,7 @@ void FairRunSim::Init()
     }
 
     /** This call will create the container if it does not exist*/
-    FairGeoParSet* geopar = dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
+    auto geopar = dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
     if (geopar) {
         geopar->SetGeometry(gGeoManager);
     }
@@ -207,7 +205,6 @@ void FairRunSim::Init()
     // on/off visualisation
     if (fStoreTraj) {
         LOG(info) << "Create visualisation manager ";
-        new FairTrajFilter();
     }
     if (fRadLength) {
         fApp->SetRadiationLengthReg(fRadLength);
