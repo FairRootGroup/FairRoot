@@ -4,7 +4,7 @@
   "name": "FairRoot",
   "description": "<p>A simulation, reconstruction and analysis framework that is based on the ROOT system. The user can create simulated data and/or perform analysis with the same framework. Geant3 and Geant4 transport engines are supported, however the user code that creates simulated data do not depend on a particular monte carlo engine. The framework delivers base classes which enable the users to construct their detectors and /or analysis tasks in a simple way, it also delivers some general functionality like track visualization. Moreover an interface for reading magnetic field maps is also implemented.</p>",
   "license": "https://spdx.org/licenses/LGPL-3.0-only",
-  "version": "v18.2.1",
+  "softwareVersion": "19.0.0",
   "datePublished": "2012-05-25",
   "keywords": [
     "geant4",
@@ -16,9 +16,10 @@
     "analysis",
     "simulation"
   ],
-  "contributor": [
+  "author": [
     {
       "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-8071-4497",
       "familyName": "Al-Turany",
       "givenName": "Mohammad"
     },
@@ -29,11 +30,13 @@
     },
     {
       "@type": "Person",
+      "@id": "https://orcid.org/0000-0003-3787-1910",
       "familyName": "Klein",
       "givenName": "Dennis"
     },
     {
       "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-7537-2875",
       "familyName": "Kresan",
       "givenName": "Dmytro"
     },
@@ -44,8 +47,206 @@
     },
     {
       "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-5321-8404",
+      "givenName": "Christian",
+      "familyName": "Tacke"
+    },
+    {
+      "@type": "Person",
       "familyName": "Uhlig",
       "givenName": "Florian"
+    }
+  ],
+  "contributor": [
+    {
+      "@type": "Person",
+      "givenName": "Laurent",
+      "familyName": "Aphecetche"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Arya",
+      "familyName": "Babai"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Dario",
+      "familyName": "Berzano"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Denis",
+      "familyName": "Bertini"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Sebastien",
+      "familyName": "Binet"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Susanna",
+      "familyName": "Costanza"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Giulio",
+      "familyName": "Eulisse"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Volker",
+      "familyName": "Friese"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Konstantin",
+      "familyName": "Gertsenberger"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Ivana",
+      "familyName": "H\u0159ivn\u00e1\u010dov\u00e1"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Roman",
+      "familyName": "Klasen"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Ralf",
+      "familyName": "Kliemt"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Philipp",
+      "familyName": "Klenze"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Thorsten",
+      "familyName": "Kollegger"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Ilse",
+      "familyName": "Koenig"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Mikolaj",
+      "familyName": "Krzewicki"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Lia",
+      "familyName": "Lavezzi"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Evgeny",
+      "familyName": "Lavrik"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Oliver",
+      "familyName": "Lantwin"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Anar",
+      "familyName": "Manafov"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Jan",
+      "familyName": "Mayer"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Gvozden",
+      "familyName": "Neskovic"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Sebastian",
+      "familyName": "Neubert"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Egor",
+      "familyName": "Ovcharenko"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Carmelo",
+      "familyName": "Pellegrino"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Loizeau",
+      "familyName": "Pierre-Alain"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Stefan",
+      "familyName": "Pflueger"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Matthias",
+      "familyName": "Richter"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Fons",
+      "familyName": "Rademakers"
+    },
+    {
+      "@type": "Person",
+      "givenName": "David",
+      "familyName": "Rohr"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Ruben",
+      "familyName": "Shahoyan"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Tobias",
+      "familyName": "Stockmanns"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Andrey",
+      "familyName": "Ustyuzhanin"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Barth\u00e9l\u00e9my",
+      "familyName": "von Haller"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Sandro",
+      "familyName": "Wenzel"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Daniel",
+      "familyName": "Wielanek"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Nicolas",
+      "familyName": "Winckler"
+    },
+    {
+      "@type": "Person",
+      "givenName": "Lorenzo",
+      "familyName": "Zanetti"
     }
   ]
 }
