@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -174,7 +174,6 @@ class FairStack : public FairGenericStack
     void Register() override;
 
     /** Output to screen
-     **@param iVerbose: 0=events summary, 1=track info
      **/
     void Print(Option_t*) const override;
 

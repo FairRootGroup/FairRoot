@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -55,8 +55,6 @@ class FairUrqmdGenerator : public FairGenerator
 
     /** Reads on event from the input file and pushes the tracks onto
      ** the stack. Abstract method in base class.
-     ** @param pStack    pointer to the stack
-     ** @param ver       not used
      **/
     Bool_t ReadEvent(FairPrimaryGenerator* primGen);
 

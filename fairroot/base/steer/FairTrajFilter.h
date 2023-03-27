@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -253,7 +253,8 @@ class FairTrajFilter
 
     /**
      * This is the getter for the total energy cut.
-     * @param References to the variables where return values should be stored.
+     *
+     * \param [out] etotMin,etotMax References to the variables where return values should be stored.
      */
     void GetEnergyCut(Double_t& etotMin, Double_t& etotMax) const;
 

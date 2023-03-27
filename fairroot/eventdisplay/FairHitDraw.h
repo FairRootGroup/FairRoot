@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -22,8 +22,6 @@
 #include <Rtypes.h>     // for FairHitDraw::Class, etc
 #include <TVector3.h>   // for TVector3
 
-class TObject;
-
 class FairHitDraw : public FairBoxSetDraw
 {
   public:
@@ -38,7 +36,6 @@ class FairHitDraw : public FairBoxSetDraw
 
     /** Legacy constructor
      *@param name        Name of task
-     *@param dataSource  Input container for data to be displayed
      *@param iVerbose    Verbosity level
      **/
     FairHitDraw(const char* name, Int_t iVerbose = 1);
