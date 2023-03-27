@@ -79,6 +79,10 @@ find_package(FairCMakeModules 0.2 QUIET REQUIRED)
 include(FairFindPackage2)
 include(FairFormattedOutput)
 include(FairSummary)
+if(FairCMakeModules_VERSION VERSION_GREATER_EQUAL 1.0.0)
+  include(FairProjectConfig)
+endif()
+
 include(FairRootTargets)
 include(FairRootPackage)
 include(FairRootSummary)
@@ -86,6 +90,10 @@ include(FairMacros)
 include(WriteConfigFile)
 include(Dart)
 include(CheckCompiler)
+
+if(FairCMakeModules_VERSION VERSION_GREATER_EQUAL 1.0.0)
+  fair_get_git_version()
+endif()
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
 
