@@ -22,6 +22,7 @@
 #include "FairRKPropagator.h"   // for FairRKPropagator
 #include "FairRootManager.h"    // for FairRootManager
 #include "FairRunAna.h"         // for FairRunAna
+#include "FairXMLNode.h"        // for XML support
 
 #include <TClonesArray.h>        // for TClonesArray
 #include <TDatabasePDG.h>        // for TDatabasePDG
@@ -88,7 +89,7 @@ void FairEveMCTracks::DrawTrack(Int_t id)
     auto tr = static_cast<FairMCTrack*>(fContainer->UncheckedAt(id));
     if (!CheckCuts(tr))
         return;
-    Color_t color = GetEventManager()->Color(tr->GetPdgCode());
+    Color_t color = fXMLConf.GetColor(tr->GetPdgCode());
     TEveTrackList* trList = FindTrackGroup(Form("%i", tr->GetPdgCode()), color);
     TParticle p(tr->GetPdgCode(),
                 0,
@@ -145,7 +146,7 @@ void FairEveMCTracks::Repaint()
 
 InitStatus FairEveMCTracks::Init()
 {
-    FairEventManager* eveManager = GetEventManager();
+    FairEventManager* eveManager = FairEventManager::Instance();
     FairRootManager* mngr = &(eveManager->GetRootManager());
     fContainer = dynamic_cast<TClonesArray*>(mngr->GetObject("MCTrack"));
     if (!fContainer) {
@@ -165,7 +166,19 @@ InitStatus FairEveMCTracks::Init()
     }
     fRK = std::make_unique<FairRKPropagator>(field);
     fPDG = TDatabasePDG::Instance();
-    return FairEveTracks::Init();
+    TString xmlConfig = eveManager->GetXMLConfig();
+    if (xmlConfig.Length() > 4) {
+        FairXMLFile file(xmlConfig);
+        FairXMLNode* root = file.GetRootNode();
+        FairXMLNode* mcColors = root->GetChild("FairMCTrackColors");   // lok for MCtrack colors
+        if (!mcColors) {   // not found MCTracks? maybe there is a general branch for MC colors
+            root->GetChild("MCTracksColors");
+            LOG(warning) << "Cannot find FairMCTrackColors";
+        }
+        if (mcColors)
+            fXMLConf = FairXMLPdgColor(mcColors);
+    }
+    return kSUCCESS;
 }
 
 FairEveMCTracks::~FairEveMCTracks() = default;

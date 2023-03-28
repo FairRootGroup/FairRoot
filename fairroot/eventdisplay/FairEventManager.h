@@ -47,7 +47,6 @@ class FairEventManager : public TEveEventManager
     virtual void PrevEvent();              // *MENU*
     virtual void Close();
     virtual void DisplaySettings();   //  *Menu*
-    virtual Int_t Color(Int_t pdg);
     void AddTask(FairTask* t) { fRunAna->AddTask(t); }
     virtual void Init(Int_t visopt = 1, Int_t vislvl = 3, Int_t maxvisnds = 10000);
     virtual Int_t GetCurrentEvent() { return fEntry; }
@@ -85,6 +84,11 @@ class FairEventManager : public TEveEventManager
         min = fTimeMin;
         max = fTimeMax;
     };
+    /**
+     *
+     * @return name of the xml file with configuration of event display
+     */
+    TString GetXMLConfig() const { return fXMLConfig; };
     virtual void AddParticlesToPdgDataBase(Int_t pdg = 0);
     /**
      * set detector's transparency
@@ -147,8 +151,6 @@ class FairEventManager : public TEveEventManager
     TEveProjectionAxes* GetRPhiAxes() const { return fAxesPhi; };
     TEveProjectionAxes* GetRhoZAxes() const { return fAxesRho; };
     virtual void LoadXMLSettings();
-    void LoadXMLDetector(TGeoNode* node, FairXMLNode* xml, Int_t depth = 0);
-    Int_t StringToColor(TString color) const;
 
   private:
     FairRunAna* fRunAna;                                //!
@@ -179,7 +181,6 @@ class FairEventManager : public TEveEventManager
     TEveText* fEventTimeText{nullptr};                  //!
     TEveText* fEventNumberText{nullptr};                //!
     TString fXMLConfig;
-    std::map<int, int> fPDGToColor;
     void SetTransparencyForLayer(TGeoNode* node, Int_t depth, Char_t transparency);
     static FairEventManager* fgRinstance;   //!
     FairEventManager(const FairEventManager&);

@@ -39,6 +39,9 @@ set(sources
   tracks/FairEveTracks.cxx
   tracks/FairGeoTracksDraw.cxx
   tracks/FairGeoTrackHandler.cxx
+  xml/FairXMLDetectorConf.cxx
+  xml/FairXMLEveConf.cxx
+  xml/FairXMLPdgColor.cxx
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
@@ -51,6 +54,7 @@ target_include_directories(${target} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/tracks>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/gui>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/datasource>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/xml>
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
