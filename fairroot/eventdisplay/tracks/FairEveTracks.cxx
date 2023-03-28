@@ -1,12 +1,12 @@
 /********************************************************************************
- *    Copyright (C) 2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2020-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 /*
- * FairTracks.cxx
+ * FairEveTracks.cxx
  *
  *  Created on: 4 maj 2020
  *      Author: Daniel Wielanek
@@ -14,27 +14,20 @@
  *		Warsaw University of Technology, Faculty of Physics
  */
 
- #include "FairEveTracks.h"
- #include <RtypesCore.h>            // for kFALSE, kTRUE, Bool_t, Color_t
- #include <TEveManager.h>           // for TEveManager, gEve
- #include <TEveTrack.h>             // for TEveTrackList
- #include <TEveTrackPropagator.h>   // for TEveTrackPropagator
- #include <TString.h>               // for TString
- #include <algorithm>               // for for_each
- #include <list>                    // for __list_iterator, operator!=
- #include "FairEveRecoTrackList.h"  // for FairEveRecoTrackList
- #include "FairEventManager.h"      // for FairEventManager
+#include "FairEveTracks.h"
 
+#include "FairEveRecoTrackList.h"   // for FairEveRecoTrackList
+#include "FairEventManager.h"       // for FairEventManager
+
+#include <RtypesCore.h>            // for kFALSE, kTRUE, Bool_t, Color_t
+#include <TEveManager.h>           // for TEveManager, gEve
+#include <TEveTrackPropagator.h>   // for TEveTrackPropagator
+#include <TString.h>               // for TString
+#include <algorithm>               // for for_each
+#include <list>                    // for __list_iterator, operator!=
 
 FairEveTracks::FairEveTracks(Bool_t acceptCompound)
-    : fEventManager(nullptr)
-    , fPt{0, 10}
-    , fEta{-10, 10}
-    , fEnergy{0, 10}
-    , fUsePt(kFALSE)
-    , fUseEta(kFALSE)
-    , fUseEnergy(kFALSE)
-    , fAcceptCompound(acceptCompound)
+    : fAcceptCompound(acceptCompound)
 {}
 
 void FairEveTracks::ToggleTracks()
