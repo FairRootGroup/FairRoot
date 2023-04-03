@@ -20,6 +20,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Define CMAKE_INSTALL_*DIR family of variables
 include(GNUInstallDirs)
+include(CTest)
 include(FairRootTargetRootDictionary)
 
 # Define install dirs
@@ -88,7 +89,6 @@ include(FairRootPackage)
 include(FairRootSummary)
 include(FairMacros)
 include(WriteConfigFile)
-include(Dart)
 include(CheckCompiler)
 
 if(FairCMakeModules_VERSION VERSION_GREATER_EQUAL 1.0.0)
