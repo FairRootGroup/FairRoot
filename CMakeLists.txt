@@ -44,6 +44,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Define CMAKE_INSTALL_*DIR family of variables
 include(GNUInstallDirs)
+include(CTest)
 include(FairRootTargetRootDictionary)
 
 # Define install dirs
@@ -89,7 +90,6 @@ include(CheckSymbolExists)
 # Load some basic macros which are needed later on
 include(FairMacros)
 include(WriteConfigFile)
-include(Dart)
 include(CheckCompiler)
 
 #Check the compiler and set the compile and link flags
