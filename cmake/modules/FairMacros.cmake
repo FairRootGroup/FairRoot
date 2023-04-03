@@ -1,5 +1,5 @@
 ################################################################################
-#    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+# Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -188,7 +188,6 @@ MACRO (CHECK_OUT_OF_SOURCE_BUILD)
    STRING(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}" insource)
    IF(insource)
       FILE(REMOVE_RECURSE ${CMAKE_SOURCE_DIR}/Testing)
-      FILE(REMOVE ${CMAKE_SOURCE_DIR}/DartConfiguration.tcl)
       MESSAGE(FATAL_ERROR "FAIRROOT should be installed as an out of source build, to keep the source directory clean. Please create a extra build directory and run the command 'cmake path_to_source_dir' in this newly created directory. You have also to delete the directory CMakeFiles and the file CMakeCache.txt in the source directory. Otherwise cmake will complain even if you run it from an out-of-source directory.")
    ENDIF(insource)
 
