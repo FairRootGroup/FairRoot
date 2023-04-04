@@ -34,8 +34,6 @@ FairMbsStreamSource::FairMbsStreamSource(const FairMbsStreamSource& source)
 {
 }
 
-FairMbsStreamSource::~FairMbsStreamSource() {}
-
 Bool_t FairMbsStreamSource::Init()
 {
     return ConnectToServer();

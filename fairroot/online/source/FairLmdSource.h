@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -33,17 +33,17 @@ class FairLmdSource : public FairMbsSource
   public:
     FairLmdSource();
     FairLmdSource(const FairLmdSource& source);
-    virtual ~FairLmdSource();
+    ~FairLmdSource() override;
 
     void AddFile(TString fileName);
     void AddPath(TString dir, TString wildCard);
     inline Int_t GetCurrentFile() const { return fCurrentFile; }
     inline const TList* GetFileNames() const { return fFileNames; }
 
-    virtual Bool_t Init();
-    virtual Int_t ReadEvent(UInt_t = 0);
-    virtual void Close();
-    Bool_t SpecifyRunId()
+    Bool_t Init() override;
+    Int_t ReadEvent(UInt_t = 0) override;
+    void Close() override;
+    Bool_t SpecifyRunId() override
     {
         ReadEvent(0);
         return true;
@@ -65,7 +65,7 @@ class FairLmdSource : public FairMbsSource
 
     FairLmdSource& operator=(const FairLmdSource&);
 
-    ClassDef(FairLmdSource, 0);
+    ClassDefOverride(FairLmdSource, 0);
 };
 
 #endif

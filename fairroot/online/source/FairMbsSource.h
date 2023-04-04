@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -23,13 +23,13 @@
 class FairMbsSource : public FairOnlineSource
 {
   public:
-    FairMbsSource();
-    FairMbsSource(const FairMbsSource& source);
-    virtual ~FairMbsSource();
+    FairMbsSource() = default;
+    FairMbsSource(const FairMbsSource& source) = default;
+    ~FairMbsSource() override = default;
 
-    virtual Bool_t Init() = 0;
-    virtual Int_t ReadEvent(UInt_t = 0) = 0;
-    virtual void Close() = 0;
+    Bool_t Init() override = 0;
+    Int_t ReadEvent(UInt_t = 0) override = 0;
+    void Close() override = 0;
 
   protected:
     Bool_t Unpack(Int_t* data,
@@ -40,7 +40,7 @@ class FairMbsSource : public FairOnlineSource
                   Short_t subCrate,
                   Short_t control);
 
-    ClassDef(FairMbsSource, 0);
+    ClassDefOverride(FairMbsSource, 0);
 };
 
 #endif

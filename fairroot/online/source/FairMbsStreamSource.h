@@ -28,12 +28,12 @@ class FairMbsStreamSource : public FairMbsSource
   public:
     FairMbsStreamSource(TString tServerName);
     FairMbsStreamSource(const FairMbsStreamSource& source);
-    virtual ~FairMbsStreamSource();
+    ~FairMbsStreamSource() override = default;
 
-    virtual Bool_t Init();
-    virtual Int_t ReadEvent(UInt_t = 0);
-    virtual void Close();
-    Bool_t SpecifyRunId()
+    Bool_t Init() override;
+    Int_t ReadEvent(UInt_t = 0) override;
+    void Close() override;
+    Bool_t SpecifyRunId() override
     {
         ReadEvent(0);
         return true;
@@ -55,7 +55,7 @@ class FairMbsStreamSource : public FairMbsSource
     FairMbsStreamSource& operator=(const FairMbsStreamSource&);
 
   public:
-    ClassDef(FairMbsStreamSource, 0);
+    ClassDefOverride(FairMbsStreamSource, 0);
 };
 
 #endif
