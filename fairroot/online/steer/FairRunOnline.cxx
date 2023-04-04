@@ -17,7 +17,6 @@
 #include "FairField.h"
 #include "FairFileHeader.h"
 #include "FairGeoParSet.h"
-#include "FairLogger.h"
 #include "FairParSet.h"   // for FairParSet
 #include "FairRootManager.h"
 #include "FairRunIdGenerator.h"
@@ -34,6 +33,7 @@
 #include <TObject.h>      // for TObject
 #include <TROOT.h>
 #include <TSystem.h>
+#include <fairlogger/Logger.h>
 #include <iostream>
 #include <signal.h>
 #include <stdlib.h>
@@ -423,5 +423,3 @@ void FairRunOnline::Fill()
         fMarkFill = kTRUE;
     }
 }
-
-ClassImp(FairRunOnline);

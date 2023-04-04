@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -24,5 +24,3 @@ FairUnpack::FairUnpack(Short_t type, Short_t subType, Short_t procId, Short_t su
 }
 
 FairUnpack::~FairUnpack() {}
-
-ClassImp(FairUnpack);
