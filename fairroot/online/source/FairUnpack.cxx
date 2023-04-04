@@ -20,7 +20,4 @@ FairUnpack::FairUnpack(Short_t type, Short_t subType, Short_t procId, Short_t su
     , fProcId(procId)
     , fSubCrate(subCrate)
     , fControl(control)
-{
-}
-
-FairUnpack::~FairUnpack() {}
+{}

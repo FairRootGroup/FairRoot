@@ -907,11 +907,6 @@ REvent::REvent()
     //  piData = 0;
 }
 
-REvent::~REvent()
-{
-    // LOG(info) <<  "    ~REvent() ...";
-}
-
 void REvent::ReFillHead(Int_t* pHead)
 {
     iSize = pHead[0];   // event size without header in 2-byte-words

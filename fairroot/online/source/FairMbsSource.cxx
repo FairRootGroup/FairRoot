@@ -17,19 +17,7 @@
 
 #include <fairlogger/Logger.h>
 
-FairMbsSource::FairMbsSource()
-    : FairOnlineSource()
-{
-}
-
-FairMbsSource::FairMbsSource(const FairMbsSource &source)
-    : FairOnlineSource(source)
-{
-}
-
-FairMbsSource::~FairMbsSource() {}
-
-Bool_t FairMbsSource::Unpack(Int_t *data,
+Bool_t FairMbsSource::Unpack(Int_t* data,
                              Int_t size,
                              Short_t type,
                              Short_t subType,

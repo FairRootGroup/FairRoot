@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -40,8 +40,8 @@ class REvent : public TObject
     REvent& operator=(const REvent&);
 
   public:
-    REvent();    // constructor
-    ~REvent();   // destructor
+    REvent();
+    ~REvent() override = default;
 
     void ReFillHead(Int_t* pHead);   // unpack and fill event header
     void ReFillData(Int_t* pData);   // unpack and fill event data
@@ -60,7 +60,7 @@ class REvent : public TObject
     Short_t subEvtControl[100];
     Int_t* pSubEvt[100];
 
-    ClassDef(REvent, 0);
+    ClassDefOverride(REvent, 0);
 };
 
 class MRevBuffer : public TObject
@@ -97,7 +97,7 @@ class MRevBuffer : public TObject
 
   public:
     MRevBuffer(Int_t iMode);   // constructor
-    ~MRevBuffer();             // destructor
+    ~MRevBuffer() override;
 
     TSocket* RevOpen(char* pNode, Int_t iPort, Int_t iEvent);
     // input: node name and port number server, req. no. of events
@@ -132,7 +132,7 @@ class MRevBuffer : public TObject
 
     void RevClose(TSocket* pSocket);   // input Socket ptr
 
-    ClassDef(MRevBuffer, 0);
+    ClassDefOverride(MRevBuffer, 0);
 };
 
 #endif   // !MRevBuffer_H
