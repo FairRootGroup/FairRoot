@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -48,10 +48,7 @@
 // IWYU pragma: no_include <sys/_endian.h>
 // IWYU pragma: no_include <sys/signal.h>
 
-#include "FairLogger.h"
-
-ClassImp(MRevBuffer);
-ClassImp(REvent);
+#include <fairlogger/Logger.h>
 
 extern "C"
 {

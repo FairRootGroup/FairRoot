@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -13,8 +13,6 @@
 
 #include "FairLmdSource.h"
 
-#include "FairLogger.h"
-
 #include <TIterator.h>
 #include <TList.h>
 #include <TObjString.h>
@@ -22,6 +20,7 @@
 #include <TSystem.h>
 #include <TSystemDirectory.h>
 #include <TSystemFile.h>
+#include <fairlogger/Logger.h>
 
 FairLmdSource::FairLmdSource()
     : FairMbsSource()
@@ -241,5 +240,3 @@ void FairLmdSource::Close()
     Unpack(reinterpret_cast<Int_t*>(fxBuffer), sizeof(s_bufhe), -4, -4, -4, -4, -4);
     fCurrentEvent = 0;
 }
-
-ClassImp(FairLmdSource);

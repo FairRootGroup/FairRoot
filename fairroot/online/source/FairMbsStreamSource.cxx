@@ -10,7 +10,7 @@
 
 #include "FairMbsStreamSource.h"
 
-#include "FairLogger.h"
+#include <fairlogger/Logger.h>
 
 FairMbsStreamSource::FairMbsStreamSource(TString tServerName)
     : FairMbsSource()
@@ -130,5 +130,3 @@ void FairMbsStreamSource::Close()
     CHARS* sErrorString = nullptr;
     f_evt_error(status, sErrorString, 0);
 }
-
-ClassImp(FairMbsStreamSource);
