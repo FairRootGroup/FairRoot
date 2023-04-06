@@ -18,8 +18,8 @@ class FairAlignmentHandler
     void RecomputePhysicalAssmbBbox() const;
 
   public:
-    FairAlignmentHandler();
-    virtual ~FairAlignmentHandler();
+    FairAlignmentHandler() = default;
+    virtual ~FairAlignmentHandler() = default;
 };
 
 #endif
