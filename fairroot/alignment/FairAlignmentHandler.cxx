@@ -4,6 +4,7 @@
 #include <TGeoManager.h>
 #include <TGeoPhysicalNode.h>
 #include <TGeoShapeAssembly.h>
+#include <TGeoVoxelFinder.h>
 #include <fairlogger/Logger.h>
 
 void FairAlignmentHandler::AlignGeometry() const
@@ -18,8 +19,9 @@ void FairAlignmentHandler::AlignGeometry() const
             AlignGeometryByFullPath();
         }
 
-        // --- Force BoundingBox recomputation for AssemblyVolumes as they may have been corrupted by alignment
-        // FIXME: will hopefully be fixed in Root in near future, temp fix in meantime
+        // --- Force BoundingBox recomputation for volumes/nodes needing it after alignment
+        // FIXME: May be added to RefreshPhysicalNode step in Root in near future, temp fix needed here in meantime
+        ///       cf https://github.com/root-project/root/issues/12242
         RecomputePhysicalAssmbBbox();
 
         LOG(info) << "Refreshing geometry...";
@@ -100,15 +102,23 @@ void FairAlignmentHandler::AddAlignmentMatrices(const std::map<std::string, TGeo
 
 void FairAlignmentHandler::RecomputePhysicalAssmbBbox() const
 {
-    TObjArray* pPhysNodesArr = gGeoManager->GetListOfPhysicalNodes();
-
-    for (auto pPhysNode : TRangeDynCast<TGeoPhysicalNode>(pPhysNodesArr)) {
-        if (pPhysNode) {
-            auto pShapeAsb = dynamic_cast<TGeoShapeAssembly*>(pPhysNode->GetShape());
-            if (pShapeAsb) {
-                // Should reach here only if the original node was a TGeoShapeAssembly
-                pShapeAsb->ComputeBBox();
-            }
+    /// After alignment, forces the recomputation of the bounding box of all volumesAssemblies and the rebuilding of
+    /// Nodes requiring it.
+    /// => Not done after each change to geometry in ROOT for perf reason
+    /// => to be called once all changes done
+    /// => original snippet proposed in https://github.com/root-project/root/issues/12242 by A. Gheata
+    TObjArray* volumes = gGeoManager->GetListOfVolumes();
+    for (auto vol : TRangeDynCast<TGeoVolume>(volumes)) {
+        if (!vol) {
+            continue;
+        }
+        if (vol->IsAssembly()) {
+            vol->GetShape()->ComputeBBox();
+        }
+        auto finder = vol->GetVoxels();
+        if (finder && finder->NeedRebuild()) {
+            finder->Voxelize();
+            vol->FindOverlaps();
         }
     }
 }
