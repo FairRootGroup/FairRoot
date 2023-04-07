@@ -39,7 +39,7 @@ class FairParSet : public TObject
     virtual Bool_t init(FairParIo*) { return kFALSE; }
     virtual Int_t write();
     virtual Int_t write(FairParIo*) { return kFALSE; }
-    virtual void clear() {}
+    virtual void clear();
     virtual void print();
 
     const char* getDetectorName() { return detName.Data(); }

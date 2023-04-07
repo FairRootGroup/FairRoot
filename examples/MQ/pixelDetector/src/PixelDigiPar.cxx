@@ -33,12 +33,7 @@ PixelDigiPar::PixelDigiPar(const char* name, const char* title, const char* cont
     , fChargeConvMethod(0)
     , fPixelSorterCellWidth(0.)
     , fPixelSorterNumberOfCells(0)
-{
-    clear();
-}
-
-// -----   Destructor   ----------------------------------------------------
-PixelDigiPar::~PixelDigiPar(void) {}
+{}
 
 void PixelDigiPar::putParams(FairParamList* list)
 {

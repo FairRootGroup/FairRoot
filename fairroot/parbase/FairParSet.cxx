@@ -115,6 +115,12 @@ void FairParSet::print()
     }
 }
 
+void FairParSet::clear()
+{
+    status = kFALSE;
+    resetInputVersions();
+}
+
 void FairParSet::resetInputVersions()
 {
     // resets the input versions if the container is not static

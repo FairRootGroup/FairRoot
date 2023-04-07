@@ -25,14 +25,6 @@ FairTutorialDet2DigiPar::FairTutorialDet2DigiPar(const char* name, const char* t
     detName = "TutorialDet";
 }
 
-FairTutorialDet2DigiPar::~FairTutorialDet2DigiPar() { clear(); }
-
-void FairTutorialDet2DigiPar::clear()
-{
-    status = kFALSE;
-    resetInputVersions();
-}
-
 void FairTutorialDet2DigiPar::printparams()
 {
     LOG(info) << "Print";

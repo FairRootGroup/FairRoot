@@ -32,12 +32,9 @@ class FairTutorialDet2DigiPar : public FairParGenericSet
     FairTutorialDet2DigiPar(const FairTutorialDet2DigiPar&) = delete;
     FairTutorialDet2DigiPar& operator=(const FairTutorialDet2DigiPar&) = delete;
     /** Destructor **/
-    ~FairTutorialDet2DigiPar() override;
+    ~FairTutorialDet2DigiPar() override = default;
 
     virtual void printparams();
-
-    /** Reset all parameters **/
-    void clear() override;
 
     void putParams(FairParamList*) override;
     Bool_t getParams(FairParamList*) override;

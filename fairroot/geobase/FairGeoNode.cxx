@@ -44,10 +44,7 @@ FairGeoNode::FairGeoNode()
     , labTransform(nullptr)
     , fDaughterList(new TObjArray(5))
     , fTruncName("")
-{
-    // Constructor
-    clear();
-}
+{}
 
 FairGeoNode::FairGeoNode(FairGeoNode& r)
     : FairGeoVolume(r)
