@@ -9,7 +9,6 @@
 
 #include "FairParamList.h"   // for FairParamList
 
-#include <TGenericClassInfo.h>   // for TGenericClassInfo
 #include <TString.h>             // for TString
 #include <fairlogger/Logger.h>   // for LOG, Logger
 
@@ -20,17 +19,9 @@ FairMQExParamsParOne::FairMQExParamsParOne(const char* name, const char* title, 
     detName = "TutorialDet";
 }
 
-FairMQExParamsParOne::~FairMQExParamsParOne() { clear(); }
-
-void FairMQExParamsParOne::clear()
-{
-    status = kFALSE;
-    resetInputVersions();
-}
-
 void FairMQExParamsParOne::print()
 {
-    LOG(info) << "Print";
+    FairParGenericSet::print();
     LOG(info) << "fParameterValue: " << fParameterValue;
 }
 
