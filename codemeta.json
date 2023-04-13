@@ -16,6 +16,15 @@
     "analysis",
     "simulation"
   ],
+  "maintainer": {
+    "@type": "Person",
+    "familyName": "Karabowicz",
+    "givenName": "Radoslaw"
+  },
+  "readme": "https://github.com/FairRootGroup/FairRoot/blob/master/README.md",
+  "codeRepository": "https://github.com/FairRootGroup/FairRoot/",
+  "identifier": "https://doi.org/10.5281/zenodo.3896282",
+  "issueTracker": "https://github.com/FairRootGroup/FairRoot/issues",
   "author": [
     {
       "@type": "Person",
