@@ -22,6 +22,7 @@
 
 #include <TCollection.h>   // for TIter
 #include <TList.h>         // for TList
+#include <iostream>
 
 FairParIo::FairParIo()
     : TObject()
@@ -40,7 +41,6 @@ FairParIo::~FairParIo()
     if (detParIoList) {
         detParIoList->Delete();
         delete detParIoList;
-        detParIoList = 0;
     }
 }
 
@@ -76,5 +76,23 @@ void FairParIo::removeDetParIo(Text_t* detName)
     // removes input/output class for a detector
     TObject* p = detParIoList->FindObject(detName);
     delete p;
-    p = 0;
+}
+
+void FairParIo::close()
+{
+    filename = "";
+    if (detParIoList) {
+        detParIoList->Delete();
+    }
+}
+
+void FairParIo::print()
+{
+    TIter next(detParIoList);
+    FairDetParIo* io;
+    std::cout << "detector I/Os: ";
+    while ((io = static_cast<FairDetParIo*>(next()))) {
+        std::cout << " " << io->GetName();
+    }
+    std::cout << '\n';
 }
