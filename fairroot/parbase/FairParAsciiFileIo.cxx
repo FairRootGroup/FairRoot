@@ -34,19 +34,6 @@
 using std::cerr;
 using std::cout;
 using std::endl;
-using std::filebuf;
-using std::ios;
-
-FairParAsciiFileIo::FairParAsciiFileIo()
-    : FairParIo()
-    , file(nullptr)
-{}
-
-FairParAsciiFileIo::~FairParAsciiFileIo()
-{
-    // default destructor closes an open file and deletes list of I/Os
-    close();
-}
 
 void FairParAsciiFileIo::ActivateSelf()
 {
@@ -68,15 +55,13 @@ Bool_t FairParAsciiFileIo::open(const Text_t* fname, const Text_t* status)
              << "\n  writing state : out\n   reading state : in  \nopen  aborted \n";
         return kFALSE;
     }
-    file = new std::fstream();
     if (strcmp(status, "in") == 0) {
-        file->open(fname, ios::in);
+        file.open(fname, std::ios::in);
     };
     if (strcmp(status, "out") == 0) {
-        file->open(fname, ios::out);
+        file.open(fname, std::ios::out);
     };
-    filebuf* buf = file->rdbuf();
-    if (file && (buf->is_open() == 1)) {
+    if (file.is_open()) {
         filename = fname;
         ActivateSelf();
         FairRuntimeDb::instance()->activateParIo(this);
@@ -129,12 +114,7 @@ void FairParAsciiFileIo::MergeFiles(const char* fname, const TList* fnamelist)
 
 void FairParAsciiFileIo::close()
 {
-    // closes the file and deletes the detector I/Os
-    if (file) {
-        file->close();
-        delete file;
-        file = 0;
-    }
+    file.close();
     FairParIo::close();
 }
 
@@ -147,10 +127,4 @@ void FairParAsciiFileIo::print()
     } else {
         cout << "No file open\n";
     }
-}
-
-std::fstream* FairParAsciiFileIo::getFile()
-{
-    // returns the file pointer
-    return file;
 }

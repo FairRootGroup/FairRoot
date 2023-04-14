@@ -25,6 +25,8 @@ class FairParIo : public TObject
 
   public:
     FairParIo();
+    FairParIo(const FairParIo&) = delete;
+    FairParIo& operator=(const FairParIo&) = delete;
     ~FairParIo() override;
     virtual FairDetParIo* getDetParIo(const Text_t*);
     virtual void setDetParIo(FairDetParIo*);
@@ -56,10 +58,6 @@ class FairParIo : public TObject
     // set and get for flag autoWritable
     void setAutoWritable(Bool_t f = kTRUE) { autoWritable = f; }
     Bool_t isAutoWritable() const { return autoWritable; }
-
-  private:
-    FairParIo(const FairParIo&);
-    FairParIo& operator=(const FairParIo&);
 
     ClassDefOverride(FairParIo, 0);   // Base class for all parameter I/Os
 };

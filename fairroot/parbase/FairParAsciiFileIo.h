@@ -13,20 +13,17 @@
 #include <Rtypes.h>   // for Bool_t, Text_t, etc
 #include <fstream>    // for fstream, etc
 
-class TList;
-
 class FairParAsciiFileIo : public FairParIo
 {
-  protected:
-    std::fstream* file;   // pointer to a file
-
   public:
-    FairParAsciiFileIo();
+    FairParAsciiFileIo() = default;
+    FairParAsciiFileIo(const FairParAsciiFileIo&) = delete;
+    FairParAsciiFileIo& operator=(const FairParAsciiFileIo&) = delete;
 
     /**
      * default destructor closes an open file and deletes list of I/Os
      */
-    ~FairParAsciiFileIo() override;
+    ~FairParAsciiFileIo() override = default;
 
     /**
      * \brief Opens file
@@ -64,23 +61,15 @@ class FairParAsciiFileIo : public FairParIo
     void close() override;
 
     // returns kTRUE if file is open
-    Bool_t check() override
-    {
-        if (file) {
-            return (file->rdbuf()->is_open() == 1);
-        } else {
-            return kFALSE;
-        }
-    }
+    Bool_t check() override { return file.is_open(); }
 
     // prints information about the file and the detector I/Os
     void print() override;
 
-    std::fstream* getFile();
+    std::fstream* getFile() { return &file; }
 
   private:
-    FairParAsciiFileIo(const FairParAsciiFileIo&);
-    FairParAsciiFileIo& operator=(const FairParAsciiFileIo&);
+    std::fstream file{};
     void ActivateSelf();
 
     ClassDefOverride(FairParAsciiFileIo, 0);   // Parameter I/O from ASCII files
