@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -9,12 +9,12 @@
 #define FAIRPARIO_H
 
 #include <Rtypes.h>    // for Bool_t, Text_t, etc
+#include <TList.h>     // for TList
 #include <TObject.h>   // for TObject
 #include <TString.h>   // for TString
 
 class FairDetParIo;
 class FairRtdbRun;
-class TList;
 
 class FairParIo : public TObject
 {
@@ -25,12 +25,12 @@ class FairParIo : public TObject
 
   public:
     FairParIo();
-    virtual ~FairParIo();
+    ~FairParIo() override;
     virtual FairDetParIo* getDetParIo(const Text_t*);
     virtual void setDetParIo(FairDetParIo*);
     virtual void removeDetParIo(Text_t*);
     void setInputNumber(Int_t);
-    virtual void close() { ; }
+    virtual void close();
 
     // returns the filename
     const char* getFilename() { return filename.Data(); }
@@ -41,7 +41,7 @@ class FairParIo : public TObject
     virtual void setDetParIo(Text_t*) { ; }
 
     // prints information about input/output
-    virtual void print() { ; }
+    virtual void print();
 
     // checks if the input/output is open
     virtual Bool_t check() { return kFALSE; }
@@ -51,7 +51,7 @@ class FairParIo : public TObject
 
     // sets global file pointer in ROOT if input/output is a ROOT-file
     // (code in FairParRootFileIo)
-    virtual void cd() { ; }
+    virtual void cd() {}
 
     // set and get for flag autoWritable
     void setAutoWritable(Bool_t f = kTRUE) { autoWritable = f; }

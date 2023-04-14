@@ -19,7 +19,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "FairParAsciiFileIo.h"
 
-#include "FairDetParIo.h"   // for FairDetParIo
 #include "FairGenericParAsciiFileIo.h"
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
 
@@ -135,11 +134,8 @@ void FairParAsciiFileIo::close()
         file->close();
         delete file;
         file = 0;
-        filename = "";
     }
-    if (detParIoList) {
-        detParIoList->Delete();
-    }
+    FairParIo::close();
 }
 
 void FairParAsciiFileIo::print()
@@ -147,13 +143,7 @@ void FairParAsciiFileIo::print()
     // prints information about the file and the detector I/Os
     if (check()) {
         cout << "Ascii I/O " << filename << " is open\n";
-        TIter next(detParIoList);
-        FairDetParIo* io;
-        cout << "detector I/Os: ";
-        while ((io = static_cast<FairDetParIo*>(next()))) {
-            cout << " " << io->GetName();
-        }
-        cout << '\n';
+        FairParIo::print();
     } else {
         cout << "No file open\n";
     }

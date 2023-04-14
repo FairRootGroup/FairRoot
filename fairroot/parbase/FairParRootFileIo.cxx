@@ -24,7 +24,6 @@
 //////////////////////////////////////////////////////////////////////////////
 #include "FairParRootFileIo.h"
 
-#include "FairDetParIo.h"    // for FairDetParIo
 #include "FairGenericParRootFileIo.h"
 #include "FairRtdbRun.h"     // for FairRtdbRun
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
@@ -260,9 +259,7 @@ void FairParRootFileIo::close()
         delete file;
         file = 0;
     }
-    if (detParIoList) {
-        detParIoList->Delete();
-    }
+    FairParIo::close();
 }
 
 void FairParRootFileIo::print()
@@ -270,14 +267,8 @@ void FairParRootFileIo::print()
     // prints the content of a open ROOT file and the list of detector I/Os
     if (file) {
         file->ls();
-        TIter next(detParIoList);
-        FairDetParIo* io;
         cout << "Root file I/O " << file->GetName() << " is open\n";
-        cout << "detector I/Os: ";
-        while ((io = static_cast<FairDetParIo*>(next()))) {
-            cout << " " << io->GetName();
-        }
-        cout << '\n';
+        FairParIo::print();
     } else {
         cout << "No ROOT file open\n";
     }
