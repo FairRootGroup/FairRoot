@@ -14,6 +14,7 @@
 
 #include "FairEveAnimationControl.h"
 #include "FairRunAna.h"   // for FairRunAna
+#include "FairXMLPdgColor.h"
 
 #include <Rtypes.h>             // for Float_t, Int_t, Bool_t, etc
 #include <TEveEventManager.h>   // for TEveEventManager
@@ -50,7 +51,7 @@ class FairEventManager : public TEveEventManager
     virtual void PrevEvent();              // *MENU*
     virtual void Close();
     virtual void DisplaySettings();   //  *Menu*
-    virtual Int_t Color(Int_t pdg);
+    virtual Int_t Color(Int_t pdg) { return fPDGColor.GetColor(pdg); }
     void AddTask(FairTask* t) { fRunAna->AddTask(t); }
     virtual void Init(Int_t visopt = 1, Int_t vislvl = 3, Int_t maxvisnds = 10000);
     virtual Int_t GetCurrentEvent() { return fEntry; }
@@ -151,7 +152,10 @@ class FairEventManager : public TEveEventManager
     TEveProjectionAxes* GetRhoZAxes() const { return fAxesRho; };
     virtual void LoadXMLSettings();
     void LoadXMLDetector(TGeoNode* node, FairXMLNode* xml, Int_t depth = 0);
-    Int_t StringToColor(TString color) const;
+    [[deprecated("Use FairXMLPdgColor::StringToColor")]] Int_t StringToColor(const TString& color) const
+    {
+        return FairXMLPdgColor::StringToColor(color);
+    }
 
   private:
     FairRunAna* fRunAna;                                //!
@@ -181,8 +185,8 @@ class FairEventManager : public TEveEventManager
     TEveProjectionAxes* fAxesRho{nullptr};              //!
     TEveText* fEventTimeText{nullptr};                  //!
     TEveText* fEventNumberText{nullptr};                //!
+    FairXMLPdgColor fPDGColor{};                        //!
     TString fXMLConfig;
-    std::map<int, int> fPDGToColor;
     void SetTransparencyForLayer(TGeoNode* node, Int_t depth, Char_t transparency);
     static FairEventManager* fgRinstance;   //!
     FairEventManager(const FairEventManager&);
