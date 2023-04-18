@@ -17,6 +17,9 @@
 
 class FairField;
 
+/**
+ * \ingroup base_sim fairroot_singleton
+ */
 class FairFieldFactory
 {
   public:

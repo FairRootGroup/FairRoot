@@ -15,6 +15,7 @@
 #include "FairSource.h"
 
 #include <Rtypes.h>   // for Int_t, Bool_t, etc
+#include <TFile.h>    //
 #include <TMCtls.h>   // for multi-threading
 #include <TNamed.h>   // for TNamed
 #include <TString.h>
@@ -28,17 +29,15 @@ class FairRootManager;
 class FairRuntimeDb;
 class FairSink;
 class FairTask;
-class TFile;
 class FairField;
-class TGeoHMatrix;
 
 /**
  * Configure the Simuation or Analysis
+ * \ingroup base_steer fairroot_singleton
  * @author M. Al-Turany  D. Bertini
  * @version 0.1
  * @since 12.01.04
  */
-
 class FairRun : public TNamed
 {
     friend class FairMCApplication;
@@ -52,9 +51,7 @@ class FairRun : public TNamed
      * default dtor
      */
     ~FairRun() override;
-    /**
-     * static instance
-     */
+
     static FairRun* Instance();
     /**
      * Add a FAIRTask to the simulation or analysis

@@ -53,11 +53,11 @@ enum class FairMCApplicationState
 
 /**
  * The Main Application ( Interface to MonteCarlo application )
+ * \ingroup base_sim fairroot_singleton
  * @author M. Al-Turany, D. Bertini
  * @version 0.1
  * @since 12.01.04
  */
-
 class FairMCApplication : public TVirtualMCApplication
 {
   public:
@@ -80,8 +80,7 @@ class FairMCApplication : public TVirtualMCApplication
     /** default destructor
      */
     ~FairMCApplication() override;
-    /** Singelton instance
-     */
+
     static FairMCApplication* Instance();
     virtual void AddDecayModes();
     /**  Add user defined particles (optional) */

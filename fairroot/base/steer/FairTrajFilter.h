@@ -24,6 +24,7 @@ class TParticle;
 
 /**
  * @class FairTrajFilter
+ * \ingroup base_steer fairroot_singleton
  * The filter for storing of the trajectories.
  * This singleton class controls storing of trajectories
  * in the gGeoManager list during the simulation.
@@ -117,11 +118,7 @@ class FairTrajFilter
 
     void Init(TString brName = "GeoTracks", TString folderName = "MCGeoTrack");
     void Reset();
-    /**
-     * This function is used to access the methods of the class.
-     * @return Pointer to the singleton FairTrajFilter object, created
-     * with FairTrajFilter::FairTrajFilter().
-     */
+
     static FairTrajFilter* Instance();
 
     /**

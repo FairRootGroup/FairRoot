@@ -13,6 +13,9 @@
 #include <TObject.h>   // for TObject
 #include <set>         // for set of branch types to ignore
 
+/**
+ * \ingroup base_steer fairroot_singleton
+ */
 class FairLinkManager : public TObject
 {
   public:
@@ -21,7 +24,6 @@ class FairLinkManager : public TObject
     /**dtor*/
     ~FairLinkManager() override;
 
-    /** static access method */
     static FairLinkManager* Instance();
     virtual void AddIgnoreType(Int_t type);   ///< Adds a BranchId (Type) to which links are not included in the link
                                               ///< list. Either ignore types or include types can be given.

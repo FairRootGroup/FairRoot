@@ -1,0 +1,33 @@
+/**
+ * \weakgroup fairroot_singleton FairRoot/ROOT Style "singleton"-like Objects
+
+These classes are currently using a singleton-like pattern that is
+NOT [the classic textbook pattern](https://en.wikipedia.org/wiki/Singleton_pattern).
+
+This pattern is discouraged for new code!
+Also the existing code utilising it is slowly getting deprecated
+in favour of code not relying on singleton like behaviour.
+
+Attributes / Design:
+
+- There can only be one or zero instances per process (or thread for some).
+  Note that zero is explicitly allowed.
+
+  Some classes enforce this at runtime, some don't.
+
+- Global access via the static `::Instance()` function on the class
+  returns a pointer to that object or `nullptr` if the instance does
+  not exist. It DOES NOT lazily create the "singleton" instance (see
+  also below).
+
+  Note: This function is likely getting deprecated in the process
+  of getting away from this behaviour.
+
+- Other code is responsible for creating (thus owning) and
+  destructing the object. The object can be created on the stack,
+  on the heap or even as a member variable of another class
+  (constructors are public). That code can either be internal
+  FairRoot code or code by the user (like with the \ref FairRun
+  classes).
+
+ */

@@ -8,13 +8,6 @@
 #ifndef FAIRRUNONLINE_H
 #define FAIRRUNONLINE_H
 
-/**
- * Configure and manage the Analysis
- * @author M. Al-Turany D. Bertini
- * @version 0.1
- * @since 28.02.05
- */
-
 #include "FairField.h"
 #include "FairRootManager.h"
 #include "FairRun.h"
@@ -25,8 +18,14 @@
 class FairField;
 class FairSource;
 class THttpServer;
-class TObject;
 
+/**
+ * Configure and manage the Analysis
+ * \ingroup online fairroot_singleton
+ * @author M. Al-Turany D. Bertini
+ * @version 0.1
+ * @since 28.02.05
+ */
 class FairRunOnline : public FairRun
 {
   public:
