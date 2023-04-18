@@ -30,7 +30,7 @@ class FairPrimaryGenerator;
 
 /**
  * \brief Configure the Simulation session
- * \ingroup base_steer
+ * \ingroup base_steer fairroot_singleton
  * @author M. Al-Turany  D. Bertini
  * @version 0.1
  * @since 12.01.04
@@ -42,7 +42,7 @@ class FairRunSim : public FairRun
     FairRunSim(Bool_t isMaster = kTRUE);
     /** default dtor*/
     ~FairRunSim() override;
-    /** Singelton instance*/
+
     static FairRunSim* Instance();
     /**
      *       Add a module to the simulation (e.g. PIPE, Magnet, ..etc)

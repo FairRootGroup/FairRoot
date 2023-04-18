@@ -34,6 +34,9 @@ class TEveText;
 class TGeoNode;
 class TGListTreeItem;
 
+/**
+ * \ingroup eventdisplay fairroot_singleton
+ */
 class FairEventManager : public TEveEventManager
 {
   public:

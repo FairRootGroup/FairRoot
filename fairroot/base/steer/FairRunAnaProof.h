@@ -8,19 +8,18 @@
 #ifndef FAIRRUNANAPROOF_H
 #define FAIRRUNANAPROOF_H
 
+#include "FairFileSource.h"   // FairRunAnaProof can only accept FairFileSource as source
+#include "FairRunAna.h"
+
+#include <TProof.h>
+
 /**
  * Configure and manage the  Analysis on proof
+ * \ingroup base_steer fairroot_singleton
  * @author R. Karabowicz
  * @version 0.1
  * @since 30.04.2013
  */
-
-#include "FairFileSource.h"   // FairRunAnaProof can only accept FairFileSource as source
-#include "FairRunAna.h"
-
-#include <Rtypes.h>
-#include <TProof.h>
-
 class FairRunAnaProof : public FairRunAna
 {
   public:

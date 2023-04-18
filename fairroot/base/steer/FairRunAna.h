@@ -8,31 +8,27 @@
 #ifndef FAIRRUNANA_H
 #define FAIRRUNANA_H
 
-/**
- * Configure and manage the  Analysis
- * @author M. Al-Turany D. Bertini
- * @version 0.1
- * @since 28.02.05
- */
-
 #include "FairRootManager.h"   // for FairRootManager
 #include "FairRun.h"           // for FairRun
 #include "FairRunInfo.h"       // for FairRunInfo
 
 #include <Rtypes.h>    // for Bool_t, Double_t, UInt_t, etc
+#include <TF1.h>       //
 #include <TString.h>   // for TString
 
 class FairField;
-class TF1;
-class TFile;
-
-class FairSource;
 class FairFileSource;
 class FairMixedSource;
 
+/**
+ * Configure and manage the  Analysis
+ * \ingroup base_steer fairroot_singleton
+ * @author M. Al-Turany D. Bertini
+ * @version 0.1
+ * @since 28.02.05
+ */
 class FairRunAna : public FairRun
 {
-
   public:
     static FairRunAna* Instance();
     ~FairRunAna() override;
@@ -86,9 +82,9 @@ class FairRunAna : public FairRun
     Bool_t IsTimeStamp() { return fTimeStamps; }
 
     /** Set the flag for proccessing lmd files */
-    void StopProcessingLMD(void) { fFinishProcessingLMDFile = kTRUE; }
+    void StopProcessingLMD() { fFinishProcessingLMDFile = kTRUE; }
     /** Get the status of lmd file proccessing */
-    Bool_t GetLMDProcessingStatus(void) { return fFinishProcessingLMDFile; }
+    Bool_t GetLMDProcessingStatus() { return fFinishProcessingLMDFile; }
 
   protected:
     /**
