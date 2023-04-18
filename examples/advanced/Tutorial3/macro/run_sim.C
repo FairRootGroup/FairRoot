@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -9,9 +9,13 @@
 #include <TStopwatch.h>
 #include <TString.h>
 #include <TSystem.h>
+#include <iostream>
 #include <memory>
 
-void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant3")
+using std::cout;
+using std::endl;
+
+void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant4")
 {
     TStopwatch timer;
     timer.Start();
@@ -28,13 +32,13 @@ void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant3")
     gSystem->Setenv("CONFIG_DIR", tut_configdir.Data());
 
     // create Instance of Run Manager class
-    FairRunSim *fRun = new FairRunSim();
-    fRun->SetUseFairLinks(kTRUE);
+    FairRunSim run{};
+    run.SetUseFairLinks(kTRUE);
     //  FairLinkManager::Instance()->AddIncludeType(0);
     // set the MC version used
     // ------------------------
 
-    fRun->SetName(mcEngine);
+    run.SetName(mcEngine);
 
     TString outFile = "data/testrun_";
     outFile = outFile + mcEngine + ".root";
@@ -45,40 +49,40 @@ void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant3")
     TString parFile = "data/testparams_";
     parFile = parFile + mcEngine + ".root";
 
-    fRun->SetSink(std::make_unique<FairRootFileSink>(outFile));
-    fRun->SetGenerateRunInfo(kTRUE);   // Create FairRunInfo file
+    run.SetSink(std::make_unique<FairRootFileSink>(outFile));
+    run.SetGenerateRunInfo(kTRUE);   // Create FairRunInfo file
 
     // -----   Magnetic field   -------------------------------------------
     // Constant Field
     FairConstField *fMagField = new FairConstField();
     fMagField->SetField(0., 10., 0.);                        // values are in kG
     fMagField->SetFieldRegion(-50, 50, -50, 50, 350, 450);   // values are in cm (xmin,xmax,ymin,ymax,zmin,zmax)
-    fRun->SetField(fMagField);
+    run.SetField(fMagField);
     // --------------------------------------------------------------------
 
     // Set Material file Name
     //-----------------------
-    fRun->SetMaterials("media.geo");
+    run.SetMaterials("media.geo");
 
     // Create and add detectors
     //-------------------------
     FairModule *Cave = new FairCave("CAVE");
     Cave->SetGeometryFileName("cave.geo");
-    fRun->AddModule(Cave);
+    run.AddModule(Cave);
 
     FairModule *Magnet = new FairMagnet("MAGNET");
     Magnet->SetGeometryFileName("magnet.geo");
-    fRun->AddModule(Magnet);
+    run.AddModule(Magnet);
 
     FairDetector *Torino = new FairTestDetector("TORINO", kTRUE);
     Torino->SetGeometryFileName("torino.geo");
-    fRun->AddModule(Torino);
+    run.AddModule(Torino);
 
     // Create and Set Event Generator
     //-------------------------------
 
     FairPrimaryGenerator *primGen = new FairPrimaryGenerator();
-    fRun->SetGenerator(primGen);
+    run.SetGenerator(primGen);
 
     // Box Generator
     FairBoxGenerator *boxGen = new FairBoxGenerator(2212, 10);   // 13 = muon; 1 = multipl.
@@ -90,9 +94,9 @@ void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant3")
     // boxGen->SetXYZ(0., 0.37, 0.);
     primGen->AddGenerator(boxGen);
 
-    fRun->SetStoreTraj(kTRUE);
+    run.SetStoreTraj(kTRUE);
 
-    fRun->Init();
+    run.Init();
 
     // -Trajectories Visualization (TGeoManager Only )
     // -----------------------------------------------
@@ -110,7 +114,7 @@ void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant3")
     // Fill the Parameter containers for this run
     //-------------------------------------------
 
-    FairRuntimeDb *rtdb = fRun->GetRuntimeDb();
+    FairRuntimeDb* rtdb = run.GetRuntimeDb();
     Bool_t kParameterMerged = kTRUE;
     FairParRootFileIo *output = new FairParRootFileIo(kParameterMerged);
     output->open(parFile);
@@ -123,9 +127,9 @@ void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant3")
     // -----------------
 
     //  Int_t nEvents = 1;
-    fRun->Run(nEvents);
+    run.Run(nEvents);
 
-    fRun->CreateGeometryFile(geoFile);
+    run.CreateGeometryFile(geoFile);
 
     // -----   Finish   -------------------------------------------------------
 

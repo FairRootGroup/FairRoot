@@ -1,8 +1,0 @@
-#!/bin/bash
-
-set -e
-
-# generate data
-
-@CMAKE_CURRENT_BINARY_DIR@/macro/run_sim.sh
-@CMAKE_CURRENT_BINARY_DIR@/macro/run_digi.sh

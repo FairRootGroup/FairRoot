@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -8,9 +8,13 @@
 
 #include <TStopwatch.h>
 #include <TString.h>
+#include <iostream>
 #include <memory>
 
-void run_digi(TString mcEngine = "TGeant3")
+using std::cout;
+using std::endl;
+
+void run_digi(TString mcEngine = "TGeant4")
 {
     FairLogger* logger = FairLogger::GetLogger();
     // logger->SetLogFileName("MyLog.log");
@@ -39,28 +43,28 @@ void run_digi(TString mcEngine = "TGeant3")
     TStopwatch timer;
 
     // -----   Reconstruction run   -------------------------------------------
-    FairRunAna* fRun = new FairRunAna();
+    FairRunAna run{};
     FairFileSource* fFileSource = new FairFileSource(inFile);
-    fRun->SetSource(fFileSource);
-    fRun->SetSink(std::make_unique<FairRootFileSink>(outFile));
-    fRun->SetUseFairLinks(kTRUE);
+    run.SetSource(fFileSource);
+    run.SetSink(std::make_unique<FairRootFileSink>(outFile));
+    run.SetUseFairLinks(kTRUE);
     FairLinkManager::Instance()->AddIncludeType(0);
     //  FairLinkManager::Instance()->AddIncludeType(1);
-    fRun->SetGenerateRunInfo(kTRUE);   // Create FairRunInfo file
+    run.SetGenerateRunInfo(kTRUE);   // Create FairRunInfo file
 
-    FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
+    FairRuntimeDb* rtdb = run.GetRuntimeDb();
     FairParRootFileIo* parInput1 = new FairParRootFileIo();
     parInput1->open(parFile.Data());
     rtdb->setFirstInput(parInput1);
 
     // -----   TorinoDetector hit  producers   ---------------------------------
     FairTestDetectorDigiTask* digiTask = new FairTestDetectorDigiTask();
-    fRun->AddTask(digiTask);
+    run.AddTask(digiTask);
 
-    fRun->Init();
+    run.Init();
 
     timer.Start();
-    fRun->Run();
+    run.Run();
 
     // -----   Finish   -------------------------------------------------------
 

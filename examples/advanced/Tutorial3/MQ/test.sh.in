@@ -2,7 +2,7 @@
 
 set -e
 
-mcEngine="TGeant3"
+mcEngine="TGeant4"
 
 session="$(@FairMQ_BINDIR@/fairmq-uuid-gen -h)"
 
