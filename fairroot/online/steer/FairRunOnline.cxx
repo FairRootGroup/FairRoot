@@ -185,13 +185,12 @@ void FairRunOnline::Init()
     fTask->SetParTask();
     fRtdb->initContainers(fRunId);
 
-    //  InitContainers();
     // --- Get event header from Run
     if (!fEvtHeader) {
-        LOG(fatal) << "FairRunOnline::InitContainers:No event header in run!";
+        LOG(fatal) << "FairRunOnline::Init() No event header in run!";
         return;
     }
-    LOG(info) << "FairRunOnline::InitContainers: event header at " << fEvtHeader;
+    LOG(info) << "FairRunOnline::Init() Event header at " << fEvtHeader;
     fRootManager->Register("EventHeader.", "Event", fEvtHeader, (nullptr != GetSink()));
     fEvtHeader->SetRunId(fRunId);
 
@@ -207,43 +206,6 @@ void FairRunOnline::Init()
     fRootManager->InitSink();
     fRootManager->WriteFolder();
     fRootManager->WriteFileHeader(fFileHeader);
-}
-
-void FairRunOnline::InitContainers()
-{
-    fRtdb = GetRuntimeDb();
-    FairBaseParSet* par = static_cast<FairBaseParSet*>(fRtdb->getContainer("FairBaseParSet"));
-    LOG(info) << "FairRunOnline::InitContainers: par = " << par;
-    if (nullptr == par)
-        LOG(warn) << "FairRunOnline::InitContainers: no  'FairBaseParSet' container !";
-
-    if (par) {
-        fEvtHeader = static_cast<FairEventHeader*>(fRootManager->GetObject("EventHeader."));
-
-        fRunId = GetEvtHeaderRunId();
-
-        // Copy the Event Header Info to Output
-        fEvtHeader->Register();
-
-        // Init the containers in Tasks
-        fRtdb->initContainers(fRunId);
-        fTask->ReInitTask();
-        //    fTask->SetParTask();
-        fRtdb->initContainers(fRunId);
-        //     if (gGeoManager==0) {
-        //       par->GetGeometry();
-        //     }
-    } else {
-        // --- Get event header from Run
-        //      fEvtHeader = dynamic_cast<FairEventHeader*> (FairRunOnline::Instance()->GetEventHeade
-        GetEventHeader();
-        if (!fEvtHeader) {
-            LOG(fatal) << "FairRunOnline::InitContainers:No event header in run!";
-            return;
-        }
-        LOG(info) << "FairRunOnline::InitContainers: event header at " << fEvtHeader;
-        fRootManager->Register("EventHeader.", "Event", fEvtHeader, kTRUE);
-    }
 }
 
 Int_t FairRunOnline::EventLoop()

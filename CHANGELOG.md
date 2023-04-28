@@ -89,7 +89,9 @@ file an issue, so that we can see how to handle this.
 
 ### Breaking Changes
 * The output folder name changed from 'folderName_0' to 'folderName'.
-In the MT mode of Geant4 the folder names changed from 'folderName_1' and 'folderName_2' to 'folderName'.
+  In the MT mode of Geant4 the folder names changed from 'folderName_1' and 'folderName_2' to 'folderName'.
+* Removed the FairRunOnline::InitContainers() function.
+  It has not been used in FairRoot. Tested with R3BRoot.
 
 ### Bug fixes
 * Check the return value of `source->InitUnpackers()`/`source->ReinitUnpackers()`
