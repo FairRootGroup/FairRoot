@@ -9,6 +9,7 @@
 #ifndef _FAIRMBS_TASK_
 #define _FAIRMBS_TASK_
 
+#include "FairRunOnline.h"
 #include "FairTask.h"
 
 #include <Rtypes.h>
@@ -23,7 +24,10 @@ class FairMBSTask : public FairTask
 {
   public:
     /** Standard Constructor. */
-    FairMBSTask(const char* name, Int_t iVerbose);
+    explicit FairMBSTask(FairRunOnline& run)
+        : FairTask("ExampleMBSTask")
+        , fRunOnline(run)
+    {}
 
     /** Destructor. */
     ~FairMBSTask() override = default;
@@ -35,11 +39,12 @@ class FairMBSTask : public FairTask
     void Exec(Option_t*) override;
 
   private:
-    TClonesArray* fRawData; /**< Array with input data. */
-    TH1F* fhQdc;            /**< Histogram object which is registered on http server. */
-    TH1F* fhTac;
-    TH1F* fhClock;
-    TH1F* fhTacCh;
+    TClonesArray* fRawData{nullptr}; /**< Array with input data. */
+    TH1F* fhQdc{nullptr};            /**< Histogram object which is registered on http server. */
+    TH1F* fhTac{nullptr};
+    TH1F* fhClock{nullptr};
+    TH1F* fhTacCh{nullptr};
+    FairRunOnline& fRunOnline;   //!
 
   public:
     ClassDefOverride(FairMBSTask, 1);

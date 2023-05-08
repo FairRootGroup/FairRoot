@@ -32,7 +32,7 @@ ActivateHttpServer()
 
 Histograms to be published can be added from an analysis task by:
 ~~~~~~~~~~~~~~~~~~
-FairRunOnline::Instance()->AddObject(h1);
+fRunOnline.AddObject(h1);
 where h1 is of type TH1F* or TH2F*
 ~~~~~~~~~~~~~~~~~~
 
@@ -40,20 +40,20 @@ In addition, one can publish a canvas by using the same AddObject method. The ca
 ~~~~~~~~~~~~~~~~~~
 TCanvas *c1 = new TCanvas("c1", "Title", 10, 10, 500, 500);
 h1->Draw();
-FairRunOnline::Instance()->AddObject(c1);
+fRunOnline.AddObject(c1);
 ~~~~~~~~~~~~~~~~~~
 
 In case of large amount of histogram objects for multiple detectors, the histograms can be organized in folder structure.
 ~~~~~~~~~~~~~~~~~~
 TFolder *f1 = new TFolder("myfolder", "Title");
 f1->Add(h1);
-FairRunOnline::Instance()->AddObject(f1);
+fRunOnline.AddObject(f1);
 ~~~~~~~~~~~~~~~~~~
 
 Analysis task can also register a command, which can be executed on
 a histogram object:
 ~~~~~~~~~~~~~~~~~~
-FairRunOnline::Instance()->RegisterHttpCommand("/Reset_h1", "/h1/->Reset()");
+fRunOnline.RegisterHttpCommand("/Reset_h1", "/h1/->Reset()");
 In this case the command will reset the histogram with name "h1"
 ~~~~~~~~~~~~~~~~~~
 
