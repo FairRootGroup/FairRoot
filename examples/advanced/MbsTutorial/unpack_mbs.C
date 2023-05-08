@@ -1,3 +1,5 @@
+#include <TStopwatch.h>
+#include <TString.h>
 
 void unpack_mbs()
 {
@@ -29,7 +31,7 @@ void unpack_mbs()
     // ---------------------------------------------------------------------------
 
     // Create analysis task ------------------------------------------------------
-    FairMBSTask* task = new FairMBSTask("ExampleTask", 1);
+    auto task = new FairMBSTask(*run);
     run->AddTask(task);
     // ---------------------------------------------------------------------------
 

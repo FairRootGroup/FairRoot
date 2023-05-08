@@ -10,28 +10,15 @@
 
 #include "FairMBSRawItem.h"
 #include "FairRootManager.h"
-#include "FairRunOnline.h"
 
 #include <TCanvas.h>
 #include <TFolder.h>
 
-FairMBSTask::FairMBSTask(const char* name, Int_t iVerbose)
-    : FairTask(name, iVerbose)
-    , fRawData(nullptr)
-    , fhQdc(nullptr)
-    , fhTac(nullptr)
-    , fhClock(nullptr)
-    , fhTacCh(nullptr)
-{}
-
 InitStatus FairMBSTask::Init()
 {
-    FairRootManager* mgr = FairRootManager::Instance();
-    if (nullptr == mgr) {
-        return kFATAL;
-    }
+    FairRootManager& mgr = fRunOnline.GetRootManager();
 
-    fRawData = static_cast<TClonesArray*>(mgr->GetObject("MBSRawItem"));
+    fRawData = static_cast<TClonesArray*>(mgr.GetObject("MBSRawItem"));
     if (nullptr == fRawData) {
         return kERROR;
     }
@@ -41,13 +28,8 @@ InitStatus FairMBSTask::Init()
     fhClock = new TH1F("hClock", "Raw Clock distribution", 64, 0., 64.);
     fhTacCh = new TH1F("hTacCh", "Raw TAC Channel distribution", 20, 0., 20.);
 
-    FairRunOnline* run = FairRunOnline::Instance();
-    if (nullptr == run) {
-        return kERROR;
-    }
-
-    run->AddObject(fhQdc);
-    run->RegisterHttpCommand("/Reset_hQdc", "/hQdc/->Reset()");
+    fRunOnline.AddObject(fhQdc);
+    fRunOnline.RegisterHttpCommand("/Reset_hQdc", "/hQdc/->Reset()");
 
     auto c1 = new TCanvas("c1", "", 10, 10, 500, 500);
     c1->Divide(2, 2);
@@ -60,14 +42,14 @@ InitStatus FairMBSTask::Init()
     c1->cd(4);
     fhTacCh->Draw();
     c1->cd(0);
-    run->AddObject(c1);
+    fRunOnline.AddObject(c1);
 
     auto folder = new TFolder("MbsDetFolder", "Example Folder");
     folder->Add(fhQdc);
     folder->Add(fhTac);
     folder->Add(fhClock);
     folder->Add(fhTacCh);
-    run->AddObject(folder);
+    fRunOnline.AddObject(folder);
 
     return kSUCCESS;
 }
