@@ -284,15 +284,8 @@ void FairRunAnaProof::RunOneEvent(Long64_t entry)
         fRootManager->ReadEvent(entry);
 
         FillEventHeader();
+        CheckRunIdChanged();
 
-        auto const tmpId = GetEvtHeaderRunId();
-        if (tmpId != fRunId) {
-            fRunId = tmpId;
-            if (!fStatic) {
-                Reinit(fRunId);
-                fTask->ReInitTask();
-            }
-        }
         fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
 
         fTask->ExecuteTask("");

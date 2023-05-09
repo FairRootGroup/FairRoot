@@ -88,6 +88,12 @@ class FairRunOnline : public FairRun
     /** Main Event loop **/
     Int_t EventLoop();
 
+    /**
+     * \brief Internal facade: Handle RunID changes
+     * \return false on error
+     */
+    bool CheckRunIdChanged();
+
   protected:
     /** This variable became true after Init is called*/
     Bool_t fIsInitialized;

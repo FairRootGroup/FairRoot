@@ -130,6 +130,11 @@ class FairRunAna : public FairRun
     /** Flag for Event Header Persistency */
     Bool_t fStoreEventHeader;   //!
 
+    /**
+     * \brief Internal facade: Handle RunID changes
+     */
+    void CheckRunIdChanged();
+
     ClassDefOverride(FairRunAna, 6);
 };
 

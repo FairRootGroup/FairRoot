@@ -216,21 +216,8 @@ Int_t FairRunOnline::EventLoop()
     signal(SIGINT, handler_ctrlc);
 
     FillEventHeader();
-    auto const tmpId = GetEvtHeaderRunId();
-    if (tmpId != fRunId) {
-        LOG(info) << "FairRunOnline::EventLoop() Detected changed RunID from " << fRunId << " to " << tmpId;
-        fRunId = tmpId;
-        if (!fStatic) {
-            LOG(info) << "FairRunOnline::EventLoop() Call Reinit.";
-            Reinit(fRunId);
-            if (!GetSource()->ReInitUnpackers()) {
-                LOG(fatal) << "FairRunOnline->EventLoop() ReInitUnpackers() failed!";
-                return 1;
-            }
-            fTask->ReInitTask();
-        } else {
-            LOG(info) << "FairRunOnline::EventLoop() ReInit not called because initialisation is static.";
-        }
+    if (!CheckRunIdChanged()) {
+        return 1;
     }
 
     fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
@@ -346,6 +333,32 @@ void FairRunOnline::RegisterHttpCommand(TString name, TString command)
         TString path = "/Objects/HISTO";
         fServer->RegisterCommand(name, path + command);
     }
+}
+
+/**
+ * \sa FairRunAna::CheckRunIdChanged
+ */
+bool FairRunOnline::CheckRunIdChanged()
+{
+    auto const tmpId = GetEvtHeaderRunId();
+    if (tmpId == fRunId) {
+        return true;
+    }
+
+    LOG(info) << "FairRunOnline::CheckRunIdChanged: Detected changed RunID from " << fRunId << " to " << tmpId;
+    fRunId = tmpId;
+    if (fStatic) {
+        LOG(info) << "FairRunOnline::CheckRunIdChanged: ReInit not called because initialisation is static.";
+        return true;
+    }
+    LOG(info) << "FairRunOnline::CheckRunIdChanged: Call Reinit.";
+    Reinit(fRunId);
+    if (!GetSource()->ReInitUnpackers()) {
+        LOG(fatal) << "FairRunOnline::CheckRunIdChanged: ReInitUnpackers() failed!";
+        return false;
+    }
+    fTask->ReInitTask();
+    return true;
 }
 
 void FairRunOnline::Reinit(UInt_t runId)

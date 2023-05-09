@@ -324,8 +324,6 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
             fRunInfo.Reset();
         }
 
-        Int_t readEventReturn = 0;
-
         for (int i = Ev_start; i < Ev_end || MaxAllowed == -1; i++) {
 
             gSystem->IgnoreInterrupt();
@@ -337,7 +335,7 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
                 break;
             }
 
-            readEventReturn = fRootManager->ReadEvent(i);
+            auto readEventReturn = fRootManager->ReadEvent(i);
 
             if (readEventReturn != 0) {
                 LOG(warn) << "FairRunAna::Run() fRootManager->ReadEvent(" << i << ") returned " << readEventReturn
@@ -346,15 +344,8 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
             }
 
             FillEventHeader();
+            CheckRunIdChanged();
 
-            auto const tmpId = GetEvtHeaderRunId();
-            if (tmpId != fRunId) {
-                fRunId = tmpId;
-                if (!fStatic) {
-                    Reinit(fRunId);
-                    fTask->ReInitTask();
-                }
-            }
             // std::cout << "WriteoutBufferData with time: " << fRootManager->GetEventTime();
             fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
             fTask->ExecuteTask("");
@@ -384,8 +375,6 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 //_____________________________________________________________________________
 void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
 {
-    UInt_t tmpId = 0;
-
     Int_t MaxAllowed = fRootManager->CheckMaxEventNo(Ev_end);
     if (MaxAllowed != -1) {
         if (Ev_end == 0) {
@@ -425,13 +414,9 @@ void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
          * if we have simulation files then they have MC Event Header and the Run Id is in it, any way it
          * would be better to make FairMCEventHeader a subclass of FairEvtHeader.
          */
-        if (tmpId != fRunId) {
-            fRunId = tmpId;
-            if (!fStatic) {
-                Reinit(fRunId);
-                fTask->ReInitTask();
-            }
-        }
+
+        CheckRunIdChanged();
+
         // FairMCEventHeader* header = dynamic_cast<FairMCEventHeader*>(fRootManager->GetObject("MCEventHeader.");
         //    std::cout << "WriteoutBufferData with time: " << fRootManager->GetEventTime();
         fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
@@ -487,14 +472,7 @@ void FairRunAna::RunMQ(Long64_t entry)
    it read a certain event and call the task exec, but no output is written
    */
     fRootManager->ReadEvent(entry);
-    auto const tmpId = GetEvtHeaderRunId();
-    if (tmpId != fRunId) {
-        fRunId = tmpId;
-        if (!fStatic) {
-            Reinit(fRunId);
-            fTask->ReInitTask();
-        }
-    }
+    CheckRunIdChanged();
     fTask->ExecuteTask("");
     FillEventHeader();
     fTask->FinishTask();
@@ -505,14 +483,7 @@ void FairRunAna::RunMQ(Long64_t entry)
 void FairRunAna::Run(Long64_t entry)
 {
     fRootManager->ReadEvent(entry);
-    auto const tmpId = GetEvtHeaderRunId();
-    if (tmpId != fRunId) {
-        fRunId = tmpId;
-        if (!fStatic) {
-            Reinit(fRunId);
-            fTask->ReInitTask();
-        }
-    }
+    CheckRunIdChanged();
     fTask->ExecuteTask("");
     FillEventHeader();
     fTask->FinishTask();
@@ -615,6 +586,27 @@ void FairRunAna::TerminateRun()
     fRootManager->CloseSink();
 }
 //_____________________________________________________________________________
+
+/**
+ * \sa FairRunOnline::CheckRunIdChanged
+ */
+void FairRunAna::CheckRunIdChanged()
+{
+    auto newrunid = GetEvtHeaderRunId();
+    if (newrunid == fRunId) {
+        return;
+    }
+
+    LOG(debug) << "FairRunAna::CheckRunIdChanged() Detected changed RunID from " << fRunId << " to " << newrunid;
+    fRunId = newrunid;
+    if (fStatic) {
+        LOG(debug) << "FairRunAna::CheckRunIdChanged: ReInit not called because initialisation is static.";
+        return;
+    }
+    LOG(debug) << "FairRunAna::CheckRunIdChanged: Call Reinit.";
+    Reinit(fRunId);
+    fTask->ReInitTask();
+}
 
 void FairRunAna::Reinit(UInt_t runId)
 {
