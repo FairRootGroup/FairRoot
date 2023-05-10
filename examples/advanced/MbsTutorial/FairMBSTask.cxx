@@ -13,9 +13,7 @@
 #include "FairRunOnline.h"
 
 #include <TCanvas.h>
-#include <TClonesArray.h>
 #include <TFolder.h>
-#include <TH1F.h>
 
 FairMBSTask::FairMBSTask(const char* name, Int_t iVerbose)
     : FairTask(name, iVerbose)
@@ -51,7 +49,7 @@ InitStatus FairMBSTask::Init()
     run->AddObject(fhQdc);
     run->RegisterHttpCommand("/Reset_hQdc", "/hQdc/->Reset()");
 
-    TCanvas* c1 = new TCanvas("c1", "", 10, 10, 500, 500);
+    auto c1 = new TCanvas("c1", "", 10, 10, 500, 500);
     c1->Divide(2, 2);
     c1->cd(1);
     fhQdc->Draw();
@@ -64,7 +62,7 @@ InitStatus FairMBSTask::Init()
     c1->cd(0);
     run->AddObject(c1);
 
-    TFolder* folder = new TFolder("MbsDetFolder", "Example Folder");
+    auto folder = new TFolder("MbsDetFolder", "Example Folder");
     folder->Add(fhQdc);
     folder->Add(fhTac);
     folder->Add(fhClock);
@@ -80,9 +78,8 @@ void FairMBSTask::Exec(Option_t*)
         return;
     }
     Int_t nItems = fRawData->GetEntriesFast();
-    FairMBSRawItem* item;
     for (Int_t i = 0; i < nItems; i++) {
-        item = static_cast<FairMBSRawItem*>(fRawData->At(i));
+        auto item = static_cast<FairMBSRawItem const*>(fRawData->At(i));
         if (nullptr == item) {
             continue;
         }
