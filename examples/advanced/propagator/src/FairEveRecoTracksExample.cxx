@@ -194,6 +194,9 @@ void FairEveRecoTracksExample::Repaint()
 
 InitStatus FairEveRecoTracksExample::Init()
 {
+    auto status = FairEveTracks::Init();
+    if (status != kSUCCESS)
+        return status;
     FairRootManager *mngr = FairRootManager::Instance();
     fContainerReco = (TClonesArray *)mngr->GetObject("FairTutPropTracks");
     if (fContainerReco == nullptr) {
@@ -218,7 +221,7 @@ InitStatus FairEveRecoTracksExample::Init()
     }
     fRK = new FairRKPropagator(field);
     fPDG = TDatabasePDG::Instance();
-    return FairEveTracks::Init();
+    return kSUCCESS;
 }
 
 void FairEveRecoTracksExample::SetDrawMC(Bool_t draw)
