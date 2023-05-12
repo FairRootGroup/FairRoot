@@ -145,6 +145,9 @@ void FairEveMCTracks::Repaint()
 
 InitStatus FairEveMCTracks::Init()
 {
+    auto status = FairEveTracks::Init();
+    if (status != kSUCCESS)
+        return status;
     FairEventManager* eveManager = GetEventManager();
     FairRootManager* mngr = &(eveManager->GetRootManager());
     fContainer = dynamic_cast<TClonesArray*>(mngr->GetObject("MCTrack"));
@@ -165,7 +168,7 @@ InitStatus FairEveMCTracks::Init()
     }
     fRK = std::make_unique<FairRKPropagator>(field);
     fPDG = TDatabasePDG::Instance();
-    return FairEveTracks::Init();
+    return kSUCCESS;
 }
 
 FairEveMCTracks::~FairEveMCTracks() = default;
