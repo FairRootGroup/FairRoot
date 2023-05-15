@@ -97,6 +97,7 @@ file an issue, so that we can see how to handle this.
 * Check the return value of `source->InitUnpackers()`/`source->ReinitUnpackers()`
   in `FairRunOnline`. Stop run if `false` returned.
 * Remove sink from Tutorial3/MQ/sampler.cxx.
+* Fixed broken `StaticContainer` functionality (do not `ReInit`ialize when `RunId` changes) in `FairRunOnline`.
 
 ### Other Notable Changes
 * Allow running without output sink. In this case even persistent branches would not be stored anywhere.

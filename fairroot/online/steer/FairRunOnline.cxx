@@ -215,16 +215,20 @@ Int_t FairRunOnline::EventLoop()
 
     FillEventHeader();
     auto const tmpId = GetEvtHeaderRunId();
-
     if (tmpId != fRunId) {
-        LOG(info) << "FairRunOnline::EventLoop() Call Reinit due to changed RunID (from " << fRunId << " to " << tmpId;
+        LOG(info) << "FairRunOnline::EventLoop() Detected changed RunID from " << fRunId << " to " << tmpId;
         fRunId = tmpId;
-        Reinit(fRunId);
-        if (!GetSource()->ReInitUnpackers()) {
-            LOG(fatal) << "FairRunOnline->EventLoop() ReInitUnpackers() failed!";
-            return 1;
+        if (!fStatic) {
+            LOG(info) << "FairRunOnline::EventLoop() Call Reinit.";
+            Reinit(fRunId);
+            if (!GetSource()->ReInitUnpackers()) {
+                LOG(fatal) << "FairRunOnline->EventLoop() ReInitUnpackers() failed!";
+                return 1;
+            }
+            fTask->ReInitTask();
+        } else {
+            LOG(info) << "FairRunOnline::EventLoop() ReInit not called because initialisation is static.";
         }
-        fTask->ReInitTask();
     }
 
     fRootManager->StoreWriteoutBufferData(fRootManager->GetEventTime());
