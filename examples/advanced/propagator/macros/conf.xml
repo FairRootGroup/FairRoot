@@ -16,4 +16,9 @@
     <mctrack color="kGreen" pdg="211"></mctrack>
     <mctrack color="kYellow" pdg="11"></mctrack>
 </MCTracksColors>
+<FairMCTrackColors>
+    <mctrack color="kCyan" pdg="2212"></mctrack>
+    <mctrack color="kPink" pdg="211"></mctrack>
+    <mctrack color="kOrange" pdg="11"></mctrack>
+</FairMCTrackColors>
 </xmlconf>

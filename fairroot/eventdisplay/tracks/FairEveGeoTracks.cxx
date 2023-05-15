@@ -20,6 +20,7 @@
 #include "FairEventManager.h"   // for FairEventManager
 #include "FairGetEventTime.h"
 #include "FairRootManager.h"   // for FairRootManager
+#include "FairXMLNode.h"
 
 #include <TBranch.h>
 #include <TClonesArray.h>   // for TClonesArray
@@ -47,7 +48,7 @@ FairEveGeoTracks::FairEveGeoTracks()
 
 InitStatus FairEveGeoTracks::Init()
 {
-    FairEventManager* eveManager = GetEventManager();
+    FairEventManager* eveManager = FairEventManager::Instance();
     auto& mngr = eveManager->GetRootManager();
     fContainer = dynamic_cast<TClonesArray*>(mngr.GetObject("GeoTracks"));
     if (!fContainer) {
@@ -56,7 +57,16 @@ InitStatus FairEveGeoTracks::Init()
     }
     fBranch = mngr.GetInTree()->GetBranch("GeoTracks");
     FairGetEventTime::Instance().Init();
-    return FairEveTracks::Init();
+    TString xmlConfig = eveManager->GetXMLConfig();
+    if (xmlConfig.Length() > 4) {
+        FairXMLFile file(xmlConfig);
+        FairXMLNode* root = file.GetRootNode();
+        FairXMLNode* mcColors = root->GetChild("MCTracksColors");
+        if (mcColors) {
+            fXMLConf = FairXMLPdgColor(mcColors);
+        }
+    }
+    return kSUCCESS;
 }
 
 void FairEveGeoTracks::DrawTrack(Int_t id)
@@ -65,7 +75,7 @@ void FairEveGeoTracks::DrawTrack(Int_t id)
     if (!CheckCuts(tr))
         return;
     auto p = static_cast<TParticle*>(tr->GetParticle());
-    Color_t color = GetEventManager()->Color(p->GetPdgCode());
+    Color_t color = fXMLConf.GetColor(p->GetPdgCode());
     TEveTrackList* trList = FindTrackGroup(p->GetName(), color);
 
     auto track = new FairEveTrack(p, p->GetPdgCode(), trList->GetPropagator());
@@ -97,7 +107,7 @@ void FairEveGeoTracks::DrawAnimatedTrack(TGeoTrack* tr, double t0)
     if (tr->GetPoint(0)[3] * timeScale + t0 > fTMax)
         return;   // first point after tmax
     auto p = static_cast<TParticle*>(tr->GetParticle());
-    Color_t color = GetEventManager()->Color(p->GetPdgCode());
+    Color_t color = fXMLConf.GetColor(p->GetPdgCode());
     TEveTrackList* trList = FindTrackGroup(p->GetName(), color);
     auto track = new FairEveTrack(p, p->GetPdgCode(), trList->GetPropagator());
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p->Px(), p->Py(), p->Pz()));

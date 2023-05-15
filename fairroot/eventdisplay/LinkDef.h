@@ -42,5 +42,7 @@
 #pragma link C++ class FairTimebasedMCSource;
 #pragma link C++ class FairTimebasedMCHitSource;
 #pragma link C++ class FairGetEventTime + ;
-
+#pragma link C++ class FairXMLDetectorConf + ;
+#pragma link C++ class FairXMLPdgColor + ;
+#pragma link C++ class FairXMLEveConf + ;
 #endif

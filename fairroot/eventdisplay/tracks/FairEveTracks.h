@@ -16,18 +16,18 @@
 #ifndef FAIRTEVERACKS_H_
 #define FAIRTEVERACKS_H_
 
-#include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
-#include <RtypesCore.h>   // for Double_t, Bool_t, kFALSE, Color_t
-#include <TEveElement.h>  // for TEveElement
-#include <TNamed.h>       // for TNamed
-#include <TString.h>      // for TString
-#include "FairTask.h"     // for InitStatus
-class FairEventManager;  // lines 23-23
+#include "FairTask.h"   // for InitStatus
+
+#include <Rtypes.h>        // for THashConsistencyHolder, ClassDef
+#include <RtypesCore.h>    // for Double_t, Bool_t, kFALSE, Color_t
+#include <TEveElement.h>   // for TEveElement
+#include <TNamed.h>        // for TNamed
+#include <TString.h>       // for TString
+class FairEventManager;    // lines 23-23
 class TBuffer;
 class TClass;
 class TEveTrackList;  // lines 24-24
 class TMemberInspector;
-
 
 /**
  * base evelement that represents tracks
@@ -36,13 +36,12 @@ class FairEveTracks
     : public TEveElement
     , public TNamed
 {
-    FairEventManager *fEventManager;   //!
-    Double_t fPt[2];
-    Double_t fEta[2];
-    Double_t fEnergy[2];
-    Bool_t fUsePt;
-    Bool_t fUseEta;
-    Bool_t fUseEnergy;
+    Double_t fPt[2]{0, 10};
+    Double_t fEta[2]{-10, 10};
+    Double_t fEnergy[2]{0, 10};
+    Bool_t fUsePt{kFALSE};
+    Bool_t fUseEta{kFALSE};
+    Bool_t fUseEnergy{kFALSE};
     const Bool_t fAcceptCompound;
 
   protected:
@@ -55,7 +54,6 @@ class FairEveTracks
     Bool_t UsePtCut() const { return fUsePt; };
     Bool_t UseEtaCut() const { return fUseEta; };
     Bool_t UseEnergyCut() const { return fUseEnergy; };
-    FairEventManager *GetEventManager() const { return fEventManager; };
     /**
      *
      * @param groupName - name of the track group
@@ -118,7 +116,7 @@ class FairEveTracks
      * reset group, repaint tracks assigned to this class
      */
     virtual void Repaint() = 0;
-    virtual InitStatus Init();
+    virtual InitStatus Init() { return kSUCCESS; }
     virtual ~FairEveTracks();
     ClassDef(FairEveTracks, 0)
 };
