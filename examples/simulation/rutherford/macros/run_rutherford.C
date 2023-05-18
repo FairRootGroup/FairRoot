@@ -1,15 +1,21 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
+#include <TH2D.h>
 #include <TRandom.h>
+#include <TStopwatch.h>
 #include <TString.h>
 #include <TSystem.h>
+#include <iostream>
 #include <memory>
+
+using std::cout;
+using std::endl;
 
 void run_rutherford(Int_t nEvents = 10, TString mcEngine = "TGeant4", Bool_t isMT = true)
 {

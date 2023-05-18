@@ -1,10 +1,16 @@
 /********************************************************************************
- *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2019-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TRandom.h>
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+
 int runMM(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = false)
 {
     UInt_t randomSeed = 123456;

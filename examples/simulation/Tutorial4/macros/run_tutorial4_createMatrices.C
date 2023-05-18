@@ -1,13 +1,20 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TObjString.h>
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+#include <fairlogger/Logger.h>
+#include <fstream>
+
 void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT = false)
 {
-
     TString dir = getenv("VMCWORKDIR");
 
     TString tut_configdir = dir + "/simulation/Tutorial4/gconfig";
@@ -119,7 +126,7 @@ void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine = "TGeant
 
     auto matrices = tutdet->getMisalignmentMatrices();
 
-    ofstream myfile;
+    std::ofstream myfile;
     myfile.open("misalignmentMatrices.txt");
 
     double* rot;
@@ -140,6 +147,4 @@ void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine = "TGeant
     LOG(info) << "AlignHandler: all matrices added!";
 
     LOG(info) << "SUCCESS! All matrices created and saved!";
-
-    return;
 }
