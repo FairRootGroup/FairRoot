@@ -1,3 +1,16 @@
+/********************************************************************************
+ * Copyright (C) 2012-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
+
+#include <TRandom.h>
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+
 void run_sim_sep(Int_t fileId, Int_t nEvents = 1000, TString mcEngine = "TGeant3")
 {
     gRandom->SetSeed(1111 * fileId);
