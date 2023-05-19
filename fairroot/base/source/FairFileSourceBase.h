@@ -12,6 +12,7 @@
 #include "FairSource.h"
 
 #include <TFile.h>
+#include <TObjArray.h>
 #include <TTree.h>
 #include <list>
 #include <map>
@@ -21,14 +22,18 @@
  */
 class FairFileSourceBase : public FairSource
 {
+    friend class FairFileSource;
+    friend class FairMixedSource;
+
   public:
-    ~FairFileSourceBase() override = default;
+    ~FairFileSourceBase() override;
     void Reset() override {}
     Source_Type GetSourceType() override { return kFILE; }
     void SetParUnpackers() override {}
     Bool_t InitUnpackers() override { return kTRUE; }
     Bool_t ReInitUnpackers() override { return kTRUE; }
 
+    TObjArray* GetListOfFolders() { return &fListFolder; }
     Bool_t CompareBranchList(TFile* fileHandle, TString inputLevel);
 
   protected:
@@ -38,6 +43,10 @@ class FairFileSourceBase : public FairSource
     std::map<TString, std::list<TString>> fCheckInputBranches{};   //!
 
     static bool ActivateObjectAnyImpl(TTree* source, void** obj, const std::type_info& info, const char* brname);
+
+  private:
+    /** list of folders from all input (and friends) files*/
+    TObjArray fListFolder{16};   //!
 
     ClassDefOverride(FairFileSourceBase, 0);
 };

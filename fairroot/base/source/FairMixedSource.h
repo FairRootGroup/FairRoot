@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -22,6 +22,8 @@
 #include <TChain.h>
 #include <TF1.h>
 #include <TFile.h>
+#include <TFolder.h>
+#include <TString.h>
 #include <list>
 #include <map>
 #include <memory>
@@ -29,10 +31,6 @@
 class FairEventHeader;
 class FairFileHeader;
 class FairMCEventHeader;
-class TString;
-class TFolder;
-class TObject;
-
 class FairRootManager;
 
 class FairMixedSource : public FairFileSourceBase
@@ -111,7 +109,6 @@ class FairMixedSource : public FairFileSourceBase
     void SetFileHeader(FairFileHeader* f) { fFileHeader = f; }
     Double_t GetEventTime();
 
-    TObjArray* GetListOfFolders() { return fListFolder; }
     TFolder* GetBranchDescriptionFolder() { return fCbmroot; }
     UInt_t GetEntries() { return fNoOfEntries; }
 
@@ -143,8 +140,6 @@ class FairMixedSource : public FairFileSourceBase
     std::map<TString, TChain*> fFriendTypeList;                         //!
     std::list<TString> fInputLevel;                                     //!
     std::map<TString, std::multimap<TString, TArrayI>> fRunIdInfoAll;   //!
-    /** list of folders from all input (and friends) files*/
-    TObjArray* fListFolder;   //!
     /**folder structure of output*/
     TFolder* fCbmout;
     /**folder structure of input*/

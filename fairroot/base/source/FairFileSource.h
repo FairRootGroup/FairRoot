@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -24,6 +24,7 @@
 #include <TFile.h>
 #include <TFolder.h>
 #include <TString.h>
+#include <TTree.h>
 #include <list>
 #include <map>
 #include <memory>
@@ -31,7 +32,6 @@
 class FairEventHeader;
 class FairFileHeader;
 class FairMCEventHeader;
-class TTree;
 
 class FairFileSource : public FairFileSourceBase
 {
@@ -73,7 +73,6 @@ class FairFileSource : public FairFileSourceBase
         }
     }
     void SetInTree(TTree* tempTree);
-    TObjArray* GetListOfFolders() { return fListFolder; }
     TFolder* GetBranchDescriptionFolder() { return fCbmroot; }
     UInt_t GetEntries() { return fNoOfEntries; }
 
@@ -125,8 +124,6 @@ class FairFileSource : public FairFileSourceBase
     TChain* fInChain;
     /**Input Tree */
     TTree* fInTree;
-    /** list of folders from all input (and friends) files*/
-    TObjArray* fListFolder;   //!
     /**folder structure of output*/
     TFolder* fCbmout;
     /**folder structure of input*/

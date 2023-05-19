@@ -16,7 +16,6 @@
 #include "FairMixedSource.h"
 
 #include "FairEventHeader.h"
-#include "FairLogger.h"
 #include "FairMCEventHeader.h"
 #include "FairRootManager.h"
 
@@ -30,6 +29,7 @@
 #include <TRandom.h>   // for TRandom, gRandom
 #include <TString.h>
 #include <cmath>   // floor, fmod
+#include <fairlogger/Logger.h>
 
 FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
     : FairFileSourceBase()
@@ -41,7 +41,6 @@ FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
     , fFriendTypeList()
     , fInputLevel()
     , fRunIdInfoAll()
-    , fListFolder(new TObjArray(16))
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -93,7 +92,6 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
     , fFriendTypeList()
     , fInputLevel()
     , fRunIdInfoAll()
-    , fListFolder(new TObjArray(16))
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -145,7 +143,6 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     , fFriendTypeList()
     , fInputLevel()
     , fRunIdInfoAll()
-    , fListFolder(new TObjArray(16))
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -268,7 +265,7 @@ Bool_t FairMixedSource::Init()
     }
 
     gROOT->GetListOfBrowsables()->Add(fCbmroot);
-    fListFolder->Add(fCbmroot);
+    fListFolder.Add(fCbmroot);
 
     // Store the information about the unique runids in the input file
     // together with the filename and the number of events for each runid
@@ -310,8 +307,8 @@ Bool_t FairMixedSource::Init()
     fNoOfEntries = fBackgroundChain->GetEntries();
     FairRootManager::Instance()->SetInChain(fBackgroundChain, 0);
 
-    for (Int_t i = 0; i < fListFolder->GetEntriesFast(); i++) {
-        TFolder* fold = static_cast<TFolder*>(fListFolder->At(i));
+    for (Int_t i = 0; i < fListFolder.GetEntriesFast(); i++) {
+        TFolder* fold = static_cast<TFolder*>(fListFolder.At(i));
         fEvtHeader = static_cast<FairEventHeader*>(fold->FindObjectAny("EventHeader."));
         fMCHeader = static_cast<FairMCEventHeader*>(fold->FindObjectAny("MCEventHeader."));
         if (fEvtHeader) {
@@ -321,7 +318,7 @@ Bool_t FairMixedSource::Init()
             ActivateObject(reinterpret_cast<TObject**>(&fMCHeader), "MCEventHeader.");
         }
     }
-    FairRootManager::Instance()->SetListOfFolders(fListFolder);
+    FairRootManager::Instance()->SetListOfFolders(&fListFolder);
 
     LOG(info) << "Entries in this Source " << fNoOfEntries << " ------------";
     return kTRUE;
@@ -527,7 +524,7 @@ Bool_t FairMixedSource::OpenBackgroundChain()
     }
 
     gROOT->GetListOfBrowsables()->Add(fCbmroot);
-    fListFolder->Add(fCbmroot);
+    fListFolder.Add(fCbmroot);
     return kTRUE;
 }
 
