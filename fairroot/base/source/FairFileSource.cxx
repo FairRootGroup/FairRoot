@@ -16,7 +16,6 @@
 #include "FairFileSource.h"
 
 #include "FairEventHeader.h"
-#include "FairLogger.h"
 #include "FairMCEventHeader.h"
 #include "FairRootManager.h"
 
@@ -37,8 +36,9 @@
 #include <algorithm>   // for find
 #include <cmath>       // fmod
 #include <cstdlib>     // exit
-#include <list>        // for _List_iterator, list, etc
-#include <map>         // multimap
+#include <fairlogger/Logger.h>
+#include <list>   // for _List_iterator, list, etc
+#include <map>    // multimap
 #include <typeinfo>
 #include <vector>
 
@@ -53,7 +53,6 @@ FairFileSource::FairFileSource(TFile* f, const char* Title, UInt_t)
     , fRunIdInfoAll()
     , fInChain(0)
     , fInTree(0)
-    , fListFolder(new TObjArray(16))
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -91,7 +90,6 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
     , fRunIdInfoAll()
     , fInChain(0)
     , fInTree(0)
-    , fListFolder(new TObjArray(16))
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -130,7 +128,6 @@ FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UI
     , fRunIdInfoAll()
     , fInChain(0)
     , fInTree(0)
-    , fListFolder(new TObjArray(16))
     , fCbmout(0)
     , fCbmroot(0)
     , fSourceIdentifier(0)
@@ -223,7 +220,7 @@ Bool_t FairFileSource::Init()
     }
 
     gROOT->GetListOfBrowsables()->Add(fCbmroot);
-    fListFolder->Add(fCbmroot);
+    fListFolder.Add(fCbmroot);
 
     // Store the information about the unique runids in the input file
     // together with the filename and the number of events for each runid
@@ -269,8 +266,8 @@ Bool_t FairFileSource::Init()
 
     LOG(debug) << "Entries in this Source " << fNoOfEntries;
 
-    for (Int_t i = 0; i < fListFolder->GetEntriesFast(); i++) {
-        TFolder* fold = static_cast<TFolder*>(fListFolder->At(i));
+    for (Int_t i = 0; i < fListFolder.GetEntriesFast(); i++) {
+        TFolder* fold = static_cast<TFolder*>(fListFolder.At(i));
         fEvtHeader = static_cast<FairEventHeader*>(fold->FindObjectAny("EventHeader."));
         fMCHeader = static_cast<FairMCEventHeader*>(fold->FindObjectAny("MCEventHeader."));
         if (fEvtHeader) {
@@ -281,7 +278,7 @@ Bool_t FairFileSource::Init()
         }
     }
 
-    FairRootManager::Instance()->SetListOfFolders(fListFolder);
+    FairRootManager::Instance()->SetListOfFolders(&fListFolder);
 
     AddFriendsToChain();
 
@@ -536,7 +533,7 @@ void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
     }
     folderName1 = folderName1 + "_" + inputLevel;
     added->SetName(folderName1);
-    fListFolder->Add(added);
+    fListFolder.Add(added);
 
     /**Get The list of branches from the friend file and add it to the actual list*/
     auto list = f->Get<TList>("BranchList");

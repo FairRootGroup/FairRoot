@@ -8,9 +8,16 @@
 
 #include "FairFileSourceBase.h"
 
+#include "FairRootManager.h"
+
 #include <TObjString.h>
 #include <fairlogger/Logger.h>
 #include <set>
+
+FairFileSourceBase::~FairFileSourceBase()
+{
+    FairRootManager::Instance()->SetListOfFolders(nullptr);
+}
 
 Bool_t FairFileSourceBase::CompareBranchList(TFile* fileHandle, TString inputLevel)
 {
