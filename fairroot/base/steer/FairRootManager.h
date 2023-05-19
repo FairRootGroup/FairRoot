@@ -337,8 +337,6 @@ class FairRootManager : public TObject
 
     /**private Members*/
 
-    /**folder structure of output*/
-    TFolder* fOutFolder;
     /** current time in ns*/
     Double_t fCurrentTime;
     std::vector<TObject*> fObj2{};   //!

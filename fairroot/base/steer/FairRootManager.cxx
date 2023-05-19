@@ -72,7 +72,6 @@ FairRootManager* FairRootManager::Instance()
 
 FairRootManager::FairRootManager()
     : TObject()
-    , fOutFolder(0)
     , fCurrentTime(0)
     , fBranchSeqId(0)
     , fBranchNameList(new TList())
@@ -483,19 +482,9 @@ Bool_t FairRootManager::ReadNextEvent(Double_t)
 TObject* FairRootManager::GetObject(const char* BrName)
 {
     /**Get Data object by name*/
-    TObject* Obj = nullptr;
     LOG(debug2) << " Try to find if the object " << BrName << " is already activated by another task or call";
-    /**Try to find the object in the folder structure, object already activated by other task or call*/
-    if (fOutFolder) {
-        Obj = fOutFolder->FindObjectAny(BrName);
-        if (Obj) {
-            LOG(debug2) << "Object " << BrName << " was already activated by another task";
-        }
-    }
     /**Get object from memory or source*/
-    if (!Obj) {
-        Obj = ActivateBranch(BrName);
-    }
+    TObject* Obj = ActivateBranch(BrName);
     if (Obj != nullptr)
         FairMonitor::GetMonitor()->RecordGetting(BrName);
     return Obj;
@@ -773,19 +762,7 @@ Int_t FairRootManager::CheckBranchSt(const char* BrName)
 {
     // cout <<"FairRootManager::CheckBranchSt  :  " << BrName << endl;
 
-    if (fListFolder == 0) {
-        fListFolder = new TObjArray(16);
-    }
-
-    TObject* Obj1 = nullptr;
-    if (fOutFolder) {
-        fListFolder->Add(fOutFolder);
-        Obj1 = fOutFolder->FindObjectAny(BrName);   // Branch in output folder
-    }
-    if (!Obj1) {
-        Obj1 = ListFolderSearch(BrName);
-    }
-
+    TObject* Obj1 = ListFolderSearch(BrName);
     TObject* Obj2 = GetMemoryBranch(BrName);   // Branch in Memory
 
     Int_t returnvalue = 0;
