@@ -46,7 +46,7 @@ FairMCEventHeader::FairMCEventHeader(UInt_t runId)
     , fRotZ(0.)
 {}
 
-FairMCEventHeader::FairMCEventHeader(EventID iEvent,
+FairMCEventHeader::FairMCEventHeader(fr::EventID iEvent,
                                      Double_t x,
                                      Double_t y,
                                      Double_t z,
@@ -72,7 +72,7 @@ FairMCEventHeader::~FairMCEventHeader() {}
 
 void FairMCEventHeader::Reset()
 {
-    fEventId = NoEventID;
+    fEventId = fr::NoEventID;
     fNPrim = 0;
     fX = fY = fZ = fT = fB = 0.;
     fIsSet = kFALSE;

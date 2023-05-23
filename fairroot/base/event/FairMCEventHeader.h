@@ -14,6 +14,8 @@
 #ifndef FAIRMCEVENTHEADER_H
 #define FAIRMCEVENTHEADER_H 1
 
+#include "FairBaseTypes.h"
+
 #include <Rtypes.h>     // for Double_t, UInt_t, etc
 #include <TNamed.h>     // for TNamed
 #include <TVector3.h>   // for TVector3
@@ -22,12 +24,6 @@
 class FairMCEventHeader : public TNamed
 {
   public:
-    /// Alias name for event id type
-    using EventID = UInt_t;
-
-    /// Sentinel value for the event id, meaning no event id stored
-    static constexpr EventID NoEventID = std::numeric_limits<EventID>::max();
-
     /** Default constructor **/
     FairMCEventHeader();
 
@@ -39,7 +35,7 @@ class FairMCEventHeader : public TNamed
      *@param b        impact parameter [fm] (if relevant)
      *@param nPrim    number of input tracks
      **/
-    FairMCEventHeader(EventID iEvent, Double_t x, Double_t y, Double_t z, Double_t t, Double_t b, Int_t nPrim);
+    FairMCEventHeader(fr::EventID iEvent, Double_t x, Double_t y, Double_t z, Double_t t, Double_t b, Int_t nPrim);
 
     /** Standard constructor with run identifier **/
     FairMCEventHeader(UInt_t runId);
@@ -48,10 +44,10 @@ class FairMCEventHeader : public TNamed
     ~FairMCEventHeader() override;
 
     /** Accessors **/
-    UInt_t GetRunID() const { return fRunId; }        /// run identifier
-    EventID GetEventID() const { return fEventId; }   /// event identifier
+    UInt_t GetRunID() const { return fRunId; }            /// run identifier
+    fr::EventID GetEventID() const { return fEventId; }   /// event identifier
     /// check whether an event id is set
-    Bool_t HasEventID() const { return fEventId != NoEventID; }
+    Bool_t HasEventID() const { return fEventId != fr::NoEventID; }
     Double_t GetX() const { return fX; }         /// vertex x [cm]
     Double_t GetY() const { return fY; }         /// vertex y [cm]
     Double_t GetZ() const { return fZ; }         /// vertex z [cm]
@@ -66,7 +62,7 @@ class FairMCEventHeader : public TNamed
     void GetVertex(TVector3& vertex) { vertex.SetXYZ(fX, fY, fZ); }
 
     /** Modifiers **/
-    void SetEventID(EventID eventId) { fEventId = eventId; }
+    void SetEventID(fr::EventID eventId) { fEventId = eventId; }
     void SetRunID(UInt_t runId) { fRunId = runId; }
     void SetTime(Double_t t) { fT = t; }
     void SetB(Double_t b) { fB = b; }
@@ -85,18 +81,18 @@ class FairMCEventHeader : public TNamed
     virtual void Register();
 
   protected:
-    UInt_t fRunId;                 ///  Run identifier
-    EventID fEventId{NoEventID};   ///  Event identifier
-    Double32_t fX;                 ///  Primary vertex x [cm]
-    Double32_t fY;                 ///  Primary vertex y [cm]
-    Double32_t fZ;                 ///  Primary vertex z [cm]
-    Double32_t fT;                 ///  Event time [s]
-    Double32_t fB;                 ///  Impact parameter [fm] (if relevant)
-    Int_t fNPrim;                  ///  Number of input tracks
-    Bool_t fIsSet;                 ///  Flag whether variables are filled
-    Double32_t fRotX;              ///  Rotation around x-axis (beam tilt) [rad]
-    Double32_t fRotY;              ///  Rotation around y-axis (beam tilt) [rad]
-    Double32_t fRotZ;              ///  Rotation around z-axis (event plane) [rad]
+    UInt_t fRunId;                         ///  Run identifier
+    fr::EventID fEventId{fr::NoEventID};   ///  Event identifier
+    Double32_t fX;                         ///  Primary vertex x [cm]
+    Double32_t fY;                         ///  Primary vertex y [cm]
+    Double32_t fZ;                         ///  Primary vertex z [cm]
+    Double32_t fT;                         ///  Event time [s]
+    Double32_t fB;                         ///  Impact parameter [fm] (if relevant)
+    Int_t fNPrim;                          ///  Number of input tracks
+    Bool_t fIsSet;                         ///  Flag whether variables are filled
+    Double32_t fRotX;                      ///  Rotation around x-axis (beam tilt) [rad]
+    Double32_t fRotY;                      ///  Rotation around y-axis (beam tilt) [rad]
+    Double32_t fRotZ;                      ///  Rotation around z-axis (event plane) [rad]
 
     ClassDefOverride(FairMCEventHeader, 2);
 };
