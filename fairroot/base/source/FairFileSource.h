@@ -115,8 +115,6 @@ class FairFileSource : public FairFileSourceBase
     TString fInputTitle;
     /**ROOT file*/
     TFile* fRootFile;
-    /** Current Entry number */
-    Int_t fCurrentEntryNr;   //!
     /** List of all files added with AddFriend */
     std::list<TString> fFriendFileList;                                 //!
     std::list<TString> fInputChainList;                                 //!
