@@ -48,17 +48,11 @@ def jobMatrix(String prefix, String type, List specs) {
             sh "cat ${jobscript}"
             sh "bash ${jobscript}"
           } else {
-            def containercmd = "singularity exec -B/shared ${env.SINGULARITY_CONTAINER_ROOT}/fairroot/${os}.${ver}.sif bash -l -c \\\"${ctestcmd}\\\""
-            sh """\
-              echo \"echo \\\"*** Job started at .......: \\\$(date -R)\\\"\" >> ${jobscript}
-              echo \"echo \\\"*** Job ID ...............: \\\${SLURM_JOB_ID}\\\"\" >> ${jobscript}
-              echo \"echo \\\"*** Compute node .........: \\\$(hostname -f)\\\"\" >> ${jobscript}
-              echo \"unset http_proxy\" >> ${jobscript}
-              echo \"unset HTTP_PROXY\" >> ${jobscript}
-              echo \"${containercmd}\" >> ${jobscript}
-            """
-            sh "cat ${jobscript}"
-            sh "./slurm-submit.sh \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
+            def container = "${os}.${ver}.sif"
+            sh(label: "Create Slurm Job Script", script: """
+              exec test/ci/slurm-create-jobscript.sh "${label}" "${container}" "${jobscript}" ${ctestcmd}
+            """)
+            sh "./test/ci/slurm-submit.sh \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
           }
 
           deleteDir()
