@@ -11,8 +11,6 @@
 #include <FairRootManager.h>
 #include <fairlogger/Logger.h>
 
-ClassImp(FairDataSourceI);
-
 FairDataSourceI::FairDataSourceI()
 {
     // TODO Auto-generated constructor stub

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -11,8 +11,9 @@
 // -------------------------------------------------------------------------
 #include "FairParticleGenerator.h"
 
-#include "FairLogger.h"
 #include "FairPrimaryGenerator.h"   // for FairPrimaryGenerator
+
+#include <fairlogger/Logger.h>
 
 FairParticleGenerator::FairParticleGenerator()
     : FairBaseMCGenerator()
@@ -65,5 +66,3 @@ Bool_t FairParticleGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
     return kTRUE;
 }
-
-ClassImp(FairParticleGenerator);

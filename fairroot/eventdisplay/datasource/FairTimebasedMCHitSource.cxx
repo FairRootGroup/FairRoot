@@ -9,8 +9,6 @@
 #include <FairRootManager.h>
 #include <FairTimebasedMCHitSource.h>
 
-ClassImp(FairTimebasedMCHitSource);
-
 FairTimebasedMCHitSource::FairTimebasedMCHitSource()
 {
     // TODO Auto-generated constructor stub

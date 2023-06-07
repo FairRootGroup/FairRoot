@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -11,10 +11,10 @@
 // -------------------------------------------------------------------------
 #include "FairAsciiGenerator.h"
 
-#include "FairLogger.h"
 #include "FairPrimaryGenerator.h"   // for FairPrimaryGenerator
 
 #include <climits>   // for INT_MAX
+#include <fairlogger/Logger.h>
 #include <fstream>
 
 FairAsciiGenerator::FairAsciiGenerator()
@@ -99,5 +99,3 @@ void FairAsciiGenerator::CloseInput()
         fInputFile = nullptr;
     }
 }
-
-ClassImp(FairAsciiGenerator);

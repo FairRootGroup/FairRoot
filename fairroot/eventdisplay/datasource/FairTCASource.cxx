@@ -5,10 +5,7 @@
  * \author Tobias Stockmanns <t.stockmanns@fz-juelich.de>
  */
 
-#include <FairRootManager.h>
-#include <FairTCASource.h>
-
-ClassImp(FairTCASource);
+#include "FairTCASource.h"
 
 FairTCASource::FairTCASource()
 {

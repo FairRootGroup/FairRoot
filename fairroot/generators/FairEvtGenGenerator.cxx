@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -11,12 +11,12 @@
 // -------------------------------------------------------------------------
 #include "FairEvtGenGenerator.h"
 
-#include "FairLogger.h"
 #include "FairPrimaryGenerator.h"   // for FairPrimaryGenerator
 
 #include <TF1.h>       // for TF1
 #include <TRandom.h>   // for TRandom, gRandom
 #include <algorithm>   // max
+#include <fairlogger/Logger.h>
 
 FairEvtGenGenerator::FairEvtGenGenerator()
     : FairGenerator()
@@ -183,5 +183,3 @@ void FairEvtGenGenerator::CloseInput()
         fInputFile = nullptr;
     }
 }
-
-ClassImp(FairEvtGenGenerator);
