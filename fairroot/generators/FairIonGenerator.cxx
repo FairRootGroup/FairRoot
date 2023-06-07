@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,7 +12,6 @@
 #include "FairIonGenerator.h"
 
 #include "FairIon.h"                // for FairIon
-#include "FairLogger.h"             // for logging
 #include "FairParticle.h"           // for FairParticle
 #include "FairPrimaryGenerator.h"   // for FairPrimaryGenerator
 #include "FairRunSim.h"             // for FairRunSim
@@ -22,6 +21,7 @@
 #include <TParticle.h>      // for TParticle
 #include <TParticlePDG.h>   // for TParticlePDG
 #include <cstdio>           // for sprintf
+#include <fairlogger/Logger.h>
 
 Int_t FairIonGenerator::fgNIon = 0;
 
@@ -175,5 +175,3 @@ FairGenerator* FairIonGenerator::CloneGenerator() const
 
     return new FairIonGenerator(*this);
 }
-
-ClassImp(FairIonGenerator);

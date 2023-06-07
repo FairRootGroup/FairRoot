@@ -53,5 +53,3 @@ std::pair<int, double> FairGetEventTime::GetEvent(double simTime) const
     }
     return std::make_pair(evtIndex, evtTime);
 }
-
-ClassImp(FairGetEventTime);

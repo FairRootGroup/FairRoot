@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -13,17 +13,12 @@
 #include <TGLayout.h>        // for TGLayoutHints, etc
 #include <TGNumberEntry.h>   // for TGNumberEntry, etc
 #include <fairlogger/Logger.h>
-
-class TGWindow;
-
 #include <iostream>   // for operator<<, basic_ostream, etc
 
 // FairBoxSetEditor
 //
 // Specialization of TGedEditor for proper update propagation to
 // TEveManager.
-
-ClassImp(FairBoxSetEditor);
 
 FairBoxSetEditor::FairBoxSetEditor(const TGWindow* p, Int_t width, Int_t height, UInt_t options, Pixel_t back)
     : TGedFrame(p, width, height, options | kVerticalFrame, back)
