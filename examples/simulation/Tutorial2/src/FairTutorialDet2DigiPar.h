@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -16,10 +16,10 @@
 #include "FairParGenericSet.h"
 
 #include <Rtypes.h>
+#include <TArrayF.h>
 #include <TArrayI.h>
 
 class FairParamList;
-class TArrayF;
 
 class FairTutorialDet2DigiPar : public FairParGenericSet
 {
@@ -29,33 +29,25 @@ class FairTutorialDet2DigiPar : public FairParGenericSet
                             const char* title = "Tutorial Det digi parameters",
                             const char* context = "Default");
 
+    FairTutorialDet2DigiPar(const FairTutorialDet2DigiPar&) = delete;
+    FairTutorialDet2DigiPar& operator=(const FairTutorialDet2DigiPar&) = delete;
     /** Destructor **/
-    virtual ~FairTutorialDet2DigiPar();
+    ~FairTutorialDet2DigiPar() override;
 
-    /** Initialisation from input device**/
-    // virtual Bool_t init(FairParIo* input);
-
-    /** Output to file **/
-    // virtual Int_t write(FairParIo* output);
-
-    //  virtual void print();
     virtual void printparams();
 
     /** Reset all parameters **/
-    virtual void clear();
+    void clear() override;
 
-    void putParams(FairParamList*);
-    Bool_t getParams(FairParamList*);
+    void putParams(FairParamList*) override;
+    Bool_t getParams(FairParamList*) override;
 
   private:
-    TArrayF* ftutdetdigipar;        //
+    TArrayF ftutdetdigipar{10};     //
     TArrayI ftutdetdigiparsector;   //
     Int_t ftutdetdigiparstation;    //
 
-    FairTutorialDet2DigiPar(const FairTutorialDet2DigiPar&);
-    FairTutorialDet2DigiPar& operator=(const FairTutorialDet2DigiPar&);
-
-    ClassDef(FairTutorialDet2DigiPar, 1);
+    ClassDefOverride(FairTutorialDet2DigiPar, 1);
 };
 
 #endif
