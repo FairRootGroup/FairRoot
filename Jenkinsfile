@@ -1,39 +1,14 @@
 #!groovy
 
 def macos_builds = [
-  [os: "macos",  ver: "13", arch: "x86_64", compiler: "apple-clang-14", fairsoft: "24.01"],
-  [os: "macos",  ver: "14", arch: "x86_64", compiler: "apple-clang-14", fairsoft: "24.01"],
-  [os: "macos",  ver: "14", arch: "arm64",  compiler: "apple-clang-15", fairsoft: "24.01"],
 ]
 
 def linux_builds = [
-  [os: "debian", ver: "10",      compiler: "gcc-8",   fairsoft: "jan24_patches",    image: "jan24"],
-  [os: "debian", ver: "10",      compiler: "gcc-8",   fairsoft: "jan24_patches_mt", image: "jan24"],
-  [os: "debian", ver: "10",      compiler: "gcc-8",   fairsoft: "nov22_patches",    image: "nov22"],
-  [os: "debian", ver: "10",      compiler: "gcc-8",   fairsoft: "apr22_patches",    image: "apr22"],
-  [os: "debian", ver: "11",      compiler: "gcc-10",  fairsoft: "jan24_patches",    image: "jan24"],
-  [os: "debian", ver: "11",      compiler: "gcc-10",  fairsoft: "jan24_patches_mt", image: "jan24"],
-  [os: "debian", ver: "11",      compiler: "gcc-10",  fairsoft: "nov22_patches",    image: "nov22"],
-  [os: "debian", ver: "11",      compiler: "gcc-10",  fairsoft: "apr22_patches",    image: "apr22"],
-  [os: "debian", ver: "12",      compiler: "gcc-12",  fairsoft: "jan24_patches",    image: "jan24"],
-  [os: "debian", ver: "12",      compiler: "gcc-12",  fairsoft: "jan24_patches_mt", image: "jan24"],
-  [os: "debian", ver: "12",      compiler: "gcc-12",  fairsoft: "nov22_patches",    image: "nov22"],
-  [os: "fedora", ver: "39",      compiler: "gcc-13",  fairsoft: "jan24_patches",    image: "jan24"],
-  [os: "fedora", ver: "39",      compiler: "gcc-13",  fairsoft: "jan24_patches_mt", image: "jan24"],
-  [os: "ubuntu", ver: "20.04",   compiler: "gcc-9",   fairsoft: "jan24_patches",    image: "jan24"],
-  [os: "ubuntu", ver: "20.04",   compiler: "gcc-9",   fairsoft: "jan24_patches_mt", image: "jan24"],
-  [os: "ubuntu", ver: "20.04",   compiler: "gcc-9",   fairsoft: "nov22_patches",    image: "nov22"],
-  [os: "ubuntu", ver: "20.04",   compiler: "gcc-9",   fairsoft: "apr22_patches",    image: "apr22"],
-  [os: "ubuntu", ver: "22.04",   compiler: "gcc-11",  fairsoft: "jan24_patches",    image: "jan24"],
-  [os: "ubuntu", ver: "22.04",   compiler: "gcc-11",  fairsoft: "jan24_patches_mt", image: "jan24"],
-  [os: "ubuntu", ver: "22.04",   compiler: "gcc-11",  fairsoft: "nov22_patches",    image: "nov22"],
-  [os: "ubuntu", ver: "22.04",   compiler: "gcc-11",  fairsoft: "apr22_patches",    image: "apr22"],
   [os: "ubuntu", ver: "rolling", compiler: "current", fairsoft: "dev", check: "warnings",
     extra: "-DUSE_CLANG_TIDY=ON -DBUILD_MBS=OFF -DBUILD_PROOF_SUPPORT=OFF"],
 ]
 
 def linux_checks = [
-  [os: 'ubuntu', ver: 'rolling', compiler: 'current', fairsoft: 'dev', check: 'doxygen'],
 ]
 
 def isBranchBuild() {
