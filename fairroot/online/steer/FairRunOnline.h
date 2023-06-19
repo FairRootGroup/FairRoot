@@ -37,7 +37,7 @@ class FairRunOnline : public FairRun
     /**initialize the run manager*/
     void Init() override;
     /**Run for the given number of events*/
-    void Run(Int_t Ev_start, Int_t Ev_end) override;
+    void Run(FairRoot::EntryID Ev_start, int Ev_end) override;
 
     void Reinit(UInt_t runId);
     UInt_t getRunId() { return fRunId; }
@@ -96,9 +96,9 @@ class FairRunOnline : public FairRun
     Bool_t fStatic;   //!
     FairField* fField;
 
-    Int_t fNevents;             //!
-    THttpServer* fServer;       //!
-    Int_t fServerRefreshRate;   //!
+    FairRoot::EntryID fNevents{0};   //!
+    THttpServer* fServer;            //!
+    Int_t fServerRefreshRate;        //!
 
     virtual void Fill();
 

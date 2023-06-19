@@ -35,25 +35,34 @@ class FairRunAna : public FairRun
     FairRunAna();
     /**initialize the run manager*/
     void Init() override;
-    /**Run from event number NStart to event number NStop */
-    void Run(Int_t NStart = 0, Int_t NStop = 0) override;
+    /**Run analysis:
+     * for the whole input if NEntry == NStop == 0,
+     * for NEntry entries if NStop == 0,
+     * from NEntry until NStop entry is reached
+     * from NEntry to the end of input, if NStop = -1 */
+    void Run(FairRoot::EntryID NEntry = 0, int NStop = 0) override;
     /**Run over the whole input file with timpe window delta_t as unit (entry)*/
     void Run(Double_t delta_t);
+    /** \deprecated Deprecated in v19, will be removed in v20. */
+    [[deprecated("Replaced by RunSingle(), which has an unambiguous name")]] void Run(Long64_t entry)
+    {
+        RunSingle(entry);
+    }
     /**Run for the given single entry*/
-    void Run(Long64_t entry);
-    /**Run event reconstruction from event number NStart to event number NStop */
-    void RunEventReco(Int_t NStart, Int_t NStop);
+    void RunSingle(FairRoot::EntryID entry);
+    /**Run event reconstruction from entry number NEntry to entry number NStop */
+    void RunEventReco(FairRoot::EntryID NEntry, Int_t NStop);
     /**Run over all TSBuffers until the data is processed*/
     void RunTSBuffers();
     /** the dummy run does not check the evt header or the parameters!! */
-    void DummyRun(Int_t NStart, Int_t NStop);
+    void DummyRun(FairRoot::EntryID NStart, FairRoot::EntryID NStop);
     /** This methode is only needed and used with ZeroMQ
-     * it read a certain event and call the task exec, but no output is written
+     * it read a certain entry and call the task exec, but no output is written
      * @param entry : entry number in the tree
      */
-    void RunMQ(Long64_t entry);
+    void RunMQ(FairRoot::EntryID entry);
     /** Run on a list of lmd files*/
-    void RunOnLmdFiles(UInt_t NStart = 0, UInt_t NStop = 0);
+    void RunOnLmdFiles(FairRoot::EntryID NStart = 0, FairRoot::EntryID NStop = 0);
 
     void RunOnTBData();
     /** finish tasks, write output*/

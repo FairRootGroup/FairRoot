@@ -307,7 +307,7 @@ void FairRunSim::SetMCConfig()
     }
 }
 
-void FairRunSim::Run(Int_t NEvents, Int_t)
+void FairRunSim::Run(FairRoot::EntryID NEvents, int)
 {
     fApp->RunMC(NEvents);
     fWasMT = fApp->GetIsMT();

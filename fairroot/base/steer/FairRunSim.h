@@ -72,7 +72,7 @@ class FairRunSim : public FairRun
     /**
      *       run the  simulation
      */
-    void Run(Int_t NEvents = 0, Int_t NotUsed = 0) override;
+    void Run(FairRoot::EntryID NEvents = 0, int NotUsed = 0) override;
     /**
      *       Set the magnetic that has to be used for simulation field
      */

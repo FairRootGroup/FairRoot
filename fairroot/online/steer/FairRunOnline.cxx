@@ -54,7 +54,6 @@ FairRunOnline::FairRunOnline()
     , fIsInitialized(kFALSE)
     , fStatic(kFALSE)
     , fField(0)
-    , fNevents(0)
     , fServer(nullptr)
     , fServerRefreshRate(0)
 {
@@ -69,7 +68,6 @@ FairRunOnline::FairRunOnline(FairSource* source)
     , fIsInitialized(kFALSE)
     , fStatic(kFALSE)
     , fField(0)
-    , fNevents(0)
     , fServer(nullptr)
     , fServerRefreshRate(0)
 {
@@ -249,14 +247,14 @@ Int_t FairRunOnline::EventLoop()
     return 0;
 }
 
-void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
+void FairRunOnline::Run(FairRoot::EntryID Ev_start, int Ev_end)
 {
     fNevents = 0;
 
     gIsInterrupted = kFALSE;
 
-    Int_t MaxAllowed = fRootManager->CheckMaxEventNo(Ev_end);
-    if (MaxAllowed != -1) {
+    FairRoot::EntryID MaxAllowed = fRootManager->CheckMaxEventNo(Ev_end);
+    if (MaxAllowed != FairRoot::EntryID::None) {
         if (Ev_end == 0) {
             if (Ev_start == 0) {
                 Ev_end = MaxAllowed;
@@ -296,7 +294,7 @@ void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
             }
         }
     } else {
-        for (Int_t i = Ev_start; i < Ev_end; i++) {
+        for (FairRoot::EntryID i = Ev_start; i < Ev_end; i++) {
             status = fRootManager->ReadEvent(i);
             if (0 == status) {
                 status = EventLoop();

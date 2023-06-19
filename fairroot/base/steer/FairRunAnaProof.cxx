@@ -32,7 +32,10 @@
 
 FairRunAnaProof* FairRunAnaProof::fRAPInstance = nullptr;
 
-FairRunAnaProof* FairRunAnaProof::Instance() { return fRAPInstance; }
+FairRunAnaProof* FairRunAnaProof::Instance()
+{
+    return fRAPInstance;
+}
 
 FairRunAnaProof::FairRunAnaProof(const char* proofName)
     : FairRunAna()
@@ -262,13 +265,13 @@ void FairRunAnaProof::SetSource(FairSource* tempSource)
     fProofFileSource = static_cast<FairFileSource*>(tempSource);
 }
 
-void FairRunAnaProof::Run(Int_t Ev_start, Int_t Ev_end)
+void FairRunAnaProof::Run(FairRoot::EntryID NEntry, int NStop)
 {
-    RunOnProof(Ev_start, Ev_end);
+    RunOnProof(NEntry, NStop);
     return;
 }
 
-void FairRunAnaProof::RunOneEvent(Long64_t entry)
+void FairRunAnaProof::RunOneEvent(FairRoot::EntryID entry)
 {
     if (fTimeStamps) {
         RunTSBuffers();
@@ -294,7 +297,7 @@ void FairRunAnaProof::RunOneEvent(Long64_t entry)
     }
 }
 
-void FairRunAnaProof::RunOnProof(Int_t NStart, Int_t NStop)
+void FairRunAnaProof::RunOnProof(FairRoot::EntryID NStart, int NStop)
 {
     fProofOutputStatus.ToLower();
     if (!fProofOutputStatus.Contains("copy") && !fProofOutputStatus.Contains("merge")) {
