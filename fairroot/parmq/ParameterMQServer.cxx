@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -134,7 +134,10 @@ bool ParameterMQServer::ProcessRequest(fair::mq::MessagePtr& req, int /*index*/)
         parameterName = newParameterName;
         par = static_cast<FairParGenericSet*>(fRtdb->getContainer(parameterName.c_str()));
     }
-    fRtdb->initContainers(runId);
+    if (!fRtdb->initContainers(runId)) {
+        LOG(error) << "ParameterMQServer::ProcessRequest: fRtdb->initContainers failed";
+        return false;
+    }
 
     LOG(info) << "Sending following parameter to the client:";
     if (par) {
@@ -192,7 +195,10 @@ bool ParameterMQServer::ProcessUpdate(fair::mq::MessagePtr& update, int /*index*
                 parDescr.erase(0, parDescr.find("RUNID") + 5);
             }
         }
-        fRtdb->initContainers(runId);
+        if (!fRtdb->initContainers(runId)) {
+            LOG(error) << "ParameterMQServer::ProcessRequest: fRtdb->initContainers failed";
+            return false;
+        }
 
         newPar->setChanged(true);   // trigger writing to file
         newPar->setStatic(true);    // to get rid of error

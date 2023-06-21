@@ -186,11 +186,10 @@ void FairRunAnaProof::Init()
 
         // Init the containers in Tasks
         LOG(info) << "--- Initialize with RunId  --- " << fRunId;
-        fRtdb->initContainers(fRunId);
+        if (!fRtdb->initContainers(fRunId)) {
+            LOG(error) << "FairRunAnaProof::Init: fRtdb->initContainers failed";
+        }
         fTask->SetParTask();
-
-        // fRtdb->initContainers( fRunId );
-
     } else {   // end----- if(fMixedInput)
         LOG(info) << "Initializing without input file or Mixed input";
         FairEventHeader* evt = GetEventHeader();
@@ -200,14 +199,18 @@ void FairRunAnaProof::Init()
         fRtdb->addRun(fRunId);
         evt->SetRunId(fRunId);
         fTask->SetParTask();
-        fRtdb->initContainers(fRunId);
+        if (!fRtdb->initContainers(fRunId)) {
+            LOG(error) << "FairRunAnaProof::Init: fRtdb->initContainers failed";
+        }
     }
     FairFieldFactory* fieldfact = FairFieldFactory::Instance();
     if (fieldfact) {
         fieldfact->SetParm();
     }
 
-    fRtdb->initContainers(fRunId);
+    if (!fRtdb->initContainers(fRunId)) {
+        LOG(error) << "FairRunAnaProof::Init: fRtdb->initContainers failed";
+    }
     fFileHeader->SetRunId(fRunId);
 
     // create a field
@@ -251,7 +254,9 @@ void FairRunAnaProof::InitContainers()
 
         // Init the containers in Tasks
         LOG(info) << "--- Initialize with RunId  --- " << fRunId;
-        fRtdb->initContainers(fRunId);
+        if (!fRtdb->initContainers(fRunId)) {
+            LOG(error) << "FairRunAnaProof::Init: fRtdb->initContainers failed";
+        }
     }
 }
 

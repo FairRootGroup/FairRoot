@@ -454,7 +454,7 @@ Bool_t FairRuntimeDb::writeContainer(FairParSet* cont, FairRtdbRun* run, FairRtd
     return kTRUE;
 }
 
-Bool_t FairRuntimeDb::initContainers(UInt_t runId, Int_t refId, const Text_t* fileName)
+bool FairRuntimeDb::initContainers(UInt_t runId, Int_t refId, const char* fileName)
 {
     // loops over the list of containers and calls the init() function of each
     // container if it is not static

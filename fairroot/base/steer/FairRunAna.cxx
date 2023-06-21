@@ -130,7 +130,6 @@ void FairRunAna::SetGeomFile(const char* GeoFileName)
 
 void FairRunAna::Init()
 {
-
     if (fIsInitialized) {
         LOG(fatal) << "Error Init is already called before!";
         exit(-1);
@@ -220,11 +219,10 @@ void FairRunAna::Init()
 
         // Init the containers in Tasks
         LOG(info) << "--- Initialize with RunId  --- " << fRunId;
-        fRtdb->initContainers(fRunId);
+        if (!fRtdb->initContainers(fRunId)) {
+            LOG(error) << "FairRunAna::Init: fRtdb->initContainers failed";
+        }
         fTask->SetParTask();
-
-        // fRtdb->initContainers( fRunId );
-
     } else {   // end----- if(fMixedInput)
         LOG(info) << "Initializing without input file or Mixed input";
         FairEventHeader* evt = GetEventHeader();
@@ -234,7 +232,9 @@ void FairRunAna::Init()
         fRtdb->addRun(fRunId);
         evt->SetRunId(fRunId);
         fTask->SetParTask();
-        fRtdb->initContainers(fRunId);
+        if (!fRtdb->initContainers(fRunId)) {
+            LOG(error) << "FairRunAna::Init: fRtdb->initContainers failed";
+        }
     }
 
     FairFieldFactory* fieldfact = FairFieldFactory::Instance();
@@ -242,7 +242,9 @@ void FairRunAna::Init()
         fieldfact->SetParm();
     }
 
-    fRtdb->initContainers(fRunId);
+    if (!fRtdb->initContainers(fRunId)) {
+        LOG(error) << "FairRunAna::Init: fRtdb->initContainers failed";
+    }
     fFileHeader->SetRunId(fRunId);
 
     // create a field
@@ -617,7 +619,9 @@ void FairRunAna::TerminateRun()
 void FairRunAna::Reinit(UInt_t runId)
 {
     // reinit procedure
-    fRtdb->initContainers(runId);
+    if (!fRtdb->initContainers(runId)) {
+        LOG(error) << "FairRunAna::Reinit: fRtdb->initContainers failed";
+    }
 }
 //_____________________________________________________________________________
 

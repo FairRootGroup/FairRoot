@@ -67,7 +67,7 @@ class FairRuntimeDb : public TObject
     FairParSet* findContainer(const char*);
     void removeContainer(const char*);
     void removeAllContainers();
-    Bool_t initContainers(UInt_t runId, Int_t refId = -1, const Text_t* fileName = "");
+    [[nodiscard]] bool initContainers(UInt_t runId, Int_t refId = -1, const char* fileName = "");
     void setContainersStatic(Bool_t f = kTRUE);
     Bool_t writeContainers(void);
     Bool_t writeContainer(FairParSet*, FairRtdbRun*, FairRtdbRun* refRun = 0);
