@@ -1218,7 +1218,9 @@ void FairMCApplication::SetParTask()
         module->SetParContainers();
     }
     FairRuntimeDb* fRTdb = fRun->GetRuntimeDb();
-    fRTdb->initContainers(fRun->GetRunId());
+    if (!fRTdb->initContainers(fRun->GetRunId())) {
+        LOG(error) << "FairMCApplication::SetParTask: rtdb->initContainers failed";
+    }
 }
 //_____________________________________________________________________________
 void FairMCApplication::InitTasks()

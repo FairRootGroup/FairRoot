@@ -183,7 +183,9 @@ void FairRunOnline::Init()
 
     GetSource()->SetParUnpackers();
     fTask->SetParTask();
-    fRtdb->initContainers(fRunId);
+    if (!fRtdb->initContainers(fRunId)) {
+        LOG(error) << "FairRunOnline::Init: fRtdb->initContainers failed";
+    }
 
     // --- Get event header from Run
     if (!fEvtHeader) {
@@ -349,7 +351,9 @@ void FairRunOnline::RegisterHttpCommand(TString name, TString command)
 void FairRunOnline::Reinit(UInt_t runId)
 {
     // reinit procedure
-    fRtdb->initContainers(runId);
+    if (!fRtdb->initContainers(runId)) {
+        LOG(error) << "FairRunOnline::Reinit: fRtdb->initContainers failed";
+    }
 }
 
 void FairRunOnline::SetContainerStatic(Bool_t tempBool)
