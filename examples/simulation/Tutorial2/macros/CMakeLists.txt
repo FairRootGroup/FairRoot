@@ -12,21 +12,30 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/read_digis.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_background.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_signal.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_tutorial2.C)
+GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/compare_seed_value.C)
 
 set(maxTestTime 60)
 
 add_test(NAME ex_sim_tutorial2
-         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial2.sh)
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial2.sh  10 \"TGeant4\" true 333)
 set_tests_properties(ex_sim_tutorial2 PROPERTIES
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
   FIXTURES_SETUP fixtures.ex_sim_tutorial2_sim
 )
 
+add_test(NAME ex_compare_seed_value
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/compare_seed_value.sh \"tutorial2_pions.params_p2.000_t0_n10.root\" 333)
+set_tests_properties(ex_compare_seed_value PROPERTIES
+  TIMEOUT ${maxTestTime}
+  FIXTURES_REQUIRED fixtures.ex_sim_tutorial2_sim
+  FIXTURES_SETUP fixtures.ex_compare_seed_value
+)
+
 add_test(NAME ex_sim_tutorial2_create_digis
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/create_digis.sh)
 set_tests_properties(ex_sim_tutorial2_create_digis PROPERTIES
-  FIXTURES_REQUIRED fixtures.ex_sim_tutorial2_sim
+  FIXTURES_REQUIRED fixtures.ex_compare_seed_value
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
   FIXTURES_SETUP fixtures.ex_sim_tutorial2_digi
