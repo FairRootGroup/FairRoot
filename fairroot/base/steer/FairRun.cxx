@@ -227,6 +227,19 @@ TString FairRun::GetUserOutputFileName() const { return fUserOutputFileName; }
 
 void FairRun::AlignGeometry() const { fAlignmentHandler.AlignGeometry(); }
 
+/**
+ * \todo Should we check for `fEvtHeader` being set as well?
+ */
+void FairRun::FillEventHeader()
+{
+    if (!fSource) {
+        LOG(warning) << "FairRun::FillEventHeader: No Source!";
+        return;
+    }
+
+    fSource->FillEventHeader(fEvtHeader);
+}
+
 void FairRun::AddAlignmentMatrices(const std::map<std::string, TGeoHMatrix>& alignmentMatrices, bool invertMatrices)
 {
     fAlignmentHandler.AddAlignmentMatrices(alignmentMatrices, invertMatrices);
