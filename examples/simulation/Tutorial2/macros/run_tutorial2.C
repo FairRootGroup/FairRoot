@@ -5,7 +5,15 @@
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT = true)
+
+#include <TRandom.h>
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+#include <memory>
+
+void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant4",
+                   Bool_t isMT = true, UInt_t initial_seed=98989)
 {
 
     TString dir = getenv("VMCWORKDIR");
@@ -44,7 +52,7 @@ void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT
                            nEvents);
 
     // Set the random seed
-    gRandom->SetSeed(98989);
+    gRandom->SetSeed(initial_seed);
 
     // In general, the following parts need not be touched
     // ========================================================================
