@@ -32,7 +32,10 @@
 
 FairRunAnaProof* FairRunAnaProof::fRAPInstance = nullptr;
 
-FairRunAnaProof* FairRunAnaProof::Instance() { return fRAPInstance; }
+FairRunAnaProof* FairRunAnaProof::Instance()
+{
+    return fRAPInstance;
+}
 
 FairRunAnaProof::FairRunAnaProof(const char* proofName)
     : FairRunAna()

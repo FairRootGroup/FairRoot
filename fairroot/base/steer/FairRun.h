@@ -244,17 +244,19 @@ class FairRun : public TNamed
     std::unique_ptr<FairSource> fSource{};   //!
 
     void AlignGeometry() const;
-    /**
-     * Call FillEventHeader on the source
-     */
-    void FillEventHeader()
-    {
-        if (fSource)
-            fSource->FillEventHeader(fEvtHeader);
-    }
 
     /**
-     * Get the RunId of the Event Header
+     * \brief Internal facade for FairSource::FillEventHeader
+     *
+     * Call \ref FairSource::FillEventHeader with the current header
+     * on the current source. Will perform some checks.
+     */
+    void FillEventHeader();
+
+    /**
+     * \brief Internal facade: Get the RunId of the Event Header
+     *
+     * \todo Should `fEvtHeader` be checked?
      */
     UInt_t GetEvtHeaderRunId() const { return fEvtHeader->GetRunId(); }
 

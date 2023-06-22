@@ -59,7 +59,10 @@ void FRA_handler_ctrlc(int)
 //_____________________________________________________________________________
 FairRunAna* FairRunAna::fgRinstance = nullptr;
 //_____________________________________________________________________________
-FairRunAna* FairRunAna::Instance() { return fgRinstance; }
+FairRunAna* FairRunAna::Instance()
+{
+    return fgRinstance;
+}
 //_____________________________________________________________________________
 FairRunAna::FairRunAna()
     : FairRun()
