@@ -28,7 +28,7 @@ using namespace Pythia8;
 class PyTr1Rng : public RndmEngine
 {
   public:
-    PyTr1Rng() { rng = new TRandom1(gRandom->GetSeed()); };
+    PyTr1Rng() { rng = new TRandom1(gRandom->TRandom::GetSeed()); };
     virtual ~PyTr1Rng(){};
 
     Double_t flat() { return rng->Rndm(); };
@@ -40,7 +40,7 @@ class PyTr1Rng : public RndmEngine
 class PyTr3Rng : public RndmEngine
 {
   public:
-    PyTr3Rng() { rng = new TRandom3(gRandom->GetSeed()); };
+    PyTr3Rng() { rng = new TRandom3(gRandom->TRandom::GetSeed()); };
     virtual ~PyTr3Rng(){};
 
     Double_t flat() { return rng->Rndm(); };
