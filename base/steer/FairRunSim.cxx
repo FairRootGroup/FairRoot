@@ -234,7 +234,7 @@ void FairRunSim::Init()
     }
     if (par) {
         par->SetContListStr(ContList);
-        par->SetRndSeed(gRandom->GetSeed());
+        par->SetRndSeed(gRandom->TRandom::GetSeed());
         par->setChanged();
         par->setInputVersion(fRunId, 1);
     }
