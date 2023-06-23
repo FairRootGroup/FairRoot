@@ -1,15 +1,29 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
+#if !defined(__CLING__) || defined(__ROOTCLING__)
+#include "FairFileSource.h"
+#include "FairParAsciiFileIo.h"
+#include "FairParRootFileIo.h"
+#include "FairRootFileSink.h"
+#include "FairRunAna.h"
+#include "FairRuntimeDb.h"
+#include "FairSystemInfo.h"
+#include "FairTutorialDet2CustomTask.h"
+#include "FairTutorialDet2DigiPar.h"
+#include "FairTutorialDet2Digitizer.h"
+
 #include <TStopwatch.h>
 #include <TString.h>
+#include <TSystem.h>
 #include <iostream>
 #include <memory>
+#endif
 
 using std::cout;
 using std::endl;
