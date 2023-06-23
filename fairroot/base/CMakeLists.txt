@@ -9,8 +9,6 @@
 set(target Base)
 
 set(sources
-  event/FairEventBuilder.cxx
-  event/FairEventBuilderManager.cxx
   event/FairEventHeader.cxx
   event/FairFileHeader.cxx
   event/FairFileInfo.cxx
@@ -80,6 +78,13 @@ if(BUILD_PROOF_SUPPORT)
   )
 endif()
 
+if(BUILD_EVENT_BUILDER)
+  list(APPEND sources
+    event/FairEventBuilder.cxx
+    event/FairEventBuilderManager.cxx
+  )
+endif()
+
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
 add_library(${target} SHARED ${sources} ${headers})
@@ -127,6 +132,10 @@ target_compile_definitions(${target}
 if(BUILD_PROOF_SUPPORT)
   target_link_libraries(${target} PRIVATE ROOT::Proof)
   target_compile_definitions(${target} PRIVATE BUILD_PROOF_SUPPORT)
+endif()
+
+if(BUILD_EVENT_BUILDER)
+  target_compile_definitions(${target} PRIVATE BUILD_EVENT_BUILDER)
 endif()
 
 fairroot_target_root_dictionary(${target}

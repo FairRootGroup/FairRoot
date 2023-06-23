@@ -16,8 +16,6 @@
 #pragma link C++ class FairGeoParSet;
 #pragma link C++ class FairDetector+;
 //#pragma link C++ class FairDoubleHit+;
-#pragma link C++ class FairEventBuilder+;
-#pragma link C++ class FairEventBuilderManager+;
 #pragma link C++ class FairEventHeader+;
 #pragma link C++ class FairFileHeader+;
 #pragma link C++ class FairGeaneApplication+;
@@ -78,6 +76,10 @@
 #ifdef BUILD_PROOF_SUPPORT
 #pragma link C++ class FairAnaSelector+;
 #pragma link C++ class FairRunAnaProof;
+#endif
+#ifdef BUILD_EVENT_BUILDER
+#pragma link C++ class FairEventBuilder+;
+#pragma link C++ class FairEventBuilderManager+;
 #endif
 
 #endif
