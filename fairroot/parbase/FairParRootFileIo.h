@@ -14,20 +14,17 @@
 #include <TFile.h>    // for TFile
 #include <TNamed.h>   // for TNamed
 #include <fstream>
-using std::fstream;
+#include <memory>
 
 class FairRtdbRun;
-class TKey;
-class TList;
 
 class FairParRootFile : public TNamed
 {
   public:
-    FairRtdbRun* run;   //! pointer to current run in ROOT file
     FairParRootFile(const Text_t* fname, Option_t* option = "READ", const Text_t* ftitle = "", Int_t compress = 1);
     FairParRootFile(TFile* f);
     ~FairParRootFile() override;
-    FairRtdbRun* getRun() { return run; }
+    FairRtdbRun* getRun() { return run.get(); }
     void readVersions(FairRtdbRun*);
 
     Bool_t IsOpen() { return RootFile && (RootFile->IsOpen()); }
@@ -66,6 +63,8 @@ class FairParRootFile : public TNamed
     TFile* RootFile;
 
   private:
+    std::unique_ptr<FairRtdbRun> run;   //! pointer to current run in ROOT file
+
     FairParRootFile(const FairParRootFile&);
     FairParRootFile& operator=(const FairParRootFile&);
 

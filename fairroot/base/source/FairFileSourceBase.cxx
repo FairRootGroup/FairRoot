@@ -10,8 +10,10 @@
 
 #include "FairRootManager.h"
 
+#include <TCollection.h>
 #include <TObjString.h>
 #include <fairlogger/Logger.h>
+#include <memory>
 #include <set>
 
 FairFileSourceBase::~FairFileSourceBase()
@@ -38,10 +40,12 @@ Bool_t FairFileSourceBase::CompareBranchList(TFile* fileHandle, TString inputLev
     // If a branch with the same name is found, this branch is removed from
     // the list. If in the end no branch is left in the list everything is
     // fine.
-    auto list = fileHandle->Get<TList>("BranchList");
+    std::unique_ptr<TList> list{fileHandle->Get<TList>("BranchList")};
     if (list) {
-        for (Int_t i = 0; i < list->GetEntries(); i++) {
-            auto Obj = dynamic_cast<TObjString*>(list->At(i));
+        for (auto Obj : TRangeDynCast<TObjString>(list.get())) {
+            if (!Obj) {
+                continue;
+            }
             auto iter1 = branches.find(Obj->GetString());
             if (iter1 != branches.end()) {
                 branches.erase(iter1);

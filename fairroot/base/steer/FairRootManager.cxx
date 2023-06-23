@@ -74,7 +74,6 @@ FairRootManager::FairRootManager()
     : TObject()
     , fCurrentTime(0)
     , fBranchSeqId(0)
-    , fBranchNameList(new TList())
     , fMCTrackBranchId(-1)
     , fTimeBasedBranchNameList(new TList())
     , fActiveContainer()
@@ -96,16 +95,14 @@ FairRootManager::FairRootManager()
     fId = FRM_fgCounter.fetch_add(1, std::memory_order_relaxed);
 
     LOG(debug) << "FairRootManager::FairRootManager #" << fId << " at " << this;
+
+    fBranchNameList.SetOwner(kTRUE);
 }
 
 FairRootManager::~FairRootManager()
 {
-    //
     LOG(debug) << "Enter Destructor of FairRootManager";
 
-    fBranchNameList->Delete();
-    delete fBranchNameList;
-    LOG(debug) << "Leave Destructor of FairRootManager";
     delete fEventHeader;
     delete fSourceChain;
     if (fSink)
@@ -192,8 +189,8 @@ void FairRootManager::Register(const char* name, const char* folderName, TNamed*
 
 Int_t FairRootManager::AddBranchToList(const char* name)
 {
-    if (fBranchNameList->FindObject(name) == 0) {
-        fBranchNameList->AddLast(new TObjString(name));
+    if (fBranchNameList.FindObject(name) == 0) {
+        fBranchNameList.AddLast(new TObjString(name));
         // check if we are setting the MCTrack Branch
         if (strcmp(name, "MCTrack") == 0) {
             fMCTrackBranchId = fBranchSeqId;
@@ -261,7 +258,7 @@ TString FairRootManager::GetBranchName(Int_t id)
 {
     /**Return the branch name from the id*/
     if (id < fBranchSeqId) {
-        TObjString* ObjStr = static_cast<TObjString*>(fBranchNameList->At(id));
+        TObjString* ObjStr = static_cast<TObjString*>(fBranchNameList.At(id));
         return ObjStr->GetString();
     } else {
         TString NotFound("Branch not found");
@@ -274,8 +271,8 @@ Int_t FairRootManager::GetBranchId(TString const& BrName)
     /**Return the branch id from the name*/
     TObjString* ObjStr;
     Int_t Id = -1;
-    for (Int_t t = 0; t < fBranchNameList->GetEntries(); t++) {
-        ObjStr = static_cast<TObjString*>(fBranchNameList->TList::At(t));
+    for (Int_t t = 0; t < fBranchNameList.GetEntries(); t++) {
+        ObjStr = static_cast<TObjString*>(fBranchNameList.TList::At(t));
         if (BrName == ObjStr->GetString()) {
             Id = t;
             break;
@@ -387,7 +384,7 @@ void FairRootManager::WriteFolder()
 {
     if (fSink) {
         fSink->WriteFolder();
-        fSink->WriteObject(fBranchNameList, "BranchList", TObject::kSingleKey);
+        fSink->WriteObject(&fBranchNameList, "BranchList", TObject::kSingleKey);
         fSink->WriteObject(fTimeBasedBranchNameList, "TimeBasedBranchList", TObject::kSingleKey);
     }
 }
@@ -666,7 +663,7 @@ void FairRootManager::SetBranchNameList(TList* list)
     if (list == nullptr)
         return;
     // otherwise clear existing and add via the standard interface
-    fBranchNameList->Clear();
+    fBranchNameList.Clear();
     fMCTrackBranchId = -1;
     for (Int_t t = 0; t < list->GetEntries(); t++) {
         AddBranchToList(static_cast<TObjString*>(list->At(t))->GetString().Data());
@@ -786,7 +783,7 @@ void FairRootManager::CreatePerMap()
     // cout << " FairRootManager::CreatePerMap() " << endl;
     fBranchPerMap = kTRUE;
     for (Int_t i = 0; i < fBranchSeqId; i++) {
-        TObjString* name = static_cast<TObjString*>(fBranchNameList->At(i));
+        TObjString* name = static_cast<TObjString*>(fBranchNameList.At(i));
         // cout << " FairRootManager::CreatePerMap() Obj At " << i << "  is "  << name->GetString() << endl;
         TString BrName = name->GetString();
         fBrPerMap.insert(pair<TString, Int_t>(BrName, CheckBranchSt(BrName.Data())));

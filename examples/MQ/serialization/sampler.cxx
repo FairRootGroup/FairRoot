@@ -33,17 +33,14 @@ namespace bpo = boost::program_options;
 
 struct Sampler : fair::mq::Device
 {
-    Sampler()
-        : fInput(nullptr)
-        , fTree(nullptr)
-    {}
+    Sampler() = default;
 
     void Init() override
     {
         fFileName = fConfig->GetValue<std::string>("input-file");
         fInputFile.reset(TFile::Open(fFileName.c_str(), "READ"));
         if (fInputFile) {
-            fTree = fInputFile->Get<TTree>("cbmsim");
+            fTree.reset(fInputFile->Get<TTree>("cbmsim"));
             if (fTree) {
                 fTree->SetBranchAddress("MyDigi", &fInput);
             } else {
@@ -116,10 +113,10 @@ struct Sampler : fair::mq::Device
         return hits;
     }
 
-    TClonesArray* fInput;
-    TTree* fTree;
+    TClonesArray* fInput{nullptr};
     std::string fFileName;
     std::unique_ptr<TFile> fInputFile;
+    std::unique_ptr<TTree> fTree;
 };
 
 void addCustomOptions(bpo::options_description& options)

@@ -1,10 +1,35 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#if !defined(__CLING__) || defined(__ROOTCLING__)
+#include "FairFileSource.h"
+#include "FairMCEventHeader.h"
+#include "FairMCTrack.h"
+#include "FairParRootFileIo.h"
+#include "FairRootFileSink.h"
+#include "FairRunAna.h"
+#include "FairRuntimeDb.h"
+#include "FairSystemInfo.h"
+#include "FairTutorialDet4Hit.h"
+#include "FairTutorialDet4Point.h"
+#endif
+
+#include <TClonesArray.h>
+#include <TH1F.h>
+#include <TH2F.h>
+#include <TStopwatch.h>
+#include <TString.h>
+#include <iostream>
+#include <memory>
+
+using std::cout;
+using std::endl;
+
 int plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "align_TGeant3")
 {
     TStopwatch timer;
@@ -28,11 +53,11 @@ int plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "align_TGeant
     parInput1->open(ParFile.Data());
     rtdb->setFirstInput(parInput1);
 
-    TFile *f1 = TFile::Open(MCFile);
-    TFile *f2 = TFile::Open(RecoFile);
+    std::unique_ptr<TFile> f1{TFile::Open(MCFile)};
+    std::unique_ptr<TFile> f2{TFile::Open(RecoFile)};
 
-    auto t1 = f1->Get<TTree>("cbmsim");
-    auto t2 = f2->Get<TTree>("cbmsim");
+    std::unique_ptr<TTree> t1{f1->Get<TTree>("cbmsim")};
+    std::unique_ptr<TTree> t2{f2->Get<TTree>("cbmsim")};
 
     FairMCEventHeader *MCEventHeader = new FairMCEventHeader();
     TClonesArray *MCTracks = new TClonesArray("FairMCTrack");
@@ -44,7 +69,6 @@ int plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "align_TGeant
     t1->SetBranchAddress("TutorialDetPoint", &TutorialDetPoints);
     t2->SetBranchAddress("TutorialDetHit", &TutorialDetHits);
 
-    FairMCTrack *MCTrack;
     FairTutorialDet4Point *Point;
     FairTutorialDet4Hit *Hit;
 
@@ -64,11 +88,8 @@ int plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "align_TGeant
     TH1F *pointy = new TH1F("pointy", "Hit; posy;", 200., -80., 80.);
 
     Int_t nMCTracks, nPoints, nHits;
-    Float_t x_point, y_point, z_point, tof_point, SMtype_point, mod_point, cel_point, gap_point;
     Float_t x_poi, y_poi, z_poi;
-    Float_t SMtype_poi, mod_poi, cel_poi, gap_poi;
-    Float_t p_MC, px_MC, py_MC, pz_MC;
-    Float_t x_hit, y_hit, z_hit, dy_hit;
+    Float_t x_hit, y_hit, z_hit;
 
     Int_t nevent = t1->GetEntries();
 
@@ -108,7 +129,6 @@ int plots(Int_t nEvents = 1000, Int_t iout = 1, TString mcEngine = "align_TGeant
             x_hit = Hit->GetX();
             y_hit = Hit->GetY();
             z_hit = Hit->GetZ();
-            dy_hit = Hit->GetDy();
             //    Int_t flg_hit = Hit->GetFlag();
 
             Float_t delta_x = x_poi - x_hit;
