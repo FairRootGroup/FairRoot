@@ -38,7 +38,6 @@
 #include <TString.h>             // for TString, Form
 #include <fairlogger/Logger.h>   // for LOG
 #include <iostream>              // for operator<<, basic_ostream, etc
-#include <memory>                // for std::unique_ptr
 
 using std::cerr;
 using std::cout;
@@ -46,42 +45,30 @@ using std::endl;
 
 FairParRootFile::FairParRootFile(const Text_t* fname, Option_t* option, const Text_t* ftitle, Int_t compress)
     : TNamed(fname, ftitle)
-    , run(nullptr)
     , RootFile(TFile::Open(fname, option, ftitle, compress))
 {
     //              : TFile(fname,option,ftitle,compress) {
     // constructor opens a ROOT file
     //  RootFile=TFile::Open(fname,option,ftitle,compress);
-    // run=0;
 }
 
 FairParRootFile::FairParRootFile(TFile* f)
     : TNamed(f->GetName(), f->GetTitle())
-    , run(nullptr)
     , RootFile(f)
 {
     //  :TFile(f->GetName(),"UPDATE"){
     // constructor opens a ROOT file
     // RootFile=TFile::Open(f->GetName(),"UPDATE");
     //  RootFile=f;
-    //  run=0;
 }
 
-FairParRootFile::~FairParRootFile()
-{
-    // destructor
-    delete run;
-    run = 0;
-    // TODO: What about the file? Should it be closed or not
-}
+FairParRootFile::~FairParRootFile() = default;
 
 void FairParRootFile::readVersions(FairRtdbRun* currentRun)
 {
     // finds the current run containing the parameter container versions
     // in the ROOT file
-    delete run;
-
-    run = RootFile->Get<FairRtdbRun>(currentRun->GetName());
+    run.reset(RootFile->Get<FairRtdbRun>(currentRun->GetName()));
     if (!run) {
         LOG(warning) << "FairParRootFile::readVersions(" << RootFile->GetName() << "): Reading run "
                      << currentRun->GetName() << " failed";
@@ -229,9 +216,9 @@ void FairParRootFileIo::MergeFiles(TFile* newParFile, const TList* fnamelist)
         TListIter keyIter(inputKeys);
         TKey* inpKey;
         while ((inpKey = static_cast<TKey*>(keyIter.Next()))) {
-            TObject* tempObj = inFile->Get(inpKey->GetName());
+            std::unique_ptr<TObject> tempObj{inFile->Get(inpKey->GetName())};
 
-            newParFile->WriteTObject(tempObj);
+            newParFile->WriteTObject(tempObj.get());
         }
     }
 }

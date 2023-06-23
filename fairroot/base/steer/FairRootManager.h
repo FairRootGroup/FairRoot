@@ -87,7 +87,7 @@ class FairRootManager : public TObject
     Int_t GetMCTrackBranchId() const { return fMCTrackBranchId; }
 
     /**Return a TList of TObjString of branch names available in this session*/
-    TList* GetBranchNameList() { return fBranchNameList; }
+    TList* GetBranchNameList() { return &fBranchNameList; }
 
     /**  Get the Object (container) for the given branch name,
          this method can be used to access the data of
@@ -360,7 +360,7 @@ class FairRootManager : public TObject
     /**Branch id for this run */
     Int_t fBranchSeqId;
     /**List of branch names as TObjString*/
-    TList* fBranchNameList;   //!
+    TList fBranchNameList{};   //!
 
     /**The branch ID for the special (required) MCTrack branch**/
     Int_t fMCTrackBranchId;   //!
