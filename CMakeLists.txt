@@ -115,6 +115,7 @@ ENDIF(NOT UNIX)
 option(BUILD_UNITTESTS "Build all unittests and add them as new tests" OFF)
 option(ENABLE_GEANT3_TESTING "Enable tests utilizing Geant3" OFF)
 option(BUILD_PROOF_SUPPORT "Support ROOT::Proof (deprecated)" OFF)
+option(BUILD_EVENT_BUILDER "Build FairEventBuild" ON)
 
 option(BUILD_ONLINE "Build the online library" ON)
 option(BUILD_MBS "Build MBS" OFF)
