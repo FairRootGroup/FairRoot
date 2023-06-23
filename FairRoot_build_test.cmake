@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2021-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2021-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -49,6 +49,9 @@ if ((NOT DEFINED BUILD_MBS) OR BUILD_MBS)
 endif()
 if ((NOT DEFINED BUILD_PROOF_SUPPORT) OR BUILD_PROOF_SUPPORT)
   list(APPEND options "-DBUILD_PROOF_SUPPORT=ON")
+endif()
+if ((NOT DEFINED BUILD_EVENT_BUILDER) OR BUILD_EVENT_BUILDER)
+  list(APPEND options "-DBUILD_EVENT_BUILDER=ON")
 endif()
 if (USE_CLANG_TIDY)
   list(APPEND options "-DCMAKE_CXX_CLANG_TIDY=clang-tidy")

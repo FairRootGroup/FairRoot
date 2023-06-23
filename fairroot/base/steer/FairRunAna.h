@@ -42,7 +42,8 @@ class FairRunAna : public FairRun
     /**Run for the given single entry*/
     void Run(Long64_t entry);
     /**Run event reconstruction from event number NStart to event number NStop */
-    void RunEventReco(Int_t NStart, Int_t NStop);
+    /** \deprecated Deprecated along with FairEventBuilder. */
+    [[deprecated("Deprecated along with FairEventBuilder.")]] void RunEventReco(Int_t NStart, Int_t NStop);
     /**Run over all TSBuffers until the data is processed*/
     void RunTSBuffers();
     /** the dummy run does not check the evt header or the parameters!! */

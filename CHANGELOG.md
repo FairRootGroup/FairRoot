@@ -75,6 +75,9 @@ file an issue, so that we can see how to handle this.
   * Proof was deprecated by ROOT
   * The affected code in FairRoot is disabled by default now
   * It can still be enabled with `-DBUILD_PROOF_SUPPORT=ON`.
+* Deprecated FairEventBuilder and FairEventBuilderManager
+  * The functionality, introduced to enable event reconstruction, is not used.
+  * It can be enabled with `-DBUILD_EVENT_BUILDER=ON`.
 
 ### Other Notable Changes
 * Consider calling `fairroot_check_root_cxxstd_compatibility()`
