@@ -1,19 +1,33 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
+#if !defined(__CLING__) || defined(__ROOTCLING__)
+#include "FairBoxGenerator.h"
+#include "FairCave.h"
+#include "FairDetector.h"
+#include "FairModule.h"
+#include "FairParRootFileIo.h"
+#include "FairPrimaryGenerator.h"
+#include "FairRootFileSink.h"
+#include "FairRunSim.h"
+#include "FairRuntimeDb.h"
+#include "FairSystemInfo.h"
+#include "FairTutorialDet2.h"
+
+#include <RtypesCore.h>
 #include <TRandom.h>
 #include <TStopwatch.h>
 #include <TString.h>
 #include <TSystem.h>
 #include <memory>
+#endif
 
-void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant4",
-                   Bool_t isMT = true, UInt_t initial_seed=98989)
+void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant4", Bool_t isMT = true, UInt_t initial_seed = 98989)
 {
 
     TString dir = getenv("VMCWORKDIR");
@@ -120,30 +134,30 @@ void run_tutorial2(Int_t nEvents = 10, TString mcEngine = "TGeant4",
 
     // -----   Finish   -------------------------------------------------------
 
-    cout << endl << endl;
+    std::cout << std::endl << std::endl;
 
     // Extract the maximal used memory an add is as Dart measurement
     // This line is filtered by CTest and the value send to CDash
     FairSystemInfo sysInfo;
     Float_t maxMemory = sysInfo.GetMaxMemory();
-    cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
-    cout << maxMemory;
-    cout << "</DartMeasurement>" << endl;
+    std::cout << "<DartMeasurement name=\"MaxMemory\" type=\"numeric/double\">";
+    std::cout << maxMemory;
+    std::cout << "</DartMeasurement>" << std::endl;
 
     timer.Stop();
     Double_t rtime = timer.RealTime();
     Double_t ctime = timer.CpuTime();
 
     Float_t cpuUsage = ctime / rtime;
-    cout << "<DartMeasurement name=\"CpuLoad\" type=\"numeric/double\">";
-    cout << cpuUsage;
-    cout << "</DartMeasurement>" << endl;
+    std::cout << "<DartMeasurement name=\"CpuLoad\" type=\"numeric/double\">";
+    std::cout << cpuUsage;
+    std::cout << "</DartMeasurement>" << std::endl;
 
-    cout << endl << endl;
-    cout << "Output file is " << outFile << endl;
-    cout << "Parameter file is " << parFile << endl;
-    cout << "Real time " << rtime << " s, CPU time " << ctime << "s" << endl << endl;
-    cout << "Macro finished successfully." << endl;
+    std::cout << std::endl << std::endl;
+    std::cout << "Output file is " << outFile << std::endl;
+    std::cout << "Parameter file is " << parFile << std::endl;
+    std::cout << "Real time " << rtime << " s, CPU time " << ctime << "s" << std::endl << std::endl;
+    std::cout << "Macro finished successfully." << std::endl;
 
     // ------------------------------------------------------------------------
 }
