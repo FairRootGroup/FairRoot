@@ -1,7 +1,34 @@
+/********************************************************************************
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
+
+#if !defined(__CLING__) || defined(__ROOTCLING__)
+#include "FairBoxGenerator.h"
+#include "FairCave.h"
+#include "FairDetector.h"
+#include "FairModule.h"
+#include "FairParRootFileIo.h"
+#include "FairPrimaryGenerator.h"
+#include "FairRootFileSink.h"
+#include "FairRunSim.h"
+#include "FairRuntimeDb.h"
+#include "FairSystemInfo.h"
+#include "FairTutorialDet2.h"
+
+#include <RtypesCore.h>
 #include <TStopwatch.h>
 #include <TString.h>
 #include <TSystem.h>
+#include <iostream>
 #include <memory>
+#endif
+
+using std::cout;
+using std::endl;
 
 void run_background(Int_t nEvents = 130)
 {
@@ -53,7 +80,7 @@ void run_background(Int_t nEvents = 130)
 
     // -----   Create simulation run   ----------------------------------------
     auto run = std::make_unique<FairRunSim>();
-    run->SetName("TGeant4");                       // Transport engine
+    run->SetName("TGeant4");   // Transport engine
     run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run->GetRuntimeDb();
     // ------------------------------------------------------------------------
