@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -22,23 +22,25 @@ set_tests_properties(ex_sim_tutorial2 PROPERTIES
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
   FIXTURES_SETUP fixtures.ex_sim_tutorial2_sim
+  RESOURCE_LOCK ex_sim_tutorial2_paramFile
 )
 
-add_test(NAME ex_compare_seed_value
+add_test(NAME ex_sim_tutorial2_compare_seed_value
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/compare_seed_value.sh \"tutorial2_pions.params_p2.000_t0_n10.root\" 333)
-set_tests_properties(ex_compare_seed_value PROPERTIES
+set_tests_properties(ex_sim_tutorial2_compare_seed_value PROPERTIES
   TIMEOUT ${maxTestTime}
   FIXTURES_REQUIRED fixtures.ex_sim_tutorial2_sim
-  FIXTURES_SETUP fixtures.ex_compare_seed_value
+  RESOURCE_LOCK ex_sim_tutorial2_paramFile
 )
 
 add_test(NAME ex_sim_tutorial2_create_digis
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/create_digis.sh)
 set_tests_properties(ex_sim_tutorial2_create_digis PROPERTIES
-  FIXTURES_REQUIRED fixtures.ex_compare_seed_value
+  FIXTURES_REQUIRED fixtures.ex_sim_tutorial2_sim
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Macro finished successfully"
   FIXTURES_SETUP fixtures.ex_sim_tutorial2_digi
+  RESOURCE_LOCK ex_sim_tutorial2_paramFile
 )
 
 add_test(NAME ex_sim_tutorial2_read_digis
