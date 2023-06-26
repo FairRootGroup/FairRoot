@@ -114,12 +114,12 @@ pipeline{
                              extra: '-DUSE_CLANG_TIDY=ON -DBUILD_MBS=OFF'],
             [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches'],
             [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches_mt'],
-            [os: 'macos',      ver: '12',    arch: 'arm64',  compiler: 'apple-clang-13',  fairsoft: '22.4'],
-            [os: 'macos',      ver: '12',    arch: 'x86_64', compiler: 'apple-clang-13',  fairsoft: '22.4'],
-            [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-13',  fairsoft: '22.4'],
-            [os: 'macos',      ver: '12',    arch: 'arm64',  compiler: 'apple-clang-13',  fairsoft: '22.11'],
-            [os: 'macos',      ver: '12',    arch: 'x86_64', compiler: 'apple-clang-13',  fairsoft: '22.11'],
-            [os: 'macos',      ver: '11',    arch: 'x86_64', compiler: 'apple-clang-13',  fairsoft: '22.11'],
+            [os: 'macos',      ver: '12',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '22.11'],
+            // [os: 'macos',      ver: '13',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '22.11'],
+            // [os: 'macos',      ver: '13',    arch: 'arm64',  compiler: 'apple-clang-14',  fairsoft: '22.11'],
+            // [os: 'macos',      ver: '12',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '23.6'],
+            // [os: 'macos',      ver: '13',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '23.6'],
+            // [os: 'macos',      ver: '13',    arch: 'arm64',  compiler: 'apple-clang-14',  fairsoft: '23.6'],
           ])
 
           def checks = jobMatrix('alfa-ci', 'check', [
