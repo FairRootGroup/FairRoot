@@ -35,23 +35,20 @@ set(sources
   timeBasedSimulation/FairTestDetectorTimeDigiTask.cxx
   timeBasedSimulation/FairTestDetectorTimeRecoTask.cxx
 
-  $<$<BOOL:${Protobuf_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/Payload.pb.cc>
+  $<$<TARGET_EXISTS:protobuf::libprotobuf>:${CMAKE_CURRENT_BINARY_DIR}/Payload.pb.cc>
   $<$<BOOL:${Flatbuffers_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/PayloadDigi_generated.h>
   $<$<BOOL:${Flatbuffers_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/PayloadHit_generated.h>
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
-if(Protobuf_FOUND)
-  set(PROTOBUF_USED true)
+if(TARGET protobuf::libprotobuf)
   list(APPEND defs PROTOBUF)
   add_custom_command(
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/Payload.pb.h ${CMAKE_CURRENT_BINARY_DIR}/Payload.pb.cc
-    COMMAND ${PROTOBUF_PROTOC_EXECUTABLE} -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} Payload.proto
+    COMMAND $<TARGET_FILE:protobuf::protoc> -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} Payload.proto
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/MQ/data
   )
-else()
-  set(PROTOBUF_USED false)
 endif()
 
 if(Flatbuffers_FOUND)
@@ -112,7 +109,7 @@ target_link_libraries(${target} PUBLIC
 
   Boost::serialization
 
-  $<$<BOOL:${Protobuf_FOUND}>:protobuf::libprotobuf>
+  $<$<TARGET_EXISTS:protobuf::libprotobuf>:protobuf::libprotobuf>
   $<$<BOOL:${Flatbuffers_FOUND}>:${flatbuffers_lib}>
 
   ROOT::Physics # TVector3, TLorentzVector

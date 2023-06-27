@@ -160,7 +160,21 @@ else()
 endif()
 find_package2(PUBLIC Pythia6)
 find_package2(PUBLIC Pythia8)
-find_package2(PUBLIC Protobuf)
+# Protobuf https://github.com/protocolbuffers/protobuf/releases/tag/v22.0
+# added a new dependency to abseil which is not handled yet by CMake's
+# FindProtobuf.cmake.
+# https://github.com/protocolbuffers/protobuf/issues/12292 - Let's try to
+# find a Protobuf CMake pkg first and fall back to find module if not found.
+find_package2(PUBLIC Protobuf CONFIG)
+if(NOT Protobuf_FOUND)
+  unset(Protobuf_FOUND CACHE)
+  find_package2(PUBLIC Protobuf)
+  if(    Protobuf_FOUND
+     AND Protobuf_VERSION VERSION_GREATER_EQUAL 4.22
+     AND NOT TARGET absl::raw_logging_internal)
+    set(Protobuf_FOUND NOTFOUND CACHE FORCE)
+  endif()
+endif()
 find_package2(PUBLIC Flatbuffers)
 
 find_package2(PUBLIC Geant3)
