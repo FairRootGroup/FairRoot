@@ -278,7 +278,7 @@ void FairRunAna::Init()
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
+void FairRunAna::Run(FairRoot::EntryID NEntry, int NStop)
 {
     gFRAIsInterrupted = kFALSE;
 
@@ -287,35 +287,35 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
     } else {
         //  if (fInputFile==0) {
         if (!fInFileIsOpen) {
-            DummyRun(Ev_start, Ev_end);
+            DummyRun(NEntry, NStop);
             return;
         }
 
-        Int_t MaxAllowed = fRootManager->CheckMaxEventNo(Ev_end);
-        if (MaxAllowed != -1) {
-            if (Ev_end == 0) {
-                if (Ev_start == 0) {
-                    Ev_end = MaxAllowed;
+        FairRoot::EntryID MaxAllowed = fRootManager->CheckMaxEventNo(NStop);
+        if (MaxAllowed != FairRoot::EntryID::None) {
+            if (NStop == 0) {
+                if (NEntry == 0) {
+                    NStop = MaxAllowed;
                 } else {
-                    Ev_end = Ev_start;
-                    if (Ev_end > MaxAllowed) {
-                        Ev_end = MaxAllowed;
+                    NStop = NEntry;
+                    if (NStop > MaxAllowed) {
+                        NStop = MaxAllowed;
                     }
-                    Ev_start = 0;
+                    NEntry = 0;
                 }
             } else {
-                if (Ev_end > MaxAllowed) {
+                if (NStop > MaxAllowed) {
                     cout << "-------------------Warning---------------------------" << endl;
-                    cout << " -W FairRunAna : File has less events than requested!!" << endl;
-                    cout << " File contains : " << MaxAllowed << " Events" << endl;
-                    cout << " Requested number of events = " << Ev_end << " Events" << endl;
-                    cout << " The number of events is set to " << MaxAllowed << " Events" << endl;
+                    cout << " -W FairRunAna : File has less entries than requested!!" << endl;
+                    cout << " File contains : " << MaxAllowed << " entries" << endl;
+                    cout << " Requested number of entries = " << NStop << " entries" << endl;
+                    cout << " The number of entries is set to " << MaxAllowed << " entries" << endl;
                     cout << "-----------------------------------------------------" << endl;
-                    Ev_end = MaxAllowed;
+                    NStop = MaxAllowed;
                 }
             }
-            LOG(info) << "FairRunAna::Run() After checking, the run will run from event " << Ev_start << " to "
-                      << Ev_end << ".";
+            LOG(info) << "FairRunAna::Run() After checking, the run will run from entry " << NEntry << " to " << NStop
+                      << ".";
         } else {
             LOG(info) << "FairRunAna::Run() continue running without stop";
         }
@@ -326,7 +326,7 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 
         Int_t readEventReturn = 0;
 
-        for (int i = Ev_start; i < Ev_end || MaxAllowed == -1; i++) {
+        for (FairRoot::EntryID i = NEntry; i < NStop || MaxAllowed == -1; i++) {
 
             gSystem->IgnoreInterrupt();
             //  gFRAIsInterrupted = kFALSE;
@@ -382,34 +382,34 @@ void FairRunAna::Run(Int_t Ev_start, Int_t Ev_end)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
+void FairRunAna::RunEventReco(FairRoot::EntryID NEntry, Int_t NStop)
 {
     UInt_t tmpId = 0;
 
-    Int_t MaxAllowed = fRootManager->CheckMaxEventNo(Ev_end);
-    if (MaxAllowed != -1) {
-        if (Ev_end == 0) {
-            if (Ev_start == 0) {
-                Ev_end = MaxAllowed;
+    Int_t MaxAllowed = fRootManager->CheckMaxEventNo(NStop);
+    if (MaxAllowed != FairRoot::EntryID::None) {
+        if (NStop == 0) {
+            if (NEntry == 0) {
+                NStop = MaxAllowed;
             } else {
-                Ev_end = Ev_start;
-                if (Ev_end > MaxAllowed) {
-                    Ev_end = MaxAllowed;
+                NStop = NEntry;
+                if (NStop > MaxAllowed) {
+                    NStop = MaxAllowed;
                 }
-                Ev_start = 0;
+                NEntry = 0;
             }
         } else {
-            if (Ev_end > MaxAllowed) {
+            if (NStop > MaxAllowed) {
                 cout << "-------------------Warning---------------------------" << endl;
-                cout << " -W FairRunAna : File has less events than requested!!" << endl;
-                cout << " File contains : " << MaxAllowed << " Events" << endl;
-                cout << " Requested number of events = " << Ev_end << " Events" << endl;
-                cout << " The number of events is set to " << MaxAllowed << " Events" << endl;
+                cout << " -W FairRunAna : File has less entries than requested!!" << endl;
+                cout << " File contains : " << MaxAllowed << " entries" << endl;
+                cout << " Requested number of entries = " << NStop << " entries" << endl;
+                cout << " The number of entries is set to " << MaxAllowed << " entries" << endl;
                 cout << "-----------------------------------------------------" << endl;
-                Ev_end = MaxAllowed;
+                NStop = MaxAllowed;
             }
         }
-        LOG(info) << "FairRunAna::Run() After checking, the run will run from event " << Ev_start << " to " << Ev_end
+        LOG(info) << "FairRunAna::Run() After checking, the run will run from entry " << NEntry << " to " << NStop
                   << ".";
     } else {
         LOG(info) << "FairRunAna::Run() continue running without stop";
@@ -419,7 +419,7 @@ void FairRunAna::RunEventReco(Int_t Ev_start, Int_t Ev_end)
         fRunInfo.Reset();
     }
 
-    for (int i = Ev_start; i < Ev_end; i++) {
+    for (FairRoot::EntryID i = NEntry; i < NStop; i++) {
         fRootManager->ReadEvent(i);
         /**
          * if we have simulation files then they have MC Event Header and the Run Id is in it, any way it
@@ -480,11 +480,11 @@ void FairRunAna::Run(Double_t delta_t)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRunAna::RunMQ(Long64_t entry)
+void FairRunAna::RunMQ(FairRoot::EntryID entry)
 {
     /**
    This methode is only needed and used with ZeroMQ
-   it read a certain event and call the task exec, but no output is written
+   it read a certain entry and call the task exec, but no output is written
    */
     fRootManager->ReadEvent(entry);
     auto const tmpId = GetEvtHeaderRunId();
@@ -502,7 +502,7 @@ void FairRunAna::RunMQ(Long64_t entry)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRunAna::Run(Long64_t entry)
+void FairRunAna::RunSingle(FairRoot::EntryID entry)
 {
     fRootManager->ReadEvent(entry);
     auto const tmpId = GetEvtHeaderRunId();
@@ -552,7 +552,7 @@ void FairRunAna::RunTSBuffers()
 //_____________________________________________________________________________
 //_____________________________________________________________________________
 
-void FairRunAna::RunOnLmdFiles(UInt_t NStart, UInt_t NStop)
+void FairRunAna::RunOnLmdFiles(FairRoot::EntryID NStart, FairRoot::EntryID NStop)
 {
     if (NStart == 0 && NStop == 0) {
         NStart = 0;
@@ -587,10 +587,10 @@ void FairRunAna::RunOnTBData()
     fRootManager->Write();
 }
 //_____________________________________________________________________________
-void FairRunAna::DummyRun(Int_t Ev_start, Int_t Ev_end)
+void FairRunAna::DummyRun(FairRoot::EntryID NStart, FairRoot::EntryID NStop)
 {
     /** This methode is just for testing, if you are not sure about what you do, don't use it */
-    for (int i = Ev_start; i < Ev_end; i++) {
+    for (FairRoot::EntryID i = NStart; i < NStop; i++) {
         fTask->ExecuteTask("");
         FillEventHeader();
         Fill();

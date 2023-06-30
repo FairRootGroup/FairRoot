@@ -13,6 +13,7 @@
 #include "FairLinkManager.h"
 #include "FairSink.h"
 #include "FairSource.h"
+#include "FairTypes.h"
 
 #include <Rtypes.h>   // for Int_t, Bool_t, etc
 #include <TFile.h>    //
@@ -70,7 +71,7 @@ class FairRun : public TNamed
     /**
      * run the analysis or simulation
      */
-    virtual void Run(Int_t NStart = 0, Int_t NStop = 0) = 0;
+    virtual void Run(FairRoot::EntryID NEntry = 0, int NStop = 0) = 0;
     /**
      *       Set the experiment dependent run header
      *       for each run

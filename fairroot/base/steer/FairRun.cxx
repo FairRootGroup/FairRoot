@@ -32,7 +32,10 @@
 
 TMCThreadLocal FairRun* FairRun::fRunInstance = nullptr;
 
-FairRun* FairRun::Instance() { return fRunInstance; }
+FairRun* FairRun::Instance()
+{
+    return fRunInstance;
+}
 
 FairRun::FairRun(Bool_t isMaster)
     : TNamed()
@@ -137,7 +140,10 @@ void FairRun::SetTask(FairTask* task)
     }
 }
 
-void FairRun::CreateGeometryFile(const char* geofile) { fRootManager->CreateGeometryFile(geofile); }
+void FairRun::CreateGeometryFile(const char* geofile)
+{
+    fRootManager->CreateGeometryFile(geofile);
+}
 
 FairTask* FairRun::GetTask(const char* taskName)
 {
@@ -154,7 +160,10 @@ FairEventHeader* FairRun::GetEventHeader()
     return fEvtHeader;
 }
 
-void FairRun::SetUseFairLinks(Bool_t val) { fRootManager->SetUseFairLinks(val); }
+void FairRun::SetUseFairLinks(Bool_t val)
+{
+    fRootManager->SetUseFairLinks(val);
+}
 
 void FairRun::SetWriteRunInfoFile(Bool_t write)
 {
@@ -221,11 +230,20 @@ TFile* FairRun::GetOutputFile()
     return rootFileSink->GetRootFile();
 }
 
-void FairRun::SetUserOutputFileName(const TString& name) { fUserOutputFileName = name; }
+void FairRun::SetUserOutputFileName(const TString& name)
+{
+    fUserOutputFileName = name;
+}
 
-TString FairRun::GetUserOutputFileName() const { return fUserOutputFileName; }
+TString FairRun::GetUserOutputFileName() const
+{
+    return fUserOutputFileName;
+}
 
-void FairRun::AlignGeometry() const { fAlignmentHandler.AlignGeometry(); }
+void FairRun::AlignGeometry() const
+{
+    fAlignmentHandler.AlignGeometry();
+}
 
 /**
  * \todo Should we check for `fEvtHeader` being set as well?

@@ -34,12 +34,12 @@ class FairRunAnaProof : public FairRunAna
     /** Init containers executed on PROOF, which is part of Init when running locally*/
     void InitContainers();
 
-    /**Run from event number NStart to event number NStop */
-    void Run(Int_t NStart = 0, Int_t NStop = 0) override;
-    /**Run for one event, used on PROOF nodes*/
-    void RunOneEvent(Long64_t entry);
-    /**Run on proof from event NStart to event NStop*/
-    void RunOnProof(Int_t NStart, Int_t NStop);
+    /**Run from entry number NEntry to entry number NStop */
+    void Run(FairRoot::EntryID NEntry = 0, int NStop = 0) override;
+    /**Run for one entry, used on PROOF nodes*/
+    void RunOneEvent(FairRoot::EntryID entry);
+    /**Run on proof from entry NStart to entry NStop*/
+    void RunOnProof(FairRoot::EntryID NStart, int NStop);
 
     /** set the input tree of fRootManager when running on PROOF worker*/
     /* void        SetInTree (TTree* tempTree)   { */
