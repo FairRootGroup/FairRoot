@@ -23,24 +23,26 @@
 // fails.
 
 #include <RtypesCore.h>
-#include <TBranch.h>
+#include <TCanvas.h>
+#include <TCollection.h>   // for TRangeDynCast
 #include <TFile.h>
 #include <TH1.h>
+#include <TKey.h>
+#include <TLeaf.h>
 #include <TMath.h>
-#include <TObjArray.h>
 #include <TString.h>
 #include <TTree.h>
+#include <algorithm> // for std::any_of
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
-std::vector<std::pair<TString, TString>> GetLeafNames(TTree*);
+std::vector<std::string> GetLeafNames(TTree&);
 
-Bool_t CheckEntriesIdentical(TH1* compHist, std::stringstream& outstream);
-Bool_t CheckHistogramIdentical(TH1* origHist, TH1* newHist, std::stringstream& outstream);
-Bool_t CheckHistogramKolmogorov(TH1* origHist, TH1* newHist, std::stringstream& outstream);
+bool operator==(TH1 const&, TH1 const&);
 
 int TreeCompareAuto(TString fileName1 = "", TString fileName2 = "")
 {
@@ -50,82 +52,126 @@ int TreeCompareAuto(TString fileName1 = "", TString fileName2 = "")
     }
 
     // Get the output tree from the original file
-    TFile* file1 = TFile::Open(fileName1, "READ");
-    if (nullptr == file1)
+    std::unique_ptr<TFile> file1{TFile::Open(fileName1, "READ")};
+    if (!file1) {
+        std::cout << "Could not open file " << fileName1 << std::endl;
         return 42;
-    TTree* tree1 = (TTree*)file1->Get("cbmsim");
+    }
 
-    // Get the output tree from the file whcih should be compared
-    TFile* file2 = TFile::Open(fileName2, "READ");
-    if (nullptr == file2)
+    // Find a tree in the file
+    TList* keylist = file1->GetListOfKeys();
+    TKey* key;
+    TIter keyIterator(keylist);
+    TString treeName;
+    int numTreeInFile{0};
+    while ((key = static_cast<TKey*>(keyIterator()))) {
+        if (key->ReadObj()->InheritsFrom("TTree")) {
+           treeName     = key->GetName();
+           std::cout << "Found TTree with name " << treeName << std::endl;
+           numTreeInFile++;
+        }
+    }
+    if ( treeName.IsNull() ) {
+        std::cout << "File does not contain any TTree" << std::endl;
         return 42;
-    TTree* tree2 = (TTree*)file2->Get("cbmsim");
+    }
+    if ( 1 != numTreeInFile ) {
+        std::cout << "File ontains more than one TTree" << std::endl;
+        return 42;
+    }
+
+    std::unique_ptr<TTree> tree1{file1->Get<TTree>(treeName)};
+    if (!tree1) {
+        std::cout << "File " << fileName1 << " does not have the tree " 
+                  << treeName << std::endl;
+        return 42;
+    }
+
+    // Get the output tree from the file which should be compared
+    std::unique_ptr<TFile> file2{TFile::Open(fileName2, "READ")};
+    if (!file2) {
+        std::cout << "Could not open file " << fileName2 << std::endl;
+        return 42;
+    }
+
+    // The name of the tree must be the same in both files
+    std::unique_ptr<TTree> tree2{file2->Get<TTree>(treeName)};
+    if (!tree2) {
+        std::cout << "File " << fileName2 << " does not have the tree" 
+                  << treeName << std::endl;
+        return 42;
+    }
 
     // Add the output tree from the file to compare as friend to the tree
     // of the original file. This allows to access a data member of the
     // original file by e.g. StsHit.fX and the data element of the second tree
     // by tree2.StsHit.fX
-    tree1->AddFriend(tree2, "tree2");
+    TString const friendName{"tree2"};
+    tree1->AddFriend(tree2.get(), friendName);
 
-    // Define pairs of data members to compare. One from each tree.
-    // This allows to compare them also if names or the structure of
-    // the classses change.
-    std::vector<std::pair<TString, TString>> leaves = GetLeafNames(tree1);
+    // Get the leaf names for all leaves which should be compared
+    // from the first input tree
+    auto leaves = GetLeafNames(*tree1);
+
+    if (0 == leaves.size()) {
+        std::cout << "Test passed. Tree does not contain any data which must be checked" << std::endl;
+        return 0;
+    }
+
+    // The TCanvas is needed to suppress a info/warning
+    TCanvas defaultCanvas;
 
     std::stringstream outstream;
-    Bool_t okay{kTRUE};
-    Int_t numTestedLeaves{0};
-    Int_t numEmptyLeaves{0};
-    Int_t numLeaves{0};
-    Int_t numFailedLeaves{0};
-    Int_t numIdenticalEntries{0};
-    Int_t numIdenticalHistograms{0};
-    Int_t numKolmogorovHistograms{0};
+    bool okay{true};
+    int numTestedLeaves{0};
+    int numEmptyLeaves{0};
+    int numLeaves{0};
+    int numFailedLeaves{0};
+    int numIdenticalEntries{0};
+    int numIdenticalHistograms{0};
+    int numKolmogorovHistograms{0};
 
     for (auto leaf : leaves) {
-        TString leafName = leaf.first;
-        TString leafName1 = leaf.second;
+        TString leafName = leaf;
+        TString leafName1 = friendName + "." + leafName;
 
         TString command1 = leafName + ">>htemp";
         tree1->Draw(command1);
+        int entries{0};
+        float low{0.};
+        float high{0.};
+        int nBins{0};
+        auto htemp = static_cast<TH1F*>(gPad->GetPrimitive("htemp"));
+        if (htemp) {
+            entries = htemp->GetEntries();
+            nBins = htemp->GetNbinsX();
+            low = htemp->GetXaxis()->GetXmin();
+            high = htemp->GetXaxis()->GetXmax();
+        }
+
+        command1 = leafName1 + ">>hist1(" + nBins + ", " + low + ", " + high + ")";
+        tree1->Draw(command1);
+        auto hist1 = static_cast<TH1F*>(gPad->GetPrimitive("hist1"));
         int entries1{0};
         float low1{0.};
         float high1{0.};
         int nBins1{0};
-        auto htemp = (TH1F*)gPad->GetPrimitive("htemp");
-        if (htemp) {
-            entries1 = htemp->GetEntries();
-            nBins1 = htemp->GetNbinsX();
-            low1 = htemp->GetXaxis()->GetXmin();
-            high1 = htemp->GetXaxis()->GetXmax();
-        }
-
-        command1 = leafName1 + ">>hist1(" + nBins1 + ", " + low1 + ", " + high1 + ")";
-        //    cout << command1 << endl;
-        tree1->Draw(command1);
-        auto hist1 = (TH1F*)gPad->GetPrimitive("hist1");
-        int entries2{0};
-        float low2{0.};
-        float high2{0.};
-        int nBins2{0};
         if (hist1) {
-            entries2 = hist1->GetEntries();
-            nBins2 = hist1->GetNbinsX();
-            low2 = hist1->GetXaxis()->GetXmin();
-            high2 = hist1->GetXaxis()->GetXmax();
+            entries1 = hist1->GetEntries();
+            nBins1 = hist1->GetNbinsX();
+            low1 = hist1->GetXaxis()->GetXmin();
+            high1 = hist1->GetXaxis()->GetXmax();
         }
 
-        if ((0 == entries1 && 0 != entries2) || (0 != entries1 && 0 == entries2)) {
+        if ((0 == entries && 0 != entries1) || (0 != entries && 0 == entries1)) {
             std::cout << "One of the distributions is empty" << std::endl;
-            okay = kFALSE;
+            okay = false;
         }
-        if (0 == entries1 && 0 == entries2) {
+        if (0 == entries && 0 == entries1) {
             outstream << "Both Histograms are empty." << std::endl;
 
             hist1->Clear();
             htemp->Clear();
-            //      numTestedLeaves++;
-            //      numEmptyLeaves++;
             continue;
         }
 
@@ -135,60 +181,71 @@ int TreeCompareAuto(TString fileName1 = "", TString fileName2 = "")
         // If the content is differnt one gets a distribution which is
         // detected.
         outstream << "Comparing " << leafName << " and " << leafName1 << std::endl;
+
         TString command = leafName + "-" + leafName1 + ">>hist(20, -10.,10.)";
         tree1->Draw(command);
-        auto hist = (TH1F*)gPad->GetPrimitive("hist");
+        auto hist = static_cast<TH1F*>(gPad->GetPrimitive("hist"));
         numTestedLeaves++;
 
         // Check if the entries in the tree are identical
-        Bool_t leafIsIdentical = CheckEntriesIdentical(hist, outstream);
+        outstream << "Checking for identical entries" << endl;
+
+        if (TMath::Abs(hist->GetMean()) < 0.000001 && TMath::Abs(hist->GetRMS()) < 0.000001
+            && 0 == hist->GetBinContent(0) && 0 == hist->GetBinContent(hist->GetNbinsX() + 1)) {
+            numIdenticalEntries++;
+            outstream << "Entries are identical." << std::endl;
+            outstream << "**********************" << std::endl;
+            hist1->Clear();
+            hist->Clear();
+            htemp->Clear();
+            continue;
+        }
 
         // If the entries are not identical check if the histograms are
         // identical. This is the case if the entries in the tree are sorted
         // differently
-        if (leafIsIdentical) {
-            numIdenticalEntries++;
-            outstream << "**********************" << std::endl;
-            hist1->Clear();
-            hist->Clear();
-            htemp->Clear();
-            continue;
-        } else {
-            outstream << "CHecking for identical histograms" << endl;
-            leafIsIdentical = CheckHistogramIdentical(htemp, hist1, outstream);
-        }
+        outstream << "Checking for identical histograms" << endl;
 
-        if (leafIsIdentical) {
+        if (*htemp == *hist1) {
             numIdenticalHistograms++;
+            outstream << "Histograms are identical." << std::endl;
             outstream << "**********************" << std::endl;
             hist1->Clear();
             hist->Clear();
             htemp->Clear();
             continue;
-        } else {
-            outstream << "CHecking Kolmogorov" << endl;
-            leafIsIdentical = CheckHistogramKolmogorov(htemp, hist1, outstream);
         }
 
-        if (leafIsIdentical) {
+        // if also the histograms are not identical check if the histograms
+        // are equal on a statistical base. Use The Kolmogorov test for
+        // this.
+        outstream << "Checking Kolmogorov" << endl;
+
+        double kolmo = htemp->KolmogorovTest(hist1);
+
+        outstream << "Result of Kolmogorov test: " << kolmo << endl;
+        if (kolmo > 0.99) {
             numKolmogorovHistograms++;
             outstream << "**********************" << std::endl;
             hist1->Clear();
             hist->Clear();
             htemp->Clear();
             continue;
-        } else {
-            outstream << "Data are differnt" << std::endl;
-            outstream << "**********************" << std::endl;
-            outstream << "Entries: " << hist->GetEntries() << std::endl;
-            outstream << "Mean: " << hist->GetMean() << std::endl;
-            outstream << "RMS: " << hist->GetRMS() << std::endl;
-            outstream << "Underflow: " << hist->GetBinContent(0) << std::endl;
-            outstream << "Overflow: " << hist->GetBinContent(hist->GetNbinsX() + 1) << std::endl;
-            outstream << "**********************" << std::endl;
-            okay = kFALSE;
-            numFailedLeaves++;
         }
+
+        outstream << "Data are differnt" << std::endl;
+        outstream << "**********************" << std::endl;
+        outstream << "Entries: " << hist->GetEntries() << std::endl;
+        outstream << "Mean: " << hist->GetMean() << std::endl;
+        outstream << "RMS: " << hist->GetRMS() << std::endl;
+        outstream << "Underflow: " << hist->GetBinContent(0) << std::endl;
+        outstream << "Overflow: " << hist->GetBinContent(hist->GetNbinsX() + 1) << std::endl;
+        outstream << "**********************" << std::endl;
+        okay = false;
+        numFailedLeaves++;
+        hist1->Clear();
+        hist->Clear();
+        htemp->Clear();
     }
 
     if (!okay) {
@@ -197,9 +254,8 @@ int TreeCompareAuto(TString fileName1 = "", TString fileName2 = "")
         std::cout << numFailedLeaves << " of " << numTestedLeaves << " leaves are different." << std::endl;
         return 1;
     }
-    //  std::cout << outstream.str();
+
     std::cout << "Tested leaves:                    " << numTestedLeaves << std::endl;
-    //  std::cout << "Empty leaves:                     " << numEmptyLeaves << std::endl;
     std::cout << "Leaves with identical entries:    " << numIdenticalEntries << std::endl;
     std::cout << "Leaves with identical histograms: " << numIdenticalHistograms << std::endl;
     std::cout << "Leaves with kolmo histograms:     " << numKolmogorovHistograms << std::endl;
@@ -208,102 +264,81 @@ int TreeCompareAuto(TString fileName1 = "", TString fileName2 = "")
     return 0;
 }
 
-Bool_t CheckEntriesIdentical(TH1* compHist, std::stringstream& outstream)
+bool operator==(TH1 const& lhs, TH1 const& rhs)
 {
-    if ((TMath::Abs(compHist->GetMean()) > 0.000001 && TMath::Abs(compHist->GetRMS()) > 0.000001)
-        || (0 != compHist->GetBinContent(0)) || (0 != compHist->GetBinContent(compHist->GetNbinsX() + 1))) {
-        return kFALSE;
-    } else {
-        outstream << "Entries are identical." << std::endl;
-        outstream << "**********************" << std::endl;
-        return kTRUE;
-    }
-}
-
-Bool_t CheckHistogramIdentical(TH1* origHist, TH1* newHist, std::stringstream& outstream)
-{
-    if (origHist && newHist) {
-        outstream << "Comparing histograms" << std::endl;
-        for (int x = 0; x < origHist->GetNbinsX() + 1; ++x) {
-            if (origHist->GetBinContent(x) != newHist->GetBinContent(x)) {
-                return kFALSE;
-            }
-        }
-        outstream << "Histograms are identical." << std::endl;
-        outstream << "**********************" << std::endl;
-        return kTRUE;
-    }
-    return kFALSE;
-}
-
-Bool_t CheckHistogramKolmogorov(TH1* origHist, TH1* newHist, std::stringstream& outstream)
-{
-    Double_t kolmo = origHist->KolmogorovTest(newHist);
-
-    outstream << "Result of Kolmogorov test: " << kolmo << endl;
-    if (kolmo > 0.99) {
-        return kTRUE;
-    }
-
-    return kFALSE;
-}
-
-std::vector<std::pair<TString, TString>> GetLeafNames(TTree* cbmsim)
-{
-
-    std::vector<TString> ListOfLeaves;
-
-    if (cbmsim) {
-        TObjArray* bla1 = cbmsim->GetListOfLeaves();
-        TIter myiter1(bla1);
-        TBranch* branch;
-        while ((branch = (TBranch*)myiter1.Next())) {
-            TString mystring = branch->GetName();
-            //      cout << "Branch Name: " << mystring << endl;
-
-            // Generate leaf names for points, digis and hits
-            if (mystring.Contains("Point") || mystring.Contains("Digi") || mystring.Contains("Hit")) {
-                TObjArray* bla2 = mystring.Tokenize(".");
-                if (bla2->GetEntriesFast() == 4) {
-                    TString _branch = ((TObjString*)(bla2->At(2)))->GetString();
-                    TString _leaf = ((TObjString*)(bla2->At(3)))->GetString();
-                    if (_leaf.EqualTo("fLink")) {
-                        TString name = _branch + "." + _leaf + ".fLinks";
-                        ListOfLeaves.emplace_back(_branch + "." + _leaf + ".fLinks.fFile");
-                        ListOfLeaves.emplace_back(_branch + "." + _leaf + ".fLinks.fType");
-                        ListOfLeaves.emplace_back(_branch + "." + _leaf + ".fLinks.fEntry");
-                        ListOfLeaves.emplace_back(_branch + "." + _leaf + ".fLinks.fIndex");
-                        ListOfLeaves.emplace_back(_branch + "." + _leaf + ".fLinks.fWeight");
-                        ListOfLeaves.emplace_back(_branch + "." + _leaf + ".fEntryNr.fFile");
-                        ListOfLeaves.emplace_back(_branch + "." + _leaf + ".fEntryNr.fType");
-                        ListOfLeaves.emplace_back(_branch + "." + _leaf + ".fEntryNr.fEntry");
-                        ListOfLeaves.emplace_back(_branch + "." + _leaf + ".fEntryNr.fIndex");
-                        ListOfLeaves.emplace_back(_branch + "." + _leaf + ".fEntryNr.fWeight");
-                    } else {
-                        ListOfLeaves.emplace_back(_branch + "." + _leaf);
-                    }
-                }
-            }
-
-            if (mystring.Contains("MCTrack")) {
-                TObjArray* bla2 = mystring.Tokenize(".");
-                if (bla2->GetEntriesFast() == 4) {
-                    TString _branch = ((TObjString*)(bla2->At(2)))->GetString();
-                    TString _leaf = ((TObjString*)(bla2->At(3)))->GetString();
-                    ListOfLeaves.emplace_back(_branch + "." + _leaf);
-                }
-            }
-
-            if (mystring.Contains("GeoTracks")) {
-                continue;
-            }
+    for (int x = 0; x < lhs.GetNbinsX() + 1; ++x) {
+        if (lhs.GetBinContent(x) != rhs.GetBinContent(x)) {
+            return false;
         }
     }
+    return true;
+}
 
-    std::vector<std::pair<TString, TString>> leaves;
-    for (auto const element : ListOfLeaves) {
-        TString nameTree2 = "tree2." + element;
-        leaves.emplace_back(make_pair(element, nameTree2));
+std::vector<std::string_view> split(std::string_view sv, char by)
+{
+    std::vector<std::string_view> components;
+    std::string_view::size_type first{0};
+    std::string_view::size_type last{sv.find(by, first)};
+    while (last != std::string_view::npos) {
+        components.emplace_back(sv.substr(first, last - first));
+        first = last + 1;
+        last = sv.find(by, first);
     }
+    components.emplace_back(sv.substr(first, std::string_view::npos));
+    return components;
+}
+
+// to be replaced by std::string::contains in C++23
+// https://en.cppreference.com/w/cpp/string/basic_string/contains
+bool contains(std::string_view sv, std::string_view what)
+{
+    return sv.find(what) != std::string_view::npos;
+}
+
+std::vector<std::string> GetLeafNames(TTree& simTree)
+{
+    std::vector<std::string> leaves;
+
+    for (auto leaf : TRangeDynCast<TLeaf>(simTree.GetListOfLeaves())) {
+        if (!leaf) {
+            continue;
+        }
+
+        std::string const fullName = leaf->GetName();
+
+        auto const keywords = {"Point", "Digi", "Hit", "MCTrack"};
+        auto const match = std::any_of(std::cbegin(keywords), std::cend(keywords), [&](auto keyword) {
+           return contains(fullName, keyword);
+        });
+        if (!match) {
+            continue;
+        }
+
+        auto const parts = split(fullName, '.');
+        if (parts.size() != 4) {
+            continue;
+        }
+
+        std::string const branchName{parts[2]};
+        std::string const leafName{parts[3]};
+        std::string const name{branchName + "." + leafName};
+
+        if (leafName == "fLink" && !contains(fullName, "MCTrack")) {
+            leaves.emplace_back(name + ".fLinks.fFile");
+            leaves.emplace_back(name + ".fLinks.fType");
+            leaves.emplace_back(name + ".fLinks.fEntry");
+            leaves.emplace_back(name + ".fLinks.fIndex");
+            leaves.emplace_back(name + ".fLinks.fWeight");
+            leaves.emplace_back(name + ".fEntryNr.fFile");
+            leaves.emplace_back(name + ".fEntryNr.fType");
+            leaves.emplace_back(name + ".fEntryNr.fEntry");
+            leaves.emplace_back(name + ".fEntryNr.fIndex");
+            leaves.emplace_back(name + ".fEntryNr.fWeight");
+            continue;
+        }
+
+        leaves.emplace_back(name);
+    }
+
     return leaves;
 }
