@@ -18,8 +18,9 @@ dir1=$1
 dir2=$2
 
 files=( 
-simulation/Tutorial1/macros/tutorial1_TGeant4_pions.mc_p2.000_t0_n1.root
-simulation/Tutorial1/macros/tutorial1_TGeant4_pions.mc_p2.000_t0_n10.root
+simulation/Tutorial1/macros/tutorial1_TGeant4_pions.mc_p2.000000_t0.000000_n1.root
+simulation/Tutorial1/macros/tutorial1_TGeant4_pions.mc_p2.000000_t0.000000_n10.root
+simulation/Tutorial1/macros/tutorial1_TGeant4_pions.mc_p2.000000_t0.000000_n20.root
 simulation/Tutorial1/macros/tutorial1_pythia8_TGeant4_pions.mc_p2.000_t0_n10.root
 simulation/Tutorial1/macros/tutorial1_pythia6_TGeant4_pions.mc_p2.000_t0_n10.root
 simulation/Tutorial1/macros/tutorial1_urqmd_TGeant4.mc.root
@@ -28,34 +29,18 @@ simulation/Tutorial2/macros/tutorial2_pions.mc_p2.000_t0_n10.root
 simulation/Tutorial2/macros/tutorial2_pions.mc_p2.000_t0_n10.sg1.root
 simulation/Tutorial2/macros/tutorial2_pions.mc_p2.000_t0_n20.sg2.root
 simulation/Tutorial2/macros/tutorial2_pions.mc_p2.000_t0_n130.bg.root
-#simulation/Tutorial2/macros/digis.mc.root
-#simulation/Tutorial2/macros/digis.mix.mc.root
 
 simulation/Tutorial4/macros/data/testrun_align_TGeant4.root
 simulation/Tutorial4/macros/data/testreco_align_TGeant4.root
-#simulation/Tutorial4/macros/data/test.ana.root
 
 simulation/rutherford/macros/data/test_TGeant4.mc.root
 simulation/rutherford/macros/data/test1_TGeant4.mc.root
 
 advanced/propagator/macros/prop.mc.root
-#advanced/propagator/macros/prop.rk.cal.root
 
 advanced/Tutorial3/macro/data/testrun_TGeant4.root
 advanced/Tutorial3/macro/data/testdigi_TGeant4.root
 advanced/Tutorial3/macro/data/testreco_TGeant4.root
-advanced/Tutorial3/macro/data/testDiRePr_TGeant4.root
-#advanced/Tutorial3/macro/data/testrecotimebased_TGeant4.root
-
-#MQ/serialization/data_io/testinput1.root
-#MQ/serialization/data_io/outputEx1Test.root
-#MQ/serialization/data_io/testinput2.root
-#MQ/serialization/data_io/outputEx2Test.root
-#MQ/pixelDetector/macros/pixel_TGeant4.mc.root
-#MQ/pixelDetector/macros/pixel_TGeant4.digi.root
-#MQ/pixelDetector/macros/pixel_TGeant4.digiToBin.root
-#MQ/pixelDetector/macros/MQ.pixel_TGeant4.hits.root
-#MQ/pixelSimSplit/run/MQ.simulation_TGeant4.data.root
 )
 
 for i in "${files[@]}"; do
