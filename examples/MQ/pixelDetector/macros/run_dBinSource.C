@@ -1,15 +1,36 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#if !defined(__CLING__) || defined(__ROOTCLING__)
+// Example includes
+#include "PixelDigiBinSource.h"
+#include "PixelEventHeader.h"
+#include "PixelFindHits.h"
+
+// FairRoot includes
+#include "FairParAsciiFileIo.h"
+#include "FairParRootFileIo.h"
+#include "FairRootFileSink.h"
+#include "FairRunAna.h"
+#include "FairRuntimeDb.h"
+#include "FairSystemInfo.h"
+#endif
+
+#include <TStopwatch.h>
+#include <TString.h>
+#include <iostream>
+#include <memory>
+
+using std::cout;
+using std::endl;
+
 void run_dBinSource(TString mcEngine = "TGeant3")
 {
-    // Verbosity level (0=quiet, 1=event level, 2=track level, 3=debug)
-    Int_t iVerbose = 0;   // just forget about it, for the moment
-
     // Parameter file
     TString parFile = "pixel_";
     parFile = parFile + mcEngine + ".params.root";
@@ -26,19 +47,17 @@ void run_dBinSource(TString mcEngine = "TGeant3")
     // -----   Timer   --------------------------------------------------------
     TStopwatch timer;
 
-    PixelEventHeader* pixelEventHeader = new PixelEventHeader();
-
     // -----   Reconstruction run   -------------------------------------------
-    FairRunAna* fRun = new FairRunAna();
-    fRun->SetEventHeader(pixelEventHeader);
-    fRun->SetSink(new FairRootFileSink(outFile));
+    FairRunAna run{};
+    run.SetEventHeader(std::make_unique<PixelEventHeader>());
+    run.SetSink(std::make_unique<FairRootFileSink>(outFile));
 
     PixelDigiBinSource* digiSource = new PixelDigiBinSource("Pixel Digi Source");
     digiSource->SetInputFileName("digisBin.dat");
 
-    fRun->SetSource(digiSource);
+    run.SetSource(digiSource);
 
-    FairRuntimeDb* rtdb = fRun->GetRuntimeDb();
+    FairRuntimeDb* rtdb = run.GetRuntimeDb();
     FairParRootFileIo* parInput1 = new FairParRootFileIo();
     parInput1->open(parFile.Data());
 
@@ -50,15 +69,15 @@ void run_dBinSource(TString mcEngine = "TGeant3")
 
     // -----   TorinoDetector hit  producers   ---------------------------------
     //  PixelDigiReadFromFile* digiRead = new PixelDigiReadFromFile();
-    //  fRun->AddTask(digiRead);
+    //  run->AddTask(digiRead);
 
     PixelFindHits* hitFinderTask = new PixelFindHits();
-    fRun->AddTask(hitFinderTask);
+    run.AddTask(hitFinderTask);
 
-    fRun->Init();
+    run.Init();
 
     timer.Start();
-    fRun->Run();
+    run.Run();
 
     // -----   Finish   -------------------------------------------------------
 
