@@ -96,8 +96,13 @@ class FairGenericStack : public TVirtualMCStack
     /** Register the MCTrack array to the Root Manager  **/
     virtual void Register() {}
 
-    virtual TClonesArray* GetListOfParticles() { return 0; }
-    virtual void SetParticleArray(__attribute__((unused)) TClonesArray* partArray) {}
+    virtual TClonesArray* GetListOfParticles() { return nullptr; }
+    virtual void SetParticleArray(TClonesArray* partArray)
+    {
+        if (partArray) {
+            SetParticleArray(partArray, 0, partArray->GetEntries());
+        }
+    }
     virtual void SetParticleArray(__attribute__((unused)) TClonesArray* partArray,
                                   __attribute__((unused)) Int_t partFrom,
                                   __attribute__((unused)) Int_t partTo)

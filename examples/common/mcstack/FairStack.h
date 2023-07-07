@@ -45,9 +45,6 @@
 #include <stack>     // for stack
 #include <utility>   // for pair
 
-class TClonesArray;
-class TRefArray;
-
 class FairStack : public FairGenericStack
 {
   public:
@@ -165,7 +162,7 @@ class FairStack : public FairGenericStack
     void FillTrackArray() override;
 
     /** Update the track index in the MCTracks and MCPoints **/
-    void UpdateTrackIndex(TRefArray* detArray = 0) override;
+    void UpdateTrackIndex(TRefArray* detArray = nullptr) override;
 
     /** Resets arrays and stack and deletes particles and tracks **/
     void Reset() override;
@@ -198,24 +195,14 @@ class FairStack : public FairGenericStack
     TParticle* GetParticle(Int_t trackId) const;
     TClonesArray* GetListOfParticles() override { return fParticles; }
 
-    void SetParticleArray(TClonesArray* partArray) override
-    {
-        for (Int_t ipart = 0; ipart < partArray->GetEntries(); ipart++) {
-            ((TParticle*)(partArray->At(ipart)))->SetUniqueID(fNPrimaries);
-            fStack.push((TParticle*)partArray->At(ipart));
-            AddParticle((TParticle*)partArray->At(ipart));
-            fNParticles++;
-            fNPrimaries++;
-        }
-    }
-
     void SetParticleArray(TClonesArray* partArray, Int_t partFrom, Int_t partTo) override
     {
         for (Int_t ipart = partFrom; ipart < partTo; ipart++) {
-            ((TParticle*)(partArray->At(ipart)))->SetUniqueID(fNPrimaries);
-            ((TParticle*)(partArray->At(ipart)))->SetStatusCode(fNPrimaries);
-            fStack.push((TParticle*)partArray->At(ipart));
-            AddParticle((TParticle*)partArray->At(ipart));
+            auto particle = static_cast<TParticle*>(partArray->At(ipart));
+            particle->SetUniqueID(fNPrimaries);
+            particle->SetStatusCode(fNPrimaries);
+            fStack.push(particle);
+            AddParticle(particle);
             fNParticles++;
             fNPrimaries++;
         }
@@ -224,7 +211,7 @@ class FairStack : public FairGenericStack
     /** Clone this object (used in MT mode only) */
     FairGenericStack* CloneStack() const override
     {
-        FairStack* clonedStack = new FairStack();
+        auto clonedStack = new FairStack();
         clonedStack->StoreSecondaries(fStoreSecondaries);
         clonedStack->SetMinPoints(fMinPoints);
         clonedStack->SetEnergyCut(fEnergyCut);
