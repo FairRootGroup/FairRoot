@@ -239,6 +239,12 @@
     },
     {
       "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-7006-7986",
+      "givenName": "Yanzhao",
+      "familyName": "Wang"
+    },
+    {
+      "@type": "Person",
       "givenName": "Sandro",
       "familyName": "Wenzel"
     },
