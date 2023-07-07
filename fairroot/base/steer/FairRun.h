@@ -56,6 +56,7 @@ class FairRun : public TNamed
     /**
      * Add a FAIRTask to the simulation or analysis
      */
+    void AddTask(std::unique_ptr<FairTask> task) { AddTask(task.release()); }
     virtual void AddTask(FairTask* t);
     virtual void StoreTaskNames(const FairTask* t);
     virtual void SetTask(FairTask* t);

@@ -71,8 +71,8 @@ void run_dAsciiSource(TString mcEngine = "TGeant3")
     //  PixelDigiReadFromFile* digiRead = new PixelDigiReadFromFile();
     //  run->AddTask(digiRead);
 
-    PixelFindHits* hitFinderTask = new PixelFindHits();
-    run.AddTask(hitFinderTask);
+    auto hitFinderTask = std::make_unique<PixelFindHits>();
+    run.AddTask(std::move(hitFinderTask));
 
     run.Init();
 
