@@ -4,8 +4,11 @@ HeaderFilterRegex: '.*'
 #   ROOT throws lots of them in their headers
 # Bugprone:
 #   These could cause actual bugs.
-# enable cppcoreguidelines-virtual-class-destructor
+# C++ Core Guidelines
+# * cppcoreguidelines-virtual-class-destructor
 #   Avoid undefined behaviour
+# * cppcoreguidelines-pro-type-cstyle-cast
+#   Avoid C-Style Casts which might be problematic
 # enable google-build-using-namespace
 #   "using namespace" imports a changing amount of symbols, avoid it
 # improve readability:
@@ -18,6 +21,7 @@ Checks: >-
   -bugprone-virtual-near-miss,
   -bugprone-unhandled-self-assignment,
   -bugprone-reserved-identifier,
+  cppcoreguidelines-pro-type-cstyle-cast,
   cppcoreguidelines-virtual-class-destructor,
   modernize-make-unique,
   google-build-using-namespace,
