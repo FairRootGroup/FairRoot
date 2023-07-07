@@ -1,14 +1,23 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+set(prefix ex_pixel)
+
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_sim.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_digi.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_digiToBin.C)
+
+# Try to compile the macros as normal files
+add_library(${prefix}_check_compile OBJECT
+    run_dAsciiSource.C
+    run_dBinSource.C)
+target_link_libraries(${prefix}_check_compile PRIVATE
+    FairRoot::ExPixel)
 
 set(maxTestTime 30)
 
