@@ -82,7 +82,8 @@ void create_digis()
 
     rtdb->getContainer("FairTutorialDet2DigiPar")->print();
 
-    FairTutorialDet2DigiPar* DigiPar = (FairTutorialDet2DigiPar*)rtdb->getContainer("FairTutorialDet2DigiPar");
+    auto DigiPar = dynamic_cast<FairTutorialDet2DigiPar*>(rtdb->getContainer("FairTutorialDet2DigiPar"));
+    assert(DigiPar);
 
     DigiPar->setChanged();
     DigiPar->setInputVersion(fRun->GetRunId(), 1);

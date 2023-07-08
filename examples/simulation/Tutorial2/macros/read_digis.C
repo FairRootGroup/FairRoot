@@ -94,7 +94,8 @@ void read_digis()
     rtdb->saveOutput();
 
     // -- Print out the random seed from the simulation ----------------------
-    FairBaseParSet* BasePar = (FairBaseParSet*)rtdb->getContainer("FairBaseParSet");
+    auto BasePar = dynamic_cast<FairBaseParSet*>(rtdb->getContainer("FairBaseParSet"));
+    assert(BasePar);
     cout << "RndSeed used in simulation was  " << BasePar->GetRndSeed() << endl;
 
     // -----------------------------------------------------------------------
@@ -102,7 +103,7 @@ void read_digis()
     // Second version to print the parameters
     // which also shows how to change and save them again
 
-    FairTutorialDet2DigiPar* DigiPar = (FairTutorialDet2DigiPar*)rtdb->getContainer("FairTutorialDet2DigiPar");
+    auto DigiPar = static_cast<FairTutorialDet2DigiPar*>(rtdb->getContainer("FairTutorialDet2DigiPar"));
 
     DigiPar->setChanged();
     DigiPar->setInputVersion(fRun->GetRunId(), 1);
