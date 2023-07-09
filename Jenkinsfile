@@ -29,6 +29,14 @@ def jobMatrix(String prefix, String type, List specs) {
           deleteDir()
           checkout scm
 
+          if (check == "warnings" || check == "doxygen") {
+            discoverGitReferenceBuild()
+          }
+          if (check == "doxygen") {
+            gitDiffStat()
+            // mineRepository()
+          }
+
           def jobscript = 'job.sh'
           def ctestcmd = "ctest -S FairRoot_${type}_test.cmake -V --output-on-failure"
           sh "echo \"set -e\" >> ${jobscript}"
@@ -55,9 +63,6 @@ def jobMatrix(String prefix, String type, List specs) {
               exec test/ci/slurm-create-jobscript.sh "${label}" "${container}" "${jobscript}" ${ctestcmd}
             """)
             sh "./test/ci/slurm-submit.sh \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
-          }
-          if (check == "warnings" || check == "doxygen") {
-            discoverGitReferenceBuild()
           }
           if (check == "warnings") {
             recordIssues(tools: [clangTidy(pattern: logpattern)],
