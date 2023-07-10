@@ -81,8 +81,11 @@ file an issue, so that we can see how to handle this.
   * The functionality, introduced to enable event reconstruction, is not used.
   * It can be enabled with `-DBUILD_EVENT_BUILDER=ON`.
 * Deprecated `FairRun::SetEventHeader(FairEventHeader*)`
-   * Use `FairRun::SetEventHeader(std::unique_ptr<FairEventHeader> EvHeader)`, which 
-     indicates the ownership transferring.
+  * Use `FairRun::SetEventHeader(std::unique_ptr<FairEventHeader> EvHeader)`,
+    which indicates the ownership transferring.
+* Deprecated `FairRunAna::Run(Long64_t entry)`
+  * Functionality unclear due to dubious `Run(int)` and `Run(long)`.
+  * Use `FairRunAna::RunSingleEntry(Long64_t entry)` instead.
 
 ### Other Notable Changes
 * Consider calling `fairroot_check_root_cxxstd_compatibility()`

@@ -179,7 +179,7 @@ void FairEventManager::GotoEvent(Int_t event)
     fEntry = event;
     fTimeMin = 0;
     fTimeMax = DBL_MAX;
-    fRunAna->Run(static_cast<Long64_t>(event));
+    fRunAna->RunSingleEntry(fEntry);
 }
 
 void FairEventManager::NextEvent()
@@ -187,7 +187,7 @@ void FairEventManager::NextEvent()
     fEntry += 1;
     fTimeMin = 0;
     fTimeMax = DBL_MAX;
-    fRunAna->Run(static_cast<Long64_t>(fEntry));
+    fRunAna->RunSingleEntry(fEntry);
 }
 
 void FairEventManager::PrevEvent()
@@ -195,7 +195,7 @@ void FairEventManager::PrevEvent()
     fEntry -= 1;
     fTimeMin = 0;
     fTimeMax = DBL_MAX;
-    fRunAna->Run(static_cast<Long64_t>(fEntry));
+    fRunAna->RunSingleEntry(fEntry);
 }
 
 void FairEventManager::Close() {}
