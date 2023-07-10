@@ -35,12 +35,18 @@ class FairRunAna : public FairRun
     FairRunAna();
     /**initialize the run manager*/
     void Init() override;
-    /**Run from event number NStart to event number NStop */
+    /** Run analysis:
+     * for the whole input if NEntry == NStop == 0,
+     * for NEntry entries if NStop == 0,
+     * from NEntry until NStop entry is reached
+     * from NEntry to the end of input, if NStop = -1 */
     void Run(Int_t NStart = 0, Int_t NStop = 0) override;
     /**Run over the whole input file with timpe window delta_t as unit (entry)*/
     void Run(Double_t delta_t);
+    /** \deprecated Replaced by unambiguous RunSingleEntry(entry)*/
+    [[deprecated("Replaced by unambiguous RunSingleEntry(entry)")]] void Run(Long64_t entry) { RunSingleEntry(entry); }
     /**Run for the given single entry*/
-    void Run(Long64_t entry);
+    void RunSingleEntry(Long64_t entry);
     /**Run event reconstruction from event number NStart to event number NStop */
     /** \deprecated Deprecated along with FairEventBuilder. */
     [[deprecated("Deprecated along with FairEventBuilder.")]] void RunEventReco(Int_t NStart, Int_t NStop);

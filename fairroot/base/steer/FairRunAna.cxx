@@ -475,7 +475,7 @@ void FairRunAna::RunMQ(Long64_t entry)
 //_____________________________________________________________________________
 
 //_____________________________________________________________________________
-void FairRunAna::Run(Long64_t entry)
+void FairRunAna::RunSingleEntry(Long64_t entry)
 {
     fRootManager->ReadEvent(entry);
     CheckRunIdChanged();
