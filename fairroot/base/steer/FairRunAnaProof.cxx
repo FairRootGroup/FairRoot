@@ -85,6 +85,11 @@ void FairRunAnaProof::Init()
         // input chain. Do a check if the added files are of the same type
         // as the the input file. Same type means check if they contain the
         // same branch.
+        // FairRunAnaProof should accept only FairFileSource
+        fProofFileSource = dynamic_cast<FairFileSource*>(GetSource());
+        if (!fProofFileSource) {
+            LOG(error) << "FairRunAnaProof. Only FairFileSource is accepted as source";
+        }
     }
     // Load Geometry from user file
 
@@ -254,16 +259,6 @@ void FairRunAnaProof::InitContainers()
             LOG(error) << "FairRunAnaProof::Init: fRtdb->initContainers failed";
         }
     }
-}
-
-void FairRunAnaProof::SetSource(FairSource* tempSource)
-{
-    // FairRunAnaProof should accept only FairFileSource
-    if (strncmp(tempSource->GetName(), "FairFileSource", 14) != 0) {
-        LOG(warn) << "FairRunAnaProof. Seems you are trying to set different source than FairFileSource";
-    }
-    FairRunAna::SetSource(tempSource);
-    fProofFileSource = static_cast<FairFileSource*>(tempSource);
 }
 
 void FairRunAnaProof::Run(Int_t Ev_start, Int_t Ev_end)

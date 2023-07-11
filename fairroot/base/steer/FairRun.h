@@ -197,7 +197,7 @@ class FairRun : public TNamed
      *
      * Takes an owning pointer!
      */
-    virtual void SetSource(FairSource* tempSource);
+    void SetSource(FairSource* tempSource);
     /** Return non-owning pointer to source **/
     FairSource* GetSource() { return fSource.get(); }
     FairRootManager& GetRootManager() { return *fRootManager; }
