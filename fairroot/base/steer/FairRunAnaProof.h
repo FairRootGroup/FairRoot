@@ -58,8 +58,6 @@ class FairRunAnaProof : public FairRunAna
     /** Set PROOF output status, possibilities: "copy","merge"*/
     void SetProofOutputStatus(TString outStat) { fProofOutputStatus = outStat; }
 
-    void SetSource(FairSource* tempSource) override;
-
   protected:
     static FairRunAnaProof* fRAPInstance;
 
