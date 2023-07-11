@@ -23,11 +23,17 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
 {
   public:
     /** Default constructor **/
-    FairTimeStamp();
+    FairTimeStamp() = default;
+
     /** Constructor with time **/
-    FairTimeStamp(Double_t time);
+    FairTimeStamp(Double_t time)
+        : fTimeStamp(time)
+    {}
     /** Constructor with time and time error **/
-    FairTimeStamp(Double_t time, Double_t timeerror);
+    FairTimeStamp(Double_t time, Double_t timeerror)
+        : fTimeStamp(time)
+        , fTimeStampError(timeerror)
+    {}
 
     /** Destructor **/
     ~FairTimeStamp() override = default;
@@ -42,12 +48,10 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
         if (this == obj) {
             return 0;
         }
-        FairTimeStamp* tsobj = static_cast<FairTimeStamp*>(const_cast<TObject*>(obj));
+        auto tsobj = static_cast<FairTimeStamp const*>(obj);
         Double_t ts = tsobj->GetTimeStamp();
         Double_t tserror = tsobj->GetTimeStampError();
-        if (fTimeStamp < ts) {
-            return -1;
-        } else if (fTimeStamp == ts && fTimeStampError < tserror) {
+        if ((fTimeStamp < ts) || (fTimeStamp == ts && fTimeStampError < tserror)) {
             return -1;
         } else if (fTimeStamp == ts && fTimeStampError == tserror) {
             return 0;
@@ -73,30 +77,10 @@ class FairTimeStamp : public FairMultiLinkedData_Interface
     virtual bool operator<(const FairTimeStamp* rValue) const { return GetTimeStamp() < rValue->GetTimeStamp(); }
 
   protected:
-    Double_t fTimeStamp;      /** Time of digit or Hit  [ns] */
-    Double_t fTimeStampError; /** Error on time stamp */
+    Double_t fTimeStamp{-1};        //< Time of digit or Hit  [ns]
+    Double_t fTimeStampError{-1};   //< Error on time stamp
 
     ClassDefOverride(FairTimeStamp, 4);
 };
-
-// -----   Default constructor   -------------------------------------------
-inline FairTimeStamp::FairTimeStamp()
-    : FairMultiLinkedData_Interface()
-    , fTimeStamp(-1)
-    , fTimeStampError(-1)
-{}
-
-// -----   Standard constructor   ------------------------------------------
-inline FairTimeStamp::FairTimeStamp(Double_t time)
-    : FairMultiLinkedData_Interface()
-    , fTimeStamp(time)
-    , fTimeStampError(-1)
-{}
-
-inline FairTimeStamp::FairTimeStamp(Double_t time, Double_t timeerror)
-    : FairMultiLinkedData_Interface()
-    , fTimeStamp(time)
-    , fTimeStampError(timeerror)
-{}
 
 #endif   // FAIRTIMESTAMP_H
