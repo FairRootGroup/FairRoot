@@ -63,26 +63,26 @@ void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine = "TGeant
     //  gLogger->SetLogScreenLevel("INFO");
 
     // -----   Create simulation run   ----------------------------------------
-    FairRunSim* run = new FairRunSim();
-    run->SetName(mcEngine);                        // Transport engine
-    run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
-    run->SetSink(new FairRootFileSink(outFile));   // Output file
-    FairRuntimeDb* rtdb = run->GetRuntimeDb();
+    FairRunSim run{};
+    run.SetName(mcEngine);                        // Transport engine
+    run.SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
+    run.SetSink(new FairRootFileSink(outFile));   // Output file
+    FairRuntimeDb* rtdb = run.GetRuntimeDb();
     // ------------------------------------------------------------------------
 
     // -----   Create media   -------------------------------------------------
-    run->SetMaterials("media.geo");   // Materials
+    run.SetMaterials("media.geo");   // Materials
     // ------------------------------------------------------------------------
 
     // -----   Create geometry   ----------------------------------------------
     FairModule* cave = new FairCave("CAVE");
     cave->SetGeometryFileName("cave_vacuum.geo");
-    run->AddModule(cave);
+    run.AddModule(cave);
 
     FairTutorialDet4* tutdet = new FairTutorialDet4("TUTDET", kTRUE);
     tutdet->SetGeometryFileName("tutorial4.root");
 
-    run->AddModule(tutdet);
+    run.AddModule(tutdet);
     // ------------------------------------------------------------------------
 
     // -----   Create PrimaryGenerator   --------------------------------------
@@ -100,11 +100,11 @@ void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine = "TGeant
 
     primGen->AddGenerator(boxGen);
 
-    run->SetGenerator(primGen);
+    run.SetGenerator(primGen);
     // ------------------------------------------------------------------------
 
     // -----   Initialize simulation run   ------------------------------------
-    run->SetStoreTraj(kTRUE);
+    run.SetStoreTraj(kTRUE);
 
     // -----   Runtime database   ---------------------------------------------
 
@@ -117,7 +117,7 @@ void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine = "TGeant
     rtdb->setOutput(parOut);
     // ------------------------------------------------------------------------
 
-    run->Init();
+    run.Init();
 
     // sadly, the align parameters are only available AFTER we called fRun->Init()
 
