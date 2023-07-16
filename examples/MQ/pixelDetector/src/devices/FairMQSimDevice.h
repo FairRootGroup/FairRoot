@@ -17,6 +17,7 @@
 #define FAIRMQSIMDEVICE_H_
 
 #include "FairMQRunDevice.h"
+#include "FairRunSim.h"
 
 #include <Rtypes.h>
 #include <TString.h>
@@ -24,7 +25,6 @@
 #include <memory>
 #include <string>
 
-class FairRunSim;
 class FairField;
 class FairParIo;
 class FairPrimaryGenerator;
@@ -59,6 +59,7 @@ class FairMQSimDevice : public FairMQRunDevice
 
   protected:
     void InitTask() override;
+    void ResetTask() override;
     void PreRun() override;
     void PostRun() override {}
     bool ConditionalRun() override;
@@ -69,7 +70,7 @@ class FairMQSimDevice : public FairMQRunDevice
 
     bool fRunInitialized;   // false, set to true after initialization in the run stage (!)
 
-    FairRunSim* fRunSim;
+    std::unique_ptr<FairRunSim> fRunSim;
     // ------ FairRunSim settings ------
     int64_t fNofEvents;
     std::string fTransportName;

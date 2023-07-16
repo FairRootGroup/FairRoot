@@ -17,7 +17,6 @@
 #include "FairModule.h"
 #include "FairParSet.h"
 #include "FairPrimaryGenerator.h"
-#include "FairRunSim.h"
 #include "FairRuntimeDb.h"
 
 #include <TCollection.h>
@@ -31,7 +30,6 @@ FairMQSimDevice::FairMQSimDevice()
     , fSimDeviceId(0)
     , fUpdateChannelName("updateChannel")
     , fRunInitialized(false)
-    , fRunSim(nullptr)
     , fNofEvents(1)
     , fTransportName("TGeant3")
     , fMaterialsFile("")
@@ -46,7 +44,7 @@ FairMQSimDevice::FairMQSimDevice()
 
 void FairMQSimDevice::InitTask()
 {
-    fRunSim = new FairRunSim();
+    fRunSim = std::make_unique<FairRunSim>();
 
     SetupRunSink(*fRunSim);
 
@@ -78,6 +76,11 @@ void FairMQSimDevice::InitTask()
     for (int idet = 0; idet < fDetectorArray->GetEntries(); idet++) {
         fRunSim->AddModule((FairModule*)(fDetectorArray->At(idet)));
     }
+}
+
+void FairMQSimDevice::ResetTask()
+{
+    fRunSim.reset();
 }
 
 void FairMQSimDevice::InitializeRun()

@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -63,25 +63,25 @@ void run_tutorial1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
     // ------------------------------------------------------------------------
 
     // -----   Create simulation run   ----------------------------------------
-    FairRunSim* run = new FairRunSim();
-    run->SetName(mcEngine);                        // Transport engine
-    run->SetSink(std::make_unique<FairRootFileSink>(outFile));
-    FairRuntimeDb* rtdb = run->GetRuntimeDb();
+    FairRunSim run{};
+    run.SetName(mcEngine);   // Transport engine
+    run.SetSink(std::make_unique<FairRootFileSink>(outFile));
+    FairRuntimeDb* rtdb = run.GetRuntimeDb();
     // ------------------------------------------------------------------------
 
     // -----   Create media   -------------------------------------------------
-    run->SetMaterials("media.geo");   // Materials
+    run.SetMaterials("media.geo");   // Materials
     // ------------------------------------------------------------------------
 
     // -----   Create geometry   ----------------------------------------------
 
     FairModule* cave = new FairCave("CAVE");
     cave->SetGeometryFileName("cave_vacuum.geo");
-    run->AddModule(cave);
+    run.AddModule(cave);
 
     FairDetector* tutdet = new FairTutorialDet1("TUTDET", kTRUE);
     tutdet->SetGeometryFileName("double_sector.geo");
-    run->AddModule(tutdet);
+    run.AddModule(tutdet);
     // ------------------------------------------------------------------------
 
     // -----   Create PrimaryGenerator   --------------------------------------
@@ -96,12 +96,12 @@ void run_tutorial1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
 
     primGen->AddGenerator(boxGen);
 
-    run->SetGenerator(primGen);
+    run.SetGenerator(primGen);
     // ------------------------------------------------------------------------
 
-    run->SetStoreTraj(kFALSE);   // to store particle trajectories
+    run.SetStoreTraj(kFALSE);   // to store particle trajectories
 
-    run->SetRadGridRegister(kTRUE);   // activate RadGridManager
+    run.SetRadGridRegister(kTRUE);   // activate RadGridManager
 
     // define two example meshs for dosimetry
     FairMesh* aMesh1 = new FairMesh("test1");
@@ -117,12 +117,12 @@ void run_tutorial1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
     aMesh1->print();
     aMesh2->print();
 
-    run->AddMesh(aMesh1);
-    run->AddMesh(aMesh2);
+    run.AddMesh(aMesh1);
+    run.AddMesh(aMesh2);
 
     // -----   Initialize simulation run   ------------------------------------
-    run->Init();
-    run->GetMCApplication()->GetRadGridMan()->SetOutputFileName("radGridResults.root");
+    run.Init();
+    run.GetMCApplication()->GetRadGridMan()->SetOutputFileName("radGridResults.root");
     // ------------------------------------------------------------------------
 
     // -----   Runtime database   ---------------------------------------------
@@ -136,7 +136,7 @@ void run_tutorial1_mesh(Int_t nEvents = 10, TString mcEngine = "TGeant3")
     // ------------------------------------------------------------------------
 
     // -----   Start run   ----------------------------------------------------
-    run->Run(nEvents);
+    run.Run(nEvents);
     // ------------------------------------------------------------------------
 
     // -----   Finish   -------------------------------------------------------

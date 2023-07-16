@@ -63,36 +63,36 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine = "TGeant4", Bool_t isM
     logger->SetLogVerbosityLevel("HIGH");
 
     // -----   Create simulation run   ----------------------------------------
-    FairRunSim* run = new FairRunSim();
-    run->SetName(mcEngine);                        // Transport engine
-    run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
-    run->SetSink(std::make_unique<FairRootFileSink>(outFile));
-    FairRuntimeDb* rtdb = run->GetRuntimeDb();
+    FairRunSim run{};
+    run.SetName(mcEngine);   // Transport engine
+    run.SetIsMT(isMT);       // Multi-threading mode (Geant4 only)
+    run.SetSink(std::make_unique<FairRootFileSink>(outFile));
+    FairRuntimeDb* rtdb = run.GetRuntimeDb();
     // ------------------------------------------------------------------------
 
-    run->SetGenerateRunInfo(kFALSE);
+    run.SetGenerateRunInfo(kFALSE);
     // -----   Create media   -------------------------------------------------
-    run->SetMaterials("media.geo");   // Materials
+    run.SetMaterials("media.geo");   // Materials
     // ------------------------------------------------------------------------
 
     // -----   Create geometry   ----------------------------------------------
 
     FairModule* cave = new FairCave("CAVE");
     cave->SetGeometryFileName("cave_vacuum.geo");
-    run->AddModule(cave);
+    run.AddModule(cave);
 
     FairModule* target = new FairTarget("Target");
     target->SetGeometryFileName("target_rutherford.geo");
-    run->AddModule(target);
+    run.AddModule(target);
 
     FairDetector* rutherford = new FairRutherford("RutherfordDetector", kTRUE);
     rutherford->SetGeometryFileName("rutherford.geo");
-    run->AddModule(rutherford);
+    run.AddModule(rutherford);
     // ------------------------------------------------------------------------
 
     // -----   Create PrimaryGenerator   --------------------------------------
     FairPrimaryGenerator* primGen = new FairPrimaryGenerator();
-    run->SetGenerator(primGen);
+    run.SetGenerator(primGen);
 
     // Ion Generator
 
@@ -119,10 +119,10 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine = "TGeant4", Bool_t isM
     primGen->AddGenerator(ypt);
     // ------------------------------------------------------------------------
 
-    run->SetStoreTraj(kTRUE);
+    run.SetStoreTraj(kTRUE);
 
     // -----   Run initialisation   -------------------------------------------
-    run->Init();
+    run.Init();
     // ------------------------------------------------------------------------
 
     // Set cuts for storing the trajectories.
@@ -150,9 +150,9 @@ void run_rutherford(Int_t nEvents = 10, TString mcEngine = "TGeant4", Bool_t isM
     // ------------------------------------------------------------------------
 
     // -----   Start run   ----------------------------------------------------
-    run->Run(nEvents);
+    run.Run(nEvents);
     // ------------------------------------------------------------------------
-    run->CreateGeometryFile(geoFile);
+    run.CreateGeometryFile(geoFile);
 
     // -----   Finish   -------------------------------------------------------
 
