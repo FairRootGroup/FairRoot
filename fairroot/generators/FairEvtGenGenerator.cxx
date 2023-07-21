@@ -36,7 +36,8 @@ FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName)
     , fDensityFunction(0)
 {
     LOG(info) << "FairEvtGenGenerator: Opening input file " << fileName;
-    if ((fInputFile = fopen(fFileName, "r")) == nullptr)
+    fInputFile = fopen(fFileName, "r");
+    if (!fInputFile)
     //  fInputFile = new ifstream(fFileName);
     //  if ( ! fInputFile->is_open() )
     {
@@ -55,7 +56,8 @@ FairEvtGenGenerator::FairEvtGenGenerator(const char* fileName, Double_t Rsigma, 
     , fDensityFunction(DensityFunction)
 {
     LOG(info) << "FairEvtGenGenerator: Opening input file " << fileName;
-    if ((fInputFile = fopen(fFileName, "r")) == nullptr) {
+    fInputFile = fopen(fFileName, "r");
+    if (!fInputFile) {
         LOG(fatal) << "Cannot open input file.";
     }
 }

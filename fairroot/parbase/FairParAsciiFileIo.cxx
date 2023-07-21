@@ -50,7 +50,7 @@ Bool_t FairParAsciiFileIo::open(const Text_t* fname, const Text_t* status)
     // if a file is already open, this file will be closed
     // activates detector I/Os
     close();
-    if (!((strcmp(status, "in") == 0) || (strcmp(status, "out") == 0))) {
+    if ((strcmp(status, "in") != 0) && (strcmp(status, "out") != 0)) {
         cout << "Put the right stream option for file " << fname
              << "\n  writing state : out\n   reading state : in  \nopen  aborted \n";
         return kFALSE;

@@ -350,7 +350,8 @@ Int_t FairRuntimeDb::findOutputVersion(FairParSet* cont)
                 run = static_cast<FairRtdbRun*>(runs->At(i));
                 vers = run->getParVersion(name);
                 if (vers->getInputVersion(1) == in1 && vers->getInputVersion(2) == in2) {
-                    if ((v = vers->getRootVersion()) != 0) {
+                    v = vers->getRootVersion();
+                    if (v != 0) {
                         return v;
                     }
                 }
@@ -367,7 +368,8 @@ Int_t FairRuntimeDb::findOutputVersion(FairParSet* cont)
     while ((run = static_cast<FairRtdbRun*>(next()))) {
         vers = run->getParVersion(name);
         if (vers->getInputVersion(1) == in1 && vers->getInputVersion(2) == in2) {
-            if ((v = vers->getRootVersion()) != 0) {
+            v = vers->getRootVersion();
+            if (v != 0) {
                 return v;
             }
         }

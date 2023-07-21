@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -96,8 +96,8 @@ bool FairMQPixelSamplerBin::ConditionalRun()
     for (int iobj = 0; iobj < fNObjects; iobj++) {
         if (strcmp(fInputObjects[iobj]->GetName(), "EventHeader.") == 0) {
             PixelPayload::EventHeader* header = new PixelPayload::EventHeader();
-            header->fRunId = ((FairEventHeader*)fInputObjects[iobj])->GetRunId();
-            header->fMCEntryNo = ((FairEventHeader*)fInputObjects[iobj])->GetMCEntryNumber();
+            header->fRunId = static_cast<FairEventHeader*>(fInputObjects[iobj])->GetRunId();
+            header->fMCEntryNo = static_cast<FairEventHeader*>(fInputObjects[iobj])->GetMCEntryNumber();
             header->fPartNo = 0;
             auto msgHeader(NewMessage(header, sizeof(PixelPayload::EventHeader), [](void* data, void* /*hint*/) {
                 delete static_cast<PixelPayload::EventHeader*>(data);
@@ -106,7 +106,7 @@ bool FairMQPixelSamplerBin::ConditionalRun()
             // LOG(debug) << "-----------------------------";
             // LOG(debug) << "first part has size = " << sizeof(PixelPayload::EventHeader);
         } else {
-            Int_t nofEntries = ((TClonesArray*)fInputObjects[iobj])->GetEntries();
+            Int_t nofEntries = static_cast<TClonesArray*>(fInputObjects[iobj])->GetEntries();
             size_t digisSize = nofEntries * sizeof(PixelPayload::Digi);
 
             auto msgTCA(NewMessage(digisSize));
@@ -114,7 +114,7 @@ bool FairMQPixelSamplerBin::ConditionalRun()
             PixelPayload::Digi* digiPayload = static_cast<PixelPayload::Digi*>(msgTCA->GetData());
 
             for (int idigi = 0; idigi < nofEntries; idigi++) {
-                PixelDigi* digi = static_cast<PixelDigi*>(((TClonesArray*)fInputObjects[iobj])->At(idigi));
+                auto digi = static_cast<PixelDigi*>(static_cast<TClonesArray*>(fInputObjects[iobj])->At(idigi));
                 if (!digi) {
                     continue;
                 }

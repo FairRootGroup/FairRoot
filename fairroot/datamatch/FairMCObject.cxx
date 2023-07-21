@@ -65,14 +65,12 @@ void FairMCObject::AddLink(FairLink link, int index)
 
 void FairMCObject::AdoptSize(int index)
 {
-    int start = fStage.size();
     while (static_cast<int>(fStage.size()) < index + 1) {
         FairMCEntry myVec;
         myVec.SetPos(fStage.size());
         myVec.SetSource(GetStageId());
         myVec.SetPersistanceCheck(kFALSE);
         fStage.push_back(myVec);
-        start++;
     }
 }
 

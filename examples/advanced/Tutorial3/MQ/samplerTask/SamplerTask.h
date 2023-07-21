@@ -47,7 +47,7 @@ class SamplerTask : public FairTask
     void SetEventIndex(Long64_t eventIndex) { fEventIndex = eventIndex; }
     void SetBranch(const std::string& branch) { fBranch = branch; }
 
-    void GetPayload(std::unique_ptr<fair::mq::Message>& msg) { msg = move(fPayload); }
+    void GetPayload(std::unique_ptr<fair::mq::Message>& msg) { msg = std::move(fPayload); }
     void SetTransport(std::shared_ptr<fair::mq::TransportFactory> factory) { fTransportFactory = factory; }
 
   protected:

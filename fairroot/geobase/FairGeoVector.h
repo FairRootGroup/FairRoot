@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -155,7 +155,7 @@ inline FairGeoVector& FairGeoVector::operator=(const FairGeoVector& v)
 
 inline Bool_t FairGeoVector::operator==(const FairGeoVector& v) const
 {
-    return (!(v.getX() != x || v.getY() != y || v.getZ() != z));
+    return (v.x == x) && (v.y == y) && (v.z == z);
 }
 
 inline Bool_t FairGeoVector::operator!=(const FairGeoVector& v) const
@@ -165,22 +165,22 @@ inline Bool_t FairGeoVector::operator!=(const FairGeoVector& v) const
 /// check with ilse
 inline Bool_t FairGeoVector::operator<(const Double_t a)
 {
-    return !(x >= a || y >= a || z >= a);
+    return (x < a) && (y < a) && (z < a);
 }
 
 inline Bool_t FairGeoVector::operator<=(const Double_t a)
 {
-    return !(x > a || y > a || z > a);
+    return (x <= a) && (y <= a) && (z <= a);
 }
 
 inline Bool_t FairGeoVector::operator>(const Double_t a)
 {
-    return !(x <= a || y <= a || z <= a);
+    return (x > a) && (y > a) && (z > a);
 }
 
 inline Bool_t FairGeoVector::operator>=(const Double_t a)
 {
-    return !(x < a || y < a || z < a);
+    return (x >= a) & (y >= a) && (z >= a);
 }
 
 inline FairGeoVector& FairGeoVector::operator+=(const Double_t a)
