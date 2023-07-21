@@ -41,7 +41,7 @@ FairYamlVMCConfig::FairYamlVMCConfig()
 void FairYamlVMCConfig::Setup(const char* mcEngine)
 {
     fMCEngine = mcEngine;
-    if (!((strcmp(mcEngine, "TGeant4") == 0) || (strcmp(mcEngine, "TGeant3") == 0))) {
+    if ((strcmp(mcEngine, "TGeant4") != 0) && (strcmp(mcEngine, "TGeant3") != 0)) {
         LOG(fatal) << "FairYamlVMCConfig::Setup() Engine \"" << mcEngine << "\" unknown!";
     }
 

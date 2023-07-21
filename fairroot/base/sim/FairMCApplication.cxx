@@ -718,8 +718,8 @@ void FairMCApplication::ConstructOpGeometry()
         NK = medium->getNpckov();
         if (NK > 0) {
             Int_t Mid = 0;
-            TGeoMedium* Med = 0;
-            if (gGeoManager && (Med = gGeoManager->GetMedium(medium->GetName()))) {
+            TGeoMedium* Med = (gGeoManager ? gGeoManager->GetMedium(medium->GetName()) : nullptr);
+            if (Med) {
                 Mid = Med->GetId();
             } else {
                 Mid = medium->getMediumIndex();

@@ -182,22 +182,25 @@ FairParSet* FairContFact::getContainer(const char* name)
     // createContainer(FairContainer*), which is implemented in the derived classes
     // and calls the corresponding constructor. Then the pointer it added in the
     // runtime database.
-    auto c = static_cast<FairContainer*>((containers->FindObject(name)));
-
-    FairParSet* cont = nullptr;
-    if (c) {
-        TString cn = c->getConcatName();
-        FairRuntimeDb* rtdb = FairRuntimeDb::instance();
-        if (!(cont = rtdb->findContainer(c->getConcatName().Data()))) {
-            if (strlen(c->getActualContext()) == 0) {
-                c->setActualContext(c->getDefaultContext());
-            }
-            cont = createContainer(c);
-            if (cont) {
-                rtdb->addContainer(cont);
-            }
-        }
+    auto c = static_cast<FairContainer*>(containers->FindObject(name));
+    if (!c) {
+        return nullptr;
     }
+
+    FairRuntimeDb* rtdb = FairRuntimeDb::instance();
+    FairParSet* cont = rtdb->findContainer(c->getConcatName().Data());
+    if (cont) {
+        return cont;
+    }
+
+    if (strlen(c->getActualContext()) == 0) {
+        c->setActualContext(c->getDefaultContext());
+    }
+    cont = createContainer(c);
+    if (cont) {
+        rtdb->addContainer(cont);
+    }
+
     return cont;
 }
 
