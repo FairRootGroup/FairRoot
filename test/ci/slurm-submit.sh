@@ -26,6 +26,11 @@ if [ -z "$ALFACI_SLURM_QUEUE" ]
 then
 	ALFACI_SLURM_QUEUE=main
 fi
+case "${label}" in
+	*check/*)
+		slurm_requested_features=localworkspace
+		;;
+esac
 
 echo "*** Slurm request options :"
 echo "***   Working directory ..: $PWD"
@@ -37,11 +42,19 @@ fi
 echo "***   Wall Time ..........: $ALFACI_SLURM_TIMEOUT min"
 echo "***   Job Name ...........: ${label}"
 echo "***   Extra Options ......: ${ALFACI_SLURM_EXTRA_OPTS}"
+if [ -n "$slurm_requested_features" ]
+then
+	echo "***   Requested Features .: $slurm_requested_features"
+fi
 
 srun_cmdline_opts="-p $ALFACI_SLURM_QUEUE -n 1 -N 1 -t $ALFACI_SLURM_TIMEOUT"
 if [ -n "$ALFACI_SLURM_CPUS" ]
 then
 	srun_cmdline_opts="$srun_cmdline_opts -c $ALFACI_SLURM_CPUS"
+fi
+if [ -n "$slurm_requested_features" ]
+then
+	srun_cmdline_opts="$srun_cmdline_opts --constraint=$slurm_requested_features"
 fi
 
 echo "*** Submitting job at ....: $(date -R)"
