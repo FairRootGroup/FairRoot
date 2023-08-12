@@ -271,6 +271,7 @@ add_subdirectory(third_party)
 
 # Set some useful variables
 SetBasicVariables()
+SET(ROOT_INCLUDE_PATH ${CMAKE_INSTALL_FULL_INCLUDEDIR})
 
 # All the main / public components
 add_subdirectory(fairroot)
@@ -336,14 +337,13 @@ install(FILES ${CMAKE_BINARY_DIR}/check_system.csh
 Configure_File(${CMAKE_SOURCE_DIR}/cmake/scripts/fairroot-config.in ${CMAKE_BINARY_DIR}/fairroot-config @ONLY)
 
 install(PROGRAMS ${CMAKE_BINARY_DIR}/fairroot-config
-  DESTINATION bin
+  DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 
 WRITE_CONFIG_FILE(config.sh)
 WRITE_CONFIG_FILE(config.csh)
 SET(VMCWORKDIR ${CMAKE_INSTALL_PREFIX}/share/fairbase/examples)
-SET(ROOT_INCLUDE_PATH ${CMAKE_INSTALL_PREFIX}/include)
 WRITE_CONFIG_FILE(config.sh_install)
 WRITE_CONFIG_FILE(config.csh_install)
 
