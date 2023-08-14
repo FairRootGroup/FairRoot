@@ -75,6 +75,14 @@ include(FairMacros)
 include(WriteConfigFile)
 include(Dart)
 include(CheckCompiler)
+include(FairRootCodemeta)
+
+get_codemeta_version()
+if (PROJECT_CODEMETA_VERSION
+    AND NOT "${PROJECT_CODEMETA_VERSION}" STREQUAL "${PROJECT_VERSION}")
+  message(AUTHOR_WARNING "Project Version (${PROJECT_VERSION}) and "
+          "CodeMeta Version (${PROJECT_CODEMETA_VERSION}) do not match!")
+endif()
 
 #Check the compiler and set the compile and link flags
 Check_Compiler()
