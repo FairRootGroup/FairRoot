@@ -90,9 +90,16 @@ include(FairRootSummary)
 include(FairMacros)
 include(WriteConfigFile)
 include(CheckCompiler)
+include(FairRootCodemeta)
 
 if(FairCMakeModules_VERSION VERSION_GREATER_EQUAL 1.0.0)
   fair_get_git_version()
+endif()
+get_codemeta_version()
+if (PROJECT_CODEMETA_VERSION
+    AND NOT "${PROJECT_CODEMETA_VERSION}" STREQUAL "${PROJECT_VERSION}")
+  message(AUTHOR_WARNING "Project Version (${PROJECT_VERSION}) and "
+          "CodeMeta Version (${PROJECT_CODEMETA_VERSION}) do not match!")
 endif()
 
 set(LIBRARY_OUTPUT_PATH "${CMAKE_BINARY_DIR}/lib")
