@@ -20,6 +20,10 @@ set(sources
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
+list(APPEND headers
+  FairMemory.h
+)
+
 add_library(${target} SHARED ${sources} ${headers})
 fairroot_library_settings(${target})
 # Keep old filesystem name
