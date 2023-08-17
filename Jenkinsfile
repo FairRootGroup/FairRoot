@@ -60,9 +60,9 @@ def jobMatrix(String prefix, String type, List specs) {
           } else {
             def container = "${os}.${ver}.sif"
             sh(label: "Create Slurm Job Script", script: """
-              exec test/ci/slurm-create-jobscript.sh "${label}" "${container}" "${jobscript}" ${ctestcmd}
+              exec tests/ci/slurm-create-jobscript.sh "${label}" "${container}" "${jobscript}" ${ctestcmd}
             """)
-            sh "./test/ci/slurm-submit.sh \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
+            sh "./tests/ci/slurm-submit.sh \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
           }
           if (check == "warnings") {
             recordIssues(tools: [clangTidy(pattern: logpattern)],
