@@ -261,6 +261,11 @@ if(BUILD_TESTING)
   )
 
   FetchContent_MakeAvailable(Catch2)
+
+  # Include `Catch` module for the `catch_discover_tests` command, see
+  # https://github.com/catchorg/Catch2/blob/devel/docs/cmake-integration.md#customization
+  list(PREPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+  include(Catch)
 endif()
 
 # Set some useful variables
