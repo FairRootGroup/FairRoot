@@ -305,7 +305,7 @@ if(ClangFormat_FOUND)
 endif()
 
 if(BUILD_TESTING)
-  add_subdirectory(test)
+  add_subdirectory(tests)
 endif()
 
 find_package2_implicit_dependencies()
