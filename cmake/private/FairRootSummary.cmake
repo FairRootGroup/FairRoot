@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -168,11 +168,4 @@ function(fairroot_summary_components)
     set(doxygen_summary   "${BRed} NO${CR}     (default, enable with ${BMagenta}-DBUILD_DOXYGEN=ON${CR})")
   endif()
   message(STATUS "  ${BWhite}Doxygen${CR}             ${doxygen_summary}")
-
-  if(BUILD_UNITTESTS)
-    set(unittests_summary "${BGreen} YES${CR}    (disable with ${BMagenta}-DBUILD_UNITTESTS=OFF${CR})")
-  else()
-    set(unittests_summary "${BRed} NO${CR}     (default, enable with ${BMagenta}-DBUILD_UNITTESTS=ON${CR})")
-  endif()
-  message(STATUS "  ${BWhite}Unit tests${CR}          ${unittests_summary}")
 endfunction()

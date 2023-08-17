@@ -60,6 +60,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   * basemq/devices/FairMQSampler.h -> into examples/advanced/Tutorial3/MQ/sampler.cxx
   * basemq/tasks/FairMQProcessorTask.h -> examples/advanced/Tutorial3/MQ/processorTask/ProcessorTask.h
   * basemq/tasks/FairMQSamplerTask.h -> examples/advanced/Tutorial3/MQ/samplerTask/SamplerTask.h
+* Retire CMake switch `BUILD_UNITTESTS`. The few tests behind it have not been
+  used nor maintained for many years. Also, it was in conflict with the CMake
+  standard switch `BUILD_TESTING` from the CTest module.
 
 
 ### Deprecations
