@@ -66,7 +66,7 @@ def jobMatrix(String prefix, String type, List specs) {
           }
           if (check == "warnings") {
             recordIssues(tools: [clangTidy(pattern: logpattern)],
-                         filters: [excludeFile('build/.*/G__.*[.]cxx')],
+                         filters: [excludeFile('build/.*/G__.*[.]cxx'), excludeFile('third_party/.*')],
                          qualityGates: [[threshold: 4, type: 'NEW', unstable: true]],
                          ignoreFailedBuilds: false,
                          skipBlames: true)

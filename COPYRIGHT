@@ -4,6 +4,17 @@ Upstream-Contact: Mohammad Al-Turany <m.al-turany@gsi.de>
 Source: https://github.com/FairRootGroup/FairRoot
 
 Files: *
-Copyright: 2003-2019, GSI Helmholtzzentrum fuer Schwerionenforschung GmbH
-Copyright: 2003-2019, [see AUTHORS file]
-Copyright: 2003-2019, [see CONTRIBUTORS file]
+Copyright: 2003-2023, GSI Helmholtzzentrum fuer Schwerionenforschung GmbH
+Copyright: 2003-2023, [see AUTHORS file]
+Copyright: 2003-2023, [see CONTRIBUTORS file]
+License: LGPL-3.0-only
+
+Files: third_party/Catch2*
+Copyright: Catch2 Authors, https://github.com/catchorg/Catch2
+License: BSL-1.0
+
+License: LGPL-3.0-only
+  [see LICENSE file]
+
+License: BSL-1.0
+  [see third_party/Catch2*/LICENSE.txt file]
