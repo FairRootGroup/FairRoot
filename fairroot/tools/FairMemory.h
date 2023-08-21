@@ -56,6 +56,9 @@ struct optional_deleter
  * It's mostly meant for cases, where FairRoot has a public API
  * that enforces this behaviour. This should be deprecated and
  * removed sooner than later.
+ *
+ * \note Avoid `reset(T*)` as it does not change the Deleter's setting
+ *       and thus can have surprising effects.
  */
 template<typename T, typename Deleter = std::default_delete<T>>
 using maybe_owning_ptr = std::unique_ptr<T, optional_deleter<T, Deleter>>;
