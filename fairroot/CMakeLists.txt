@@ -1,10 +1,13 @@
 ################################################################################
-# Copyright (C) 2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH       #
+#    Copyright (C) 2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
+
+# Shall be prefixed to all test executables
+set(test_prefix fairroot_test)
 
 add_subdirectory(tools)
 add_subdirectory(mcsteplogger)

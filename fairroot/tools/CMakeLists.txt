@@ -55,3 +55,5 @@ fairroot_target_root_dictionary(${target}
 
 fairroot_install_exported(TARGETS ${target})
 install(FILES ${headers} ${extra_headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+add_subdirectory(tests)
