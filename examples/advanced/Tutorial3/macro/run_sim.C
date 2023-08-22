@@ -6,6 +6,19 @@
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
+#if !defined(__CLING__) || defined(__ROOTCLING__)
+#include "FairBoxGenerator.h"
+#include "FairCave.h"
+#include "FairConstField.h"
+#include "FairMagnet.h"
+#include "FairParRootFileIo.h"
+#include "FairPrimaryGenerator.h"
+#include "FairRootFileSink.h"
+#include "FairRunSim.h"
+#include "FairSystemInfo.h"
+#include "FairTestDetector.h"
+#endif
+
 #include <TStopwatch.h>
 #include <TString.h>
 #include <TSystem.h>
@@ -132,6 +145,7 @@ void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant4")
     run.CreateGeometryFile(geoFile);
 
     // -----   Finish   -------------------------------------------------------
+    run.ls();
 
     cout << endl << endl;
 

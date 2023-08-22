@@ -15,7 +15,9 @@
 #include "FairSink.h"
 
 #include <TFolder.h>
+#include <TROOT.h>
 #include <TTree.h>
+#include <iostream>
 
 FairSink::FairSink()
     : fRunId(0)
@@ -28,3 +30,14 @@ FairSink::FairSink(const FairSink& sink)
 {}
 
 FairSink::~FairSink() {}
+
+void FairSink::ls(Option_t*) const
+{
+    TROOT::IndentLevel();
+    std::cout << "OBJ: " << IsA()->GetName() << "\n";
+    TROOT::IncreaseDirLevel();
+    if (fOutFolder) {
+        fOutFolder->ls();
+    }
+    TROOT::DecreaseDirLevel();
+}

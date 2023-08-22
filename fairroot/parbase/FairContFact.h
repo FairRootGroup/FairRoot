@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -55,6 +55,8 @@ class FairContFact : public TNamed
     virtual void activateParIo(FairParIo*) {}
     /// @param[in] container Transfers ownership if return value is true
     Bool_t AddContainer(FairContainer*);
+
+    void ls(Option_t* option = "") const override;
 
   protected:
     TList* containers{new TList};   // all parameter containers managed by this factory

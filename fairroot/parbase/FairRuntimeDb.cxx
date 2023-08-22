@@ -52,6 +52,7 @@
 #include <TClass.h>        // for TClass
 #include <TCollection.h>   // for TIter
 #include <TFile.h>         // for TFile, gFile
+#include <TROOT.h>         //
 #include <cstdio>          // for sprintf
 #include <cstring>         // for strcmp, strlen
 #include <fairlogger/Logger.h>
@@ -90,6 +91,8 @@ FairRuntimeDb::FairRuntimeDb(void)
     , ioType(UNKNOWN_Type)
 {
     gRtdb = this;
+    containerList->SetName("containerList");
+    runs->SetName("runs");
 }
 
 FairRuntimeDb::~FairRuntimeDb()
@@ -640,6 +643,25 @@ void FairRuntimeDb::print()
     } else {
         cout << "output: none" << '\n';
     }
+}
+
+void FairRuntimeDb::ls(Option_t* option) const
+{
+    TObject::ls(option);
+    TROOT::IncreaseDirLevel();
+    if (firstInput) {
+        firstInput->ls(option);
+    }
+    if (secondInput) {
+        secondInput->ls(option);
+    }
+    if (output) {
+        output->ls(option);
+    }
+    contFactories.ls();
+    containerList->ls();
+    runs->ls();
+    TROOT::DecreaseDirLevel();
 }
 
 void FairRuntimeDb::resetInputVersions()

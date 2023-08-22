@@ -204,6 +204,8 @@ class FairRun : public TNamed
     FairRootManager& GetRootManager() { return *fRootManager; }
     FairRootManager const& GetRootManager() const { return *fRootManager; }
 
+    void ls(Option_t* option = "") const override;
+
   private:
     FairRun(const FairRun& M);
     FairRun& operator=(const FairRun&) { return *this; }

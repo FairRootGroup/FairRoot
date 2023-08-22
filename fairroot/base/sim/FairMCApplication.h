@@ -233,6 +233,8 @@ class FairMCApplication : public TVirtualMCApplication
      */
     auto GetIsMT() { return fMC ? fMC->IsMT() : false; }
 
+    void ls(Option_t* option = "") const override;
+
   private:
     // methods
     Int_t GetIonPdg(Int_t z, Int_t a) const;

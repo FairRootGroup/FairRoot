@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -78,6 +78,8 @@ class FairRtdbRun : public TNamed
     void resetOutputVersions();
     void print();
     void write(std::fstream&);
+
+    void ls(Option_t* option = "") const override;
 
   private:
     FairRtdbRun& operator=(const FairRtdbRun&);

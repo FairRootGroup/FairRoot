@@ -27,6 +27,7 @@
 
 #include <TCollection.h>   // for TIter
 #include <TList.h>         // for TList
+#include <TROOT.h>         // for TROOT
 #include <fstream>         // for fstream
 #include <iomanip>         // for setw, operator<<
 #include <iostream>        // for cout
@@ -54,6 +55,7 @@ FairRtdbRun::FairRtdbRun(const Text_t* name, const Text_t* refName)
     // constructor with the run id and reference run as strings
     //  parVersions=new TList();
     //  refRun=refName;
+    parVersions->SetName("parVersions");
 }
 
 FairRtdbRun::FairRtdbRun(Int_t r, Int_t rr)
@@ -62,6 +64,7 @@ FairRtdbRun::FairRtdbRun(Int_t r, Int_t rr)
     , parVersions(new TList())
     , refRun("")
 {
+    parVersions->SetName("parVersions");
     char name[255];
     sprintf(name, "%i", r);
     SetName(name);
@@ -74,6 +77,7 @@ FairRtdbRun::FairRtdbRun(FairRtdbRun& run)
     , refRun(run.refRun)
 {
     // copy constructor
+    parVersions->SetName("parVersions");
     TList* lv = run.getParVersions();
     TIter next(lv);
     FairParVersion* pv;
@@ -161,4 +165,14 @@ void FairRtdbRun::write(std::fstream& fout)
         fout << setw(11) << v->getInputVersion(1) << setw(11) << v->getInputVersion(2) << setw(11)
              << v->getRootVersion() << '\n';
     }
+}
+
+void FairRtdbRun::ls(Option_t* option) const
+{
+    TNamed::ls(option);
+    TROOT::IncreaseDirLevel();
+    if (parVersions) {
+        parVersions->ls();
+    }
+    TROOT::DecreaseDirLevel();
 }

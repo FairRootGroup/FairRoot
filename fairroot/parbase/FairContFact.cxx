@@ -22,6 +22,7 @@
 
 #include <TCollection.h>   // for TIter
 #include <TObjString.h>
+#include <TROOT.h>
 #include <cstring>   // for strlen
 #include <fairlogger/Logger.h>
 #include <iostream>   // for operator<<, ostream, cout, etc
@@ -145,11 +146,14 @@ const char* FairContainer::getContext()
 
 FairContFact::FairContFact()
     : TNamed()
-{}
+{
+    containers->SetName("containers");
+}
 
 FairContFact::FairContFact(const char* name, const char* title)
     : TNamed(name, title)
 {
+    containers->SetName("containers");
     FairRuntimeDb::instance()->addContFactory(this);
 }
 
@@ -233,4 +237,12 @@ Bool_t FairContFact::AddContainer(FairContainer* cont)
 
     containers->Add(cont);
     return kTRUE;
+}
+
+void FairContFact::ls(Option_t* option) const
+{
+    TNamed::ls(option);
+    TROOT::IncreaseDirLevel();
+    containers->ls();
+    TROOT::DecreaseDirLevel();
 }
