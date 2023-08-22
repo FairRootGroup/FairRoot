@@ -213,6 +213,8 @@ class FairRunSim : public FairRun
      */
     auto GetMCApplication() { return fApp; }
 
+    void ls(Option_t* option = "") const override;
+
   private:
     FairRunSim(const FairRunSim& M);
     FairRunSim& operator=(const FairRunSim&) { return *this; }

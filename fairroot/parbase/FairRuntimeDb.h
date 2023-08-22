@@ -104,6 +104,7 @@ class FairRuntimeDb : public TObject
     void activateParIo(FairParIo*);
     TList* getListOfContainers() { return containerList; }
     void print(void);
+    void ls(Option_t* option = "") const override;
 
     Int_t findOutputVersion(FairParSet*);
 

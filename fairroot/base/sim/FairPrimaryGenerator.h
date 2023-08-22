@@ -158,6 +158,8 @@ class FairPrimaryGenerator : public TNamed
 
     Int_t GetTotPrimary() { return fTotPrim; }
 
+    void ls(Option_t* option = "") const override;
+
   protected:
     /**  Copy constructor */
     FairPrimaryGenerator(const FairPrimaryGenerator &);

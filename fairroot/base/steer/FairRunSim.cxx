@@ -34,6 +34,7 @@
 #include <TList.h>         // for TList
 #include <TObjString.h>    // for TObjString
 #include <TObject.h>       // for TObject
+#include <TROOT.h>         //
 #include <TRandom.h>       // for gRandom
 #include <TSystem.h>       // for TSystem, gSystem
 #include <iostream>        // for cout, endl, ostream
@@ -72,6 +73,9 @@ FairRunSim::FairRunSim(Bool_t isMaster)
     fginstance = this;
     fRunId = 0;
     fAna = kFALSE;
+    fIons->SetName("fIons");
+    fParticles->SetName("fParticles");
+    ListOfModules->SetName("ListOfModules");
 }
 #pragma GCC diagnostic pop
 
@@ -379,6 +383,34 @@ FairMCEventHeader* FairRunSim::GetMCEventHeader()
         fMCEvHead = new FairMCEventHeader();
     }
     return fMCEvHead;
+}
+
+void FairRunSim::ls(Option_t* option) const
+{
+    FairRun::ls(option);
+    TROOT::IncreaseDirLevel();
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+    if (fGen) {
+        fGen->ls(option);
+    }
+#pragma GCC diagnostic pop
+    if (fField) {
+        fField->ls(option);
+    }
+    // if (fSimulationConfig) {
+    //     fSimulationConfig->ls(option);
+    // }
+    ListOfModules->ls();
+    fParticles->ls();
+    fIons->ls();
+    if (fMCEvHead) {
+        fMCEvHead->ls(option);
+    }
+    if (fApp) {
+        fApp->ls(option);
+    }
+    TROOT::DecreaseDirLevel();
 }
 
 TMCThreadLocal FairRunSim* FairRunSim::fginstance = nullptr;

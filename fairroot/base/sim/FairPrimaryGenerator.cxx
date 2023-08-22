@@ -18,6 +18,7 @@
 #include <TMath.h>          // for Sqrt
 #include <TObject.h>        // for TObject
 #include <TParticlePDG.h>   // for TParticlePDG
+#include <TROOT.h>          //
 #include <TRandom.h>        // for TRandom, gRandom
 #include <iostream>         // for operator<<, basic_ostream, etc
 
@@ -63,6 +64,7 @@ FairPrimaryGenerator::FairPrimaryGenerator()
     , fEventNr(0)
 {
     fTargetZ[0] = 0.;
+    fGenList->SetName("fGenList");
 }
 
 FairPrimaryGenerator::FairPrimaryGenerator(const char *name, const char *title)
@@ -101,6 +103,7 @@ FairPrimaryGenerator::FairPrimaryGenerator(const char *name, const char *title)
     , fEventNr(0)
 {
     fTargetZ[0] = 0.;
+    fGenList->SetName("fGenList");
 }
 
 FairPrimaryGenerator::FairPrimaryGenerator(const FairPrimaryGenerator &rhs)
@@ -139,6 +142,7 @@ FairPrimaryGenerator::FairPrimaryGenerator(const FairPrimaryGenerator &rhs)
     , fEventNr(rhs.fEventNr)
 {
     fTargetZ[0] = rhs.fTargetZ[0];
+    fGenList->SetName("fGenList");
 }
 
 Bool_t FairPrimaryGenerator::Init()
@@ -548,4 +552,12 @@ void FairPrimaryGenerator::SmearGausVertexXY(Bool_t flag)
     if (fSmearGausVertexXY && fSmearVertexXY) {
         fSmearVertexXY = kFALSE;
     }
+}
+
+void FairPrimaryGenerator::ls(Option_t* option) const
+{
+    TNamed::ls(option);
+    TROOT::IncreaseDirLevel();
+    fGenList->ls();
+    TROOT::DecreaseDirLevel();
 }

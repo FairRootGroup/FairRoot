@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -65,6 +65,8 @@ class FairSink
     virtual void WriteGeometry() = 0;
 
     virtual FairSink* CloneSink() = 0;
+
+    virtual void ls(Option_t* option = "") const;
 
   protected:
     struct TypeAddressPair

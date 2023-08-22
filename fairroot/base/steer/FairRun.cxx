@@ -259,3 +259,25 @@ void FairRun::SetSource(FairSource* othersource)
     fRootManager->SetSource(othersource);
     fSource.reset(othersource);
 }
+
+void FairRun::ls(Option_t* option) const
+{
+    TNamed::ls(option);
+    TROOT::IncreaseDirLevel();
+    fRootManager->ls(option);
+    fRtdb->ls(option);
+    if (fSource) {
+        fSource->ls(option);
+    }
+    if (fSink) {
+        fSink->ls(option);
+    }
+    if (fEvtHeader) {
+        fEvtHeader->ls(option);
+    }
+    if (fTask) {
+        fTask->ls();
+    }
+    fLinkManager.ls(option);
+    TROOT::DecreaseDirLevel();
+}

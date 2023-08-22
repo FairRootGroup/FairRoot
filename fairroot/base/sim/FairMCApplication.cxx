@@ -1311,3 +1311,20 @@ void FairMCApplication::UndoGeometryModifications()
 
     gGeoManager->ClearPhysicalNodes(kFALSE);
 }
+
+void FairMCApplication::ls(Option_t* option) const
+{
+    TVirtualMCApplication::ls(option);
+    TROOT::IncreaseDirLevel();
+    if (fMC) {
+        fMC->ls(option);
+    }
+    if (fStack) {
+        fStack->ls(option);
+    }
+    // fTrajFilter->ls(option);
+    // fRadLenMan->ls(option);
+    // fRadMapMan->ls(option);
+    // fRadGridMan->ls(option);
+    TROOT::DecreaseDirLevel();
+}
