@@ -5,8 +5,8 @@
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
-cmake_policy(VERSION 3.15...3.27)
+cmake_minimum_required(VERSION 3.18 FATAL_ERROR)
+cmake_policy(VERSION 3.18...3.27)
 
 set(PROJECT_MIN_CXX_STANDARD 17)
 
@@ -260,12 +260,11 @@ endif()
 # The target name includes the namespace yaml-cpp begining
 # from version 0.8.0. So the new exported target is now
 # yaml-cpp::yaml-cpp.
-if(yaml-cpp_FOUND)
-  if(TARGET yaml-cpp::yaml-cpp)
-    set(YAMLCPPLIB yaml-cpp::yaml-cpp)
-  else()
-    set(YAMLCPPLIB yaml-cpp)
-  endif()
+# To work also with previous versions of yaml-cpp an alias
+# is created and the new target name is used in the project
+if(yaml-cpp_FOUND AND TARGET yaml-cpp AND NOT TARGET yaml-cpp::yaml-cpp)
+  message(VERBOSE "Creating target alias yaml-cpp::yaml-cpp")
+  add_library(yaml-cpp::yaml-cpp ALIAS yaml-cpp)
 endif()
 
 if(BUILD_TESTING)
