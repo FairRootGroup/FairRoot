@@ -14,7 +14,7 @@
 
 # Check if cmake has the required version
 CMAKE_MINIMUM_REQUIRED(VERSION 3.11.0 FATAL_ERROR)
-cmake_policy(VERSION 3.11...3.19)
+cmake_policy(VERSION 3.11...3.27)
 
 set(CMAKE_INSTALL_MESSAGE LAZY)
 # Set project version
