@@ -6,7 +6,7 @@
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
-cmake_policy(VERSION 3.15...3.23)
+cmake_policy(VERSION 3.15...3.27)
 
 set(PROJECT_MIN_CXX_STANDARD 17)
 
