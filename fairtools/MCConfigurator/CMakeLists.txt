@@ -30,7 +30,7 @@ target_include_directories(${target} SYSTEM PUBLIC
 target_link_libraries(${target}
   PUBLIC
   FairRoot::Base # FairGenericVMCConfig
-  yaml-cpp
+  ${YAMLCPPLIB}
 
   PRIVATE
   FairRoot::Tools
