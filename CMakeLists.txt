@@ -256,6 +256,17 @@ if(    yaml-cpp_FOUND
     INTERFACE_INCLUDE_DIRECTORIES "${YAML_CPP_INCLUDE_DIR}"
   )
 endif()
+# Workaround to fix a problem with the imported target name
+# The target name includes the namespace yaml-cpp begining
+# from version 0.8.0. So the new exported target is now
+# yaml-cpp::yaml-cpp.
+if(yaml-cpp_FOUND)
+  if(TARGET yaml-cpp::yaml-cpp)
+    set(YAMLCPPLIB yaml-cpp::yaml-cpp)
+  else()
+    set(YAMLCPPLIB yaml-cpp)
+  endif()
+endif()
 
 if(BUILD_TESTING)
   Include(FetchContent)
