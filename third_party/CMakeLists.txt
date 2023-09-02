@@ -6,6 +6,12 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.25)
+  set(declare_with_system "SYSTEM")
+else()
+  set(declare_with_system "")
+endif()
+
 if(BUILD_TESTING)
   Include(FetchContent)
 
@@ -14,6 +20,7 @@ if(BUILD_TESTING)
     SOURCE_DIR ${CMAKE_SOURCE_DIR}/third_party/Catch2_v3.4.0
     # GIT_REPOSITORY https://github.com/catchorg/Catch2.git
     # GIT_TAG        v3.4.0
+    ${declare_with_system}
   )
 
   FetchContent_MakeAvailable(Catch2)
