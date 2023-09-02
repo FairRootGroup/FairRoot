@@ -267,23 +267,7 @@ if(yaml-cpp_FOUND AND TARGET yaml-cpp AND NOT TARGET yaml-cpp::yaml-cpp)
   add_library(yaml-cpp::yaml-cpp ALIAS yaml-cpp)
 endif()
 
-if(BUILD_TESTING)
-  Include(FetchContent)
-
-  FetchContent_Declare(
-    Catch2
-    SOURCE_DIR ${CMAKE_SOURCE_DIR}/third_party/Catch2_v3.4.0
-    # GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-    # GIT_TAG        v3.4.0
-  )
-
-  FetchContent_MakeAvailable(Catch2)
-
-  # Include `Catch` module for the `catch_discover_tests` command, see
-  # https://github.com/catchorg/Catch2/blob/devel/docs/cmake-integration.md#customization
-  list(PREPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
-  include(Catch)
-endif()
+add_subdirectory(third_party)
 
 # Set some useful variables
 SetBasicVariables()
