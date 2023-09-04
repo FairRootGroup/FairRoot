@@ -53,11 +53,6 @@
 
 class FairGeoMedium;
 
-thread_local TArrayI* FairModule::volNumber = 0;
-thread_local Int_t FairModule::fNbOfVolumes = 0;
-thread_local FairVolumeList* FairModule::vList = 0;
-thread_local TRefArray* FairModule::svList = 0;
-
 void FairModule::ConstructGeometry()
 {
     LOG(warn)
@@ -74,16 +69,7 @@ FairModule::~FairModule() {}
 
 FairModule::FairModule(const char* Name, const char* title, Bool_t Active)
     : TNamed(Name, title)
-    , fMotherVolumeName("")
-    , fgeoVer("Not defined")
-    , fgeoName("Not defined")
-    , fModId(-1)
     , fActive(Active)
-    , fNbOfSensitiveVol(0)
-    , fVerboseLevel(0)
-    , flGeoPar(nullptr)
-    , fGeoSaved(kFALSE)
-    , fMC(nullptr)
 {
     if (!svList) {
         svList = new TRefArray();
@@ -102,9 +88,7 @@ FairModule::FairModule(const FairModule& rhs)
     , fActive(rhs.fActive)
     , fNbOfSensitiveVol(rhs.fNbOfSensitiveVol)
     , fVerboseLevel(rhs.fVerboseLevel)
-    , flGeoPar(nullptr)
     , fGeoSaved(rhs.fGeoSaved)
-    , fMC(nullptr)
 {
     if (!svList) {
         svList = new TRefArray();
@@ -135,16 +119,6 @@ FairModule::FairModule(const FairModule& rhs)
 
 FairModule::FairModule()
     : TNamed()
-    , fMotherVolumeName("")
-    , fgeoVer("Not defined")
-    , fgeoName("Not defined")
-    , fModId(-1)
-    , fActive(kFALSE)
-    , fNbOfSensitiveVol(0)
-    , fVerboseLevel(0)
-    , flGeoPar(nullptr)
-    , fGeoSaved(kFALSE)
-    , fMC(nullptr)
 {}
 
 FairModule& FairModule::operator=(const FairModule& rhs)

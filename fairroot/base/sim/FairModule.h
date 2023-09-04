@@ -137,14 +137,14 @@ class FairModule : public TNamed
     TList* GetListOfGeoPar() { return flGeoPar; }
 
     /**list of volumes in a simulation session*/
-    static thread_local FairVolumeList* vList;   //!
+    static thread_local inline FairVolumeList* vList{0};   //!
     /**total number of volumes in a simulaion session*/
-    static thread_local Int_t fNbOfVolumes;   //!
+    static thread_local inline Int_t fNbOfVolumes{0};   //!
     /**list of all sensitive volumes in  a simulaion session*/
-    static thread_local TRefArray* svList;   //!
+    static thread_local inline TRefArray* svList{0};   //!
 
-    static thread_local TArrayI* volNumber;   //!
-    TString fMotherVolumeName;                //!
+    static thread_local inline TArrayI* volNumber{0};   //!
+    TString fMotherVolumeName{""};                      //!
     FairVolume* getFairVolume(FairGeoNode* fNode);
     void AddSensitiveVolume(TGeoVolume* v);
 
@@ -160,15 +160,15 @@ class FairModule : public TNamed
   protected:
     FairModule(const FairModule&);
     FairModule& operator=(const FairModule&);
-    TString fgeoVer;
-    TString fgeoName;
-    Int_t fModId;
-    Bool_t fActive;
-    Int_t fNbOfSensitiveVol;   //!
-    Int_t fVerboseLevel;
-    TList* flGeoPar;    //!  list of Detector Geometry parameters
-    Bool_t fGeoSaved;   //! flag for initialisation
-    TVirtualMC* fMC;    //! cahed pointer to MC (available only after initialization)
+    TString fgeoVer{"Not defined"};
+    TString fgeoName{"Not defined"};
+    Int_t fModId{-1};
+    Bool_t fActive{kFALSE};
+    Int_t fNbOfSensitiveVol{0};   //!
+    Int_t fVerboseLevel{0};
+    TList* flGeoPar{nullptr};   //!  list of Detector Geometry parameters
+    Bool_t fGeoSaved{kFALSE};   //! flag for initialisation
+    TVirtualMC* fMC{nullptr};   //! cahed pointer to MC (available only after initialization)
 
     ClassDefOverride(FairModule, 4);
 };
