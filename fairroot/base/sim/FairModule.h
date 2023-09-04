@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -143,8 +143,7 @@ class FairModule : public TNamed
     /**list of all sensitive volumes in  a simulaion session*/
     static thread_local inline TRefArray* svList{0};   //!
 
-    static thread_local inline TArrayI* volNumber{0};   //!
-    TString fMotherVolumeName{""};                      //!
+    TString fMotherVolumeName{""};   //!
     FairVolume* getFairVolume(FairGeoNode* fNode);
     void AddSensitiveVolume(TGeoVolume* v);
 
