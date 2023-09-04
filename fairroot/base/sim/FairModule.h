@@ -16,21 +16,19 @@
 #include "FairRun.h"         // for FairRun
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
 
-#include <Rtypes.h>      // for Bool_t, Int_t, etc
+#include <TGeoMatrix.h>
+#include <TGeoNode.h>
+#include <TGeoVolume.h>
 #include <TList.h>       // for TList (ptr only), TListIter
 #include <TNamed.h>      // for TNamed
 #include <TObjArray.h>   // for TObjArray
+#include <TRefArray.h>   // for TRefArray
 #include <TString.h>     // for TString, operator!=
-#include <string>        // for string
+#include <TVirtualMC.h>
+#include <string>
 
 class FairVolumeList;
 class FairVolume;
-class TArrayI;
-class TGeoMatrix;
-class TGeoNode;
-class TGeoVolume;
-class TRefArray;
-class TVirtualMC;
 
 /**
  * Base class for constructing all detecors and passive volumes
@@ -137,11 +135,11 @@ class FairModule : public TNamed
     TList* GetListOfGeoPar() { return flGeoPar; }
 
     /**list of volumes in a simulation session*/
-    static thread_local inline FairVolumeList* vList{0};   //!
+    static thread_local inline FairVolumeList* vList{nullptr};   //!
     /**total number of volumes in a simulaion session*/
     static thread_local inline Int_t fNbOfVolumes{0};   //!
     /**list of all sensitive volumes in  a simulaion session*/
-    static thread_local inline TRefArray* svList{0};   //!
+    static thread_local inline TRefArray* svList{nullptr};   //!
 
     TString fMotherVolumeName{""};   //!
     FairVolume* getFairVolume(FairGeoNode* fNode);
