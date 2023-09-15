@@ -29,7 +29,6 @@ class TBuffer;
 class TClass;
 class TClonesArray;
 class TDatabasePDG;
-class TMemberInspector;
 
 class FairEveMCTracks : public FairEveTracks
 {

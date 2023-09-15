@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2020-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -24,8 +24,7 @@ class TBuffer;
 class TClass;
 class TGCompositeFrame;
 class TGNumberEntry;  // lines 25-25
-class TGedFrame;  // lines 24-24
-class TMemberInspector;
+class TGedFrame;
 
 /**
  * base class for graphics cuts

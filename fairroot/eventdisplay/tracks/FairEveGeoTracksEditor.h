@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2020-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -29,14 +29,11 @@ class FairEveMinMaxCut;  // lines 27-27
 class TBuffer;
 class TClass;
 class TGWindow;
-class TMemberInspector;
 class TObject;
-
 
 /**
  * editor of TGeoTracks in event display
  */
-
 class FairEveGeoTracksEditor : public TGedFrame
 {
     std::unique_ptr<FairEveMinMaxCut> fPtCut;

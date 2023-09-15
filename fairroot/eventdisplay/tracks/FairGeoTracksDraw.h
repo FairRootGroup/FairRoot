@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2020-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -23,7 +23,6 @@ class FairEveGeoTracks;  // lines 21-21
 class FairEventManager;  // lines 22-22
 class TBuffer;
 class TClass;
-class TMemberInspector;
 
 /**
  * task that draws the TGeoTracks

@@ -1,5 +1,5 @@
  ################################################################################
- #    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+ # Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             # 
  #              GNU Lesser General Public Licence (LGPL) version 3,             #  
@@ -81,7 +81,6 @@ set(CTEST_CUSTOM_WARNING_EXCEPTION
         "/include/TMap.h:"
         "/include/TMatrixT.h:"
         "/include/TMatrixTSym.h:"
-        "/include/TMemberInspector.h:"
         "/include/TObjArray.h:"
         "/include/TRefArray.h:"
         "/include/TString.h:"

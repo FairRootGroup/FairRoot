@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -23,8 +23,7 @@ class TClass;
 class TGComboBox;  // lines 22-22
 class TGLabel;  // lines 27-27
 class TGNumberEntry;  // lines 28-28
-class TGWindow;  // lines 29-29
-class TMemberInspector;
+class TGWindow;
 class TObject;  // lines 30-30
 
 class FairEventManagerEditor : public TGedFrame
