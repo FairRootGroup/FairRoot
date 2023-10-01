@@ -146,8 +146,6 @@ void PixelFindHits::GetParList(TList* tempList)
 {
     fDigiPar = new PixelDigiPar("PixelDigiParameters");
     tempList->Add(fDigiPar);
-
-    return;
 }
 
 void PixelFindHits::InitMQ(TList* tempList)
@@ -168,8 +166,6 @@ void PixelFindHits::InitMQ(TList* tempList)
     LOG(info) << ">> fPitchY      = " << fPitchY;
 
     fHits = new TClonesArray("PixelHit", 10000);
-
-    return;
 }
 
 void PixelFindHits::ExecMQ(TList* inputList, TList* outputList)
@@ -181,7 +177,6 @@ void PixelFindHits::ExecMQ(TList* inputList, TList* outputList)
     fDigis = (TClonesArray*)inputList->FindObject("PixelDigis");
     outputList->Add(fHits);
     Exec("");
-    return;
 }
 
 InitStatus PixelFindHits::Init()

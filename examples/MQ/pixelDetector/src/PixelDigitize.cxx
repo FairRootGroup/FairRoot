@@ -178,8 +178,6 @@ void PixelDigitize::GetParList(TList* tempList)
 {
     fDigiPar = new PixelDigiPar("PixelDigiParameters");
     tempList->Add(fDigiPar);
-
-    return;
 }
 
 void PixelDigitize::InitMQ(TList* tempList)
@@ -200,8 +198,6 @@ void PixelDigitize::InitMQ(TList* tempList)
     LOG(info) << ">> fPitchY      = " << fPitchY;
 
     fDigis = new TClonesArray("PixelDigi", 10000);
-
-    return;
 }
 
 void PixelDigitize::ExecMQ(TList* inputList, TList* outputList)
@@ -212,7 +208,6 @@ void PixelDigitize::ExecMQ(TList* inputList, TList* outputList)
     fPoints = (TClonesArray*)inputList->FindObject("PixelPoint");
     outputList->Add(fDigis);
     Exec("");
-    return;
 }
 
 InitStatus PixelDigitize::Init()

@@ -97,8 +97,8 @@ void FairTutPropTr::InitPropagator()
     fPro->SetDestinationPlane(planePoint, planeVectJ, planeVectK);
 
     fPropagatorSet = true;
-    return;
 }
+
 // -------------------------------------------------------------------------
 
 // -----   Public method Exec   --------------------------------------------

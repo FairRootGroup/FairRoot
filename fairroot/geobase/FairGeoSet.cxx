@@ -152,7 +152,6 @@ void FairGeoSet::readInout(std::fstream& fin)
         do {
             fin.get(c);
         } while (c != '\n');
-    return;
 }
 
 void FairGeoSet::readTransform(std::fstream& fin, FairGeoTransform& tf)

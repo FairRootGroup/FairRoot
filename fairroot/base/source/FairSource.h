@@ -46,8 +46,8 @@ class FairSource : public TObject
     /**Check the maximum event number we can run to*/
     virtual Int_t CheckMaxEventNo(Int_t = 0) { return -1; }
     /**Read the tree entry on one branch**/
-    virtual void ReadBranchEvent(const char*) { return; }
-    virtual void ReadBranchEvent(const char*, Int_t) { return; }
+    virtual void ReadBranchEvent(const char*) {}
+    virtual void ReadBranchEvent(const char*, Int_t) {}
     virtual void FillEventHeader(FairEventHeader* feh);
     void SetRunId(Int_t runId) { fRunId = runId; }
     Int_t GetRunId() const { return fRunId; }

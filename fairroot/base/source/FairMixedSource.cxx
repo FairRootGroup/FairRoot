@@ -413,7 +413,6 @@ void FairMixedSource::FillEventHeader(FairEventHeader* feh)
     LOG(debug) << "FairMixedSource::FillEventHeader() Event " << fCurrentEntryNo << " at " << feh->GetEventTime()
                << " -> Run id = " << fOutHeader->GetRunId() << " event#" << feh->GetMCEntryNumber() << " from file#"
                << fOutHeader->GetInputFileId();
-    return;
 }
 
 void FairMixedSource::SetSignalFile(TString name, UInt_t identifier)
@@ -741,7 +740,6 @@ void FairMixedSource::ReadBranchEvent(const char* BrName)
         return;
     }
     chain->FindBranch(BrName)->GetEntry(fEvtHeader->GetMCEntryNumber());
-    return;
 }
 
 void FairMixedSource::ReadBranchEvent(const char* BrName, Int_t Entry)
@@ -755,7 +753,6 @@ void FairMixedSource::ReadBranchEvent(const char* BrName, Int_t Entry)
         return;
     }
     chain->FindBranch(BrName)->GetEntry(Entry);
-    return;
 }
 
 void FairMixedSource::UseRunIdFromBG()

@@ -151,8 +151,6 @@ void PixelFindTracks::GetParList(TList* tempList)
 {
     fDigiPar = new PixelDigiPar("PixelDigiParameters");
     tempList->Add(fDigiPar);
-
-    return;
 }
 
 void PixelFindTracks::InitMQ(TList* tempList)
@@ -162,8 +160,6 @@ void PixelFindTracks::InitMQ(TList* tempList)
 
     fTracks = new TClonesArray("PixelTrack", 10000);
     fhDist2D = new TH2F("fhDist2D", "Distance between hit and expected track", 400, -1., 1., 400, -1., 1.);
-
-    return;
 }
 
 void PixelFindTracks::ExecMQ(TList* inputList, TList* outputList)
@@ -175,7 +171,6 @@ void PixelFindTracks::ExecMQ(TList* inputList, TList* outputList)
     fHits = (TClonesArray*)inputList->FindObject("PixelHits");
     outputList->Add(fTracks);
     Exec("");
-    return;
 }
 
 InitStatus PixelFindTracks::Init()

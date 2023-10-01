@@ -70,8 +70,6 @@ void FairEventBuilderManager::Exec(Option_t*)
     // - should extract possible events
     // - is implemented by different experiments
     AnalyzeAndExtractEvents(maxEventTimeAllowed);
-
-    return;
 }
 
 Double_t FairEventBuilderManager::FillEventVectors()
