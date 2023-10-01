@@ -699,8 +699,8 @@ void FairFileSource::ReadBranchEvent(const char* BrName)
         fEventTime = GetEventTime();
         return;
     }
-    return;
 }
+
 void FairFileSource::ReadBranchEvent(const char* BrName, Int_t Entry)
 {
     fCurrentEntryNo = Entry;
@@ -714,7 +714,6 @@ void FairFileSource::ReadBranchEvent(const char* BrName, Int_t Entry)
         fEventTime = GetEventTime();
         return;
     }
-    return;
 }
 
 void FairFileSource::FillEventHeader(FairEventHeader* feh)

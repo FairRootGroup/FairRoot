@@ -195,7 +195,6 @@ void FairMultiLinkedData::InsertLink(FairLink link)
     } else {
         fLinks.insert(link);
     }
-    return;
 }
 
 void FairMultiLinkedData::InsertHistory(FairLink link)

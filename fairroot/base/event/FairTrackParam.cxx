@@ -187,7 +187,6 @@ void FairTrackParam::SetCovariance(Int_t i, Int_t j, Double_t val)
         index = 10 + j;
     }
     fCovMatrix[index] = val;
-    return;
 }
 
 FairTrackParam& FairTrackParam::operator=(const FairTrackParam& par)

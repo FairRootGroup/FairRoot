@@ -40,7 +40,7 @@ class FairOnlineSink : public FairSink
 
     virtual void FillEventHeader(FairEventHeader* /* feh */) {}
 
-    void SetOutTree(TTree* /* fTree */) override { return; }
+    void SetOutTree(TTree* /* fTree */) override {}
 
     void Fill() override;
 

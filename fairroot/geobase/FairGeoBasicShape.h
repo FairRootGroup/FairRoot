@@ -40,7 +40,7 @@ class FairGeoBasicShape : public TNamed
     virtual void printPoints(FairGeoVolume* volu);
     virtual TArrayD* calcVoluParam(FairGeoVolume*) { return 0; }
     virtual void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&);
-    virtual void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&) { return; }
+    virtual void calcVoluPosition(FairGeoVolume*, const FairGeoTransform&, const FairGeoTransform&) {}
     void printParam();
 
   protected:

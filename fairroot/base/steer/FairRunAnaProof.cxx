@@ -264,7 +264,6 @@ void FairRunAnaProof::InitContainers()
 void FairRunAnaProof::Run(Int_t Ev_start, Int_t Ev_end)
 {
     RunOnProof(Ev_start, Ev_end);
-    return;
 }
 
 void FairRunAnaProof::RunOneEvent(Long64_t entry)

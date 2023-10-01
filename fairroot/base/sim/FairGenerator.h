@@ -53,7 +53,7 @@ class FairGenerator : public TNamed
     virtual Bool_t Init() { return kTRUE; }
 
     /**Finalize the generator if needed */
-    virtual void Finish() { return; }
+    virtual void Finish() {}
 
     /** Clone this object (used in MT mode only) */
     virtual FairGenerator* CloneGenerator() const;
