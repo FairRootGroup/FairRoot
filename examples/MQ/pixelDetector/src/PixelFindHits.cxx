@@ -151,7 +151,10 @@ void PixelFindHits::GetParList(TList* tempList)
 void PixelFindHits::InitMQ(TList* tempList)
 {
     LOG(info) << "********************************************** PixelFindHits::InitMQ()";
-    fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
+    fDigiPar = dynamic_cast<PixelDigiPar*>(tempList->FindObject("PixelDigiParameters"));
+    if (!fDigiPar) {
+        throw std::runtime_error("no PixelDigiParameters");
+    }
 
     fFeCols = fDigiPar->GetFECols();
     fFeRows = fDigiPar->GetFERows();
@@ -174,7 +177,13 @@ void PixelFindHits::ExecMQ(TList* inputList, TList* outputList)
     //  "," << outputList->GetName() << "), Event " << fTNofEvents; LOG(info) <<
     //  "********************************************** PixelFindHits::ExecMQ(), Event " << fTNofEvents; LOG(info) <<
     //  "h" << FairLogger::flush;
-    fDigis = (TClonesArray*)inputList->FindObject("PixelDigis");
+    fDigis = dynamic_cast<TClonesArray*>(inputList->FindObject("PixelDigis"));
+    if (!fDigis) {
+        throw std::runtime_error("no PixelDigis");
+    }
+    if (!fDigis->GetClass()->InheritsFrom(PixelDigi::Class())) {
+        throw std::runtime_error("wrong type in PixelDigis TCA");
+    }
     outputList->Add(fHits);
     Exec("");
 }

@@ -83,7 +83,7 @@ Int_t PixelDigiBinSource::ReadEvent(UInt_t i)
     LOG(debug) << "PixelDigiBinSource::ReadEvent() Begin of (" << fDigis.GetEntries() << ")";
 
     Int_t head[4];   // runId, MCEntryNo, PartNo, NofDigis
-    fInputFile.read((char*)head, sizeof(head));
+    fInputFile.read(reinterpret_cast<char*>(head), sizeof(head));
 
     if (fInputFile.eof()) {
         LOG(info) << "End of file reached!";
@@ -94,7 +94,7 @@ Int_t PixelDigiBinSource::ReadEvent(UInt_t i)
 
     const Int_t constNofData = head[3] * dataSize;
     short int dataCont[constNofData];
-    fInputFile.read((char*)dataCont, sizeof(dataCont));
+    fInputFile.read(reinterpret_cast<char*>(dataCont), sizeof(dataCont));
 
     fRunId = head[0];
     fMCEntryNo = head[1];
@@ -146,7 +146,7 @@ Int_t PixelDigiBinSource::CheckMaxEventNo(Int_t /*EvtEnd*/) { return -1; }
 
 void PixelDigiBinSource::FillEventHeader(FairEventHeader* feh)
 {
-    ((PixelEventHeader*)feh)->SetRunId(fRunId);
-    ((PixelEventHeader*)feh)->SetMCEntryNumber(fMCEntryNo);
-    ((PixelEventHeader*)feh)->SetPartNo(fPartNo);
+    FairSource::FillEventHeader(feh);
+    feh->SetMCEntryNumber(fMCEntryNo);
+    static_cast<PixelEventHeader*>(feh)->SetPartNo(fPartNo);
 }

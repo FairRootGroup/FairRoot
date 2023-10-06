@@ -144,7 +144,7 @@ Int_t PixelDigiSource::CheckMaxEventNo(Int_t /*EvtEnd*/) { return -1; }
 
 void PixelDigiSource::FillEventHeader(FairEventHeader* feh)
 {
-    ((PixelEventHeader*)feh)->SetRunId(fRunId);
-    ((PixelEventHeader*)feh)->SetMCEntryNumber(fMCEntryNo);
-    ((PixelEventHeader*)feh)->SetPartNo(fPartNo);
+    FairSource::FillEventHeader(feh);
+    feh->SetMCEntryNumber(fMCEntryNo);
+    static_cast<PixelEventHeader*>(feh)->SetPartNo(fPartNo);
 }

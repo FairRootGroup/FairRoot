@@ -156,7 +156,10 @@ void PixelFindTracks::GetParList(TList* tempList)
 void PixelFindTracks::InitMQ(TList* tempList)
 {
     LOG(info) << "********************************************** PixelFindTracks::InitMQ()";
-    fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
+    fDigiPar = dynamic_cast<PixelDigiPar*>(tempList->FindObject("PixelDigiParameters"));
+    if (!fDigiPar) {
+        throw std::runtime_error("no PixelDigiParameters");
+    }
 
     fTracks = new TClonesArray("PixelTrack", 10000);
     fhDist2D = new TH2F("fhDist2D", "Distance between hit and expected track", 400, -1., 1., 400, -1., 1.);
@@ -168,7 +171,13 @@ void PixelFindTracks::ExecMQ(TList* inputList, TList* outputList)
     //  << "," << outputList->GetName() << "), Event " << fTNofEvents; LOG(info) <<
     //  "********************************************** PixelFindTracks::ExecMQ(), Event " << fTNofEvents; LOG(info) <<
     //  "t" << FairLogger::flush;
-    fHits = (TClonesArray*)inputList->FindObject("PixelHits");
+    fHits = dynamic_cast<TClonesArray*>(inputList->FindObject("PixelHits"));
+    if (!fHits) {
+        throw std::runtime_error("no PixelHits");
+    }
+    if (!fHits->GetClass()->InheritsFrom(PixelHit::Class())) {
+        throw std::runtime_error("wrong type in PixelHits TCA");
+    }
     outputList->Add(fTracks);
     Exec("");
 }

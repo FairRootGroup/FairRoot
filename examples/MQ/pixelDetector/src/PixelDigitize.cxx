@@ -183,7 +183,10 @@ void PixelDigitize::GetParList(TList* tempList)
 void PixelDigitize::InitMQ(TList* tempList)
 {
     LOG(info) << "********************************************** PixelDigitize::InitMQ()";
-    fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
+    fDigiPar = dynamic_cast<PixelDigiPar*>(tempList->FindObject("PixelDigiParameters"));
+    if (!fDigiPar) {
+        throw std::runtime_error("no PixelDigiParameters");
+    }
 
     fFeCols = fDigiPar->GetFECols();
     fFeRows = fDigiPar->GetFERows();
@@ -205,7 +208,13 @@ void PixelDigitize::ExecMQ(TList* inputList, TList* outputList)
     //  LOG(info) << "********************************************** PixelDigitize::ExecMQ(" << inputList->GetName() <<
     //  "," << outputList->GetName() << "), Event " << fTNofEvents; LOG(info) <<
     //  "********************************************** PixelDigitize::ExecMQ(), Event " << fTNofEvents;
-    fPoints = (TClonesArray*)inputList->FindObject("PixelPoint");
+    fPoints = dynamic_cast<TClonesArray*>(inputList->FindObject("PixelPoint"));
+    if (!fPoints) {
+        throw std::runtime_error("no PixelPoint");
+    }
+    if (!fPoints->GetClass()->InheritsFrom(PixelPoint::Class())) {
+        throw std::runtime_error("wrong type in PixelPoint TCA");
+    }
     outputList->Add(fDigis);
     Exec("");
 }
