@@ -51,6 +51,11 @@ struct optional_deleter
  * contain a reference (and thus not delete its content
  * on destruction).
  *
+ * The default is an owning pointer, so that it can be used
+ * just like a plain std::unique_ptr. It should be trivial to
+ * switch to a plain one later, if the non-owning part is not
+ * used any longer.
+ *
  * \note Think twice before using this!
  *
  * It's mostly meant for cases, where FairRoot has a public API
