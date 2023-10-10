@@ -54,6 +54,17 @@ TEST_CASE("maybe_owning_ptr")
         REQUIRE(analyzer.destructed == 1);
         REQUIRE(analyzer.was_destructed('A'));
     }
+    SECTION("unique_ptr style initialize and go out of scope")
+    {
+        {
+            MaybeOwning other{item_a.release()};
+            REQUIRE(!item_a);
+            REQUIRE(other);
+            REQUIRE(analyzer.destructed == 0);
+        }
+        REQUIRE(analyzer.destructed == 1);
+        REQUIRE(analyzer.was_destructed('A'));
+    }
     SECTION("Pass ownership and go out of scope")
     {
         {
