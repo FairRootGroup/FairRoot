@@ -76,9 +76,9 @@ If(ROOT_CONFIG_EXECUTABLE)
 
   # extract major, minor, and patch versions from
   # the version string given by root-config
-  String(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+\\/[0-9][0-9]+.*" "\\1" ROOT_VERSION_MAJOR "${ROOT_VERSION_STRING}")
-  String(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" ROOT_VERSION_MINOR "${ROOT_VERSION_STRING}")
-  String(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+).*" "\\1" ROOT_VERSION_PATCH "${ROOT_VERSION_STRING}")
+  String(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+[\\/.][0-9][0-9]+.*" "\\1" ROOT_VERSION_MAJOR "${ROOT_VERSION_STRING}")
+  String(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+[\\/.][0-9][0-9]+.*" "\\1" ROOT_VERSION_MINOR "${ROOT_VERSION_STRING}")
+  String(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+[\\/.]([0-9][0-9]+).*" "\\1" ROOT_VERSION_PATCH "${ROOT_VERSION_STRING}")
 
   if(NOT ROOT_FIND_VERSION_MAJOR)
     set(ROOT_FIND_VERSION_MAJOR 0)
