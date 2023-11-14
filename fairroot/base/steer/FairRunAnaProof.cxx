@@ -94,17 +94,7 @@ void FairRunAnaProof::Init()
     // Load Geometry from user file
 
     if (fLoadGeo) {
-        if (fInputGeoFile != 0) {   // First check if the user has a separate Geo file!
-            TIter next(fInputGeoFile->GetListOfKeys());
-            TKey* key;
-            while ((key = static_cast<TKey*>(next()))) {
-                if (strcmp(key->GetClassName(), "TGeoManager") != 0) {
-                    continue;
-                }
-                gGeoManager = static_cast<TGeoManager*>(key->ReadObj());
-                break;
-            }
-        }
+        SearchForTGeoManagerInGeoFile();
     } else {
         //    FairGeoParSet* geopar=dynamic_cast<FairGeoParSet*>(fRtdb->getContainer("FairGeoParSet"));
         fRtdb->getContainer("FairGeoParSet");
@@ -142,17 +132,7 @@ void FairRunAnaProof::Init()
     } else {   //  if(fInputFile )
         // NO input file but there is a geometry file
         if (fLoadGeo) {
-            if (fInputGeoFile != 0) {   // First check if the user has a separate Geo file!
-                TIter next(fInputGeoFile->GetListOfKeys());
-                TKey* key;
-                while ((key = static_cast<TKey*>(next()))) {
-                    if (strcmp(key->GetClassName(), "TGeoManager") != 0) {
-                        continue;
-                    }
-                    gGeoManager = static_cast<TGeoManager*>(key->ReadObj());
-                    break;
-                }
-            }
+            SearchForTGeoManagerInGeoFile();
         }
     }
     // Init the Chain ptr

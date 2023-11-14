@@ -28,7 +28,7 @@
 #include "FairTrajFilter.h"       // for FairTrajFilter
 #include "signal.h"
 
-#include <TCollection.h>      // for TIter
+#include <TCollection.h>      // for TRangeDynCast
 #include <TDirectory.h>       // for TDirectory::TContext
 #include <TFile.h>            // for TFile
 #include <TGeoManager.h>      // for gGeoManager, TGeoManager
@@ -144,17 +144,7 @@ void FairRunAna::Init()
 
     // Load Geometry from user file
     if (fLoadGeo) {
-        if (fInputGeoFile != 0) {   // First check if the user has a separate Geo file!
-            TIter next(fInputGeoFile->GetListOfKeys());
-            TKey* key;
-            while ((key = dynamic_cast<TKey*>(next()))) {
-                if (strcmp(key->GetClassName(), "TGeoManager") != 0) {
-                    continue;
-                }
-                gGeoManager = dynamic_cast<TGeoManager*>(key->ReadObj());
-                break;
-            }
-        }
+        SearchForTGeoManagerInGeoFile();
     } else {
         /*** Get the container that normly has the geometry and all the basic stuff from simulation*/
         fRtdb->getContainer("FairGeoParSet");
@@ -180,17 +170,7 @@ void FairRunAna::Init()
     } else {   //  if(fInputFile )
         // NO input file but there is a geometry file
         if (fLoadGeo) {
-            if (fInputGeoFile != 0) {   // First check if the user has a separate Geo file!
-                TIter next(fInputGeoFile->GetListOfKeys());
-                TKey* key;
-                while ((key = dynamic_cast<TKey*>(next()))) {
-                    if (strcmp(key->GetClassName(), "TGeoManager") != 0) {
-                        continue;
-                    }
-                    gGeoManager = dynamic_cast<TGeoManager*>(key->ReadObj());
-                    break;
-                }
-            }
+            SearchForTGeoManagerInGeoFile();
         }
     }
 
@@ -643,3 +623,21 @@ void FairRunAna::Fill()
     }
 }
 //_____________________________________________________________________________
+
+void FairRunAna::SearchForTGeoManagerInGeoFile()
+{
+    if (!fInputGeoFile) {   // First check if the user has a separate Geo file!
+        return;
+    }
+    for (auto key : TRangeDynCast<TKey>(fInputGeoFile->GetListOfKeys())) {
+        if (!key) {
+            continue;
+        }
+        auto geo = key->ReadObject<TGeoManager>();
+        if (!geo) {
+            continue;
+        }
+        gGeoManager = geo;
+        break;
+    }
+}

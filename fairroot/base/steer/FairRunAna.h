@@ -142,6 +142,11 @@ class FairRunAna : public FairRun
      */
     void CheckRunIdChanged();
 
+    /**
+     * \brief Internal helper: Search for TGeoManager in fInputGeoFile
+     */
+    void SearchForTGeoManagerInGeoFile();
+
     ClassDefOverride(FairRunAna, 6);
 };
 

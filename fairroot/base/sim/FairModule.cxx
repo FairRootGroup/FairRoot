@@ -45,6 +45,7 @@
 #include <cstdlib>   // for getenv
 #include <cstring>   // for strcmp, strlen
 #include <map>
+#include <memory>
 
 void FairModule::ConstructGeometry()
 {
@@ -301,9 +302,8 @@ void FairModule::ConstructRootGeometry(TGeoMatrix* shiftM)
      */
     TGeoManager* OldGeo = gGeoManager;
     TGeoManager* NewGeo = 0;
-    TGeoVolume* volume = 0;
-    ;
-    TFile* f = TFile::Open(GetGeometryFileName().Data());
+
+    std::unique_ptr<TFile> f{TFile::Open(GetGeometryFileName().Data())};
     TList* l = f->GetListOfKeys();
     TKey* key;
     TIter next(l);
@@ -313,11 +313,11 @@ void FairModule::ConstructRootGeometry(TGeoMatrix* shiftM)
         /**loop inside the delivered root file and try to fine a TGeoManager object
          * the first TGeoManager found will be read
          */
-        if (strcmp(key->GetClassName(), "TGeoManager") != 0) {
+        NewGeo = key->ReadObject<TGeoManager>();
+        if (!NewGeo) {
             continue;
         }
         gGeoManager = 0;
-        NewGeo = static_cast<TGeoManager*>(key->ReadObj());
         break;
     }
     if (NewGeo != 0) {
@@ -325,7 +325,7 @@ void FairModule::ConstructRootGeometry(TGeoMatrix* shiftM)
          */
 
         NewGeo->cd();
-        volume = static_cast<TGeoVolume*>(NewGeo->GetNode(0)->GetDaughter(0)->GetVolume());
+        TGeoVolume* volume = NewGeo->GetNode(0)->GetDaughter(0)->GetVolume();
         v1 = volume->MakeCopyVolume(volume->GetShape());
         // n=NewGeo->GetTopNode();
         n = v1->GetNode(0);
@@ -338,8 +338,8 @@ void FairModule::ConstructRootGeometry(TGeoMatrix* shiftM)
          */
 
         key = static_cast<TKey*>(l->At(0));   // Get the first key in the list
-        volume = dynamic_cast<TGeoVolume*>(key->ReadObj());
-        if (volume != 0) {
+        auto volume = key->ReadObject<TGeoVolume>();
+        if (volume) {
             n = volume->GetNode(0);
         }
         if (n != 0) {
@@ -415,7 +415,6 @@ void FairModule::ConstructRootGeometry(TGeoMatrix* shiftM)
              */
             ExpandNode(n);
             delete NewGeo;
-            delete f;
         } else {
             LOG(fatal) << "Could not find the given mother volume " << fMotherVolumeName.Data()
                        << " where the geomanger should be added.";
