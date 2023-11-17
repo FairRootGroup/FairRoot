@@ -51,9 +51,13 @@ class FairSource : public TObject
     virtual void FillEventHeader(FairEventHeader* feh);
     void SetRunId(Int_t runId) { fRunId = runId; }
     Int_t GetRunId() const { return fRunId; }
+    void Finish() { FinishTask(); }
 
   protected:
     Int_t fRunId;
+
+  private:
+    virtual void FinishTask() {}
 
   public:
     ClassDefOverride(FairSource, 2);

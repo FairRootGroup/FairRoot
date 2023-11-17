@@ -551,6 +551,7 @@ void FairRunAna::TerminateRun()
 {
     fRootManager->StoreAllWriteoutBufferData();
     fTask->FinishTask();
+    GetSource()->Finish();
     //  gDirectory->SetName(fRootManager->GetOutFile()->GetName());
     //  fRunInfo.WriteInfo(); // CRASHES due to file ownership i guess...
     //   cout << ">>> SlaveTerminate fRootManager->GetInChain()->Print()" << endl;

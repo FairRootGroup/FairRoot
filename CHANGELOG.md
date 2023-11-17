@@ -94,6 +94,7 @@ file an issue, so that we can see how to handle this.
 * Consider calling `fairroot_check_root_cxxstd_compatibility()`
   in your `CMakeLists.txt`.
 * `fairsoft-config` isn't searched for and not needed any more.
+* `FairSource` now supports additional private virtual function `FinishTask()`, which is called in the end of the run.
 
 ### Example Changes in Experiment Repos
 * https://github.com/R3BRootGroup/R3BRoot/pull/413
