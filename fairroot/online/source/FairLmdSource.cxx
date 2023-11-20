@@ -54,6 +54,7 @@ FairLmdSource::FairLmdSource(const FairLmdSource& source)
 
 FairLmdSource::~FairLmdSource()
 {
+    CloseLmd();
     fFileNames->Delete();
     delete fFileNames;
 }
@@ -121,6 +122,8 @@ Bool_t FairLmdSource::Init()
 
 Bool_t FairLmdSource::OpenNextFile(TString fileName)
 {
+    CloseLmd();
+
     Int_t inputMode = GETEVT__FILE;
     fxInputChannel = new s_evt_channel;
     void* headptr = &fxInfoHeader;
@@ -133,6 +136,8 @@ Bool_t FairLmdSource::OpenNextFile(TString fileName)
 
     if (status) {
         LOG(error) << "File " << fileName << " opening failed.";
+        delete fxInputChannel;
+        fxInputChannel = nullptr;
         return kFALSE;
     }
 
@@ -166,7 +171,7 @@ Int_t FairLmdSource::ReadEvent(UInt_t)
         }
 
         if (GETEVT__NOMORE == status) {
-            Close();
+            CloseLmd();
         }
 
         TString name = (static_cast<TObjString*>(fFileNames->At(fCurrentFile)))->GetString();
@@ -236,7 +241,17 @@ Int_t FairLmdSource::ReadEvent(UInt_t)
 
 void FairLmdSource::Close()
 {
+    CloseLmd();
+}
+
+void FairLmdSource::CloseLmd()
+{
+    if (!fxInputChannel) {
+        return;
+    }
     f_evt_get_close(fxInputChannel);
+    delete fxInputChannel;
+    fxInputChannel = nullptr;
     Unpack(reinterpret_cast<Int_t*>(fxBuffer), sizeof(s_bufhe), -4, -4, -4, -4, -4);
     fCurrentEvent = 0;
 }

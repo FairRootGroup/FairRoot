@@ -65,6 +65,9 @@ class FairLmdSource : public FairMbsSource
 
     FairLmdSource& operator=(const FairLmdSource&);
 
+  private:
+    void CloseLmd();
+
     ClassDefOverride(FairLmdSource, 0);
 };
 
