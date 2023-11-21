@@ -35,6 +35,12 @@ class FairSource : public TObject
     virtual Bool_t Init() = 0;
     virtual Int_t ReadEvent(UInt_t = 0) = 0;
     virtual Bool_t SpecifyRunId() = 0;
+
+    /**
+     * \note It might be called multiple times, please handle that.
+     * \note It will be called from the dtor of FairRun.
+     *       Don't interact with FairRun here.
+     */
     virtual void Close() = 0;
     virtual void Reset() = 0;
     virtual Bool_t ActivateObject(TObject**, const char*) { return kFALSE; }

@@ -82,6 +82,13 @@ FairRun::~FairRun()
 {
     LOG(debug) << "Enter Destructor of FairRun";
 
+    if (fSource) {
+        fSource->Close();
+    }
+    if (fSink) {
+        fSink->Close();
+    }
+
     // So that FairRootManager does not try to delete these, because we will do that:
     fRootManager->SetSource(nullptr);
     fRootManager->SetSink(nullptr);

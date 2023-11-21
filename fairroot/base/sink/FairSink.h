@@ -16,15 +16,14 @@
 #define FAIRSINK_H
 
 #include <Rtypes.h>
+#include <TFolder.h>
+#include <TObject.h>
 #include <TString.h>
+#include <TTree.h>
 #include <map>        // map
 #include <memory>     // unique_ptr
 #include <string>     // string
 #include <typeinfo>   // type_info
-
-class TObject;
-class TFolder;
-class TTree;
 
 enum Sink_Type
 {
@@ -40,6 +39,12 @@ class FairSink
     virtual ~FairSink();
 
     virtual Bool_t InitSink() = 0;
+
+    /**
+     * \note It might be called multiple times, please handle that.
+     * \note It will be called from the dtor of FairRun.
+     *       Don't interact with FairRun here.
+     */
     virtual void Close() = 0;
     virtual void Reset() = 0;
 
