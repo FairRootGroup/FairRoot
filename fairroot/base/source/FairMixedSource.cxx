@@ -183,8 +183,6 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     // }
 }
 
-FairMixedSource::~FairMixedSource() = default;
-
 Bool_t FairMixedSource::Init()
 {
     fOutHeader = new FairEventHeader();
@@ -387,8 +385,6 @@ Int_t FairMixedSource::ReadEvent(UInt_t i)
     return 0;
 }
 
-void FairMixedSource::Close() {}
-
 void FairMixedSource::FillEventHeader(FairEventHeader* feh)
 {
     feh->SetEventTime(fOutHeader->GetEventTime());
@@ -423,7 +419,10 @@ void FairMixedSource::SetSignalFile(TString name, UInt_t identifier)
     }
 }
 
-void FairMixedSource::AddSignalFile(TString name, UInt_t identifier) { SetSignalFile(name, identifier); }
+void FairMixedSource::AddSignalFile(TString name, UInt_t identifier)
+{
+    SetSignalFile(name, identifier);
+}
 
 TChain* FairMixedSource::GetSignalChainNo(UInt_t i)
 {

@@ -18,12 +18,12 @@
 #include <TRefArray.h>   // for TRefArray
 #include <TString.h>     // for TString, operator<
 #include <fairlogger/Logger.h>
+#include <list>
 #include <map>   // for map, multimap, etc
 #include <memory>
 #include <string>
 #include <type_traits>   // is_pointer, remove_pointer, is_const, remove...
 #include <typeinfo>
-#include <list>
 
 class BinaryFunctor;
 class FairEventHeader;
@@ -69,7 +69,7 @@ class FairRootManager : public TObject
 
     void CloseSink()
     {
-        if (fSink) {
+        if (fSink != nullptr) {
             fSink->Close();
         }
     }

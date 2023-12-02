@@ -323,9 +323,6 @@ void FairRunSim::Run(Int_t NEvents, Int_t)
 {
     fApp->RunMC(NEvents);
     fWasMT = fApp->GetIsMT();
-    if (fSink) {
-        fSink->Close();
-    }
 }
 
 void FairRunSim::SetField(FairField* field)

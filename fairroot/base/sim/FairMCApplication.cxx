@@ -478,10 +478,6 @@ void FairMCApplication::FinishRunOnWorker()
     LOG(debug) << "FairMCApplication::FinishRunOnWorker: ";
 
     FinishRun();
-
-    // Close the sink on workers so that the execution of main FairRunSim->Run()
-    // finishes with the output files properly closed.
-    fRootManager->CloseSink();
 }
 
 //_____________________________________________________________________________

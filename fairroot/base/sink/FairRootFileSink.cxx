@@ -202,7 +202,7 @@ void FairRootFileSink::TruncateBranchNames(TBranch* b, TString ffn)
 
 void FairRootFileSink::Close()
 {
-    if (fRootFile) {
+    if (fRootFile != nullptr) {
         fRootFile->Close();
     }
 }
@@ -251,7 +251,8 @@ void FairRootFileSink::WriteFolder()
     }
 }
 
-namespace impl {
+namespace impl
+{
 // a helper function to demangle a type_name
 inline std::string demangle(const char* name)
 {

@@ -40,11 +40,10 @@ class FairFileSource : public FairFileSourceBase
     FairFileSource(const TString* RootFileName, const char* Title = "InputRootFile", UInt_t identifier = 0);
     FairFileSource(const TString RootFileName, const char* Title = "InputRootFile", UInt_t identifier = 0);
     // FairFileSource(const FairFileSource& file);
-    ~FairFileSource() override;
+    ~FairFileSource() override = default;
 
     Bool_t Init() override;
     Int_t ReadEvent(UInt_t i = 0) override;
-    void Close() override;
 
     /**Check the maximum event number we can run to*/
     Int_t CheckMaxEventNo(Int_t EvtEnd = 0) override;
@@ -65,9 +64,9 @@ class FairFileSource : public FairFileSourceBase
     void CreateNewFriendChain(TString inputFile, TString inputLevel);
     TTree* GetInTree() { return fInChain->GetTree(); }
     TChain* GetInChain() { return fInChain; }
-    void CloseInFile()
+    [[deprecated("Use Close() function")]] void CloseInFile()
     {
-        if (fRootFile) {
+        if (fRootFile != nullptr) {
             fRootFile->Close();
         }
     }

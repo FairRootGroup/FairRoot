@@ -144,8 +144,6 @@ FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UI
     LOG(debug) << "FairFileSource created------------";
 }
 
-FairFileSource::~FairFileSource() = default;
-
 Bool_t FairFileSource::Init()
 {
     if (IsInitialized) {
@@ -303,11 +301,15 @@ Bool_t FairFileSource::SpecifyRunId()
     return fInChain->GetEntry(0) != 0;
 }
 
-void FairFileSource::Close() { CloseInFile(); }
+void FairFileSource::AddFriend(TString fName)
+{
+    fFriendFileList.push_back(fName);
+}
 
-void FairFileSource::AddFriend(TString fName) { fFriendFileList.push_back(fName); }
-
-void FairFileSource::AddFile(TString FileName) { fInputChainList.push_back(FileName); }
+void FairFileSource::AddFile(TString FileName)
+{
+    fInputChainList.push_back(FileName);
+}
 
 void FairFileSource::AddFriendsToChain()
 {

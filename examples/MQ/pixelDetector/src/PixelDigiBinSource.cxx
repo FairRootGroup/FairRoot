@@ -106,8 +106,7 @@ Int_t PixelDigiBinSource::ReadEvent(UInt_t i)
     for (Int_t idata = 0; idata < head[3]; idata++) {
         LOG(debug) << "    --/" << idata << "/-->    " << dataCont[idata * dataSize + 0] << " / "
                    << dataCont[idata * dataSize + 1] << " / " << dataCont[idata * dataSize + 2] << " / "
-                   << dataCont[idata * dataSize + 3] << " / "
-                   << " 0.";
+                   << dataCont[idata * dataSize + 3] << " / " << " 0.";
         new (fDigis[fNDigis]) PixelDigi(-1,
                                         dataCont[idata * dataSize + 0],
                                         dataCont[idata * dataSize + 1],
@@ -138,11 +137,12 @@ Bool_t PixelDigiBinSource::ActivateObject(TObject** obj, const char* BrName)
     return kTRUE;
 }
 
-void PixelDigiBinSource::Close() { fInputFile.close(); }
-
 void PixelDigiBinSource::Reset() {}
 
-Int_t PixelDigiBinSource::CheckMaxEventNo(Int_t /*EvtEnd*/) { return -1; }
+Int_t PixelDigiBinSource::CheckMaxEventNo(Int_t /*EvtEnd*/)
+{
+    return -1;
+}
 
 void PixelDigiBinSource::FillEventHeader(FairEventHeader* feh)
 {
