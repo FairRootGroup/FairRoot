@@ -44,7 +44,6 @@ class FairFileSource : public FairFileSourceBase
 
     Bool_t Init() override;
     Int_t ReadEvent(UInt_t i = 0) override;
-    void Close() override;
 
     /**Check the maximum event number we can run to*/
     Int_t CheckMaxEventNo(Int_t EvtEnd = 0) override;

@@ -38,6 +38,11 @@ PixelDigiBinSource::PixelDigiBinSource(TString inputFileName)
     LOG(debug) << "PixelDigiBinSource created------------";
 }
 
+PixelDigiBinSource::~PixelDigiBinSource()
+{
+    fInputFile.close();
+}
+
 Bool_t PixelDigiBinSource::Init()
 {
     // Get input array
@@ -138,11 +143,12 @@ Bool_t PixelDigiBinSource::ActivateObject(TObject** obj, const char* BrName)
     return kTRUE;
 }
 
-void PixelDigiBinSource::Close() { fInputFile.close(); }
-
 void PixelDigiBinSource::Reset() {}
 
-Int_t PixelDigiBinSource::CheckMaxEventNo(Int_t /*EvtEnd*/) { return -1; }
+Int_t PixelDigiBinSource::CheckMaxEventNo(Int_t /*EvtEnd*/)
+{
+    return -1;
+}
 
 void PixelDigiBinSource::FillEventHeader(FairEventHeader* feh)
 {

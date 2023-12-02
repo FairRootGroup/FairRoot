@@ -39,6 +39,11 @@ PixelDigiSource::PixelDigiSource(TString inputFileName)
     LOG(debug) << "PixelDigiSource created------------";
 }
 
+PixelDigiSource::~PixelDigiSource()
+{
+    fInputFile.close();
+}
+
 Bool_t PixelDigiSource::Init()
 {
     // Get input array
@@ -136,11 +141,13 @@ Bool_t PixelDigiSource::ActivateObject(TObject** obj, const char* BrName)
     return kTRUE;
 }
 
-void PixelDigiSource::Close() { fInputFile.close(); }
 
 void PixelDigiSource::Reset() {}
 
-Int_t PixelDigiSource::CheckMaxEventNo(Int_t /*EvtEnd*/) { return -1; }
+Int_t PixelDigiSource::CheckMaxEventNo(Int_t /*EvtEnd*/)
+{
+    return -1;
+}
 
 void PixelDigiSource::FillEventHeader(FairEventHeader* feh)
 {

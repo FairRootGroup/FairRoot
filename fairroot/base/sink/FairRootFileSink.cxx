@@ -68,6 +68,13 @@ FairRootFileSink::FairRootFileSink(const TString RootFileName, const char* Title
     LOG(debug) << "FairRootFileSink created------------";
 }
 
+FairRootFileSink::~FairRootFileSink()
+{
+    if (fRootFile) {
+        fRootFile->Close();
+    }
+}
+
 TFile* FairRootFileSink::OpenRootFile(TString fileName)
 {
     if (fileName.Length() <= 5)
@@ -200,13 +207,6 @@ void FairRootFileSink::TruncateBranchNames(TBranch* b, TString ffn)
     delete BrIter;
 }
 
-void FairRootFileSink::Close()
-{
-    if (fRootFile) {
-        fRootFile->Close();
-    }
-}
-
 void FairRootFileSink::Reset() {}
 
 void FairRootFileSink::FillEventHeader(FairEventHeader* /* feh */) {}
@@ -251,7 +251,8 @@ void FairRootFileSink::WriteFolder()
     }
 }
 
-namespace impl {
+namespace impl
+{
 // a helper function to demangle a type_name
 inline std::string demangle(const char* name)
 {
