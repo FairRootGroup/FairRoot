@@ -89,6 +89,9 @@ file an issue, so that we can see how to handle this.
 * Deprecated `FairRunAna::Run(Long64_t entry)`
   * Functionality unclear due to dubious `Run(int)` and `Run(long)`.
   * Use `FairRunAna::RunSingleEntry(Long64_t entry)` instead.
+* Deprecated `FairSource::Close()` and `FairSink::Close()`
+  * The resource closing should be handled by its owner.
+  * Close the resource in destructors of the derived classes instead.
 
 ### Other Notable Changes
 * Consider calling `fairroot_check_root_cxxstd_compatibility()`
