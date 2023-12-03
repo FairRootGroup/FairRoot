@@ -35,7 +35,7 @@ class FairSource : public TObject
     virtual Bool_t Init() = 0;
     virtual Int_t ReadEvent(UInt_t = 0) = 0;
     virtual Bool_t SpecifyRunId() = 0;
-    [[deprecated("Please close your resources in derived class dtor")]] virtual void Close() {};
+    [[deprecated("Close will go away, the dtor closes resources")]] virtual void Close() {};
     virtual void Reset() = 0;
     virtual Bool_t ActivateObject(TObject**, const char*) { return kFALSE; }
     virtual Bool_t ActivateObjectAny(void**, const std::type_info&, const char*) { return kFALSE; }

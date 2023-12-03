@@ -143,6 +143,11 @@ Bool_t PixelDigiBinSource::ActivateObject(TObject** obj, const char* BrName)
     return kTRUE;
 }
 
+void PixelDigiBinSource::Close()
+{
+    fInputFile.close();
+}
+
 void PixelDigiBinSource::Reset() {}
 
 Int_t PixelDigiBinSource::CheckMaxEventNo(Int_t /*EvtEnd*/)

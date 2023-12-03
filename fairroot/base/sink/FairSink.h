@@ -40,7 +40,7 @@ class FairSink
     virtual ~FairSink();
 
     virtual Bool_t InitSink() = 0;
-    [[deprecated("Please close your resources in derived class dtor")]] virtual void Close();
+    [[deprecated("Close will go away, the dtor closes resources")]] virtual void Close(){};
     virtual void Reset() = 0;
 
     virtual Sink_Type GetSinkType() = 0;
