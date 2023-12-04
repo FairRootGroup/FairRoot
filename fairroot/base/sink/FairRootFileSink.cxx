@@ -68,13 +68,6 @@ FairRootFileSink::FairRootFileSink(const TString RootFileName, const char* Title
     LOG(debug) << "FairRootFileSink created------------";
 }
 
-FairRootFileSink::~FairRootFileSink()
-{
-    if (fRootFile) {
-        fRootFile->Close();
-    }
-}
-
 TFile* FairRootFileSink::OpenRootFile(TString fileName)
 {
     if (fileName.Length() <= 5)
