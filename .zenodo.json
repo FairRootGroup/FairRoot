@@ -1,0 +1,199 @@
+{
+    "creators": [
+        {
+            "name": "Al-Turany, Mohammad",
+            "orcid": "0000-0002-8071-4497"
+        },
+        {
+            "name": "Karabowicz, Radoslaw"
+        },
+        {
+            "name": "Klein, Dennis",
+            "orcid": "0000-0003-3787-1910"
+        },
+        {
+            "name": "Kresan, Dmytro",
+            "orcid": "0000-0002-7537-2875"
+        },
+        {
+            "name": "Rybalchenko, Alexey"
+        },
+        {
+            "name": "Tacke, Christian",
+            "orcid": "0000-0002-5321-8404"
+        },
+        {
+            "name": "Uhlig, Florian"
+        }
+    ],
+    "contributors": [
+        {
+            "type": "Other",
+            "name": "Aphecetche, Laurent"
+        },
+        {
+            "type": "Other",
+            "name": "Babai, Arya"
+        },
+        {
+            "type": "Other",
+            "name": "Berzano, Dario"
+        },
+        {
+            "type": "Other",
+            "name": "Bertini, Denis"
+        },
+        {
+            "type": "Other",
+            "name": "Binet, Sebastien"
+        },
+        {
+            "type": "Other",
+            "name": "Costanza, Susanna"
+        },
+        {
+            "type": "Other",
+            "name": "Eulisse, Giulio"
+        },
+        {
+            "type": "Other",
+            "name": "Friese, Volker"
+        },
+        {
+            "type": "Other",
+            "name": "Gertsenberger, Konstantin"
+        },
+        {
+            "type": "Other",
+            "name": "H\u0159ivn\u00e1\u010dov\u00e1, Ivana"
+        },
+        {
+            "type": "Other",
+            "name": "Klasen, Roman"
+        },
+        {
+            "type": "Other",
+            "name": "Kliemt, Ralf"
+        },
+        {
+            "type": "Other",
+            "name": "Klenze, Philipp"
+        },
+        {
+            "type": "Other",
+            "name": "Kollegger, Thorsten"
+        },
+        {
+            "type": "Other",
+            "name": "Koenig, Ilse"
+        },
+        {
+            "type": "Other",
+            "name": "Krzewicki, Mikolaj"
+        },
+        {
+            "type": "Other",
+            "name": "Lavezzi, Lia"
+        },
+        {
+            "type": "Other",
+            "name": "Lavrik, Evgeny"
+        },
+        {
+            "type": "Other",
+            "name": "Lantwin, Oliver"
+        },
+        {
+            "type": "Other",
+            "name": "Manafov, Anar"
+        },
+        {
+            "type": "Other",
+            "name": "Mayer, Jan"
+        },
+        {
+            "type": "Other",
+            "name": "Neskovic, Gvozden"
+        },
+        {
+            "type": "Other",
+            "name": "Neubert, Sebastian"
+        },
+        {
+            "type": "Other",
+            "name": "Ovcharenko, Egor"
+        },
+        {
+            "type": "Other",
+            "name": "Pellegrino,Carmelo"
+        },
+        {
+            "type": "Other",
+            "name": "Pierre-Alain, Loizeau"
+        },
+        {
+            "type": "Other",
+            "name": "Pflueger, Stefan"
+        },
+        {
+            "type": "Other",
+            "name": "Richter, Matthias"
+        },
+        {
+            "type": "Other",
+            "name": "Rademakers, Fons"
+        },
+        {
+            "type": "Other",
+            "name": "Rohr, David"
+        },
+        {
+            "type": "Other",
+            "name": "Shahoyan, Ruben"
+        },
+        {
+            "type": "Other",
+            "name": "Stockmanns, Tobias"
+        },
+        {
+            "type": "Other",
+            "name": "Ustyuzhanin, Andrey"
+        },
+        {
+            "type": "Other",
+            "name": "von Haller, Barth\u00e9l\u00e9my"
+        },
+        {
+            "type": "Other",
+            "name": "Wang, Yanzhao",
+            "orcid": "0000-0002-7006-7986"
+        },
+        {
+            "type": "Other",
+            "name": "Wenzel, Sandro"
+        },
+        {
+            "type": "Other",
+            "name": "Wielanek, Daniel"
+        },
+        {
+            "type": "Other",
+            "name": "Winckler, Nicolas"
+        },
+        {
+            "type": "Other",
+            "name": "Zanetti, Lorenzo"
+        }
+    ],
+    "description": "<p>A simulation, reconstruction and analysis framework that is based on the ROOT system. The user can create simulated data and/or perform analysis with the same framework. Geant3 and Geant4 transport engines are supported, however the user code that creates simulated data do not depend on a particular monte carlo engine. The framework delivers base classes which enable the users to construct their detectors and /or analysis tasks in a simple way, it also delivers some general functionality like track visualization. Moreover an interface for reading magnetic field maps is also implemented.</p>",
+    "related_identifiers": [
+        {
+            "identifier": "https://github.com/FairRootGroup/FairRoot/",
+            "relation": "isSupplementTo",
+            "resource_type": "software",
+            "scheme": "url"
+        }
+    ],
+    "title": "FairRoot",
+    "license": "LGPL-3.0-only"
+}
