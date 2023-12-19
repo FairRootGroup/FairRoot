@@ -29,30 +29,32 @@
     {
       "@type": "Person",
       "@id": "https://orcid.org/0000-0002-8071-4497",
-      "familyName": "Al-Turany",
-      "givenName": "Mohammad"
+      "givenName": "Mohammad",
+      "familyName": "Al-Turany"
     },
     {
       "@type": "Person",
-      "familyName": "Karabowicz",
-      "givenName": "Radoslaw"
+      "@id": "https://orcid.org/0009-0005-4083-2711",
+      "givenName": "Radoslaw",
+      "familyName": "Karabowicz"
     },
     {
       "@type": "Person",
       "@id": "https://orcid.org/0000-0003-3787-1910",
-      "familyName": "Klein",
-      "givenName": "Dennis"
+      "givenName": "Dennis",
+      "familyName": "Klein"
     },
     {
       "@type": "Person",
       "@id": "https://orcid.org/0000-0002-7537-2875",
-      "familyName": "Kresan",
-      "givenName": "Dmytro"
+      "givenName": "Dmytro",
+      "familyName": "Kresan"
     },
     {
       "@type": "Person",
-      "familyName": "Rybalchenko",
-      "givenName": "Alexey"
+      "@id": "https://orcid.org/0000-0002-6249-155X",
+      "givenName": "Alexey",
+      "familyName": "Rybalchenko"
     },
     {
       "@type": "Person",
@@ -62,8 +64,9 @@
     },
     {
       "@type": "Person",
-      "familyName": "Uhlig",
-      "givenName": "Florian"
+      "@id": "https://orcid.org/0009-0005-3057-8561",
+      "givenName": "Florian",
+      "familyName": "Uhlig"
     }
   ],
   "contributor": [
