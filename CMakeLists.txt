@@ -73,7 +73,7 @@ include(FairRootPackage)
 include(FairRootSummary)
 include(FairMacros)
 include(WriteConfigFile)
-include(Dart)
+include(CTest)
 include(CheckCompiler)
 include(FairRootCodemeta)
 
