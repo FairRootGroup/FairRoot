@@ -89,7 +89,7 @@ include(CheckSymbolExists)
 # Load some basic macros which are needed later on
 include(FairMacros)
 include(WriteConfigFile)
-include(Dart)
+include(CTest)
 include(CheckCompiler)
 
 #Check the compiler and set the compile and link flags
