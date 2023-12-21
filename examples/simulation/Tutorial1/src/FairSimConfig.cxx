@@ -1,13 +1,16 @@
-/********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
- *                                                                              *
- *              This software is distributed under the terms of the             *
- *              GNU Lesser General Public Licence (LGPL) version 3,             *
- *                  copied verbatim in the file "LICENSE"                       *
- ********************************************************************************/
+/*********************************************************************************
+ *  Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                               *
+ *              This software is distributed under the terms of the              *
+ *              GNU Lesser General Public Licence (LGPL) version 3,              *
+ *                  copied verbatim in the file "LICENSE"                        *
+ *********************************************************************************/
 #include "FairSimConfig.h"
 
 #include "FairLogger.h"
+
+#include <boost/program_options.hpp>
+namespace po = boost::program_options;
 
 #include <iostream>
 #include <vector>
@@ -15,18 +18,11 @@
 using std::string;
 using std::vector;
 
-FairSimConfig::FairSimConfig()
-    : fDescription("Options")
-    , fHelp(false)
-    , fnEvents(1)
-    , fEngine("TGeant3")
-    , fMultiThreaded(false)
-    , fOutputFile("sim.root")
-    , fParameterFile("par.root")
-    , fRandomSeed(0)
+static auto makeDescription()
 {
+    po::options_description description{"Options"};
     // clang-format off
-    fDescription.add_options()
+    description.add_options()
         ("help",                                        "Print this message")
         ("nevents",        po::value<int>(),            "Number of events to simulate")
         ("engine",         po::value<vector<string>>(), "Monte Carlo engine")
@@ -35,46 +31,47 @@ FairSimConfig::FairSimConfig()
         ("parameter-file", po::value<vector<string>>(), "Parameter file")
         ("random-seed",    po::value<int>(),            "Seed for the random number generator");
     // clang-format on
+    return description;
 }
-
-FairSimConfig::~FairSimConfig() {}
 
 int FairSimConfig::ParseCommandLine(int argc, char* argv[])
 {
+    po::variables_map map;
+    auto description = makeDescription();
     try {
-        po::store(po::parse_command_line(argc, argv, fDescription), fMap);
+        po::store(po::parse_command_line(argc, argv, description), map);
 
-        po::notify(fMap);
+        po::notify(map);
     } catch (po::error& e) {
         LOG(error) << e.what();
         fHelp = true;
         return 0;
     }
 
-    if (fMap.count("help")) {
+    if (map.count("help")) {
         fHelp = true;
         return 0;
     }
-    if (fMap.count("nevents")) {
-        fnEvents = fMap["nevents"].as<int>();
+    if (map.count("nevents")) {
+        fnEvents = map["nevents"].as<int>();
     }
-    if (fMap.count("engine")) {
-        fEngine = fMap["engine"].as<vector<string>>().at(0);
+    if (map.count("engine")) {
+        fEngine = map["engine"].as<vector<string>>().at(0);
         if (!GetEngine().EqualTo("TGeant3") && !GetEngine().EqualTo("TGeant4")) {
             LOG(error) << "Option engine can be either TGeant3 or TGeant4";
             return 1;
         }
     }
-    if (fMap.count("output-file")) {
-        fOutputFile = fMap["output-file"].as<vector<string>>().at(0);
+    if (map.count("output-file")) {
+        fOutputFile = map["output-file"].as<vector<string>>().at(0);
     }
-    if (fMap.count("parameter-file")) {
-        fParameterFile = fMap["parameter-file"].as<vector<string>>().at(0);
+    if (map.count("parameter-file")) {
+        fParameterFile = map["parameter-file"].as<vector<string>>().at(0);
     }
-    if (fMap.count("random-seed")) {
-        fRandomSeed = fMap["random-seed"].as<int>();
+    if (map.count("random-seed")) {
+        fRandomSeed = map["random-seed"].as<int>();
     }
-    if (fMap.count("multi-threaded")) {
+    if (map.count("multi-threaded")) {
         LOG(info) << "YUPYUPYUP";
         fMultiThreaded = true;
     }
@@ -83,5 +80,6 @@ int FairSimConfig::ParseCommandLine(int argc, char* argv[])
 
 void FairSimConfig::PrintHelpMessage()
 {
-    std::cout << fDescription << std::endl;
+    auto description = makeDescription();
+    std::cout << description << std::endl;
 }

@@ -1,26 +1,22 @@
-/********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
- *                                                                              *
- *              This software is distributed under the terms of the             *
- *              GNU Lesser General Public Licence (LGPL) version 3,             *
- *                  copied verbatim in the file "LICENSE"                       *
- ********************************************************************************/
+/*********************************************************************************
+ *  Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                               *
+ *              This software is distributed under the terms of the              *
+ *              GNU Lesser General Public Licence (LGPL) version 3,              *
+ *                  copied verbatim in the file "LICENSE"                        *
+ *********************************************************************************/
 #ifndef FAIRSIMCONFIG
 #define FAIRSIMCONFIG
-
-#include "boost/program_options.hpp"
 
 #include <Rtypes.h>
 #include <TString.h>
 #include <string>
 
-namespace po = boost::program_options;
-
 class FairSimConfig
 {
   public:
-    FairSimConfig();
-    virtual ~FairSimConfig();
+    FairSimConfig() = default;
+    virtual ~FairSimConfig() = default;
 
     int ParseCommandLine(int argc, char* argv[]);
 
@@ -35,18 +31,15 @@ class FairSimConfig
     int GetRandomSeed() const { return fRandomSeed; }
 
   private:
-    po::options_description fDescription;   //!
-    po::variables_map fMap;                 //!
+    bool fHelp{false};
+    int fnEvents{1};
+    std::string fEngine{"TGeant3"};
+    bool fMultiThreaded{false};
+    std::string fOutputFile{"sim.root"};
+    std::string fParameterFile{"par.root"};
+    int fRandomSeed{0};
 
-    bool fHelp;
-    int fnEvents;
-    std::string fEngine;
-    bool fMultiThreaded;
-    std::string fOutputFile;
-    std::string fParameterFile;
-    int fRandomSeed;
-
-    ClassDef(FairSimConfig, 1);
+    ClassDef(FairSimConfig, 0);
 };
 
 #endif
