@@ -188,7 +188,10 @@ endif (CMAKE_SYSTEM_NAME MATCHES Linux)
 
 
 if (CMAKE_SYSTEM_NAME MATCHES Darwin)
-   EXEC_PROGRAM("sw_vers -productVersion | cut -d . -f 1-2" OUTPUT_VARIABLE MAC_OS_VERSION)
+   execute_process(COMMAND sw_vers -productVersion
+                   COMMAND cut -d . -f 1-2
+                   OUTPUT_STRIP_TRAILING_WHITESPACE
+                   OUTPUT_VARIABLE MAC_OS_VERSION)
    MESSAGE("-- Found a Mac OS X System ${MAC_OS_VERSION}")
    if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
       MESSAGE("-- Found GNU compiler collection")
