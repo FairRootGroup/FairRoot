@@ -48,7 +48,7 @@ def jobMatrix(String prefix, String type, List specs) {
             ctestcmd = ctestcmd + " " + extra
           }
           if (selector =~ /^macos/) {
-            sh "echo \"export SIMPATH=\$(brew --prefix fairsoft@${fairsoft})\" >> ${jobscript}"
+            // sh "echo \"export SIMPATH=\$(brew --prefix fairsoft)\" >> ${jobscript}"
           } else {
             sh "echo \"export SIMPATH=/fairsoft/${fairsoft}\" >> ${jobscript}"
           }
@@ -120,7 +120,9 @@ pipeline{
                              extra: '-DUSE_CLANG_TIDY=ON -DBUILD_MBS=OFF -DBUILD_PROOF_SUPPORT=OFF'],
             [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches'],
             [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches_mt'],
-            [os: 'macos',      ver: '12',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '22.11'],
+            [os: 'macos',      ver: '13',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '24.01'],
+            [os: 'macos',      ver: '14',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '24.01'],
+            [os: 'macos',      ver: '14',    arch: 'arm64',  compiler: 'apple-clang-15',  fairsoft: '24.01'],
             // [os: 'macos',      ver: '13',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '22.11'],
             // [os: 'macos',      ver: '13',    arch: 'arm64',  compiler: 'apple-clang-14',  fairsoft: '22.11'],
             // [os: 'macos',      ver: '12',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '23.6'],
