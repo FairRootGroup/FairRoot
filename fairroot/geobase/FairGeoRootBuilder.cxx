@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -23,7 +23,6 @@
 #include "FairGeoVector.h"      // for FairGeoVector
 
 #include <TArrayD.h>        // for TArrayD
-#include <TGeoManager.h>    // for TGeoManager
 #include <TGeoMaterial.h>   // for TGeoMixture, TGeoMaterial
 #include <TGeoMatrix.h>     // for TGeoCombiTrans, etc
 #include <TGeoMedium.h>     // for TGeoMedium
@@ -34,17 +33,16 @@
 
 FairGeoRootBuilder::FairGeoRootBuilder()
     : FairGeoBuilder()
-    , geoManager(nullptr)
-{
-    // Default constructor
-}
+{}
 
 FairGeoRootBuilder::FairGeoRootBuilder(const char* name, const char* title)
     : FairGeoBuilder(name, title)
-    , geoManager(nullptr)
-{
-    // Constructor
-}
+{}
+
+FairGeoRootBuilder::FairGeoRootBuilder(const char* name, const char* title, std::unique_ptr<TGeoManager> geom)
+    : FairGeoBuilder(name, title)
+    , geoManager(std::move(geom))
+{}
 
 Bool_t FairGeoRootBuilder::createNode(FairGeoNode* volu, Int_t hadFormat)
 {
