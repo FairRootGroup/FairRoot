@@ -10,8 +10,6 @@
 
 #include "FairContFact.h"
 
-class FairContainer;
-
 class NewDetectorContFact : public FairContFact
 {
   public:

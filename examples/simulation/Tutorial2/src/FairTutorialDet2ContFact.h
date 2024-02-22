@@ -10,10 +10,6 @@
 
 #include "FairContFact.h"
 
-#include <Rtypes.h>
-
-class FairParSet;
-
 class FairTutorialDet2ContFact : public FairContFact
 {
   public:
