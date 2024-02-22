@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -18,10 +18,10 @@ class FairPassiveContFact : public FairContFact
 {
   public:
     FairPassiveContFact();
-    ~FairPassiveContFact() {}
-    FairParSet* createContainer(FairContainer*);
+    ~FairPassiveContFact() override = default;
+    FairParSet* createContainer(FairContainer*) override;
 
-    ClassDef(FairPassiveContFact, 0);   // Factory for all Passive parameter containers
+    ClassDefOverride(FairPassiveContFact, 0);   // Factory for all Passive parameter containers
 };
 
 #endif /* !FAIRPASSIVECONTFACT_H */
