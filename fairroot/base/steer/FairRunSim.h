@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -23,6 +23,7 @@
 #include <utility>
 
 class FairField;
+class FairGeoLoader;
 class FairMCEventHeader;
 class FairMesh;
 class FairModule;
@@ -222,6 +223,8 @@ class FairRunSim : public FairRun
     void CheckFlukaExec();
 
     bool fWasMT{false};   //!                              /** Actual MT mode used */
+
+    std::unique_ptr<FairGeoLoader> fGeoLoader;   //!
 
   protected:
     Int_t count{0};                     //!< Internal counter
