@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -153,11 +153,11 @@ void FairRunSim::Init()
     //  fOutFile=fRootManager->OpenOutFile(fOutname);
     LOG(info) << "==============  FairRunSim: Initialising simulation run ==============";
 
-    auto loader = new FairGeoLoader(fLoaderName.Data(), "Geo Loader");
-    FairGeoInterface* GeoInterFace = loader->getGeoInterface();
-    GeoInterFace->SetNoOfSets(ListOfModules->GetEntries());
-    GeoInterFace->setMediaFile(MatFname.Data());
-    GeoInterFace->readMedia();
+    fGeoLoader = std::make_unique<FairGeoLoader>(fLoaderName.Data(), "Geo Loader");
+    FairGeoInterface* geointerFace = fGeoLoader->getGeoInterface();
+    geointerFace->SetNoOfSets(ListOfModules->GetEntries());
+    geointerFace->setMediaFile(MatFname.Data());
+    geointerFace->readMedia();
 
     //  gSystem->cd(flout.Data());
 
@@ -389,6 +389,9 @@ void FairRunSim::ls(Option_t* option) const
 {
     FairRun::ls(option);
     TROOT::IncreaseDirLevel();
+    if (fGeoLoader) {
+        fGeoLoader->ls(option);
+    }
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     if (fGen) {

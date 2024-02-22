@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -29,42 +29,44 @@ FairGeoLoader* FairGeoLoader::fgInstance = nullptr;
 
 FairGeoLoader* FairGeoLoader::Instance() { return fgInstance; }
 
-FairGeoLoader::FairGeoLoader()
-    : TNamed()
-    , fInterface(NULL)
-    , fGeoBuilder(NULL)
+static std::unique_ptr<FairGeoBuilder> MakeGeoBuilder(const char* Name)
 {
-    fgInstance = this;
-}
-
-FairGeoLoader::FairGeoLoader(const char* Name, const char* title)
-    : TNamed(Name, title)
-    , fInterface(NULL)
-    , fGeoBuilder(NULL)
-{
-    if (fgInstance) {
-        Fatal("FairGeoLoader", "Singleton instance already exists.");
-        return;
-    }
-    fgInstance = this;
-    fInterface = new FairGeoInterface;
     if (strncmp(Name, "TGeo", 4) == 0) {
-        TGeoManager* geom = new TGeoManager("FAIRGeom", "FAIR geometry");
-        fGeoBuilder = new FairGeoRootBuilder("TGeo builder", "geometry builder");
-        (static_cast<FairGeoRootBuilder*>(fGeoBuilder))->setGeoManager(geom);
-    } else if (strncmp(Name, "G3Native", 8) == 0) {
+        auto geom = std::make_unique<TGeoManager>("FAIRGeom", "FAIR geometry");
+        return std::make_unique<FairGeoRootBuilder>("TGeo builder", "geometry builder", std::move(geom));
+    }
+
+    if (strncmp(Name, "G3Native", 8) == 0) {
         cout << "-I- FairGeoLoader() : Native G3 Geometry is used: This option is not supported any more!" << endl;
         exit(0);
         //        gGeoManager = NULL;
         //        fGeoBuilder=new FairGeoG3Builder("G3 builder","geometry builder");
     }
 
-    fInterface->setGeomBuilder(fGeoBuilder);
+    return {};
+}
+
+FairGeoLoader::FairGeoLoader()
+    : TNamed()
+{
+    fgInstance = this;
+}
+
+FairGeoLoader::FairGeoLoader(const char* Name, const char* title)
+    : TNamed(Name, title)
+    , fGeoBuilder(MakeGeoBuilder(Name))
+{
+    if (fgInstance) {
+        Fatal("FairGeoLoader", "Singleton instance already exists.");
+        return;
+    }
+    fgInstance = this;
+
+    fInterface.setGeomBuilder(fGeoBuilder.get());
 }
 
 FairGeoLoader::~FairGeoLoader()
 {
-    delete fInterface;
     if (fgInstance == this) {
         // Do not point to a destructed object!
         fgInstance = nullptr;
