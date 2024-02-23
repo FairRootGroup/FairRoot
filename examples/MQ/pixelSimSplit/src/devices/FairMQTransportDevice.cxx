@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -14,6 +14,7 @@
 
 #include "FairMQTransportDevice.h"
 
+#include "FairExampleRunSim.h"
 #include "FairGenericStack.h"
 #include "FairMCApplication.h"
 #include "FairMCSplitEventHeader.h"
@@ -65,7 +66,7 @@ void FairMQTransportDevice::Init()
 
 void FairMQTransportDevice::InitTask()
 {
-    fRunSim = std::make_unique<FairRunSim>();
+    fRunSim = std::make_unique<FairExampleRunSim>(fTransportName.c_str());
 
     fMCSplitEventHeader = new FairMCSplitEventHeader(fRunId, 0, 0, 0);
     fRunSim->SetMCEventHeader(fMCSplitEventHeader);
@@ -80,8 +81,6 @@ void FairMQTransportDevice::InitTask()
         if (fSecondParameter)
             rtdb->setSecondInput(fSecondParameter);
     }
-
-    fRunSim->SetName(fTransportName.c_str());
 
     if (fUserConfig.Length() > 0)
         fRunSim->SetUserConfig(fUserConfig);

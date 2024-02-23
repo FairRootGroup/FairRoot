@@ -1,21 +1,15 @@
 /********************************************************************************
- * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2023-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
-// $Id: ZdcLinkDef.h,v 1.1.1.1
-//2005/06/23 07:14:26 dbertini Exp $
 
-#ifdef __CINT__
+#include "FairExampleRunSim.h"
 
-#pragma link off all globals;
-#pragma link off all classes;
-#pragma link off all functions;
-
-#pragma link C++ class FairExampleRunSim+;
-#pragma link C++ class FairStack+;
-#pragma link C++ class FairMCTrack+;
-
-#endif
+FairExampleRunSim::FairExampleRunSim(const char* mcEngine)
+    : FairRunSim()
+{
+    SetName(mcEngine);
+}
