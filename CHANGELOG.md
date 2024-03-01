@@ -4,6 +4,26 @@ All notable changes to FairRoot will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## 18.8.2 - 2023-03-01
+
+### Bug fixes
+* Fix wrong init order in eventdisplay.
+* Fix GeoAssembly bounding box after alignment:
+  * Use ROOT expert patch.
+* Fix to obtain initial random seed from TRandom::GetSeed():
+  * Replace TRandom3::GetSeed() with the GetSeed() from base class.
+* Adopt new software versions:
+  * Fix FindROOT.cmake to work with ROOT v6.30.00.
+  * Adopt CMake policies up to 3.27.
+  * Support yaml-cpp 0.8+.
+  * Fix runtime error with XCode 13.3+.
+
+### Other Notable Changes
+* Software recongnition:
+  * Implement fair-software.eu badges
+  * Add codemeta.json in accordance with ESCAPE
+  * Add config for zenodo.org
+
 ## 18.8.1 - 2023-02-24
 
 ### Breaking Changes
