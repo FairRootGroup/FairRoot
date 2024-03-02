@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -180,7 +180,7 @@ FairTrackParH::FairTrackParH(TVector3 pos, TVector3 Mom, TVector3 posErr, TVecto
     SetY(pos.y());   // y (lab)
     SetZ(pos.z());   // z (lab)
 
-    fq = int(q / TMath::Abs(q));
+    fq = q / TMath::Abs(q);
     Double_t P = TMath::Sqrt(fPx * fPx + fPy * fPy + fPz * fPz);
     fLm = TMath::ASin(fPz / P);
 
@@ -317,7 +317,7 @@ void FairTrackParH::SetTrackPar(Double_t X,
 
     fPhi = TMath::ATan2(Py, Px);
     if (Q != 0) {
-        fq = int(TMath::Abs(Q) / Q);
+        fq = TMath::Abs(Q) / Q;
     }
     fQp = fq / P;
 

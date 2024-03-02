@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -128,9 +128,7 @@ void FairGeoVolume::clear()
 void FairGeoVolume::print()
 {
     // prints all parameters of a volume
-    cout << "Volume: " << (const_cast<const char*>(fName.Data()))
-         << "  Shape: " << (const_cast<const char*>(shape.Data()))
-         << "  Mother: " << (const_cast<const char*>(mother.Data())) << '\n';
+    cout << "Volume: " << fName.Data() << "  Shape: " << shape.Data() << "  Mother: " << mother.Data() << '\n';
     cout << "Points definition " << endl;
     if (points) {
         for (Int_t i = 0; i < nPoints; i++) {

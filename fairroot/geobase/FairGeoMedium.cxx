@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -99,7 +99,7 @@ void FairGeoMedium::setNComponents(Int_t n)
         cz = new Double_t[k];
         cw = new Double_t[k];
     }
-    weightFac = static_cast<Int_t>(n / nComponents);
+    weightFac = n / nComponents;
 }
 
 Bool_t FairGeoMedium::setComponent(Int_t i, Double_t a, Double_t z, Double_t weight)
