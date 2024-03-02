@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -296,7 +296,7 @@ void FairFileSource::SetInTree(TTree* tempTree)
 {
     fInTree = nullptr;
     fInTree = tempTree;
-    fRootFile = static_cast<TFile*>(tempTree->GetCurrentFile());
+    fRootFile = tempTree->GetCurrentFile();
     fInChain->Reset();
     IsInitialized = kFALSE;
     Init();
@@ -387,7 +387,7 @@ void FairFileSource::AddFriendsToChain()
             friendType++;
         }
 
-        TChain* chain = static_cast<TChain*>(fFriendTypeList[inputLevel]);
+        TChain* chain = fFriendTypeList[inputLevel];
         chain->AddFile(fileName, 1234567890, FairRootManager::GetTreeName());
     }
 

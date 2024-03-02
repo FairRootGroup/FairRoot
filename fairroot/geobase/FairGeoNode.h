@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -64,10 +64,10 @@ class FairGeoNode : public FairGeoVolume
     void AddDaughter(FairGeoNode* fNode) { fDaughterList->AddLast(fNode); }
     TObjArray* GetListOfDaughters() { return fDaughterList; }
     EFairGeoNodeType getVolumeType() { return volumeType; }
-    Bool_t isTopNode() { return static_cast<Bool_t>((volumeType == kFairGeoTopNode)); }
-    Bool_t isRefNode() { return static_cast<Bool_t>((volumeType == kFairGeoRefNode)); }
-    Bool_t isKeepin() { return static_cast<Bool_t>((volumeType == kFairGeoKeepin)); }
-    Bool_t isModule() { return static_cast<Bool_t>((volumeType == kFairGeoModule)); }
+    Bool_t isTopNode() { return volumeType == kFairGeoTopNode; }
+    Bool_t isRefNode() { return volumeType == kFairGeoRefNode; }
+    Bool_t isKeepin() { return volumeType == kFairGeoKeepin; }
+    Bool_t isModule() { return volumeType == kFairGeoModule; }
     Int_t getCopyNo();
     FairGeoBasicShape* getShapePointer() { return pShape; }
     FairGeoNode* getMotherNode() { return pMother; }

@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -202,14 +202,14 @@ Bool_t FairGeoNode::write(std::fstream& fout)
     // Writes all parameters of a volume to file
     fout << fName.Data() << '\n';
     if (pMother) {
-        fout << (const_cast<const char*>(mother.Data())) << '\n';
+        fout << mother.Data() << '\n';
     } else {
         Error("write", "Unknown mother for %s\n", fName.Data());
         return kFALSE;
     }
     if (!copyNode) {
         if (pShape) {
-            fout << (const_cast<const char*>(shape.Data())) << '\n';
+            fout << shape.Data() << '\n';
         } else {
             Error("write", "Unknown shape for %s\n", fName.Data());
             return kFALSE;
