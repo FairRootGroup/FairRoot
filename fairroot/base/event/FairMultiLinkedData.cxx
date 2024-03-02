@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -284,7 +284,10 @@ FairMultiLinkedData FairMultiLinkedData::GetLinksWithType(Int_t type) const
     return result;
 }
 
-bool LargerWeight(FairLink val1, FairLink val2) { return val1.GetWeight() > val2.GetWeight(); }
+static bool LargerWeight(FairLink const& val1, FairLink const& val2)
+{
+    return val1.GetWeight() > val2.GetWeight();
+}
 
 std::vector<FairLink> FairMultiLinkedData::GetSortedMCTracks()
 {
