@@ -388,7 +388,7 @@ void FairFileSource::AddFriendsToChain()
         }
 
         TChain* chain = fFriendTypeList[inputLevel];
-        chain->AddFile(fileName, 1234567890, FairRootManager::GetTreeName());
+        chain->AddFile(fileName, TTree::kMaxEntries, FairRootManager::GetTreeName());
     }
 
     // Check if all friend chains have the same runids and the same
