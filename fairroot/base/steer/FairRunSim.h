@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -21,12 +21,14 @@
 #include <functional>
 #include <memory>
 #include <utility>
+#include <vector>
 
 class FairField;
 class FairMCEventHeader;
 class FairMesh;
 class FairModule;
 class FairPrimaryGenerator;
+class FairVolume;
 
 /**
  * \brief Configure the Simulation session
@@ -37,6 +39,10 @@ class FairPrimaryGenerator;
  */
 class FairRunSim : public FairRun
 {
+    friend class FairModule;
+    friend class FairDetector;
+    friend class FairMCApplication;
+
   public:
     /** default ctor*/
     FairRunSim(Bool_t isMaster = kTRUE);
@@ -222,6 +228,9 @@ class FairRunSim : public FairRun
     void CheckFlukaExec();
 
     bool fWasMT{false};   //!                              /** Actual MT mode used */
+
+    /**list of all sensitive volumes in  a simulaion session*/
+    std::vector<FairVolume*> fAllSensitiveVolumes;   //!
 
   protected:
     Int_t count{0};                     //!< Internal counter
