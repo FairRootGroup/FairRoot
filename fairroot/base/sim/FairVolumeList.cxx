@@ -53,14 +53,14 @@ FairVolume* FairVolumeList::findObject(const TString& name)
     return nullptr;
 }
 
-void FairVolumeList::addVolume(FairVolume* elem)
+void FairVolumeList::addVolume(std::unique_ptr<FairVolume> vol)
 {
-    FairVolume* v = findObject(elem->GetName());
+    FairVolume* vol_found = findObject(vol->GetName());
 
-    if (v) {
-        LOG(error) << "FairVolumeList element: " << elem->GetName() << " VolId : " << elem->getVolumeId()
-                   << " already defined " << v->getVolumeId();
+    if (vol_found) {
+        LOG(error) << "FairVolumeList element: " << vol->GetName() << " VolId : " << vol->getVolumeId()
+                   << " already defined " << vol_found->getVolumeId();
     } else {
-        fData.Add(elem);
+        fData.Add(vol.release());
     }
 }

@@ -15,6 +15,7 @@
 #include <TObject.h>     // for TObject
 #include <TString.h>     // for TString
 #include <cassert>       // for assert
+#include <memory>        // for std::unique_ptr
 
 /**
  * This Object is only used for internal book keeping!
@@ -51,7 +52,9 @@ class FairVolumeList : public TObject
     }
 
     FairVolume* findObject(const TString& name);
-    void addVolume(FairVolume* elem);
+
+    void addVolume(std::unique_ptr<FairVolume> vol);
+    [[deprecated]] void addVolume(FairVolume* elem) { addVolume(std::unique_ptr<FairVolume>(elem)); }
 
     Int_t getEntries() { return fData.GetEntries(); }
     FairVolume* At(Int_t pos) { return (dynamic_cast<FairVolume*>(fData.At(pos))); }

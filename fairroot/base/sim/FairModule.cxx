@@ -213,7 +213,6 @@ void FairModule::ProcessNodes(TList* aList)
     TListIter iter(aList);
     FairGeoNode* node = nullptr;
     FairGeoNode* MotherNode = nullptr;
-    FairVolume* volume = nullptr;
     FairRuntimeDb* rtdb = FairRun::Instance()->GetRuntimeDb();
     FairGeoParSet* par = static_cast<FairGeoParSet*>(rtdb->getContainer("FairGeoParSet"));
     TObjArray* fNodes = par->GetGeoNodes();
@@ -221,22 +220,23 @@ void FairModule::ProcessNodes(TList* aList)
 
         node->calcLabTransform();
         MotherNode = node->getMotherNode();
-        volume = new FairVolume(node->getTruncName(), fNbOfVolumes++);
+        auto volume = std::make_unique<FairVolume>(node->getTruncName(), fNbOfVolumes++);
+        auto volume_ptr = volume.get();
         volume->setRealName(node->GetName());
-        vList->addVolume(volume);
-        volume->setGeoNode(node);
-        volume->setCopyNo(node->getCopyNo());
+        vList->addVolume(std::move(volume));
+        volume_ptr->setGeoNode(node);
+        volume_ptr->setCopyNo(node->getCopyNo());
 
         if (MotherNode != 0) {
-            volume->setMotherId(node->getMCid());
-            volume->setMotherCopyNo(MotherNode->getCopyNo());
+            volume_ptr->setMotherId(node->getMCid());
+            volume_ptr->setMotherCopyNo(MotherNode->getCopyNo());
         }
         FairGeoVolume* aVol = nullptr;
 
         if (node->isSensitive() && fActive) {
-            volume->setModId(fModId);
-            volume->SetModule(this);
-            fAllSensitiveVolumes.push_back(volume);
+            volume_ptr->setModId(fModId);
+            volume_ptr->SetModule(this);
+            fAllSensitiveVolumes.push_back(volume_ptr);
             aVol = dynamic_cast<FairGeoVolume*>(node);
             fNodes->AddLast(aVol);
             fNbOfSensitiveVol++;
@@ -251,12 +251,12 @@ void FairModule::AddSensitiveVolume(TGeoVolume* v)
     // Only register volumes which are not already registered
     // Otherwise the stepping will be slowed down
     if (!vList->findObject(v->GetName())) {
-        FairVolume* volume = nullptr;
-        volume = new FairVolume(v->GetName(), fNbOfVolumes++);
-        vList->addVolume(volume);
-        volume->setModId(fModId);
-        volume->SetModule(this);
-        fAllSensitiveVolumes.push_back(volume);
+        auto volume = std::make_unique<FairVolume>(v->GetName(), fNbOfVolumes++);
+        auto volume_ptr = volume.get();
+        vList->addVolume(std::move(volume));
+        volume_ptr->setModId(fModId);
+        volume_ptr->SetModule(this);
+        fAllSensitiveVolumes.push_back(volume_ptr);
         fNbOfSensitiveVol++;
     }
 }

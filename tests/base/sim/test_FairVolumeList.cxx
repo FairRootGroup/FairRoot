@@ -27,9 +27,9 @@ TEST_CASE("FairVolumeList")
         auto a = MakeVolume("a");
         auto* a_ptr = a.get();
 
-        volumes.addVolume(a.release());
-        volumes.addVolume(MakeVolume("b").release());
-        volumes.addVolume(MakeVolume("a").release());
+        volumes.addVolume(std::move(a));
+        volumes.addVolume(MakeVolume("b"));
+        volumes.addVolume(MakeVolume("a"));
 
         REQUIRE(volumes.getEntries() == 2);
         REQUIRE(volumes.getVolume("a") == a_ptr);
