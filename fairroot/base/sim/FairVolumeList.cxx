@@ -37,22 +37,6 @@ Int_t FairVolumeList::getVolumeId(const TString& name)
     return vol->getVolumeId();
 }
 
-FairVolume* FairVolumeList::findObject(const TString& name)
-{
-    FairVolume* obj = nullptr;
-
-    for (int i = 0; i < fData.GetEntriesFast(); i++) {
-        obj = static_cast<FairVolume*>(fData.At(i));
-        if (obj) {
-            if (obj->GetName() == name) {
-                return obj;
-            }
-        }
-    }
-
-    return nullptr;
-}
-
 void FairVolumeList::addVolume(std::unique_ptr<FairVolume> vol)
 {
     FairVolume* vol_found = findObject(vol->GetName());
