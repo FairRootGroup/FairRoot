@@ -30,7 +30,7 @@ class FairVolumeList : public TObject
     TObjArray fData;
 
   public:
-    FairVolumeList();
+    FairVolumeList() { fData.SetOwner(kTRUE); }
     FairVolumeList(const FairVolumeList&) = delete;
     FairVolumeList& operator=(const FairVolumeList&) = delete;
     ~FairVolumeList() override = default;
