@@ -27,9 +27,9 @@ TEST_CASE("FairVolumeList")
         auto a = MakeVolume("a");
         auto* a_ptr = a.get();
 
-        volumes.addVolume(std::move(a));
-        volumes.addVolume(MakeVolume("b"));
-        volumes.addVolume(MakeVolume("a"));
+        REQUIRE(volumes.addVolume(std::move(a)));
+        REQUIRE(volumes.addVolume(MakeVolume("b")));
+        REQUIRE(volumes.addVolume(MakeVolume("a")) == nullptr);
 
         REQUIRE(volumes.getEntries() == 2);
         REQUIRE(volumes.getVolume("a") == a_ptr);
@@ -39,5 +39,14 @@ TEST_CASE("FairVolumeList")
     {
         REQUIRE(volumes.getVolume("z") == nullptr);
         REQUIRE(volumes.getVolumeId("z") == FairVolumeList::fgkNotFound);
+    }
+
+    SECTION("adding volumes returns added vol or nullptr")
+    {
+        auto a = MakeVolume("a");
+        auto* a_ptr = a.get();
+
+        REQUIRE(volumes.addVolume(std::move(a)) == a_ptr);
+        REQUIRE(volumes.addVolume(MakeVolume("a")) == nullptr);
     }
 }

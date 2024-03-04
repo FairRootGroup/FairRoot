@@ -53,8 +53,8 @@ class FairVolumeList : public TObject
 
     FairVolume* findObject(const TString& name) { return static_cast<FairVolume*>(fData.FindObject(name.Data())); }
 
-    void addVolume(std::unique_ptr<FairVolume> vol);
-    [[deprecated]] void addVolume(FairVolume* elem) { addVolume(std::unique_ptr<FairVolume>(elem)); }
+    [[nodiscard]] FairVolume* addVolume(std::unique_ptr<FairVolume> vol);
+    [[deprecated]] FairVolume* addVolume(FairVolume* elem) { return addVolume(std::unique_ptr<FairVolume>(elem)); }
 
     Int_t getEntries() { return fData.GetEntries(); }
     FairVolume* At(Int_t pos) { return (dynamic_cast<FairVolume*>(fData.At(pos))); }

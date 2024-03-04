@@ -37,6 +37,7 @@
 #include <TObjArray.h>         // for TObjArray
 #include <TObject.h>           // for TObject
 #include <TSystem.h>           // for TSystem, gSystem
+#include <fairlogger/Logger.h>
 
 #ifdef ROOT_HAS_GDML
 #include <TGDMLParse.h>
@@ -220,23 +221,28 @@ void FairModule::ProcessNodes(TList* aList)
 
         node->calcLabTransform();
         MotherNode = node->getMotherNode();
-        auto volume = std::make_unique<FairVolume>(node->getTruncName(), fNbOfVolumes++);
-        auto volume_ptr = volume.get();
+        auto nodeTruncName = node->getTruncName();
+        auto volume = std::make_unique<FairVolume>(nodeTruncName, fNbOfVolumes++);
         volume->setRealName(node->GetName());
-        vList->addVolume(std::move(volume));
-        volume_ptr->setGeoNode(node);
-        volume_ptr->setCopyNo(node->getCopyNo());
+        auto addedVol = vList->addVolume(std::move(volume));
+        if (!addedVol) {
+            LOG(warn) << "Skipping further processing of FairGeoNode " << nodeTruncName
+                      << ". It is already present in the global volume list.";
+            continue;
+        }
+        addedVol->setGeoNode(node);
+        addedVol->setCopyNo(node->getCopyNo());
 
         if (MotherNode != 0) {
-            volume_ptr->setMotherId(node->getMCid());
-            volume_ptr->setMotherCopyNo(MotherNode->getCopyNo());
+            addedVol->setMotherId(node->getMCid());
+            addedVol->setMotherCopyNo(MotherNode->getCopyNo());
         }
         FairGeoVolume* aVol = nullptr;
 
         if (node->isSensitive() && fActive) {
-            volume_ptr->setModId(fModId);
-            volume_ptr->SetModule(this);
-            fAllSensitiveVolumes.push_back(volume_ptr);
+            addedVol->setModId(fModId);
+            addedVol->SetModule(this);
+            fAllSensitiveVolumes.push_back(addedVol);
             aVol = dynamic_cast<FairGeoVolume*>(node);
             fNodes->AddLast(aVol);
             fNbOfSensitiveVol++;
@@ -251,12 +257,10 @@ void FairModule::AddSensitiveVolume(TGeoVolume* v)
     // Only register volumes which are not already registered
     // Otherwise the stepping will be slowed down
     if (!vList->findObject(v->GetName())) {
-        auto volume = std::make_unique<FairVolume>(v->GetName(), fNbOfVolumes++);
-        auto volume_ptr = volume.get();
-        vList->addVolume(std::move(volume));
-        volume_ptr->setModId(fModId);
-        volume_ptr->SetModule(this);
-        fAllSensitiveVolumes.push_back(volume_ptr);
+        auto addedVol = vList->addVolume(std::make_unique<FairVolume>(v->GetName(), fNbOfVolumes++));
+        addedVol->setModId(fModId);
+        addedVol->SetModule(this);
+        fAllSensitiveVolumes.push_back(addedVol);
         fNbOfSensitiveVol++;
     }
 }
