@@ -12,12 +12,9 @@
 
 #include "FairVolumeList.h"
 
-#include "FairLogger.h"   // for logging
-#include "FairVolume.h"   // for FairVolume
-
 FairVolume* FairVolumeList::getVolume(const TString& name)
 {
-    TObject* obj = findObject(name);
+    auto obj = findObject(name);
 
     if (obj) {
         LOG(info) << "FairVolume getVolume " << name << " found";
@@ -28,18 +25,14 @@ FairVolume* FairVolumeList::getVolume(const TString& name)
 
 Int_t FairVolumeList::getVolumeId(const TString& name)
 {
-    FairVolume* vol = getVolume(name);
+    auto vol = getVolume(name);
 
-    if (!vol) {
-        return fgkNotFound;
-    }
-
-    return vol->getVolumeId();
+    return vol ? vol->getVolumeId() : fgkNotFound;
 }
 
 void FairVolumeList::addVolume(std::unique_ptr<FairVolume> vol)
 {
-    FairVolume* vol_found = findObject(vol->GetName());
+    auto vol_found = findObject(vol->GetName());
 
     if (vol_found) {
         LOG(error) << "FairVolumeList element: " << vol->GetName() << " VolId : " << vol->getVolumeId()
