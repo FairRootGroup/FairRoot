@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2022-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2022-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -9,6 +9,7 @@
 #ifndef __FAIRROOT__FairFileSourceBase__
 #define __FAIRROOT__FairFileSourceBase__
 
+#include "FairMemory.h"
 #include "FairSource.h"
 
 #include <TFile.h>
@@ -33,18 +34,23 @@ class FairFileSourceBase : public FairSource
     Bool_t InitUnpackers() override { return kTRUE; }
     Bool_t ReInitUnpackers() override { return kTRUE; }
 
+    TFile* GetInFile() { return fRootFile.get(); }
+    const TFile* GetRootFile() { return fRootFile.get(); }
+
     TObjArray* GetListOfFolders() { return &fListFolder; }
     Bool_t CompareBranchList(TFile* fileHandle, TString inputLevel);
 
   protected:
-    FairFileSourceBase()
-        : FairSource(){};
+    FairFileSourceBase() = default;
+    FairFileSourceBase(fairroot::detail::maybe_owning_ptr<TFile> file);
 
     std::map<TString, std::list<TString>> fCheckInputBranches{};   //!
 
     static bool ActivateObjectAnyImpl(TTree* source, void** obj, const std::type_info& info, const char* brname);
 
   private:
+    /**ROOT file*/
+    fairroot::detail::maybe_owning_ptr<TFile> fRootFile;   //!
     /** list of folders from all input (and friends) files*/
     TObjArray fListFolder{16};   //!
 

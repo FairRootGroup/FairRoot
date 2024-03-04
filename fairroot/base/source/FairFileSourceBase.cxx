@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2022-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2022-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -15,6 +15,15 @@
 #include <fairlogger/Logger.h>
 #include <memory>
 #include <set>
+#include <utility>   // for std::move
+
+FairFileSourceBase::FairFileSourceBase(fairroot::detail::maybe_owning_ptr<TFile> file)
+    : fRootFile(std::move(file))
+{
+    if ((!fRootFile) || fRootFile->IsZombie()) {
+        LOG(fatal) << "Error opening the Input file";
+    }
+}
 
 FairFileSourceBase::~FairFileSourceBase()
 {

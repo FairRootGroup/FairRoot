@@ -42,10 +42,12 @@
 #include <typeinfo>
 #include <vector>
 
+using fairroot::detail::maybe_owning_ptr;
+using fairroot::detail::non_owning;
+
 FairFileSource::FairFileSource(TFile* f, const char* Title, UInt_t)
-    : FairFileSourceBase()
+    : FairFileSourceBase(maybe_owning_ptr<TFile>{f, non_owning})
     , fInputTitle(Title)
-    , fRootFile(f)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
@@ -73,16 +75,12 @@ FairFileSource::FairFileSource(TFile* f, const char* Title, UInt_t)
     , fEventMeanTime(0.)
     , fCheckFileLayout(kTRUE)
 {
-    if ((!fRootFile) || fRootFile->IsZombie()) {
-        LOG(fatal) << "Error opening the Input file";
-    }
     LOG(debug) << "FairFileSource created------------";
 }
 
 FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, UInt_t)
-    : FairFileSourceBase()
+    : FairFileSourceBase(std::unique_ptr<TFile>{TFile::Open(RootFileName->Data())})
     , fInputTitle(Title)
-    , fRootFile(0)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
@@ -110,17 +108,12 @@ FairFileSource::FairFileSource(const TString* RootFileName, const char* Title, U
     , fEventMeanTime(0.)
     , fCheckFileLayout(kTRUE)
 {
-    fRootFile = TFile::Open(RootFileName->Data());
-    if ((!fRootFile) || fRootFile->IsZombie()) {
-        LOG(fatal) << "Error opening the Input file";
-    }
     LOG(debug) << "FairFileSource created------------";
 }
 
 FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UInt_t)
-    : FairFileSourceBase()
+    : FairFileSourceBase(std::unique_ptr<TFile>{TFile::Open(RootFileName.Data())})
     , fInputTitle(Title)
-    , fRootFile(0)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
@@ -148,10 +141,6 @@ FairFileSource::FairFileSource(const TString RootFileName, const char* Title, UI
     , fEventMeanTime(0.)
     , fCheckFileLayout(kTRUE)
 {
-    fRootFile = TFile::Open(RootFileName.Data());
-    if ((!fRootFile) || fRootFile->IsZombie()) {
-        LOG(fatal) << "Error opening the Input file";
-    }
     LOG(debug) << "FairFileSource created------------";
 }
 
@@ -294,9 +283,8 @@ Bool_t FairFileSource::Init()
 
 void FairFileSource::SetInTree(TTree* tempTree)
 {
-    fInTree = nullptr;
     fInTree = tempTree;
-    fRootFile = tempTree->GetCurrentFile();
+    fRootFile = maybe_owning_ptr<TFile>{tempTree->GetCurrentFile(), non_owning};
     fInChain->Reset();
     IsInitialized = kFALSE;
     Init();
@@ -581,8 +569,8 @@ Bool_t FairFileSource::ActivateObjectAny(void** obj, const std::type_info& info,
 
 void FairFileSource::SetInputFile(TString name)
 {
-    fRootFile = TFile::Open(name.Data());
-    if (fRootFile->IsZombie()) {
+    fRootFile = std::unique_ptr<TFile>{TFile::Open(name.Data())};
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
     LOG(info) << "FairFileSource set------------";

@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -58,7 +58,6 @@ class FairMixedSource : public FairFileSourceBase
 
     void FillEventHeader(FairEventHeader* feh) override;
 
-    const TFile* GetRootFile() { return fRootFile; }
     /** Add a friend file (input) by name)*/
 
     Bool_t ActivateObject(TObject** obj, const char* BrName) override;
@@ -132,8 +131,6 @@ class FairMixedSource : public FairFileSourceBase
 
     /** Title of input source, could be input, background or signal*/
     TString fInputTitle;
-    /**ROOT file*/
-    TFile* fRootFile;
     /** List of all files added with AddFriend */
     std::list<TString> fFriendFileList;                                 //!
     std::list<TString> fInputChainList;                                 //!

@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -31,11 +31,13 @@
 #include <cmath>   // floor, fmod
 #include <fairlogger/Logger.h>
 
+using fairroot::detail::maybe_owning_ptr;
+using fairroot::detail::non_owning;
+
 FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
-    : FairFileSourceBase()
+    : FairFileSourceBase(maybe_owning_ptr<TFile>{f, non_owning})
     , fRootManager(0)
     , fInputTitle(Title)
-    , fRootFile(f)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
@@ -74,19 +76,15 @@ FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
     , fRunIdFromSG(kFALSE)
     , fRunIdFromSG_identifier(0)
 {
-    if ((!fRootFile) || fRootFile->IsZombie()) {
-        LOG(fatal) << "Error opening the Input file";
-    }
     LOG(info) << "FairMixedSource created------------";
 
     fRootManager = FairRootManager::Instance();
 }
 
 FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title, UInt_t)
-    : FairFileSourceBase()
+    : FairFileSourceBase(std::unique_ptr<TFile>{TFile::Open(RootFileName->Data())})
     , fRootManager(0)
     , fInputTitle(Title)
-    , fRootFile(0)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
@@ -125,19 +123,14 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
     , fRunIdFromSG(kFALSE)
     , fRunIdFromSG_identifier(0)
 {
-    fRootFile = TFile::Open(RootFileName->Data());
-    if ((!fRootFile) || fRootFile->IsZombie()) {
-        LOG(fatal) << "Error opening the Input file";
-    }
     fRootManager = FairRootManager::Instance();
     LOG(info) << "FairMixedSource created------------";
 }
 
 FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalId, const char* Title, UInt_t)
-    : FairFileSourceBase()
+    : FairFileSourceBase(std::unique_ptr<TFile>{TFile::Open(RootFileName.Data())})
     , fRootManager(0)
     , fInputTitle(Title)
-    , fRootFile(0)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
@@ -176,11 +169,6 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     , fRunIdFromSG(kFALSE)
     , fRunIdFromSG_identifier(0)
 {
-    fRootFile = TFile::Open(RootFileName.Data());
-    if ((!fRootFile) || fRootFile->IsZombie()) {
-        LOG(fatal) << "Error opening the Input file";
-    }
-
     if (signalId == 0) {
         SetBackgroundFile(RootFileName);
     } else {
@@ -456,8 +444,8 @@ void FairMixedSource::SetBackgroundFile(TString name)
     if (name.IsNull()) {
         LOG(info) << "No background file defined.";
     }
-    fRootFile = TFile::Open(name);
-    if (fRootFile->IsZombie()) {
+    fRootFile = std::unique_ptr<TFile>{TFile::Open(name)};
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Background file  " << name.Data();
     }
 }
