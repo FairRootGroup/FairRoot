@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -47,6 +47,8 @@
 #include <map>
 #include <memory>
 
+thread_local std::vector<FairVolume*> FairModule::fAllSensitiveVolumes;
+
 void FairModule::ConstructGeometry()
 {
     LOG(warn)
@@ -65,9 +67,6 @@ FairModule::FairModule(const char* Name, const char* title, Bool_t Active)
     : TNamed(Name, title)
     , fActive(Active)
 {
-    if (!svList) {
-        svList = new TRefArray();
-    }
     if (!vList) {
         vList = new FairVolumeList();
     }
@@ -84,13 +83,6 @@ FairModule::FairModule(const FairModule& rhs)
     , fVerboseLevel(rhs.fVerboseLevel)
     , fGeoSaved(rhs.fGeoSaved)
 {
-    if (!svList) {
-        svList = new TRefArray();
-        for (Int_t i = 0; i < rhs.svList->GetEntries(); i++) {
-            svList->Add(rhs.svList->At(i));
-        }
-    }
-
     if (!vList) {
         vList = new FairVolumeList();
         for (Int_t i = 0; i < rhs.vList->getEntries(); i++) {
@@ -218,13 +210,11 @@ void FairModule::ProcessNodes(TList* aList)
       from ConstructGeometry() of your detector class. Aborting...";
     }
 
-    if (!svList) {
-        svList = new TRefArray();
-    }
     if (!vList) {
         vList = new FairVolumeList();
     }
 
+    auto& svList = fAllSensitiveVolumes;
     TListIter iter(aList);
     FairGeoNode* node = nullptr;
     FairGeoNode* MotherNode = nullptr;
@@ -251,7 +241,7 @@ void FairModule::ProcessNodes(TList* aList)
         if (node->isSensitive() && fActive) {
             volume->setModId(fModId);
             volume->SetModule(this);
-            svList->Add(volume);
+            svList.push_back(volume);
             aVol = dynamic_cast<FairGeoVolume*>(node);
             fNodes->AddLast(aVol);
             fNbOfSensitiveVol++;
@@ -261,6 +251,7 @@ void FairModule::ProcessNodes(TList* aList)
 
 void FairModule::AddSensitiveVolume(TGeoVolume* v)
 {
+    auto& svList = fAllSensitiveVolumes;
     LOG(debug2) << "AddSensitiveVolume " << v->GetName();
 
     // Only register volumes which are not already registered
@@ -271,7 +262,7 @@ void FairModule::AddSensitiveVolume(TGeoVolume* v)
         vList->addVolume(volume);
         volume->setModId(fModId);
         volume->SetModule(this);
-        svList->Add(volume);
+        svList.push_back(volume);
         fNbOfSensitiveVol++;
     }
 }
