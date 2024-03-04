@@ -16,16 +16,8 @@
 #include "FairVolume.h"   // for FairVolume
 
 FairVolumeList::FairVolumeList()
-    : TObject()
-    , fData(new TObjArray())
-{}
-
-FairVolumeList::~FairVolumeList()
 {
-    if (fData) {
-        fData->Delete();
-        delete fData;
-    }
+    fData.SetOwner(kTRUE);
 }
 
 FairVolume* FairVolumeList::getVolume(TString* name)
@@ -54,8 +46,8 @@ FairVolume* FairVolumeList::findObject(TString name)
 {
     FairVolume* obj = nullptr;
 
-    for (int i = 0; i < fData->GetEntriesFast(); i++) {
-        obj = static_cast<FairVolume*>(fData->At(i));
+    for (int i = 0; i < fData.GetEntriesFast(); i++) {
+        obj = static_cast<FairVolume*>(fData.At(i));
         if (obj) {
             if (obj->GetName() == name) {
                 return obj;
@@ -74,6 +66,6 @@ void FairVolumeList::addVolume(FairVolume* elem)
         LOG(error) << "FairVolumeList element: " << elem->GetName() << " VolId : " << elem->getVolumeId()
                    << " already defined " << v->getVolumeId();
     } else {
-        fData->Add(elem);
+        fData.Add(elem);
     }
 }
