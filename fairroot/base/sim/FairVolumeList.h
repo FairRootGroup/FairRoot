@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -25,13 +25,13 @@
 class FairVolumeList : public TObject
 {
   private:
-    TObjArray* fData;
-    FairVolumeList(const FairVolumeList&);
-    FairVolumeList& operator=(const FairVolumeList&);
+    TObjArray fData;
 
   public:
-    FairVolumeList();
-    ~FairVolumeList() override;
+    FairVolumeList() { fData.SetOwner(kTRUE); }
+    FairVolumeList(const FairVolumeList&) = delete;
+    FairVolumeList& operator=(const FairVolumeList&) = delete;
+    ~FairVolumeList() override = default;
 
     FairVolume* getVolume(TString* name);
     Int_t getVolumeId(TString* name);
@@ -39,10 +39,10 @@ class FairVolumeList : public TObject
     FairVolume* findObject(TString name);
     void addVolume(FairVolume* elem);
 
-    Int_t getEntries() { return fData->GetEntries(); }
-    FairVolume* At(Int_t pos) { return (dynamic_cast<FairVolume*>(fData->At(pos))); }
+    Int_t getEntries() { return fData.GetEntries(); }
+    FairVolume* At(Int_t pos) { return (dynamic_cast<FairVolume*>(fData.At(pos))); }
 
-    ClassDefOverride(FairVolumeList, 1);
+    ClassDefOverride(FairVolumeList, 0);
 };
 
 #endif   // FAIR_VOLUMELIST_H
