@@ -250,19 +250,20 @@ void FairModule::ProcessNodes(TList* aList)
     }
 }
 
-void FairModule::AddSensitiveVolume(TGeoVolume* v)
+void FairModule::AddSensitiveVolume(TGeoVolume* vol)
 {
-    LOG(debug2) << "AddSensitiveVolume " << v->GetName();
+    auto volName = vol->GetName();
+    LOG(debug2) << "AddSensitiveVolume " << volName;
 
-    // Only register volumes which are not already registered
-    // Otherwise the stepping will be slowed down
-    if (!vList->findObject(v->GetName())) {
-        auto addedVol = vList->addVolume(std::make_unique<FairVolume>(v->GetName(), fNbOfVolumes++));
-        addedVol->setModId(fModId);
-        addedVol->SetModule(this);
-        fAllSensitiveVolumes.push_back(addedVol);
-        fNbOfSensitiveVol++;
+    auto addedVol = vList->addVolume(std::make_unique<FairVolume>(volName, fNbOfVolumes));
+    if (!addedVol) {
+        return;
     }
+    ++fNbOfVolumes;
+    addedVol->setModId(fModId);
+    addedVol->SetModule(this);
+    fAllSensitiveVolumes.push_back(addedVol);
+    ++fNbOfSensitiveVol;
 }
 
 FairVolume* FairModule::getFairVolume(FairGeoNode* fN)
