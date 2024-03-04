@@ -1,5 +1,5 @@
 ################################################################################
-#   Copyright (C) 2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH     #
+# Copyright (C) 2023-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -8,10 +8,7 @@
 
 fairroot_add_catch2_test_suite(Base
   SOURCES
-  dummy_example.cxx # remove me once first real tests are added
-  # add more test files if appropriate
+  sim/test_FairVolumeList.cxx
 
-  # DEPENDENCIES
-  # FairRoot::Base
-  # list all the targets to build the test suite here
+  DEPENDENCIES FairRoot::Base
 )
