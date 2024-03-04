@@ -39,9 +39,8 @@ TEST_CASE("FairVolumeList")
     SECTION("handles reading a non-existent volume")
     {
         TString z = "z";
-        constexpr auto notFound = -111;
 
         REQUIRE(volumes.getVolume(&z) == nullptr);
-        REQUIRE(volumes.getVolumeId(&z) == notFound);
+        REQUIRE(volumes.getVolumeId(&z) == FairVolumeList::fgkNotFound);
     }
 }

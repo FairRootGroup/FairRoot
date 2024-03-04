@@ -30,11 +30,11 @@ Int_t FairVolumeList::getVolumeId(TString* name)
 {
     FairVolume* vol = getVolume(name);
 
-    if (vol) {
-        return vol->getVolumeId();
-    } else {
-        return -111;
+    if (!vol) {
+        return fgkNotFound;
     }
+
+    return vol->getVolumeId();
 }
 
 FairVolume* FairVolumeList::findObject(TString name)

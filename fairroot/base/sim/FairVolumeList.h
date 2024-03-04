@@ -33,6 +33,8 @@ class FairVolumeList : public TObject
     FairVolumeList& operator=(const FairVolumeList&) = delete;
     ~FairVolumeList() override = default;
 
+    static constexpr Int_t fgkNotFound = -111;
+
     FairVolume* getVolume(TString* name);
     Int_t getVolumeId(TString* name);
 
