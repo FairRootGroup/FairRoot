@@ -14,6 +14,7 @@
 #include <TObjArray.h>   // for TObjArray
 #include <TObject.h>     // for TObject
 #include <TString.h>     // for TString
+#include <cassert>       // for assert
 
 /**
  * This Object is only used for internal book keeping!
@@ -35,10 +36,21 @@ class FairVolumeList : public TObject
 
     static constexpr Int_t fgkNotFound = -111;
 
-    FairVolume* getVolume(TString* name);
-    Int_t getVolumeId(TString* name);
+    FairVolume* getVolume(const TString& name);
+    [[deprecated]] FairVolume* getVolume(TString* name)
+    {
+        assert(name);
+        return getVolume(*name);
+    }
 
-    FairVolume* findObject(TString name);
+    Int_t getVolumeId(const TString& name);
+    [[deprecated]] Int_t getVolumeId(TString* name)
+    {
+        assert(name);
+        return getVolumeId(*name);
+    }
+
+    FairVolume* findObject(const TString& name);
     void addVolume(FairVolume* elem);
 
     Int_t getEntries() { return fData.GetEntries(); }

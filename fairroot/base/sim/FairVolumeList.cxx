@@ -20,18 +20,18 @@ FairVolumeList::FairVolumeList()
     fData.SetOwner(kTRUE);
 }
 
-FairVolume* FairVolumeList::getVolume(TString* name)
+FairVolume* FairVolumeList::getVolume(const TString& name)
 {
+    TObject* obj = findObject(name);
 
-    TObject* obj = findObject(*name);
     if (obj) {
-        LOG(info) << "FairVolume getVolume " << name->Data() << "found";
+        LOG(info) << "FairVolume getVolume " << name << " found";
     }
 
     return static_cast<FairVolume*>(obj);
 }
 
-Int_t FairVolumeList::getVolumeId(TString* name)
+Int_t FairVolumeList::getVolumeId(const TString& name)
 {
     FairVolume* vol = getVolume(name);
 
@@ -42,7 +42,7 @@ Int_t FairVolumeList::getVolumeId(TString* name)
     return vol->getVolumeId();
 }
 
-FairVolume* FairVolumeList::findObject(TString name)
+FairVolume* FairVolumeList::findObject(const TString& name)
 {
     FairVolume* obj = nullptr;
 

@@ -25,21 +25,18 @@ TEST_CASE("FairVolumeList")
     {
         auto a = MakeVolume("a");
         auto* a_ptr = a.get();
-        auto a_name = TString(a->GetName());
 
         vlist.addVolume(a.release());
         vlist.addVolume(MakeVolume("b").release());
         vlist.addVolume(MakeVolume("a").release());
 
         REQUIRE(vlist.getEntries() == 2);
-        REQUIRE(vlist.getVolume(&a_name) == a_ptr);
+        REQUIRE(vlist.getVolume("a") == a_ptr);
     }
 
     SECTION("handles reading a non-existent volume")
     {
-        TString z = "z";
-
-        REQUIRE(vlist.getVolume(&z) == nullptr);
-        REQUIRE(vlist.getVolumeId(&z) == FairVolumeList::fgkNotFound);
+        REQUIRE(vlist.getVolume("z") == nullptr);
+        REQUIRE(vlist.getVolumeId("z") == FairVolumeList::fgkNotFound);
     }
 }
