@@ -12,68 +12,35 @@
 
 #include "FairVolumeList.h"
 
-#include "FairLogger.h"   // for logging
-#include "FairVolume.h"   // for FairVolume
-
-FairVolumeList::FairVolumeList()
-    : TObject()
-    , fData(new TObjArray())
-{}
-
-FairVolumeList::~FairVolumeList()
+FairVolume* FairVolumeList::getVolume(const TString& name)
 {
-    if (fData) {
-        fData->Delete();
-        delete fData;
-    }
-}
+    auto obj = findObject(name);
 
-FairVolume* FairVolumeList::getVolume(TString* name)
-{
-
-    TObject* obj = findObject(*name);
     if (obj) {
-        LOG(info) << "FairVolume getVolume " << name->Data() << "found";
+        LOG(info) << "FairVolume getVolume " << name << " found";
     }
 
     return static_cast<FairVolume*>(obj);
 }
 
-Int_t FairVolumeList::getVolumeId(TString* name)
+Int_t FairVolumeList::getVolumeId(const TString& name)
 {
-    FairVolume* vol = getVolume(name);
+    auto vol = getVolume(name);
 
-    if (vol) {
-        return vol->getVolumeId();
-    } else {
-        return -111;
-    }
+    return vol ? vol->getVolumeId() : fgkNotFound;
 }
 
-FairVolume* FairVolumeList::findObject(TString name)
+FairVolume* FairVolumeList::addVolume(std::unique_ptr<FairVolume> vol)
 {
-    FairVolume* obj = nullptr;
+    auto vol_found = findObject(vol->GetName());
 
-    for (int i = 0; i < fData->GetEntriesFast(); i++) {
-        obj = static_cast<FairVolume*>(fData->At(i));
-        if (obj) {
-            if (obj->GetName() == name) {
-                return obj;
-            }
-        }
+    if (vol_found) {
+        LOG(error) << "FairVolumeList element: " << vol->GetName() << " VolId : " << vol->getVolumeId()
+                   << " already defined " << vol_found->getVolumeId();
+        return nullptr;
     }
 
-    return nullptr;
-}
-
-void FairVolumeList::addVolume(FairVolume* elem)
-{
-    FairVolume* v = findObject(elem->GetName());
-
-    if (v) {
-        LOG(error) << "FairVolumeList element: " << elem->GetName() << " VolId : " << elem->getVolumeId()
-                   << " already defined " << v->getVolumeId();
-    } else {
-        fData->Add(elem);
-    }
+    auto vol_added = vol.get();
+    fData.Add(vol.release());
+    return vol_added;
 }

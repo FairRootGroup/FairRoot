@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -14,6 +14,8 @@
 #include <TObjArray.h>   // for TObjArray
 #include <TObject.h>     // for TObject
 #include <TString.h>     // for TString
+#include <cassert>       // for assert
+#include <memory>        // for std::unique_ptr
 
 /**
  * This Object is only used for internal book keeping!
@@ -25,24 +27,39 @@
 class FairVolumeList : public TObject
 {
   private:
-    TObjArray* fData;
-    FairVolumeList(const FairVolumeList&);
-    FairVolumeList& operator=(const FairVolumeList&);
+    TObjArray fData;
 
   public:
-    FairVolumeList();
-    ~FairVolumeList() override;
+    FairVolumeList() { fData.SetOwner(kTRUE); }
+    FairVolumeList(const FairVolumeList&) = delete;
+    FairVolumeList& operator=(const FairVolumeList&) = delete;
+    ~FairVolumeList() override = default;
 
-    FairVolume* getVolume(TString* name);
-    Int_t getVolumeId(TString* name);
+    static constexpr Int_t fgkNotFound = -111;
 
-    FairVolume* findObject(TString name);
-    void addVolume(FairVolume* elem);
+    FairVolume* getVolume(const TString& name);
+    [[deprecated]] FairVolume* getVolume(TString* name)
+    {
+        assert(name);
+        return getVolume(*name);
+    }
 
-    Int_t getEntries() { return fData->GetEntries(); }
-    FairVolume* At(Int_t pos) { return (dynamic_cast<FairVolume*>(fData->At(pos))); }
+    Int_t getVolumeId(const TString& name);
+    [[deprecated]] Int_t getVolumeId(TString* name)
+    {
+        assert(name);
+        return getVolumeId(*name);
+    }
 
-    ClassDefOverride(FairVolumeList, 1);
+    FairVolume* findObject(const TString& name) { return static_cast<FairVolume*>(fData.FindObject(name.Data())); }
+
+    FairVolume* addVolume(std::unique_ptr<FairVolume> vol);
+    [[deprecated]] FairVolume* addVolume(FairVolume* elem) { return addVolume(std::unique_ptr<FairVolume>(elem)); }
+
+    Int_t getEntries() { return fData.GetEntries(); }
+    FairVolume* At(Int_t pos) { return (dynamic_cast<FairVolume*>(fData.At(pos))); }
+
+    ClassDefOverride(FairVolumeList, 2);
 };
 
 #endif   // FAIR_VOLUMELIST_H

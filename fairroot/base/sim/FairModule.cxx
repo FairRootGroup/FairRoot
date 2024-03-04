@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -91,6 +91,7 @@ FairModule::FairModule(const FairModule& rhs)
         }
     }
 
+    // TODO: This is broken. FairVolumeList owns contained volumes!
     if (!vList) {
         vList = new FairVolumeList();
         for (Int_t i = 0; i < rhs.vList->getEntries(); i++) {
@@ -228,7 +229,6 @@ void FairModule::ProcessNodes(TList* aList)
     TListIter iter(aList);
     FairGeoNode* node = nullptr;
     FairGeoNode* MotherNode = nullptr;
-    FairVolume* volume = nullptr;
     FairRuntimeDb* rtdb = FairRun::Instance()->GetRuntimeDb();
     FairGeoParSet* par = static_cast<FairGeoParSet*>(rtdb->getContainer("FairGeoParSet"));
     TObjArray* fNodes = par->GetGeoNodes();
@@ -236,22 +236,23 @@ void FairModule::ProcessNodes(TList* aList)
 
         node->calcLabTransform();
         MotherNode = node->getMotherNode();
-        volume = new FairVolume(node->getTruncName(), fNbOfVolumes++);
+        auto volume = std::make_unique<FairVolume>(node->getTruncName(), fNbOfVolumes++);
+        auto volume_ptr = volume.get();
         volume->setRealName(node->GetName());
-        vList->addVolume(volume);
-        volume->setGeoNode(node);
-        volume->setCopyNo(node->getCopyNo());
+        vList->addVolume(std::move(volume));
+        volume_ptr->setGeoNode(node);
+        volume_ptr->setCopyNo(node->getCopyNo());
 
         if (MotherNode != 0) {
-            volume->setMotherId(node->getMCid());
-            volume->setMotherCopyNo(MotherNode->getCopyNo());
+            volume_ptr->setMotherId(node->getMCid());
+            volume_ptr->setMotherCopyNo(MotherNode->getCopyNo());
         }
         FairGeoVolume* aVol = nullptr;
 
         if (node->isSensitive() && fActive) {
-            volume->setModId(fModId);
-            volume->SetModule(this);
-            svList->Add(volume);
+            volume_ptr->setModId(fModId);
+            volume_ptr->SetModule(this);
+            svList->Add(volume_ptr);
             aVol = dynamic_cast<FairGeoVolume*>(node);
             fNodes->AddLast(aVol);
             fNbOfSensitiveVol++;
@@ -261,18 +262,19 @@ void FairModule::ProcessNodes(TList* aList)
 
 void FairModule::AddSensitiveVolume(TGeoVolume* v)
 {
-    LOG(debug2) << "AddSensitiveVolume " << v->GetName();
+    auto vol_name = v->GetName();
+    LOG(debug2) << "AddSensitiveVolume " << vol_name;
+
+    auto volume = std::make_unique<FairVolume>(vol_name, fNbOfVolumes);
 
     // Only register volumes which are not already registered
     // Otherwise the stepping will be slowed down
-    if (!vList->findObject(v->GetName())) {
-        FairVolume* volume = nullptr;
-        volume = new FairVolume(v->GetName(), fNbOfVolumes++);
-        vList->addVolume(volume);
-        volume->setModId(fModId);
-        volume->SetModule(this);
-        svList->Add(volume);
-        fNbOfSensitiveVol++;
+    if (auto vol_added = vList->addVolume(std::move(volume)); vol_added) {
+        ++fNbOfVolumes;
+        vol_added->setModId(fModId);
+        vol_added->SetModule(this);
+        svList->Add(vol_added);
+        ++fNbOfSensitiveVol;
     }
 }
 
