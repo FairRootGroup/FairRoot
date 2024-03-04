@@ -30,14 +30,17 @@ Int_t FairVolumeList::getVolumeId(const TString& name)
     return vol ? vol->getVolumeId() : fgkNotFound;
 }
 
-void FairVolumeList::addVolume(std::unique_ptr<FairVolume> vol)
+FairVolume* FairVolumeList::addVolume(std::unique_ptr<FairVolume> vol)
 {
     auto vol_found = findObject(vol->GetName());
 
     if (vol_found) {
         LOG(error) << "FairVolumeList element: " << vol->GetName() << " VolId : " << vol->getVolumeId()
                    << " already defined " << vol_found->getVolumeId();
-    } else {
-        fData.Add(vol.release());
+        return nullptr;
     }
+
+    auto vol_added = vol.get();
+    fData.Add(vol.release());
+    return vol_added;
 }

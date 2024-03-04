@@ -39,4 +39,10 @@ TEST_CASE("FairVolumeList")
         REQUIRE(vlist.getVolume("z") == nullptr);
         REQUIRE(vlist.getVolumeId("z") == FairVolumeList::fgkNotFound);
     }
+
+    SECTION("adding volumes returns added vol or nullptr")
+    {
+        REQUIRE(vlist.addVolume(MakeVolume("a")) != nullptr);
+        REQUIRE(vlist.addVolume(MakeVolume("a")) == nullptr);
+    }
 }
