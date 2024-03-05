@@ -226,15 +226,15 @@ Bool_t FairFileSource::Init()
         for (auto fileName : fInputChainList) {
             // Temporarily open the input file to extract information which
             // is needed to bring the friend trees in the correct order
-            TFile* inputFile = TFile::Open(fileName);
-            if (inputFile->IsZombie()) {
+            std::unique_ptr<TFile> inputFile{TFile::Open(fileName)};
+            if ((!inputFile) || inputFile->IsZombie()) {
                 LOG(fatal) << "Error opening the file " << fileName.Data()
                            << " which should be added to the input chain or as friend chain";
             }
 
             if (fCheckFileLayout) {
                 // Check if the branchlist is the same as for the first input file.
-                Bool_t isOk = CompareBranchList(inputFile, chainName);
+                Bool_t isOk = CompareBranchList(inputFile.get(), chainName);
                 if (!isOk) {
                     LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName()
                                << " and the file to be added " << fileName.Data() << " are different.";
@@ -246,9 +246,6 @@ Bool_t FairFileSource::Init()
             // GetRunIdInfo(inputFile->GetName(), chainName);
             // Add the file to the input chain
             fInChain->Add(fileName);
-
-            // Close the temporarly file
-            inputFile->Close();
         }
     }
     fNoOfEntries = fInChain->GetEntries();
@@ -349,25 +346,23 @@ void FairFileSource::AddFriendsToChain()
         // then already existing friend chain. If this type of friend tree
         // does not exist already create a new friend chain and add the file.
         Bool_t inputLevelFound = kFALSE;
-        TFile* inputFile;
         for (auto level : fInputLevel) {
             inputLevel = level;
 
-            inputFile = TFile::Open(fileName);
-            if (inputFile->IsZombie()) {
+            std::unique_ptr<TFile> inputFile{TFile::Open(fileName)};
+            if ((!inputFile) || inputFile->IsZombie()) {
                 LOG(fatal) << "Error opening the file " << level.Data()
                            << " which should be added to the input chain or as friend chain";
             }
 
             // Check if the branchlist is already stored in the map. If it is
             // already stored add the file to the chain.
-            Bool_t isOk = CompareBranchList(inputFile, inputLevel);
+            Bool_t isOk = CompareBranchList(inputFile.get(), inputLevel);
             if (isOk) {
                 inputLevelFound = kTRUE;
                 inputFile->Close();
                 continue;
             }
-            inputFile->Close();
         }
         if (!inputLevelFound) {
             inputLevel = Form("FriendTree_%i", friendType);
@@ -500,7 +495,7 @@ void FairFileSource::CheckFriendChains()
 void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
 {
     TDirectory::TContext restorecwd{};
-    TFile* f = TFile::Open(inputFile);
+    std::unique_ptr<TFile> f{TFile::Open(inputFile)};
 
     TString folderName1 = FairRootManager::GetFolderName();
     TString folderName = Form("/%s", folderName1.Data());
@@ -538,8 +533,6 @@ void FairFileSource::CreateNewFriendChain(TString inputFile, TString inputLevel)
 
     TChain* chain = new TChain(inputLevel, folderName);
     fFriendTypeList[inputLevel] = chain;
-
-    f->Close();
 }
 
 Bool_t FairFileSource::ActivateObject(TObject** obj, const char* BrName)
