@@ -40,7 +40,6 @@ class FairVolume;
 class FairRunSim : public FairRun
 {
     friend class FairModule;
-    friend class FairDetector;
     friend class FairMCApplication;
 
   public:
@@ -220,6 +219,11 @@ class FairRunSim : public FairRun
     auto GetMCApplication() { return fApp; }
 
     void ls(Option_t* option = "") const override;
+
+    /**
+     * \brief Internal helper for FairDetector
+     */
+    void UpdateSensitiveVolumesForModule(FairModule& mod);
 
   private:
     FairRunSim(const FairRunSim& M);
