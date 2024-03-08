@@ -20,7 +20,7 @@
 #include "FairGeoNode.h"        // for FairGeoNode
 #include "FairGeoParSet.h"      // for FairBaseParSet
 #include "FairMCApplication.h"
-#include "FairRun.h"          // for FairRun
+#include "FairRunSim.h"       // for FairRun, FairRunSim
 #include "FairRuntimeDb.h"    // for FairRuntimeDb
 #include "FairVolume.h"       // for FairVolume
 #include "FairVolumeList.h"   // for FairVolumeList
@@ -46,8 +46,6 @@
 #include <cstring>   // for strcmp, strlen
 #include <map>
 #include <memory>
-
-thread_local std::vector<FairVolume*> FairModule::fAllSensitiveVolumes;
 
 void FairModule::ConstructGeometry()
 {
@@ -214,11 +212,12 @@ void FairModule::ProcessNodes(TList* aList)
         vList = new FairVolumeList();
     }
 
+    FairRunSim& run = *(FairRunSim::Instance());
     TListIter iter(aList);
     FairGeoNode* node = nullptr;
     FairGeoNode* MotherNode = nullptr;
     FairVolume* volume = nullptr;
-    FairRuntimeDb* rtdb = FairRun::Instance()->GetRuntimeDb();
+    FairRuntimeDb* rtdb = run.GetRuntimeDb();
     FairGeoParSet* par = static_cast<FairGeoParSet*>(rtdb->getContainer("FairGeoParSet"));
     TObjArray* fNodes = par->GetGeoNodes();
     while ((node = static_cast<FairGeoNode*>(iter.Next()))) {
@@ -240,7 +239,7 @@ void FairModule::ProcessNodes(TList* aList)
         if (node->isSensitive() && fActive) {
             volume->setModId(fModId);
             volume->SetModule(this);
-            fAllSensitiveVolumes.push_back(volume);
+            run.fAllSensitiveVolumes.push_back(volume);
             aVol = dynamic_cast<FairGeoVolume*>(node);
             fNodes->AddLast(aVol);
             fNbOfSensitiveVol++;
@@ -260,7 +259,7 @@ void FairModule::AddSensitiveVolume(TGeoVolume* v)
         vList->addVolume(volume);
         volume->setModId(fModId);
         volume->SetModule(this);
-        fAllSensitiveVolumes.push_back(volume);
+        FairRunSim::Instance()->fAllSensitiveVolumes.push_back(volume);
         fNbOfSensitiveVol++;
     }
 }

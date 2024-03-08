@@ -886,7 +886,7 @@ void FairMCApplication::InitGeometry()
     fMCEventHeader->SetRunID(runId);
 
     // Fill sensitive volumes in fVolMap
-    for (auto fv : FairModule::fAllSensitiveVolumes) {
+    for (auto fv : fRun->fAllSensitiveVolumes) {
         if (!fv) {
             continue;
         }
