@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -26,6 +26,7 @@
 #include <TString.h>     // for TString, operator!=
 #include <TVirtualMC.h>
 #include <string>
+#include <vector>
 
 class FairVolumeList;
 class FairVolume;
@@ -139,7 +140,7 @@ class FairModule : public TNamed
     /**total number of volumes in a simulaion session*/
     static thread_local inline Int_t fNbOfVolumes{0};   //!
     /**list of all sensitive volumes in  a simulaion session*/
-    static thread_local inline TRefArray* svList{nullptr};   //!
+    static thread_local std::vector<FairVolume*> fAllSensitiveVolumes;   //!
 
     TString fMotherVolumeName{""};   //!
     FairVolume* getFairVolume(FairGeoNode* fNode);

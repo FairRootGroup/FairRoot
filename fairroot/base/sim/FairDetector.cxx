@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -13,7 +13,6 @@
 #include "FairDetector.h"
 
 #include "FairGeoNode.h"   // for FairGeoNode
-#include "FairModule.h"    // for FairModule::svList, etc
 #include "FairRootManager.h"
 #include "FairVolume.h"   // for FairVolume
 
@@ -94,13 +93,11 @@ void FairDetector::Initialize()
         DefineSensitiveVolumes();
     }
 
-    Int_t NoOfEntries = svList->GetEntries();
     Int_t fMCid;
     FairGeoNode* fN;
     TString cutName;
     TString copysign = "#";
-    for (Int_t i = 0; i < NoOfEntries; i++) {
-        FairVolume* aVol = static_cast<FairVolume*>(svList->At(i));
+    for (auto aVol : fAllSensitiveVolumes) {
         cutName = aVol->GetName();
         Ssiz_t pos = cutName.Index(copysign, 1);
         if (pos > 1) {
