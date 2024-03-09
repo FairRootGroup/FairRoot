@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -10,14 +10,14 @@
 
 #include "FairGeoBuilder.h"   // for FairGeoBuilder
 
-#include <Rtypes.h>   // for FairGeoRootBuilder::Class, etc
+#include <TGeoManager.h>
 
 class FairGeoMedium;
 class FairGeoNode;
-class TGeoManager;
 
 /**
  * class to create geometry in ROOT
+ * \ingroup geobase
  * @author M. Al-Turany
  */
 class FairGeoRootBuilder : public FairGeoBuilder
@@ -25,15 +25,14 @@ class FairGeoRootBuilder : public FairGeoBuilder
   private:
     FairGeoRootBuilder(const FairGeoRootBuilder&);
     FairGeoRootBuilder& operator=(const FairGeoRootBuilder&);
-
-  protected:
-    TGeoManager* geoManager;   // ROOT geometry manager
+    std::unique_ptr<TGeoManager> geoManager;   //!< ROOT geometry manager
 
   public:
     FairGeoRootBuilder();
     FairGeoRootBuilder(const char*, const char*);
+    FairGeoRootBuilder(const char*, const char*, std::unique_ptr<TGeoManager>);
     ~FairGeoRootBuilder() override = default;
-    void setGeoManager(TGeoManager* me) { geoManager = me; }
+    [[deprecated]] void setGeoManager(TGeoManager* me) { geoManager.reset(me); }
     Bool_t createNode(FairGeoNode*, Int_t hadFormat = 0) override;
     Int_t createMedium(FairGeoMedium*) override;
     void finalize() override;
