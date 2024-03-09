@@ -107,3 +107,83 @@ for (auto const& listEntry : *list) { /*...*/ } // avoid
 for (auto const& aVol : *volList) { /*...*/ }   // acceptable
 for (auto const& volume : *volumes) { /*...*/ } // ✓ prefer
 ```
+
+
+# Creating a new Release
+
+(This is basically for the release manager, so that we don't
+forget anything.)
+
+## Control the status
+
+* Take a look at the
+  [Milestone](https://github.com/FairRootGroup/FairRoot/milestones)
+  for the release
+
+  Consider moving still open items to another milestone
+
+## Check the CI Coverage
+
+* Remind/ask myself what platforms the release is targeting (I roughly
+  target the last two years of releases for ubuntu/fedora, debian
+  stable/oldstable + anything older, if relevant in GSI still)
+* Then I compare what is currently tested via CI and decide whether it
+  needs an updates, e.g.
+   * regenerate/update existing images (cover new FairSoft releases? get
+     latest os updates to test closer to what a user may use)
+   * add new images (new os releases? which ship new compiler major versions
+     perhaps)
+   * remove old images
+   * For macs it involves similar steps, updating homebrew, perhaps the os
+     or the command line tools
+* Fix issues resulting from previous step
+
+## Create a commit
+
+On the `v{x.y}_patches` branch with comment `Bump v{x.y.z}`:
+
+* Double check that the version number on the `project`
+  line in [CMakeLists.txt](CMakeLists.txt) is correct
+
+* Apply some final editorial changes to the
+  [CHANGELOG](CHANGELOG.md) for the upcoming release
+  * Remove the `(UNRELEASED)` tag on the header
+  * Add the correct date
+  * Go over the list and re-order things/etc (classical
+    editorial changes)
+
+* Apply editorial changes to [README](README.md)
+
+* (Soon)
+  * Check that `codemeta.json` and friends have been
+    updated.
+  * Get a zenodo entry ready
+
+## Push the patch to the repository:
+
+* ```
+  git push origin v{x.y}_patches
+  ```
+
+* Check the CI, so that all checks pass for the branch
+
+## Create, control and push the new tag to the repository:
+
+```
+git tag v{x.y.z} -a -s
+git show v{x.y.z}
+git push origin v{x.y.z}
+```
+
+## Create a new realese on GitHub.
+
+## In certain cases the tag should be merged onto master:
+
+```
+git checkout master
+git merge origin/v{x.y}_patches
+git push mainrepo origin
+```
+
+The message, when prompted, should be `Merge v{x.y.z}`.
+The merge and push should not be forced.
