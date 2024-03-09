@@ -307,6 +307,7 @@ void FairRunOnline::Run(Int_t Ev_start, Int_t Ev_end)
 void FairRunOnline::Finish()
 {
     fTask->FinishTask();
+    GetSource()->Finish();
     fRootManager->LastFill();
     fRootManager->Write();
     GetSource()->Close();
