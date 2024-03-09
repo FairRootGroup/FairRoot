@@ -63,12 +63,7 @@ class FairRootManager : public TObject
     0 : Branch does not exist   */
     Int_t CheckBranch(const char* BrName);
 
-    void CloseSink()
-    {
-        if (fSink) {
-            fSink->Close();
-        }
-    }
+    [[deprecated("Close will go away, the dtor closes resources")]] void CloseSink() {}
     /**Create a new file and save the current TGeoManager object to it*/
     void CreateGeometryFile(const char* geofile);
     void Fill();

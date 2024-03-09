@@ -28,12 +28,11 @@ class PixelDigiSource : public FairSource
 {
   public:
     PixelDigiSource(TString inputFileName = "test.dat");
-    ~PixelDigiSource() override = default;
+    ~PixelDigiSource() override;
 
     Bool_t Init() override;
 
     Int_t ReadEvent(UInt_t i = 0) override;
-    void Close() override;
     void Reset() override;
     Bool_t SpecifyRunId() override
     {

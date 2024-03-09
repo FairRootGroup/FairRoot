@@ -200,13 +200,6 @@ void FairRootFileSink::TruncateBranchNames(TBranch* b, TString ffn)
     delete BrIter;
 }
 
-void FairRootFileSink::Close()
-{
-    if (fRootFile) {
-        fRootFile->Close();
-    }
-}
-
 void FairRootFileSink::Reset() {}
 
 void FairRootFileSink::FillEventHeader(FairEventHeader* /* feh */) {}
@@ -251,7 +244,8 @@ void FairRootFileSink::WriteFolder()
     }
 }
 
-namespace impl {
+namespace impl
+{
 // a helper function to demangle a type_name
 inline std::string demangle(const char* name)
 {
