@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -31,11 +31,13 @@
 #include <cmath>   // floor, fmod
 #include <fairlogger/Logger.h>
 
+using fairroot::detail::maybe_owning_ptr;
+using fairroot::detail::non_owning;
+
 FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
     : FairFileSourceBase()
     , fRootManager(0)
     , fInputTitle(Title)
-    , fRootFile(f)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
@@ -74,6 +76,7 @@ FairMixedSource::FairMixedSource(TFile* f, const char* Title, UInt_t)
     , fRunIdFromSG(kFALSE)
     , fRunIdFromSG_identifier(0)
 {
+    fRootFile = maybe_owning_ptr<TFile>{f, non_owning};
     if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
@@ -86,7 +89,6 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
     : FairFileSourceBase()
     , fRootManager(0)
     , fInputTitle(Title)
-    , fRootFile(0)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
@@ -125,7 +127,7 @@ FairMixedSource::FairMixedSource(const TString* RootFileName, const char* Title,
     , fRunIdFromSG(kFALSE)
     , fRunIdFromSG_identifier(0)
 {
-    fRootFile = TFile::Open(RootFileName->Data());
+    fRootFile = std::unique_ptr<TFile>{TFile::Open(RootFileName->Data())};
     if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
@@ -137,7 +139,6 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     : FairFileSourceBase()
     , fRootManager(0)
     , fInputTitle(Title)
-    , fRootFile(0)
     , fFriendFileList()
     , fInputChainList()
     , fFriendTypeList()
@@ -176,7 +177,7 @@ FairMixedSource::FairMixedSource(const TString RootFileName, const Int_t signalI
     , fRunIdFromSG(kFALSE)
     , fRunIdFromSG_identifier(0)
 {
-    fRootFile = TFile::Open(RootFileName.Data());
+    fRootFile = std::unique_ptr<TFile>{TFile::Open(RootFileName.Data())};
     if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Input file";
     }
@@ -281,14 +282,14 @@ Bool_t FairMixedSource::Init()
         for (auto fileName : fInputChainList) {
             // Temporarily open the input file to extract information which
             // is needed to bring the friend trees in the correct order
-            TFile* inputFile = TFile::Open(fileName);
-            if (inputFile->IsZombie()) {
+            std::unique_ptr<TFile> inputFile{TFile::Open(fileName)};
+            if ((!inputFile) || inputFile->IsZombie()) {
                 LOG(fatal) << "Error opening the file " << fileName.Data()
                            << " which should be added to the input chain or as friend chain";
             }
 
             // Check if the branchlist is the same as for the first input file.
-            Bool_t isOk = CompareBranchList(inputFile, chainName);
+            Bool_t isOk = CompareBranchList(inputFile.get(), chainName);
             if (!isOk) {
                 LOG(fatal) << "Branch structure of the input file " << fRootFile->GetName()
                            << " and the file to be added " << fileName.Data();
@@ -299,9 +300,6 @@ Bool_t FairMixedSource::Init()
             // GetRunIdInfo(inputFile->GetName(), chainName);
             // Add the file to the input chain
             fBackgroundChain->Add(fileName);
-
-            // Close the temporarly file
-            inputFile->Close();
         }
     }
     fNoOfEntries = fBackgroundChain->GetEntries();
@@ -417,8 +415,8 @@ void FairMixedSource::FillEventHeader(FairEventHeader* feh)
 
 void FairMixedSource::SetSignalFile(TString name, UInt_t identifier)
 {
-    TFile* SignalInFile = TFile::Open(name.Data());
-    if (SignalInFile->IsZombie()) {
+    std::unique_ptr<TFile> SignalInFile{TFile::Open(name.Data())};
+    if ((!SignalInFile) || SignalInFile->IsZombie()) {
         LOG(fatal) << "Error opening the Signal file";
     } else {
         /** Set a signal file of certain type (identifier) if already exist add the file to the chain*/
@@ -456,8 +454,8 @@ void FairMixedSource::SetBackgroundFile(TString name)
     if (name.IsNull()) {
         LOG(info) << "No background file defined.";
     }
-    fRootFile = TFile::Open(name);
-    if (fRootFile->IsZombie()) {
+    fRootFile = std::unique_ptr<TFile>{TFile::Open(name)};
+    if ((!fRootFile) || fRootFile->IsZombie()) {
         LOG(fatal) << "Error opening the Background file  " << name.Data();
     }
 }
@@ -467,8 +465,8 @@ void FairMixedSource::AddBackgroundFile(TString name)
     if (name.IsNull()) {
         LOG(info) << "No background file defined.";
     }
-    TFile* BGFile = TFile::Open(name);
-    if (BGFile->IsZombie()) {
+    std::unique_ptr<TFile> BGFile{TFile::Open(name)};
+    if ((!BGFile) || BGFile->IsZombie()) {
         LOG(fatal) << "Error opening the Background file " << name.Data();
     } else {
         if (fBackgroundChain != 0) {

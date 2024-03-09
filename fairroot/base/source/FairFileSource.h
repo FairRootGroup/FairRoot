@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -52,9 +52,9 @@ class FairFileSource : public FairFileSourceBase
     void ReadBranchEvent(const char* BrName) override;
     /**Read specific tree entry on one branch**/
     void ReadBranchEvent(const char* BrName, Int_t Entry) override;
+
     void FillEventHeader(FairEventHeader* feh) override;
 
-    const TFile* GetRootFile() { return fRootFile; }
     /** Add a friend file (input) by name)*/
     void AddFriend(TString FileName);
     /**Add ROOT file to input, the file will be chained to already added files*/
@@ -65,7 +65,6 @@ class FairFileSource : public FairFileSourceBase
     void CreateNewFriendChain(TString inputFile, TString inputLevel);
     TTree* GetInTree() { return fInChain->GetTree(); }
     TChain* GetInChain() { return fInChain; }
-    TFile* GetInFile() { return fRootFile; }
     void CloseInFile()
     {
         if (fRootFile) {
@@ -112,8 +111,6 @@ class FairFileSource : public FairFileSourceBase
   private:
     /** Title of input source, could be input, background or signal*/
     TString fInputTitle;
-    /**ROOT file*/
-    TFile* fRootFile;
     /** List of all files added with AddFriend */
     std::list<TString> fFriendFileList;                                 //!
     std::list<TString> fInputChainList;                                 //!
