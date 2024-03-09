@@ -1,16 +1,34 @@
 /********************************************************************************
- * Copyright (C) 2019-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2019-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
+#include "FairExampleRunSim.h"
+
+#if !defined(__CLING__) || defined(__ROOTCLING__)
+#include "FairBoxGenerator.h"
+#include "FairCave.h"
+#include "FairConstField.h"
+#include "FairParRootFileIo.h"
+#include "FairPrimaryGenerator.h"
+#include "FairRootFileSink.h"
+#include "FairSystemInfo.h"
+#include "FairTrajFilter.h"
+#include "FairTutPropDet.h"
+#endif
+
 #include <TRandom.h>
 #include <TStopwatch.h>
 #include <TString.h>
 #include <TSystem.h>
+#include <iostream>
 #include <memory>
+
+using std::cout;
+using std::endl;
 
 int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = false)
 {
@@ -55,8 +73,7 @@ int runMC(Int_t nEvents = 1000, TString mcEngine = "TGeant4", Bool_t isMT = fals
     // ------------------------------------------------------------------------
 
     // -----   Create simulation run   ----------------------------------------
-    FairRunSim run{};
-    run.SetName(mcEngine);   // Transport engine
+    FairExampleRunSim run{mcEngine.Data()};
     //  run.SetSimulationConfig(new FairVMCConfig());
     run.SetIsMT(isMT);   // Multi-threading mode (Geant4 only)
     run.SetSink(std::make_unique<FairRootFileSink>(outFile));

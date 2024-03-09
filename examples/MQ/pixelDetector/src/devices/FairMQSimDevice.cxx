@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -14,6 +14,7 @@
 
 #include "FairMQSimDevice.h"
 
+#include "FairExampleRunSim.h"
 #include "FairModule.h"
 #include "FairParSet.h"
 #include "FairPrimaryGenerator.h"
@@ -44,7 +45,7 @@ FairMQSimDevice::FairMQSimDevice()
 
 void FairMQSimDevice::InitTask()
 {
-    fRunSim = std::make_unique<FairRunSim>();
+    fRunSim = std::make_unique<FairExampleRunSim>(fTransportName.c_str());
 
     SetupRunSink(*fRunSim);
 
@@ -56,7 +57,6 @@ void FairMQSimDevice::InitTask()
             rtdb->setSecondInput(fSecondParameter);
     }
 
-    fRunSim->SetName(fTransportName.c_str());
     //  fRunSim->SetSimulationConfig(new FairVMCConfig());
     fRunSim->SetIsMT(kFALSE);
 
