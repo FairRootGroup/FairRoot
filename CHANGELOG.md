@@ -1,10 +1,11 @@
+
 # Changelog
 
 All notable changes to FairRoot will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## 19.0 (UNRELEASED) - 2023-XX-XX
+## 19.0 (Unreleased) - 2024-03-xx
 
 ### Breaking Changes
 * We have moved away from our custom ROOT find module, and now use the native cmake package of ROOT.
@@ -28,8 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
       and the COLOR option takes no argument.
 * Dropped `Generate_Exe_Script`, and `GENERATE_TEST_SCRIPT`
   * `Generate_Exe_Script` was never meant for external use.
-  * `GENERATE_TEST_SCRIPT` can be replaced by much simpler, and more
-    flexible local code by users.
+  * `GENERATE_TEST_SCRIPT` can be replaced by much simpler and more flexible local code by users.
   * Replace with a local template, `configure_file`, and `execute_process()`
   * In your template consider using `source @FairRoot_BINDIR/FairRootConfig.sh`
 * Dropped `Generate_Version_Info`
@@ -91,6 +91,7 @@ file an issue, so that we can see how to handle this.
   * Use `FairRunAna::RunSingleEntry(Long64_t entry)` instead.
 
 ### Other Notable Changes
+* We have restuctured the main FairRoot folder by moving all the public components to the new '/fairroot/' folder.
 * Consider calling `fairroot_check_root_cxxstd_compatibility()`
   in your `CMakeLists.txt`.
 * `fairsoft-config` isn't searched for and not needed any more.
@@ -98,8 +99,27 @@ file an issue, so that we can see how to handle this.
 ### Example Changes in Experiment Repos
 * https://github.com/R3BRootGroup/R3BRoot/pull/413
 
+## 18.8.2 - 2023-03-01
 
-## 18.8.1 (UNRELEASED) - 2023-01-XX
+### Bug fixes
+* Fix wrong init order in eventdisplay.
+* Fix GeoAssembly bounding box after alignment:
+  * Use ROOT expert patch.
+* Fix to obtain initial random seed from TRandom::GetSeed():
+  * Replace TRandom3::GetSeed() with the GetSeed() from base class.
+* Adopt new software versions:
+  * Fix FindROOT.cmake to work with ROOT v6.30.00.
+  * Adopt CMake policies up to 3.27.
+  * Support yaml-cpp 0.8+.
+  * Fix runtime error with XCode 13.3+.
+
+### Other Notable Changes
+* Software recongnition:
+  * Implement fair-software.eu badges
+  * Add codemeta.json in accordance with ESCAPE
+  * Add config for zenodo.org
+
+## 18.8.1 - 2024-02-24
 
 ### Breaking Changes
 * The output folder name changed from 'folderName_0' to 'folderName'.
