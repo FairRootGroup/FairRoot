@@ -8,98 +8,105 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## 19.0 (Unreleased) - 2024-03-xx
 
 ### Breaking Changes
-* We have moved away from our custom ROOT find module, and now use the native cmake package of ROOT.
-  * This means, that all library dependencies of the type `Core` are either not working at all, or might not work as expected. Please upgrade all of them to be like `ROOT::Core` .
-  * This also means, that you need to add an `include(ROOTMacros)` after your `find_package2(... ROOT ...)`.
-  * `ROOT_VERSION_NUMBER` is gone. Use `ROOT_VERSION` (which is the dotted version number) and `VERSION_GREATER`/etc now.
-  * `ROOTSYS` isn't any longer set. For example use ROOT targets instead.
-* Many CMake related tools have been externalized into
-  [FairCMakeModules](https://github.com/FairRootGroup/FairCMakeModules)
-  and partly rewritten
-  * You need to install it before installing FairRoot. FairSoft provides it.
-  * `find_package2` has moved to `FairFindPackage2`.
-    To use it in your code, perform something like this:
-    ```cmake
-    find_package(FairCMakeModules 1.0 REQUIRED)
-    include(FairFindPackage2)
-    ```
-  * Dropped Color Codes and `pad()`
-    * Use `FairFormattedOutput` from FairCMakeModules
-    * Note that `fair_pad` needs the width argument to be incremented by 1,
-      and the COLOR option takes no argument.
-* Dropped `Generate_Exe_Script`, and `GENERATE_TEST_SCRIPT`
-  * `Generate_Exe_Script` was never meant for external use.
-  * `GENERATE_TEST_SCRIPT` can be replaced by much simpler and more flexible local code by users.
-  * Replace with a local template, `configure_file`, and `execute_process()`
-  * In your template consider using `source @FairRoot_BINDIR/FairRootConfig.sh`
-* Dropped `Generate_Version_Info`
-  * If you just need to generate some files with your version number in it,
-    use the standard `configure_file` CMake command.
-  * Alternatively consider creating a proper CMake Package with
-    `configure_package_config_file()`, and `write_basic_package_version_file()`.
-  * If you need the "git version", use
-    [`fair_get_git_version()` from FairCMakeModules](https://fairrootgroup.github.io/FairCMakeModules/latest/module/FairProjectConfig.html#fair-get-git-version)
-    in addition.
-* Renamed our `ROOT_GENERATE_DICTIONARY` to `FAIRROOT_GENERATE_DICTIONARY`.
-  (It's not used in many places anyway, it seems.)
-* `fEvtHeader` member variable now is a private unique pointer owned by `FairRun`. To access
-  the event header, please use the public member function `GetEventHeader()`.
-* The following files have been deleted. As far as we know they were not used anywhere:
-  * basemq/baseMQtools/baseMQtools.h
-  * basemq/policies/Sampler/FairMQFileSource.h
-  * basemq/policies/Sampler/FairSourceMQInterface.h
-  * basemq/policies/Sampler/SimpleTreeReader.h
-  * basemq/policies/Serialization/BinaryBaseClassSerializer.h
-  * basemq/policies/Storage/BinaryOutFileManager.h
-  * basemq/policies/Storage/BoostDataSaver.h
-  * basemq/policies/Storage/RootOutFileManager.h
-  * basemq/policies/Storage/TriviallyCopyableDataSaver.h
-  * basemq/policies/Serialization/IOPolicy.h
-* The following files/classes have been moved to the example where they are used and renamed:
-  * basemq/devices/FairMQProcessor.h -> into examples/advanced/Tutorial3/MQ/processor.cxx
-  * basemq/devices/FairMQSampler.h -> into examples/advanced/Tutorial3/MQ/sampler.cxx
-  * basemq/tasks/FairMQProcessorTask.h -> examples/advanced/Tutorial3/MQ/processorTask/ProcessorTask.h
-  * basemq/tasks/FairMQSamplerTask.h -> examples/advanced/Tutorial3/MQ/samplerTask/SamplerTask.h
-* Retire CMake switch `BUILD_UNITTESTS`. The few tests behind it have not been
-  used nor maintained for many years. Also, it was in conflict with the CMake
-  standard switch `BUILD_TESTING` from the CTest module.
 
+* CMake
+  * Dropped [our custom `FindROOT.cmake`](https://github.com/FairRootGroup/FairRoot/commit/764b2c66432d2e63f765df6f6d328aa4b61dba10)
+    * Using the native CMake package of ROOT, see
+      https://root.cern/manual/integrate_root_into_my_cmake_project/
+    * ROOT targets **MUST BE** prefixed with `ROOT::` now, see
+      https://root.cern/manual/integrate_root_into_my_cmake_project/#full-example-event-project
+    * Explicitely `include(ROOTMacros)` after your `find_package2(... ROOT ...)`
+      now
+    * Dropped `ROOT_VERSION_NUMBER`, use `ROOT_VERSION` (which is the dotted
+      version number) and [`VERSION_GREATER`/etc](https://cmake.org/cmake/help/latest/command/if.html#version-comparisons)
+      instead
+    * Dropped `ROOTSYS`, use ROOT CMake targets instead
+  * Some CMake macros have been factored out into the
+    [FairCMakeModules](https://github.com/FairRootGroup/FairCMakeModules)
+    project which is required by FairRoot
+    * FairSoft `apr21` and later ship it (see alternative
+      [installation methods](https://fairrootgroup.github.io/FairCMakeModules/latest/installation.html))
+    * `find_package2` has moved to [`FairFindPackage2`](https://fairrootgroup.github.io/FairCMakeModules/latest/module/FairFindPackage2.html).
+      To use it in your code, perform something like this:
+      ```cmake
+      find_package(FairCMakeModules 1.0 REQUIRED)
+      include(FairFindPackage2)
+      ```
+    * Dropped Color Codes and `pad()`, use [`FairFormattedOutput` from FairCMakeModules](https://fairrootgroup.github.io/FairCMakeModules/latest/module/FairFormattedOutput.html)
+      instead
+      * Note that [`fair_pad()`](https://fairrootgroup.github.io/FairCMakeModules/latest/module/FairFormattedOutput.html#fair-pad)
+        needs the width argument to be incremented by 1, and the `COLOR` option
+        takes no argument
+  * Dropped `Generate_Exe_Script()`, it was never meant for external use
+  * Dropped `GENERATE_TEST_SCRIPT()`, replace it with a locally maintained solution
+    * Consider using `source @FairRoot_BINDIR@/FairRootConfig.sh -p`
+  * Dropped `Generate_Version_Info()`
+    * If you just need to generate some files with your version number in it,
+      use the standard [`configure_file`](https://cmake.org/cmake/help/latest/command/configure_file.html)
+      CMake command.
+    * Alternatively, consider creating a [proper CMake Package](https://cmake.org/cmake/help/latest/manual/cmake-packages.7.html#creating-packages)
+      with `configure_package_config_file()`, and `write_basic_package_version_file()`.
+    * If you need the "git version", use
+      [`fair_get_git_version()` from FairCMakeModules](https://fairrootgroup.github.io/FairCMakeModules/latest/module/FairProjectConfig.html#fair-get-git-version)
+      in addition.
+  * Renamed our `ROOT_GENERATE_DICTIONARY()` to `FAIRROOT_GENERATE_DICTIONARY()`
+  * Dropped build switch `BUILD_UNITTESTS`, it was in conflict with the CMake
+    standard switch [`BUILD_TESTING` from the CTest module](https://cmake.org/cmake/help/latest/module/CTest.html)
+
+* C++
+  * `fEvtHeader` member variable now is a private unique pointer owned by
+    `FairRun`. To access the event header, use the public member function
+    `GetEventHeader()`.
+  * Dropped headers:
+    * `basemq/baseMQtools/baseMQtools.h`
+    * `basemq/policies/Sampler/FairMQFileSource.h`
+    * `basemq/policies/Sampler/FairSourceMQInterface.h`
+    * `basemq/policies/Sampler/SimpleTreeReader.h`
+    * `basemq/policies/Serialization/BinaryBaseClassSerializer.h`
+    * `basemq/policies/Storage/BinaryOutFileManager.h`
+    * `basemq/policies/Storage/BoostDataSaver.h`
+    * `basemq/policies/Storage/RootOutFileManager.h`
+    * `basemq/policies/Storage/TriviallyCopyableDataSaver.h`
+    * `basemq/policies/Serialization/IOPolicy.h`
+  * The following files/classes have been moved to the example where they are used and renamed:
+    * `basemq/devices/FairMQProcessor.h` -> `examples/advanced/Tutorial3/MQ/processor.cxx`
+    * `basemq/devices/FairMQSampler.h` -> `examples/advanced/Tutorial3/MQ/sampler.cxx`
+    * `basemq/tasks/FairMQProcessorTask.h` -> `examples/advanced/Tutorial3/MQ/processorTask/ProcessorTask.h`
+    * `basemq/tasks/FairMQSamplerTask.h` -> `examples/advanced/Tutorial3/MQ/samplerTask/SamplerTask.h`
 
 ### Deprecations
 
-This release of FairRoot deprecates many APIs for various
-reasons. If you think you really require some API, please
-file an issue, so that we can see how to handle this.
+If you think you really require a deprecated API, please
+[file an issue](https://github.com/FairRootGroup/FairRoot/issues/new).
 
-* Deprecating MbsAPI
-  * We plan to remove it completely in the next major release.
-  * If you need it, speak up NOW.
-  * It is disabled by default in this release.
-  * It can still be enabled with `-DBUILD_MBS=ON`.
-* Deprecated Proof relaled classes
-  * Proof was deprecated by ROOT
-  * The affected code in FairRoot is disabled by default now
-  * It can still be enabled with `-DBUILD_PROOF_SUPPORT=ON`.
-* Deprecated FairEventBuilder and FairEventBuilderManager
-  * The functionality, introduced to enable event reconstruction, is not used.
-  * It can be enabled with `-DBUILD_EVENT_BUILDER=ON`.
-* Deprecated `FairRun::SetEventHeader(FairEventHeader*)`
-  * Use `FairRun::SetEventHeader(std::unique_ptr<FairEventHeader> EvHeader)`,
-    which indicates the ownership transferring.
-* Deprecated `FairRunAna::Run(Long64_t entry)`
-  * Functionality unclear due to dubious `Run(int)` and `Run(long)`.
-  * Use `FairRunAna::RunSingleEntry(Long64_t entry)` instead.
+* Deprecated MbsAPI
+  * We plan to remove it completely in the next major release
+  * Disabled by default, enable via `-DBUILD_MBS=ON`
+* Deprecated Proof related classes
+  * [Proof was deprecated in ROOT 6.26](https://github.com/root-project/root/commit/40c3e85970f83b52d6e29bb3c509498bf15fe9e5)
+  * Disabled by default, enable via `-DBUILD_PROOF_SUPPORT=ON`
+* Deprecated `FairEventBuilder` and `FairEventBuilderManager` (https://github.com/FairRootGroup/FairRoot/pull/1414)
+  * Disabled by default, enable via `-DBUILD_EVENT_BUILDER=ON`
+* Deprecated `FairRun::SetEventHeader(FairEventHeader*)`, use
+  `FairRun::SetEventHeader(std::unique_ptr<FairEventHeader> EvHeader)` instead
+  * Clarified ownership semantics
+* Deprecated `FairRunAna::Run(Long64_t entry)`, use
+  `FairRunAna::RunSingleEntry(Long64_t entry)` instead
+  * Semantics were unclear due to dubious `Run(int)` and `Run(long)`
 
 ### Other Notable Changes
-* We have restuctured the main FairRoot folder by moving all the public components to the new '/fairroot/' folder.
+
+* Restructured the source tree by moving all public components to the new
+  '/fairroot' folder
 * Consider calling `fairroot_check_root_cxxstd_compatibility()`
-  in your `CMakeLists.txt`.
-* `fairsoft-config` isn't searched for and not needed any more.
+  in your `CMakeLists.txt`
+* `fairsoft-config` isn't searched for and not needed any more
 
 ### Example Changes in Experiment Repos
+
 * https://github.com/R3BRootGroup/R3BRoot/pull/413
 
-## 18.8.2 - 2023-03-01
+## 18.8.2 - 2024-03-01
 
 ### Bug fixes
 * Fix wrong init order in eventdisplay.
