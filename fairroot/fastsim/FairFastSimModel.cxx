@@ -126,15 +126,15 @@ void FairFastSimModel::DoIt(const G4FastTrack& fastTrack, G4FastStep& fastStep)
         G4double len = 0.;
         G4double ek = particle->Ek() * 1000.;
 
-        fastStep.SetPrimaryTrackFinalPosition(pos, false);
-        fastStep.SetPrimaryTrackFinalTime(tim);
-        fastStep.SetPrimaryTrackFinalProperTime(tim);
-        fastStep.SetPrimaryTrackFinalMomentum(mom, false);
-        fastStep.SetPrimaryTrackFinalKineticEnergy(ek);
+        fastStep.ProposePrimaryTrackFinalPosition(pos, false);
+        fastStep.ProposePrimaryTrackFinalTime(tim);
+        fastStep.ProposePrimaryTrackFinalProperTime(tim);
+        fastStep.ProposePrimaryTrackFinalMomentumDirection(mom, false);
+        fastStep.ProposePrimaryTrackFinalKineticEnergy(ek);
         //    fastStep.SetPrimaryTrackFinalKineticEnergyAndDirection (G4double, const G4ThreeVector &, G4bool
         //    localCoordinates=true);
-        fastStep.SetPrimaryTrackFinalPolarization(pol, false);
-        fastStep.SetPrimaryTrackPathLength(len);
+        fastStep.ProposePrimaryTrackFinalPolarization(pol, false);
+        fastStep.ProposePrimaryTrackPathLength(len);
 
         if (FairTrajFilter::Instance()->IsAccepted(particle)) {
             FairTrajFilter::Instance()->GetCurrentTrk()->AddPoint(
