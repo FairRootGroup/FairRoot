@@ -56,7 +56,7 @@ struct Processor : fair::mq::Device
                 partsOut.AddPart(std::move(partsIn.At(0)));
                 partsOut.AddPart(NewMessage());
 
-                BoostSerializer<MyHit>().Serialize(partsOut.AtRef(1), &hits);
+                BoostSerializer<MyHit>().Serialize(*(partsOut.At(1)), &hits);
                 if (Send(partsOut, "data2") >= 0) {
                     sentMsgs++;
                 }

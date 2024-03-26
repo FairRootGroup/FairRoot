@@ -66,7 +66,7 @@ void FairMQRunDevice::SendBranches(FairOnlineSink& sink)
 
     TList* branchNameList = FairRootManager::Instance()->GetBranchNameList();
 
-    for (auto& mi : fChannels) {
+    for (auto& mi : GetChannels()) {
         LOG(debug) << "trying channel >" << mi.first << "<";
 
         fair::mq::Parts parts;
