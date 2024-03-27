@@ -11,8 +11,9 @@
 #include <Rtypes.h>    // for Int_t, Text_t, UInt_t, etc
 #include <TNamed.h>    // for TNamed
 #include <TString.h>   // for TString
-#include <iosfwd>      // for fstream
-#include <stdio.h>     // for sprintf, sscanf
+#include <fairlogger/Logger.h>
+#include <iosfwd>    // for fstream
+#include <stdio.h>   // for sprintf, sscanf
 
 class TList;
 using std::fstream;
@@ -101,8 +102,13 @@ inline void FairRtdbRun::setRefRun(Int_t r)
     if (r == -1) {
         refRun = "";
     } else {
-        char name[255];
-        sprintf(name, "%i", r);
+        int maxbuf{255};
+        char name[maxbuf];
+
+        int result_length = snprintf(name, maxbuf - 1, "%i", r);
+        if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+            LOG(fatal) << "Buffer overrun in snprintf.";
+        }
         refRun = name;
     }
 }

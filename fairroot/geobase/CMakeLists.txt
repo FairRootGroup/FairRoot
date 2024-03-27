@@ -60,6 +60,7 @@ target_link_libraries(${target}
 
   PRIVATE
   FairRoot::Tools
+  FairLogger::FairLogger
 
   ROOT::Geom
   ROOT::Graf3d # TRotMatrix

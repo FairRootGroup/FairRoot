@@ -30,9 +30,10 @@
 #include "FairGeoSet.h"       // for FairGeoSet
 #include "FairGeoShapes.h"    // for FairGeoShapes
 
-#include <TClass.h>       // for TClass
-#include <TList.h>        // for TList
-#include <TObjArray.h>    // for TObjArray
+#include <TClass.h>      // for TClass
+#include <TList.h>       // for TList
+#include <TObjArray.h>   // for TObjArray
+#include <fairlogger/Logger.h>
 #include <iostream>       // for operator<<, basic_ostream, etc
 #include <stdio.h>        // for sprintf
 #include <string.h>       // for strcmp
@@ -100,7 +101,10 @@ void FairGeoInterface::addGeoModule(FairGeoSet* pSet)
     pSet->setMasterNodes(masterNodes);
     nActualSets++;
 }
-void FairGeoInterface::setMediaFile(const char* file) { media->setInputFile(file); }
+void FairGeoInterface::setMediaFile(const char* file)
+{
+    media->setInputFile(file);
+}
 
 void FairGeoInterface::addInputFile(const char* file)
 {
@@ -428,46 +432,83 @@ Bool_t FairGeoInterface::connectOutput(const char* name)
     if (output) {
         if (strcmp(output->IsA()->GetName(), "FairGeoAsciiIo") == 0) {
             TString fName(name);
-            char buf[80];
+            int maxbuf{80};
+            char buf[maxbuf];
             struct tm* newtime;
             time_t t;
             time(&t);
             newtime = localtime(&t);
             if (newtime->tm_mday < 10) {
-                sprintf(buf, "_0%i", newtime->tm_mday);
+                int result_length = snprintf(buf, maxbuf - 1, "_0%i", newtime->tm_mday);
+                if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+                    LOG(fatal) << "Buffer overrun in snprintf.";
+                }
             } else {
-                sprintf(buf, "_%i", newtime->tm_mday);
+                int result_length = snprintf(buf, maxbuf - 1, "_%i", newtime->tm_mday);
+                if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+                    LOG(fatal) << "Buffer overrun in snprintf.";
+                }
             }
             fName = fName + buf;
             if (newtime->tm_mon < 9) {
-                sprintf(buf, "0%i", newtime->tm_mon + 1);
+                int result_length = snprintf(buf, maxbuf - 1, "0%i", newtime->tm_mon + 1);
+                if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+                    LOG(fatal) << "Buffer overrun in snprintf.";
+                }
             } else {
-                sprintf(buf, "%i", newtime->tm_mon + 1);
+                int result_length = snprintf(buf, maxbuf - 1, "%i", newtime->tm_mon + 1);
+                if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+                    LOG(fatal) << "Buffer overrun in snprintf.";
+                }
             }
             fName = fName + buf;
             Int_t y = newtime->tm_year - 100;
             if (y < 10) {
-                sprintf(buf, "0%i", y);
+                int result_length = snprintf(buf, maxbuf - 1, "0%i", y);
+                if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+                    LOG(fatal) << "Buffer overrun in snprintf.";
+                }
             } else {
-                sprintf(buf, "%i", y);
+                int result_length = snprintf(buf, maxbuf - 1, "%i", y);
+                if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+                    LOG(fatal) << "Buffer overrun in snprintf.";
+                }
             }
             fName = fName + buf;
             if (newtime->tm_hour < 10) {
-                sprintf(buf, "0%i", newtime->tm_hour);
+                int result_length = snprintf(buf, maxbuf - 1, "0%i", newtime->tm_hour);
+                if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+                    LOG(fatal) << "Buffer overrun in snprintf.";
+                }
             } else {
-                sprintf(buf, "%i", newtime->tm_hour);
+                int result_length = snprintf(buf, maxbuf - 1, "%i", newtime->tm_hour);
+                if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+                    LOG(fatal) << "Buffer overrun in snprintf.";
+                }
             }
             fName = fName + buf;
             if (newtime->tm_min < 10) {
-                sprintf(buf, "0%i", newtime->tm_min);
+                int result_length = snprintf(buf, maxbuf - 1, "0%i", newtime->tm_min);
+                if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+                    LOG(fatal) << "Buffer overrun in snprintf.";
+                }
             } else {
-                sprintf(buf, "%i", newtime->tm_min);
+                int result_length = snprintf(buf, maxbuf - 1, "%i", newtime->tm_min);
+                if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+                    LOG(fatal) << "Buffer overrun in snprintf.";
+                }
             }
             fName = fName + buf;
             if (newtime->tm_sec < 10) {
-                sprintf(buf, "0%i", newtime->tm_sec);
+                int result_length = snprintf(buf, maxbuf - 1, "0%i", newtime->tm_sec);
+                if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+                    LOG(fatal) << "Buffer overrun in snprintf.";
+                }
             } else {
-                sprintf(buf, "%i", newtime->tm_sec);
+                int result_length = snprintf(buf, maxbuf - 1, "%i", newtime->tm_sec);
+                if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+                    LOG(fatal) << "Buffer overrun in snprintf.";
+                }
             }
             fName = fName + buf + ".geo";
             output->open(fName, "out");
