@@ -21,7 +21,6 @@
 #include "FairParSet.h"   // for FairParSet
 
 #include <fairlogger/Logger.h>
-
 #include <fstream>    // for fstream
 #include <stdio.h>    // for printf, sprintf
 #include <string.h>   // for strlen, strncmp
@@ -48,9 +47,9 @@ Bool_t FairDetParAsciiFileIo::findContainer(const Text_t* name)
     Text_t buf[maxbuf];
     Text_t buf2[maxbuf];
 
-    int result_length = snprintf(buf2, maxbuf-1, "%s%s%s", "[", name, "]");
+    int result_length = snprintf(buf2, maxbuf - 1, "%s%s%s", "[", name, "]");
     if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
-      LOG(fatal) << "Buffer overrun in snprintf.";
+        LOG(fatal) << "Buffer overrun in snprintf.";
     }
 
     // cout << " buf2 " <<  buf2 << endl;
@@ -174,7 +173,7 @@ Bool_t FairDetParAsciiFileIo::findContainer(const Text_t* name) {
   const Int_t maxbuf=4000;
   Text_t buf[maxbuf];
   Text_t buf2[maxbuf];
-  
+
   int result_length = snprintf(buf2, maxbuf-1, "%s%s%s", "[", name, "]");
   if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
     LOG(fatal) << "Buffer overrun in snprintf.";

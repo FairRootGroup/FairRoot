@@ -109,9 +109,9 @@ FairIonGenerator::FairIonGenerator(Int_t z,
   */
     int maxbuf{20};
     char buffer[maxbuf];
-    int result_length = snprintf(buffer, maxbuf-1, "FairIon%d", fgNIon);
+    int result_length = snprintf(buffer, maxbuf - 1, "FairIon%d", fgNIon);
     if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
-      LOG(fatal) << "Buffer overrun in snprintf.";
+        LOG(fatal) << "Buffer overrun in snprintf.";
     }
     fIon = new FairIon(buffer, z, a, q);
     FairRunSim* run = FairRunSim::Instance();
@@ -145,9 +145,15 @@ FairIonGenerator::~FairIonGenerator()
     // if (fIon) delete fIon;
 }
 
-void FairIonGenerator::SetExcitationEnergy(Double_t eExc) { fIon->SetExcEnergy(eExc); }
+void FairIonGenerator::SetExcitationEnergy(Double_t eExc)
+{
+    fIon->SetExcEnergy(eExc);
+}
 
-void FairIonGenerator::SetMass(Double_t mass) { fIon->SetMass(mass); }
+void FairIonGenerator::SetMass(Double_t mass)
+{
+    fIon->SetMass(mass);
+}
 
 Bool_t FairIonGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {

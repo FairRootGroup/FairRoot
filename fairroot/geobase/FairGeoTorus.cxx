@@ -25,10 +25,9 @@
 #include "FairGeoVector.h"      // for FairGeoVector
 #include "FairGeoVolume.h"      // for FairGeoVolume
 
-#include <fairlogger/Logger.h>
-
 #include <TArrayD.h>   // for TArrayD
 #include <TString.h>   // for TString
+#include <fairlogger/Logger.h>
 #include <fstream>
 #include <ostream>    // for basic_ostream::write
 #include <stdio.h>    // for printf, sprintf, sscanf
@@ -112,9 +111,9 @@ Bool_t FairGeoTorus::writePoints(std::fstream* pFile, FairGeoVolume* volu)
     Text_t buf[maxbuf];
     for (Int_t i = 0; i < nPoints; i++) {
         FairGeoVector& v = *(volu->getPoint(i));
-        int result_length = snprintf(buf, maxbuf-1, "%9.3f\n", v(0));
+        int result_length = snprintf(buf, maxbuf - 1, "%9.3f\n", v(0));
         if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
-          LOG(fatal) << "Buffer overrun in snprintf.";
+            LOG(fatal) << "Buffer overrun in snprintf.";
         }
         pFile->write(buf, strlen(buf));
     }

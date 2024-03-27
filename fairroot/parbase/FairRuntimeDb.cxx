@@ -275,9 +275,9 @@ FairRtdbRun* FairRuntimeDb::getRun(Int_t id)
     int maxbuf{255};
     char name[maxbuf];
 
-    int result_length = snprintf(name, maxbuf-1, "%i", id);
+    int result_length = snprintf(name, maxbuf - 1, "%i", id);
     if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
-      LOG(fatal) << "Buffer overrun in snprintf.";
+        LOG(fatal) << "Buffer overrun in snprintf.";
     }
 
     return static_cast<FairRtdbRun*>((runs->FindObject(name)));
@@ -302,7 +302,10 @@ void FairRuntimeDb::removeRun(Text_t* name)
     }
 }
 
-void FairRuntimeDb::clearRunList() { runs->Delete(); }
+void FairRuntimeDb::clearRunList()
+{
+    runs->Delete();
+}
 
 void FairRuntimeDb::writeVersions()
 {

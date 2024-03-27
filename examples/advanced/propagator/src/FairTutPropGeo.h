@@ -15,9 +15,9 @@
 class FairTutPropGeo : public FairGeoSet
 {
   protected:
-    static constexpr int maxbuf{20}; //!
-    char modName[maxbuf]{"Pixel"};   // name of module
-    char eleName[maxbuf]{"Pixel"};   // substring for elements in module
+    static constexpr int maxbuf{20};   //!
+    char modName[maxbuf]{"Pixel"};     // name of module
+    char eleName[maxbuf]{"Pixel"};     // substring for elements in module
   public:
     FairTutPropGeo();
     ~FairTutPropGeo() override = default;

@@ -37,11 +37,10 @@
 #include "FairGeoVector.h"      // for FairGeoVector
 #include "FairGeoVolume.h"      // for FairGeoVolume
 
-#include <fairlogger/Logger.h>
-
 #include <TArrayD.h>     // for TArrayD
 #include <TMathBase.h>   // for Abs
 #include <TString.h>     // for TString
+#include <fairlogger/Logger.h>
 #include <fstream>
 #include <ostream>    // for basic_ostream::write
 #include <stdio.h>    // for printf, sprintf, sscanf
@@ -106,14 +105,14 @@ Bool_t FairGeoTubs::writePoints(std::fstream* pFile, FairGeoVolume* volu)
     for (Int_t i = 0; i < nPoints; i++) {
         FairGeoVector& v = *(volu->getPoint(i));
         if (i == 0 || i == 2) {
-            int result_length = snprintf(buf, maxbuf-1, "%9.3f%10.3f%10.3f\n", v(0), v(1), v(2));
+            int result_length = snprintf(buf, maxbuf - 1, "%9.3f%10.3f%10.3f\n", v(0), v(1), v(2));
             if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
-              LOG(fatal) << "Buffer overrun in snprintf.";
+                LOG(fatal) << "Buffer overrun in snprintf.";
             }
         } else {
-            int result_length = snprintf(buf, maxbuf-1, "%9.3f%10.3f\n", v(0), v(1));
+            int result_length = snprintf(buf, maxbuf - 1, "%9.3f%10.3f\n", v(0), v(1));
             if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
-              LOG(fatal) << "Buffer overrun in snprintf.";
+                LOG(fatal) << "Buffer overrun in snprintf.";
             }
         }
         pFile->write(buf, strlen(buf));

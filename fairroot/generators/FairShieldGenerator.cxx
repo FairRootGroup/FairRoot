@@ -51,7 +51,10 @@ FairShieldGenerator::FairShieldGenerator(const char* fileName)
     fInputFile = new std::ifstream(fFileName);
 }
 
-FairShieldGenerator::~FairShieldGenerator() { CloseInput(); }
+FairShieldGenerator::~FairShieldGenerator()
+{
+    CloseInput();
+}
 
 Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
@@ -103,9 +106,9 @@ Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
         if (iPid == 1000) {
             int maxbuf{20};
             char ionName[maxbuf];
-            int result_length = snprintf(ionName, maxbuf-1, "Ion_%d_%d", iMass, iCharge);
+            int result_length = snprintf(ionName, maxbuf - 1, "Ion_%d_%d", iMass, iCharge);
             if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
-              LOG(fatal) << "Buffer overrun in snprintf.";
+                LOG(fatal) << "Buffer overrun in snprintf.";
             }
             TParticlePDG* part = fPDG->GetParticle(ionName);
             if (!part) {
@@ -158,9 +161,9 @@ Int_t FairShieldGenerator::RegisterIons()
             if (iPid == 1000) {   // ion
                 int maxbuf{20};
                 char buffer[maxbuf];
-                int result_length = snprintf(buffer, maxbuf-1, "Ion_%d_%d", iMass, iCharge);
+                int result_length = snprintf(buffer, maxbuf - 1, "Ion_%d_%d", iMass, iCharge);
                 if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
-                  LOG(fatal) << "Buffer overrun in snprintf.";
+                    LOG(fatal) << "Buffer overrun in snprintf.";
                 }
                 TString ionName(buffer);
                 if (fIonMap.find(ionName) == fIonMap.end()) {   // new ion

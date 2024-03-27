@@ -8,7 +8,6 @@
 #include "PixelGeo.h"
 
 #include <fairlogger/Logger.h>
-
 #include <stdio.h>   // for sprintf
 
 PixelGeo::PixelGeo()
@@ -28,9 +27,9 @@ const char* PixelGeo::getModuleName(Int_t m)
       ASCII file should start with Pixel otherwise they will
       not be constructed
   */
-    int result_length = snprintf(modName, maxbuf-1, "Pixel%i", m + 1);
+    int result_length = snprintf(modName, maxbuf - 1, "Pixel%i", m + 1);
     if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
-      LOG(fatal) << "Buffer overrun in snprintf.";
+        LOG(fatal) << "Buffer overrun in snprintf.";
     }
     return modName;
 }
@@ -38,9 +37,9 @@ const char* PixelGeo::getModuleName(Int_t m)
 const char* PixelGeo::getEleName(Int_t m)
 {
     /** Returns the element name of Det number m */
-    int result_length = snprintf(eleName, maxbuf-1, "Pixel%i", m + 1);
+    int result_length = snprintf(eleName, maxbuf - 1, "Pixel%i", m + 1);
     if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
-      LOG(fatal) << "Buffer overrun in snprintf.";
+        LOG(fatal) << "Buffer overrun in snprintf.";
     }
     return eleName;
 }
