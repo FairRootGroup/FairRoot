@@ -20,6 +20,8 @@
 
 #include "FairParSet.h"   // for FairParSet
 
+#include <fairlogger/Logger.h>
+
 #include <fstream>    // for fstream
 #include <stdio.h>    // for printf, sprintf
 #include <string.h>   // for strlen, strncmp
@@ -45,7 +47,12 @@ Bool_t FairDetParAsciiFileIo::findContainer(const Text_t* name)
     const Int_t maxbuf = 4000;
     Text_t buf[maxbuf];
     Text_t buf2[maxbuf];
-    sprintf(buf2, "%s%s%s", "[", name, "]");
+
+    int result_length = snprintf(buf2, maxbuf-1, "%s%s%s", "[", name, "]");
+    if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+      LOG(fatal) << "Buffer overrun in snprintf.";
+    }
+
     // cout << " buf2 " <<  buf2 << endl;
     pFile->clear();
     pFile->seekg(0, ios::beg);
@@ -163,20 +170,25 @@ sepLine=
 }
 
 Bool_t FairDetParAsciiFileIo::findContainer(const Text_t* name) {
-// searches the container in the file
-const Int_t maxbuf=4000;
-Text_t buf[maxbuf];
-Text_t buf2[maxbuf];
-sprintf(buf2,"%s%s%s","[",name,"]");
-pFile->clear();
-pFile->seekg(0,ios::beg);
-while (!pFile->eof()) {
-pFile->getline(buf,maxbuf);
-if (buf[0]!='[') continue;
-if (!strncmp(buf,buf2,strlen(buf2))) break;
-}
-if (pFile->eof()) return kFALSE;
-return kTRUE;
+  // searches the container in the file
+  const Int_t maxbuf=4000;
+  Text_t buf[maxbuf];
+  Text_t buf2[maxbuf];
+  
+  int result_length = snprintf(buf2, maxbuf-1, "%s%s%s", "[", name, "]");
+  if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+    LOG(fatal) << "Buffer overrun in snprintf.";
+  }
+
+  pFile->clear();
+  pFile->seekg(0,ios::beg);
+  while (!pFile->eof()) {
+    pFile->getline(buf,maxbuf);
+    if (buf[0]!='[') continue;
+    if (!strncmp(buf,buf2,strlen(buf2))) break;
+  }
+  if (pFile->eof()) return kFALSE;
+  return kTRUE;
 }
 
 void FairDetParAsciiFileIo::writeHeader(const Text_t* name, const Text_t* context,

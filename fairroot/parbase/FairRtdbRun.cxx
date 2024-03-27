@@ -65,8 +65,13 @@ FairRtdbRun::FairRtdbRun(Int_t r, Int_t rr)
     , refRun("")
 {
     parVersions->SetName("parVersions");
-    char name[255];
-    sprintf(name, "%i", r);
+    int maxbuf{255};
+    char name[maxbuf];
+    int result_length = snprintf(name, maxbuf-1, "%i", r);
+    if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+      LOG(fatal) << "Buffer overrun in snprintf.";
+    }
+
     SetName(name);
     setRefRun(rr);
 }

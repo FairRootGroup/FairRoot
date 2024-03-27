@@ -16,8 +16,9 @@
 class PixelGeo : public FairGeoSet
 {
   protected:
-    char modName[20]{"Pixel"};   // name of module
-    char eleName[20]{"Pixel"};   // substring for elements in module
+    static constexpr int maxbuf{20}; //!
+    char modName[maxbuf]{"Pixel"};   // name of module
+    char eleName[maxbuf]{"Pixel"};   // substring for elements in module
 
   public:
     PixelGeo();

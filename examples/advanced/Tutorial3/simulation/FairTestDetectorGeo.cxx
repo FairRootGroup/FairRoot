@@ -7,6 +7,8 @@
  ********************************************************************************/
 #include "FairTestDetectorGeo.h"
 
+#include <fairlogger/Logger.h>
+
 #include <cstdio>   // for sprintf
 
 FairTestDetectorGeo::FairTestDetectorGeo()
@@ -26,13 +28,19 @@ const char* FairTestDetectorGeo::getModuleName(Int_t m)
         ASCII file should start with FairTestDetector otherwise they will
         not be constructed
     */
-    sprintf(modName, "torino%i", m + 1);
+    int result_length = snprintf(modName, maxbuf-1, "torino%i", m + 1);
+    if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+      LOG(fatal) << "Buffer overrun in snprintf.";
+    }
     return modName;
 }
 
 const char* FairTestDetectorGeo::getEleName(Int_t m)
 {
     /** Returns the element name of Det number m */
-    sprintf(eleName, "torino%i", m + 1);
+    int result_length = snprintf(eleName, maxbuf-1, "torino%i", m + 1);
+    if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+      LOG(fatal) << "Buffer overrun in snprintf.";
+    }
     return eleName;
 }

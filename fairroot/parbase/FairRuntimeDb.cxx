@@ -272,8 +272,14 @@ FairRtdbRun* FairRuntimeDb::addRun(Int_t runId, Int_t refId)
 FairRtdbRun* FairRuntimeDb::getRun(Int_t id)
 {
     // returns a pointer to the run called by the run id
-    char name[255];
-    sprintf(name, "%i", id);
+    int maxbuf{255};
+    char name[maxbuf];
+
+    int result_length = snprintf(name, maxbuf-1, "%i", id);
+    if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+      LOG(fatal) << "Buffer overrun in snprintf.";
+    }
+
     return static_cast<FairRtdbRun*>((runs->FindObject(name)));
 }
 

@@ -16,8 +16,9 @@
 class FairTutorialDet4Geo : public FairGeoSet
 {
   protected:
-    char modName[20]{"tutdet"};   // name of module
-    char eleName[20]{"tutdet"};   // substring for elements in module
+    static constexpr int maxbuf{20}; //!
+    char modName[maxbuf]{"tutdet"};   // name of module
+    char eleName[maxbuf]{"tutdet"};   // substring for elements in module
 
   public:
     FairTutorialDet4Geo();

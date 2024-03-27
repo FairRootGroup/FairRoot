@@ -101,8 +101,12 @@ Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
         // Case ion
         if (iPid == 1000) {
-            char ionName[20];
-            sprintf(ionName, "Ion_%d_%d", iMass, iCharge);
+            int maxbuf{20};
+            char ionName[maxbuf];
+            int result_length = snprintf(ionName, maxbuf-1, "Ion_%d_%d", iMass, iCharge);
+            if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+              LOG(fatal) << "Buffer overrun in snprintf.";
+            }
             TParticlePDG* part = fPDG->GetParticle(ionName);
             if (!part) {
                 LOG(warn) << "FairShieldGenerator::ReadEvent: Cannot find " << ionName << " in database!";
@@ -152,8 +156,12 @@ Int_t FairShieldGenerator::RegisterIons()
         for (Int_t iTrack = 0; iTrack < nTracks; iTrack++) {
             *fInputFile >> iPid >> iMass >> iCharge >> px >> py >> pz;
             if (iPid == 1000) {   // ion
-                char buffer[20];
-                sprintf(buffer, "Ion_%d_%d", iMass, iCharge);
+                int maxbuf{20};
+                char buffer[maxbuf];
+                int result_length = snprintf(buffer, maxbuf-1, "Ion_%d_%d", iMass, iCharge);
+                if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+                  LOG(fatal) << "Buffer overrun in snprintf.";
+                }
                 TString ionName(buffer);
                 if (fIonMap.find(ionName) == fIonMap.end()) {   // new ion
                     FairIon* ion = new FairIon(ionName, iCharge, iMass, iCharge);

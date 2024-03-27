@@ -107,8 +107,12 @@ FairIonGenerator::FairIonGenerator(Int_t z,
   fVy   = vy;
   fVz   = vz;
   */
-    char buffer[20];
-    sprintf(buffer, "FairIon%d", fgNIon);
+    int maxbuf{20};
+    char buffer[maxbuf];
+    int result_length = snprintf(buffer, maxbuf-1, "FairIon%d", fgNIon);
+    if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+      LOG(fatal) << "Buffer overrun in snprintf.";
+    }
     fIon = new FairIon(buffer, z, a, q);
     FairRunSim* run = FairRunSim::Instance();
     if (!run) {

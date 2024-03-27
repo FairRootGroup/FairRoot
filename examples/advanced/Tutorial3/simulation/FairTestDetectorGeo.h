@@ -16,8 +16,9 @@
 class FairTestDetectorGeo : public FairGeoSet
 {
   protected:
-    char modName[20]{"torino"};   // name of module
-    char eleName[20]{"torino"};   // substring for elements in module
+    static constexpr int maxbuf{20}; //!
+    char modName[maxbuf]{"torino"};   // name of module
+    char eleName[maxbuf]{"torino"};   // substring for elements in module
   public:
     FairTestDetectorGeo();
     ~FairTestDetectorGeo() override = default;

@@ -27,6 +27,8 @@
 #include "FairRtdbRun.h"         // for FairParVersion, FairRtdbRun
 #include "FairRuntimeDb.h"       // for FairRuntimeDb
 
+#include <fairlogger/Logger.h>
+
 #include <TDirectory.h>   // for TDirectory, gDirectory
 #include <TKey.h>         // for TKey
 #include <TROOT.h>        // for TROOT, gROOT
@@ -134,8 +136,14 @@ TObject *FairDetParRootFileIo::findContainer(Text_t *name, Int_t vers)
     // This funtion uses internally the ROOT function FindObject(Text_t*), which
     // creates a new object. The calling function must therefore delete the
     // object after usage!
-    Text_t cn[80];
-    sprintf(cn, "%s;%i", name, vers);
+    int maxbuf{80};
+    Text_t cn[maxbuf];
+    
+    int result_length = snprintf(cn, maxbuf-1, "%s;%i", name, vers);
+    if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+      LOG(fatal) << "Buffer overrun in snprintf.";
+    }
+
     pFile->cd();
     TObject *p = gROOT->FindObject(cn);
     return p;

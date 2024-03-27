@@ -7,6 +7,8 @@
  ********************************************************************************/
 #include "FairTutorialDet2Geo.h"
 
+#include <fairlogger/Logger.h>
+
 #include <cstdio>
 
 FairTutorialDet2Geo::FairTutorialDet2Geo()
@@ -24,13 +26,19 @@ const char* FairTutorialDet2Geo::getModuleName(Int_t m)
       ASCII file should start with TutorialDet otherwise they will
       not be constructed
   */
-    sprintf(modName, "tutdet%i", m + 1);
+    int result_length = snprintf(modName, maxbuf-1, "tutdet%i", m + 1);
+    if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+      LOG(fatal) << "Buffer overrun in snprintf.";
+    }
     return modName;
 }
 
 const char* FairTutorialDet2Geo::getEleName(Int_t m)
 {
     /** Returns the element name of Det number m */
-    sprintf(eleName, "tutdet%i", m + 1);
+    int result_length = snprintf(eleName, maxbuf-1, "tutdet%i", m + 1);
+    if (!(result_length > 0 && result_length < static_cast<int>(maxbuf))) {
+      LOG(fatal) << "Buffer overrun in snprintf.";
+    }
     return eleName;
 }
