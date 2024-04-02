@@ -99,7 +99,13 @@ echo "Terminating topology ..."
 kill ${PIDS[TRANSPORTER]} ${PIDS[MERGER]} ${PIDS[PARMQSERVER]} ${PIDS[FILESINK]}
 for DEVICE in TRANSPORTER MERGER PARMQSERVER FILESINK
 do
-  wait ${PIDS[$DEVICE]} || { ret=$?; echo "$DEVICE failed with exit code $ret"; RC=$(($RC + $ret)); }
+  wait ${PIDS[$DEVICE]} || {
+    ret=$?
+    echo "*** $DEVICE failed with exit code $ret"
+    RC=$(($RC + $ret))
+    echo "    Last lines of log:"
+    tail -n 50 "${LOGS[$DEVICE]}" | sed -e 's/^/    | /'
+  }
 done
 echo "... terminated (RC=$RC)."
 
