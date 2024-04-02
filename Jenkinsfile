@@ -20,6 +20,7 @@ def jobMatrix(String prefix, String type, List specs) {
     def arch = spec.arch
     def check = spec.getOrDefault("check", null)
     def extra = spec.getOrDefault("extra", null)
+    def image = spec.getOrDefault("image", null)
 
     nodes[label] = {
       node(selector) {
@@ -59,6 +60,9 @@ def jobMatrix(String prefix, String type, List specs) {
             sh "bash ${jobscript}"
           } else {
             def container = "${os}.${ver}.sif"
+            if (image) {
+              container = "${os}.${ver}.${image}.sif"
+            }
             sh(label: "Create Slurm Job Script", script: """
               exec tests/ci/slurm-create-jobscript.sh "${label}" "${container}" "${jobscript}" ${ctestcmd}
             """)
@@ -105,29 +109,33 @@ pipeline{
       steps{
         script {
           def builds = jobMatrix('alfa-ci', 'build', [
-            // [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'apr21_patches'],
-            // [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'apr21_patches_mt'],
-            [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches'],
-            [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches_mt'],
-            [os: 'debian',     ver: '11',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches'],
-            [os: 'debian',     ver: '11',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches_mt'],
-            [os: 'debian',     ver: '11',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr22_patches'],
-            [os: 'debian',     ver: '11',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr22_patches_mt'],
-            // [os: 'ubuntu',     ver: '20.04', arch: 'x86_64', compiler: 'gcc-9',           fairsoft: 'apr21_patches'],
-            // [os: 'ubuntu',     ver: '20.04', arch: 'x86_64', compiler: 'gcc-9',           fairsoft: 'apr21_patches_mt'],
-            [os: 'ubuntu',   ver: 'rolling', arch: 'x86_64', compiler: 'current',         fairsoft: 'dev',
-                             check: 'warnings',
-                             extra: '-DUSE_CLANG_TIDY=ON -DBUILD_MBS=OFF -DBUILD_PROOF_SUPPORT=OFF'],
-            [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches'],
-            [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches_mt'],
-            [os: 'macos',      ver: '13',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '24.01'],
-            [os: 'macos',      ver: '14',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '24.01'],
-            [os: 'macos',      ver: '14',    arch: 'arm64',  compiler: 'apple-clang-15',  fairsoft: '24.01'],
-            // [os: 'macos',      ver: '13',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '22.11'],
-            // [os: 'macos',      ver: '13',    arch: 'arm64',  compiler: 'apple-clang-14',  fairsoft: '22.11'],
-            // [os: 'macos',      ver: '12',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '23.6'],
-            // [os: 'macos',      ver: '13',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '23.6'],
-            // [os: 'macos',      ver: '13',    arch: 'arm64',  compiler: 'apple-clang-14',  fairsoft: '23.6'],
+            [os: 'debian', ver: '10',      arch: 'x86_64', compiler: 'gcc-8',   fairsoft: 'jan24_patches',    image: 'jan24'],
+            [os: 'debian', ver: '10',      arch: 'x86_64', compiler: 'gcc-8',   fairsoft: 'jan24_patches_mt', image: 'jan24'],
+            [os: 'debian', ver: '10',      arch: 'x86_64', compiler: 'gcc-8',   fairsoft: 'nov22_patches',    image: 'nov22'],
+            [os: 'debian', ver: '10',      arch: 'x86_64', compiler: 'gcc-8',   fairsoft: 'apr22_patches',    image: 'apr22'],
+            [os: 'debian', ver: '11',      arch: 'x86_64', compiler: 'gcc-10',  fairsoft: 'jan24_patches',    image: 'jan24'],
+            [os: 'debian', ver: '11',      arch: 'x86_64', compiler: 'gcc-10',  fairsoft: 'jan24_patches_mt', image: 'jan24'],
+            [os: 'debian', ver: '11',      arch: 'x86_64', compiler: 'gcc-10',  fairsoft: 'nov22_patches',    image: 'nov22'],
+            [os: 'debian', ver: '11',      arch: 'x86_64', compiler: 'gcc-10',  fairsoft: 'apr22_patches',    image: 'apr22'],
+            [os: 'debian', ver: '12',      arch: 'x86_64', compiler: 'gcc-12',  fairsoft: 'jan24_patches',    image: 'jan24'],
+            [os: 'debian', ver: '12',      arch: 'x86_64', compiler: 'gcc-12',  fairsoft: 'jan24_patches_mt', image: 'jan24'],
+            [os: 'debian', ver: '12',      arch: 'x86_64', compiler: 'gcc-12',  fairsoft: 'nov22_patches',    image: 'nov22'],
+            [os: 'fedora', ver: '39',      arch: 'x86_64', compiler: 'gcc-13',  fairsoft: 'jan24_patches',    image: 'jan24'],
+            [os: 'fedora', ver: '39',      arch: 'x86_64', compiler: 'gcc-13',  fairsoft: 'jan24_patches_mt', image: 'jan24'],
+            [os: 'ubuntu', ver: '20.04',   arch: 'x86_64', compiler: 'gcc-9',   fairsoft: 'jan24_patches',    image: 'jan24'],
+            [os: 'ubuntu', ver: '20.04',   arch: 'x86_64', compiler: 'gcc-9',   fairsoft: 'jan24_patches_mt', image: 'jan24'],
+            [os: 'ubuntu', ver: '20.04',   arch: 'x86_64', compiler: 'gcc-9',   fairsoft: 'nov22_patches',    image: 'nov22'],
+            [os: 'ubuntu', ver: '20.04',   arch: 'x86_64', compiler: 'gcc-9',   fairsoft: 'apr22_patches',    image: 'apr22'],
+            [os: 'ubuntu', ver: '22.04',   arch: 'x86_64', compiler: 'gcc-11',  fairsoft: 'jan24_patches',    image: 'jan24'],
+            [os: 'ubuntu', ver: '22.04',   arch: 'x86_64', compiler: 'gcc-11',  fairsoft: 'jan24_patches_mt', image: 'jan24'],
+            [os: 'ubuntu', ver: '22.04',   arch: 'x86_64', compiler: 'gcc-11',  fairsoft: 'nov22_patches',    image: 'nov22'],
+            [os: 'ubuntu', ver: '22.04',   arch: 'x86_64', compiler: 'gcc-11',  fairsoft: 'apr22_patches',    image: 'apr22'],
+            [os: 'ubuntu', ver: 'rolling', arch: 'x86_64', compiler: 'current', fairsoft: 'dev',
+              check: 'warnings',
+              extra: '-DUSE_CLANG_TIDY=ON -DBUILD_MBS=OFF -DBUILD_PROOF_SUPPORT=OFF'],
+            [os: 'macos',  ver: '13',      arch: 'x86_64', compiler: 'apple-clang-14', fairsoft: '24.01'],
+            [os: 'macos',  ver: '14',      arch: 'x86_64', compiler: 'apple-clang-14', fairsoft: '24.01'],
+            [os: 'macos',  ver: '14',      arch: 'arm64',  compiler: 'apple-clang-15', fairsoft: '24.01'],
           ])
 
           def checks = jobMatrix('alfa-ci', 'check', [
