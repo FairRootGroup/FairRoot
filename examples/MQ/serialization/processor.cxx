@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH       *
+ * Copyright (C) 2023-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -56,7 +56,7 @@ struct Processor : fair::mq::Device
                 partsOut.AddPart(std::move(partsIn.At(0)));
                 partsOut.AddPart(NewMessage());
 
-                BoostSerializer<MyHit>().Serialize(partsOut.AtRef(1), &hits);
+                BoostSerializer<MyHit>().Serialize(*partsOut.At(1), &hits);
                 if (Send(partsOut, "data2") >= 0) {
                     sentMsgs++;
                 }
