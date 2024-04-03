@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -14,6 +14,7 @@
 
 #include "FairMQRunDevice.h"
 
+#include "FairMQ.h"
 #include "FairOnlineSink.h"
 #include "FairRootManager.h"
 #include "RootSerializer.h"
@@ -23,7 +24,6 @@
 #include <TObjString.h>
 #include <cstdio>   // printf
 #include <fairlogger/Logger.h>
-
 #include <mutex>   // std::mutex
 std::mutex mtx;    // mutex for critical section
 
@@ -66,7 +66,7 @@ void FairMQRunDevice::SendBranches(FairOnlineSink& sink)
 
     TList* branchNameList = FairRootManager::Instance()->GetBranchNameList();
 
-    for (auto& mi : fChannels) {
+    for (auto& mi : fairroot::GetFairMQDeviceChannels(*this)) {
         LOG(debug) << "trying channel >" << mi.first << "<";
 
         fair::mq::Parts parts;

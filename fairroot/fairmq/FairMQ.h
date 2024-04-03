@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2022-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2022-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -52,5 +52,20 @@ using TransportFactory = ::FairMQTransportFactory;
 #include <fairmq/TransportFactory.h>   // for fair::mq::TransportFactory
 
 #endif
+
+namespace fairroot
+{
+
+// see https://github.com/FairRootGroup/FairMQ/commit/5ef17fddbb6a957867cd6aca978176bc95c63508
+inline auto& GetFairMQDeviceChannels(fair::mq::Device& device)
+{
+#if FAIRMQ_VERSION_DEC < 105000
+    return device.fChannels;
+#else
+    return device.GetChannels();
+#endif
+}
+
+}   // namespace fairroot
 
 #endif   // FAIRROOT_FAIRMQ_H

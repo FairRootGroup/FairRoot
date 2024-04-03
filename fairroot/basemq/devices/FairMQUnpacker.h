@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -88,7 +88,9 @@ class FairMQUnpacker : public fair::mq::Device
         }
 
         // check if given channel exist
-        if (!fChannels.count(fInputChannelName)) {
+        try {
+            GetChannel(fInputChannelName);
+        } catch (const std::out_of_range&) {
             throw std::runtime_error(std::string("MQ-channel name '") + fInputChannelName
                                      + "' does not exist. Check the MQ-channel configuration");
         }
@@ -105,7 +107,7 @@ class FairMQUnpacker : public fair::mq::Device
 
     void Run()
     {
-        fair::mq::Channel& inputChannel = fChannels.at(fInputChannelName).at(0);
+        auto& inputChannel = GetChannel(fInputChannelName);
 
         while (!NewStatePending()) {
             auto msgSize(NewMessage());

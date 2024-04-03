@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -245,8 +245,8 @@ class FairMQLmdSampler : public fair::mq::Device
                 fair::mq::Parts parts;
 
                 // send header
-                // auto header(fTransportFactory->CreateMessage(fSubEvent, sizeof(fSubEvent),
-                // free_buffer, nullptr)); fChannels.at(chanName).at(0).SendPart(header);
+                // auto header(fTransportFactory->CreateMessage(fSubEvent, sizeof(fSubEvent), free_buffer, nullptr));
+                // GetChannel(chanName, 0).SendPart(header);
 
                 int* arraySize = new int(sebuflength);
 
