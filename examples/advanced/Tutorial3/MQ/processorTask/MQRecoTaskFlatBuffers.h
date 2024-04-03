@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -31,9 +31,9 @@ void MQRecoTask<TestDetectorFlatBuffers>::Exec(Option_t* opt)
         new ((*fRecoTask.fDigiArray)[it - digis->begin()])
             FairTestDetectorDigi((*it)->x(), (*it)->y(), (*it)->z(), (*it)->timestamp());
         static_cast<FairTestDetectorDigi*>(((*fRecoTask.fDigiArray)[it - digis->begin()]))
-            ->SetTimeStampError((*it)->timestampError());
+            ->SetTimeStampError((*it)->timestamp_error());
         // LOG(info) << (*it)->x() << " " << (*it)->y() << " " << (*it)->z() << " " << (*it)->timestamp() << " " <<
-        // (*it)->timestampError();
+        // (*it)->timestamp_error();
     }
 
     if (!fRecoTask.fDigiArray) {
@@ -53,16 +53,16 @@ void MQRecoTask<TestDetectorFlatBuffers>::Exec(Option_t* opt)
         // LOG(warn) << " " << hit->GetDetectorID() << " " << hit->GetX() << " " << hit->GetY() << " " << hit->GetZ() <<
         // " " << hit->GetDx() << " " << hit->GetDy() << " " << hit->GetDz();
         TestDetectorFlat::HitBuilder hb(*builder);
-        hb.add_detID(hit->GetDetectorID());                // detID:int
-        hb.add_mcIndex(hit->GetRefIndex());                // GetRefIndex:int
-        hb.add_x(hit->GetX());                             // x:double
-        hb.add_y(hit->GetY());                             // y:double
-        hb.add_z(hit->GetZ());                             // z:double
-        hb.add_dx(hit->GetDx());                           // dx:double
-        hb.add_dy(hit->GetDy());                           // dy:double
-        hb.add_dz(hit->GetDz());                           // dz:double
-        hb.add_timestamp(hit->GetTimeStamp());             // timestamp:double
-        hb.add_timestampError(hit->GetTimeStampError());   // timestampError:double
+        hb.add_det_id(hit->GetDetectorID());                // det_id:int
+        hb.add_mc_index(hit->GetRefIndex());                // GetRefIndex:int
+        hb.add_x(hit->GetX());                              // x:double
+        hb.add_y(hit->GetY());                              // y:double
+        hb.add_z(hit->GetZ());                              // z:double
+        hb.add_dx(hit->GetDx());                            // dx:double
+        hb.add_dy(hit->GetDy());                            // dy:double
+        hb.add_dz(hit->GetDz());                            // dz:double
+        hb.add_timestamp(hit->GetTimeStamp());              // timestamp:double
+        hb.add_timestamp_error(hit->GetTimeStampError());   // timestamp_error:double
         hits[i] = hb.Finish();
     }
     auto hvector = builder->CreateVector(hits, numEntries);

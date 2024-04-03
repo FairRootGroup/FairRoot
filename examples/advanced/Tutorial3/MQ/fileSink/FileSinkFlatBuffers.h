@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -32,7 +32,7 @@ void FileSink<TestDetectorFlatBuffers>::InitTask()
         for (auto it = hits->begin(); it != hits->end(); ++it) {
             TVector3 pos((*it)->x(), (*it)->y(), (*it)->z());
             TVector3 dpos((*it)->dx(), (*it)->dy(), (*it)->dz());
-            new ((*fOutput)[it - hits->begin()]) FairTestDetectorHit((*it)->detID(), (*it)->mcIndex(), pos, dpos);
+            new ((*fOutput)[it - hits->begin()]) FairTestDetectorHit((*it)->det_id(), (*it)->mc_index(), pos, dpos);
             // LOG(warn) << " " << (*it)->detID() << " " << (*it)->x() << " " << (*it)->y() << " " << (*it)->z() << " "
             // << (*it)->dx() << " " << (*it)->dy() << " " << (*it)->dz();
         }

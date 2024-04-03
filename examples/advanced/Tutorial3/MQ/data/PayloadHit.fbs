@@ -1,8 +1,8 @@
 namespace TestDetectorFlat;
 
 table Hit {
-  detID:int;
-  mcIndex:int;
+  det_id:int;
+  mc_index:int;
   x:double;
   y:double;
   z:double;
@@ -10,7 +10,7 @@ table Hit {
   dy:double;
   dz:double;
   timestamp:double;
-  timestampError:double;
+  timestamp_error:double;
 }
 
 table HitPayload {

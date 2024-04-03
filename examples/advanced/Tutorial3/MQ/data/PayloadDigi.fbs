@@ -5,7 +5,7 @@ table Digi {
   y:int;
   z:int;
   timestamp:double;
-  timestampError:double;
+  timestamp_error:double;
 }
 
 table DigiPayload {
