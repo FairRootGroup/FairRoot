@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -52,9 +52,9 @@ bool FairMQPixelMerger::MergeData(fair::mq::Parts& parts, int /*index*/)
     int nofArrays = 0;
     // LOG(debug) <<
     // "******************************************************************************************************";
-    for (int ipart = 0; ipart < parts.Size(); ipart++) {
+    for (auto& part : parts) {
         tempObject = nullptr;
-        RootSerializer().Deserialize(*parts.At(ipart), tempObject);
+        RootSerializer().Deserialize(*part, tempObject);
         if (strcmp(tempObject->GetName(), "EventHeader.") == 0) {
             fEventHeader = (PixelEventHeader*)tempObject;
             // LOG(debug) << "GOT PART [" << fEventHeader->GetRunId() << "][" << fEventHeader->GetMCEntryNumber() <<

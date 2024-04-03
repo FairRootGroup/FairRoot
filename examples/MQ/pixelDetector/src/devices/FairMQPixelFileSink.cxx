@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -57,7 +57,7 @@ void FairMQPixelFileSink::InitTask()
 bool FairMQPixelFileSink::StoreData(fair::mq::Parts& parts, int /*index*/)
 {
     bool creatingTree = false;
-    auto numParts = parts.Size();
+    const auto numParts = parts.Size();
     std::vector<std::unique_ptr<TObject>> cleanup;
     std::vector<TObject*> objectsForBranches;
 
@@ -68,7 +68,7 @@ bool FairMQPixelFileSink::StoreData(fair::mq::Parts& parts, int /*index*/)
 
     cleanup.reserve(numParts);
     objectsForBranches.resize(numParts, nullptr);
-    for (int ipart = 0; ipart < numParts; ipart++) {
+    for (decltype(parts.Size()) ipart = 0; ipart < numParts; ipart++) {
         auto curobj = RootSerializer().DeserializeTo<TObject>(*parts.At(ipart));
         objectsForBranches.at(ipart) = curobj.get();
         if (creatingTree) {

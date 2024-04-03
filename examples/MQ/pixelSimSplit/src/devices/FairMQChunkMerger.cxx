@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -59,9 +59,9 @@ bool FairMQChunkMerger::MergeData(fair::mq::Parts& parts, int /*index*/)
     // dataDuplicationFlag = false;
 
     std::vector<TClonesArray*> tcaVector;
-    for (int ipart = 0; ipart < parts.Size(); ++ipart) {
+    for (auto& part : parts) {
         TObject* tempObject = nullptr;
-        RootSerializer().Deserialize(*parts.At(ipart), tempObject);
+        RootSerializer().Deserialize(*part, tempObject);
 
         //        LOG(INFO) << "Got object " << tempObject->ClassName() << " named " << tempObject->GetName();
         if (strcmp(tempObject->GetName(), "MCEventHeader.") == 0) {
