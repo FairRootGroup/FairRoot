@@ -111,6 +111,10 @@ FairRunSim::~FairRunSim()
         // Do not point to a destructed object!
         fginstance = nullptr;
     }
+
+    /// \bug Leaks GeoLoader and related resources, prevents memory issues (probably a double free)
+    ///      See: https://github.com/FairRootGroup/FairRoot/issues/1514
+    static_cast<void>(fGeoLoader.release());
 }
 
 FairRunSim* FairRunSim::Instance()
