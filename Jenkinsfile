@@ -117,7 +117,7 @@ def jobMatrix(String type, String sourcedir, List specs) {
               exec ${sourcedir}/tests/ci/slurm-create-jobscript.sh "${label}" "${container}" "${jobscript}" ${ctestcmd}
             """)
             dir(sourcedir) {
-              sh "tests/ci/slurm-submit.sh \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
+              sh "tests/ci/slurm-submit.sh \"${type}\" \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
             }
           }
 
