@@ -1,5 +1,5 @@
  ################################################################################
- # Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+ # Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             #
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -129,6 +129,7 @@ if (BUILD_MBS)
   set(BUILD_ONLINE ON)
 endif()
 option(BUILD_BASEMQ "Build the 'FairRoot::BaseMQ' library" ON)
+Option(BUILD_EXAMPLES "Build Examples" ON)
 
 # searches for needed packages
 # REQUIRED means that cmake will stop if this packages are not found
@@ -231,6 +232,10 @@ if(BUILD_BASEMQ OR BUILD_EXAMPLES)
   )
 endif()
 
+if(BUILD_EXAMPLES)
+  find_package2(PRIVATE fmt REQUIRED)
+endif()
+
 If (Boost_FOUND)
   Set(Boost_Avail 1)
 Else (Boost_FOUND)
@@ -291,7 +296,6 @@ if(BUILD_DOXYGEN)
   endif()
 endif(BUILD_DOXYGEN)
 
-Option(BUILD_EXAMPLES "Build Examples" ON)
 if(BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif(BUILD_EXAMPLES)
