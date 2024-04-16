@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2020-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2020-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -9,8 +9,12 @@
 macro(fairroot_ctest_setup)
   cmake_host_system_information(RESULT fqdn QUERY FQDN)
 
-  set(CTEST_SOURCE_DIRECTORY .)
-  set(CTEST_BINARY_DIRECTORY build)
+  if(NOT CTEST_SOURCE_DIRECTORY)
+    set(CTEST_SOURCE_DIRECTORY .)
+  endif()
+  if(NOT CTEST_BINARY_DIRECTORY)
+    set(CTEST_BINARY_DIRECTORY build)
+  endif()
   set(CTEST_PROJECT_NAME "FairRoot")
   set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
   set(CTEST_USE_LAUNCHERS ON)
