@@ -46,9 +46,8 @@ endif()
 if (USE_CLANG_TIDY)
   list(APPEND options "-DCMAKE_CXX_CLANG_TIDY=clang-tidy")
 endif()
-if ("$ENV{CHANGE_ID}" STREQUAL "")
-  # Branch build
-  list(APPEND options "-DENABLE_GEANT3_TESTING:BOOL=ON")
+if (ENABLE_GEANT3_TESTING)
+  list(APPEND options "-DENABLE_GEANT3_TESTING=ON")
 endif()
 ctest_configure(OPTIONS "${options}")
 

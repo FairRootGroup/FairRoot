@@ -36,7 +36,11 @@ def linux_checks = [
   [os: 'ubuntu', ver: 'rolling', compiler: 'current', fairsoft: 'dev', check: 'doxygen'],
 ]
 
-if (env.CHANGE_ID != null) { // only run checks for PRs
+def isBranchBuild() {
+  return !env.CHANGE_ID
+}
+
+if (!isBranchBuild()) { // PRs only
   linux_checks += [
     [os: "ubuntu", ver: "rolling", compiler: "current", fairsoft: "dev",  check: "format"]
   ]
@@ -94,6 +98,9 @@ def jobMatrix(String type, String src, List specs) {
           if (type == "check") {
             ctestcmd = "ctest -S ${sourcedir}/FairRoot_${check}_test.cmake -VV"
             sh "echo \"export FAIRROOT_FORMAT_BASE=origin/\${CHANGE_TARGET}\" >> ${jobscript}"
+          }
+          if (isBranchBuild() && !(os =~ /^macos/)) {
+            ctestcmd += " -DENABLE_GEANT3_TESTING=ON"
           }
           if (extra) {
             ctestcmd = ctestcmd + " " + extra
