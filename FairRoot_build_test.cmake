@@ -48,7 +48,9 @@ if (USE_CLANG_TIDY)
 endif()
 if ("$ENV{CHANGE_ID}" STREQUAL "")
   # Branch build
-  list(APPEND options "-DENABLE_GEANT3_TESTING:BOOL=ON")
+  if (NOT CMAKE_SYSTEM_NAME MATCHES Darwin)
+    list(APPEND options "-DENABLE_GEANT3_TESTING:BOOL=ON")
+  endif()
 endif()
 ctest_configure(OPTIONS "${options}")
 
