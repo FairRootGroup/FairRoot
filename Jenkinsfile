@@ -42,7 +42,7 @@ if (env.CHANGE_ID != null) { // only run checks for PRs
   ]
 }
 
-def jobMatrix(String type, String sourcedir, List specs) {
+def jobMatrix(String type, String src, List specs) {
   def nodes = [:]
   for (spec in specs) {
     def arch = spec.getOrDefault("arch", "x86_64")
@@ -68,6 +68,7 @@ def jobMatrix(String type, String sourcedir, List specs) {
       node(selector) {
         githubNotify(context: "${label}", description: "Building ...", status: "PENDING")
         try {
+          def sourcedir = src
           if (!sourcedir) {
             deleteDir()
             checkout scm
