@@ -1,5 +1,5 @@
 ################################################################################
-#    Copyright (C) 2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    #
+# Copyright (C) 2023-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -17,9 +17,9 @@ if(BUILD_TESTING)
 
   FetchContent_Declare(
     Catch2
-    SOURCE_DIR ${CMAKE_SOURCE_DIR}/third_party/Catch2_v3.4.0
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/third_party/Catch2_v3.5.4
     # GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-    # GIT_TAG        v3.4.0
+    # GIT_TAG        v3.5.4
     ${declare_with_system}
   )
 
