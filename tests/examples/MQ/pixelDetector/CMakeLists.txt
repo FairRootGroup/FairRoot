@@ -18,4 +18,4 @@ target_link_libraries(${exe} PRIVATE
   FairRoot::GeoBase_checks
   Catch2::Catch2WithMain
 )
-catch_discover_tests(${exe} TEST_PREFIX "${suite}::")
+fairroot_discover_catch2_tests(${exe} SUITE ${suite})

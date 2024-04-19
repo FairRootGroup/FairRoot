@@ -15,4 +15,4 @@ add_executable(${exe}
   # add more test files if appropriate
 )
 target_link_libraries(${exe} PRIVATE Catch2::Catch2WithMain)
-catch_discover_tests(${exe} TEST_PREFIX "${suite}::")
+fairroot_discover_catch2_tests(${exe} SUITE ${suite})
