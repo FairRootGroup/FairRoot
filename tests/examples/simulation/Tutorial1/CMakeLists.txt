@@ -8,6 +8,15 @@
 
 # Test suite for the `FairRoot::ExSimulation1` library
 
+# Linking transitively against FairRoot::FastSim fails on some Linux systems due
+# to missing RUNPATH entries in various dependencies, workaround by setting
+# $LD_LIBRARY_PATH, see https://github.com/FairRootGroup/FairRoot/issues/1523
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+  set(workaround ENABLE_LD_LIBRARY_PATH_WORKAROUND)
+else()
+  set(workaround)
+endif()
+
 set(suite ExSimulation1)
 set(exe "${test_prefix}_${suite}")
 add_executable(${exe}
@@ -18,4 +27,4 @@ target_link_libraries(${exe} PRIVATE
   FairRoot::GeoBase_checks
   Catch2::Catch2WithMain
 )
-catch_discover_tests(${exe} TEST_PREFIX "${suite}::")
+fairroot_discover_catch2_tests(${exe} SUITE ${suite} ${workaround})

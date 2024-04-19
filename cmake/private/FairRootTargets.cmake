@@ -1,11 +1,12 @@
 ################################################################################
-# Copyright (C) 2021 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH       #
+# Copyright (C) 2021-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+include_guard(GLOBAL)
 
 # Set the C++ language level on exported targets
 #
@@ -51,4 +52,32 @@ function(fairroot_install_exported)
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     ARCHIVE DESTINATION ${PROJECT_INSTALL_LIBDIR}
     LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
+endfunction()
+
+
+function(fairroot_discover_catch2_tests target)
+  cmake_parse_arguments(PARSE_ARGV 1 ARGS "ENABLE_LD_LIBRARY_PATH_WORKAROUND" "SUITE" "")
+
+  set(test_prefix "")
+  if(ARGS_SUITE)
+    set(test_prefix "${ARGS_SUITE}::")
+  endif()
+
+  set(dl_paths "")
+  set(req_version 3.22)
+  if(ARGS_ENABLE_LD_LIBRARY_PATH_WORKAROUND)
+    set(dl_paths ${LD_LIBRARY_PATH})
+  endif()
+
+  if(dl_paths)
+    if(CMAKE_VERSION VERSION_GREATER_EQUAL ${req_version})
+      catch_discover_tests(${target} TEST_PREFIX "${test_prefix}" DL_PATHS ${dl_paths})
+    else()
+      message(VERBOSE "Skipping tests discovery for target \"${target}\" "
+                      "because CMake ${req_version} is required "
+                      "(current: ${CMAKE_VERSION}).")
+    endif()
+  else()
+    catch_discover_tests(${target} TEST_PREFIX "${test_prefix}")
+  endif()
 endfunction()
