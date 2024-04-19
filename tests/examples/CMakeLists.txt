@@ -7,9 +7,9 @@
 ################################################################################
 
 # Temporarily disabled, see https://github.com/FairRootGroup/FairRoot/issues/1523
-# if(TARGET FairRoot::ExSimulation1)
-#   add_subdirectory(simulation/Tutorial1)
-# endif()
+if(TARGET FairRoot::ExSimulation1)
+  add_subdirectory(simulation/Tutorial1)
+endif()
 if(TARGET FairRoot::ExSimulation2)
   add_subdirectory(simulation/Tutorial2)
 endif()

@@ -58,5 +58,21 @@ fairroot_target_root_dictionary(${target}
   EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 
+# exchange linker flag --enable-new-dtags by --disable-new-dtags
+# to use RPATH instead of RUNPATH in the generated library. When using
+# RUNPATH on many Linux systems the indirect library dependencies are not
+# found when linking an executable which uses the FairFastSim library and
+# such that the linking fails. This bug somehow depends on the Linux system
+# and the linker version.
+# No better solution was found so far. In principle there should be a way
+# such that also when using RUNPATH the indirect dependencies are properly
+# found.
+# Send patches to upstrean such that that geant4, geant4_vmc and vgm
+# correctly build libraries with RPATH information.
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  set(new_linker_flags ${CMAKE_SHARED_LINKER_FLAGS})
+  string(REGEX REPLACE "--enable-new-dtags" "--disable-new-dtags" CMAKE_SHARED_LINKER_FLAGS ${new_linker_flags})
+endif()
+
 fairroot_install_exported(TARGETS ${target})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
