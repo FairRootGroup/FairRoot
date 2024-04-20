@@ -6,9 +6,6 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-# Shall be prefixed to all test executables
-set(test_prefix test)
-
 add_subdirectory(base)
 add_subdirectory(geobase)
 

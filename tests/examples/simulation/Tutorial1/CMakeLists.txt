@@ -6,8 +6,6 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-# Test suite for the `FairRoot::ExSimulation1` library
-
 # Linking transitively against FairRoot::FastSim fails on some Linux systems due
 # to missing RUNPATH entries in various dependencies, workaround by setting
 # $LD_LIBRARY_PATH, see https://github.com/FairRootGroup/FairRoot/issues/1523
@@ -17,14 +15,13 @@ else()
   set(workaround)
 endif()
 
-set(suite ExSimulation1)
-set(exe "${test_prefix}_${suite}")
-add_executable(${exe}
+fairroot_add_catch2_test_suite(ExSimulation1
+  SOURCES
   test_FairTutorialDet1Geo.cxx
-)
-target_link_libraries(${exe} PRIVATE
+
+  DEPENDENCIES
   FairRoot::ExSimulation1
   FairRoot::GeoBase_checks
-  Catch2::Catch2WithMain
+
+  ${workaround}
 )
-fairroot_discover_catch2_tests(${exe} SUITE ${suite} ${workaround})
