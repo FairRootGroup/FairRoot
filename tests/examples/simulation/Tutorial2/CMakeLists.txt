@@ -6,16 +6,11 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-# Test suite for the `FairRoot::ExSimulation2` library
-
-set(suite ExSimulation2)
-set(exe "${test_prefix}_${suite}")
-add_executable(${exe}
+fairroot_add_catch2_test_suite(ExSimulation2
+  SOURCES
   test_FairTutorialDet2Geo.cxx
-)
-target_link_libraries(${exe} PRIVATE
+
+  DEPENDENCIES
   FairRoot::ExSimulation2
   FairRoot::GeoBase_checks
-  Catch2::Catch2WithMain
 )
-fairroot_discover_catch2_tests(${exe} SUITE ${suite})

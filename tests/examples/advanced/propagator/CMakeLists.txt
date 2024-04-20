@@ -6,16 +6,11 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-# Test suite for the `FairRoot::ExPropagator` library
-
-set(suite ExPropagator)
-set(exe "${test_prefix}_${suite}")
-add_executable(${exe}
+fairroot_add_catch2_test_suite(ExPropagator
+  SOURCES
   test_FairTutPropGeo.cxx
-)
-target_link_libraries(${exe} PRIVATE
+
+  DEPENDENCIES
   FairRoot::ExPropagator
   FairRoot::GeoBase_checks
-  Catch2::Catch2WithMain
 )
-fairroot_discover_catch2_tests(${exe} SUITE ${suite})

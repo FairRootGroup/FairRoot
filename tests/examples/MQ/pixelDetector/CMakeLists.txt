@@ -6,16 +6,11 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
-# Test suite for the `FairRoot::ExPixel` library
-
-set(suite ExPixel)
-set(exe "${test_prefix}_${suite}")
-add_executable(${exe}
+fairroot_add_catch2_test_suite(ExPixel
+  SOURCES
   test_PixelGeo.cxx
-)
-target_link_libraries(${exe} PRIVATE
+
+  DEPENDENCIES
   FairRoot::ExPixel
   FairRoot::GeoBase_checks
-  Catch2::Catch2WithMain
 )
-fairroot_discover_catch2_tests(${exe} SUITE ${suite})
