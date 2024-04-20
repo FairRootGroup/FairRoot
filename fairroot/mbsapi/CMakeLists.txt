@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -37,8 +37,16 @@ list(APPEND headers
 add_library(${target} SHARED ${sources} ${headers})
 fairroot_library_settings(${target})
 
-if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "9")
-  target_compile_options(${target} PRIVATE "-Wno-stringop-overflow")
+if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+  target_compile_options(${target} PRIVATE
+    "-Wno-stringop-overflow"
+    "-Wno-deprecated-declarations"
+  )
+endif()
+if(CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
+  target_compile_options(${target} PRIVATE
+    "-Wno-deprecated-non-prototype"
+  )
 endif()
 
 target_include_directories(${target} PUBLIC
