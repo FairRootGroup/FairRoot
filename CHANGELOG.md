@@ -73,7 +73,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * `basemq/devices/FairMQSampler.h` -> `examples/advanced/Tutorial3/MQ/sampler.cxx`
     * `basemq/tasks/FairMQProcessorTask.h` -> `examples/advanced/Tutorial3/MQ/processorTask/ProcessorTask.h`
     * `basemq/tasks/FairMQSamplerTask.h` -> `examples/advanced/Tutorial3/MQ/samplerTask/SamplerTask.h`
-
+  * FairTimeStamp
+    * `virtual bool operator<(const FairTimeStamp* rValue) const` changed to `bool operator<(const FairTimeStamp& rValue) const`
+ 
 ### Deprecations
 
 If you think you really require a deprecated API, please
