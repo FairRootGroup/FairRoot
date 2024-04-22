@@ -41,6 +41,12 @@ using std::ios;
 FairGeoSet::~FairGeoSet()
 {
     // Destructor
+    if (volumes && !volumes->IsOwner()) {
+        // destructing a TList that doesn't own its contents
+        // still touches the objects inside, even if they're
+        // already destroeyed
+        volumes->Clear("nodelete");
+    }
     delete volumes;
     volumes = 0;
     delete modules;
