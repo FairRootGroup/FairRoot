@@ -15,6 +15,7 @@
 #include <TNamed.h>    // for TNamed
 #include <TString.h>   // for TString
 #include <iosfwd>      // for fstream
+#include <string>      // for std::string
 
 // class FairGeoNode;
 class FairGeoShapes;
@@ -76,6 +77,7 @@ class FairGeoSet : public TNamed
     const char* getGeomFile() { return geoFile.Data(); }
     Int_t getMaxSectors() { return maxSectors; }
     Int_t getMaxModules() { return maxModules; }
+    void setMaxModules(Int_t _maxMods) { maxModules = _maxMods; }
     Int_t getMaxKeepinVolumes() { return maxKeepinVolumes; }
     void setModules(Int_t, Int_t*);
     Int_t* getModules();
@@ -89,10 +91,16 @@ class FairGeoSet : public TNamed
     TString& getAuthor() { return author; }
     TString& getDescription() { return description; }
     virtual const char* getKeepinName(Int_t, Int_t) { return 0; }
-    virtual const char* getModuleName(Int_t) { return 0; }
-    virtual const char* getEleName(Int_t) { return 0; }
+    virtual const char* getModuleName(Int_t);
+    virtual const char* getEleName(Int_t);
     virtual Int_t getSecNumInMod(const TString&) { return -1; }
-    virtual Int_t getModNumInMod(const TString&) { return 0; }
+
+    /** returns the module index in the modules array from the module name.
+        The module number is counted starting at 1, so to get the array index
+        one has to substract 1 from the module number.
+    */
+    virtual Int_t getModNumInMod(const TString& name);
+
     virtual Bool_t read(std::fstream&, FairGeoMedia*);
     virtual void addRefNodes() {}
     virtual void write(std::fstream&);
@@ -104,6 +112,9 @@ class FairGeoSet : public TNamed
   private:
     FairGeoSet(const FairGeoSet&);
     FairGeoSet& operator=(const FairGeoSet&);
+
+    std::string fModNameSet{""};   //! name of module
+    std::string fEleNameSet{""};   //! substring for elements in module
 };
 
 #endif /* !FAIRGEOSET_H */

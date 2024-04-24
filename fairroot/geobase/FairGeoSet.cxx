@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -26,9 +26,11 @@
 #include <TArrayI.h>   // for TArrayI
 #include <TString.h>   // for TString, operator<<
 #include <ctype.h>     // for isalpha
-#include <fstream>     // for fstream
-#include <iostream>    // for cout
-#include <string.h>    // for strcmp
+#include <fairlogger/Logger.h>
+#include <fmt/core.h>
+#include <fstream>    // for fstream
+#include <iostream>   // for cout
+#include <string.h>   // for strcmp
 
 class FairGeoMedium;
 
@@ -516,4 +518,62 @@ void FairGeoSet::compare(FairGeoSet& rset)
         nnf = 0;
     }
     cout << "Number of additional volumes in second list: " << nnf << '\n';
+}
+
+Int_t FairGeoSet::getModNumInMod(const TString& name)
+{
+    const auto& prefix = fName;
+    const auto prefixLength = prefix.Length();
+    const auto length = name.Length();
+
+    // check if the naming is correct. All modules in a geometry file must start with
+    // the generic module name followed by a number.
+    if ((!name.BeginsWith(prefix)) || (length <= prefixLength)) {
+        LOG(fatal) << "Naming conventions violated. The element name must start with " << prefix
+                   << " followed by a unique number.\n"
+                   << "The passed value was " << name;
+    }
+
+    // construct TString starting after the end of the detector name
+    // which contains the detector number
+    TString modNumber(name(prefixLength, (length - prefixLength)));
+
+    // check if the conversion worked as expected. Atoi internally calls the c function
+    // atoi which returns in case of failure the value 0. Since in our case a value of
+    // 0 is an error anyway (Natural counting starts at 1 as well as the counting of elements
+    // in the module) a value of 0 indicates an error
+    int retVal = modNumber.Atoi();
+    if (0 == retVal) {
+        LOG(fatal) << "Naming conventions violated. The element name must start with " << prefix
+                   << " followed by a unique number."
+                   << "The passed value was " << name;
+    }
+    return (retVal - 1);
+}
+
+const char* FairGeoSet::getModuleName(Int_t m)
+{
+    /** Returns the module name of the detector with array index m
+        Since the name uses natuaral counting the index has to be
+        increased by 1. All module names in the ASCII file needs to
+        start with the name saved in fName since otherwise they are
+        not constructed.
+    */
+    LOG_IF(fatal, m < 0) << "Negative array index not allowed";
+
+    fModNameSet.clear();
+    fModNameSet = fmt::format("{}{}", fName.View(), m + 1);
+
+    return fModNameSet.data();
+}
+
+const char* FairGeoSet::getEleName(Int_t m)
+{
+    /** Returns the element name of Det number m */
+    LOG_IF(fatal, m < 0) << "Negative array index not allowed";
+
+    fEleNameSet.clear();
+    fEleNameSet = fmt::format("{}{}", fName.View(), m + 1);
+
+    return fEleNameSet.data();
 }

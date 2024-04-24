@@ -203,6 +203,8 @@ endif()
 find_package2(PUBLIC DDS)
 find_package2(PUBLIC FairLogger VERSION 1.2.0 REQUIRED)
 
+find_package2(PRIVATE fmt REQUIRED)
+
 if(BUILD_BASEMQ OR BUILD_EXAMPLES)
   if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
     Set(Boost_NO_SYSTEM_PATHS TRUE)
@@ -232,9 +234,6 @@ if(BUILD_BASEMQ OR BUILD_EXAMPLES)
   )
 endif()
 
-if(BUILD_EXAMPLES)
-  find_package2(PRIVATE fmt REQUIRED)
-endif()
 
 If (Boost_FOUND)
   Set(Boost_Avail 1)
