@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -20,9 +20,9 @@ FairGeoPassivePar::FairGeoPassivePar(const char* name, const char* title, const 
     , fGeoPassNodes(new TObjArray())
 {}
 
-FairGeoPassivePar::~FairGeoPassivePar(void) {}
+FairGeoPassivePar::~FairGeoPassivePar() {}
 
-void FairGeoPassivePar::clear(void)
+void FairGeoPassivePar::clear()
 {
     delete fGeoSensNodes;
     delete fGeoPassNodes;

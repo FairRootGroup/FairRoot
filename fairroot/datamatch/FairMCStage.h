@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -65,11 +65,11 @@ class FairMCStage : public FairMCObject
     void SetLoaded(Bool_t loaded) { fLoaded = loaded; }
     void SetFill(Bool_t fill) { fFill = fill; }
 
-    std::string GetBranchName(void) const { return fBranchName; }
-    std::string GetFileName(void) const { return fFileName; }
-    Double_t GetWeight(void) const { return fWeight; }
-    Bool_t GetLoaded(void) const { return fLoaded; }
-    Bool_t GetFill(void) const { return fFill; }
+    std::string GetBranchName() const { return fBranchName; }
+    std::string GetFileName() const { return fFileName; }
+    Double_t GetWeight() const { return fWeight; }
+    Bool_t GetLoaded() const { return fLoaded; }
+    Bool_t GetFill() const { return fFill; }
 
     virtual void ClearEntries()
     {

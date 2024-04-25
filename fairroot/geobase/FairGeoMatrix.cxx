@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -20,7 +20,7 @@
 //     added as needed
 /////////////////////////////////////////////////////////
 
-FairGeoMatrix::FairGeoMatrix(void)
+FairGeoMatrix::FairGeoMatrix()
     : TObject()
 {
     // Initializes the matrix to 0
@@ -29,9 +29,9 @@ FairGeoMatrix::FairGeoMatrix(void)
     }
 }
 
-FairGeoMatrix::~FairGeoMatrix(void) {}
+FairGeoMatrix::~FairGeoMatrix() {}
 
-Double_t FairGeoMatrix::det(void)
+Double_t FairGeoMatrix::det()
 {
     // Computes de determinat of the 3D matrix
     return (fM[0] * fM[4] * fM[8] + fM[1] * fM[5] * fM[6] + fM[3] * fM[7] * fM[2] - fM[2] * fM[4] * fM[6]

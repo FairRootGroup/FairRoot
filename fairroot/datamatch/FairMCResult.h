@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -56,8 +56,8 @@ class FairMCResult : public FairMCObject
     void SetStartType(Int_t start) { fStartType = start; }
     void SetStopType(Int_t stop) { fStopType = stop; }
 
-    Int_t GetStartType(void) const { return fStartType; }
-    Int_t GetStopType(void) const { return fStopType; }
+    Int_t GetStartType() const { return fStartType; }
+    Int_t GetStopType() const { return fStopType; }
 
     virtual void PrintInfo(std::ostream& out = std::cout) { out << *this; }
 

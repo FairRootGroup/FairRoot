@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -15,9 +15,9 @@ NewParameterContainer ::NewParameterContainer(const char* name, const char* titl
     : FairParGenericSet(name, title, context)
 {}
 
-NewParameterContainer::~NewParameterContainer(void) {}
+NewParameterContainer::~NewParameterContainer() {}
 
-void NewParameterContainer::clear(void) {}
+void NewParameterContainer::clear() {}
 
 void NewParameterContainer::putParams(FairParamList* l)
 {

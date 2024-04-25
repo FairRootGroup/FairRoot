@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -29,7 +29,7 @@ class FairRuntimeDb : public TObject
     static FairRuntimeDb* gRtdb;   //!
 
   protected:
-    FairRuntimeDb(void);
+    FairRuntimeDb();
     TList* containerList;      // list of parameter containers
     TList* runs;               // list of runs
     FairParIo* firstInput;     // first (prefered) input for parameters
@@ -53,7 +53,7 @@ class FairRuntimeDb : public TObject
     ParamIOType ioType;   // IO Type
 
   public:
-    static FairRuntimeDb* instance(void);
+    static FairRuntimeDb* instance();
     ~FairRuntimeDb() override;
 
     Bool_t addParamContext(const char*);
@@ -69,41 +69,41 @@ class FairRuntimeDb : public TObject
     void removeAllContainers();
     [[nodiscard]] bool initContainers(UInt_t runId, Int_t refId = -1, const char* fileName = "");
     void setContainersStatic(Bool_t f = kTRUE);
-    Bool_t writeContainers(void);
+    Bool_t writeContainers();
     Bool_t writeContainer(FairParSet*, FairRtdbRun*, FairRtdbRun* refRun = 0);
 
     FairRtdbRun* addRun(Int_t runId, Int_t refId = -1);
     FairRtdbRun* getRun(Int_t);
     FairRtdbRun* getRun(const char*);
-    FairRtdbRun* getCurrentRun(void) { return currentRun; }
+    FairRtdbRun* getCurrentRun() { return currentRun; }
     Text_t const* getCurrentFileName() { return currentFileName.Data(); }
-    void clearRunList(void);
+    void clearRunList();
 
     void removeRun(Text_t*);
 
     Bool_t setInputVersion(Int_t run, Text_t* container, Int_t version, Int_t inputNumber);
     Bool_t setRootOutputVersion(Int_t run, Text_t* container, Int_t version);
     void setVersionsChanged(Bool_t f = kTRUE) { versionsChanged = f; }
-    void resetInputVersions(void);
-    void resetOutputVersions(void);
-    void resetAllVersions(void);
+    void resetInputVersions();
+    void resetOutputVersions();
+    void resetAllVersions();
 
-    Bool_t readAll(void);
-    void writeVersions(void);
-    void saveOutput(void);
+    Bool_t readAll();
+    void writeVersions();
+    void saveOutput();
 
     Bool_t setFirstInput(FairParIo*);
     Bool_t setSecondInput(FairParIo*);
     Bool_t setOutput(FairParIo*);
-    FairParIo* getFirstInput(void);
-    FairParIo* getSecondInput(void);
-    FairParIo* getOutput(void);
-    void closeFirstInput(void);
-    void closeSecondInput(void);
-    void closeOutput(void);
+    FairParIo* getFirstInput();
+    FairParIo* getSecondInput();
+    FairParIo* getOutput();
+    void closeFirstInput();
+    void closeSecondInput();
+    void closeOutput();
     void activateParIo(FairParIo*);
     TList* getListOfContainers() { return containerList; }
-    void print(void);
+    void print();
     void ls(Option_t* option = "") const override;
 
     Int_t findOutputVersion(FairParSet*);
