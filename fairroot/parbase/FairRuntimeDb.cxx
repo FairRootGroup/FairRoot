@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -68,7 +68,7 @@ static TList contFactories;   //! list of container factories
 
 FairRuntimeDb* FairRuntimeDb::gRtdb = 0;
 
-FairRuntimeDb* FairRuntimeDb::instance(void)
+FairRuntimeDb* FairRuntimeDb::instance()
 {
     // Singleton instance
     if (gRtdb == 0) {
@@ -77,7 +77,7 @@ FairRuntimeDb* FairRuntimeDb::instance(void)
     return gRtdb;
 }
 
-FairRuntimeDb::FairRuntimeDb(void)
+FairRuntimeDb::FairRuntimeDb()
     : TObject()
     , containerList(new TList())
     , runs(new TList())
@@ -234,7 +234,7 @@ void FairRuntimeDb::removeContainer(const char* name)
     }
 }
 
-void FairRuntimeDb::removeAllContainers(void)
+void FairRuntimeDb::removeAllContainers()
 {
     // removes all containers from the list and deletes them
     containerList->Delete();
@@ -503,7 +503,7 @@ Bool_t FairRuntimeDb::readAll()
     return kTRUE;
 }
 
-Bool_t FairRuntimeDb::initContainers(void)
+Bool_t FairRuntimeDb::initContainers()
 {
     // private function
     auto refRunName = currentRun->getRefRun();

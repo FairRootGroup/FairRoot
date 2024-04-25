@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -67,7 +67,7 @@ class FairRtdbRun : public TNamed
     FairRtdbRun(Int_t r, Int_t rr = -1);
     FairRtdbRun(FairRtdbRun& run);
     ~FairRtdbRun();
-    inline UInt_t getRunId(void);
+    inline UInt_t getRunId();
     void addParVersion(FairParVersion* pv);
     FairParVersion* getParVersion(const Text_t* name);
     TList* getParVersions() { return parVersions; }
@@ -89,7 +89,7 @@ class FairRtdbRun : public TNamed
 
 // -------------------- inlines ---------------------------
 
-inline UInt_t FairRtdbRun::getRunId(void)
+inline UInt_t FairRtdbRun::getRunId()
 {
     UInt_t r;
     sscanf(GetName(), "%i", &r);

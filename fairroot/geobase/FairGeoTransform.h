@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -41,7 +41,7 @@ class FairGeoTransform : public TObject
     FairGeoVector transTo(const FairGeoVector& p) const;
     void transFrom(const FairGeoTransform&);
     void transTo(const FairGeoTransform&);
-    void invert(void);
+    void invert();
     void clear();
     void print();
     const FairGeoVector& getTranslation()

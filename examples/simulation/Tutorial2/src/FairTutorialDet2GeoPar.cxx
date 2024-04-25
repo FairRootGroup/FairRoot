@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -17,9 +17,9 @@ FairTutorialDet2GeoPar ::FairTutorialDet2GeoPar(const char* name, const char* ti
     , fGeoPassNodes(new TObjArray())
 {}
 
-FairTutorialDet2GeoPar::~FairTutorialDet2GeoPar(void) {}
+FairTutorialDet2GeoPar::~FairTutorialDet2GeoPar() {}
 
-void FairTutorialDet2GeoPar::clear(void)
+void FairTutorialDet2GeoPar::clear()
 {
     delete fGeoSensNodes;
     delete fGeoPassNodes;

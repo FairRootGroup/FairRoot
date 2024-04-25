@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -74,11 +74,11 @@ class FairGeoSet : public TNamed
     void setMasterNodes(TList* m) { masterNodes = m; }
     void setGeomFile(const char* filename) { geoFile = filename; }
     const char* getGeomFile() { return geoFile.Data(); }
-    Int_t getMaxSectors(void) { return maxSectors; }
-    Int_t getMaxModules(void) { return maxModules; }
-    Int_t getMaxKeepinVolumes(void) { return maxKeepinVolumes; }
+    Int_t getMaxSectors() { return maxSectors; }
+    Int_t getMaxModules() { return maxModules; }
+    Int_t getMaxKeepinVolumes() { return maxKeepinVolumes; }
     void setModules(Int_t, Int_t*);
-    Int_t* getModules(void);
+    Int_t* getModules();
     Int_t getModule(Int_t, Int_t);
     FairGeoNode* getVolume(const char* name) { return dynamic_cast<FairGeoNode*>(volumes->FindObject(name)); }
     FairGeoNode* getMasterNode(const char* name) { return dynamic_cast<FairGeoNode*>(masterNodes->FindObject(name)); }

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -77,7 +77,7 @@ class FairMCObject : public TObject
     FairMCEntry GetEntry(int index) const { return fStage[index]; }
     FairLink GetSingleLink(int entryIndex, int linkIndex) const { return fStage.at(entryIndex).GetLink(linkIndex); }
 
-    Int_t GetStageId(void) const { return fStageId; }
+    Int_t GetStageId() const { return fStageId; }
 
     FairMCEntry GetMCLink(Int_t index) { return fStage.at(index); }
 

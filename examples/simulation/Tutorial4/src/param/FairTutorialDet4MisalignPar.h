@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -22,8 +22,8 @@ class FairTutorialDet4MisalignPar : public FairParGenericSet
         const char* name = "FairTutorialDet4MissallignPar",
         const char* title = "Missalignment parameter for FairTutorialDet4HitProducerIdealMissallign Parameters",
         const char* context = "TestDefaultContext");
-    ~FairTutorialDet4MisalignPar(void);
-    void clear(void);
+    ~FairTutorialDet4MisalignPar();
+    void clear();
     void putParams(FairParamList*);
     Bool_t getParams(FairParamList*);
 
