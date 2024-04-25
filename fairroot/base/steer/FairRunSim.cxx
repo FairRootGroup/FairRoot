@@ -40,6 +40,7 @@
 #include <iostream>        // for cout, endl, ostream
 #include <stdlib.h>        // for getenv, nullptr
 #include <string.h>        // for strcmp, strncmp
+#include <tuple>           // for std::ignore
 
 using std::cout;
 using std::endl;
@@ -114,7 +115,7 @@ FairRunSim::~FairRunSim()
 
     /// \bug Leaks GeoLoader and related resources, prevents memory issues (probably a double free)
     ///      See: https://github.com/FairRootGroup/FairRoot/issues/1514
-    static_cast<void>(fGeoLoader.release());
+    std::ignore = fGeoLoader.release();
 }
 
 FairRunSim* FairRunSim::Instance()
