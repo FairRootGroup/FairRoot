@@ -9,7 +9,7 @@
 #include "FairGeoSet.h"
 
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/generators/catch_generators.hpp>
+#include <catch2/generators/catch_generators_all.hpp>
 #include <fmt/core.h>
 #include <string>
 
@@ -30,7 +30,7 @@ auto checkGeoSetNamingConventions(FairGeoSet& geo, const std::string& prefix, in
 
     SECTION("name generation")
     {
-        const Int_t index = GENERATE(0, 1, 99);
+        auto index = GENERATE(take(100, random(1, 1000)));
         const auto name = fmt::format("{}{}", prefix, index + 1);
 
         REQUIRE(geo.getModuleName(index) == name);
@@ -39,7 +39,7 @@ auto checkGeoSetNamingConventions(FairGeoSet& geo, const std::string& prefix, in
 
     SECTION("name parsing")
     {
-        const Int_t index = GENERATE(0, 1, 8);
+        auto index = GENERATE(take(100, random(1, 1000)));
         const auto name = fmt::format("{}{}", prefix, index + 1);
 
         REQUIRE(geo.getModNumInMod(name) == index);
