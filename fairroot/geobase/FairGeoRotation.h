@@ -39,11 +39,11 @@ class FairGeoRotation : public TObject
     inline FairGeoRotation& operator=(const FairGeoRotation&);
     inline Bool_t operator==(const FairGeoRotation&);
     inline Bool_t operator!=(const FairGeoRotation&);
-    inline FairGeoVector operator*(const FairGeoVector&)const;
-    inline FairGeoRotation operator*(const FairGeoRotation&)const;
+    inline FairGeoVector operator*(const FairGeoVector&) const;
+    inline FairGeoRotation operator*(const FairGeoRotation&) const;
     inline FairGeoRotation& operator*=(const FairGeoRotation&);
     inline FairGeoRotation& transform(const FairGeoRotation&);
-    inline Bool_t isUnitMatrix();
+    inline Bool_t isUnitMatrix() const;
     inline FairGeoRotation inverse() const;
     inline FairGeoRotation& invert();
     inline Double_t determinant() const;
@@ -112,7 +112,10 @@ inline void FairGeoRotation::setElement(const Double_t a, const Int_t i)
     }
 }
 
-inline Double_t FairGeoRotation::getElement(Int_t i, Int_t j) const { return rot[i * 3 + j]; }
+inline Double_t FairGeoRotation::getElement(Int_t i, Int_t j) const
+{
+    return rot[i * 3 + j];
+}
 
 inline FairGeoRotation& FairGeoRotation::operator=(const FairGeoRotation& r)
 {
@@ -170,11 +173,17 @@ inline FairGeoRotation FairGeoRotation::operator*(const FairGeoRotation& r) cons
     return FairGeoRotation(&a[0]);
 }
 
-inline FairGeoRotation& FairGeoRotation::operator*=(const FairGeoRotation& r) { return *this = operator*(r); }
+inline FairGeoRotation& FairGeoRotation::operator*=(const FairGeoRotation& r)
+{
+    return *this = operator*(r);
+}
 
-inline FairGeoRotation& FairGeoRotation::transform(const FairGeoRotation& r) { return *this = r * (*this); }
+inline FairGeoRotation& FairGeoRotation::transform(const FairGeoRotation& r)
+{
+    return *this = r * (*this);
+}
 
-inline Bool_t FairGeoRotation::isUnitMatrix()
+inline Bool_t FairGeoRotation::isUnitMatrix() const
 {
     return rot[0] == 1. && rot[1] == 0. && rot[2] == 0. && rot[3] == 0. && rot[4] == 1. && rot[5] == 0. && rot[6] == 0.
            && rot[7] == 0. && rot[8] == 1.;
@@ -191,7 +200,10 @@ inline FairGeoRotation FairGeoRotation::inverse() const
     return FairGeoRotation(a);
 }
 
-inline FairGeoRotation& FairGeoRotation::invert() { return *this = inverse(); }
+inline FairGeoRotation& FairGeoRotation::invert()
+{
+    return *this = inverse();
+}
 
 inline Double_t FairGeoRotation::determinant() const
 {
