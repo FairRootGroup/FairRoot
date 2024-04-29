@@ -48,7 +48,7 @@ class FairGeoVector : public TObject
     Double_t getY() const { return y; }
     Double_t getZ() const { return z; }
 
-    Double_t getValues(Int_t i)
+    Double_t getValues(Int_t i) const
     {
         if (i < 0 || i > 2) {
             std::cout << " -E- Vector index  is 0 1 2 only ! " << std::endl;
