@@ -58,6 +58,7 @@ set(CTEST_CUSTOM_WARNING_MATCH	${CTEST_CUSTOM_WARNING_MATCH}
 Set (CTEST_CUSTOM_COVERAGE_EXCLUDE
      ".*Dict.h"
      ".*Dict.cxx"
+     "third_party"
      "_.*"
     )
 
