@@ -38,22 +38,6 @@ using std::cout;
 using std::endl;
 using std::ios;
 
-FairGeoSet::FairGeoSet()
-    : TNamed()
-    , hadesGeo(0)
-    , volumes(new TList())
-    , masterNodes(nullptr)
-    , maxKeepinVolumes(0)
-    , maxModules(0)
-    , modules(nullptr)
-    , pShapes(nullptr)
-    , geoFile("")
-    , author("")
-    , description("")
-{
-    // Constructor
-}
-
 FairGeoSet::~FairGeoSet()
 {
     // Destructor

@@ -31,7 +31,7 @@ class TArrayI;
 class FairGeoSet : public TNamed
 {
   protected:
-    Int_t hadesGeo;
+    Int_t hadesGeo{0};
 
     class FairGeoCopyNode : public TNamed
     {
@@ -51,18 +51,18 @@ class FairGeoSet : public TNamed
         FairGeoCopyNode& operator=(const FairGeoCopyNode&);
     };
 
-    TList* volumes;         /** list of volumes */
-    TList* masterNodes;     /** pointer to list of mother volumes from other detector parts*/
-    Int_t maxSectors{0};    /** maximum number of sectors (-1 for detectors outside any sector)*/
-    Int_t maxKeepinVolumes; /** maximum number of keepin volumes per sector*/
-    Int_t maxModules;       /** maximum number of modules per sector*/
-    TArrayI* modules;       /** Module's array.*/
-    FairGeoShapes* pShapes; /** pointer to the class FairGeoShapes*/
-    TString geoFile;        /** name of geometry input file or Oracle*/
-    TString author;         /** author of the media version*/
-    TString description;    /** description of the version*/
+    TList* volumes{new TList()};     /** list of volumes */
+    TList* masterNodes{nullptr};     /** pointer to list of mother volumes from other detector parts*/
+    Int_t maxSectors{0};             /** maximum number of sectors (-1 for detectors outside any sector)*/
+    Int_t maxKeepinVolumes{0};       /** maximum number of keepin volumes per sector*/
+    Int_t maxModules{0};             /** maximum number of modules per sector*/
+    TArrayI* modules{nullptr};       /** Module's array.*/
+    FairGeoShapes* pShapes{nullptr}; /** pointer to the class FairGeoShapes*/
+    TString geoFile{""};             /** name of geometry input file or Oracle*/
+    TString author{""};              /** author of the media version*/
+    TString description{""};         /** description of the version*/
 
-    FairGeoSet();
+    FairGeoSet() = default;
     void readInout(std::fstream&);
     void readTransform(std::fstream&, FairGeoTransform&);
     Bool_t readVolumeParams(std::fstream&, FairGeoMedia*, FairGeoNode*, TList* l = 0);
