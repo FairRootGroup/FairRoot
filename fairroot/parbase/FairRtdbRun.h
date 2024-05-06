@@ -101,9 +101,7 @@ inline void FairRtdbRun::setRefRun(Int_t r)
     if (r == -1) {
         refRun = "";
     } else {
-        char name[255];
-        sprintf(name, "%i", r);
-        refRun = name;
+        refRun.Form("%i", r);
     }
 }
 

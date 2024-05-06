@@ -56,8 +56,9 @@
 #include <cstdio>          // for sprintf
 #include <cstring>         // for strcmp, strlen
 #include <fairlogger/Logger.h>
-#include <iomanip>    // for setw, operator<<
-#include <iostream>   // for operator<<, basic_ostream, etc
+#include <fmt/core.h>   // for format
+#include <iomanip>      // for setw, operator<<
+#include <iostream>     // for operator<<, basic_ostream, etc
 
 using std::cout;
 using std::endl;
@@ -272,9 +273,7 @@ FairRtdbRun* FairRuntimeDb::addRun(Int_t runId, Int_t refId)
 FairRtdbRun* FairRuntimeDb::getRun(Int_t id)
 {
     // returns a pointer to the run called by the run id
-    char name[255];
-    sprintf(name, "%i", id);
-    return static_cast<FairRtdbRun*>((runs->FindObject(name)));
+    return static_cast<FairRtdbRun*>((runs->FindObject(fmt::format("{}", id).c_str())));
 }
 
 FairRtdbRun* FairRuntimeDb::getRun(const char* name)
@@ -296,7 +295,10 @@ void FairRuntimeDb::removeRun(Text_t* name)
     }
 }
 
-void FairRuntimeDb::clearRunList() { runs->Delete(); }
+void FairRuntimeDb::clearRunList()
+{
+    runs->Delete();
+}
 
 void FairRuntimeDb::writeVersions()
 {

@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -28,6 +28,7 @@
 #include <TCollection.h>   // for TIter
 #include <TList.h>         // for TList
 #include <TROOT.h>         // for TROOT
+#include <fmt/core.h>      // for format
 #include <fstream>         // for fstream
 #include <iomanip>         // for setw, operator<<
 #include <iostream>        // for cout
@@ -65,9 +66,7 @@ FairRtdbRun::FairRtdbRun(Int_t r, Int_t rr)
     , refRun("")
 {
     parVersions->SetName("parVersions");
-    char name[255];
-    sprintf(name, "%i", r);
-    SetName(name);
+    SetName(fmt::format("{}", r).c_str());
     setRefRun(rr);
 }
 
