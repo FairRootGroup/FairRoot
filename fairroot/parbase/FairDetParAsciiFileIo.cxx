@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -20,9 +20,12 @@
 
 #include "FairParSet.h"   // for FairParSet
 
-#include <fstream>    // for fstream
-#include <stdio.h>    // for printf, sprintf
-#include <string.h>   // for strlen, strncmp
+#include <cstdio>        // for printf
+#include <cstring>       // for strlen, strncmp
+#include <fmt/core.h>    // for format
+#include <fstream>       // for fstream
+#include <string>        // for std::string
+#include <string_view>   // for std::string_view
 
 using std::ios;
 
@@ -42,24 +45,28 @@ FairDetParAsciiFileIo::FairDetParAsciiFileIo(std::fstream* f)
 Bool_t FairDetParAsciiFileIo::findContainer(const Text_t* name)
 {
     // searches the container in the file
-    const Int_t maxbuf = 4000;
-    Text_t buf[maxbuf];
-    Text_t buf2[maxbuf];
-    sprintf(buf2, "%s%s%s", "[", name, "]");
-    // cout << " buf2 " <<  buf2 << endl;
+    const auto searchValue = fmt::format("[{}]", name);
+    const auto searchValueLength = searchValue.size();
     pFile->clear();
     pFile->seekg(0, ios::beg);
-    while (!pFile->eof()) {
-        pFile->getline(buf, maxbuf);
-        if (buf[0] != '[') {
+    // looking for lines that start with searchValue
+    for (std::string line; std::getline(*pFile, line);) {
+        // TODO: C++20
+        // if (line.starts_with(searchValue)) {
+        //     return true;
+        // }
+        // clang-format off
+
+        if (line.size() < searchValueLength) {
             continue;
         }
-        // cout << " buf: " <<  buf << endl;
-        if (!strncmp(buf, buf2, strlen(buf2))) {
-            break;
+        if (const auto linePrefix = std::string_view(line).substr(0, searchValueLength);
+            linePrefix == searchValue) {
+            return true;
         }
+        // clang-format on
     }
-    return !pFile->eof();
+    return false;
 }
 
 Bool_t FairDetParAsciiFileIo::checkAllFound(Int_t* set, Int_t setSize)
