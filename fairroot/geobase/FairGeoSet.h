@@ -83,7 +83,6 @@ class FairGeoSet : public TNamed
     const char* getGeomFile() { return geoFile.Data(); }
     Int_t getMaxSectors() { return maxSectors; }
     Int_t getMaxModules() { return maxModules; }
-    void setMaxModules(Int_t _maxMods) { maxModules = _maxMods; }
     Int_t getMaxKeepinVolumes() { return maxKeepinVolumes; }
     void setModules(Int_t, Int_t*);
     Int_t* getModules();
