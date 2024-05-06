@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -31,13 +31,9 @@
 #include <string.h>   // for strcmp
 
 MyGeoCave::MyGeoCave()
-    : FairGeoSet()
+    : FairGeoSet("cave", 1)
     , name("cave")
-{
-    // Constructor
-    fName = "cave";
-    maxModules = 1;
-}
+{}
 
 Bool_t MyGeoCave::read(std::fstream& fin, FairGeoMedia* media)
 {

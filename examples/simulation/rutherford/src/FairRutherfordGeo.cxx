@@ -8,9 +8,5 @@
 #include "FairRutherfordGeo.h"
 
 FairRutherfordGeo::FairRutherfordGeo()
-    : FairGeoSet()
-{
-    // Constructor
-    SetName("rutherford");
-    setMaxModules(10);
-}
+    : FairGeoSet("rutherford", 10)
+{}

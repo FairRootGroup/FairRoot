@@ -8,9 +8,5 @@
 #include "FairTutorialDet1Geo.h"
 
 FairTutorialDet1Geo::FairTutorialDet1Geo()
-    : FairGeoSet()
-{
-    // Constructor
-    SetName("tutdet");
-    setMaxModules(10);
-}
+    : FairGeoSet("tutdet", 10)
+{}

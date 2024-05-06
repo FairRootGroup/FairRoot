@@ -63,6 +63,12 @@ class FairGeoSet : public TNamed
     TString description{""};         /** description of the version*/
 
     FairGeoSet() = default;
+    FairGeoSet(const char* name, Int_t maxMods, Int_t maxSecs = 0)
+        : TNamed{name, ""}
+        , maxSectors{maxSecs}
+        , maxModules{maxMods}
+    {}
+
     void readInout(std::fstream&);
     void readTransform(std::fstream&, FairGeoTransform&);
     Bool_t readVolumeParams(std::fstream&, FairGeoMedia*, FairGeoNode*, TList* l = 0);
