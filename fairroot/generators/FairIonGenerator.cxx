@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -20,8 +20,8 @@
 #include <TObjArray.h>      // for TObjArray
 #include <TParticle.h>      // for TParticle
 #include <TParticlePDG.h>   // for TParticlePDG
-#include <cstdio>           // for sprintf
 #include <fairlogger/Logger.h>
+#include <fmt/core.h>   // for format
 
 Int_t FairIonGenerator::fgNIon = 0;
 
@@ -107,9 +107,7 @@ FairIonGenerator::FairIonGenerator(Int_t z,
   fVy   = vy;
   fVz   = vz;
   */
-    char buffer[20];
-    sprintf(buffer, "FairIon%d", fgNIon);
-    fIon = new FairIon(buffer, z, a, q);
+    fIon = new FairIon(fmt::format("FairIon{}", fgNIon).c_str(), z, a, q);
     FairRunSim* run = FairRunSim::Instance();
     if (!run) {
         LOG(error) << "No FairRun instantised!";
@@ -141,9 +139,15 @@ FairIonGenerator::~FairIonGenerator()
     // if (fIon) delete fIon;
 }
 
-void FairIonGenerator::SetExcitationEnergy(Double_t eExc) { fIon->SetExcEnergy(eExc); }
+void FairIonGenerator::SetExcitationEnergy(Double_t eExc)
+{
+    fIon->SetExcEnergy(eExc);
+}
 
-void FairIonGenerator::SetMass(Double_t mass) { fIon->SetMass(mass); }
+void FairIonGenerator::SetMass(Double_t mass)
+{
+    fIon->SetMass(mass);
+}
 
 Bool_t FairIonGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {

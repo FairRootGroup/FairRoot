@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -19,7 +19,7 @@
 #include <TDatabasePDG.h>   // for TDatabasePDG
 #include <TParticlePDG.h>   // for TParticlePDG
 #include <climits>          // for INT_MAX
-#include <cstdio>           // for sprintf
+#include <fmt/core.h>       // for format
 #include <fstream>          // for ifstream
 #include <utility>          // for pair
 
@@ -51,7 +51,10 @@ FairShieldGenerator::FairShieldGenerator(const char* fileName)
     fInputFile = new std::ifstream(fFileName);
 }
 
-FairShieldGenerator::~FairShieldGenerator() { CloseInput(); }
+FairShieldGenerator::~FairShieldGenerator()
+{
+    CloseInput();
+}
 
 Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 {
@@ -101,9 +104,8 @@ Bool_t FairShieldGenerator::ReadEvent(FairPrimaryGenerator* primGen)
 
         // Case ion
         if (iPid == 1000) {
-            char ionName[20];
-            sprintf(ionName, "Ion_%d_%d", iMass, iCharge);
-            TParticlePDG* part = fPDG->GetParticle(ionName);
+            const auto ionName = fmt::format("Ion_{}_{}", iMass, iCharge);
+            TParticlePDG* part = fPDG->GetParticle(ionName.c_str());
             if (!part) {
                 LOG(warn) << "FairShieldGenerator::ReadEvent: Cannot find " << ionName << " in database!";
                 continue;
@@ -152,11 +154,9 @@ Int_t FairShieldGenerator::RegisterIons()
         for (Int_t iTrack = 0; iTrack < nTracks; iTrack++) {
             *fInputFile >> iPid >> iMass >> iCharge >> px >> py >> pz;
             if (iPid == 1000) {   // ion
-                char buffer[20];
-                sprintf(buffer, "Ion_%d_%d", iMass, iCharge);
-                TString ionName(buffer);
+                const auto ionName = fmt::format("Ion_{}_{}", iMass, iCharge);
                 if (fIonMap.find(ionName) == fIonMap.end()) {   // new ion
-                    FairIon* ion = new FairIon(ionName, iCharge, iMass, iCharge);
+                    FairIon* ion = new FairIon(ionName.c_str(), iCharge, iMass, iCharge);
                     fIonMap[ionName] = ion;
                     nIons++;
                 }   // new ion
