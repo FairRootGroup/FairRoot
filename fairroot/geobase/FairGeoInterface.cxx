@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -33,9 +33,9 @@
 #include <TClass.h>       // for TClass
 #include <TList.h>        // for TList
 #include <TObjArray.h>    // for TObjArray
+#include <cstdio>         // for printf, sscanf
+#include <fmt/core.h>     // for format
 #include <iostream>       // for operator<<, basic_ostream, etc
-#include <stdio.h>        // for sprintf
-#include <string.h>       // for strcmp
 #include <sys/select.h>   // for time_t
 #include <time.h>         // for tm, localtime, time
 
@@ -100,7 +100,10 @@ void FairGeoInterface::addGeoModule(FairGeoSet* pSet)
     pSet->setMasterNodes(masterNodes);
     nActualSets++;
 }
-void FairGeoInterface::setMediaFile(const char* file) { media->setInputFile(file); }
+void FairGeoInterface::setMediaFile(const char* file)
+{
+    media->setInputFile(file);
+}
 
 void FairGeoInterface::addInputFile(const char* file)
 {
@@ -427,50 +430,19 @@ Bool_t FairGeoInterface::connectOutput(const char* name)
     // Connects the output (ASCII or Oracle)
     if (output) {
         if (strcmp(output->IsA()->GetName(), "FairGeoAsciiIo") == 0) {
-            TString fName(name);
-            char buf[80];
             struct tm* newtime;
             time_t t;
             time(&t);
             newtime = localtime(&t);
-            if (newtime->tm_mday < 10) {
-                sprintf(buf, "_0%i", newtime->tm_mday);
-            } else {
-                sprintf(buf, "_%i", newtime->tm_mday);
-            }
-            fName = fName + buf;
-            if (newtime->tm_mon < 9) {
-                sprintf(buf, "0%i", newtime->tm_mon + 1);
-            } else {
-                sprintf(buf, "%i", newtime->tm_mon + 1);
-            }
-            fName = fName + buf;
-            Int_t y = newtime->tm_year - 100;
-            if (y < 10) {
-                sprintf(buf, "0%i", y);
-            } else {
-                sprintf(buf, "%i", y);
-            }
-            fName = fName + buf;
-            if (newtime->tm_hour < 10) {
-                sprintf(buf, "0%i", newtime->tm_hour);
-            } else {
-                sprintf(buf, "%i", newtime->tm_hour);
-            }
-            fName = fName + buf;
-            if (newtime->tm_min < 10) {
-                sprintf(buf, "0%i", newtime->tm_min);
-            } else {
-                sprintf(buf, "%i", newtime->tm_min);
-            }
-            fName = fName + buf;
-            if (newtime->tm_sec < 10) {
-                sprintf(buf, "0%i", newtime->tm_sec);
-            } else {
-                sprintf(buf, "%i", newtime->tm_sec);
-            }
-            fName = fName + buf + ".geo";
-            output->open(fName, "out");
+            const auto fullName = fmt::format("{}_{:02d}{:02d}{:02d}{:02d}{:02d}{:02d}.geo",
+                                              name,
+                                              newtime->tm_mday,
+                                              newtime->tm_mon + 1,
+                                              newtime->tm_year - 100,
+                                              newtime->tm_hour,
+                                              newtime->tm_min,
+                                              newtime->tm_sec);
+            output->open(fullName.c_str(), "out");
             cout << "Output file for " << name << ":  " << (static_cast<FairGeoAsciiIo*>(output))->getFilename()
                  << endl;
         }

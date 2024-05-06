@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -19,12 +19,11 @@
 #include "FairGeoVector.h"      // for FairGeoVector
 #include "FairGeoVolume.h"      // for FairGeoVolume
 
-#include <TArrayD.h>   // for TArrayD
-#include <TString.h>   // for TString
-#include <fstream>
-#include <ostream>    // for fstream, etc
-#include <stdio.h>    // for printf, sprintf
-#include <string.h>   // for strlen
+#include <TArrayD.h>    // for TArrayD
+#include <TString.h>    // for TString
+#include <cstdio>       // for printf
+#include <fmt/core.h>   // for format
+#include <fstream>      // for fstream, etc
 
 FairGeoAssembly::FairGeoAssembly()
     : FairGeoBasicShape()
@@ -73,11 +72,9 @@ Bool_t FairGeoAssembly::writePoints(std::fstream* pFile, FairGeoVolume* volu)
     if (!pFile) {
         return kFALSE;
     }
-    Text_t buf[155];
     for (Int_t i = 0; i < nPoints; i++) {
         FairGeoVector& v = *(volu->getPoint(i));
-        sprintf(buf, "%9.3f\n", v(0));
-        pFile->write(buf, strlen(buf));
+        *pFile << fmt::format("{:9.3f}\n", v(0));
     }
     return kTRUE;
 }
