@@ -85,9 +85,6 @@ FairModule::FairModule(const FairModule& rhs)
 {
     if (!vList) {
         vList = new FairVolumeList();
-        for (Int_t i = 0; i < rhs.vList->getEntries(); i++) {
-            vList->addVolume(rhs.vList->At(i));
-        }
     }
 
     // Initialize cached pointer to MC (on worker)
@@ -159,7 +156,6 @@ void FairModule::Streamer(TBuffer& b)
 
 void FairModule::SetGeometryFileName(TString fname, TString)
 {
-
     // If absolute path is given as argument, try to find it there.
     // If the file don't exist break. Don't look anywhere else.
     if (fname.BeginsWith("/")) {
