@@ -143,7 +143,10 @@ class FairModule : public TNamed
     static thread_local std::vector<FairVolume*> fAllSensitiveVolumes;   //!
 
     TString fMotherVolumeName{""};   //!
-    FairVolume* getFairVolume(FairGeoNode* fNode);
+    /**
+     * \deprecated Not used anywhere, will be removed in a future release
+     */
+    [[deprecated]] FairVolume* getFairVolume(FairGeoNode* fNode);
     void AddSensitiveVolume(TGeoVolume* v);
 
   private:
