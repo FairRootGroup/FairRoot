@@ -205,7 +205,7 @@ find_package2(PUBLIC FairLogger VERSION 1.2.0 REQUIRED)
 
 find_package2(PRIVATE fmt REQUIRED)
 
-if(BUILD_BASEMQ OR BUILD_EXAMPLES)
+if(BUILD_BASEMQ OR BUILD_EXAMPLES OR BUILD_TESTING)
   if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
     Set(Boost_NO_SYSTEM_PATHS TRUE)
   endif()
@@ -225,6 +225,9 @@ if(BUILD_BASEMQ OR BUILD_EXAMPLES)
   endif()
   if(BUILD_EXAMPLES)
     list(APPEND boost_dependencies program_options)
+  endif()
+  if(BUILD_TESTING)
+    list(APPEND boost_dependencies filesystem)
   endif()
 
   find_package2(PUBLIC Boost
