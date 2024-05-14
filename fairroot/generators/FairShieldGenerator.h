@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -10,35 +10,31 @@
 // -----                Created 15/09/06 by V. Friese                  -----
 // -------------------------------------------------------------------------
 
-/** FairShieldGenerator
- *@author V.Friese  <v.friese@gsi.de>
- *@since 15.09.06
- *@version 1.0
- *
- ** The FairShieldGenerator is similar to the FairAsciiGenerator. It uses the
- ** ASCII output of the SHIELD code as input for simulation.
- ** The format of the event header is:
- ** event nr.; number of particles; beam momentum; impact parameter
- ** followed by a line for each particle of the format
- ** PID; A; Z; px; py; pz
- ** The PID must be given as for Geant3. For ions, it is 1000. The total
- ** momentum is required, not momentum per nucleon.
- **/
-
 #ifndef FAIRSHIELDGENERATOR_H
 #define FAIRSHIELDGENERATOR_H 1
 
 #include "FairGenerator.h"   // for FairGenerator
 
-#include <Rtypes.h>    // for FairShieldGenerator::Class, etc
-#include <TString.h>   // for TString
-#include <iosfwd>      // for ifstream
-#include <map>         // for map
+#include <Rtypes.h>   // for FairShieldGenerator::Class, etc
+#include <TDatabasePDG.h>
+#include <iosfwd>   // for ifstream
 
-class TDatabasePDG;
 class FairPrimaryGenerator;
-class FairIon;
 
+/**
+ *@author V.Friese  <v.friese@gsi.de>
+ *@since 15.09.06
+ *@version 1.0
+ *
+ * The FairShieldGenerator is similar to the FairAsciiGenerator. It uses the
+ * ASCII output of the SHIELD code as input for simulation.
+ * The format of the event header is:
+ * event nr.; number of particles; beam momentum; impact parameter
+ * followed by a line for each particle of the format
+ * PID; A; Z; px; py; pz
+ * The PID must be given as for Geant3. For ions, it is 1000. The total
+ * momentum is required, not momentum per nucleon.
+ **/
 class FairShieldGenerator : public FairGenerator
 {
   public:
@@ -71,9 +67,6 @@ class FairShieldGenerator : public FairGenerator
     /** Private method RegisterIons. Goes through the input file and registers
      ** any ion needed. **/
     Int_t RegisterIons();
-
-    /** STL map from ion name to FairIon **/
-    std::map<TString, FairIon*> fIonMap;   //!
 
     FairShieldGenerator(const FairShieldGenerator&);
     FairShieldGenerator& operator=(const FairShieldGenerator&);

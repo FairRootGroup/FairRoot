@@ -16,19 +16,18 @@
 #include "FairPrimaryGenerator.h"   // for FairPrimaryGenerator
 #include "FairRunSim.h"             // for FairRunSim
 
-#include <TDatabasePDG.h>   // for TDatabasePDG
 #include <TParticlePDG.h>   // for TParticlePDG
 #include <climits>          // for INT_MAX
 #include <fmt/core.h>       // for format
 #include <fstream>          // for ifstream
-#include <utility>          // for pair
+#include <set>
+#include <string>
 
 FairShieldGenerator::FairShieldGenerator()
     : FairGenerator()
     , fInputFile(nullptr)
     , fFileName(nullptr)
     , fPDG(nullptr)
-    , fIonMap()
 {}
 
 FairShieldGenerator::FairShieldGenerator(const char* fileName)
@@ -36,7 +35,6 @@ FairShieldGenerator::FairShieldGenerator(const char* fileName)
     , fInputFile(nullptr)
     , fFileName(fileName)
     , fPDG(TDatabasePDG::Instance())
-    , fIonMap()
 {
     LOG(info) << "FairShieldGenerator: Opening input file " << fileName;
     fInputFile = new std::ifstream(fFileName);
@@ -136,39 +134,38 @@ void FairShieldGenerator::CloseInput()
 
 Int_t FairShieldGenerator::RegisterIons()
 {
+    FairRunSim* run = FairRunSim::Instance();
     Int_t nIons = 0;
-    Int_t eventId, nTracks, iPid, iMass, iCharge;
-    Double_t pBeam, b, px, py, pz;
-    fIonMap.clear();
+    std::set<std::string> duplicatecheck;
 
     while (!fInputFile->eof()) {
+        Int_t eventId, nTracks;
 
         *fInputFile >> eventId;
         *fInputFile >> nTracks;
         if (nTracks < 0 || nTracks > (INT_MAX - 1))
             LOG(fatal) << "Error reading the number of events from event header.";
+        Double_t pBeam, b;
         *fInputFile >> pBeam >> b;
         if (fInputFile->eof()) {
             continue;
         }
         for (Int_t iTrack = 0; iTrack < nTracks; iTrack++) {
+            Int_t iPid, iMass, iCharge;
+            Double_t px, py, pz;
             *fInputFile >> iPid >> iMass >> iCharge >> px >> py >> pz;
             if (iPid == 1000) {   // ion
                 const auto ionName = fmt::format("Ion_{}_{}", iMass, iCharge);
-                if (fIonMap.find(ionName) == fIonMap.end()) {   // new ion
-                    FairIon* ion = new FairIon(ionName.c_str(), iCharge, iMass, iCharge);
-                    fIonMap[ionName] = ion;
+                if (duplicatecheck.count(ionName) == 0) {
+                    // new ion
+                    auto ion = new FairIon(ionName.c_str(), iCharge, iMass, iCharge);
+                    duplicatecheck.emplace(ionName);
+                    run->AddNewIon(ion);
                     nIons++;
                 }   // new ion
             }       // ion
         }           // track loop
     }               // event loop
-
-    FairRunSim* run = FairRunSim::Instance();
-    for (const auto& mi : fIonMap) {
-        FairIon* ion = mi.second;
-        run->AddNewIon(ion);
-    }
 
     return nIons;
 }
