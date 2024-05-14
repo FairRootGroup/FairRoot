@@ -24,8 +24,8 @@ auto checkGeoSetNamingConventions(FairGeoSet& geo, const std::string& prefix, in
     SECTION("construction")
     {
         // Check that members are correctly set by constructor
-        REQUIRE(geo.GetName() == prefix);
-        REQUIRE(geo.getMaxModules() == modules);
+        CHECK(geo.GetName() == prefix);
+        CHECK(geo.getMaxModules() == modules);
     }
 
     SECTION("name generation")
@@ -33,8 +33,8 @@ auto checkGeoSetNamingConventions(FairGeoSet& geo, const std::string& prefix, in
         auto index = GENERATE(take(100, random(1, 1000)));
         const auto name = fmt::format("{}{}", prefix, index + 1);
 
-        REQUIRE(geo.getModuleName(index) == name);
-        REQUIRE(geo.getEleName(index) == name);
+        CHECK(geo.getModuleName(index) == name);
+        CHECK(geo.getEleName(index) == name);
     }
 
     SECTION("name parsing")
@@ -42,7 +42,7 @@ auto checkGeoSetNamingConventions(FairGeoSet& geo, const std::string& prefix, in
         auto index = GENERATE(take(100, random(1, 1000)));
         const auto name = fmt::format("{}{}", prefix, index + 1);
 
-        REQUIRE(geo.getModNumInMod(name) == index);
+        CHECK(geo.getModNumInMod(name) == index);
     }
 }
 
