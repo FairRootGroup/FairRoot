@@ -17,7 +17,8 @@
 
 #include <Rtypes.h>   // for FairShieldGenerator::Class, etc
 #include <TDatabasePDG.h>
-#include <iosfwd>   // for ifstream
+#include <fstream>   // for ifstream
+#include <string>
 
 class FairPrimaryGenerator;
 
@@ -47,18 +48,18 @@ class FairShieldGenerator : public FairGenerator
     FairShieldGenerator(const char* fileName);
 
     /** Destructor. **/
-    virtual ~FairShieldGenerator();
+    ~FairShieldGenerator() override;
 
     /** Reads on event from the input file and pushes the tracks onto
      ** the stack. Abstract method in base class.
      ** @param primGen  pointer to the FairPrimaryGenerator
      **/
-    virtual Bool_t ReadEvent(FairPrimaryGenerator* primGen);
+    Bool_t ReadEvent(FairPrimaryGenerator* primGen) override;
 
   private:
-    std::ifstream* fInputFile;   //! Input file stream
-    const Char_t* fFileName;     //! Input file Name
-    TDatabasePDG* fPDG;          //!  PDG database
+    std::ifstream fInputFile;   //! Input file stream
+    std::string fFileName;      //! Input file Name
+    TDatabasePDG* fPDG;         //!  PDG database
 
     /** Private method CloseInput. Just for convenience. Closes the
      ** input file properly. Called from destructor and from ReadEvent. **/
@@ -71,7 +72,7 @@ class FairShieldGenerator : public FairGenerator
     FairShieldGenerator(const FairShieldGenerator&);
     FairShieldGenerator& operator=(const FairShieldGenerator&);
 
-    ClassDef(FairShieldGenerator, 1);
+    ClassDefOverride(FairShieldGenerator, 1);
 };
 
 #endif
