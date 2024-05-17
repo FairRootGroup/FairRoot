@@ -1,11 +1,10 @@
-
 # Changelog
 
 All notable changes to FairRoot will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
-## 19.0 (Unreleased) - 2024-03-xx
+## 19.0.0 - 2024-05-17
 
 ### Breaking Changes
 
@@ -75,7 +74,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * `basemq/tasks/FairMQSamplerTask.h` -> `examples/advanced/Tutorial3/MQ/samplerTask/SamplerTask.h`
   * FairTimeStamp
     * `virtual bool operator<(const FairTimeStamp* rValue) const` changed to `bool operator<(const FairTimeStamp& rValue) const`
- 
+
 ### Deprecations
 
 If you think you really require a deprecated API, please
