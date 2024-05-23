@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -71,11 +71,10 @@ class FairMQPixelTaskProcessor : public fair::mq::Device
         fReceivedMsgs++;
 
         std::vector<TObject*> tempObjects;
-        for (int ipart = 0; ipart < parts.Size(); ipart++) {
+        for (auto& part : parts) {
             TObject* obj = nullptr;
-            RootSerializer().Deserialize(*parts.At(ipart), obj);
+            RootSerializer().Deserialize(*part, obj);
             tempObjects.push_back(obj);
-            // LOG(trace) << "got TObject with name \"" << tempObjects[ipart]->GetName() << "\".";
             if (strcmp(tempObjects.back()->GetName(), "EventHeader.") == 0) {
                 fEventHeader = (FairEventHeader*)(tempObjects.back());
             }

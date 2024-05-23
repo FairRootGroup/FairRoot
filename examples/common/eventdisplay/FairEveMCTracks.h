@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2020-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2020-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -29,17 +29,16 @@ class TBuffer;
 class TClass;
 class TClonesArray;
 class TDatabasePDG;
-class TMemberInspector;
 
 class FairEveMCTracks : public FairEveTracks
 {
-    TClonesArray *fContainer;
+    TClonesArray* fContainer{nullptr};
     Bool_t fShowPrimary;
     Bool_t fShowSecondary;
     Bool_t fUsePdg;
     Int_t fPdgCut;
     std::unique_ptr<FairRKPropagator> fRK{};
-    TDatabasePDG *fPDG;
+    TDatabasePDG* fPDG{nullptr};
 
   protected:
     Bool_t CheckCuts(FairMCTrack *tr);

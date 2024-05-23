@@ -35,9 +35,9 @@ set(sources
   timeBasedSimulation/FairTestDetectorTimeDigiTask.cxx
   timeBasedSimulation/FairTestDetectorTimeRecoTask.cxx
 
-  $<$<TARGET_EXISTS:protobuf::libprotobuf>:${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc>
-  $<$<BOOL:${Flatbuffers_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadDigi_generated.h>
-  $<$<BOOL:${Flatbuffers_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadHit_generated.h>
+  $<$<TARGET_EXISTS:protobuf::libprotobuf>:${CMAKE_CURRENT_BINARY_DIR}/Payload.pb.cc>
+  $<$<BOOL:${Flatbuffers_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/PayloadDigi_generated.h>
+  $<$<BOOL:${Flatbuffers_FOUND}>:${CMAKE_CURRENT_BINARY_DIR}/PayloadHit_generated.h>
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
@@ -45,8 +45,8 @@ fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 if(TARGET protobuf::libprotobuf)
   list(APPEND defs PROTOBUF)
   add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.h ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayload.pb.cc
-    COMMAND $<TARGET_FILE:protobuf::protoc> -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayload.proto
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/Payload.pb.h ${CMAKE_CURRENT_BINARY_DIR}/Payload.pb.cc
+    COMMAND $<TARGET_FILE:protobuf::protoc> -I=. --cpp_out=${CMAKE_CURRENT_BINARY_DIR} Payload.proto
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/MQ/data
   )
 endif()
@@ -55,13 +55,13 @@ if(Flatbuffers_FOUND)
   set(FLATBUFFERS_USED true)
   list(APPEND defs FLATBUFFERS)
   add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadDigi_generated.h
-    COMMAND $<TARGET_FILE:flatbuffers::flatc> -c -o ${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayloadDigi.fbs
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/PayloadDigi_generated.h
+    COMMAND $<TARGET_FILE:flatbuffers::flatc> -c -o ${CMAKE_CURRENT_BINARY_DIR} PayloadDigi.fbs
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/MQ/data
   )
   add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/FairTestDetectorPayloadHit_generated.h
-    COMMAND $<TARGET_FILE:flatbuffers::flatc> -c -o ${CMAKE_CURRENT_BINARY_DIR} FairTestDetectorPayloadHit.fbs
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/PayloadHit_generated.h
+    COMMAND $<TARGET_FILE:flatbuffers::flatc> -c -o ${CMAKE_CURRENT_BINARY_DIR} PayloadHit.fbs
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/MQ/data
   )
 
@@ -74,18 +74,7 @@ else()
   set(FLATBUFFERS_USED false)
 endif()
 
-if(msgpack_FOUND)
-  set(MSGPACK_USED true)
-  list(APPEND defs MSGPACK)
-else()
-  set(MSGPACK_USED false)
-endif()
-
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3Three.sh.in          ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3Three.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3All.sh.in            ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3All.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3AllProxy.sh.in       ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3AllProxy.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3PushPull.sh.in       ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3PushPull.sh)
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/run/startMQTut3ExtraProcessor.sh.in ${CMAKE_CURRENT_BINARY_DIR}/startMQTut3ExtraProcessor.sh)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/start.sh.in ${CMAKE_CURRENT_BINARY_DIR}/start.sh)
 
 add_library(${target} SHARED ${sources} ${headers})
 add_library(FairRoot::${target} ALIAS ${target})
@@ -109,11 +98,6 @@ target_include_directories(${target} PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-# TODO: DELETE ME ONCE USING root targets
-target_include_directories(${target} SYSTEM PUBLIC
-  ${ROOT_INCLUDE_DIR}
-)
-
 target_link_libraries(${target} PUBLIC
   FairRoot::Base # FairRunIdGenerator
   FairRoot::BaseMQ # Serialization policies
@@ -127,7 +111,6 @@ target_link_libraries(${target} PUBLIC
 
   $<$<TARGET_EXISTS:protobuf::libprotobuf>:protobuf::libprotobuf>
   $<$<BOOL:${Flatbuffers_FOUND}>:${flatbuffers_lib}>
-  $<$<BOOL:${msgpack_FOUND}>:msgpackc>
 
   ROOT::Physics # TVector3, TLorentzVector
   ROOT::Core # Rtypes
@@ -150,18 +133,41 @@ fairroot_target_root_dictionary(${target}
 install(TARGETS ${target} LIBRARY DESTINATION ${PROJECT_INSTALL_LIBDIR})
 install(FILES ${headers} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-add_executable(tut3-sampler MQ/run/runTestDetectorSampler.cxx)
+add_executable(tut3-sampler MQ/sampler.cxx)
 target_link_libraries(tut3-sampler PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairRoot::FairMQ)
 target_compile_definitions(tut3-sampler PRIVATE ${defs})
 
-add_executable(tut3-processor MQ/run/runTestDetectorProcessor.cxx)
+add_executable(tut3-processor MQ/processor.cxx)
 target_link_libraries(tut3-processor PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairRoot::FairMQ)
 target_compile_definitions(tut3-processor PRIVATE ${defs})
 
-add_executable(tut3-sink MQ/run/runTestDetectorFileSink.cxx)
+add_executable(tut3-sink MQ/sink.cxx)
 target_link_libraries(tut3-sink PRIVATE FairRoot::BaseMQ FairRoot::ExTestDetector FairRoot::FairMQ)
 target_compile_definitions(tut3-sink PRIVATE ${defs})
 
 install(TARGETS tut3-sampler tut3-processor tut3-sink
   RUNTIME DESTINATION ${PROJECT_INSTALL_DATADIR}/examples/advanced/Tutorial3/bin
 )
+
+# test script
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/MQ/test.sh.in ${CMAKE_CURRENT_BINARY_DIR}/test.sh)
+
+macro(add_ex_tutorial3_mq_test serializationformat)
+  add_test(NAME ex_tutorial3_mq_${serializationformat} COMMAND ${CMAKE_CURRENT_BINARY_DIR}/test.sh ${serializationformat})
+  set_tests_properties(ex_tutorial3_mq_${serializationformat} PROPERTIES
+    TIMEOUT "30"
+    FIXTURES_REQUIRED fixture.ex_tutorial3_digi_TGeant4
+    PASS_REGULAR_EXPRESSION "Received 100 messages!")
+endmacro()
+
+add_ex_tutorial3_mq_test("tmessage")
+add_ex_tutorial3_mq_test("binary")
+add_ex_tutorial3_mq_test("boost")
+
+if(Flatbuffers_FOUND)
+  add_ex_tutorial3_mq_test("flatbuffers")
+endif()
+
+if(Protobuf_FOUND)
+  add_ex_tutorial3_mq_test("protobuf")
+endif()

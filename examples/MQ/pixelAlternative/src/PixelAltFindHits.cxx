@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -183,14 +183,15 @@ void PixelAltFindHits::GetParList(TList* tempList)
 {
     fDigiPar = new PixelDigiPar("PixelDigiParameters");
     tempList->Add(fDigiPar);
-
-    return;
 }
 
 void PixelAltFindHits::InitMQ(TList* tempList)
 {
     LOG(info) << "********************************************** PixelAltFindHits::InitMQ()";
-    fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
+    fDigiPar = dynamic_cast<PixelDigiPar*>(tempList->FindObject("PixelDigiParameters"));
+    if (!fDigiPar) {
+        throw std::runtime_error("no PixelDigiParameters");
+    }
 
     fFeCols = fDigiPar->GetFECols();
     fFeRows = fDigiPar->GetFERows();
@@ -205,8 +206,6 @@ void PixelAltFindHits::InitMQ(TList* tempList)
     LOG(info) << ">> fPitchY      = " << fPitchY;
 
     fHits = new TClonesArray("PixelHit", 10000);
-
-    return;
 }
 
 void PixelAltFindHits::ExecMQ(TList* inputList, TList* outputList)
@@ -215,10 +214,15 @@ void PixelAltFindHits::ExecMQ(TList* inputList, TList* outputList)
     //  << "," << outputList->GetName() << "), Event " << fTNofEvents; LOG(info) <<
     //  "********************************************** PixelAltFindHits::ExecMQ(), Event " << fTNofEvents; LOG(info) <<
     //  "h" << FairLogger::flush;
-    fDigis = (TClonesArray*)inputList->FindObject("PixelDigis");
+    fDigis = dynamic_cast<TClonesArray*>(inputList->FindObject("PixelDigis"));
+    if (!fDigis) {
+        throw std::runtime_error("no PixelDigis");
+    }
+    if (!fDigis->GetClass()->InheritsFrom(PixelDigi::Class())) {
+        throw std::runtime_error("wrong type in PixelDigis TCA");
+    }
     outputList->Add(fHits);
     Exec("");
-    return;
 }
 
 void PixelAltFindHits::ExecMQ(PixelPayload::Digi* digiPalVector,
@@ -241,7 +245,6 @@ void PixelAltFindHits::ExecMQ(PixelPayload::Digi* digiPalVector,
         hitPalVector[idigi].fDetectorID = digiPalVector[idigi].fDetectorID;
         nofHits++;
     }
-    return;
 }
 
 InitStatus PixelAltFindHits::Init()
@@ -296,5 +299,3 @@ void PixelAltFindHits::Finish()
               << static_cast<Double_t>(fTNofHits) / (static_cast<Double_t>(fTNofEvents)) << " per event)";
     LOG(info) << "---------------------------------------------------------------------";
 }
-
-ClassImp(PixelAltFindHits);

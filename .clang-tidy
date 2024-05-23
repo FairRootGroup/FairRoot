@@ -2,14 +2,26 @@
 HeaderFilterRegex: '.*'
 # disable clang-analyzer-core.UndefinedBinaryOperatorResult
 #   ROOT throws lots of them in their headers
-# enable cppcoreguidelines-virtual-class-destructor
+# Bugprone:
+#   These could cause actual bugs.
+# C++ Core Guidelines
+# * cppcoreguidelines-virtual-class-destructor
 #   Avoid undefined behaviour
+# * cppcoreguidelines-pro-type-cstyle-cast
+#   Avoid C-Style Casts which might be problematic
 # enable google-build-using-namespace
 #   "using namespace" imports a changing amount of symbols, avoid it
 # improve readability:
 #   readability-simplify-boolean-expr
 Checks: >-
   -clang-analyzer-core.UndefinedBinaryOperatorResult,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-narrowing-conversions,
+  -bugprone-virtual-near-miss,
+  -bugprone-unhandled-self-assignment,
+  -bugprone-reserved-identifier,
+  cppcoreguidelines-pro-type-cstyle-cast,
   cppcoreguidelines-virtual-class-destructor,
   modernize-make-unique,
   google-build-using-namespace,

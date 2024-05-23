@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -100,16 +100,19 @@ void FairMQPixelFileSinkBin::Init()
 
 bool FairMQPixelFileSinkBin::StoreData(fair::mq::Parts& parts, int /*index*/)
 {
-    if (parts.Size() == 0)
+    const auto numParts = parts.Size();
+
+    if (numParts == 0) {
         return true;   // probably impossible, but still check
+    }
 
     // expecting even number of parts in the form: header,data,header,data,header,data and so on...
-    int nPPE = 2;   // nof parts per event
+    constexpr auto nPPE = 2;   // nof parts per event
 
-    if (parts.Size() % nPPE >= 1)
-        LOG(info) << "received " << parts.Size() << " parts, will ignore last part!!!";
+    if (numParts % nPPE >= 1)
+        LOG(info) << "received " << numParts << " parts, will ignore last part!!!";
 
-    for (int ievent = 0; ievent < parts.Size() / nPPE; ievent++) {
+    for (decltype(parts.Size()) ievent = 0; ievent < numParts / nPPE; ievent++) {
         // the first part should be the event header
         PixelPayload::EventHeader* payloadE =
             static_cast<PixelPayload::EventHeader*>(parts.At(nPPE * ievent)->GetData());

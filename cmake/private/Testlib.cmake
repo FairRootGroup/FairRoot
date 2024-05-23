@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2020-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2020-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -9,8 +9,12 @@
 macro(fairroot_ctest_setup)
   cmake_host_system_information(RESULT fqdn QUERY FQDN)
 
-  set(CTEST_SOURCE_DIRECTORY .)
-  set(CTEST_BINARY_DIRECTORY build)
+  if(NOT CTEST_SOURCE_DIRECTORY)
+    set(CTEST_SOURCE_DIRECTORY .)
+  endif()
+  if(NOT CTEST_BINARY_DIRECTORY)
+    set(CTEST_BINARY_DIRECTORY build)
+  endif()
   set(CTEST_PROJECT_NAME "FairRoot")
   set(CTEST_CMAKE_GENERATOR "Unix Makefiles")
   set(CTEST_USE_LAUNCHERS ON)
@@ -20,6 +24,51 @@ macro(fairroot_ctest_setup)
   else()
     set(CTEST_SITE $ENV{CTEST_SITE})
   endif()
+endmacro()
+
+macro(get_NCPUS)
+  if(NOT NCPUS)
+    if(DEFINED ENV{SLURM_CPUS_PER_TASK})
+      set(NCPUS $ENV{SLURM_CPUS_PER_TASK})
+      set(NCPUS_SOURCE "SLURM_CPUS_PER_TASK")
+    elseif(DEFINED ENV{SLURM_JOB_CPUS_PER_NODE})
+      set(NCPUS $ENV{SLURM_JOB_CPUS_PER_NODE})
+      set(NCPUS_SOURCE "SLURM_JOB_CPUS_PER_NODE")
+    else()
+      include(ProcessorCount)
+      ProcessorCount(NCPUS)
+      if(NCPUS EQUAL 0)
+        set(NCPUS 1)
+      endif()
+      set(NCPUS_SOURCE "ProcessorCount()")
+    endif()
+  else()
+    set(NCPUS_SOURCE "Already-Set")
+  endif()
+  message(STATUS " NCPUS ................: ${NCPUS} (from ${NCPUS_SOURCE})")
+endmacro()
+
+macro(get_os_name_release)
+  find_program(LSB_RELEASE_EXEC lsb_release)
+  if(NOT LSB_RELEASE_EXEC)
+    # message(WARNING "lsb_release not found")
+    cmake_host_system_information(RESULT os_name QUERY OS_NAME)
+    cmake_host_system_information(RESULT os_release QUERY OS_RELEASE)
+  else()
+    execute_process(COMMAND ${LSB_RELEASE_EXEC} -si
+      OUTPUT_VARIABLE os_name
+      OUTPUT_STRIP_TRAILING_WHITESPACE)
+    execute_process(COMMAND ${LSB_RELEASE_EXEC} -sr
+      OUTPUT_VARIABLE os_release
+      OUTPUT_STRIP_TRAILING_WHITESPACE)
+    execute_process(COMMAND ${LSB_RELEASE_EXEC} -sd
+      OUTPUT_VARIABLE os_description
+      OUTPUT_STRIP_TRAILING_WHITESPACE)
+  endif()
+  if(NOT os_description)
+    set(os_description "${os_name}-${os_release}")
+  endif()
+  message(STATUS " OS Description .......: ${os_description}")
 endmacro()
 
 macro(show_jenkins_info)

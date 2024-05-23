@@ -1,3 +1,16 @@
+/********************************************************************************
+ * Copyright (C) 2012-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ *                                                                              *
+ *              This software is distributed under the terms of the             *
+ *              GNU Lesser General Public Licence (LGPL) version 3,             *
+ *                  copied verbatim in the file "LICENSE"                       *
+ ********************************************************************************/
+
+#include <TRandom.h>
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+
 void run_sim_sep(Int_t fileId, Int_t nEvents = 1000, TString mcEngine = "TGeant3")
 {
     gRandom->SetSeed(1111 * fileId);
@@ -17,49 +30,49 @@ void run_sim_sep(Int_t fileId, Int_t nEvents = 1000, TString mcEngine = "TGeant3
     gSystem->Setenv("CONFIG_DIR", tut_configdir.Data());
 
     // create Instance of Run Manager class
-    FairRunSim *fRun = new FairRunSim();
+    FairRunSim run{};
 
     // set the MC version used
     // ------------------------
 
-    fRun->SetName(mcEngine);
+    run.SetName(mcEngine);
 
     TString outfile = Form("data/testrun_%s_f%d.root", mcEngine.Data(), fileId);
     TString outparam = Form("data/testpar_%s_f%d.root", mcEngine.Data(), fileId);
 
-    fRun->SetSink(new FairRootFileSink(outfile));
+    run.SetSink(new FairRootFileSink(outfile));
 
     // -----   Magnetic field   -------------------------------------------
     // Constant Field
     FairConstField *fMagField = new FairConstField();
     fMagField->SetField(0., 10., 0.);                        // values are in kG
     fMagField->SetFieldRegion(-50, 50, -50, 50, 350, 450);   // values are in cm (xmin,xmax,ymin,ymax,zmin,zmax)
-    fRun->SetField(fMagField);
+    run.SetField(fMagField);
     // --------------------------------------------------------------------
 
     // Set Material file Name
     //-----------------------
-    fRun->SetMaterials("media.geo");
+    run.SetMaterials("media.geo");
 
     // Create and add detectors
     //-------------------------
     FairModule *Cave = new FairCave("CAVE");
     Cave->SetGeometryFileName("cave.geo");
-    fRun->AddModule(Cave);
+    run.AddModule(Cave);
 
     FairModule *Magnet = new FairMagnet("MAGNET");
     Magnet->SetGeometryFileName("magnet.geo");
-    fRun->AddModule(Magnet);
+    run.AddModule(Magnet);
 
     FairDetector *Torino = new FairTestDetector("TORINO", kTRUE);
     Torino->SetGeometryFileName("torino.geo");
-    fRun->AddModule(Torino);
+    run.AddModule(Torino);
 
     // Create and Set Event Generator
     //-------------------------------
 
     FairPrimaryGenerator *primGen = new FairPrimaryGenerator();
-    fRun->SetGenerator(primGen);
+    run.SetGenerator(primGen);
 
     // Box Generator
     FairBoxGenerator *boxGen = new FairBoxGenerator(13, 10);   // 13 = muon; 1 = multipl.
@@ -71,9 +84,9 @@ void run_sim_sep(Int_t fileId, Int_t nEvents = 1000, TString mcEngine = "TGeant3
     // boxGen->SetXYZ(0., 0.37, 0.);
     primGen->AddGenerator(boxGen);
 
-    fRun->SetStoreTraj(kTRUE);
+    run.SetStoreTraj(kTRUE);
 
-    fRun->Init();
+    run.Init();
 
     // -Trajectories Visualization (TGeoManager Only )
     // -----------------------------------------------
@@ -91,7 +104,7 @@ void run_sim_sep(Int_t fileId, Int_t nEvents = 1000, TString mcEngine = "TGeant3
     // Fill the Parameter containers for this run
     //-------------------------------------------
 
-    FairRuntimeDb *rtdb = fRun->GetRuntimeDb();
+    FairRuntimeDb* rtdb = run.GetRuntimeDb();
     Bool_t kParameterMerged = kTRUE;
     FairParRootFileIo *output = new FairParRootFileIo(kParameterMerged);
     output->open(outparam);
@@ -104,9 +117,9 @@ void run_sim_sep(Int_t fileId, Int_t nEvents = 1000, TString mcEngine = "TGeant3
     // -----------------
 
     //  Int_t nEvents = 1;
-    fRun->Run(nEvents);
+    run.Run(nEvents);
 
-    fRun->CreateGeometryFile("data/geofile_full.root");
+    run.CreateGeometryFile("data/geofile_full.root");
 
     // -----   Finish   -------------------------------------------------------
 

@@ -51,9 +51,16 @@ foreach(mcEngine IN LISTS mcEngine_list)
   )
 endforeach()
 
-add_test(NAME ex_tutorial1_PostInitConfig
+add_test(NAME ex_sim_tutorial1_Geant4MT
+         COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1.sh 20 \"TGeant4\" true false)
+set_tests_properties(ex_sim_tutorial1_Geant4MT PROPERTIES
+  TIMEOUT ${maxTestTime}
+  PASS_REGULAR_EXPRESSION "Simulation successful."
+)
+
+add_test(NAME ex_sim_tutorial1_PostInitConfig
          COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1.sh 1 \"TGeant4\" false true)
-set_tests_properties(ex_tutorial1_PostInitConfig PROPERTIES
+set_tests_properties(ex_sim_tutorial1_PostInitConfig PROPERTIES
   TIMEOUT ${maxTestTime}
   PASS_REGULAR_EXPRESSION "Loading Geant4 PostInit Config."
 )

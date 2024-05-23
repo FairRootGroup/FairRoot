@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -18,10 +18,10 @@
 #include "FairTask.h"
 
 #include <Rtypes.h>
+#include <TClonesArray.h>
+#include <TList.h>
 
-class TClonesArray;
 class PixelDigiPar;
-class TList;
 
 class PixelFitTracks : public FairTask
 {
@@ -75,12 +75,6 @@ class PixelFitTracks : public FairTask
 
     /** Intialisation **/
     InitStatus Init() override;
-
-    /** Reinitialisation **/
-    InitStatus ReInit() override;
-
-    /** Reset eventwise counters **/
-    void Reset();
 
     /** Finish at the end of each event **/
     void Finish() override;

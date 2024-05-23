@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -178,14 +178,15 @@ void PixelDigitize::GetParList(TList* tempList)
 {
     fDigiPar = new PixelDigiPar("PixelDigiParameters");
     tempList->Add(fDigiPar);
-
-    return;
 }
 
 void PixelDigitize::InitMQ(TList* tempList)
 {
     LOG(info) << "********************************************** PixelDigitize::InitMQ()";
-    fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
+    fDigiPar = dynamic_cast<PixelDigiPar*>(tempList->FindObject("PixelDigiParameters"));
+    if (!fDigiPar) {
+        throw std::runtime_error("no PixelDigiParameters");
+    }
 
     fFeCols = fDigiPar->GetFECols();
     fFeRows = fDigiPar->GetFERows();
@@ -200,8 +201,6 @@ void PixelDigitize::InitMQ(TList* tempList)
     LOG(info) << ">> fPitchY      = " << fPitchY;
 
     fDigis = new TClonesArray("PixelDigi", 10000);
-
-    return;
 }
 
 void PixelDigitize::ExecMQ(TList* inputList, TList* outputList)
@@ -209,10 +208,15 @@ void PixelDigitize::ExecMQ(TList* inputList, TList* outputList)
     //  LOG(info) << "********************************************** PixelDigitize::ExecMQ(" << inputList->GetName() <<
     //  "," << outputList->GetName() << "), Event " << fTNofEvents; LOG(info) <<
     //  "********************************************** PixelDigitize::ExecMQ(), Event " << fTNofEvents;
-    fPoints = (TClonesArray*)inputList->FindObject("PixelPoint");
+    fPoints = dynamic_cast<TClonesArray*>(inputList->FindObject("PixelPoint"));
+    if (!fPoints) {
+        throw std::runtime_error("no PixelPoint");
+    }
+    if (!fPoints->GetClass()->InheritsFrom(PixelPoint::Class())) {
+        throw std::runtime_error("wrong type in PixelPoint TCA");
+    }
     outputList->Add(fDigis);
     Exec("");
-    return;
 }
 
 InitStatus PixelDigitize::Init()
@@ -264,5 +268,3 @@ void PixelDigitize::Finish()
               << static_cast<Double_t>(fTNofDigis) / (static_cast<Double_t>(fTNofEvents)) << " per event )";
     LOG(info) << "---------------------------------------------------------------------";
 }
-
-ClassImp(PixelDigitize);

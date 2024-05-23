@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -17,21 +17,18 @@
 #define PIXELDIGISOURCE_H_
 
 #include "FairSource.h"
+#include "PixelEventHeader.h"
 
 #include <Rtypes.h>
+#include <TClonesArray.h>
 #include <TString.h>
 #include <fstream>
-
-class TClonesArray;
-
-class PixelEventHeader;
-class FairEventHeader;
 
 class PixelDigiSource : public FairSource
 {
   public:
     PixelDigiSource(TString inputFileName = "test.dat");
-    ~PixelDigiSource() override;
+    ~PixelDigiSource() override = default;
 
     Bool_t Init() override;
 
@@ -62,8 +59,8 @@ class PixelDigiSource : public FairSource
     Bool_t ActivateObject(TObject** obj, const char* BrName) override;
 
   private:
-    PixelEventHeader* fEventHeader;
-    TClonesArray* fDigis; /** Output array of PixelDigi **/
+    PixelEventHeader fEventHeader{};
+    TClonesArray fDigis; /** Output array of PixelDigi **/
     Int_t fNDigis;
 
     Int_t fTNofEvents;

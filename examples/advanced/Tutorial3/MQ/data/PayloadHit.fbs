@@ -1,0 +1,20 @@
+namespace TestDetectorFlat;
+
+table Hit {
+  det_id:int;
+  mc_index:int;
+  x:double;
+  y:double;
+  z:double;
+  dx:double;
+  dy:double;
+  dz:double;
+  timestamp:double;
+  timestamp_error:double;
+}
+
+table HitPayload {
+  hits:[Hit];
+}
+
+root_type HitPayload;

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -14,7 +14,6 @@
 
 #include "PixelFitTracks.h"
 
-#include "FairLogger.h"
 #include "FairRootManager.h"
 #include "FairRun.h"
 #include "FairRuntimeDb.h"
@@ -22,9 +21,8 @@
 #include "PixelHit.h"
 #include "PixelTrack.h"
 
-#include <TClonesArray.h>
-#include <TList.h>
 #include <TMath.h>
+#include <fairlogger/Logger.h>
 
 PixelFitTracks::PixelFitTracks()
     : PixelFitTracks("Pixel Track Fitter", 0)
@@ -46,13 +44,10 @@ PixelFitTracks::PixelFitTracks(const char* name, Int_t iVerbose)
     , fTNofTracks(0)
     , fNFitTracks(0)
     , fTNofFitTracks(0)
-{
-    Reset();
-}
+{}
 
 PixelFitTracks::~PixelFitTracks()
 {
-    Reset();
     delete fDigiPar;
     if (fFitTracks) {
         fFitTracks->Delete();
@@ -62,7 +57,9 @@ PixelFitTracks::~PixelFitTracks()
 
 void PixelFitTracks::Exec(Option_t* /*opt*/)
 {
-    Reset();
+    fNFitTracks = 0;
+    if (fFitTracks)
+        fFitTracks->Clear();
 
     fNHits = fHits->GetEntriesFast();
     fNTracks = fTracks->GetEntriesFast();
@@ -175,8 +172,6 @@ void PixelFitTracks::GetParList(TList* tempList)
 {
     fDigiPar = new PixelDigiPar("PixelDigiParameters");
     tempList->Add(fDigiPar);
-
-    return;
 }
 
 void PixelFitTracks::InitMQ(TList* tempList)
@@ -186,7 +181,6 @@ void PixelFitTracks::InitMQ(TList* tempList)
 
     fFitTracks = new TClonesArray("PixelTrack", 10000);
     fFitTracks->SetName("PixelFitTracks");
-    return;
 }
 
 void PixelFitTracks::ExecMQ(TList* inputList, TList* outputList)
@@ -199,7 +193,6 @@ void PixelFitTracks::ExecMQ(TList* inputList, TList* outputList)
     fTracks = (TClonesArray*)inputList->FindObject("PixelTracks");
     outputList->Add(fFitTracks);
     Exec("");
-    return;
 }
 
 InitStatus PixelFitTracks::Init()
@@ -223,15 +216,6 @@ InitStatus PixelFitTracks::Init()
     return kSUCCESS;
 }
 
-InitStatus PixelFitTracks::ReInit() { return kSUCCESS; }
-
-void PixelFitTracks::Reset()
-{
-    fNFitTracks = fNTracks = fNHits = 0;
-    if (fFitTracks)
-        fFitTracks->Clear();
-}
-
 void PixelFitTracks::Finish()
 {
     if (fFitTracks)
@@ -245,5 +229,3 @@ void PixelFitTracks::Finish()
               << static_cast<Double_t>(fTNofFitTracks) / (static_cast<Double_t>(fTNofEvents)) << " per event)";
     LOG(info) << "---------------------------------------------------------------------";
 }
-
-ClassImp(PixelFitTracks);

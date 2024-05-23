@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -14,15 +14,12 @@
 
 #include "PixelDigiWriteToBinFile.h"
 
-// Includes from base
-#include "FairLogger.h"
-#include "FairRootManager.h"
-
-// Includes from ROOT
 #include "PixelDigi.h"
 
-#include <TClonesArray.h>
-#include <TString.h>
+// Includes from base
+#include "FairRootManager.h"
+
+#include <fairlogger/Logger.h>
 
 PixelDigiWriteToBinFile::PixelDigiWriteToBinFile()
     : PixelDigiWriteToBinFile("Pixel DigiWriter", 0)
@@ -42,17 +39,10 @@ PixelDigiWriteToBinFile::PixelDigiWriteToBinFile(const char* name, Int_t iVerbos
     , fRunId(0)
     , fMCEntryNo(0)
     , fPartNo(0)
-
-{
-    Reset();
-}
-
-PixelDigiWriteToBinFile::~PixelDigiWriteToBinFile() { Reset(); }
+{}
 
 void PixelDigiWriteToBinFile::Exec(Option_t* /*opt*/)
 {
-    Reset();
-
     Int_t nofDigis = fDigis->GetEntriesFast();
 
     Int_t digisPerFile[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -103,7 +93,6 @@ void PixelDigiWriteToBinFile::Exec(Option_t* /*opt*/)
 
 InitStatus PixelDigiWriteToBinFile::Init()
 {
-
     // Get input array
     FairRootManager* ioman = FairRootManager::Instance();
 
@@ -163,5 +152,3 @@ void PixelDigiWriteToBinFile::Finish()
         fOutputFiles[ifile].close();
     }
 }
-
-ClassImp(PixelDigiWriteToBinFile);

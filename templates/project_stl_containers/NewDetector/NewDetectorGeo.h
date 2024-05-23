@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,17 +12,16 @@
 
 class NewDetectorGeo : public FairGeoSet
 {
-
   protected:
-    char modName[20];   // name of module
-    char eleName[20];   // substring for elements in module
+    char modName[20]{"NewDetector"};   // name of module
+    char eleName[20]{"NewDetector"};   // substring for elements in module
   public:
     NewDetectorGeo();
-    ~NewDetectorGeo() {}
-    const char* getModuleName(Int_t);
-    const char* getEleName(Int_t);
-    inline Int_t getModNumInMod(const TString&);
-    ClassDef(NewDetectorGeo, 1);
+    ~NewDetectorGeo() override = default;
+    const char* getModuleName(Int_t) override;
+    const char* getEleName(Int_t) override;
+    inline Int_t getModNumInMod(const TString&) override;
+    ClassDefOverride(NewDetectorGeo, 1);
 };
 
 inline Int_t NewDetectorGeo::getModNumInMod(const TString& name)

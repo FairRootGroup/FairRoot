@@ -1,13 +1,21 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
 void run_tutorial4_createGeometryFile(Int_t nEvents = 1, TString mcEngine = "TGeant3", Bool_t isMT = false)
 {
-
     TString dir = getenv("VMCWORKDIR");
 
     TString tut_configdir = dir + "/simulation/Tutorial4/gconfig";
@@ -58,26 +66,26 @@ void run_tutorial4_createGeometryFile(Int_t nEvents = 1, TString mcEngine = "TGe
     //  gLogger->SetLogScreenLevel("INFO");
 
     // -----   Create simulation run   ----------------------------------------
-    FairRunSim* run = new FairRunSim();
-    run->SetName(mcEngine);                        // Transport engine
-    run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
-    run->SetSink(new FairRootFileSink(outFile));   // Output file
-    FairRuntimeDb* rtdb = run->GetRuntimeDb();
+    FairRunSim run{};
+    run.SetName(mcEngine);                        // Transport engine
+    run.SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
+    run.SetSink(new FairRootFileSink(outFile));   // Output file
+    FairRuntimeDb* rtdb = run.GetRuntimeDb();
     // ------------------------------------------------------------------------
 
     // -----   Create media   -------------------------------------------------
-    run->SetMaterials("media.geo");   // Materials
+    run.SetMaterials("media.geo");   // Materials
     // ------------------------------------------------------------------------
 
     // -----   Create geometry   ----------------------------------------------
     FairModule* cave = new FairCave("CAVE");
     cave->SetGeometryFileName("cave_vacuum.geo");
-    run->AddModule(cave);
+    run.AddModule(cave);
 
     FairTutorialDet4* tutdet = new FairTutorialDet4("TUTDET", kTRUE);
     tutdet->SetGeometryFileName("tutorial4.root");
 
-    run->AddModule(tutdet);
+    run.AddModule(tutdet);
     // ------------------------------------------------------------------------
 
     // -----   Create PrimaryGenerator   --------------------------------------
@@ -95,7 +103,7 @@ void run_tutorial4_createGeometryFile(Int_t nEvents = 1, TString mcEngine = "TGe
 
     primGen->AddGenerator(boxGen);
 
-    run->SetGenerator(primGen);
+    run.SetGenerator(primGen);
     // ------------------------------------------------------------------------
 
     // -----   Runtime database   ---------------------------------------------
@@ -109,19 +117,17 @@ void run_tutorial4_createGeometryFile(Int_t nEvents = 1, TString mcEngine = "TGe
     rtdb->setOutput(parOut);
     // ------------------------------------------------------------------------
 
-    run->Init();
+    run.Init();
 
     // ------------------------------------------------------------------------
 
     // -----   Start run   ----------------------------------------------------
-    run->Run(nEvents);
-    run->CreateGeometryFile(geoFile);
+    run.Run(nEvents);
+    run.CreateGeometryFile(geoFile);
     // ------------------------------------------------------------------------
 
     rtdb->saveOutput();
     rtdb->print();
-
-    delete run;
 
     // -----   Finish   -------------------------------------------------------
 

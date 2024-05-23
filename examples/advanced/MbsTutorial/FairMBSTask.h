@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -9,12 +9,12 @@
 #ifndef _FAIRMBS_TASK_
 #define _FAIRMBS_TASK_
 
+#include "FairRunOnline.h"
 #include "FairTask.h"
 
 #include <Rtypes.h>
-
-class TClonesArray;
-class TH1F;
+#include <TClonesArray.h>
+#include <TH1F.h>
 
 /**
  * An example analysis task for demonstartion of THttpServer usage.
@@ -24,35 +24,30 @@ class FairMBSTask : public FairTask
 {
   public:
     /** Standard Constructor. */
-    FairMBSTask(const char* name, Int_t iVerbose);
+    explicit FairMBSTask(FairRunOnline& run)
+        : FairTask("ExampleMBSTask")
+        , fRunOnline(run)
+    {}
 
     /** Destructor. */
-    virtual ~FairMBSTask() {}
+    ~FairMBSTask() override = default;
 
     /** Initialization of the task. */
-    virtual InitStatus Init();
+    InitStatus Init() override;
 
     /** Process an event. */
-    virtual void Exec(Option_t*);
-
-    /** Called at the end of each event. */
-    virtual void FinishEvent() {}
-
-    /** Called at the end of task. */
-    virtual void FinishTask() {}
+    void Exec(Option_t*) override;
 
   private:
-    TClonesArray* fRawData; /**< Array with input data. */
-    TH1F* fhQdc;            /**< Histogram object which is registered on http server. */
-    TH1F* fhTac;
-    TH1F* fhClock;
-    TH1F* fhTacCh;
-
-    FairMBSTask(const FairMBSTask&);
-    FairMBSTask& operator=(const FairMBSTask&);
+    TClonesArray* fRawData{nullptr}; /**< Array with input data. */
+    TH1F* fhQdc{nullptr};            /**< Histogram object which is registered on http server. */
+    TH1F* fhTac{nullptr};
+    TH1F* fhClock{nullptr};
+    TH1F* fhTacCh{nullptr};
+    FairRunOnline& fRunOnline;   //!
 
   public:
-    ClassDef(FairMBSTask, 1);
+    ClassDefOverride(FairMBSTask, 1);
 };
 
 #endif

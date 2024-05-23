@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -19,7 +19,6 @@
 #include "FairMCSplitEventHeader.h"
 #include "FairModule.h"
 #include "FairParSet.h"
-#include "FairRunSim.h"
 #include "FairRuntimeDb.h"
 #include "FairTask.h"
 #include "RootSerializer.h"
@@ -46,7 +45,6 @@ FairMQTransportDevice::FairMQTransportDevice()
     , fVMC(nullptr)
     , fStack(nullptr)
     , fMCApplication(nullptr)
-    , fRunSim(nullptr)
     , fNofEvents(1)
     , fTransportName("TGeant3")
     , fMaterialsFile("")
@@ -67,7 +65,7 @@ void FairMQTransportDevice::Init()
 
 void FairMQTransportDevice::InitTask()
 {
-    fRunSim = new FairRunSim();
+    fRunSim = std::make_unique<FairRunSim>();
 
     fMCSplitEventHeader = new FairMCSplitEventHeader(fRunId, 0, 0, 0);
     fRunSim->SetMCEventHeader(fMCSplitEventHeader);
@@ -137,9 +135,13 @@ void FairMQTransportDevice::InitTask()
     }
 }
 
+void FairMQTransportDevice::ResetTask()
+{
+    fRunSim.reset();
+}
+
 void FairMQTransportDevice::InitializeRun()
 {
-
     // -----   Negotiate the run number   -------------------------------------
     // -----      via the fUpdateChannelName   --------------------------------
     // -----      ask the fParamMQServer   ------------------------------------
@@ -231,9 +233,9 @@ bool FairMQTransportDevice::TransportData(fair::mq::Parts& mParts, int /*index*/
 {
     TClonesArray* chunk = nullptr;
     FairMCSplitEventHeader* meh = nullptr;
-    for (int ipart = 0; ipart < mParts.Size(); ipart++) {
+    for (auto& part : mParts) {
         TObject* obj = nullptr;
-        RootSerializer().Deserialize(*mParts.At(ipart), obj);
+        RootSerializer().Deserialize(*part, obj);
         if (strcmp(obj->GetName(), "MCEvent") == 0)
             meh = dynamic_cast<FairMCSplitEventHeader*>(obj);
         else if (strcmp(obj->GetName(), "TParticles") == 0)

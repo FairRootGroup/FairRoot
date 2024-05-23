@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -10,32 +10,14 @@
 
 #include "FairGeoSet.h"   // for FairGeoSet
 
-#include <Rtypes.h>    // for Int_t, etc
-#include <TString.h>   // for TString
+#include <Rtypes.h>   // for Int_t, etc
 
 class FairTutorialDet1Geo : public FairGeoSet
 {
-  protected:
-    char modName[20];   // name of module
-    char eleName[20];   // substring for elements in module
-
   public:
     FairTutorialDet1Geo();
-    ~FairTutorialDet1Geo() {}
-    const char* getModuleName(Int_t);
-    const char* getEleName(Int_t);
-    inline Int_t getModNumInMod(const TString&);
-    ClassDef(FairTutorialDet1Geo, 1);
+    ~FairTutorialDet1Geo() override = default;
+    ClassDefOverride(FairTutorialDet1Geo, 1);
 };
 
-inline Int_t FairTutorialDet1Geo::getModNumInMod(const TString& name)
-{
-    /** returns the module index from module name
-   ?? in name[??] has to be the length of the detector name in the
-   .geo file. For example if all nodes in this file starts with
-   tutdet ?? has to be 6.
-  */
-    return static_cast<Int_t>((name[6] - '0') - 1);   //
-}
-
-#endif /*  FAIRTUTORIALDETGEO_H */
+#endif

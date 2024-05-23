@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -72,8 +72,6 @@ Pixel::~Pixel()
         delete fPixelPointCollection;
     }
 }
-
-void Pixel::Initialize() { FairDetector::Initialize(); }
 
 Bool_t Pixel::ProcessHits(FairVolume* vol)
 {
@@ -196,5 +194,3 @@ extern "C" void ExternCreateDetector()
     run->AddModule(det);
     cout << "-- ExternCreateDetector(" << det->GetName() << ") DONE --" << endl;
 }
-
-ClassImp(Pixel);

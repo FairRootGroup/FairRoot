@@ -4,6 +4,7 @@ BasedOnStyle: Mozilla
 
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortBlocksOnASingleLine: Empty
+AllowShortEnumsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLambdasOnASingleLine: All
@@ -18,7 +19,9 @@ BreakBeforeBinaryOperators: NonAssignment
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterClass: true
+  AfterEnum: true
   AfterFunction: true
+  AfterNamespace: true
   AfterStruct: true
   SplitEmptyFunction: false
   SplitEmptyRecord: false

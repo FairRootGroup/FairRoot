@@ -1,46 +1,113 @@
 #!groovy
 
-def jobMatrix(String prefix, String type, List specs) {
+def macos_builds = [
+  [os: "macos",  ver: "13", arch: "x86_64", compiler: "apple-clang-14", fairsoft: "24.01"],
+  [os: "macos",  ver: "14", arch: "x86_64", compiler: "apple-clang-14", fairsoft: "24.01"],
+  [os: "macos",  ver: "14", arch: "arm64",  compiler: "apple-clang-15", fairsoft: "24.01"],
+]
+
+def linux_builds = [
+  [os: "debian", ver: "10",      compiler: "gcc-8",   fairsoft: "jan24_patches",    image: "jan24"],
+  [os: "debian", ver: "10",      compiler: "gcc-8",   fairsoft: "jan24_patches_mt", image: "jan24"],
+  [os: "debian", ver: "10",      compiler: "gcc-8",   fairsoft: "nov22_patches",    image: "nov22"],
+  [os: "debian", ver: "10",      compiler: "gcc-8",   fairsoft: "apr22_patches",    image: "apr22"],
+  [os: "debian", ver: "11",      compiler: "gcc-10",  fairsoft: "jan24_patches",    image: "jan24"],
+  [os: "debian", ver: "11",      compiler: "gcc-10",  fairsoft: "jan24_patches_mt", image: "jan24"],
+  [os: "debian", ver: "11",      compiler: "gcc-10",  fairsoft: "nov22_patches",    image: "nov22"],
+  [os: "debian", ver: "11",      compiler: "gcc-10",  fairsoft: "apr22_patches",    image: "apr22"],
+  [os: "debian", ver: "12",      compiler: "gcc-12",  fairsoft: "jan24_patches",    image: "jan24"],
+  [os: "debian", ver: "12",      compiler: "gcc-12",  fairsoft: "jan24_patches_mt", image: "jan24"],
+  [os: "debian", ver: "12",      compiler: "gcc-12",  fairsoft: "nov22_patches",    image: "nov22"],
+  [os: "fedora", ver: "39",      compiler: "gcc-13",  fairsoft: "jan24_patches",    image: "jan24"],
+  [os: "fedora", ver: "39",      compiler: "gcc-13",  fairsoft: "jan24_patches_mt", image: "jan24"],
+  [os: "ubuntu", ver: "20.04",   compiler: "gcc-9",   fairsoft: "jan24_patches",    image: "jan24"],
+  [os: "ubuntu", ver: "20.04",   compiler: "gcc-9",   fairsoft: "jan24_patches_mt", image: "jan24"],
+  [os: "ubuntu", ver: "20.04",   compiler: "gcc-9",   fairsoft: "nov22_patches",    image: "nov22"],
+  [os: "ubuntu", ver: "20.04",   compiler: "gcc-9",   fairsoft: "apr22_patches",    image: "apr22"],
+  [os: "ubuntu", ver: "22.04",   compiler: "gcc-11",  fairsoft: "jan24_patches",    image: "jan24"],
+  [os: "ubuntu", ver: "22.04",   compiler: "gcc-11",  fairsoft: "jan24_patches_mt", image: "jan24"],
+  [os: "ubuntu", ver: "22.04",   compiler: "gcc-11",  fairsoft: "nov22_patches",    image: "nov22"],
+  [os: "ubuntu", ver: "22.04",   compiler: "gcc-11",  fairsoft: "apr22_patches",    image: "apr22"],
+  [os: "ubuntu", ver: "rolling", compiler: "current", fairsoft: "dev", check: "warnings",
+    extra: "-DUSE_CLANG_TIDY=ON -DBUILD_MBS=OFF -DBUILD_PROOF_SUPPORT=OFF"],
+]
+
+def linux_checks = [
+  [os: 'ubuntu', ver: 'rolling', compiler: 'current', fairsoft: 'dev', check: 'doxygen'],
+]
+
+def isBranchBuild() {
+  return !env.CHANGE_ID
+}
+
+if (!isBranchBuild()) { // PRs only
+  linux_checks += [
+    [os: "ubuntu", ver: "rolling", compiler: "current", fairsoft: "dev",  check: "format"]
+  ]
+}
+
+def jobMatrix(String type, String src, List specs) {
   def nodes = [:]
   for (spec in specs) {
-    def job = ''
-    switch(type) {
-      case 'build':
-        job = "${spec.os}-${spec.ver}-${spec.arch}-${spec.compiler}-fairsoft-${spec.fairsoft}"
-        break
-      case 'check':
-        job = spec.check
-        break
-    }
-    def label = "${type}/${job}"
-    def selector = "${spec.os}-${spec.ver}-${spec.arch}"
+    def arch = spec.getOrDefault("arch", "x86_64")
+    def check = spec.getOrDefault("check", null)
+    def extra = spec.getOrDefault("extra", null)
+    def image = spec.getOrDefault("image", null)
     def fairsoft = spec.fairsoft
     def os = spec.os
     def ver = spec.ver
-    def arch = spec.arch
-    def check = spec.getOrDefault("check", null)
-    def extra = spec.getOrDefault("extra", null)
+    def compiler = spec.compiler
+    def selector = "${os}-${ver}-${arch}"
+    def label = ""
+    switch(type) {
+      case "build":
+        label = "${os}-${ver}-${arch} ${compiler} ${fairsoft}"
+        break
+      case "check":
+        label = "Check ${check}"
+        break
+    }
 
     nodes[label] = {
       node(selector) {
-        githubNotify(context: "${prefix}/${label}", description: 'Building ...', status: 'PENDING')
-        def logpattern = 'build/Testing/Temporary/*.log'
+        githubNotify(context: "${label}", description: "Building ...", status: "PENDING")
         try {
-          deleteDir()
-          checkout scm
+          def sourcedir = src
+          if (!sourcedir) {
+            deleteDir()
+            checkout scm
+            sourcedir = pwd()
+          }
+          def builddir = "build-${os}-${ver}-${arch}-${fairsoft}"
+          def builddir_abs = "${pwd()}/${builddir}"
+          echo "Source dir: ${sourcedir}"
+          echo "Build dir: ${builddir_abs}"
+          def logpattern = "${builddir}/Testing/Temporary/*.log"
 
-          def jobscript = 'job.sh'
-          def ctestcmd = "ctest -S FairRoot_${type}_test.cmake -V --output-on-failure"
+          if (check == "warnings" || check == "doxygen") {
+            discoverGitReferenceBuild()
+          }
+          if (check == "doxygen") {
+            gitDiffStat()
+            // mineRepository()
+          }
+
+          def jobscript = "${pwd()}/job.sh"
+          def ctestcmd = "ctest -S ${sourcedir}/FairRoot_${type}_test.cmake -V --output-on-failure"
           sh "echo \"set -e\" >> ${jobscript}"
-          if (type == 'check') {
-            ctestcmd = "ctest -S FairRoot_${check}_test.cmake -VV"
+          if (type == "check") {
+            ctestcmd = "ctest -S ${sourcedir}/FairRoot_${check}_test.cmake -VV"
             sh "echo \"export FAIRROOT_FORMAT_BASE=origin/\${CHANGE_TARGET}\" >> ${jobscript}"
+          }
+          if (isBranchBuild() && !(os =~ /^macos/)) {
+            ctestcmd += " -DENABLE_GEANT3_TESTING=ON"
           }
           if (extra) {
             ctestcmd = ctestcmd + " " + extra
           }
+          ctestcmd += " -DCTEST_SOURCE_DIRECTORY='${sourcedir}' -DCTEST_BINARY_DIRECTORY='${builddir_abs}'"
           if (selector =~ /^macos/) {
-            sh "echo \"export SIMPATH=\$(brew --prefix fairsoft@${fairsoft})\" >> ${jobscript}"
+            // sh "echo \"export SIMPATH=\$(brew --prefix fairsoft)\" >> ${jobscript}"
           } else {
             sh "echo \"export SIMPATH=/fairsoft/${fairsoft}\" >> ${jobscript}"
           }
@@ -51,17 +118,21 @@ def jobMatrix(String prefix, String type, List specs) {
             sh "bash ${jobscript}"
           } else {
             def container = "${os}.${ver}.sif"
+            if (image) {
+              container = "${os}.${ver}.${image}.sif"
+            }
             sh(label: "Create Slurm Job Script", script: """
-              exec test/ci/slurm-create-jobscript.sh "${label}" "${container}" "${jobscript}" ${ctestcmd}
+              exec ${sourcedir}/tests/ci/slurm-create-jobscript.sh "${label}" "${container}" "${jobscript}" ${ctestcmd}
             """)
-            sh "./test/ci/slurm-submit.sh \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
+            dir(sourcedir) {
+              sh "tests/ci/slurm-submit.sh \"${type}\" \"FairRoot \${JOB_BASE_NAME} ${label}\" ${jobscript}"
+            }
           }
-          if (check == "warnings" || check == "doxygen") {
-            discoverGitReferenceBuild()
-          }
+
           if (check == "warnings") {
             recordIssues(tools: [clangTidy(pattern: logpattern)],
-                         filters: [excludeFile('build/.*/G__.*[.]cxx')],
+                         filters: [excludeFile("build.*/.*/G__.*[.]cxx"), excludeFile("third_party/.*")],
+                         qualityGates: [[threshold: 4, type: "NEW", unstable: true]],
                          ignoreFailedBuilds: false,
                          skipBlames: true)
             archiveArtifacts(artifacts: logpattern, allowEmptyArchive: true, fingerprint: true)
@@ -70,20 +141,20 @@ def jobMatrix(String prefix, String type, List specs) {
             recordIssues(tools: [doxygen()],
                          ignoreFailedBuilds: false,
                          skipBlames: true)
-            def result_url = readFile(file: 'build/generated-doxygen.url')
-            publishChecks(name: 'Doxygen-Preview',
-                          title: 'Doxygen Preview',
+            def result_url = readFile(file: "${builddir_abs}/generated-doxygen.url")
+            publishChecks(name: "Doxygen-Preview",
+                          title: "Doxygen Preview",
                           summary: result_url)
           }
 
           deleteDir()
-          githubNotify(context: "${prefix}/${label}", description: 'Success', status: 'SUCCESS')
+          githubNotify(context: "${label}", description: "Success", status: "SUCCESS")
         } catch (e) {
           if (check == "warnings") {
             archiveArtifacts(artifacts: logpattern, allowEmptyArchive: true, fingerprint: true)
           }
           deleteDir()
-          githubNotify(context: "${prefix}/${label}", description: 'Error', status: 'ERROR')
+          githubNotify(context: "${label}", description: "Error", status: "ERROR")
           throw e
         }
       }
@@ -92,50 +163,22 @@ def jobMatrix(String prefix, String type, List specs) {
   return nodes
 }
 
-pipeline{
+def linux_source = ""
+
+pipeline {
   agent none
-  stages {
-    stage("Run CI Matrix") {
-      steps{
-        script {
-          def builds = jobMatrix('alfa-ci', 'build', [
-            [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'apr21_patches'],
-            [os: 'centos',     ver: '7',     arch: 'x86_64', compiler: 'gcc-7',           fairsoft: 'apr21_patches_mt'],
-            [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches'],
-            [os: 'debian',     ver: '10',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches_mt'],
-            [os: 'debian',     ver: '11',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches'],
-            [os: 'debian',     ver: '11',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr21_patches_mt'],
-            [os: 'debian',     ver: '11',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr22_patches'],
-            [os: 'debian',     ver: '11',    arch: 'x86_64', compiler: 'gcc-8',           fairsoft: 'apr22_patches_mt'],
-            [os: 'ubuntu',     ver: '20.04', arch: 'x86_64', compiler: 'gcc-9',           fairsoft: 'apr21_patches'],
-            [os: 'ubuntu',     ver: '20.04', arch: 'x86_64', compiler: 'gcc-9',           fairsoft: 'apr21_patches_mt'],
-            [os: 'ubuntu',   ver: 'rolling', arch: 'x86_64', compiler: 'current',         fairsoft: 'dev',
-                             check: 'warnings',
-                             extra: '-DUSE_CLANG_TIDY=ON -DBUILD_MBS=OFF'],
-            [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches'],
-            [os: 'fedora',     ver: '33',    arch: 'x86_64', compiler: 'gcc-10',          fairsoft: 'apr21_patches_mt'],
-            [os: 'macos',      ver: '12',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '22.11'],
-            // [os: 'macos',      ver: '13',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '22.11'],
-            // [os: 'macos',      ver: '13',    arch: 'arm64',  compiler: 'apple-clang-14',  fairsoft: '22.11'],
-            // [os: 'macos',      ver: '12',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '23.6'],
-            // [os: 'macos',      ver: '13',    arch: 'x86_64', compiler: 'apple-clang-14',  fairsoft: '23.6'],
-            // [os: 'macos',      ver: '13',    arch: 'arm64',  compiler: 'apple-clang-14',  fairsoft: '23.6'],
-          ])
-
-          def checks = jobMatrix('alfa-ci', 'check', [
-            [os: 'ubuntu',   ver: 'rolling', arch: 'x86_64', compiler: 'current',         fairsoft: 'dev',
-                             check: 'doxygen'],
-          ])
-          if (env.CHANGE_ID != null) { // only run checks for PRs
-            checks += jobMatrix('alfa-ci', 'check', [
-              [os: 'ubuntu',   ver: 'rolling', arch: 'x86_64', compiler: 'current',         fairsoft: 'dev',
-                               check: 'format'],
-            ])
-          }
-
-          parallel(checks + builds)
-        }
-      }
-    }
-  }
-}
+  options { skipDefaultCheckout() }
+  stages { stage("CI") { parallel {
+    stage("Linux") {
+      agent { label "slurm" }
+      stages {
+        stage("SCM Checkout") {
+          steps {
+            checkout scm
+            script { linux_source = pwd() }
+            echo "Source dir: ${linux_source}" } }
+        stage("Builds and Checks") {
+          steps { script { parallel(  jobMatrix("check", linux_source, linux_checks)
+                                    + jobMatrix("build", linux_source, linux_builds)) } }
+          post { always { dir(linux_source) { deleteDir() } } } } } }
+    stage("macOS") { steps { script { parallel(jobMatrix("build", null, macos_builds)) } } } } } } }

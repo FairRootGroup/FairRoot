@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -33,12 +33,7 @@ PixelDigiPar::PixelDigiPar(const char* name, const char* title, const char* cont
     , fChargeConvMethod(0)
     , fPixelSorterCellWidth(0.)
     , fPixelSorterNumberOfCells(0)
-{
-    clear();
-}
-
-// -----   Destructor   ----------------------------------------------------
-PixelDigiPar::~PixelDigiPar(void) {}
+{}
 
 void PixelDigiPar::putParams(FairParamList* list)
 {
@@ -109,5 +104,3 @@ void PixelDigiPar::Print(Option_t*) const
     std::cout << "   Charge cloud sigma (cm) = " << fCSigma << std::endl;
     std::cout << "   charge conv. (0:ideal, 1:TOT)    = " << fChargeConvMethod << std::endl;
 }
-
-ClassImp(PixelDigiPar);

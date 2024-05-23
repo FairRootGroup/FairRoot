@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -72,7 +72,7 @@ class FairMQPixAltTaskProcessorBin : public fair::mq::Device
         // creating output multipart message
         fair::mq::Parts partsOut;
 
-        for (int ievent = 0; ievent < parts.Size() / nPPE; ievent++) {
+        for (decltype(parts.Size()) ievent = 0; ievent < parts.Size() / nPPE; ievent++) {
             // the first part should be the event header
             PixelPayload::EventHeader* payloadE =
                 static_cast<PixelPayload::EventHeader*>(parts.At(nPPE * ievent)->GetData());

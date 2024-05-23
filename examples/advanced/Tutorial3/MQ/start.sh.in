@@ -1,0 +1,51 @@
+#!/bin/bash
+
+mcEngine="TGeant3"
+
+session="$(@FairMQ_BINDIR@/fairmq-uuid-gen -h)"
+
+echo "Supported data formats: binary, boost, flatbuffers, protobuf, tmessage"
+dataFormat="binary"
+
+if (($# == 1)); then
+    dataFormat=$1
+elif (($# > 1)); then
+    echo "Usage: start.sh [data_format[=binary]]"
+    exit
+fi
+
+echo "Data format: $dataFormat"
+echo "Session ID: $session"
+
+SAMPLER="tut3-sampler"
+SAMPLER+=" --id sampler1"
+SAMPLER+=" --session $session"
+SAMPLER+=" --data-format $dataFormat"
+SAMPLER+=" --chain-input 99"
+SAMPLER+=" --input-file @CMAKE_CURRENT_BINARY_DIR@/macro/data/testdigi_$mcEngine.root"
+SAMPLER+=" --parameter-file @CMAKE_CURRENT_BINARY_DIR@/macro/data/testparams_$mcEngine.root"
+SAMPLER+=" --channel-config name=data1,type=push,method=bind,address=tcp://localhost:5565"
+xterm -geometry 80x23+0+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$SAMPLER &
+
+PROCESSOR1="tut3-processor"
+PROCESSOR1+=" --id processor1"
+PROCESSOR1+=" --session $session"
+PROCESSOR1+=" --data-format $dataFormat"
+PROCESSOR1+=" --channel-config name=data1,type=pull,method=connect,address=tcp://localhost:5565"
+PROCESSOR1+="                  name=data2,type=push,method=connect,address=tcp://localhost:5570"
+xterm -geometry 80x23+500+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR1 &
+
+PROCESSOR2="tut3-processor"
+PROCESSOR2+=" --id processor2"
+PROCESSOR2+=" --session $session"
+PROCESSOR2+=" --data-format $dataFormat"
+PROCESSOR2+=" --channel-config name=data1,type=pull,method=connect,address=tcp://localhost:5565"
+PROCESSOR2+="                  name=data2,type=push,method=connect,address=tcp://localhost:5570"
+xterm -geometry 80x23+500+350 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$PROCESSOR2 &
+
+SINK="tut3-sink"
+SINK+=" --id sink1"
+SINK+=" --session $session"
+SINK+=" --data-format $dataFormat"
+SINK+=" --channel-config name=data2,type=pull,method=bind,address=tcp://localhost:5570"
+xterm -geometry 80x23+1000+0 -hold -e @CMAKE_CURRENT_BINARY_DIR@/$SINK &

@@ -36,9 +36,6 @@ class FairTutorialDet2 : public FairDetector
     /**       destructor     */
     virtual ~FairTutorialDet2();
 
-    /**      Initialization of the detector is done here    */
-    virtual void Initialize();
-
     /**       this method is called for each step during simulation
      *       (see FairMCApplication::Stepping())
      */

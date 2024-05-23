@@ -1,17 +1,21 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
+#include <TCollection.h>
+#include <TGeoManager.h>
+#include <TKey.h>
+#include <TList.h>
+
 // forward declaration
 void writeVectorToFile(std::vector<Double_t>& vec, ofstream* myfile);
 
 void run_tutorial4_createParameterFile()
 {
-
     // Create shift in x, y, z when true
     Bool_t ShiftX = kTRUE;
     Bool_t ShiftY = kTRUE;
@@ -42,14 +46,14 @@ void run_tutorial4_createParameterFile()
 
     TList* l = f->GetListOfKeys();
 
-    TKey* key;
-    TIter next(l);
-
     TGeoManager* geoMan{nullptr};
 
-    while ((key = (TKey*)next())) {
-        if (key->ReadObj()->InheritsFrom("TGeoManager")) {
-            geoMan = static_cast<TGeoManager*>(key->ReadObj());
+    for (auto key : TRangeDynCast<TKey>(l)) {
+        if (!key) {
+            continue;
+        }
+        geoMan = key->ReadObject<TGeoManager>();
+        if (geoMan) {
             break;
         }
     }

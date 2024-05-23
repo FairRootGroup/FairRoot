@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -348,6 +348,7 @@ FairTutorialDet4Point* FairTutorialDet4::AddHit(Int_t trackID,
     return new (clref[size]) FairTutorialDet4Point(trackID, detID, pos, mom, time, length, eLoss);
 }
 
-FairModule* FairTutorialDet4::CloneModule() const { return new FairTutorialDet4(*this); }
-
-ClassImp(FairTutorialDet4);
+FairModule* FairTutorialDet4::CloneModule() const
+{
+    return new FairTutorialDet4(*this);
+}

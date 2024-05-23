@@ -12,8 +12,6 @@
 
 #include <cstring>   // strcmp
 
-ClassImp(FairTutorialDet2ContFact);
-
 static FairTutorialDet2ContFact gFairTutorialDet2ContFact;
 
 FairTutorialDet2ContFact::FairTutorialDet2ContFact()

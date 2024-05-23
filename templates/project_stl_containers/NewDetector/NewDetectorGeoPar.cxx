@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,17 +12,15 @@
 #include <TObjArray.h>
 #include <iostream>
 
-ClassImp(NewDetectorGeoPar);
-
 NewDetectorGeoPar ::NewDetectorGeoPar(const char* name, const char* title, const char* context)
     : FairParGenericSet(name, title, context)
     , fGeoSensNodes(new TObjArray())
     , fGeoPassNodes(new TObjArray())
 {}
 
-NewDetectorGeoPar::~NewDetectorGeoPar(void) {}
+NewDetectorGeoPar::~NewDetectorGeoPar() {}
 
-void NewDetectorGeoPar::clear(void)
+void NewDetectorGeoPar::clear()
 {
     delete fGeoSensNodes;
     delete fGeoPassNodes;

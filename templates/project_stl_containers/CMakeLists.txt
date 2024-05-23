@@ -27,10 +27,16 @@ SET(FAIRROOTPATH $ENV{FAIRROOTPATH})
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/
 # is checked
   set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules"  ${CMAKE_MODULE_PATH})
-  set(CMAKE_MODULE_PATH "${FAIRROOTPATH}/share/fairbase/cmake/modules_old"  ${CMAKE_MODULE_PATH})
   set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules" ${CMAKE_MODULE_PATH})
+if(SIMPATH)
+  set(CMAKE_PREFIX_PATH ${SIMPATH} ${CMAKE_PREFIX_PATH})
+endif()
 
-find_package(FairRoot REQUIRED)
+find_package(FairCMakeModules 0.2 QUIET REQUIRED)
+include(FairFindPackage2)
+include(FairSummary)
+
+find_package2(PUBLIC FairRoot VERSION 19.0 REQUIRED)
 
 # Load some basic macros which are needed later on
 include(FairMacros)
@@ -69,12 +75,12 @@ ENDIF(NOT UNIX)
 # mandatory
 
 if(SIMPATH)
-  set(CMAKE_PREFIX_PATH ${SIMPATH} ${CMAKE_PREFIX_PATH})
   set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${SIMPATH}/lib)
 endif()
 
 find_package2(PUBLIC ROOT REQUIRED)
 include(ROOTMacros)
+fairroot_check_root_cxxstd_compatibility()
 if(ROOT_vmc_FOUND)
   set(VMCLIB ROOT::VMC)
 else()
@@ -82,19 +88,13 @@ else()
   set(VMCLIB VMCLibrary)
 endif()
 find_package2(PUBLIC FairLogger  VERSION 1.2.0 REQUIRED)
-foreach(dep IN LISTS FairLogger_PACKAGE_DEPENDENCIES)
-  if(NOT dep STREQUAL "Boost")
-    find_package2(PUBLIC ${dep} REQUIRED VERSION ${FairLogger_${dep}_VERSION})
-    set(PROJECT_${dep}_VERSION ${FairLogger_${dep}_VERSION})
-  endif()
-endforeach()
 find_package2(PUBLIC Pythia6)
 find_package2(PUBLIC Pythia8)
 find_package2(PUBLIC Geant3)
 find_package2(PUBLIC Geant4)
 Find_Package2(PUBLIC VGM)
 find_package2(PUBLIC Geant4VMC)
-find_package(HEPMC)
+find_package2(PUBLIC HEPMC)
 
 if(NOT DEFINED Boost_NO_SYSTEM_PATHS)
   Set(Boost_NO_SYSTEM_PATHS TRUE)
@@ -114,7 +114,6 @@ endif()
 
 find_package2(PUBLIC Boost
   VERSION 1.67
-  ADD_REQUIREMENTS_OF FairRoot FairMQ FairLogger
 )
 
 If (Boost_FOUND)
@@ -122,6 +121,8 @@ If (Boost_FOUND)
 Else (Boost_FOUND)
   Set(Boost_Avail 0)
 EndIf (Boost_FOUND)
+
+find_package2_implicit_dependencies()
 
 # set a variable which should be used in all CMakeLists.txt
 # Defines all basic include directories from fairbase
@@ -151,28 +152,8 @@ configure_file(${CMAKE_SOURCE_DIR}/CTestCustom.cmake
                ${CMAKE_BINARY_DIR}/CTestCustom.cmake
               )
 # Summary ######################################################################
-if(CMAKE_CXX_FLAGS)
-  message(STATUS "  ")
-  message(STATUS "  ${Cyan}GLOBAL CXX FLAGS${CR}  ${BGreen}${CMAKE_CXX_FLAGS}${CR}")
-endif()
-if(CMAKE_CONFIGURATION_TYPES)
-  message(STATUS "  ")
-  message(STATUS "  ${Cyan}BUILD TYPE         CXX FLAGS${CR}")
-  string(TOUPPER "${CMAKE_BUILD_TYPE}" selected_type)
-  foreach(type IN LISTS CMAKE_CONFIGURATION_TYPES)
-   string(TOUPPER "${type}" type_upper)
-   if(type_upper STREQUAL selected_type)
-     pad("${type}" 18 " " type_padded)
-     message(STATUS "${BGreen}* ${type_padded}${CMAKE_CXX_FLAGS_${type_upper}}${CR}")
-   else()
-     pad("${type}" 18 " " type_padded)
-     message(STATUS "  ${BWhite}${type_padded}${CR}${CMAKE_CXX_FLAGS_${type_upper}}")
-   endif()
-   unset(type_padded)
-   unset(type_upper)
- endforeach()
-message(STATUS "  ")
-message(STATUS "  (Change the build type with ${BMagenta}-DCMAKE_BUILD_TYPE=...${CR})")
-endif()
+fair_summary_global_cxx_flags_standard()
+fair_summary_build_types()
+fair_summary_package_dependencies()
 
    ################################################################################

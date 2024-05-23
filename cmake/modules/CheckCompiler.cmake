@@ -14,115 +14,50 @@ if (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
    set(CMAKE_BUILD_TYPE RelWithDebInfo)
 endif (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 
-# Check for the existence of fairsoft-config
-# This program only exist in newer versions of fairsoft. If the file exist extract information about
-# the compiler and compiler flags used to install fairsoft.
-# Compare compiler and compiler flags used to compile fairsoft with the compiler and flags used now
-# In case of differences print a warning
-Find_Program(FAIRSOFT_CONFIG fairsoft-config PATHS $ENV{SIMPATH}/bin $ENV{FAIRSOFT_ROOT}/bin NO_DEFAULT_PATH)
 
-If(FAIRSOFT_CONFIG)
-  Message(STATUS "fairsoft-config found")
-  Execute_Process(COMMAND ${FAIRSOFT_CONFIG} --cc
-                  OUTPUT_VARIABLE FAIRSOFT_C_COMPILER)
-  Execute_Process(COMMAND ${FAIRSOFT_CONFIG} --cxx
-                  OUTPUT_VARIABLE FAIRSOFT_CXX_COMPILER)
-  Execute_Process(COMMAND ${FAIRSOFT_CONFIG} --f77
-                  OUTPUT_VARIABLE FAIRSOFT_Fortran_COMPILER)
-
-  # Strip whitespaces, otherwise readlink and comparison don't work
-  String(STRIP ${FAIRSOFT_C_COMPILER} FAIRSOFT_C_COMPILER)
-  String(STRIP ${FAIRSOFT_CXX_COMPILER} FAIRSOFT_CXX_COMPILER)
-  String(STRIP ${FAIRSOFT_Fortran_COMPILER} FAIRSOFT_Fortran_COMPILER)
-
-  Get_Filename_Component(FAIRSOFT_C_COMPILER ${FAIRSOFT_C_COMPILER} REALPATH)
-  Get_Filename_Component(FAIRSOFT_CXX_COMPILER ${FAIRSOFT_CXX_COMPILER} REALPATH)
-  Get_Filename_Component(FAIRSOFT_Fortran_COMPILER ${FAIRSOFT_Fortran_COMPILER} REALPATH)
-
-  Set(FAIRROOT_C_COMPILER ${CMAKE_C_COMPILER})
-  Set(FAIRROOT_CXX_COMPILER ${CMAKE_CXX_COMPILER})
-  Set(FAIRROOT_Fortran_COMPILER ${CMAKE_Fortran_COMPILER})
-
-  String(STRIP ${FAIRROOT_C_COMPILER} FAIRROOT_C_COMPILER)
-  String(STRIP ${FAIRROOT_CXX_COMPILER} FAIRROOT_CXX_COMPILER)
-
-  If(FAIRROOT_Fortran_COMPILER)
-    String(STRIP ${FAIRROOT_Fortran_COMPILER} FAIRROOT_Fortran_COMPILER)
-    Get_Filename_Component(FAIRROOT_Fortran_COMPILER ${FAIRROOT_Fortran_COMPILER} REALPATH)
-  EndIf()
-
-  Get_Filename_Component(FAIRROOT_C_COMPILER ${FAIRROOT_C_COMPILER} REALPATH)
-  Get_Filename_Component(FAIRROOT_CXX_COMPILER ${FAIRROOT_CXX_COMPILER} REALPATH)
-
-  Execute_Process(COMMAND ${FAIRSOFT_C_COMPILER} --version
-                 OUTPUT_VARIABLE FAIRSOFT_C_COMPILER_STRING
-                 )
-
-  Execute_Process(COMMAND ${FAIRROOT_C_COMPILER} --version
-                 OUTPUT_VARIABLE FAIRROOT_C_COMPILER_STRING
-                 )
-
-  Execute_Process(COMMAND ${FAIRSOFT_CXX_COMPILER} --version
-                 OUTPUT_VARIABLE FAIRSOFT_CXX_COMPILER_STRING
-                 )
-  Execute_Process(COMMAND ${FAIRROOT_CXX_COMPILER} --version
-                 OUTPUT_VARIABLE FAIRROOT_CXX_COMPILER_STRING
-                 )
-
-  set(compiler_wrapper "(omebrew/shim|ccache)")
-  if(NOT FAIRSOFT_C_COMPILER       MATCHES ${compiler_wrapper} AND
-     NOT FAIRSOFT_CXX_COMPILER     MATCHES ${compiler_wrapper} AND
-     NOT FAIRSOFT_Fortran_COMPILER MATCHES ${compiler_wrapper} AND
-     NOT FAIRROOT_C_COMPILER       MATCHES ${compiler_wrapper} AND
-     NOT FAIRROOT_CXX_COMPILER     MATCHES ${compiler_wrapper} AND
-     NOT FAIRROOT_Fortran_COMPILER MATCHES ${compiler_wrapper})
-
-    If(NOT ("${FAIRSOFT_C_COMPILER_STRING}" STREQUAL "${FAIRROOT_C_COMPILER_STRING}") OR NOT ("${FAIRSOFT_CXX_COMPILER_STRING}" STREQUAL "${FAIRROOT_CXX_COMPILER_STRING}"))
-      execute_process(COMMAND cmake -E compare_files ${FAIRSOFT_CXX_COMPILER} ${FAIRROOT_CXX_COMPILER} RESULT_VARIABLE COMPILER_DIFF)
-      If(NOT ${COMPILER_DIFF} EQUAL 0)
-        Message(STATUS "C compiler used for FairSoft installation:  ${FAIRSOFT_C_COMPILER}")
-        Message(STATUS "C compiler used now:  ${FAIRROOT_C_COMPILER}")
-        Message(STATUS "CXX compiler used for FairSoft installation:  ${FAIRSOFT_CXX_COMPILER}")
-        Message(STATUS "CXX compiler used now:  ${FAIRROOT_CXX_COMPILER}")
-        Message(STATUS "The compiler during the compilation of FairSoft is different from the current one.")
-        If(USE_DIFFERENT_COMPILER)
-          Message(STATUS "The error was silenced by the usage of -DUSE_DIFFERENT_COMPILER=TRUE")
-        Else()
-          Message(FATAL_ERROR "This is seen as an error. If you know that the setting is correct you can silence the error by using the CMake flag -DUSE_DIFFERENT_COMPILER=TRUE")
-        EndIf()
-      EndIf()
-    EndIf()
-
-    If(FAIRROOT_Fortran_COMPILER)
-      If(NOT (${FAIRSOFT_Fortran_COMPILER} STREQUAL ${FAIRROOT_Fortran_COMPILER}))
-        String(STRIP ${FAIRSOFT_Fortran_COMPILER} FAIRSOFT_Fortran_COMPILER)
-        Message(STATUS "Fortran compiler used for FairSoft installation:  ${FAIRSOFT_Fortran_COMPILER}")
-        Message(STATUS "Fortran compiler used now:  ${FAIRROOT_Fortran_COMPILER}")
-        Message(STATUS "The compiler during the compilation of FairSoft is different from the current one.")
-        If(USE_DIFFERENT_COMPILER)
-          Message(STATUS "The error was silenced by the usage of -DUSE_DIFFERENT_COMPILER=TRUE")
-        Else()
-          Message(FATAL_ERROR "This is seen as an error. If you know that the setting is correct you can silence the error by using the CMake flag -DUSE_DIFFERENT_COMPILER=TRUE")
-        EndIf()
-      EndIf()
-    EndIf()
-
+if ((NOT CMAKE_CXX_STANDARD) AND TARGET ROOT::Core)
+  get_property(ROOT_CXX_STANDARD TARGET ROOT::Core
+               PROPERTY INTERFACE_COMPILE_FEATURES)
+  message(VERBOSE "Using ROOT to detect CXX_STANDARD: [${ROOT_CXX_STANDARD}]")
+  list(FILTER ROOT_CXX_STANDARD INCLUDE REGEX "^cxx_std_.*")
+  list(TRANSFORM ROOT_CXX_STANDARD REPLACE "^cxx_std_" "")
+  list(SORT ROOT_CXX_STANDARD ORDER DESCENDING)
+  list(GET ROOT_CXX_STANDARD 0 ROOT_CXX_STANDARD)
+  if(ROOT_CXX_STANDARD)
+    set(CMAKE_CXX_STANDARD ${ROOT_CXX_STANDARD})
+    message(VERBOSE "Taking CMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD} from ROOT")
   endif()
+endif()
 
-  Execute_Process(COMMAND ${FAIRSOFT_CONFIG} --cxxflags
-                  OUTPUT_VARIABLE FAIRSOFT_CXX_FLAGS)
-  unset(CMAKE_MATCH_1)
-  String(REGEX REPLACE "-std=c\\+\\+(..)" "" FAIRSOFT_CXX_FLAGS "${FAIRSOFT_CXX_FLAGS}")
-  if(CMAKE_MATCH_1 AND (NOT DEFINED CMAKE_CXX_STANDARD OR CMAKE_CXX_STANDARD VERSION_LESS CMAKE_MATCH_1))
-    set(CMAKE_CXX_STANDARD ${CMAKE_MATCH_1})
+if (NOT CMAKE_CXX_STANDARD)
+  find_program(FAIRSOFT_CONFIG fairsoft-config PATHS $ENV{SIMPATH}/bin $ENV{FAIRSOFT_ROOT}/bin NO_DEFAULT_PATH)
+
+  if(FAIRSOFT_CONFIG)
+    message(VERBOSE "fairsoft-config found")
+    Execute_Process(COMMAND ${FAIRSOFT_CONFIG} --cxxflags
+                    OUTPUT_VARIABLE FAIRSOFT_CXX_FLAGS)
+    unset(CMAKE_MATCH_1)
+    String(REGEX REPLACE "-std=c\\+\\+(..)" "" FAIRSOFT_CXX_FLAGS "${FAIRSOFT_CXX_FLAGS}")
+    if(CMAKE_MATCH_1)
+      set(CMAKE_CXX_STANDARD ${CMAKE_MATCH_1})
+      message(VERBOSE "Taking CMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD} from fairsoft-config")
+    endif()
   endif()
-  String(STRIP ${FAIRSOFT_CXX_FLAGS} FAIRSOFT_CXX_FLAGS)
-  if(FAIRSOFT_CXX_FLAGS)
-    Set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${FAIRSOFT_CXX_FLAGS}")
+endif()
+
+if (FairRoot_CXX_STANDARD)
+  if ((NOT CMAKE_CXX_STANDARD)
+      OR (CMAKE_CXX_STANDARD VERSION_LESS FairRoot_CXX_STANDARD))
+    set(CMAKE_CXX_STANDARD "${FairRoot_CXX_STANDARD}")
   endif()
-Else()
-  Message(STATUS "fairsoft-config not found. Is SIMPATH or FAIRSOFT_ROOT set correctly?")
-EndIf()
+endif()
+
+if (PROJECT_MIN_CXX_STANDARD)
+  if ((NOT CMAKE_CXX_STANDARD)
+      OR (CMAKE_CXX_STANDARD VERSION_LESS PROJECT_MIN_CXX_STANDARD))
+    set(CMAKE_CXX_STANDARD "${PROJECT_MIN_CXX_STANDARD}")
+  endif()
+endif()
 
 
 if (CMAKE_SYSTEM_NAME MATCHES Linux)
@@ -188,7 +123,10 @@ endif (CMAKE_SYSTEM_NAME MATCHES Linux)
 
 
 if (CMAKE_SYSTEM_NAME MATCHES Darwin)
-   EXEC_PROGRAM("sw_vers -productVersion | cut -d . -f 1-2" OUTPUT_VARIABLE MAC_OS_VERSION)
+   execute_process(COMMAND sw_vers -productVersion
+                   COMMAND cut -d . -f 1-2
+                   OUTPUT_STRIP_TRAILING_WHITESPACE
+                   OUTPUT_VARIABLE MAC_OS_VERSION)
    MESSAGE("-- Found a Mac OS X System ${MAC_OS_VERSION}")
    if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
       MESSAGE("-- Found GNU compiler collection")

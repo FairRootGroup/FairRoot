@@ -4,10 +4,14 @@ BASE_COMMIT=${FAIRROOT_FORMAT_BASE:-HEAD}
 CLANG_FORMAT=${FAIRROOT_CLANG_FORMAT_BIN:-clang-format}
 GIT_CLANG_FORMAT_BIN=${FAIRROOT_GIT_CLANG_FORMAT_BIN:-git-clang-format}
 
-FILES=$(git diff --name-only $BASE_COMMIT | grep -E '*\.(h|hpp|c|C|cpp|cxx|tpl)$' | grep -viE '*LinkDef.h$')
-# Include only files that exist
-FILES=$(ls -1 $FILES 2>/dev/null)
-RESULT=$($GIT_CLANG_FORMAT_BIN --commit $BASE_COMMIT --diff $FILES --extensions h,hpp,c,C,cpp,cxx,tpl)
+FILES=$(git diff --name-only $BASE_COMMIT | grep -E '\.(h|hpp|c|C|cpp|cxx)$' | grep -viE 'LinkDef.h$' | grep -viE 'third_party/')
+
+RESULT="no modified files to format"
+if [ -n "$FILES" ]; then
+  # Include only files that exist
+  FILES=$(ls -1 $FILES 2>/dev/null)
+  RESULT=$($GIT_CLANG_FORMAT_BIN --commit $BASE_COMMIT --diff $FILES --extensions h,hpp,c,C,cpp,cxx)
+fi
 
 $CLANG_FORMAT --version
 

@@ -1,5 +1,5 @@
  ################################################################################
- # Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+ # Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             # 
  #              GNU Lesser General Public Licence (LGPL) version 3,             #  
@@ -34,6 +34,9 @@ set(FAIRROOTPATH "${FairRoot_PREFIX}")
 
 MESSAGE(STATUS "Setting FairRoot environment:")
 message(STATUS "  FairRoot Version           : ${FairRoot_VERSION}")
+if(FairRoot_GIT_VERSION)
+  message(STATUS "  FairRoot Version (Git)     : ${FairRoot_GIT_VERSION}")
+endif()
 message(STATUS "  FairRoot CXX Standard      : ${FairRoot_CXX_STANDARD}")
 message(STATUS "  FairRoot prefix            : ${FairRoot_PREFIX}")
 

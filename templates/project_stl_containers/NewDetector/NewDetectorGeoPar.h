@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -25,8 +25,8 @@ class NewDetectorGeoPar : public FairParGenericSet
     NewDetectorGeoPar(const char* name = "NewDetectorGeoPar",
                       const char* title = "NewDetector Geometry Parameters",
                       const char* context = "TestDefaultContext");
-    ~NewDetectorGeoPar(void);
-    void clear(void);
+    ~NewDetectorGeoPar();
+    void clear();
     void putParams(FairParamList*);
     Bool_t getParams(FairParamList*);
     TObjArray* GetGeoSensitiveNodes() { return fGeoSensNodes; }

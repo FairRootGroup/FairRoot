@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2020 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2020-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -18,6 +18,7 @@
 
 #include "FairEveRecoTrack.h"
 #include "FairEveTrack.h"
+#include "FairEventManager.h"
 #include "FairField.h"
 #include "FairHit.h"
 #include "FairMCTrack.h"
@@ -197,19 +198,19 @@ InitStatus FairEveRecoTracksExample::Init()
     auto status = FairEveTracks::Init();
     if (status != kSUCCESS)
         return status;
-    FairRootManager *mngr = FairRootManager::Instance();
-    fContainerReco = (TClonesArray *)mngr->GetObject("FairTutPropTracks");
+    FairRootManager& mngr = GetEventManager()->GetRootManager();
+    fContainerReco = dynamic_cast<TClonesArray*>(mngr.GetObject("FairTutPropTracks"));
     if (fContainerReco == nullptr) {
         LOG(error) << "Reco traks not found";
         return kFATAL;
     }
-    fHits1 = (TClonesArray *)mngr->GetObject("FairTutPropHits");
-    fHits2 = (TClonesArray *)mngr->GetObject("FairTutPropHits2");
+    fHits1 = dynamic_cast<TClonesArray*>(mngr.GetObject("FairTutPropHits"));
+    fHits2 = dynamic_cast<TClonesArray*>(mngr.GetObject("FairTutPropHits2"));
     if (fHits1 == nullptr || fHits2 == nullptr) {
         LOG(error) << "Hits not found";
         return kFATAL;
     }
-    fContainerSim = (TClonesArray *)mngr->GetObject("MCTrack");
+    fContainerSim = dynamic_cast<TClonesArray*>(mngr.GetObject("MCTrack"));
     if (fContainerSim == nullptr) {
         LOG(warning) << "No branch with MC tracks";
     }

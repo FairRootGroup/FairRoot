@@ -1,13 +1,20 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TObjString.h>
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+#include <fairlogger/Logger.h>
+#include <fstream>
+
 void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT = false)
 {
-
     TString dir = getenv("VMCWORKDIR");
 
     TString tut_configdir = dir + "/simulation/Tutorial4/gconfig";
@@ -56,26 +63,26 @@ void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine = "TGeant
     //  gLogger->SetLogScreenLevel("INFO");
 
     // -----   Create simulation run   ----------------------------------------
-    FairRunSim* run = new FairRunSim();
-    run->SetName(mcEngine);                        // Transport engine
-    run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
-    run->SetSink(new FairRootFileSink(outFile));   // Output file
-    FairRuntimeDb* rtdb = run->GetRuntimeDb();
+    FairRunSim run{};
+    run.SetName(mcEngine);                        // Transport engine
+    run.SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
+    run.SetSink(new FairRootFileSink(outFile));   // Output file
+    FairRuntimeDb* rtdb = run.GetRuntimeDb();
     // ------------------------------------------------------------------------
 
     // -----   Create media   -------------------------------------------------
-    run->SetMaterials("media.geo");   // Materials
+    run.SetMaterials("media.geo");   // Materials
     // ------------------------------------------------------------------------
 
     // -----   Create geometry   ----------------------------------------------
     FairModule* cave = new FairCave("CAVE");
     cave->SetGeometryFileName("cave_vacuum.geo");
-    run->AddModule(cave);
+    run.AddModule(cave);
 
     FairTutorialDet4* tutdet = new FairTutorialDet4("TUTDET", kTRUE);
     tutdet->SetGeometryFileName("tutorial4.root");
 
-    run->AddModule(tutdet);
+    run.AddModule(tutdet);
     // ------------------------------------------------------------------------
 
     // -----   Create PrimaryGenerator   --------------------------------------
@@ -93,11 +100,11 @@ void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine = "TGeant
 
     primGen->AddGenerator(boxGen);
 
-    run->SetGenerator(primGen);
+    run.SetGenerator(primGen);
     // ------------------------------------------------------------------------
 
     // -----   Initialize simulation run   ------------------------------------
-    run->SetStoreTraj(kTRUE);
+    run.SetStoreTraj(kTRUE);
 
     // -----   Runtime database   ---------------------------------------------
 
@@ -110,7 +117,7 @@ void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine = "TGeant
     rtdb->setOutput(parOut);
     // ------------------------------------------------------------------------
 
-    run->Init();
+    run.Init();
 
     // sadly, the align parameters are only available AFTER we called fRun->Init()
 
@@ -119,7 +126,7 @@ void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine = "TGeant
 
     auto matrices = tutdet->getMisalignmentMatrices();
 
-    ofstream myfile;
+    std::ofstream myfile;
     myfile.open("misalignmentMatrices.txt");
 
     double* rot;
@@ -140,6 +147,4 @@ void run_tutorial4_createMatrices(Int_t nEvents = 10, TString mcEngine = "TGeant
     LOG(info) << "AlignHandler: all matrices added!";
 
     LOG(info) << "SUCCESS! All matrices created and saved!";
-
-    return;
 }

@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2021-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2021-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -14,19 +14,8 @@ fairroot_ctest_setup()
 set(CTEST_CUSTOM_MAXIMUM_PASSED_TEST_OUTPUT_SIZE 102400)
 set(CTEST_CONFIGURATION_TYPE "RelWithDebInfo")
 
-if(NOT NCPUS)
-  if(DEFINED ENV{SLURM_CPUS_PER_TASK})
-    set(NCPUS $ENV{SLURM_CPUS_PER_TASK})
-  elseif(DEFINED ENV{SLURM_JOB_CPUS_PER_NODE})
-    set(NCPUS $ENV{SLURM_JOB_CPUS_PER_NODE})
-  else()
-    include(ProcessorCount)
-    ProcessorCount(NCPUS)
-    if(NCPUS EQUAL 0)
-      set(NCPUS 1)
-    endif()
-  endif()
-endif()
+get_NCPUS()
+get_os_name_release()
 
 if ("$ENV{LABEL}" STREQUAL "")
   set(CTEST_BUILD_NAME "build")
@@ -48,12 +37,17 @@ list(APPEND options
 if ((NOT DEFINED BUILD_MBS) OR BUILD_MBS)
   list(APPEND options "-DBUILD_MBS=ON")
 endif()
+if ((NOT DEFINED BUILD_PROOF_SUPPORT) OR BUILD_PROOF_SUPPORT)
+  list(APPEND options "-DBUILD_PROOF_SUPPORT=ON")
+endif()
+if ((NOT DEFINED BUILD_EVENT_BUILDER) OR BUILD_EVENT_BUILDER)
+  list(APPEND options "-DBUILD_EVENT_BUILDER=ON")
+endif()
 if (USE_CLANG_TIDY)
   list(APPEND options "-DCMAKE_CXX_CLANG_TIDY=clang-tidy")
 endif()
-if ("$ENV{CHANGE_ID}" STREQUAL "")
-  # Branch build
-  list(APPEND options "-DENABLE_GEANT3_TESTING:BOOL=ON")
+if (ENABLE_GEANT3_TESTING)
+  list(APPEND options "-DENABLE_GEANT3_TESTING=ON")
 endif()
 ctest_configure(OPTIONS "${options}")
 

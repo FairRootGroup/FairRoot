@@ -1,11 +1,14 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 #include "NewTask.h"
+
+#include <FairRootManager.h>
+#include <fairlogger/Logger.h>
 
 // ---- Default constructor -------------------------------------------
 NewTask::NewTask()
@@ -43,7 +46,7 @@ InitStatus NewTask::Init()
     /*
     <InputDataLevel> = (TClonesArray*) ioman->GetObject("InputDataLevelName");
     if ( ! <InputLevel> ) {
-    fLogger->Error(MESSAGE_ORIGIN,"No InputDataLevelName array!\n NewTask will be inactive");
+    LOG(error) << "No InputDataLevelName array!\n NewTask will be inactive";
     return kERROR;
     }
   */
@@ -73,6 +76,7 @@ InitStatus NewTask::ReInit()
 void NewTask::Exec(Option_t* /*option*/) { LOG(debug) << "Exec of NewTask"; }
 
 // ---- Finish --------------------------------------------------------
-void NewTask::Finish() { LOG(debug) << "Finish of NewTask"; }
-
-ClassImp(NewTask);
+void NewTask::Finish()
+{
+    LOG(debug) << "Finish of NewTask";
+}

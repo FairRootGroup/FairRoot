@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -14,9 +14,7 @@
 class FairParamList;  // lines 16-16
 class TBuffer;
 class TClass;
-class TMemberInspector;
-class TObjArray;  // lines 15-15
-
+class TObjArray;   // lines 15-15
 
 class FairRutherfordGeoPar : public FairParGenericSet
 {

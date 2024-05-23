@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -17,7 +17,6 @@
 #include "FairModule.h"
 #include "FairParSet.h"
 #include "FairPrimaryGenerator.h"
-#include "FairRunSim.h"
 #include "FairRuntimeDb.h"
 
 #include <TCollection.h>
@@ -31,7 +30,6 @@ FairMQSimDevice::FairMQSimDevice()
     , fSimDeviceId(0)
     , fUpdateChannelName("updateChannel")
     , fRunInitialized(false)
-    , fRunSim(nullptr)
     , fNofEvents(1)
     , fTransportName("TGeant3")
     , fMaterialsFile("")
@@ -46,7 +44,7 @@ FairMQSimDevice::FairMQSimDevice()
 
 void FairMQSimDevice::InitTask()
 {
-    fRunSim = new FairRunSim();
+    fRunSim = std::make_unique<FairRunSim>();
 
     SetupRunSink(*fRunSim);
 
@@ -78,6 +76,11 @@ void FairMQSimDevice::InitTask()
     for (int idet = 0; idet < fDetectorArray->GetEntries(); idet++) {
         fRunSim->AddModule((FairModule*)(fDetectorArray->At(idet)));
     }
+}
+
+void FairMQSimDevice::ResetTask()
+{
+    fRunSim.reset();
 }
 
 void FairMQSimDevice::InitializeRun()
@@ -161,10 +164,10 @@ void FairMQSimDevice::UpdateParameterServer()
     printf("FairMQSimDevice::UpdateParameterServer() finished\n");
 }
 
-void FairMQSimDevice::SendBranches()
+void FairMQSimDevice::SendBranches(FairOnlineSink& sink)
 {
     if (NewStatePending()) {
         fRunSim->StopMCRun();
     }
-    FairMQRunDevice::SendBranches();
+    FairMQRunDevice::SendBranches(sink);
 }

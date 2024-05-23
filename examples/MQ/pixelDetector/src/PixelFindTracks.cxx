@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -151,19 +151,18 @@ void PixelFindTracks::GetParList(TList* tempList)
 {
     fDigiPar = new PixelDigiPar("PixelDigiParameters");
     tempList->Add(fDigiPar);
-
-    return;
 }
 
 void PixelFindTracks::InitMQ(TList* tempList)
 {
     LOG(info) << "********************************************** PixelFindTracks::InitMQ()";
-    fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
+    fDigiPar = dynamic_cast<PixelDigiPar*>(tempList->FindObject("PixelDigiParameters"));
+    if (!fDigiPar) {
+        throw std::runtime_error("no PixelDigiParameters");
+    }
 
     fTracks = new TClonesArray("PixelTrack", 10000);
     fhDist2D = new TH2F("fhDist2D", "Distance between hit and expected track", 400, -1., 1., 400, -1., 1.);
-
-    return;
 }
 
 void PixelFindTracks::ExecMQ(TList* inputList, TList* outputList)
@@ -172,10 +171,15 @@ void PixelFindTracks::ExecMQ(TList* inputList, TList* outputList)
     //  << "," << outputList->GetName() << "), Event " << fTNofEvents; LOG(info) <<
     //  "********************************************** PixelFindTracks::ExecMQ(), Event " << fTNofEvents; LOG(info) <<
     //  "t" << FairLogger::flush;
-    fHits = (TClonesArray*)inputList->FindObject("PixelHits");
+    fHits = dynamic_cast<TClonesArray*>(inputList->FindObject("PixelHits"));
+    if (!fHits) {
+        throw std::runtime_error("no PixelHits");
+    }
+    if (!fHits->GetClass()->InheritsFrom(PixelHit::Class())) {
+        throw std::runtime_error("wrong type in PixelHits TCA");
+    }
     outputList->Add(fTracks);
     Exec("");
-    return;
 }
 
 InitStatus PixelFindTracks::Init()
@@ -223,5 +227,3 @@ void PixelFindTracks::Finish()
               << static_cast<Double_t>(fTNofTracks) / (static_cast<Double_t>(fTNofEvents)) << " per event )";
     LOG(info) << "---------------------------------------------------------------------";
 }
-
-ClassImp(PixelFindTracks);

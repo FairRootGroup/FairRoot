@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -27,7 +27,7 @@ set(sources
   tools/Mille.cc
 )
 
-if(${ROOT_HAS_OPENGL})
+if(ROOT_opengl_FOUND)
   list(APPEND sources
     display/FairTutorialDet4PointDraw.cxx
   )
@@ -49,11 +49,6 @@ target_include_directories(${target} PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-# TODO: DELETE ME ONCE USING root targets
-target_include_directories(${target} SYSTEM PUBLIC
-  ${ROOT_INCLUDE_DIR}
-)
-
 target_link_libraries(${target}
   PUBLIC
   FairRoot::Base # FairRunIdGenerator
@@ -73,7 +68,7 @@ target_link_libraries(${target}
   ${VMCLIB}
   ROOT::MathCore
   ROOT::Hist
-  $<$<BOOL:${ROOT_HAS_OPENGL}>:ROOT::Eve>
+  $<$<BOOL:${ROOT_opengl_FOUND}>:ROOT::Eve>
 )
 
 fairroot_target_root_dictionary(${target}

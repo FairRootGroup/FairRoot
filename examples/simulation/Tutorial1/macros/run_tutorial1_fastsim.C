@@ -1,13 +1,17 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include <TStopwatch.h>
+#include <TString.h>
+#include <TSystem.h>
+
 void run_tutorial1_fastsim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t isMT = false)
 {
-
     TString dir = getenv("VMCWORKDIR");
     TString tutdir = dir + "/simulation/Tutorial1";
 
@@ -60,32 +64,32 @@ void run_tutorial1_fastsim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Boo
     // ------------------------------------------------------------------------
 
     // -----   Create simulation run   ----------------------------------------
-    FairRunSim* run = new FairRunSim();
-    run->SetName(mcEngine);                        // Transport engine
-    run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
-    run->SetSink(new FairRootFileSink(outFile));   // Output file
-    FairRuntimeDb* rtdb = run->GetRuntimeDb();
+    FairRunSim run{};
+    run.SetName(mcEngine);                        // Transport engine
+    run.SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
+    run.SetSink(new FairRootFileSink(outFile));   // Output file
+    FairRuntimeDb* rtdb = run.GetRuntimeDb();
     // ------------------------------------------------------------------------
 
     // -----   Create media   -------------------------------------------------
-    run->SetMaterials("media.geo");   // Materials
+    run.SetMaterials("media.geo");   // Materials
     // ------------------------------------------------------------------------
 
     // -----   Create geometry   ----------------------------------------------
 
     FairModule* cave = new FairCave("CAVE");
     cave->SetGeometryFileName("cave_vacuum.geo");
-    run->AddModule(cave);
+    run.AddModule(cave);
 
     FairDetector* fastsim = new FairFastSimExample("FastSim");
-    run->AddModule(fastsim);
+    run.AddModule(fastsim);
 
     FairDetector* fastsim2 = new FairFastSimExample2("FastSim2");
-    run->AddModule(fastsim2);
+    run.AddModule(fastsim2);
 
     FairDetector* tutdet = new FairTutorialDet1("TUTDET", kTRUE);
     tutdet->SetGeometryFileName("double_sector.geo");
-    run->AddModule(tutdet);
+    run.AddModule(tutdet);
     // ------------------------------------------------------------------------
 
     // -----   Create PrimaryGenerator   --------------------------------------
@@ -99,7 +103,7 @@ void run_tutorial1_fastsim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Boo
 
     primGen->AddGenerator(boxGen);
 
-    run->SetGenerator(primGen);
+    run.SetGenerator(primGen);
     // ------------------------------------------------------------------------
 
     // -----   Initialize simulation run   ------------------------------------
@@ -107,11 +111,11 @@ void run_tutorial1_fastsim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Boo
     TRandom3 random(randomSeed);
     gRandom = &random;
 
-    run->SetStoreTraj(kTRUE);
+    run.SetStoreTraj(kTRUE);
 
     gLogger->SetLogScreenLevel("info");
 
-    run->Init();
+    run.Init();
     // ------------------------------------------------------------------------
 
     // -----   Runtime database   ---------------------------------------------
@@ -125,8 +129,8 @@ void run_tutorial1_fastsim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Boo
     // ------------------------------------------------------------------------
 
     // -----   Start run   ----------------------------------------------------
-    run->Run(nEvents);
-    run->CreateGeometryFile(geoFile);
+    run.Run(nEvents);
+    run.CreateGeometryFile(geoFile);
     // ------------------------------------------------------------------------
 
     // -----   Finish   -------------------------------------------------------

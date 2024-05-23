@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -18,10 +18,8 @@
 #include "FairTask.h"
 
 #include <Rtypes.h>
+#include <TClonesArray.h>
 #include <TString.h>
-
-class TClonesArray;
-
 #include <fstream>
 
 class PixelDigiWriteToBinFile : public FairTask
@@ -37,7 +35,7 @@ class PixelDigiWriteToBinFile : public FairTask
     PixelDigiWriteToBinFile(const char* name, Int_t iVerbose);
 
     /** Destructor **/
-    ~PixelDigiWriteToBinFile() override;
+    ~PixelDigiWriteToBinFile() override = default;
 
     /** Execution **/
     void Exec(Option_t* opt) override;
@@ -64,9 +62,6 @@ class PixelDigiWriteToBinFile : public FairTask
 
     /** Reinitialisation **/
     InitStatus ReInit() override;
-
-    /** Reset eventwise counters **/
-    void Reset() {}
 
     /** Finish at the end of each event **/
     void Finish() override;

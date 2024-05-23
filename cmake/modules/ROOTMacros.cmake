@@ -35,28 +35,21 @@ endfunction(Format)
   #       Macros for building ROOT dictionary
   #
   ###########################################
-Macro(ROOT_GENERATE_DICTIONARY)
 
-  # Macro to switch between the old implementation with parameters
-  # and the new implementation without parameters.
-  # For the new implementation some CMake variables has to be defined
-  # before calling the macro.
+Find_Program(ROOT_CINT_EXECUTABLE
+  NAMES rootcint
+  PATHS ${ROOT_BINDIR}
+  NO_DEFAULT_PATH
+  )
 
-  If(${ARGC} EQUAL 0)
-#    Message("New Version")
-    ROOT_GENERATE_DICTIONARY_NEW()
-  Else(${ARGC} EQUAL 0)
-    If(${ARGC} EQUAL 4)
-#      Message("Old Version")
-      ROOT_GENERATE_DICTIONARY_OLD("${ARGV0}" "${ARGV1}" "${ARGV2}" "${ARGV3}")
-    Else(${ARGC} EQUAL 4)
-      Message(FATAL_ERROR "Has to be implemented")
-    EndIf(${ARGC} EQUAL 4)
-  EndIf(${ARGC} EQUAL 0)
 
-EndMacro(ROOT_GENERATE_DICTIONARY)
-
-Macro(ROOT_GENERATE_DICTIONARY_NEW)
+macro(FAIRROOT_GENERATE_DICTIONARY)
+  if(${ARGC} GREATER 0)
+    message(FATAL_ERROR "FAIRROOT_GENERATE_DICTIONARY has no args")
+  endif()
+  if(NOT FAIRROOTPATH)
+    message(FATAL_ERROR "Do not call from inside FairRoot")
+  endif()
 
   # All Arguments needed for this new version of the macro are defined
   # in the parent scope, namely in the CMakeLists.txt of the submodule
@@ -93,7 +86,7 @@ Macro(ROOT_GENERATE_DICTIONARY_NEW)
   String(REPLACE ";" " " Int_HDRS_STR "${Int_HDRS}")
 
   Set(EXTRA_DICT_PARAMETERS "")
-  If (ROOT_FOUND_VERSION GREATER 59999)
+  If(TRUE)
 
     Set(Int_ROOTMAPFILE ${LIBRARY_OUTPUT_PATH}/lib${Int_LIB}.rootmap)
     Set(Int_PCMFILE G__${Int_LIB}Dict_rdict.pcm)
@@ -110,69 +103,21 @@ Macro(ROOT_GENERATE_DICTIONARY_NEW)
   # time we run make. To pass the variables a script is created containing the
   # correct values for the needed variables
 
-  IF(FAIRROOTPATH)
+  if(TRUE)
     Configure_File(${FAIRROOTPATH}/share/fairbase/cmake/scripts/generate_dictionary_root.sh.in
                    ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh
                   )
-    #EXEC_PROGRAM(/bin/chmod ARGS "u+x ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh")
     execute_process(COMMAND /bin/chmod u+x ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh OUTPUT_QUIET)
 
-  ELSE(FAIRROOTPATH)
-    Configure_File(${PROJECT_SOURCE_DIR}/cmake/scripts/generate_dictionary_root.sh.in
-                   ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh
-                  )
-  ENDIF(FAIRROOTPATH)
-
-
-  If (ROOT_FOUND_VERSION GREATER 59999)
     Add_Custom_Command(OUTPUT  ${OUTPUT_FILES}
                        COMMAND ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh
                        COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/${Int_PCMFILE} ${LIBRARY_OUTPUT_PATH}/${Int_PCMFILE}
                        DEPENDS ${Int_HDRS} ${Int_LINKDEF}
                       )
     Install(FILES ${LIBRARY_OUTPUT_PATH}/${Int_PCMFILE} ${Int_ROOTMAPFILE} DESTINATION lib)
-  Else()
-    Add_Custom_Command(OUTPUT  ${OUTPUT_FILES}
-                       COMMAND ${CMAKE_CURRENT_BINARY_DIR}/generate_dictionary_${script_name}.sh
-                       DEPENDS ${Int_HDRS} ${Int_LINKDEF}
-                      )
   EndIf()
+endmacro()
 
-endmacro(ROOT_GENERATE_DICTIONARY_NEW)
-
-
-MACRO (ROOT_GENERATE_DICTIONARY_OLD INFILES LINKDEF_FILE OUTFILE INCLUDE_DIRS_IN)
-
-  set(INCLUDE_DIRS)
-
-  foreach (_current_FILE ${INCLUDE_DIRS_IN})
-    set(INCLUDE_DIRS ${INCLUDE_DIRS} -I${_current_FILE})
-  endforeach (_current_FILE ${INCLUDE_DIRS_IN})
-
-#  Message("Definitions: ${DEFINITIONS}")
-#  MESSAGE("INFILES: ${INFILES}")
-#  MESSAGE("OutFILE: ${OUTFILE}")
-#  MESSAGE("LINKDEF_FILE: ${LINKDEF_FILE}")
-#  MESSAGE("INCLUDE_DIRS: ${INCLUDE_DIRS}")
-
-  STRING(REGEX REPLACE "^(.*)\\.(.*)$" "\\1.h" bla "${OUTFILE}")
-#  MESSAGE("BLA: ${bla}")
-  SET (OUTFILES ${OUTFILE} ${bla})
-
-
-  if (CMAKE_SYSTEM_NAME MATCHES Linux)
-    ADD_CUSTOM_COMMAND(OUTPUT ${OUTFILES}
-       COMMAND LD_LIBRARY_PATH=${ROOT_LIBRARY_DIR}:${_intel_lib_dirs} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE}
-       ARGS -f ${OUTFILE} -c -DHAVE_CONFIG_H ${INCLUDE_DIRS} ${INFILES} ${LINKDEF_FILE} DEPENDS ${INFILES} ${LINKDEF_FILE})
-  else (CMAKE_SYSTEM_NAME MATCHES Linux)
-    if (CMAKE_SYSTEM_NAME MATCHES Darwin)
-      ADD_CUSTOM_COMMAND(OUTPUT ${OUTFILES}
-       COMMAND DYLD_LIBRARY_PATH=${ROOT_LIBRARY_DIR} ROOTSYS=${ROOTSYS} ${ROOT_CINT_EXECUTABLE}
-       ARGS -f ${OUTFILE} -c -DHAVE_CONFIG_H ${INCLUDE_DIRS} ${INFILES} ${LINKDEF_FILE} DEPENDS ${INFILES} ${LINKDEF_FILE})
-    endif (CMAKE_SYSTEM_NAME MATCHES Darwin)
-  endif (CMAKE_SYSTEM_NAME MATCHES Linux)
-
-ENDMACRO (ROOT_GENERATE_DICTIONARY_OLD)
 
 MACRO (GENERATE_ROOT_TEST_SCRIPT SCRIPT_FULL_NAME)
 
@@ -260,7 +205,7 @@ Macro(GENERATE_LIBRARY)
     Else( IS_ABSOLUTE ${LINKDEF})
       Set(Int_LINKDEF ${CMAKE_CURRENT_SOURCE_DIR}/${LINKDEF})
     EndIf( IS_ABSOLUTE ${LINKDEF})
-    ROOT_GENERATE_DICTIONARY()
+    FAIRROOT_GENERATE_DICTIONARY()
     SET(Int_SRCS ${Int_SRCS} ${DICTIONARY})
     SET_SOURCE_FILES_PROPERTIES(${DICTIONARY}
        PROPERTIES COMPILE_FLAGS "-Wno-old-style-cast"

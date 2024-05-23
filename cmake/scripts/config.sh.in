@@ -5,7 +5,6 @@ export System_="@_system@"
 . @_EXECDIR@/check_system.sh
 if [ $same_system -eq 1 ]; then
 	export SIMPATH="@SIMPATH@"
-	export ROOTSYS="@ROOTSYS@"
 	export FAIRROOTPATH="@FAIRROOTPATH@"
 	if (@FULL_CONFIG_FILE@); then
 		export Geant4_INCLUDE_DIRS="@Geant4_INCLUDE_DIRS@"
@@ -24,7 +23,6 @@ if [ $same_system -eq 1 ]; then
 	export Geant3_INCLUDE_DIRS="@Geant3_INCLUDE_DIRS@"
 	export ROOT_LIBRARY_DIR="@ROOT_LIBRARY_DIR@"
 	export ROOT_LIBRARIES="@ROOT_LIBRARIES@"
-	export ROOT_INCLUDE_DIR="@ROOT_INCLUDE_DIR@"
 	export ROOT_INCLUDE_PATH="@Geant3_INCLUDE_DIRS@:@ROOT_INCLUDE_PATH@"
 	export VMCWORKDIR="@VMCWORKDIR@"
 	export FAIRLIBDIR="@FAIRLIBDIR@"

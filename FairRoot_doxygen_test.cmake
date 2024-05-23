@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2020-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2020-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -76,6 +76,6 @@ endif()
 ctest_submit()
 
 if (web_url)
-  file(WRITE "build/generated-doxygen.url" "${web_url}")
+  file(WRITE "${CTEST_BINARY_DIRECTORY}/generated-doxygen.url" "${web_url}")
   message(STATUS " Created Doxygen URL ..: ${web_url}")
 endif()

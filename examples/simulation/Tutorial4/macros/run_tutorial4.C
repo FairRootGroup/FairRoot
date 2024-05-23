@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -9,7 +9,11 @@
 #include <TObjString.h>
 #include <TStopwatch.h>
 #include <TSystem.h>
+#include <iostream>
 #include <memory>
+
+using std::cout;
+using std::endl;
 
 void run_tutorial4(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t doAlign = true, Bool_t isMT = false)
 {
@@ -69,27 +73,27 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t doAl
     //  gLogger->SetLogScreenLevel("INFO");
 
     // -----   Create simulation run   ----------------------------------------
-    FairRunSim* run = new FairRunSim();
-    run->SetName(mcEngine);                        // Transport engine
-    run->SetIsMT(isMT);                            // Multi-threading mode (Geant4 only)
-    run->SetSink(std::make_unique<FairRootFileSink>(outFile));
-    FairRuntimeDb* rtdb = run->GetRuntimeDb();
+    FairRunSim run{};
+    run.SetName(mcEngine);   // Transport engine
+    run.SetIsMT(isMT);       // Multi-threading mode (Geant4 only)
+    run.SetSink(std::make_unique<FairRootFileSink>(outFile));
+    FairRuntimeDb* rtdb = run.GetRuntimeDb();
     // ------------------------------------------------------------------------
 
     // -----   Create media   -------------------------------------------------
-    run->SetMaterials("media.geo");   // Materials
+    run.SetMaterials("media.geo");   // Materials
     // ------------------------------------------------------------------------
 
     // -----   Create geometry   ----------------------------------------------
     FairModule* cave = new FairCave("CAVE");
     cave->SetGeometryFileName("cave_vacuum.geo");
-    run->AddModule(cave);
+    run.AddModule(cave);
 
     FairTutorialDet4* tutdet = new FairTutorialDet4("TUTDET", kTRUE);
     tutdet->SetGeometryFileName("tutorial4.root");
     tutdet->SetModifyGeometry(doAlign);
 
-    run->AddModule(tutdet);
+    run.AddModule(tutdet);
     // ------------------------------------------------------------------------
 
     // -----   Create PrimaryGenerator   --------------------------------------
@@ -107,10 +111,10 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t doAl
 
     primGen->AddGenerator(boxGen);
 
-    run->SetGenerator(primGen);
+    run.SetGenerator(primGen);
 
     // -----  Store information about particle trajectories  ------------------
-    run->SetStoreTraj(kTRUE);
+    run.SetStoreTraj(kTRUE);
 
     // -----   Runtime database   ---------------------------------------------
 
@@ -124,7 +128,7 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t doAl
     // ------------------------------------------------------------------------
 
     // -----   Initialize simulation run   ------------------------------------
-    run->Init();
+    run.Init();
 
     // -Trajectories Visualization (TGeoManager Only )
     // -----------------------------------------------
@@ -142,15 +146,13 @@ void run_tutorial4(Int_t nEvents = 10, TString mcEngine = "TGeant3", Bool_t doAl
     // ------------------------------------------------------------------------
 
     // -----   Start run   ----------------------------------------------------
-    // run->CreateGeometryFile(geoFile); //misaligned geometry
-    run->Run(nEvents);
-    // run->CreateGeometryFile(geoFile); // original geometry
+    // run.CreateGeometryFile(geoFile); //misaligned geometry
+    run.Run(nEvents);
+    // run.CreateGeometryFile(geoFile); // original geometry
     // ------------------------------------------------------------------------
 
     rtdb->saveOutput();
     rtdb->print();
-
-    delete run;
 
     // -----   Finish   -------------------------------------------------------
 

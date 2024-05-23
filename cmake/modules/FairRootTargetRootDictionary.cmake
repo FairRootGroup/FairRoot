@@ -113,11 +113,6 @@ function(fairroot_target_root_dictionary target)
   # Need at least root core library
   # get_filename_component(LD_LIBRARY_PATH ROOT::Core DIRECTORY)
   set(LD_LIBRARY_PATH ${ROOT_LIBRARY_DIR})
-  # and possibly toolchain libs if we are using a toolchain
-  if(DEFINED ENV{GCC_TOOLCHAIN_ROOT})
-    set(LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:$ENV{GCC_TOOLCHAIN_ROOT}/lib")
-    set(LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:$ENV{GCC_TOOLCHAIN_ROOT}/lib64")
-  endif()
 
   set(includeDirs $<TARGET_PROPERTY:${target},INCLUDE_DIRECTORIES>)
   set(includeDirs "$<REMOVE_DUPLICATES:${includeDirs}>")
@@ -134,7 +129,7 @@ function(fairroot_target_root_dictionary target)
     OUTPUT ${dictionaryFile} ${pcmFile} ${rootmapFile}
     VERBATIM
     COMMAND ${CMAKE_COMMAND} -E env "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$ENV{LD_LIBRARY_PATH}"
-      ${ROOT_CINT_EXECUTABLE}
+      $<TARGET_FILE:ROOT::rootcling>
       -f ${dictionaryFile}
       -inlineInputHeader
       -rmf ${rootmapFile}

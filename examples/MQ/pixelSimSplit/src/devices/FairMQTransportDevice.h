@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2017-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2017-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -17,6 +17,7 @@
 #define FAIRMQTRANSPORTDEVICE_H_
 
 #include "FairMQRunDevice.h"
+#include "FairRunSim.h"
 
 #include <Rtypes.h>
 #include <TString.h>
@@ -25,7 +26,6 @@
 #include <string>
 
 class FairMCSplitEventHeader;
-class FairRunSim;
 class FairField;
 class FairParIo;
 class TObjArray;
@@ -65,6 +65,7 @@ class FairMQTransportDevice : public FairMQRunDevice
     //  bool TransportData(fair::mq::MessagePtr&, int);
     void Init() override;
     void InitTask() override;
+    void ResetTask() override;
     void PreRun() override;
     void PostRun() override;
     bool ConditionalRun() override;
@@ -81,7 +82,7 @@ class FairMQTransportDevice : public FairMQRunDevice
     TVirtualMC* fVMC;
     FairGenericStack* fStack;
     FairMCApplication* fMCApplication;
-    FairRunSim* fRunSim;
+    std::unique_ptr<FairRunSim> fRunSim;
     // ------ FairRunSim settings ------
     int64_t fNofEvents;
     std::string fTransportName;

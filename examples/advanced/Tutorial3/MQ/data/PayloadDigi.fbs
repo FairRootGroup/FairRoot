@@ -1,0 +1,15 @@
+namespace TestDetectorFlat;
+
+table Digi {
+  x:int;
+  y:int;
+  z:int;
+  timestamp:double;
+  timestamp_error:double;
+}
+
+table DigiPayload {
+  digis:[Digi];
+}
+
+root_type DigiPayload;

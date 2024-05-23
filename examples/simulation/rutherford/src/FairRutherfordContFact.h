@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -10,15 +10,11 @@
 
 #include "FairContFact.h"   // for FairContFact, etc
 
-#include <Rtypes.h>   // for ClassDef
-
-class FairParSet;
-
 class FairRutherfordContFact : public FairContFact
 {
   public:
     FairRutherfordContFact();
-    ~FairRutherfordContFact() override {}
+    ~FairRutherfordContFact() override = default;
     FairParSet* createContainer(FairContainer*) override;
     ClassDefOverride(FairRutherfordContFact, 0);   // Factory for all FairRutherford parameter containers
 };

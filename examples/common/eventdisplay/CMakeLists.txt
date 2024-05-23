@@ -25,11 +25,6 @@ target_include_directories(${target} PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-# TODO: DELETE ME ONCE USING root targets
-target_include_directories(${target} SYSTEM PUBLIC
-  ${ROOT_INCLUDE_DIR}
-)
-
 target_link_libraries(${target}
   PUBLIC
   FairRoot::Base # FairRunIdGenerator
@@ -49,7 +44,7 @@ target_link_libraries(${target}
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}
-  LINKDEF EventDisplayExampleLinkDef.h
+  LINKDEF LinkDef.h
   EXTRA_INCLUDE_DIRS ${CMAKE_INSTALL_FULL_INCLUDEDIR}
 )
 

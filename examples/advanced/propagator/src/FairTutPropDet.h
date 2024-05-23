@@ -32,9 +32,6 @@ class FairTutPropDet : public FairDetector
     /**       destructor     */
     ~FairTutPropDet() override;
 
-    /**      Initialization of the detector is done here    */
-    void Initialize() override;
-
     /**       this method is called for each step during simulation
      *       (see FairMCApplication::Stepping())
      */

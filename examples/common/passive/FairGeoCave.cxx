@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -28,15 +28,10 @@
 #include <iostream>   // for cout
 #include <string.h>   // for strcmp
 
-ClassImp(FairGeoCave);
-
 FairGeoCave::FairGeoCave()
-    : FairGeoSet()
+    : FairGeoSet("cave", 1)
     , name("cave")
-{
-    fName = "cave";
-    maxModules = 1;
-}
+{}
 
 Bool_t FairGeoCave::read(std::fstream& fin, FairGeoMedia* media)
 {

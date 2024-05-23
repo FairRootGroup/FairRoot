@@ -14,10 +14,10 @@ The following MQ devices are implemented:
 
 - FairMQPixelSampler - reads data branch names specified by AddInputBranchName(string) from the input file(s) set by AddInputFileName(string) via FairSource. Currently one may attach FairFileSource (chains of ROOT files), PixelDigiSource (ascii files with PixelDigis) or PixelDigiBinSource (binary files with PixelDigis);
 
-- template <typename T> FairMQPixelTaskProcessor - runs a task of class T. The class T needs to have the following functions:
-void GetParList (TList* parList); - used to get the list of parameter objects needed by class T;
-void InitMQ     (TList* parList); - initialization of the class T object using the parameters;
-void ExecMQ     (TList* inputList, TList* outputList); - analyze data from inputList and store the result in outputList;
+- `template <typename T> FairMQPixelTaskProcessor` - runs a task of class T. The class T needs to have the following functions:
+  `void GetParList (TList* parList);` - used to get the list of parameter objects needed by class T;
+  `void InitMQ     (TList* parList);` - initialization of the class T object using the parameters;
+  `void ExecMQ     (TList* inputList, TList* outputList);` - analyze data from inputList and store the result in outputList;
 
 - FairMQPixelFileSink creates output ROOT file set by SetOutputFileName(string) and tree, with the branches specified by AddOutputBranch(string className, string branchName). Currently only two classes (FairEventHeader and TClonesArray of any objects) are allowed:
 fileSink.AddOutputBranch(“FairEventHeader”,”EventHeader.”);

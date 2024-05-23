@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -146,14 +146,15 @@ void PixelFindHits::GetParList(TList* tempList)
 {
     fDigiPar = new PixelDigiPar("PixelDigiParameters");
     tempList->Add(fDigiPar);
-
-    return;
 }
 
 void PixelFindHits::InitMQ(TList* tempList)
 {
     LOG(info) << "********************************************** PixelFindHits::InitMQ()";
-    fDigiPar = (PixelDigiPar*)tempList->FindObject("PixelDigiParameters");
+    fDigiPar = dynamic_cast<PixelDigiPar*>(tempList->FindObject("PixelDigiParameters"));
+    if (!fDigiPar) {
+        throw std::runtime_error("no PixelDigiParameters");
+    }
 
     fFeCols = fDigiPar->GetFECols();
     fFeRows = fDigiPar->GetFERows();
@@ -168,8 +169,6 @@ void PixelFindHits::InitMQ(TList* tempList)
     LOG(info) << ">> fPitchY      = " << fPitchY;
 
     fHits = new TClonesArray("PixelHit", 10000);
-
-    return;
 }
 
 void PixelFindHits::ExecMQ(TList* inputList, TList* outputList)
@@ -178,10 +177,15 @@ void PixelFindHits::ExecMQ(TList* inputList, TList* outputList)
     //  "," << outputList->GetName() << "), Event " << fTNofEvents; LOG(info) <<
     //  "********************************************** PixelFindHits::ExecMQ(), Event " << fTNofEvents; LOG(info) <<
     //  "h" << FairLogger::flush;
-    fDigis = (TClonesArray*)inputList->FindObject("PixelDigis");
+    fDigis = dynamic_cast<TClonesArray*>(inputList->FindObject("PixelDigis"));
+    if (!fDigis) {
+        throw std::runtime_error("no PixelDigis");
+    }
+    if (!fDigis->GetClass()->InheritsFrom(PixelDigi::Class())) {
+        throw std::runtime_error("wrong type in PixelDigis TCA");
+    }
     outputList->Add(fHits);
     Exec("");
-    return;
 }
 
 InitStatus PixelFindHits::Init()
@@ -236,5 +240,3 @@ void PixelFindHits::Finish()
               << static_cast<Double_t>(fTNofHits) / (static_cast<Double_t>(fTNofEvents)) << " per event)";
     LOG(info) << "---------------------------------------------------------------------";
 }
-
-ClassImp(PixelFindHits);

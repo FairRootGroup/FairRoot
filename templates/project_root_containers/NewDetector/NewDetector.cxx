@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -81,8 +81,6 @@ void NewDetector::Initialize()
 {
     /**
      * WORKAROUND needed for Geant4 in MT mode
-     * Call AddSensitiveVolume for sensitive volumes in order to fill
-     * thread-local FairModule::svList.
      */
     DefineSensitiveVolumes();
 
@@ -257,5 +255,3 @@ Bool_t NewDetector::IsSensitive(const std::string& name)
     }
     return kFALSE;
 }
-
-ClassImp(NewDetector);

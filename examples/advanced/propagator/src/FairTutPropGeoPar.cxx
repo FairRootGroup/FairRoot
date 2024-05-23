@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2019 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2019-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,17 +12,15 @@
 
 #include <iostream>
 
-ClassImp(FairTutPropGeoPar);
-
 FairTutPropGeoPar ::FairTutPropGeoPar(const char* name, const char* title, const char* context)
     : FairParGenericSet(name, title, context)
     , fGeoSensNodes(new TObjArray())
     , fGeoPassNodes(new TObjArray())
 {}
 
-FairTutPropGeoPar::~FairTutPropGeoPar(void) {}
+FairTutPropGeoPar::~FairTutPropGeoPar() {}
 
-void FairTutPropGeoPar::clear(void)
+void FairTutPropGeoPar::clear()
 {
     delete fGeoSensNodes;
     delete fGeoPassNodes;

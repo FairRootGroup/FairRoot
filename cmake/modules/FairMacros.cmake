@@ -45,26 +45,6 @@ string(CONCAT Geant4Data_Variables_csh ${Geant4Data_Variables_csh} "\
 ################################################################################
 ENDMACRO()
 
-#Defines some variables with console color escape sequences
-  if(NOT WIN32 AND NOT DISABLE_COLOR)
-    string(ASCII 27 Esc)
-    set(CR       "${Esc}[m")
-    set(CB       "${Esc}[1m")
-    set(Red      "${Esc}[31m")
-    set(Green    "${Esc}[32m")
-    set(Yellow   "${Esc}[33m")
-    set(Blue     "${Esc}[34m")
-    set(Magenta  "${Esc}[35m")
-    set(Cyan     "${Esc}[36m")
-    set(White    "${Esc}[37m")
-    set(BRed     "${Esc}[1;31m")
-    set(BGreen   "${Esc}[1;32m")
-    set(BYellow  "${Esc}[1;33m")
-    set(BBlue    "${Esc}[1;34m")
-    set(BMagenta "${Esc}[1;35m")
-    set(BCyan    "${Esc}[1;36m")
-    set(BWhite   "${Esc}[1;37m")
-  endif()
 
 ################################################################################
 MACRO(SUBDIRLIST result curdir)
@@ -250,82 +230,7 @@ MACRO(REMOVE_FROM_LIST var_name list1 list2)
   SET(${var_name} ${filter_tmp})
 ENDMACRO(REMOVE_FROM_LIST)
 ################################################################################
-MACRO (GENERATE_TEST_SCRIPT SCRIPT_FULL_NAME)
 
-  get_filename_component(path_name ${SCRIPT_FULL_NAME} PATH)
-  get_filename_component(file_extension ${SCRIPT_FULL_NAME} EXT)
-  get_filename_component(file_name ${SCRIPT_FULL_NAME} NAME_WE)
-  set(shell_script_name "${file_name}.sh")
-
-  if(${ARGC} GREATER 1)
-    set(new_path ${ARGV1})
-  Else()
-    string(REPLACE ${PROJECT_SOURCE_DIR}
-           ${PROJECT_BINARY_DIR} new_path ${path_name}
-          )
-  EndIf()
-  CONVERT_LIST_TO_STRING(${LD_LIBRARY_PATH})
-  set(MY_LD_LIBRARY_PATH ${output})
-  set(my_script_name ${SCRIPT_FULL_NAME})
-  Write_Geant4Data_Variables_sh()
-  IF(FAIRROOT_FOUND)
-    configure_file(${FAIRROOT_CMAKEMOD_DIR}/scripts/set_env.sh.in
-                   ${new_path}/${shell_script_name}
-                  )
-  ELSE(FAIRROOT_FOUND)
-    configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/set_env.sh.in
-                   ${new_path}/${shell_script_name}
-                  )
-  ENDIF(FAIRROOT_FOUND)
-  EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}" OUTPUT_VARIABLE tmp)
-ENDMACRO (GENERATE_TEST_SCRIPT)
-################################################################################
-
-Macro(Generate_Exe_Script _Path _ExeName)
-
-  Message("PATH: ${_Path}")
-  Message("ExeName: ${_ExeName}")
-  set(shell_script_name "${_ExeName}.sh")
-  Message("shell_script_name: ${shell_script_name}")
-
-  string(REPLACE ${PROJECT_SOURCE_DIR}
-         ${PROJECT_BINARY_DIR} new_path ${_Path}
-        )
-
-  set(my_exe_name ${EXECUTABLE_OUTPUT_PATH}/${_ExeName})
-  Write_Geant4Data_Variables_sh()
-  configure_file(${PROJECT_SOURCE_DIR}/cmake/scripts/run_binary.sh.in
-                   ${new_path}/${shell_script_name}
-                  )
-
-  EXEC_PROGRAM(/bin/chmod ARGS "u+x  ${new_path}/${shell_script_name}" OUTPUT_VARIABLE tmp )
-
-EndMacro(Generate_Exe_Script)
-################################################################################
-
-Macro (Generate_Version_Info)
- if(FairRoot_FOUND)
-
-  Add_Custom_Target(svnheader ALL)
-
-  Add_Custom_Command(TARGET svnheader
-                     COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${PROJECT_SOURCE_DIR}
-		     -DBINARY_DIR=${CMAKE_BINARY_DIR}
-                     -DINCLUDE_OUTPUT_DIRECTORY=${INCLUDE_OUTPUT_DIRECTORY}
-                     -DFAIRROOT=${FAIRROOT_CMAKEMOD_DIR}
-                     -P ${FAIRROOT_CMAKEMOD_DIR}/modules/GenerateVersionInfo.cmake
-                      )
- else()
-  Add_Custom_Target(svnheader ALL)
-  Add_Custom_Command(TARGET svnheader
-                     COMMAND ${CMAKE_COMMAND} -DSOURCE_DIR=${CMAKE_SOURCE_DIR}
-		     -DBINARY_DIR=${CMAKE_BINARY_DIR}
-                     -DINCLUDE_OUTPUT_DIRECTORY=${INCLUDE_OUTPUT_DIRECTORY}
-                     -P ${CMAKE_SOURCE_DIR}/cmake/modules/GenerateVersionInfo.cmake
-		     )
- endif()
-EndMacro (Generate_Version_Info)
-################################################################################
 
 Macro (SetBasicVariables)
 if(FairRoot_FOUND)
@@ -340,7 +245,6 @@ if(FairRoot_FOUND)
     ${FMT_INCLUDE_DIR}
   )
   Set(SYSTEM_INCLUDE_DIRECTORIES
-    ${ROOT_INCLUDE_DIR}
     ${Boost_INCLUDE_DIRS}
   )
   Set(ROOT_INCLUDE_PATH
@@ -361,121 +265,6 @@ endif()
 EndMacro (SetBasicVariables)
 
 ################################################################################
-#
-# find_package2(PRIVATE|PUBLIC|INTERFACE <pkgname>
-#               [VERSION <version>]
-#               [COMPONENTS <list of components>]
-#               [ADD_REQUIREMENTS_OF <list of dep_pgkname>]
-#               [any other option the native find_package supports]...)
-#
-# Wrapper around CMake's native find_package command to add some features and bookkeeping.
-#
-# The qualifier (PRIVATE|PUBLIC|INTERFACE) to the package to populate
-# the variables PROJECT_[INTERFACE]_<pkgname>_([VERSION]|[COMPONENTS]|PACKAGE_DEPENDENCIES)
-# accordingly. This bookkeeping information is used to print our dependency found summary
-# table and to generate a part of our CMake package.
-#
-# When a dependending package is listed with ADD_REQUIREMENTS_OF the variables
-# <dep_pkgname>_<pkgname>_VERSION|COMPONENTS are looked up to and added to the native
-# VERSION (selected highest version) and COMPONENTS (deduplicated) args.
-#
-# COMPONENTS and VERSION args are then just passed to the native find_package.
-#
-macro(find_package2 qualifier pkgname)
-  cmake_parse_arguments(ARGS "" "VERSION" "COMPONENTS;ADD_REQUIREMENTS_OF" ${ARGN})
-
-  string(TOUPPER ${pkgname} pkgname_upper)
-  set(__old_cpp__ ${CMAKE_PREFIX_PATH})
-  set(CMAKE_PREFIX_PATH ${${pkgname_upper}_ROOT} $ENV{${pkgname_upper}_ROOT} ${CMAKE_PREFIX_PATH})
-
-  # build lists of required versions and components
-  unset(__required_versions__)
-  unset(__components__)
-  if(ARGS_VERSION)
-    list(APPEND __required_versions__ ${ARGS_VERSION})
-  endif()
-  if(ARGS_COMPONENTS)
-    list(APPEND __components__ ${ARGS_COMPONENTS})
-  endif()
-  if(ARGS_ADD_REQUIREMENTS_OF)
-    foreach(dep_pkgname IN LISTS ARGS_ADD_REQUIREMENTS_OF)
-      if(${dep_pkgname}_${pkgname}_VERSION)
-        list(APPEND __required_versions__ ${${dep_pkgname}_${pkgname}_VERSION})
-      endif()
-      if(${dep_pkgname}_${pkgname}_COMPONENTS)
-        list(APPEND __components__ ${${dep_pkgname}_${pkgname}_COMPONENTS})
-      endif()
-    endforeach()
-  endif()
-
-  # select highest required version
-  unset(__version__)
-  if(__required_versions__)
-    list(GET __required_versions__ 0 __version__)
-    foreach(v IN LISTS __required_versions__)
-      if(${v} VERSION_GREATER ${__version__})
-        set(__version__ ${v})
-      endif()
-    endforeach()
-  endif()
-  # deduplicate required component list
-  if(__components__)
-    list(REMOVE_DUPLICATES __components__)
-  endif()
-
-  # call native find_package
-  if(__components__)
-    find_package(${pkgname} ${__version__} QUIET COMPONENTS ${__components__} ${ARGS_UNPARSED_ARGUMENTS})
-  else()
-    find_package(${pkgname} ${__version__} QUIET ${ARGS_UNPARSED_ARGUMENTS})
-  endif()
-
-  if(${pkgname}_FOUND)
-    if(${qualifier} STREQUAL PRIVATE)
-      set(PROJECT_${pkgname}_VERSION ${__version__})
-      set(PROJECT_${pkgname}_COMPONENTS ${__components__})
-      set(PROJECT_PACKAGE_DEPENDENCIES ${PROJECT_PACKAGE_DEPENDENCIES} ${pkgname})
-    elseif(${qualifier} STREQUAL PUBLIC)
-      set(PROJECT_${pkgname}_VERSION ${__version__})
-      set(PROJECT_${pkgname}_COMPONENTS ${__components__})
-      set(PROJECT_PACKAGE_DEPENDENCIES ${PROJECT_PACKAGE_DEPENDENCIES} ${pkgname})
-      set(PROJECT_INTERFACE_${pkgname}_VERSION ${__version__})
-      set(PROJECT_INTERFACE_${pkgname}_COMPONENTS ${__components__})
-      set(PROJECT_INTERFACE_PACKAGE_DEPENDENCIES ${PROJECT_INTERFACE_PACKAGE_DEPENDENCIES} ${pkgname})
-    elseif(${qualifier} STREQUAL INTERFACE)
-      set(PROJECT_INTERFACE_${pkgname}_VERSION ${__version__})
-      set(PROJECT_INTERFACE_${pkgname}_COMPONENTS ${__components__})
-      set(PROJECT_INTERFACE_PACKAGE_DEPENDENCIES ${PROJECT_INTERFACE_PACKAGE_DEPENDENCIES} ${pkgname})
-    endif()
-  endif()
-
-  unset(__version__)
-  unset(__components__)
-  unset(__required_versions__)
-  set(CMAKE_PREFIX_PATH ${__old_cpp__})
-  unset(__old_cpp__)
-endmacro()
-################################################################################
-function(pad str width char out)
-  cmake_parse_arguments(ARGS "LEFT" "COLOR" "" ${ARGN})
-  string(LENGTH ${str} length)
-  if(ARGS_COLOR)
-    math(EXPR padding "${width}-(${length}-10*${ARGS_COLOR})")
-  else()
-    math(EXPR padding "${width}-${length}")
-  endif()
-  if(padding GREATER 0)
-    foreach(i RANGE ${padding})
-      if(ARGS_LEFT)
-        set(str "${char}${str}")
-      else()
-        set(str "${str}${char}")
-      endif()
-    endforeach()
-  endif()
-  set(${out} ${str} PARENT_SCOPE)
-endfunction()
-################################################################################
 function(generate_package_components)
   join("${PROJECT_PACKAGE_COMPONENTS}" " " COMPS)
   set(PACKAGE_COMPONENTS "\
@@ -493,3 +282,23 @@ check_required_components(${PROJECT_NAME})
 set(PACKAGE_COMPONENTS ${PACKAGE_COMPONENTS} PARENT_SCOPE)
 endfunction()
 ################################################################################
+
+function(fairroot_check_root_cxxstd_compatibility)
+  if(NOT CMAKE_CXX_STANDARD)
+    return()
+  endif()
+  if(ROOT_cxx${CMAKE_CXX_STANDARD}_FOUND)
+    return()
+  endif()
+  if(NOT TARGET ROOT::Core)
+    message(WARNING "ROOT::Core target not found, can't check CXX standard")
+    return()
+  endif()
+  get_property(compile_features TARGET ROOT::Core
+               PROPERTY INTERFACE_COMPILE_FEATURES)
+  if("cxx_std_${CMAKE_CXX_STANDARD}" IN_LIST compile_features)
+    return()
+  endif()
+  message(WARNING "CXX Standard ${CMAKE_CXX_STANDARD} not found "
+          "in compile features of ROOT: ${compile_features}")
+endfunction()
