@@ -203,8 +203,34 @@ git push origin v{x.y.z}
 ```sh
 git checkout master
 git merge origin/v{x.y}_patches
-git push mainrepo origin
+git push origin master
 ```
 
 The message, when prompted, should be `Merge v{x.y.z}`.
 The merge and push should not be forced.
+
+### Should the patch branch diverge too much from master:
+
+```sh
+git checkout master
+git merge -s ours v{x.y}_patches
+git checkout --detach v{x.y}_patches
+git reset --soft master
+git checkout master
+git commit --amend -C HEAD
+git push origin master
+```
+
+This merges the patch branch onto master, discarding
+any changes from master and keeps changes from patches.
+
+## For major versions merge master back on dev:
+
+```sh
+git checkout dev
+git merge master
+git push origin dev
+```
+
+This reunites the dev and master, making future
+merging easier.
