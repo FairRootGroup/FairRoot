@@ -53,7 +53,7 @@
 #include <TCollection.h>   // for TIter
 #include <TFile.h>         // for TFile, gFile
 #include <TROOT.h>         //
-#include <cstdio>          // for sprintf
+#include <cstdio>
 #include <cstring>         // for strcmp, strlen
 #include <fairlogger/Logger.h>
 #include <fmt/core.h>   // for format
