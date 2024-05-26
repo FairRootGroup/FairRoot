@@ -158,6 +158,8 @@ class FairModule : public TNamed
     void ReAssignMediaId();
     void swap(FairModule& other) throw();
 
+    void RegisterSensitiveVolume(FairVolume&);
+
   protected:
     FairModule(const FairModule&);
     FairModule& operator=(const FairModule&);

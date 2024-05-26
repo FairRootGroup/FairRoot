@@ -200,6 +200,14 @@ void FairModule::SetGeometryFileName(TString fname, TString)
     fgeoName = "";
 }
 
+void FairModule::RegisterSensitiveVolume(FairVolume& vol)
+{
+    vol.setModId(fModId);
+    vol.SetModule(this);
+    fAllSensitiveVolumes.push_back(&vol);
+    ++fNbOfSensitiveVol;
+}
+
 void FairModule::ProcessNodes(TList* nodes)
 {
     if (FairMCApplicationState::kConstructGeometry != FairMCApplication::Instance()->GetState()) {
@@ -242,10 +250,7 @@ void FairModule::ProcessNodes(TList* nodes)
         }
 
         if (node->isSensitive() && fActive) {
-            addedVol->setModId(fModId);
-            addedVol->SetModule(this);
-            fAllSensitiveVolumes.push_back(addedVol);
-            ++fNbOfSensitiveVol;
+            RegisterSensitiveVolume(*addedVol);
             parNodes->AddLast(node);
         }
     }
@@ -261,10 +266,7 @@ void FairModule::AddSensitiveVolume(TGeoVolume* vol)
         return;
     }
     ++fNbOfVolumes;
-    addedVol->setModId(fModId);
-    addedVol->SetModule(this);
-    fAllSensitiveVolumes.push_back(addedVol);
-    ++fNbOfSensitiveVol;
+    RegisterSensitiveVolume(*addedVol);
 }
 
 FairVolume* FairModule::getFairVolume(FairGeoNode* fN)
