@@ -26,7 +26,7 @@
 #include "FairVolumeList.h"   // for FairVolumeList
 
 #include <TBuffer.h>           // for TBuffer, operator<<, etc
-#include <TCollection.h>       // for TIter
+#include <TCollection.h>       // for TIter, TRangeDynCast
 #include <TDirectory.h>        // for TDirectory::TContext
 #include <TFile.h>             // for TFile
 #include <TGeoManager.h>       // for TGeoManager, gGeoManager
@@ -198,7 +198,7 @@ void FairModule::SetGeometryFileName(TString fname, TString)
     fgeoName = "";
 }
 
-void FairModule::ProcessNodes(TList* aList)
+void FairModule::ProcessNodes(TList* nodes)
 {
     if (FairMCApplicationState::kConstructGeometry != FairMCApplication::Instance()->GetState()) {
         LOG(fatal) << "Detected call to FairModule::ProcessNodes() \
@@ -211,14 +211,14 @@ void FairModule::ProcessNodes(TList* aList)
         vList = new FairVolumeList();
     }
 
-    TListIter iter(aList);
-    FairGeoNode* node = nullptr;
     FairGeoNode* MotherNode = nullptr;
     FairRuntimeDb* rtdb = FairRun::Instance()->GetRuntimeDb();
     FairGeoParSet* par = static_cast<FairGeoParSet*>(rtdb->getContainer("FairGeoParSet"));
     TObjArray* fNodes = par->GetGeoNodes();
-    while ((node = static_cast<FairGeoNode*>(iter.Next()))) {
-
+    for (auto node : TRangeDynCast<FairGeoNode>(nodes)) {
+        if (!node) {
+            continue;
+        }
         node->calcLabTransform();
         MotherNode = node->getMotherNode();
         auto nodeTruncName = node->getTruncName();
