@@ -231,7 +231,7 @@ void FairModule::ProcessNodes(TList* nodes)
         std::ignore = node->calcLabTransform();
 
         auto nodeTruncName = node->getTruncName();
-        auto volume = std::make_unique<FairVolume>(nodeTruncName, fNbOfVolumes++);
+        auto volume = std::make_unique<FairVolume>(nodeTruncName, fNbOfVolumes);
         volume->setRealName(node->GetName());
 
         auto addedVol = vList->addVolume(std::move(volume));
@@ -240,6 +240,7 @@ void FairModule::ProcessNodes(TList* nodes)
                       << ". It is already present in the global volume list.";
             continue;
         }
+        ++fNbOfVolumes;
         addedVol->setGeoNode(node);
         addedVol->setCopyNo(node->getCopyNo());
 
