@@ -28,8 +28,7 @@
 #include <TGeoMedium.h>     // for TGeoMedium
 #include <TGeoVolume.h>     // for TGeoVolume, etc
 #include <TString.h>        // for TString
-#include <cstdio>           // for sprintf
-#include <fstream>
+#include <cstdio>           // for snprintf
 
 FairGeoRootBuilder::FairGeoRootBuilder()
     : FairGeoBuilder()
