@@ -36,6 +36,7 @@
 #include <TKey.h>              // for TKey
 #include <TObjArray.h>         // for TObjArray
 #include <TObject.h>           // for TObject
+#include <TSeqCollection.h>    // for TSeqCollection
 #include <TSystem.h>           // for TSystem, gSystem
 #include <fairlogger/Logger.h>
 
@@ -47,6 +48,7 @@
 #include <cstring>   // for strcmp, strlen
 #include <map>
 #include <memory>
+#include <tuple>   // for std::ignore
 
 thread_local std::vector<FairVolume*> FairModule::fAllSensitiveVolumes;
 
@@ -211,19 +213,19 @@ void FairModule::ProcessNodes(TList* nodes)
         vList = new FairVolumeList();
     }
 
-    FairGeoNode* MotherNode = nullptr;
-    FairRuntimeDb* rtdb = FairRun::Instance()->GetRuntimeDb();
-    FairGeoParSet* par = static_cast<FairGeoParSet*>(rtdb->getContainer("FairGeoParSet"));
-    TObjArray* fNodes = par->GetGeoNodes();
+    auto rtdb = FairRun::Instance()->GetRuntimeDb();
+    auto par = static_cast<FairGeoParSet*>(rtdb->getContainer("FairGeoParSet"));
+    TSeqCollection* parNodes = par->GetGeoNodes();
     for (auto node : TRangeDynCast<FairGeoNode>(nodes)) {
         if (!node) {
             continue;
         }
-        node->calcLabTransform();
-        MotherNode = node->getMotherNode();
+        std::ignore = node->calcLabTransform();
+
         auto nodeTruncName = node->getTruncName();
         auto volume = std::make_unique<FairVolume>(nodeTruncName, fNbOfVolumes++);
         volume->setRealName(node->GetName());
+
         auto addedVol = vList->addVolume(std::move(volume));
         if (!addedVol) {
             LOG(warn) << "Skipping further processing of FairGeoNode " << nodeTruncName
@@ -233,19 +235,18 @@ void FairModule::ProcessNodes(TList* nodes)
         addedVol->setGeoNode(node);
         addedVol->setCopyNo(node->getCopyNo());
 
-        if (MotherNode != 0) {
+        auto motherNode = node->getMotherNode();
+        if (motherNode) {
             addedVol->setMotherId(node->getMCid());
-            addedVol->setMotherCopyNo(MotherNode->getCopyNo());
+            addedVol->setMotherCopyNo(motherNode->getCopyNo());
         }
-        FairGeoVolume* aVol = nullptr;
 
         if (node->isSensitive() && fActive) {
             addedVol->setModId(fModId);
             addedVol->SetModule(this);
             fAllSensitiveVolumes.push_back(addedVol);
-            aVol = dynamic_cast<FairGeoVolume*>(node);
-            fNodes->AddLast(aVol);
-            fNbOfSensitiveVol++;
+            ++fNbOfSensitiveVol;
+            parNodes->AddLast(node);
         }
     }
 }
