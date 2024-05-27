@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -29,6 +29,9 @@
 #include <TObject.h>   // for TObject
 #include <TROOT.h>     // fot gROOT
 #include <cassert>     // for... well, assert
+
+using fairroot::detail::maybe_owning_ptr;
+using fairroot::detail::non_owning;
 
 TMCThreadLocal FairRun* FairRun::fRunInstance = nullptr;
 
@@ -82,9 +85,10 @@ FairRun::~FairRun()
 {
     LOG(debug) << "Enter Destructor of FairRun";
 
-    // So that FairRootManager does not try to delete these, because we will do that:
-    fRootManager->SetSource(nullptr);
-    fRootManager->SetSink(nullptr);
+    // So that FairRootManager does not have a dangling reference
+    // to these. Our unique_ptr will destruct them.
+    fRootManager->fSource.reset();
+    fRootManager->fSink.reset();
 
     if (fTask) {
         // FairRunAna added it, but let's remove it here, because we own it
@@ -186,14 +190,14 @@ Bool_t FairRun::GetWriteRunInfoFile()
 void FairRun::SetSink(std::unique_ptr<FairSink> newsink)
 {
     fSink = std::move(newsink);
-    fRootManager->SetSink(fSink.get());
+    fRootManager->fSink = maybe_owning_ptr<FairSink>{fSink.get(), non_owning};
     fUserOutputFileName = fSink->GetFileName();
 }
 
 void FairRun::SetSink(FairSink* tempSink)
 {
     fSink.reset(tempSink);
-    fRootManager->SetSink(fSink.get());
+    fRootManager->fSink = maybe_owning_ptr<FairSink>{fSink.get(), non_owning};
     fUserOutputFileName = fSink->GetFileName();
 }
 
@@ -201,8 +205,7 @@ void FairRun::SetOutputFile(const char* fname)
 {
     LOG(warning) << "FairRun::SetOutputFile() deprecated. Use FairRootFileSink.";
     fSink = std::make_unique<FairRootFileSink>(fname);
-    if (fRootManager)
-        fRootManager->SetSink(fSink.get());
+    fRootManager->fSink = maybe_owning_ptr<FairSink>{fSink.get(), non_owning};
     fUserOutputFileName = fname;
 }
 
@@ -216,8 +219,7 @@ void FairRun::SetOutputFileName(const TString& name)
 {
     LOG(warning) << "FairRun::SetOutputFileName() deprecated. Use FairRootFileSink.";
     fSink = std::make_unique<FairRootFileSink>(name);
-    if (fRootManager)
-        fRootManager->SetSink(fSink.get());
+    fRootManager->fSink = maybe_owning_ptr<FairSink>{fSink.get(), non_owning};
     fUserOutputFileName = name;
 }
 
@@ -256,7 +258,7 @@ void FairRun::AddAlignmentMatrices(const std::map<std::string, TGeoHMatrix>& ali
 
 void FairRun::SetSource(FairSource* othersource)
 {
-    fRootManager->SetSource(othersource);
+    fRootManager->fSource = maybe_owning_ptr<FairSource>{othersource, non_owning};
     fSource.reset(othersource);
 }
 

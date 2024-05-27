@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -8,7 +8,7 @@
 #ifndef FAIR_ROOT_MANAGER_H
 #define FAIR_ROOT_MANAGER_H
 
-#include "FairLogger.h"
+#include "FairMemory.h"
 #include "FairSink.h"
 #include "FairSource.h"
 
@@ -17,7 +17,8 @@
 #include <TObject.h>     // for TObject
 #include <TRefArray.h>   // for TRefArray
 #include <TString.h>     // for TString, operator<
-#include <map>           // for map, multimap, etc
+#include <fairlogger/Logger.h>
+#include <map>   // for map, multimap, etc
 #include <memory>
 #include <string>
 #include <type_traits>   // is_pointer, remove_pointer, is_const, remove...
@@ -49,6 +50,8 @@ class TTree;
 
 class FairRootManager : public TObject
 {
+    friend class FairRun;
+
   public:
     /**dtor*/
     ~FairRootManager() override;
@@ -218,21 +221,12 @@ class FairRootManager : public TObject
     void SetUseFairLinks(Bool_t val) { fUseFairLinks = val; };
     Bool_t GetUseFairLinks() const { return fUseFairLinks; };
 
-    /**
-     * @param Status : if  true all inputs are mixed, i.e: each read event will take one entry from each input and put
-     * them in one big event and send it to the next step
-     */
-    /* void SetMixAllInputs(Bool_t Status) { */
-    /*    fMixAllInputs=kTRUE; */
-    /* } */
-
-    /** These methods have been moved to the FairFileSource */
-    void SetSource(FairSource* tempSource) { fSource = tempSource; }
-    FairSource* GetSource() { return fSource; }
+    [[deprecated]] void SetSource(FairSource* source) { fSource = std::unique_ptr<FairSource>{source}; }
+    FairSource* GetSource() { return fSource.get(); }
     Bool_t InitSource();
 
-    void SetSink(FairSink* tempSink) { fSink = tempSink; }
-    FairSink* GetSink() { return fSink; }
+    [[deprecated]] void SetSink(FairSink* sink) { fSink = std::unique_ptr<FairSink>{sink}; }
+    FairSink* GetSink() { return fSink.get(); }
     Bool_t InitSink();
 
     void SetListOfFolders(TObjArray* ta) { fListFolder = ta; }
@@ -383,14 +377,14 @@ class FairRootManager : public TObject
 
     TObjArray* fListFolder{nullptr};   //!
 
-    FairSource* fSource;
+    fairroot::detail::maybe_owning_ptr<FairSource> fSource;   //!
 
     TChain* fSourceChain = nullptr;
     std::map<UInt_t, TChain*> fSignalChainList;   //!
 
     FairEventHeader* fEventHeader;
 
-    FairSink* fSink;
+    fairroot::detail::maybe_owning_ptr<FairSink> fSink;   //!
 
     Bool_t fUseFairLinks;   //!
     Bool_t fFinishRun;      //!

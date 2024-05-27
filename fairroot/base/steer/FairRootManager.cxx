@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -84,10 +84,8 @@ FairRootManager::FairRootManager()
     , fBrPerMap()
     , fFillLastData(kFALSE)
     , fEntryNr(0)
-    , fSource(0)
     , fSignalChainList()
     , fEventHeader(new FairEventHeader())
-    , fSink(nullptr)
     , fUseFairLinks(kFALSE)
     , fFinishRun(kFALSE)
 {
@@ -105,10 +103,6 @@ FairRootManager::~FairRootManager()
 
     delete fEventHeader;
     delete fSourceChain;
-    if (fSink)
-        delete fSink;
-    if (fSource)
-        delete fSource;
 
     // Global cleanup
 
@@ -388,6 +382,7 @@ void FairRootManager::WriteFolder()
         fSink->WriteObject(fTimeBasedBranchNameList, "TimeBasedBranchList", TObject::kSingleKey);
     }
 }
+
 Bool_t FairRootManager::SpecifyRunId()
 {
     if (!fSource) {
@@ -892,7 +887,7 @@ std::string FairRootManager::GetNameFromFile(const char* namekind)
 {
     std::string default_name = "";
 
-    if (strcmp(namekind, "treename=") && strcmp(namekind, "foldername=")) {
+    if ((strcmp(namekind, "treename=") != 0) && (strcmp(namekind, "foldername=") != 0)) {
         LOG(fatal) << "FairRootManager, requested " << namekind << ", while only treename= and foldername= available.";
         return default_name;
     }
