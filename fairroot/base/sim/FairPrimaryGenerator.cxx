@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -10,17 +10,17 @@
 
 #include "FairGenerator.h"       // for FairGenerator
 #include "FairGenericStack.h"    // for FairGenericStack
-#include "FairLogger.h"          // for FairLogger, MESSAGE_ORIGIN
 #include "FairMCEventHeader.h"   // for FairMCEventHeader
 
+#include <TCollection.h>    // for TRangeDynCast
 #include <TDatabasePDG.h>   // for TDatabasePDG
-#include <TIterator.h>      // for TIterator
 #include <TMath.h>          // for Sqrt
 #include <TObject.h>        // for TObject
 #include <TParticlePDG.h>   // for TParticlePDG
 #include <TROOT.h>          //
 #include <TRandom.h>        // for TRandom, gRandom
-#include <iostream>         // for operator<<, basic_ostream, etc
+#include <fairlogger/Logger.h>
+#include <iostream>   // for operator<<, basic_ostream, etc
 
 using std::cerr;
 using std::cout;
@@ -168,7 +168,6 @@ void FairPrimaryGenerator::Finish()
 
 FairPrimaryGenerator::~FairPrimaryGenerator()
 {
-
     delete[] fTargetZ;
     fGenList->Delete();
     delete fGenList;
@@ -254,11 +253,7 @@ Bool_t FairPrimaryGenerator::GenerateEvent(FairGenericStack *pStack)
         }
 
         // Call the ReadEvent methods from all registered generators
-        fListIter->Reset();
-        TObject *obj = 0;
-        FairGenerator *gen = 0;
-        while ((obj = fListIter->Next())) {
-            gen = dynamic_cast<FairGenerator *>(obj);
+        for (auto gen : TRangeDynCast<FairGenerator>(fGenList)) {
             if (!gen) {
                 return kFALSE;
             }

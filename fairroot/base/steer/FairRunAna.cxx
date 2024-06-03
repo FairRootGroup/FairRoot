@@ -155,13 +155,13 @@ void FairRunAna::Init()
         if (fLoadGeo && gGeoManager == 0) {
             LOG(info) << "Geometry was not found in the input file we will look in the friends if any!";
             TDirectory::TContext restorecwd{};
-            TFile* nextfile = 0;
             TSeqCollection* fileList = gROOT->GetListOfFiles();
-            for (Int_t k = 0; k < fileList->GetEntries(); k++) {
-                nextfile = dynamic_cast<TFile*>(fileList->At(k));
-                if (nextfile) {
-                    nextfile->Get("FAIRGeom");
+            for (auto nextfile : TRangeDynCast<TFile>(fileList)) {
+                if (!nextfile) {
+                    continue;
                 }
+                /// \todo This looks like a leak
+                nextfile->Get("FAIRGeom");
                 if (gGeoManager) {
                     break;
                 }

@@ -16,6 +16,7 @@
 #include "FairRun.h"         // for FairRun
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
 
+#include <TCollection.h>   // for TRangeDynCast
 #include <TGeoMatrix.h>
 #include <TGeoNode.h>
 #include <TGeoVolume.h>
@@ -203,12 +204,13 @@ void FairModule::ConstructASCIIGeometry(TString containerName)
         TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
         TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
-        TListIter iter(volList);
-        FairGeoNode* node = nullptr;
         FairGeoVolume* aVol = nullptr;
 
-        while ((node = static_cast<FairGeoNode*>(iter.Next()))) {
-            aVol = dynamic_cast<FairGeoVolume*>(node);
+        for (auto node : TRangeDynCast<FairGeoNode>(volList)) {
+            if (!node) {
+                continue;
+            }
+            aVol = node;
             if (node->isSensitive()) {
                 fSensNodes->AddLast(aVol);
             } else {

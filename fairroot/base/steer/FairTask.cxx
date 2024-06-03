@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -107,18 +107,20 @@ void FairTask::FinishTask()
 void FairTask::SetVerbose(Int_t iVerbose)
 {
     fVerbose = iVerbose;
-    TIter next(GetListOfTasks());
-    FairTask* task;
-    while ((task = dynamic_cast<FairTask*>(next()))) {
+    for (auto task : TRangeDynCast<FairTask>(GetListOfTasks())) {
+        if (!task) {
+            continue;
+        }
         task->SetVerbose(iVerbose);
     }
 }
 
 void FairTask::InitTasks()
 {
-    TIter next(GetListOfTasks());
-    FairTask* task;
-    while ((task = dynamic_cast<FairTask*>(next()))) {
+    for (auto task : TRangeDynCast<FairTask>(GetListOfTasks())) {
+        if (!task) {
+            continue;
+        }
         task->InitTask();
     }
 }
@@ -207,36 +209,40 @@ void FairTask::ExecuteTasks(Option_t* option)
 
 void FairTask::ReInitTasks()
 {
-    TIter next(GetListOfTasks());
-    FairTask* task;
-    while ((task = dynamic_cast<FairTask*>(next()))) {
+    for (auto task : TRangeDynCast<FairTask>(GetListOfTasks())) {
+        if (!task) {
+            continue;
+        }
         task->ReInitTask();
     }
 }
 
 void FairTask::SetParTasks()
 {
-    TIter next(GetListOfTasks());
-    FairTask* task;
-    while ((task = dynamic_cast<FairTask*>(next()))) {
+    for (auto task : TRangeDynCast<FairTask>(GetListOfTasks())) {
+        if (!task) {
+            continue;
+        }
         task->SetParTask();
     }
 }
 
 void FairTask::FinishTasks()
 {
-    TIter next(GetListOfTasks());
-    FairTask* task;
-    while ((task = dynamic_cast<FairTask*>(next()))) {
+    for (auto task : TRangeDynCast<FairTask>(GetListOfTasks())) {
+        if (!task) {
+            continue;
+        }
         task->FinishTask();
     }
 }
 
 void FairTask::FinishEvents()
 {
-    TIter next(GetListOfTasks());
-    FairTask* task;
-    while ((task = dynamic_cast<FairTask*>(next()))) {
+    for (auto task : TRangeDynCast<FairTask>(GetListOfTasks())) {
+        if (!task) {
+            continue;
+        }
         task->FinishEvent();
     }
 }
