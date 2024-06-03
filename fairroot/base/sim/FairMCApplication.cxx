@@ -38,6 +38,7 @@
 #include "FairTrajFilter.h"         // for FairTrajFilter
 #include "FairVolume.h"             // for FairVolume
 
+#include <TCollection.h>        // for TRangeDynCast
 #include <TDatabasePDG.h>       // for TDatabasePDG
 #include <TFile.h>              // for TFile
 #include <TGeoManager.h>        // for gGeoManager, TGeoManager
@@ -340,8 +341,7 @@ void FairMCApplication::FinishRun()
         radGridFile->mkdir("Dosimetry");
         radGridFile->cd("Dosimetry");
 
-        for (Int_t i = 0; i < meshlist->GetEntriesFast(); i++) {
-            FairMesh* aMesh = dynamic_cast<FairMesh*>(meshlist->At(i));
+        for (auto aMesh : TRangeDynCast<FairMesh>(meshlist)) {
             if (aMesh) {
                 aMesh->Scale(1. / nprimary);
                 tid = aMesh->GetMeshTid();
@@ -710,11 +710,12 @@ void FairMCApplication::ConstructOpGeometry()
     FairGeoInterface* GeoInterface = loader->getGeoInterface();
     FairGeoMedia* media = GeoInterface->getMedia();
     TList* MediaList = media->getListOfMedia();
-    TListIter iter(MediaList);
-    FairGeoMedium* medium;
     Int_t NK = 0;
     Double_t p[4];
-    while ((medium = dynamic_cast<FairGeoMedium*>(iter.Next()))) {
+    for (auto medium : TRangeDynCast<FairGeoMedium>(MediaList)) {
+        if (!medium) {
+            continue;
+        }
         NK = medium->getNpckov();
         if (NK > 0) {
             Int_t Mid = 0;
@@ -801,16 +802,16 @@ void FairMCApplication::ConstructGeometry()
         pdgDatabase->ReadPDGTable();
     list = pdgDatabase->ParticleList();
     if (list != 0) {
-        TIterator* particleIter = list->MakeIterator();
-        TParticlePDG* Particle = 0;
-        while ((Particle = dynamic_cast<TParticlePDG*>(particleIter->Next())) && (Counter <= 256)) {
+        for (auto Particle : TRangeDynCast<TParticlePDG>(list)) {
+            if (!Particle) {
+                continue;
+            }
             TString Name = gGeoManager->GetPdgName(Particle->PdgCode());
             //    LOG(info) << Counter <<" : Particle name: "<< Name.Data() << " PDG " << Particle->PdgCode();
             if (Name == "XXX")
                 gGeoManager->SetPdgName(Particle->PdgCode(), Particle->GetName());
             Counter++;
         }
-        delete particleIter;
     }
     for (auto Mod : fListModules) {
         Mod->RegisterAlignmentMatrices();
@@ -892,17 +893,15 @@ void FairMCApplication::InitGeometry()
         }
         auto id = fv->getMCid();
         if (fv->getGeoNode() == 0) {
-            TGeoNode* fN = 0;
             TGeoVolume* v = gGeoManager->GetVolume(fv->GetName());
             TObjArray* fNs = 0;
             if (v) {
                 fNs = v->GetNodes();
             }
             if (fNs) {
-                for (Int_t k = 0; k < fNs->GetEntriesFast(); k++) {
-                    fN = dynamic_cast<TGeoNode*>(fNs->At(k));
+                for (auto fN : TRangeDynCast<TGeoNode>(fNs)) {
                     if (!fN) {
-                        LOG(error) << "No TGeoNode in fNs at position " << k;
+                        LOG(error) << "Not a TGeoNode in fNs";
                         continue;
                     }
                     auto fNewV = new FairVolume(fv->GetName(), id);
@@ -990,13 +989,8 @@ FairDetector* FairMCApplication::GetDetector(const char* DetName)
 void FairMCApplication::AddIons()
 {
     TDatabasePDG* pdgDatabase = TDatabasePDG::Instance();
-    TObjArray* NewIons = fRun->GetUserDefIons();
-    TIterator* Iter = NewIons->MakeIterator();
-    Iter->Reset();
-    TObject* obj = 0;
-    FairIon* ion = 0;
-    while ((obj = Iter->Next())) {
-        ion = dynamic_cast<FairIon*>(obj);
+    TCollection const* NewIons = fRun->GetUserDefIons();
+    for (auto ion : TRangeDynCast<FairIon>(NewIons)) {
         if (ion) {
             // Check if an ion with the calculated pdg code already exists in the
             // TDatabasePDG.
@@ -1020,7 +1014,6 @@ void FairMCApplication::AddIons()
                       << pdgDatabase->GetParticle(ion->GetName())->PdgCode();
         }
     }
-    delete Iter;
     /** Initialize the event generator */
     if (fEvGen) {
         fEvGen->Init();
@@ -1030,18 +1023,13 @@ void FairMCApplication::AddIons()
 void FairMCApplication::AddParticles()
 {
     TObjArray* NewPart = fRun->GetUserDefParticles();
-    TIterator* parIter = NewPart->MakeIterator();
-    parIter->Reset();
 
     // check MC engine is not null (fMC is 0x00 at this line in case of Geant4)
     TVirtualMC* curMC = TVirtualMC::GetMC();
     if (!curMC)
         LOG(fatal) << "No MC engine was defined before AddParticles()";
 
-    TObject* obj = 0;
-    FairParticle* particle = 0;
-    while ((obj = parIter->Next())) {
-        particle = dynamic_cast<FairParticle*>(obj);
+    for (auto particle : TRangeDynCast<FairParticle>(NewPart)) {
         if (particle) {   // (Int_t pdg, const char* name, TMCParticleType type, Double_t mass, Double_t charge,
                           // Double_t lifetime);
             LOG(info) << "Add Particle: " << particle->GetName() << " with PDG " << particle->GetPDG() << "\n"
@@ -1087,7 +1075,6 @@ void FairMCApplication::AddParticles()
         }
     }
 
-    delete parIter;
     AddDecayModes();
 }
 

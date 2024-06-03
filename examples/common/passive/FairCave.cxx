@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -17,9 +17,10 @@
 #include "FairRun.h"             // for FairRun
 #include "FairRuntimeDb.h"       // for FairRuntimeDb
 
-#include <TList.h>       // for TListIter, TList (ptr only)
-#include <TObjArray.h>   // for TObjArray
-#include <TString.h>     // for TString
+#include <TCollection.h>   // for TRangeDynCast
+#include <TList.h>
+#include <TObjArray.h>
+#include <TString.h>
 
 void FairCave::ConstructGeometry()
 {
@@ -41,12 +42,13 @@ void FairCave::ConstructGeometry()
     TObjArray* fSensNodes = par->GetGeoSensitiveNodes();
     TObjArray* fPassNodes = par->GetGeoPassiveNodes();
 
-    TListIter iter(volList);
-    FairGeoNode* node = nullptr;
     FairGeoVolume* aVol = nullptr;
 
-    while ((node = static_cast<FairGeoNode*>(iter.Next()))) {
-        aVol = dynamic_cast<FairGeoVolume*>(node);
+    for (auto node : TRangeDynCast<FairGeoNode>(volList)) {
+        if (!node) {
+            continue;
+        }
+        aVol = node;
         if (node->isSensitive()) {
             fSensNodes->AddLast(aVol);
         } else {

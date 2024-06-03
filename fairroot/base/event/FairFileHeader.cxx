@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -14,10 +14,9 @@
 
 #include "FairFileInfo.h"   // for FairFileInfo
 
-#include <TIterator.h>    // for TIterator
-#include <TList.h>        // for TList
-#include <TObjString.h>   // for TObjString
-#include <TObject.h>      // for TObject
+#include <TCollection.h>   // for TRangeDynCast
+#include <TList.h>
+#include <TObjString.h>
 
 FairFileHeader::FairFileHeader()
     : TNamed()
@@ -35,17 +34,11 @@ void FairFileHeader::AddInputFile(TFile* f, UInt_t id, UInt_t ChId)
 
 FairFileInfo* FairFileHeader::GetFileInfo(UInt_t id, UInt_t ChId)
 {
-    TIterator* Iter = fFileList->MakeIterator();
-    Iter->Reset();
-    TObject* obj = 0;
-    FairFileInfo* info = 0;
-    while ((obj = Iter->Next())) {
-        info = dynamic_cast<FairFileInfo*>(obj);
+    for (auto info : TRangeDynCast<FairFileInfo>(fFileList)) {
         if (info && info->GetIdentifier() == id && info->GetOrderInChain() == ChId) {
             return info;
         }
     }
-    delete Iter;
     return 0;
 }
 

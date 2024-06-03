@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -26,6 +26,7 @@ the tracking from the macro (M. Al-Turany)
 #include "FairGenerator.h"   // for FairGenerator
 
 #include <Rtypes.h>   // for Double_t, Bool_t, Int_t, etc
+#include <TIterator.h>
 #include <TMCProcess.h>
 #include <TNamed.h>      // for TNamed
 #include <TObjArray.h>   // for TObjArray
@@ -34,7 +35,6 @@ the tracking from the macro (M. Al-Turany)
 
 class FairGenericStack;
 class FairMCEventHeader;
-class TIterator;
 
 class FairPrimaryGenerator : public TNamed
 {
