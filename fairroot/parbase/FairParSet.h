@@ -87,11 +87,10 @@ class FairParSet : public TObject
         description = r.getDescription();
     }
 
-    // TODO These two methods are not used in FairRoot at all.
-    // They probably should be marked deprecated (or final, or = delete)
-    // and later removed.
-    virtual void fill(UInt_t){};
-    virtual void store(UInt_t){};
+    // These two methods are not used in FairRoot at all.
+    // Therefore mark them deprecated.
+    [[deprecated("fill function is not used, report back to FairRoot team should you need the function")]] virtual void fill(UInt_t){};
+    [[deprecated("store function is not used, report back to FairRoot team should you need the function")]] virtual void store(UInt_t){};
 
     FairParSet& operator=(const FairParSet&);
     FairParSet(const FairParSet&);

@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## 19.0.1 (unreleased)
 
+### Deprecations
+
+If you think you really require a deprecated API, please
+[file an issue](https://github.com/FairRootGroup/FairRoot/issues/new).
+
+* Deprecated `FairParSet::fill()` and `FairParSet::store()` while these methods are not being used anywhere in `FairRoot`.
+
 ### Other Notable Changes
 
 * Introduced `FairParSet::setCreateMode()` setter which allows disabling error message when initializing `FairParSet` object
