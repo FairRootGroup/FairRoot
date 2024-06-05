@@ -35,7 +35,7 @@ FairParSet::FairParSet(const char* name, const char* title, const char* context,
     , author("")
     , description("")
 {
-    for (Int_t i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         versions[i] = -1;
     }
 }
@@ -50,7 +50,7 @@ Bool_t FairParSet::init()
     // FairRunAna* fRun =FairRunAna::Instance();
     // cout << "-I-  FairParSet::init() " << GetName() << endl;
 
-    Bool_t allFound = kFALSE;
+    bool allFound = false;
     FairParIo* io = 0;
     if (rtdb) {
         io = rtdb->getFirstInput();
@@ -91,33 +91,25 @@ Int_t FairParSet::write()
 void FairParSet::print()
 {
     // prints information about container (versions,status,hasChanged...)
-    cout << "-----  " << GetName() << "  -----" << '\n';
+    LOG(info) << "-----  " << GetName() << "  -----";
     if (!paramContext.IsNull()) {
-        cout << "Context/Purpose:       " << paramContext << '\n';
+        LOG(info) << "Context/Purpose:       " << paramContext;
     }
     if (!author.IsNull()) {
-        cout << "Author:                " << author << '\n';
+        LOG(info) << "Author:                " << author;
     }
     if (!description.IsNull()) {
-        cout << "Description:           " << description << '\n';
+        LOG(info) << "Description:           " << description;
     }
-    cout << "first input version:   " << versions[1] << '\n';
-    cout << "second input version:  " << versions[2] << '\n';
-    if (changed) {
-        cout << "has changed" << '\n';
-    } else {
-        cout << "has not changed" << '\n';
-    }
-    if (status) {
-        cout << "is static" << '\n';
-    } else {
-        cout << "is not static" << '\n';
-    }
+    LOG(info) << "first input version:   " << versions[1];
+    LOG(info) << "second input version:  " << versions[2];
+    LOG(info) << "has" << (changed ? "" : " not") << " changed";
+    LOG(info) << "is" << (status ? "" : " not") << " static";
 }
 
 void FairParSet::clear()
 {
-    status = kFALSE;
+    status = false;
     resetInputVersions();
 }
 
@@ -125,10 +117,10 @@ void FairParSet::resetInputVersions()
 {
     // resets the input versions if the container is not static
     if (!status) {
-        for (Int_t i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++) {
             versions[i] = -1;
         }
-        changed = kFALSE;
+        changed = false;
     }
 }
 
@@ -150,7 +142,7 @@ FairParSet::FairParSet(const FairParSet& from)
  fTitle   = from.fTitle;
  detName  = from.detName;
 */
-    for (Int_t i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
         versions[i] = from.versions[i];
     /*
  status   = from.status;
