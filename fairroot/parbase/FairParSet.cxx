@@ -31,6 +31,7 @@ FairParSet::FairParSet(const char* name, const char* title, const char* context,
     , status(kFALSE)
     , changed(kFALSE)
     , owned(owner)
+    , creationMode(false)
     , paramContext(context)
     , author("")
     , description("")
@@ -68,6 +69,10 @@ Bool_t FairParSet::init()
         }
     }
     if (allFound) {
+        return kTRUE;
+    }
+    if (creationMode) {
+        LOG(debug) << "init() " << GetName() << "[creationMode=ON] not initialized.";
         return kTRUE;
     }
     LOG(error) << "init() " << GetName() << " not initialized";

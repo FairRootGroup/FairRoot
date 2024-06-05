@@ -24,6 +24,7 @@ class FairParSet : public TObject
     Bool_t status;          //! static flag
     Bool_t changed;         //! flag is kTRUE if parameters have changed
     Bool_t owned;           //! if flag is KTRUE FairDB has the par. class ownership
+    bool creationMode;      //! allow creation mode, it suppresses error message in the init
     TString paramContext;   // Context/purpose for parameters and conditions
     TString author;         // Author of parameters
     TString description;    // Description of parameters
@@ -69,6 +70,9 @@ class FairParSet : public TObject
     void setChanged(Bool_t flag = kTRUE) { changed = flag; }
     Bool_t hasChanged() { return changed; }
 
+    void setCreationMode(bool flag = true) { creationMode = flag; }
+    bool isCreationMode() { return creationMode; }
+
     const char* getParamContext() const { return paramContext.Data(); }
 
     void setAuthor(const char* s) { author = s; }
@@ -92,7 +96,7 @@ class FairParSet : public TObject
     FairParSet& operator=(const FairParSet&);
     FairParSet(const FairParSet&);
 
-    ClassDefOverride(FairParSet, 2);   // Base class for all parameter containers
+    ClassDefOverride(FairParSet, 3);   // Base class for all parameter containers
 };
 
 #endif /* !FAIRPARSET_H */
