@@ -1,8 +1,8 @@
 #!groovy
 
 def macos_builds = [
-  [os: "macos",  ver: "13", arch: "x86_64", compiler: "apple-clang-14", fairsoft: "24.01"],
-  [os: "macos",  ver: "14", arch: "x86_64", compiler: "apple-clang-14", fairsoft: "24.01"],
+  [os: "macos",  ver: "13", arch: "x86_64", compiler: "apple-clang-15", fairsoft: "24.01"],
+  [os: "macos",  ver: "14", arch: "x86_64", compiler: "apple-clang-15", fairsoft: "24.01"],
   [os: "macos",  ver: "14", arch: "arm64",  compiler: "apple-clang-15", fairsoft: "24.01"],
 ]
 
