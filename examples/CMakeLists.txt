@@ -6,6 +6,11 @@
 #                  copied verbatim in the file "LICENSE"                       #
 ################################################################################
 
+set(mcEngine_list TGeant4)
+if(ENABLE_GEANT3_TESTING)
+  list(APPEND mcEngine_list TGeant3)
+endif()
+
 if(Geant3_FOUND)
   add_subdirectory(common/passive)
   add_subdirectory(common/mcstack)
@@ -26,6 +31,7 @@ if(Geant3_FOUND)
 
   add_subdirectory(simulation/Tutorial4)
   if(FairMQ_FOUND AND Boost_FOUND)
+    set(pixel_simulation_engine "TGeant4")
     add_subdirectory(MQ/parameters)
     add_subdirectory(MQ/serialization)
     if(TARGET FairMQ::fairmq-dds-command-ui)
