@@ -29,9 +29,9 @@
     ${CMAKE_CURRENT_SOURCE_DIR}/doc_makeall.sh.in
     ${CMAKE_CURRENT_BINARY_DIR}/doc_makeall.sh @ONLY IMMEDIATE)
 
-  ADD_CUSTOM_TARGET(${DOXYGEN_PROJECT_NAME}DoxygenDoc ALL
-    ${BASH}
-    ${CMAKE_CURRENT_BINARY_DIR}/doc_makeall.sh)
+  ADD_CUSTOM_TARGET(DoxygenDoc ALL
+    COMMAND ${BASH} ${CMAKE_CURRENT_BINARY_DIR}/doc_makeall.sh)
 
   install(FILES "${CMAKE_CURRENT_BINARY_DIR}/doc/html"
-          DESTINATION "${CMAKE_INSTALL_DOCDIR}")
+          DESTINATION "${CMAKE_INSTALL_DOCDIR}"
+          COMPONENT Doxygen)
