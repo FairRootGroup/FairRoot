@@ -23,7 +23,15 @@ else()
   set(CTEST_BUILD_NAME $ENV{LABEL})
 endif()
 
+find_program(GCOV_COMMAND gcov)
+if(GCOV_COMMAND)
+  message("Found GCOV: ${GCOV_COMMAND}")
+  set(CTEST_COVERAGE_COMMAND ${GCOV_COMMAND})
+endif(GCOV_COMMAND)
+
 show_jenkins_info()
+
+ctest_read_custom_files(${CTEST_SOURCE_DIRECTORY})
 
 ctest_start(Continuous)
 
@@ -32,6 +40,8 @@ get_filename_component(test_install_prefix "${CTEST_BINARY_DIRECTORY}/install"
 list(APPEND options
   "-Werror=dev"
   "-DDISABLE_COLOR=ON"
+  "-DCMAKE_BUILD_TYPE=PROFILE"
+  "-DBUILD_EXAMPLES=OFF"
   "-DCMAKE_INSTALL_PREFIX:PATH=${test_install_prefix}"
 )
 if ((NOT DEFINED BUILD_MBS) OR BUILD_MBS)
@@ -74,6 +84,12 @@ else()
              ${repeat}
              RETURN_VALUE _ctest_test_ret_val)
 endif()
+
+  If(GCOV_COMMAND)
+    ctest_coverage(BUILD "${CTEST_BINARY_DIRECTORY}")
+  EndIf()
+
+
 
 fairroot_ctest_submit(FINAL)
 fairroot_summary_cdash()
