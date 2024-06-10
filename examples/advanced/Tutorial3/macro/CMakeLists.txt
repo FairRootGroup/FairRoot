@@ -15,7 +15,7 @@ GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_digi_timebased.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_reco_timebased.C)
 GENERATE_ROOT_TEST_SCRIPT(${CMAKE_CURRENT_SOURCE_DIR}/run_digi_reco_proof.C)
 
-foreach(mcEngine IN ITEMS TGeant3 TGeant4)
+foreach(mcEngine IN LISTS mcEngine_list)
   add_test(ex_tutorial3_sim_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_sim.sh 100 \"${mcEngine}\")
   math(EXPR testTime 3*${maxTestTime})
   set_tests_properties(ex_tutorial3_sim_${mcEngine} PROPERTIES

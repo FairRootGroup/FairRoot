@@ -21,7 +21,7 @@ set_tests_properties(load_all_libs PROPERTIES
   PASS_REGULAR_EXPRESSION "Macro finished succesfully"
 )
 
-foreach(mcEngine IN ITEMS TGeant3 TGeant4)
+foreach(mcEngine IN LISTS mcEngine_list)
   add_test(ex_sim_tutorial1_mesh_${mcEngine} ${CMAKE_CURRENT_BINARY_DIR}/run_tutorial1_mesh.sh 10 \"${mcEngine}\")
   set_tests_properties(ex_sim_tutorial1_mesh_${mcEngine} PROPERTIES
     TIMEOUT ${maxTestTime}

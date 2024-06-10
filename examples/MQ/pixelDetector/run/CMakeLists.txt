@@ -131,7 +131,7 @@ endif()
 
 add_test(ex_MQ_pixel_static ${CMAKE_CURRENT_BINARY_DIR}/startFairMQPixel.sh --work-dir ${CMAKE_CURRENT_BINARY_DIR}/../ -p 3 --command static --force-kill true)
 set_tests_properties(ex_MQ_pixel_static PROPERTIES
-  DEPENDS ex_pixel_digi_to_bin_TGeant3
+  DEPENDS ex_pixel_digi_to_bin_${pixel_simulation_engine}
   TIMEOUT ${maxTestTime}
   RUN_SERIAL ON
   PASS_REGULAR_EXPRESSION "Shell script finished successfully"
