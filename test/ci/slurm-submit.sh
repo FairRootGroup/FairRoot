@@ -1,13 +1,14 @@
 #! /bin/bash
 
-if [ $# != 2 ]
+if [ $# != 3 ]
 then
-	echo "*** Please call like: $0 LABEL JOBSH"
+	echo "*** Please call like: $0 TYPE LABEL JOBSH"
 	exit 1
 fi
 
-label="$1"
-jobsh="$2"
+type="$1"
+label="$2"
+jobsh="$3"
 
 if [ -z "$ALFACI_SLURM_CPUS" ]
 then
@@ -26,8 +27,8 @@ if [ -z "$ALFACI_SLURM_QUEUE" ]
 then
 	ALFACI_SLURM_QUEUE=main
 fi
-case "${label}" in
-	*check/*)
+case "${type}" in
+	*check*)
 		slurm_requested_features=localworkspace
 		;;
 esac
