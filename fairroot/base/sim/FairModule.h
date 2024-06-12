@@ -139,7 +139,9 @@ class FairModule : public TNamed
     static thread_local inline FairVolumeList* vList{nullptr};   //!
     /**total number of volumes in a simulaion session*/
     static thread_local inline Int_t fNbOfVolumes{0};   //!
-    /**list of all sensitive volumes in  a simulaion session*/
+    /**
+     * For internal use only: list of all sensitive volumes in a simulaion session
+     */
     static thread_local std::vector<FairVolume*> fAllSensitiveVolumes;   //!
 
     TString fMotherVolumeName{""};   //!
