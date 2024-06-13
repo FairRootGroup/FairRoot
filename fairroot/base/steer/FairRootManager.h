@@ -22,7 +22,7 @@
 #include <string>
 #include <type_traits>   // is_pointer, remove_pointer, is_const, remove...
 #include <typeinfo>
-#include <vector>
+#include <list>
 
 class BinaryFunctor;
 class FairEventHeader;
@@ -339,7 +339,7 @@ class FairRootManager : public TObject
 
     /** current time in ns*/
     Double_t fCurrentTime;
-    std::vector<TObject*> fObj2{};   //!
+    std::list<TObject*> fObj2{};   //!
     /** A list which hold the pointer to the branch
      * and the name of the branch in memory, it contains all branches (TClonesArrays)
      * persistance and Memory only branches
