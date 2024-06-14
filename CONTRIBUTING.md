@@ -54,15 +54,16 @@ This shall be an evolving list of explicitely adopted C++ Core Guidelines:
      **you must add a comment documenting the ownership semantics!**
 
 ### G.3 Write a good Git history
-   * Follow [the seven rules of a great Git commit message](https://cbea.ms/git-commit/#seven-rules)!
-   * Use a meaningful commit granularity, e.g. do not mix
-     unrelated changes in a single commit and vice verse squash related commits
-     into one.
-   * Utilize [the commit message body to explain *what* and *why* and not *how*](https://cbea.ms/git-commit/#why-not-how).
-     Aim your message to be meaningful (concise, but complete
-     enough) to a reader in the future! See also G.4!
-   * Utilize [reference keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)
-     both in commit messages as well as in PR comments if applicable.
+
+* Follow [the seven rules of a great Git commit message](https://cbea.ms/git-commit/#seven-rules)!
+* Use a meaningful commit granularity, e.g. do not mix
+  unrelated changes in a single commit and vice verse squash related commits
+  into one.
+* Utilize [the commit message body to explain *what* and *why* and not *how*](https://cbea.ms/git-commit/#why-not-how).
+  Aim your message to be meaningful (concise, but complete
+  enough) to a reader in the future! See also G.4!
+* Utilize [reference keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)
+  both in commit messages as well as in PR comments if applicable.
 
 ### G.4 Conventional Commits
 
