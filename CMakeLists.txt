@@ -151,17 +151,6 @@ else()
 endif()
 find_package2(PUBLIC FairLogger  VERSION 1.2.0 REQUIRED)
 
-foreach(dep IN LISTS FairLogger_PACKAGE_DEPENDENCIES)
-if(NOT dep STREQUAL "Boost")
-  find_package2(PUBLIC ${dep} REQUIRED VERSION ${FairLogger_${dep}_VERSION})
-  set(PROJECT_${dep}_VERSION ${FairLogger_${dep}_VERSION})
-  if(dep STREQUAL "fmt") # handling of external fmt installation
-    get_target_property(FMT_INCLUDE_DIR fmt::fmt INTERFACE_INCLUDE_DIRECTORIES)
-    set(FairLogger_INCDIR ${FairLogger_INCDIR} ${FMT_INCLUDE_DIR})
-  endif()
-endif()
-endforeach()
-
 find_package2(PUBLIC Pythia6)
 find_package2(PUBLIC Pythia8)
 # Protobuf https://github.com/protocolbuffers/protobuf/releases/tag/v22.0
@@ -279,6 +268,8 @@ Generate_Version_Info()
 
 # Set some useful variables
 SetBasicVariables()
+
+find_package2_implicit_dependencies()
 
 # Recurse into the given subdirectories.  This does not actually
 # cause another cmake executable to run.  The same process will walk through
