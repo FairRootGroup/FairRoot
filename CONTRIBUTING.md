@@ -60,9 +60,17 @@ This shall be an evolving list of explicitely adopted C++ Core Guidelines:
      into one.
    * Utilize [the commit message body to explain *what* and *why* and not *how*](https://cbea.ms/git-commit/#why-not-how).
      Aim your message to be meaningful (concise, but complete
-     enough) to a reader in the future!
+     enough) to a reader in the future! See also G.4!
    * Utilize [reference keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)
      both in commit messages as well as in PR comments if applicable.
+
+### G.4 Conventional Commits
+
+* Follow the [Conventional Commits Specification](https://www.conventionalcommits.org/en/v1.0.0/)
+* Adopted `type`s: `fix:`, `feat:`, `build:`, `chore:`, `ci:`, `docs:`,
+  `style:`, `refactor:`, `perf:`, `test:`
+* If a `scope` is used, prefer the library name (first directory level below
+  `fairroot/`), e.g. `fix(base):` or `feat(geobase):`
 
 ## D - Documentation
 
