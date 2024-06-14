@@ -72,6 +72,18 @@ This shall be an evolving list of explicitely adopted C++ Core Guidelines:
 * If a `scope` is used, prefer the library name (first directory level below
   `fairroot/`), e.g. `fix(base):` or `feat(geobase):`
 
+### G.5 Signed Commits and Tags
+
+You may use any signature format Git and Github support (SSH e.g. may be more
+convenient, if one does not have a GPG key yet).
+
+* [Github - Setup](https://docs.github.com/en/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key)
+* [Github - Signing Commits](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits)
+* [Github - Signing Tags](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-tags)
+* [Git - Signing Your Work](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work)
+  Make sure to consider `git config [--local|--global] commit.gpgsign true`
+  (scroll down to the bottom)
+
 ## D - Documentation
 
 ### D.1 Use [doxygen-style comments](https://www.doxygen.nl/manual/commands.html)
