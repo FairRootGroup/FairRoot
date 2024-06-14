@@ -1,11 +1,11 @@
- ################################################################################
- # Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
- #                                                                              #
- #              This software is distributed under the terms of the             # 
- #              GNU Lesser General Public Licence (LGPL) version 3,             #  
- #                  copied verbatim in the file "LICENSE"                       #
- ################################################################################
-# Find FairRoot installation 
+################################################################################
+# Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+#                                                                              #
+#              This software is distributed under the terms of the             #
+#              GNU Lesser General Public Licence (LGPL) version 3,             #
+#                  copied verbatim in the file "LICENSE"                       #
+################################################################################
+# Find FairRoot installation
 # Check the environment variable "FAIRROOTPATH"
 
 include(FindPackageHandleStandardArgs)
@@ -49,10 +49,16 @@ FIND_PATH(FAIRROOT_LIBRARY_DIR NAMES libBase.so libBase.dylib PATHS
    ${FAIRROOTPATH}/lib64
 )
 
-FIND_PATH(FAIRROOT_CMAKEMOD_DIR
-  NAMES modules/FindFairRoot.cmake modules/ROOTMacros.cmake
-  PATHS ${FAIRROOTPATH}/share/fairbase/cmake
-)
+if(FairRoot_CMAKE_MODULES_DIR)
+  set(FAIRROOT_CMAKEMOD_DIR "${FairRoot_CMAKE_MODULES_DIR}"
+    CACHE PATH "FairRoot CMake Modules Directory"
+  )
+else()
+  FIND_PATH(FAIRROOT_CMAKEMOD_DIR
+    NAMES modules/FindFairRoot.cmake modules/ROOTMacros.cmake
+    PATHS ${FAIRROOTPATH}/share/fairbase/cmake
+  )
+endif()
 
 find_package_handle_standard_args(FairRoot CONFIG_MODE
                                   REQUIRED_VARS FAIRROOT_INCLUDE_DIR
