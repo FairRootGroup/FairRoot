@@ -37,6 +37,7 @@
 #include <TROOT.h>         //
 #include <TRandom.h>       // for gRandom
 #include <TSystem.h>       // for TSystem, gSystem
+#include <cassert>         //
 #include <iostream>        // for cout, endl, ostream
 #include <stdlib.h>        // for getenv, nullptr
 #include <string.h>        // for strcmp, strncmp
@@ -125,6 +126,8 @@ FairRunSim* FairRunSim::Instance()
 
 void FairRunSim::AddModule(FairModule* Mod)
 {
+    assert(Mod);
+    Mod->SetRunSim(this);
     ListOfModules->Add(Mod);
     Mod->SetModId(count++);
 }
@@ -388,6 +391,12 @@ FairMCEventHeader* FairRunSim::GetMCEventHeader()
         fMCEvHead = new FairMCEventHeader();
     }
     return fMCEvHead;
+}
+
+FairGeoLoader& FairRunSim::GetGeometryLoader()
+{
+    assert(fGeoLoader);
+    return *fGeoLoader;
 }
 
 void FairRunSim::ls(Option_t* option) const

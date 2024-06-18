@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -43,10 +43,10 @@ void FairPipe::ConstructGeometry()
   FairGeoPassivePar* par=(FairGeoPassivePar*)(rtdb->getContainer("FairGeoPassivePar"));
 */
 
-    FairGeoLoader* loader = FairGeoLoader::Instance();
-    FairGeoInterface* GeoInterface = loader->getGeoInterface();
+    FairGeoLoader& loader = GetGeometryLoader();
+    FairGeoInterface* GeoInterface = loader.getGeoInterface();
     FairGeoMedia* Media = GeoInterface->getMedia();
-    FairGeoBuilder* geobuild = loader->getGeoBuilder();
+    FairGeoBuilder* geobuild = loader.getGeoBuilder();
 
     // Call materials
     FairGeoMedium* medVacuum = Media->getMedium("vacuum");

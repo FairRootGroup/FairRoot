@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -27,14 +27,14 @@
 
 void MyCave::ConstructGeometry()
 {
-    FairGeoLoader* loader = FairGeoLoader::Instance();
-    FairGeoInterface* GeoInterface = loader->getGeoInterface();
+    FairGeoLoader& loader = GetGeometryLoader();
+    FairGeoInterface* GeoInterface = loader.getGeoInterface();
     MyGeoCave* MGeo = new MyGeoCave();
     MGeo->setGeomFile(GetGeometryFileName());
     GeoInterface->addGeoModule(MGeo);
     Bool_t rc = GeoInterface->readSet(MGeo);
     if (rc) {
-        MGeo->create(loader->getGeoBuilder());
+        MGeo->create(loader.getGeoBuilder());
     }
 }
 MyCave::MyCave()

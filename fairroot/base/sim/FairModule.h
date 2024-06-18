@@ -29,6 +29,7 @@
 #include <string>
 #include <vector>
 
+class FairRunSim;
 class FairVolumeList;
 class FairVolume;
 
@@ -152,7 +153,15 @@ class FairModule : public TNamed
     [[deprecated]] FairVolume* getFairVolume(FairGeoNode* fNode);
     void AddSensitiveVolume(TGeoVolume* v);
 
+    /**
+     * \brief For internal use: Set the current RunSim
+     */
+    void SetRunSim(FairRunSim* runsim) { fRunSim = runsim; }
+
   private:
+    /// Set during FairRunSim::AddModule
+    FairRunSim* fRunSim{nullptr};   //!
+
     /** Re-implimented from ROOT:  TGeoMatrix::SetDefaultName()  */
     void SetDefaultMatrixName(TGeoMatrix* matrix);
     void AssignMediumAtImport(TGeoVolume* v);   // O.Merle, 29.02.2012 - see impl.
@@ -176,21 +185,27 @@ class FairModule : public TNamed
     Bool_t fGeoSaved{kFALSE};   //! flag for initialisation
     TVirtualMC* fMC{nullptr};   //! cahed pointer to MC (available only after initialization)
 
+    /**
+     * \brief Get Geometry Loader
+     * \note Only valid during ConstructGeometry
+     */
+    FairGeoLoader& GetGeometryLoader();
+
     ClassDefOverride(FairModule, 4);
 };
 
 template<class T, class U>
 void FairModule::ConstructASCIIGeometry(TString containerName)
 {
-    FairGeoLoader* loader = FairGeoLoader::Instance();
-    FairGeoInterface* GeoInterface = loader->getGeoInterface();
+    FairGeoLoader& loader = GetGeometryLoader();
+    FairGeoInterface* GeoInterface = loader.getGeoInterface();
     T* MGeo = new T();
     MGeo->print();
     MGeo->setGeomFile(GetGeometryFileName());
     GeoInterface->addGeoModule(MGeo);   // takes ownership!
     Bool_t rc = GeoInterface->readSet(MGeo);
     if (rc) {
-        MGeo->create(loader->getGeoBuilder());
+        MGeo->create(loader.getGeoBuilder());
     }
 
     TList* volList = MGeo->getListOfVolumes();

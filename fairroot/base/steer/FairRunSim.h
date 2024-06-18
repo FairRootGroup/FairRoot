@@ -214,6 +214,13 @@ class FairRunSim : public FairRun
      */
     auto GetMCApplication() { return fApp; }
 
+    /**
+     * For internal use: Get the Geometry Loader Instance
+     *
+     * \note Only valid after `Init` was called, will assert otherwise
+     */
+    FairGeoLoader& GetGeometryLoader();
+
     void ls(Option_t* option = "") const override;
 
   private:

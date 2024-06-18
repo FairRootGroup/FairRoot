@@ -21,6 +21,7 @@
 #include "FairGeoParSet.h"      // for FairBaseParSet
 #include "FairMCApplication.h"
 #include "FairRun.h"          // for FairRun
+#include "FairRunSim.h"       //
 #include "FairRuntimeDb.h"    // for FairRuntimeDb
 #include "FairVolume.h"       // for FairVolume
 #include "FairVolumeList.h"   // for FairVolumeList
@@ -38,6 +39,7 @@
 #include <TObject.h>           // for TObject
 #include <TSeqCollection.h>    // for TSeqCollection
 #include <TSystem.h>           // for TSystem, gSystem
+#include <cassert>
 #include <fairlogger/Logger.h>
 
 #ifdef ROOT_HAS_GDML
@@ -157,6 +159,12 @@ void FairModule::Streamer(TBuffer& b)
     }
 }
 
+FairGeoLoader& FairModule::GetGeometryLoader()
+{
+    assert(fRunSim);
+    return fRunSim->GetGeometryLoader();
+}
+
 void FairModule::SetGeometryFileName(TString fname, TString)
 {
     // If absolute path is given as argument, try to find it there.
@@ -210,7 +218,11 @@ void FairModule::RegisterSensitiveVolume(FairVolume& vol)
 
 void FairModule::ProcessNodes(TList* nodes)
 {
-    if (FairMCApplicationState::kConstructGeometry != FairMCApplication::Instance()->GetState()) {
+    assert(fRunSim);
+    FairMCApplication* mcapp = fRunSim->GetMCApplication();
+    assert(mcapp);
+
+    if (FairMCApplicationState::kConstructGeometry != mcapp->GetState()) {
         LOG(fatal) << "Detected call to FairModule::ProcessNodes() \
       while not in FairMCApplication::ConstructGeometry()\n\
       Call templated function FairModule::ConstructASCIIGeometry()\
@@ -221,7 +233,7 @@ void FairModule::ProcessNodes(TList* nodes)
         vList = new FairVolumeList();
     }
 
-    auto rtdb = FairRun::Instance()->GetRuntimeDb();
+    auto rtdb = fRunSim->GetRuntimeDb();
     auto par = static_cast<FairGeoParSet*>(rtdb->getContainer("FairGeoParSet"));
     TSeqCollection* parNodes = par->GetGeoNodes();
     for (auto node : TRangeDynCast<FairGeoNode>(nodes)) {
