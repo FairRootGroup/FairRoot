@@ -706,8 +706,8 @@ void FairMCApplication::SetField(FairField* field)
 //_____________________________________________________________________________
 void FairMCApplication::ConstructOpGeometry()
 {
-    FairGeoLoader* loader = FairGeoLoader::Instance();
-    FairGeoInterface* GeoInterface = loader->getGeoInterface();
+    FairGeoLoader& loader = fRun->GetGeometryLoader();
+    FairGeoInterface* GeoInterface = loader.getGeoInterface();
     FairGeoMedia* media = GeoInterface->getMedia();
     TList* MediaList = media->getListOfMedia();
     Int_t NK = 0;

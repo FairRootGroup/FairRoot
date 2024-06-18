@@ -24,14 +24,14 @@
 
 void FairCave::ConstructGeometry()
 {
-    FairGeoLoader* loader = FairGeoLoader::Instance();
-    FairGeoInterface* GeoInterface = loader->getGeoInterface();
+    FairGeoLoader& loader = GetGeometryLoader();
+    FairGeoInterface* GeoInterface = loader.getGeoInterface();
     FairGeoCave* MGeo = new FairGeoCave();
     MGeo->setGeomFile(GetGeometryFileName());
     GeoInterface->addGeoModule(MGeo);
     Bool_t rc = GeoInterface->readSet(MGeo);
     if (rc) {
-        MGeo->create(loader->getGeoBuilder());
+        MGeo->create(loader.getGeoBuilder());
     }
 
     TList* volList = MGeo->getListOfVolumes();
