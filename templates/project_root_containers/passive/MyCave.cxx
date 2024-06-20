@@ -12,7 +12,6 @@
 // -------------------------------------------------------------------------
 #include "MyCave.h"
 
-#include "FairGeoInterface.h"   // for FairGeoInterface
 #include "FairGeoLoader.h"      // for FairGeoLoader
 #include "FairGeoNode.h"        // for FairGeoNode
 #include "FairGeoVolume.h"      // for FairGeoVolume
@@ -27,16 +26,9 @@
 
 void MyCave::ConstructGeometry()
 {
-    FairGeoLoader& loader = GetGeometryLoader();
-    FairGeoInterface* GeoInterface = loader.getGeoInterface();
-    MyGeoCave* MGeo = new MyGeoCave();
-    MGeo->setGeomFile(GetGeometryFileName());
-    GeoInterface->addGeoModule(MGeo);
-    Bool_t rc = GeoInterface->readSet(MGeo);
-    if (rc) {
-        MGeo->create(loader.getGeoBuilder());
-    }
+    GetGeometryLoader().LoadAndCreate<MyGeoCave>(GetGeometryFileName());
 }
+
 MyCave::MyCave()
     : FairModule()
 {}
