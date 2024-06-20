@@ -9,7 +9,6 @@
 #include "FairCave.h"
 
 #include "FairGeoCave.h"         // for FairGeoCave
-#include "FairGeoInterface.h"    // for FairGeoInterface
 #include "FairGeoLoader.h"       // for FairGeoLoader
 #include "FairGeoNode.h"         // for FairGeoNode
 #include "FairGeoPassivePar.h"   // for FairGeoPassivePar
@@ -24,17 +23,9 @@
 
 void FairCave::ConstructGeometry()
 {
-    FairGeoLoader& loader = GetGeometryLoader();
-    FairGeoInterface* GeoInterface = loader.getGeoInterface();
-    FairGeoCave* MGeo = new FairGeoCave();
-    MGeo->setGeomFile(GetGeometryFileName());
-    GeoInterface->addGeoModule(MGeo);
-    Bool_t rc = GeoInterface->readSet(MGeo);
-    if (rc) {
-        MGeo->create(loader.getGeoBuilder());
-    }
+    FairGeoSet& MGeo = GetGeometryLoader().LoadAndCreate<FairGeoCave>(GetGeometryFileName());
 
-    TList* volList = MGeo->getListOfVolumes();
+    TList* volList = MGeo.getListOfVolumes();
     // store geo parameter
     FairRun* fRun = FairRun::Instance();
     FairRuntimeDb* rtdb = FairRun::Instance()->GetRuntimeDb();

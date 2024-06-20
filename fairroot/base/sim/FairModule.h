@@ -11,8 +11,8 @@
 #include "FairGeoInterface.h"   // for FairGeoInterface
 #include "FairGeoLoader.h"      // for FairGeoLoader
 #include "FairGeoNode.h"        // for FairGeoNode
-#include "FairGeoVolume.h"      // for FairGeoVolume
-#include "FairLogger.h"
+#include "FairGeoSet.h"
+#include "FairGeoVolume.h"
 #include "FairRun.h"         // for FairRun
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
 
@@ -26,7 +26,10 @@
 #include <TRefArray.h>   // for TRefArray
 #include <TString.h>     // for TString, operator!=
 #include <TVirtualMC.h>
+#include <fairlogger/Logger.h>
 #include <string>
+#include <type_traits>
+#include <utility>
 #include <vector>
 
 class FairRunSim;
@@ -197,24 +200,17 @@ class FairModule : public TNamed
 template<class T, class U>
 void FairModule::ConstructASCIIGeometry(TString containerName)
 {
-    FairGeoLoader& loader = GetGeometryLoader();
-    FairGeoInterface* GeoInterface = loader.getGeoInterface();
-    T* MGeo = new T();
-    MGeo->print();
-    MGeo->setGeomFile(GetGeometryFileName());
-    GeoInterface->addGeoModule(MGeo);   // takes ownership!
-    Bool_t rc = GeoInterface->readSet(MGeo);
-    if (rc) {
-        MGeo->create(loader.getGeoBuilder());
-    }
+    static_assert(std::is_base_of_v<FairGeoSet, T>);
+    static_assert(std::is_base_of_v<FairParSet, U>);
+    FairGeoSet& MGeo = GetGeometryLoader().LoadAndCreate<T>(GetGeometryFileName());
 
-    TList* volList = MGeo->getListOfVolumes();
+    TList* volList = MGeo.getListOfVolumes();
     // store geo parameter
     FairRun* fRun = FairRun::Instance();
     FairRuntimeDb* rtdb = FairRun::Instance()->GetRuntimeDb();
 
     if ("" != containerName) {
-        LOG(info) << "Add GeoNodes for " << MGeo->getDescription() << " to container " << containerName;
+        LOG(info) << "Add GeoNodes for " << MGeo.getDescription() << " to container " << containerName;
 
         //    U par=(U)(rtdb->getContainer(containerName));
         U* par = static_cast<U*>(rtdb->getContainer(containerName));

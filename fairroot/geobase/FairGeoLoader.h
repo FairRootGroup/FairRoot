@@ -17,6 +17,7 @@
 #define FairGeoLOADER_H
 
 #include "FairGeoInterface.h"
+#include "FairGeoSet.h"
 
 #include <Rtypes.h>   // for FairGeoLoader::Class, etc
 #include <TNamed.h>   // for TNamed
@@ -41,6 +42,12 @@ class FairGeoLoader : public TNamed
     /** static access method*/
     static FairGeoLoader* Instance();
 
+    /**
+     * \brief Even more low level helper function for creating goemetry
+     */
+    template<class T, class... Args>
+    FairGeoSet& LoadAndCreate(const char* geomfile, Args&&... args);
+
   private:
     FairGeoLoader(const FairGeoLoader&);
     FairGeoLoader& operator=(const FairGeoLoader&);
@@ -56,5 +63,20 @@ class FairGeoLoader : public TNamed
 
     ClassDefOverride(FairGeoLoader, 0);
 };
+
+template<class T, class... Args>
+FairGeoSet& FairGeoLoader::LoadAndCreate(const char* geomfile, Args&&... args)
+{
+    static_assert(std::is_base_of_v<FairGeoSet, T>);
+    FairGeoSet* MGeo = new T(std::forward<Args>(args)...);
+    MGeo->print();
+    MGeo->setGeomFile(geomfile);
+    fInterface.addGeoModule(MGeo);   // takes ownership!
+    Bool_t rc = fInterface.readSet(MGeo);
+    if (rc) {
+        MGeo->create(fGeoBuilder.get());
+    }
+    return *MGeo;
+}
 
 #endif
