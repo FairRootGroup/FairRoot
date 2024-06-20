@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -42,18 +42,25 @@ int run_tutorial1(int nEvents = 10, string mcEngine = "TGeant3", bool isMT = tru
 
     auto nofPart = 1;
 
-    string outDir = "./";
+    string outPrefix = "./tutorial1_";
+    outPrefix += mcEngine;
+    if (isMT) {
+        outPrefix += "MT";
+    }
+    if (loadPostInitConfig) {
+        outPrefix += "_postinit";
+    }
+    outPrefix += '_';
 
     // Output file name
-    string outFile = outDir + "/tutorial1_" + mcEngine + "_" + partName[chosenPart] + ".mc_p" + std::to_string(momentum)
-                     + "_t" + std::to_string(theta) + "_n" + std::to_string(nEvents) + ".root";
+    string outFile = outPrefix + partName[chosenPart] + ".mc_p" + std::to_string(momentum) + "_t"
+                     + std::to_string(theta) + "_n" + std::to_string(nEvents) + ".root";
 
     // Parameter file name
-    string parFile = outDir + "/tutorial1_" + mcEngine + "_" + partName[chosenPart] + ".params_p"
-                     + std::to_string(momentum) + "_t" + std::to_string(theta) + "_n" + std::to_string(nEvents)
-                     + ".root";
+    string parFile = outPrefix + partName[chosenPart] + ".params_p" + std::to_string(momentum) + "_t"
+                     + std::to_string(theta) + "_n" + std::to_string(nEvents) + ".root";
 
-    auto geoFile = "geofile_" + mcEngine + "_full.root";
+    auto geoFile = outPrefix + "_geofile_full.root";
 
     // In general, the following parts need not be touched
     // ========================================================================
