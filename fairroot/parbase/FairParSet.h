@@ -92,6 +92,9 @@ class FairParSet : public TObject
     FairParSet& operator=(const FairParSet&);
     FairParSet(const FairParSet&);
 
+  private:
+    bool CallInitIO(FairParIo* io, const char* context);
+
     ClassDefOverride(FairParSet, 2);   // Base class for all parameter containers
 };
 

@@ -30,8 +30,9 @@
 #include <TDirectory.h>   // for TDirectory, gDirectory
 #include <TKey.h>         // for TKey
 #include <TROOT.h>        // for TROOT, gROOT
-#include <fmt/core.h>     // for format
-#include <iostream>       // for operator<<, basic_ostream, etc
+#include <fairlogger/Logger.h>
+#include <fmt/core.h>   // for format
+#include <iostream>     // for operator<<, basic_ostream, etc
 
 using std::cout;
 using std::endl;
@@ -62,16 +63,17 @@ Bool_t FairDetParRootFileIo::read(FairParSet* pPar)
     }
 
     TKey* key = gDirectory->GetKey(name, version);
-    if (key) {
-        pPar->clear();
-        key->Read(pPar);
-        pPar->setInputVersion(version, inputNumber);
-        pPar->setChanged();
-        cout << "Container " << pPar->GetName() << " initialized from ROOT file." << endl;
-        return kTRUE;
+    if (!key) {
+        pPar->setInputVersion(-1, inputNumber);
+        return kFALSE;
     }
-    pPar->setInputVersion(-1, inputNumber);
-    return kFALSE;
+
+    pPar->clear();
+    key->Read(pPar);
+    pPar->setInputVersion(version, inputNumber);
+    pPar->setChanged();
+    LOG(info) << "    Container " << pPar->GetName() << " initialized from ROOT file.";
+    return kTRUE;
 }
 
 Int_t FairDetParRootFileIo::write(FairParSet* pPar)

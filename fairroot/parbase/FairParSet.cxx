@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -40,6 +40,18 @@ FairParSet::FairParSet(const char* name, const char* title, const char* context,
     }
 }
 
+bool FairParSet::CallInitIO(FairParIo* io, const char* context)
+{
+    if (!io) {
+        return false;
+    }
+    bool retval = init(io);
+    if (!retval) {
+        LOGP(warn, "{}({})::init(io) failed for {}", ClassName(), GetName(), context);
+    }
+    return retval;
+}
+
 Bool_t FairParSet::init()
 {
     // intitializes the container from an input in run time
@@ -47,31 +59,20 @@ Bool_t FairParSet::init()
     // the second input. If this failes too, it returns an error.
     // (calls internally the init function in the derived class)
     FairRuntimeDb* rtdb = FairRuntimeDb::instance();
-    // FairRunAna* fRun =FairRunAna::Instance();
-    // cout << "-I-  FairParSet::init() " << GetName() << endl;
+    if (!rtdb) {
+        LOG(error) << "FairParSet::init()/" << GetName() << ": No RTDB";
+        return false;
+    }
 
-    bool allFound = false;
-    FairParIo* io = 0;
-    if (rtdb) {
-        io = rtdb->getFirstInput();
-        if (io) {
-            allFound = init(io);
-        }
-        if (!allFound) {
-            io = rtdb->getSecondInput();
-            // cout << "-I FairParSet::init() 2 " << io <<  std::endl;
-            if (io) {
-                allFound = init(io);
-            }
-        } else {
-            setInputVersion(-1, 2);
-        }
-    }
+    bool allFound = CallInitIO(rtdb->getFirstInput(), "first input");
     if (allFound) {
-        return kTRUE;
+        setInputVersion(-1, 2);
+        return allFound;
     }
-    LOG(error) << "init() " << GetName() << " not initialized";
-    return kFALSE;
+
+    allFound = CallInitIO(rtdb->getSecondInput(), "second input");
+
+    return allFound;
 }
 
 Int_t FairParSet::write()
