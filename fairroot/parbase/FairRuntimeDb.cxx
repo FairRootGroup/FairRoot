@@ -526,24 +526,35 @@ Bool_t FairRuntimeDb::initContainers()
             secondInput->readVersions(refRun);
         }
     }
-    TIter next(containerList);
-    FairParSet* cont;
-    Bool_t rc = kTRUE;
-    cout << '\n' << "************************************************************* " << '\n';
+    LOG(info) << "*************************************************************";
     if (currentFileName.IsNull()) {
-        cout << "     initialisation for run id " << currentRun->GetName();
+        LOG(info) << "     initialisation for run id " << currentRun->GetName();
     } else {
-        cout << "     initialisation for event file " << currentFileName.Data() << '\n';
-        cout << "     run id " << currentRun->GetName();
+        LOG(info) << "     initialisation for event file " << currentFileName.Data();
+        LOG(info) << "     run id " << currentRun->GetName();
     }
     if (len > 0) {
-        cout << " --> " << refRunName;
+        LOG(info) << " --> " << refRunName;
     }
-    cout << '\n' << "************************************************************* " << '\n';
+    LOG(info) << "*************************************************************";
+    if (firstInput) {
+        LOG(info) << "First Input:";
+        firstInput->print();
+    }
+    if (secondInput) {
+        LOG(info) << "Second Input:";
+        secondInput->print();
+    }
+    bool rc = true;
+    TIter next(containerList);
+    FairParSet* cont;
     while ((cont = static_cast<FairParSet*>(next()))) {
-        cout << "-I- FairRunTimeDB::InitContainer() " << cont->GetName() << endl;
+        LOG(info) << "-I- FairRunTimeDB::initContainers() for " << cont->GetName();
         if (!cont->isStatic()) {
-            rc = cont->init() && rc;
+            if (!cont->init()) {
+                LOGP(error, "{}({})::init(): failed", cont->ClassName(), cont->GetName());
+                rc = false;
+            }
         }
     }
     if (!rc) {
