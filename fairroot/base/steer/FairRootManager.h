@@ -43,6 +43,7 @@ class TTree;
 
 /**
  * I/O Manager class
+ * \ingroup base_steer
  * @author M. Al-Turany, Denis Bertini
  * @version 0.1
  * @since 12.01.04
@@ -135,7 +136,17 @@ class FairRootManager : public TObject
     void TerminateAllTSBuffer();
     FairTSBufferFunctional* GetTSBuffer(TString branchName) { return fTSBufferMap[branchName]; }
 
-    /** static access method */
+    /**
+     * \brief Access the singleton
+     *
+     * Please try avoid using it.
+     * It will likely be deprecated at some point.
+     * Consider using a getter instead:
+     *
+     * - FairRun::GetRootManager()
+     * - FairDetector::GetRootManager()
+     * - FairEventManager::GetRootManager()
+     */
     static FairRootManager* Instance();
 
     /**Read a single entry from background chain*/

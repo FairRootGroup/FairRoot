@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -220,7 +220,7 @@ void FairTutorialDet4::Register()
       only during the simulation.
   */
 
-    FairRootManager::Instance()->Register("TutorialDetPoint", "TutorialDet", fFairTutorialDet4PointCollection, kTRUE);
+    GetRootManager().Register("TutorialDetPoint", "TutorialDet", fFairTutorialDet4PointCollection, kTRUE);
 }
 
 TClonesArray* FairTutorialDet4::GetCollection(Int_t iColl) const

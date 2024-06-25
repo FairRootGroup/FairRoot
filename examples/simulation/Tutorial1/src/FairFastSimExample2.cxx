@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -102,7 +102,7 @@ void FairFastSimExample2::Register()
         this collection will not be written to the file, it will exist
         only during the simulation.
     */
-    FairRootManager::Instance()->Register("FastSimPoint2", "FastSimDetDet", fPointsArray, kTRUE);
+    GetRootManager().Register("FastSimPoint2", "FastSimDetDet", fPointsArray, kTRUE);
 }
 
 TClonesArray* FairFastSimExample2::GetCollection(Int_t iColl) const

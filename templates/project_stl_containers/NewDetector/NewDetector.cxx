@@ -146,7 +146,7 @@ void NewDetector::Register()
         this collection will not be written to the file, it will exist
         only during the simulation.
     */
-    FairRootManager::Instance()->RegisterAny("NewDetectorPoint", fVectorPoints, kTRUE);
+    GetRootManager().RegisterAny("NewDetectorPoint", fVectorPoints, kTRUE);
 }
 
 void NewDetector::Reset()

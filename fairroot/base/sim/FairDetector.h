@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -12,11 +12,14 @@
 
 #include <Rtypes.h>   // for Int_t, Bool_t, etc
 #include <TClonesArray.h>
+#include <cassert>
 
 class FairVolume;
+class FairRootManager;
 
 /**
  * Base class for constructing detecors
+ * \ingroup base_sim
  * @author M. Al-Turany, Denis Bertini
  * @version 0.1
  * @since 12.01.04
@@ -40,8 +43,10 @@ class FairDetector : public FairModule
     */
     ~FairDetector() override;
     /**
-      Initialization of the detector is done here
-    */
+     * \brief Initialization of the detector is done here
+     *
+     * \note May use GetRootManager()
+     */
     virtual void Initialize();
     /**
       this method is called for each step during simulation (see FairMCApplication::Stepping())
@@ -52,8 +57,10 @@ class FairDetector : public FairModule
     */
     virtual void EndOfEvent() {}
     /**
-      Registers the produced collections in FAIRRootManager.
-    */
+     * \brief Registers the produced collections in FAIRRootManager.
+     *
+     * \note May use GetRootManager()
+     */
     virtual void Register() = 0;
 
     /**
@@ -98,7 +105,25 @@ class FairDetector : public FairModule
     void SaveGeoParams();
     Int_t GetDetId() { return fDetId; }
 
+    /**
+     * \brief For internal use: Set the manager
+     *
+     * \note Usually called from FairMCApplication::RegisterOutput()
+     */
+    void SetRootManager(FairRootManager* rm) { fRootManager = rm; }
+
   protected:
+    /**
+     * \brief Get the FairRootManager for this Detector
+     *
+     * \note Only valid during \ref Initialize() and Register()
+     */
+    FairRootManager& GetRootManager()
+    {
+        assert(fRootManager);
+        return *fRootManager;
+    }
+
     /** Copy constructor */
     FairDetector(const FairDetector&);
     /** Assignment operator */
@@ -107,6 +132,9 @@ class FairDetector : public FairModule
     void DefineSensitiveVolumes();
 
     Int_t fDetId;   // Detector Id has to be set from ctr.
+
+  private:
+    FairRootManager* fRootManager{nullptr};   //!
 
     ClassDefOverride(FairDetector, 1);
 };
