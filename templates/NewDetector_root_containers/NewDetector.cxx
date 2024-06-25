@@ -139,7 +139,6 @@ void NewDetector::EndOfEvent()
 
 void NewDetector::Register()
 {
-
     /** This will create a branch in the output tree called
       NewDetectorPoint, setting the last parameter to kFALSE means:
       this collection will not be written to the file, it will exist
@@ -147,9 +146,9 @@ void NewDetector::Register()
   */
 
     if (!gMC->IsMT()) {
-        FairRootManager::Instance()->Register("NewDetectorPoint", "NewDetector", fNewDetectorPointCollection, kTRUE);
+        GetRootManager().Register("NewDetectorPoint", "NewDetector", fNewDetectorPointCollection, kTRUE);
     } else {
-        FairRootManager::Instance()->RegisterAny("NewDetectorPoint", fNewDetectorPointCollection, kTRUE);
+        GetRootManager().RegisterAny("NewDetectorPoint", fNewDetectorPointCollection, kTRUE);
     }
 }
 

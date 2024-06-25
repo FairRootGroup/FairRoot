@@ -949,6 +949,7 @@ void FairMCApplication::RegisterOutput()
         }
         if (detector) {
             // check whether detector is active
+            detector->SetRootManager(fRootManager);
             if (detector->IsActive()) {
                 detector->Initialize();
                 detector->Register();

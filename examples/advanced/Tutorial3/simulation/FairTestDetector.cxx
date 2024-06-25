@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -120,15 +120,13 @@ void FairTestDetector::EndOfEvent()
 
 void FairTestDetector::Register()
 {
-
     /** This will create a branch in the output tree called
         FairTestDetectorPoint, setting the last parameter to kFALSE means:
         this collection will not be written to the file, it will exist
         only during the simulation.
     */
 
-    FairRootManager::Instance()->Register(
-        "FairTestDetectorPoint", "FairTestDetector", fFairTestDetectorPointCollection, kTRUE);
+    GetRootManager().Register("FairTestDetectorPoint", "FairTestDetector", fFairTestDetectorPointCollection, kTRUE);
 }
 
 TClonesArray* FairTestDetector::GetCollection(Int_t iColl) const
