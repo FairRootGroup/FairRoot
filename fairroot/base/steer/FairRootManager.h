@@ -406,7 +406,7 @@ class FairRootManager : public TObject
     // data members
     Int_t fId{0};   //! This manager ID
 
-    ClassDefOverride(FairRootManager, 14);
+    ClassDefOverride(FairRootManager, 0);
 };
 
 // FIXME: move to source since we can make it non-template dependent
