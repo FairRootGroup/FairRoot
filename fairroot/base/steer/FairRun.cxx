@@ -191,14 +191,11 @@ void FairRun::SetSink(std::unique_ptr<FairSink> newsink)
 {
     fSink = std::move(newsink);
     fRootManager->fSink = maybe_owning_ptr<FairSink>{fSink.get(), non_owning};
-    fUserOutputFileName = fSink->GetFileName();
-}
-
-void FairRun::SetSink(FairSink* tempSink)
-{
-    fSink.reset(tempSink);
-    fRootManager->fSink = maybe_owning_ptr<FairSink>{fSink.get(), non_owning};
-    fUserOutputFileName = fSink->GetFileName();
+    if (fSink) {
+        fUserOutputFileName = fSink->GetFileName();
+    } else {
+        fUserOutputFileName.Clear();
+    }
 }
 
 void FairRun::SetOutputFile(const char* fname)
