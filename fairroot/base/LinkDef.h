@@ -35,7 +35,7 @@
 #pragma link C++ class FairParticle+;
 #pragma link C++ class FairPrimaryGenerator+;
 #pragma link C++ class FairRecoEventHeader+;
-#pragma link C++ class FairRootManager+;
+#pragma link C++ class FairRootManager;
 #pragma link C++ class FairRun+;
 #pragma link C++ class FairRunAna;
 #pragma link C++ class FairRunIdGenerator;
