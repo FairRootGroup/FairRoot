@@ -87,7 +87,7 @@ class FairRun : public TNamed
      * Set the sink
      */
     void SetSink(std::unique_ptr<FairSink> newsink);
-    void SetSink(FairSink* tempSink);
+    void SetSink(FairSink* newsink) { SetSink(std::unique_ptr<FairSink>{newsink}); }
     /**
      * return a non-owning pointer to the sink
      */
