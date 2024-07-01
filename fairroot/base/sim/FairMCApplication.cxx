@@ -283,6 +283,8 @@ void FairMCApplication::InitMC(const char*, const char*)
         fTrajFilter = std::make_unique<FairTrajFilter>();
     }
 
+    InitFinalizer();
+
     LOG(info) << "Monte Carlo Engine Initialisation with: " << MCName.Data();
 }
 
@@ -459,7 +461,6 @@ void FairMCApplication::InitOnWorker()
         std::lock_guard guard(mtx);
         fRootManager->InitSink();
         RegisterOutput();
-        fRootManager->WriteFolder();
     }
 
     // Cache thread-local gMC
@@ -468,6 +469,8 @@ void FairMCApplication::InitOnWorker()
     // Set data to MC
     fMC->SetStack(fStack.get());
     fMC->SetMagField(fxField);
+
+    InitFinalizer();
 
     LOG(info) << "Monte Carlo Engine Worker Initialisation  with: " << fMC->GetName();
 }
@@ -868,16 +871,9 @@ void FairMCApplication::InitGeometry()
     /// save Geo Params in Output file
     if (fRootManager && !fParent) {
         RegisterOutput();
-
-        /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in
-         * the tree*/
-        /// There is always a Main Task  !
-        /// so .. always a InitTasks() is called <D.B>
-        if (fFairTaskList) {
-            InitTasks();
+        if (GetIsMT()) {
+            fRootManager->WriteFolder();
         }
-
-        fRootManager->WriteFolder();
     }
     fMCEventHeader->SetRunID(runId);
 
@@ -922,6 +918,24 @@ void FairMCApplication::InitGeometry()
     fGeometryIsInitialized = kTRUE;
 
     fState = FairMCApplicationState::kUnknownState;
+}
+
+//_____________________________________________________________________________
+void FairMCApplication::InitFinalizer()
+{
+    /** Initialize the event generator */
+    if (fEvGen) {
+        fEvGen->Init();
+    }
+    /**Tasks has to be initialized here, they have access to the detector branches and still can create objects in
+     * the tree*/
+    if (fFairTaskList) {
+        InitTasks();
+    }
+    {
+        std::lock_guard guard(mtx);
+        fRootManager->WriteFolder();
+    }
 }
 
 //_____________________________________________________________________________
@@ -1008,10 +1022,6 @@ void FairMCApplication::AddIons()
             LOG(info) << "Add Ion: " << ion->GetName() << " with PDG "
                       << pdgDatabase->GetParticle(ion->GetName())->PdgCode();
         }
-    }
-    /** Initialize the event generator */
-    if (fEvGen) {
-        fEvGen->Init();
     }
 }
 //_____________________________________________________________________________
