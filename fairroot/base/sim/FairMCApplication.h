@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -88,8 +88,7 @@ class FairMCApplication : public TVirtualMCApplication
     /** Add user defined ions (optional)
         Called by TVirtualMC.
         TGeant3 calls AddIons() first, then InitGeometry().
-        TGeant4 calls InitGeometry() first, then AddIons().
-        This function also initializes event generators.*/
+        TGeant4 calls InitGeometry() first, then AddIons().*/
     void AddIons() override;   // MC Application
     /**
      *Add user defined Tasks to be executed after each event (optional)
@@ -127,8 +126,7 @@ class FairMCApplication : public TVirtualMCApplication
     /** Initialize geometry
         Called by TVirtualMC.
         TGeant3 calls AddIons() first, then InitGeometry().
-        TGeant4 calls InitGeometry() first, then AddIons().
-        This function also registers detectors.*/
+        TGeant4 calls InitGeometry() first, then AddIons().*/
     void InitGeometry() override;   // MC Application
     /** Initialize MC engine */
     void InitMC(const char* setup, const char* cuts);
@@ -241,6 +239,11 @@ class FairMCApplication : public TVirtualMCApplication
 
     /** Register output */
     void RegisterOutput();
+    /** Finalize the init stage:
+        initialize event generator,
+        initialize tasks,
+        write output folder.*/
+    void InitFinalizer();
 
     void UndoGeometryModifications();
 
