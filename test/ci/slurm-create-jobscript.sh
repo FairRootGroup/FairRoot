@@ -32,7 +32,7 @@ echo "*** Creating job script ..: ${jobsh}"
 	echo   '  echo "*** Temporary homedir ....: $newhomedir"'
 	echo   '  unset http_proxy'
 	echo   '  unset HTTP_PROXY'
-	printf 'singularity exec -B/shared -H "${newhomedir}" %q bash -l -c %q\n' \
+	printf 'singularity exec --writable-tmpfs -B/shared -H "${newhomedir}" %q bash -l -c %q\n' \
 		"${SINGULARITY_CONTAINER_ROOT}/fairroot/${container}" \
 		"${ctestcmd}"
 ) >> "$jobsh"
