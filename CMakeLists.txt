@@ -149,6 +149,10 @@ find_package2(PUBLIC ROOT REQUIRED
   OPTIONAL_COMPONENTS ${optional_root_components})
 include(ROOTMacros)
 
+if(ROOT_VERSION VERSION_GREATER_EQUAL 6.32 AND BUILD_PROOF_SUPPORT)
+   message(FATAL_ERROR "ROOT::Proof support is not buildable, it was removed in ROOT 6.32+")
+endif()
+
 #Check the compiler and set the compile and link flags
 Check_Compiler()
 
