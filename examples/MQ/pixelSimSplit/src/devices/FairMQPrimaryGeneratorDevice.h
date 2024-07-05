@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2017-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2017-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -31,7 +31,7 @@ class FairMQPrimaryGeneratorDevice : public fair::mq::Device
 {
   public:
     FairMQPrimaryGeneratorDevice();
-    virtual ~FairMQPrimaryGeneratorDevice();
+    ~FairMQPrimaryGeneratorDevice() override;
 
     virtual void SendPrimaries();
 
@@ -50,10 +50,10 @@ class FairMQPrimaryGeneratorDevice : public fair::mq::Device
 
   protected:
     bool Reply(fair::mq::MessagePtr&, int);
-    virtual void InitTask();
-    virtual void PreRun();
-    virtual void PostRun();
-    virtual bool ConditionalRun();
+    void InitTask() override;
+    void PreRun() override;
+    void PostRun() override;
+    bool ConditionalRun() override;
 
   private:
     std::string fGeneratorChannelName;

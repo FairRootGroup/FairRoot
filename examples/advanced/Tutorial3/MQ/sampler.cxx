@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -65,10 +65,10 @@ class Sampler : public fair::mq::Device
     Sampler(const Sampler&) = delete;
     Sampler operator=(const Sampler&) = delete;
 
-    virtual ~Sampler() {}
+    ~Sampler() override = default;
 
   protected:
-    virtual void InitTask()
+    void InitTask() override
     {
         LOG(info) << "Initializing Task...";
 
@@ -117,7 +117,7 @@ class Sampler : public fair::mq::Device
         LOG(info) << "Number of events to process: " << fNumEvents;
     }
 
-    virtual void Run()
+    void Run() override
     {
         while (fSentMsgs < fNumEvents) {
             fair::mq::MessagePtr msg;
@@ -142,7 +142,7 @@ class Sampler : public fair::mq::Device
         }
     }
 
-    virtual void ResetTask()
+    void ResetTask() override
     {
         if (fFairRunAna) {
             fFairRunAna->TerminateRun();
