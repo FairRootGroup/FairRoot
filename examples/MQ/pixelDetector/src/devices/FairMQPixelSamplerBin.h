@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -30,7 +30,7 @@ class FairMQPixelSamplerBin : public fair::mq::Device
 {
   public:
     FairMQPixelSamplerBin();
-    virtual ~FairMQPixelSamplerBin();
+    ~FairMQPixelSamplerBin() override;
 
     void AddInputFileName(const std::string& tempString) { fFileNames.push_back(tempString); }
     void AddInputBranchName(const std::string& tempString) { fBranchNames.push_back(tempString); }
@@ -43,10 +43,10 @@ class FairMQPixelSamplerBin : public fair::mq::Device
     void SetAckChannelName(const std::string& tstr) { fAckChannelName = tstr; }
 
   protected:
-    virtual bool ConditionalRun();
-    virtual void PreRun();
-    virtual void PostRun();
-    virtual void InitTask();
+    bool ConditionalRun() override;
+    void PreRun() override;
+    void PostRun() override;
+    void InitTask() override;
 
   private:
     std::string fOutputChannelName;

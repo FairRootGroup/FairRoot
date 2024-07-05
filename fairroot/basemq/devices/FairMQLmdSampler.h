@@ -58,7 +58,7 @@ class FairMQLmdSampler : public fair::mq::Device
     FairMQLmdSampler(const FairMQLmdSampler&) = delete;
     FairMQLmdSampler operator=(const FairMQLmdSampler&) = delete;
 
-    virtual ~FairMQLmdSampler() {}
+    ~FairMQLmdSampler() override = default;
 
     void AddSubEvtKey(short type,
                       short subType,
@@ -105,7 +105,7 @@ class FairMQLmdSampler : public fair::mq::Device
     }
 
   protected:
-    void InitTask()
+    void InitTask() override
     {
         fFilename = fConfig->GetValue<std::string>("input-file-name");
         fType = fConfig->GetValue<short>("lmd-type");
@@ -134,7 +134,7 @@ class FairMQLmdSampler : public fair::mq::Device
         fNEvent = 0;
         fCurrentEvent = 0;
     }
-    void Run()
+    void Run() override
     {
         while (!NewStatePending())   //&& !fStop)
         {

@@ -43,7 +43,7 @@ class FairMQUnpacker : public fair::mq::Device
     FairMQUnpacker(const FairMQUnpacker&) = delete;
     FairMQUnpacker operator=(const FairMQUnpacker&) = delete;
 
-    virtual ~FairMQUnpacker() { delete fUnpacker; }
+    ~FairMQUnpacker() override { delete fUnpacker; }
 
     void AddSubEvtKey(short type,
                       short subType,
@@ -68,7 +68,7 @@ class FairMQUnpacker : public fair::mq::Device
     }
 
   protected:
-    void InitTask()
+    void InitTask() override
     {
         fType = fConfig->GetValue<short>("lmd-type");
         fSubType = fConfig->GetValue<short>("lmd-sub-type");
@@ -105,7 +105,7 @@ class FairMQUnpacker : public fair::mq::Device
         // fUnpacker->Init(); // a priori not needed -> only required for Registering in FairRootManager
     }
 
-    void Run()
+    void Run() override
     {
         auto& inputChannel = GetChannel(fInputChannelName);
 

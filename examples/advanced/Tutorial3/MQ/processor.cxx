@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -45,10 +45,10 @@ class Processor : public fair::mq::Device
     Processor(const Processor&) = delete;
     Processor operator=(const Processor&) = delete;
 
-    virtual ~Processor() {}
+    ~Processor() override = default;
 
   protected:
-    virtual void InitTask()
+    void InitTask() override
     {
         std::string inChannelName = fConfig->GetValue<std::string>("in-channel");
         std::string outChannelName = fConfig->GetValue<std::string>("out-channel");
@@ -74,7 +74,7 @@ class Processor : public fair::mq::Device
         });
     }
 
-    virtual void PostRun() { LOG(info) << "Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!"; }
+    void PostRun() override { LOG(info) << "Received " << fReceivedMsgs << " and sent " << fSentMsgs << " messages!"; }
 
   private:
     std::unique_ptr<ProcessorTask> fProcessorTask;

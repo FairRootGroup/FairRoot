@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -29,10 +29,10 @@ class ParameterMQServer : public fair::mq::Device
     ParameterMQServer(const ParameterMQServer&) = delete;
     ParameterMQServer operator=(const ParameterMQServer&) = delete;
 
-    virtual ~ParameterMQServer();
+    ~ParameterMQServer() override;
 
-    virtual void InitTask();
-    virtual void Init();
+    void InitTask() override;
+    void Init() override;
     bool ProcessRequest(fair::mq::MessagePtr&, int);
     bool ProcessUpdate(fair::mq::MessagePtr&, int);
 
