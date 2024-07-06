@@ -14,6 +14,7 @@
 
 #include "FairGeoNode.h"   // for FairGeoNode
 #include "FairRootManager.h"
+#include "FairRunSim.h"
 #include "FairVolume.h"   // for FairVolume
 
 #include <TFolder.h>       // for TFolder
@@ -97,7 +98,7 @@ void FairDetector::Initialize()
     FairGeoNode* fN;
     TString cutName;
     TString copysign = "#";
-    for (auto aVol : fAllSensitiveVolumes) {
+    for (auto aVol : GetRunSim().RangeAllSensitiveVolumes()) {
         cutName = aVol->GetName();
         Ssiz_t pos = cutName.Index(copysign, 1);
         if (pos > 1) {
