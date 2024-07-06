@@ -189,6 +189,13 @@ class FairModule : public TNamed
     TVirtualMC* fMC{nullptr};   //! cahed pointer to MC (available only after initialization)
 
     /**
+     * \brief Get the FairRootManager for this Module
+     *
+     * \note Only valid after being added to a FairRunSim
+     */
+    FairRootManager& GetRootManager();
+
+    /**
      * \brief Get Geometry Loader
      * \note Only valid during ConstructGeometry
      */
