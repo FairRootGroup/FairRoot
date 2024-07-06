@@ -177,6 +177,7 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
         auto& clone = fOwnedModules.emplace_back(module->CloneModule());
         fListModules.emplace_back(clone.get());
         fModules->Add(clone.get());
+        clone->SetRunSim(fRun);
     }
 
     // Create and fill a list of active detectors
@@ -949,7 +950,6 @@ void FairMCApplication::RegisterOutput()
         }
         if (detector) {
             // check whether detector is active
-            detector->SetRootManager(fRootManager);
             if (detector->IsActive()) {
                 detector->Initialize();
                 detector->Register();

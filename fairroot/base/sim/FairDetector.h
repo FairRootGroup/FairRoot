@@ -105,25 +105,7 @@ class FairDetector : public FairModule
     void SaveGeoParams();
     Int_t GetDetId() { return fDetId; }
 
-    /**
-     * \brief For internal use: Set the manager
-     *
-     * \note Usually called from FairMCApplication::RegisterOutput()
-     */
-    void SetRootManager(FairRootManager* rm) { fRootManager = rm; }
-
   protected:
-    /**
-     * \brief Get the FairRootManager for this Detector
-     *
-     * \note Only valid during \ref Initialize() and Register()
-     */
-    FairRootManager& GetRootManager()
-    {
-        assert(fRootManager);
-        return *fRootManager;
-    }
-
     /** Copy constructor */
     FairDetector(const FairDetector&);
     /** Assignment operator */
@@ -134,8 +116,6 @@ class FairDetector : public FairModule
     Int_t fDetId;   // Detector Id has to be set from ctr.
 
   private:
-    FairRootManager* fRootManager{nullptr};   //!
-
     ClassDefOverride(FairDetector, 1);
 };
 #endif   // FAIRDETECTOR_H

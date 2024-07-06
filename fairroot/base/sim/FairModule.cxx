@@ -159,6 +159,12 @@ void FairModule::Streamer(TBuffer& b)
     }
 }
 
+FairRootManager& FairModule::GetRootManager()
+{
+    assert(fRunSim);
+    return fRunSim->GetRootManager();
+}
+
 FairGeoLoader& FairModule::GetGeometryLoader()
 {
     assert(fRunSim);
