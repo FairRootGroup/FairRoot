@@ -4,6 +4,20 @@ All notable changes to FairRoot will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## 19.0.1 (unreleased)
+
+### Deprecations
+
+If you think you really require a deprecated API, please
+[file an issue](https://github.com/FairRootGroup/FairRoot/issues/new).
+
+* Deprecated `FairParSet::fill()` and `FairParSet::store()` while these methods are not being used anywhere in `FairRoot`.
+
+### Other Notable Changes
+
+* Introduced `FairParSet::setCreateMode()` setter which allows disabling error message when initializing `FairParSet` object
+  that should be created rather than read from the input parameter file.
+
 ## 19.0.0 - 2024-05-17
 
 ### Breaking Changes
@@ -78,9 +92,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     API.
 
 ### Deprecations
-
-If you think you really require a deprecated API, please
-[file an issue](https://github.com/FairRootGroup/FairRoot/issues/new).
 
 * Deprecated MbsAPI
   * We plan to remove it completely in the next major release
