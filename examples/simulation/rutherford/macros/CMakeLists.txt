@@ -13,7 +13,7 @@ set(maxTestTime 60)
 
 foreach(mcEngine IN LISTS mcEngine_list)
   add_test(NAME ex_sim_rutherford_${mcEngine}
-           COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_rutherford.sh 10 \"${mcEngine}\")
+           COMMAND ${CMAKE_CURRENT_BINARY_DIR}/run_rutherford.sh 10 \"${mcEngine}\" false)
   set_tests_properties(ex_sim_rutherford_${mcEngine} PROPERTIES
     TIMEOUT ${maxTestTime}
     PASS_REGULAR_EXPRESSION "Macro finished successfully"
