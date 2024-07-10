@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -96,19 +96,36 @@ FairBoxGenerator::FairBoxGenerator(Int_t pdgid, Int_t mult)
     SetPhiRange();
 }
 
-void FairBoxGenerator::SetXYZ(Double32_t x, Double32_t y, Double32_t z) { SetVertex(x, y, z, 0, 0, 0, kBox); }
+void FairBoxGenerator::SetXYZ(Double32_t x, Double32_t y, Double32_t z)
+{
+    SetVertex(x, y, z, 0, 0, 0, kBox);
+}
 
 void FairBoxGenerator::SetBoxXYZ(Double32_t x1, Double32_t y1, Double32_t x2, Double32_t y2, Double32_t z)
+{
+    SetBoxXYZ(x1, y1, z, x2, y2, z);
+}
+
+void FairBoxGenerator::SetBoxXYZ(Double32_t x1,
+                                 Double32_t y1,
+                                 Double32_t z1,
+                                 Double32_t x2,
+                                 Double32_t y2,
+                                 Double32_t z2)
 {
     Double_t X1 = TMath::Min(x1, x2);
     Double_t X2 = TMath::Max(x1, x2);
     Double_t Y1 = TMath::Min(y1, y2);
     Double_t Y2 = TMath::Max(y1, y2);
+    Double_t Z1 = TMath::Min(z1, z2);
+    Double_t Z2 = TMath::Max(z1, z2);
     Double_t dX = 0.5 * (X2 - X1);
     Double_t dY = 0.5 * (Y2 - Y1);
+    Double_t dZ = 0.5 * (Z2 - Z1);
     Double_t x = 0.5 * (X1 + X2);
     Double_t y = 0.5 * (Y1 + Y2);
-    SetVertex(x, y, z, dX, dY, 0, kBox);
+    Double_t z = 0.5 * (Z1 + Z2);
+    SetVertex(x, y, z, dX, dY, dZ, kBox);
 }
 
 Bool_t FairBoxGenerator::Init()
