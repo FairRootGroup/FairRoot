@@ -226,6 +226,12 @@ class FairRunSim : public FairRun
   private:
     FairRunSim(const FairRunSim& M);
     FairRunSim& operator=(const FairRunSim&) { return *this; }
+    /**
+     * Performs simulation initialization:
+     * - runs simulation config (construct TGeant3/TGeant4, configure TGeant3/TGeant4, create stack),
+     * - runs FairMCApplication->InitMC() (set stack, run fMC->Init(), run fMC->BuildPhysics()),
+     * - runs postinit config (sets some VMC properties, which are only allowed after init).
+     */
     void SetMCConfig();
     void CheckFlukaExec();
 
