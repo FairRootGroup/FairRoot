@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -111,6 +111,8 @@ class FairBoxGenerator : public FairBaseMCGenerator
     void SetXYZ(Double32_t x = 0, Double32_t y = 0, Double32_t z = 0);
 
     void SetBoxXYZ(Double32_t x1 = 0, Double32_t y1 = 0, Double32_t x2 = 0, Double32_t y2 = 0, Double32_t z = 0);
+
+    void SetBoxXYZ(Double32_t x1, Double32_t y1, Double32_t z1, Double32_t x2, Double32_t y2, Double32_t z2);
 
     /**
      * not used, for backward compatibility, please user FairLogger to set debug mode
