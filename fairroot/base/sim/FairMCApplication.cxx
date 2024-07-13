@@ -755,20 +755,16 @@ void FairMCApplication::ConstructGeometry()
 
     fState = FairMCApplicationState::kConstructGeometry;
 
-    Int_t NoOfVolumes = 0;
-    Int_t NoOfVolumesBefore = 0;
-    Int_t ModId = 0;
-
     TObjArray* tgeovolumelist = gGeoManager->GetListOfVolumes();
 
     for (auto Mod : fListModules) {
-        NoOfVolumesBefore = tgeovolumelist->GetEntriesFast();
+        auto NoOfVolumesBefore = tgeovolumelist->GetEntriesFast();
         Mod->InitParContainers();
         Mod->ConstructGeometry();
-        ModId = Mod->GetModId();
-        NoOfVolumes = tgeovolumelist->GetEntriesFast();
+        auto ModId = Mod->GetModId();
+        auto NoOfVolumes = tgeovolumelist->GetEntriesFast();
         for (Int_t n = NoOfVolumesBefore; n < NoOfVolumes; n++) {
-            TGeoVolume* v = (TGeoVolume*)tgeovolumelist->At(n);
+            auto v = static_cast<TGeoVolume*>(tgeovolumelist->At(n));
             fModVolMap.insert(pair<Int_t, Int_t>(v->GetNumber(), ModId));
         }
     }
@@ -795,9 +791,8 @@ void FairMCApplication::ConstructGeometry()
         LOG(info) << "TGeometry will not be imported to VMC"
                   << "\n";
     }
-    Int_t Counter = 0;
     TDatabasePDG* pdgDatabase = TDatabasePDG::Instance();
-    const THashList* list = pdgDatabase->ParticleList();
+    const TCollection* list = pdgDatabase->ParticleList();
     if (list == 0)
         pdgDatabase->ReadPDGTable();
     list = pdgDatabase->ParticleList();
@@ -807,10 +802,9 @@ void FairMCApplication::ConstructGeometry()
                 continue;
             }
             TString Name = gGeoManager->GetPdgName(Particle->PdgCode());
-            //    LOG(info) << Counter <<" : Particle name: "<< Name.Data() << " PDG " << Particle->PdgCode();
+            //    LOG(info) << " : Particle name: "<< Name.Data() << " PDG " << Particle->PdgCode();
             if (Name == "XXX")
                 gGeoManager->SetPdgName(Particle->PdgCode(), Particle->GetName());
-            Counter++;
         }
     }
     for (auto Mod : fListModules) {
