@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -32,8 +32,6 @@ FairTutorialDet2Digitizer::FairTutorialDet2Digitizer(const char* name, const cha
 
 FairTutorialDet2Digitizer::~FairTutorialDet2Digitizer()
 {
-    // FairRootManager *ioman =FairRootManager::Instance();
-    // ioman->Write();
     // fDigiCollection->Clear("C");
     // delete fDigiCollection;
 }
