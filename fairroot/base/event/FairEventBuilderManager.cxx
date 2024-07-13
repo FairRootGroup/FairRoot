@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -132,12 +132,6 @@ void FairEventBuilderManager::AddEventBuilder(FairEventBuilder* eventBuilder)
 
 InitStatus FairEventBuilderManager::Init()
 {
-    // Get input array
-    FairRootManager* ioman = FairRootManager::Instance();
-    if (!ioman) {
-        Fatal("Init", "No FairRootManager");
-    }
-
     cout << "*** FairEventBuilderManager. " << fEventBuilders.size() << " event builders registered." << endl;
 
     for (UInt_t ieb = 0; ieb < fEventBuilders.size(); ieb++) {
