@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -47,16 +47,12 @@ PixelAltDigiWriteToRootVector::PixelAltDigiWriteToRootVector(const char* name, I
     , fRunId(0)
     , fMCEntryNo(0)
     , fPartNo(0)
-{
-    Reset();
-}
+{}
 
-PixelAltDigiWriteToRootVector::~PixelAltDigiWriteToRootVector() { Reset(); }
+PixelAltDigiWriteToRootVector::~PixelAltDigiWriteToRootVector() = default;
 
 void PixelAltDigiWriteToRootVector::Exec(Option_t* /*opt*/)
 {
-    Reset();
-
     Int_t nofDigis = fDigis->GetEntriesFast();
 
     for (Int_t ifile = 0; ifile < fNofOutputFiles; ifile++) {
@@ -102,7 +98,6 @@ void PixelAltDigiWriteToRootVector::Exec(Option_t* /*opt*/)
 
 InitStatus PixelAltDigiWriteToRootVector::Init()
 {
-
     // Get input array
     FairRootManager* ioman = FairRootManager::Instance();
 
@@ -162,8 +157,6 @@ InitStatus PixelAltDigiWriteToRootVector::ReInit()
     }
     return Status;
 }
-
-void PixelAltDigiWriteToRootVector::Reset() {}
 
 void PixelAltDigiWriteToRootVector::Finish()
 {
