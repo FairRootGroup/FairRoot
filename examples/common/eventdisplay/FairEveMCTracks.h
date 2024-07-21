@@ -16,8 +16,9 @@
 #ifndef FAIREVEMCTRACKS_H_
 #define FAIREVEMCTRACKS_H_
 
-#include "FairEveTracks.h"   // for FairEveTracks
-#include "FairTask.h"        // for InitStatus
+#include "FairEveTracks.h"     // for FairEveTracks
+#include "FairTask.h"          // for InitStatus
+#include "FairXMLPdgColor.h"   //for pdg color
 
 #include <FairRKPropagator.h>
 #include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
@@ -37,11 +38,12 @@ class FairEveMCTracks : public FairEveTracks
     Bool_t fShowSecondary;
     Bool_t fUsePdg;
     Int_t fPdgCut;
+    FairXMLPdgColor fPdgColor;
     std::unique_ptr<FairRKPropagator> fRK{};
     TDatabasePDG* fPDG{nullptr};
 
   protected:
-    Bool_t CheckCuts(FairMCTrack *tr);
+    Bool_t CheckCuts(FairMCTrack* tr);
     void DrawTrack(Int_t id);
 
   public:

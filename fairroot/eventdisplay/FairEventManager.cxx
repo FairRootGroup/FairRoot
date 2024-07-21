@@ -15,6 +15,7 @@
 #include "FairRootManager.h"   // for FairRootManager
 #include "FairRunAna.h"        // for FairRunAna
 #include "FairXMLNode.h"
+#include "xml/FairXMLDetectorColor.h"
 
 #include <TDatabasePDG.h>   // for TDatabasePDG
 #include <TEveBrowser.h>
@@ -64,7 +65,6 @@ FairEventManager::FairEventManager()
     , fRhoZPlane{-1, 0, 0, 0}
     , fRphiCam(TGLViewer::kCameraOrthoXOY)
     , fRhoCam(TGLViewer::kCameraOrthoZOY)
-    , fXMLConfig("")
 {
     fgRinstance = this;
     AddParticlesToPdgDataBase();
@@ -84,7 +84,7 @@ void FairEventManager::Init(Int_t visopt, Int_t vislvl, Int_t maxvisnds)
         fWorldSizeY = box->GetDY();
         fWorldSizeZ = box->GetDZ();
     }
-    if (!fXMLConfig.EqualTo(""))
+    if (fXMLFile)
         LoadXMLSettings();
     gEve->AddGlobalElement(TNod);
     gEve->FullRedraw3D(kTRUE);
@@ -174,6 +174,11 @@ FairEventManager::~FairEventManager()
 
 void FairEventManager::Open() {}
 
+void FairEventManager::SetXMLConfig(TString xml_config)
+{
+    if (xml_config.Length() && xml_config.EndsWith(".xml"))
+        fXMLFile.reset(new FairXMLFile(xml_config));
+}
 void FairEventManager::GotoEvent(Int_t event)
 {
     fEntry = event;
@@ -297,67 +302,18 @@ void FairEventManager::SetRhoZPlane(Double_t a, Double_t b, Double_t c, Double_t
 
 void FairEventManager::LoadXMLSettings()
 {
-    FairXMLFile xmlfile(fXMLConfig, "read");
-    FairXMLNode *xml = xmlfile.GetRootNode();
-    for (int i = 0; i < xml->GetNChildren(); i++) {
-        TString nodename = xml->GetChild(i)->GetName();
-        if (nodename.EqualTo("Detectors")) {
-            TGeoNode *top = gGeoManager->GetTopNode();
-            FairXMLNode *top_xml = xml->GetChild(i)->GetChild(0);
-            if (top_xml != nullptr)
-                LoadXMLDetector(top, top_xml);
-        } else if (nodename.EqualTo("MCTracksColors")) {
-            FairXMLNode *colors = xml->GetChild(i);
-            for (int j = 0; j < colors->GetNChildren(); j++) {
-                FairXMLNode *color = colors->GetChild(j);
-                TString pgd_code = color->GetAttrib("pdg")->GetValue();
-                TString color_code = color->GetAttrib("color")->GetValue();
-                fPDGColor.SetColor(pgd_code.Atoi(), FairXMLPdgColor::StringToColor(color_code));
-            }
+    auto colors = GetXMLConfigNode("MCTracksColors");
+    auto detectors = GetXMLConfigNode("Detectors");
+    if (colors)
+        fPDGColor = FairXMLPdgColor(colors);
+    if (detectors) {
+        auto cave = detectors->GetChild(0);
+        if (cave) {
+            FairXMLDetectorColor detCol(cave);
+            detCol.Colorize(gGeoManager->GetTopNode());
         }
     }
     gEve->Redraw3D();
-}
-
-void FairEventManager::LoadXMLDetector(TGeoNode* node, FairXMLNode* xml, Int_t depth)
-{
-    TString name = xml->GetAttrib("name")->GetValue();
-    TString node_name = node->GetName();
-    Bool_t recursive = (xml->GetAttrib("recursive")->GetValue().Length() != 0 && !name.EqualTo(node_name));
-    if (recursive && depth == 0)
-        return;
-    TString transparency = xml->GetAttrib("transparency")->GetValue();
-    TString color = xml->GetAttrib("color")->GetValue();
-    if (!color.EqualTo("")) {
-        node->GetVolume()->SetFillColor(FairXMLPdgColor::StringToColor(color));
-        node->GetVolume()->SetLineColor(FairXMLPdgColor::StringToColor(color));
-    }
-    if (!transparency.EqualTo("")) {
-        node->GetVolume()->SetTransparency((Char_t)(transparency.Atoi()));
-    }
-    if (xml->GetAttrib("recursive")->GetValue().Length() > 0) {
-        TString val = xml->GetAttrib("recursive")->GetValue();
-        Int_t xml_depth = val.Atoi();
-        if (recursive) {
-            xml_depth = depth - 1;
-        }
-        for (int i = 0; i < node->GetNdaughters(); i++) {
-            TGeoNode *daughter_node = node->GetDaughter(i);
-            LoadXMLDetector(daughter_node, xml, xml_depth);
-        }
-    }
-    if (xml->GetNChildren() > 0 && !recursive) {
-        for (int i = 0; i < node->GetNdaughters(); i++) {
-            TString subdetector_name = node->GetDaughter(i)->GetName();
-            for (int j = 0; j < xml->GetNChildren(); j++) {
-                FairXMLNode *subnode = xml->GetChild(j);
-                TString subnode_name = subnode->GetAttrib("name")->GetValue();
-                if (subnode_name == subdetector_name) {
-                    LoadXMLDetector(node->GetDaughter(i), subnode);
-                }
-            }
-        }
-    }
 }
 
 void FairEventManager::SetTransparency(Bool_t use_xml, Int_t trans)
@@ -367,7 +323,7 @@ void FairEventManager::SetTransparency(Bool_t use_xml, Int_t trans)
         TGeoNode* top = gGeoManager->GetTopNode();
         SetTransparencyForLayer(top, vis_level, trans);
     } else {   // normal transparency
-        if (fXMLConfig != "") {
+        if (fXMLFile) {
             LoadXMLSettings();
         } else {
             Int_t vis_level = gGeoManager->GetVisLevel();
@@ -465,4 +421,14 @@ void FairEventManager::SetEvtNumberText(Int_t evtNumber)
     TString text = "Event: ";
     text += evtNumber;
     fEventNumberText->SetText(text);
+}
+
+FairXMLNode* FairEventManager::GetXMLConfigNode(TString name) const
+{
+    if (fXMLFile) {
+        auto root = fXMLFile->GetRootNode();
+        if (root)
+            return root->GetChild(name);
+    }
+    return nullptr;
 }

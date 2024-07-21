@@ -88,7 +88,7 @@ void FairEveMCTracks::DrawTrack(Int_t id)
     auto tr = static_cast<FairMCTrack*>(fContainer->UncheckedAt(id));
     if (!CheckCuts(tr))
         return;
-    Color_t color = GetEventManager()->Color(tr->GetPdgCode());
+    Color_t color = fPdgColor.GetColor(tr->GetPdgCode());
     TEveTrackList* trList = FindTrackGroup(Form("%i", tr->GetPdgCode()), color);
     TParticle p(tr->GetPdgCode(),
                 0,
@@ -149,6 +149,9 @@ InitStatus FairEveMCTracks::Init()
     if (status != kSUCCESS)
         return status;
     FairEventManager* eveManager = GetEventManager();
+    auto colorConf = eveManager->GetXMLConfigNode("MCTrackColors");
+    if (colorConf)
+        fPdgColor = FairXMLPdgColor(colorConf);
     FairRootManager* mngr = &(eveManager->GetRootManager());
     fContainer = dynamic_cast<TClonesArray*>(mngr->GetObject("MCTrack"));
     if (!fContainer) {

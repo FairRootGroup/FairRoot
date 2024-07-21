@@ -18,10 +18,12 @@
 
 #include "FairEveTracks.h"   // for FairEveTracks
 #include "FairTask.h"        // for InitStatus
+#include "FairXMLPdgColor.h"
 
 #include <FairTimebasedDataHandlerT.h>
 #include <Rtypes.h>       // for THashConsistencyHolder, ClassDef
 #include <RtypesCore.h>   // for Bool_t, Int_t, Double_t
+
 class TBuffer;
 class TClass;
 class TClonesArray;
@@ -41,6 +43,7 @@ class FairEveGeoTracks : public FairEveTracks
     Int_t fPdgCut;
     Double_t fTMin, fTMax;
     TBranch* fBranch = nullptr;
+    FairXMLPdgColor fPdgColor;
     FairTimebasedDataHandlerT<TGeoTrack> fGeoTrackHandler;
 
   protected:
