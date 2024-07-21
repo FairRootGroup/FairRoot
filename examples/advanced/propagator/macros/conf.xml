@@ -5,15 +5,21 @@
         <detector name="Pixel2_0" color="kRed+1" transparency="30"  recursive="0"></detector>
         <detector name="Pixel3_0" color="kRed+2" transparency="30"  recursive="0"></detector>
         <detector name="Pixel4_0" color="kRed+3" transparency="30"  recursive="0"></detector>
-        <detector name="Pixel101_0" color="kCyan" transparency="30"  recursive="0"></detector>
-        <detector name="Pixel102_0" color="kCyan+1" transparency="30"  recursive="0"></detector>
-        <detector name="Pixel103_0" color="kCyan+2" transparency="30"  recursive="0"></detector>
-        <detector name="Pixel104_0" color="kCyan+3" transparency="30"  recursive="0"></detector>
+        <detector name="Pixel5_0" color="kCyan" transparency="30"  recursive="0"></detector>
+        <detector name="Pixel6_0" color="kCyan+1" transparency="30"  recursive="0"></detector>
+        <detector name="Pixel7_0" color="kCyan+2" transparency="30"  recursive="0"></detector>
+        <detector name="Pixel8_0" color="kGreen" transparency="30"  recursive="0"></detector>
     </detector>
 </Detectors>
-<MCTracksColors>
-    <mctrack color="kRed" pdg="2212"></mctrack>
-    <mctrack color="kGreen" pdg="211"></mctrack>
-    <mctrack color="kYellow" pdg="11"></mctrack>
-</MCTracksColors>
+<MCTrackColors>
+    <track color="kRed" pdg="2212"></track>
+    <track color="kGreen" pdg="211"></track>
+    <track color="kYellow" pdg="11"></track>
+</MCTrackColors>
+<GeoTracksColors>
+    <track color="kRed+2" pdg="2212"></track>
+    <track color="kGreen+2" pdg="211"></track>
+    <track color="kYellow+2" pdg="11"></track>
+</GeoTracksColors>
+
 </xmlconf>

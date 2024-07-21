@@ -20,6 +20,7 @@
 #include "FairEventManager.h"   // for FairEventManager
 #include "FairGetEventTime.h"
 #include "FairRootManager.h"   // for FairRootManager
+#include "FairXMLNode.h"
 
 #include <TBranch.h>
 #include <TClonesArray.h>   // for TClonesArray
@@ -51,6 +52,10 @@ InitStatus FairEveGeoTracks::Init()
     if (status != kSUCCESS)
         return status;
     FairEventManager* eveManager = GetEventManager();
+    auto confColors = eveManager->GetXMLConfigNode("GeoTracksColors");
+    if (confColors) {
+        fPdgColor = FairXMLPdgColor(confColors);
+    }
     auto& mngr = eveManager->GetRootManager();
     fContainer = dynamic_cast<TClonesArray*>(mngr.GetObject("GeoTracks"));
     if (!fContainer) {
@@ -68,7 +73,7 @@ void FairEveGeoTracks::DrawTrack(Int_t id)
     if (!CheckCuts(tr))
         return;
     auto p = static_cast<TParticle*>(tr->GetParticle());
-    Color_t color = GetEventManager()->Color(p->GetPdgCode());
+    Color_t color = fPdgColor.GetColor(p->GetPdgCode());
     TEveTrackList* trList = FindTrackGroup(p->GetName(), color);
 
     auto track = new FairEveTrack(p, p->GetPdgCode(), trList->GetPropagator());
@@ -100,7 +105,7 @@ void FairEveGeoTracks::DrawAnimatedTrack(TGeoTrack* tr, double t0)
     if (tr->GetPoint(0)[3] * timeScale + t0 > fTMax)
         return;   // first point after tmax
     auto p = static_cast<TParticle*>(tr->GetParticle());
-    Color_t color = GetEventManager()->Color(p->GetPdgCode());
+    Color_t color = fPdgColor.GetColor(p->GetPdgCode());
     TEveTrackList* trList = FindTrackGroup(p->GetName(), color);
     auto track = new FairEveTrack(p, p->GetPdgCode(), trList->GetPropagator());
     track->SetElementTitle(Form("p={%4.3f,%4.3f,%4.3f}", p->Px(), p->Py(), p->Pz()));

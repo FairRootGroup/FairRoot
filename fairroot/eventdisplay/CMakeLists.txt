@@ -41,6 +41,7 @@ set(sources
   tracks/FairGeoTrackHandler.cxx
   xml/FairXMLEveConf.cxx
   xml/FairXMLPdgColor.cxx
+  xml/FairXMLDetectorColor.cxx
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)

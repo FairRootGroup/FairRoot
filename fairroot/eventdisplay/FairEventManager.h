@@ -34,6 +34,7 @@ class TEveViewer;
 class TEveText;
 class TGeoNode;
 class TGListTreeItem;
+class FairXMLFile;
 
 /**
  * \ingroup eventdisplay fairroot_singleton
@@ -44,14 +45,17 @@ class FairEventManager : public TEveEventManager
     static FairEventManager* Instance();
     FairEventManager();
     virtual ~FairEventManager();
-    virtual void SetXMLConfig(TString xml_config) { fXMLConfig = xml_config; };
+    virtual void SetXMLConfig(TString xml_config);
     virtual void Open();
     virtual void GotoEvent(Int_t event);   // *MENU*
     virtual void NextEvent();              // *MENU*
     virtual void PrevEvent();              // *MENU*
     virtual void Close();
     virtual void DisplaySettings();   //  *Menu*
-    virtual Int_t Color(Int_t pdg) { return fPDGColor.GetColor(pdg); }
+    [[deprecated("Use FairEventManager::GetXMLConfig")]] virtual Int_t Color(Int_t pdg)
+    {
+        return fPDGColor.GetColor(pdg);
+    }
     void AddTask(FairTask* t) { fRunAna->AddTask(t); }
     virtual void Init(Int_t visopt = 1, Int_t vislvl = 3, Int_t maxvisnds = 10000);
     virtual Int_t GetCurrentEvent() { return fEntry; }
@@ -126,6 +130,7 @@ class FairEventManager : public TEveEventManager
     Bool_t GetUseTimeOfEvent() const { return fUseTimeOfEvent; }
     Bool_t GetDrawAnimatedTracks() const { return fAnimatedTracks; }
     Bool_t GetClearHandler() const { return fClearHandler; }
+    FairXMLNode* GetXMLConfigNode(TString name) const;
     FairRootManager& GetRootManager() { return fRootManager; }
     FairRootManager const& GetRootManager() const { return fRootManager; }
 
@@ -151,7 +156,6 @@ class FairEventManager : public TEveEventManager
     TEveProjectionAxes* GetRPhiAxes() const { return fAxesPhi; };
     TEveProjectionAxes* GetRhoZAxes() const { return fAxesRho; };
     virtual void LoadXMLSettings();
-    void LoadXMLDetector(TGeoNode* node, FairXMLNode* xml, Int_t depth = 0);
     [[deprecated("Use FairXMLPdgColor::StringToColor")]] Int_t StringToColor(const TString& color) const
     {
         return FairXMLPdgColor::StringToColor(color);
@@ -186,7 +190,7 @@ class FairEventManager : public TEveEventManager
     TEveText* fEventTimeText{nullptr};                  //!
     TEveText* fEventNumberText{nullptr};                //!
     FairXMLPdgColor fPDGColor{};                        //!
-    TString fXMLConfig;
+    std::unique_ptr<FairXMLFile> fXMLFile;              //!
     void SetTransparencyForLayer(TGeoNode* node, Int_t depth, Char_t transparency);
     static FairEventManager* fgRinstance;   //!
     FairEventManager(const FairEventManager&);
