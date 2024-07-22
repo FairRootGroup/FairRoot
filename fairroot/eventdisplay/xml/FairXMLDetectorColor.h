@@ -38,6 +38,13 @@ class FairXMLDetectorColor : public FairXMLEveConf
      * @return recurency value, return 0 if recursive atribute has not been found
      */
     Int_t ApplyToNode(TGeoNode& node, const FairXMLNode& xml) const;
+    /**
+     * apply color to daughters
+     * @param node geo node
+     * @param xml xml node
+     * @param depth depth - if equal to -1 colorize according to xml daughters
+     */
+    void ColorizeDaughters(TGeoNode& node, const FairXMLNode& xml, Int_t depth) const;
 
   public:
     explicit FairXMLDetectorColor(FairXMLNode* node = nullptr);

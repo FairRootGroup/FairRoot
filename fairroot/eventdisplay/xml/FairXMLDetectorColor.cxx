@@ -24,17 +24,15 @@
 #include <TString.h>
 Int_t FairXMLDetectorColor::ApplyToNode(TGeoNode& node, const FairXMLNode& xml) const
 {
-    auto transparency_atrib = xml.GetAttrib("transparency");
-    Char_t transparency = 0;
-    if (transparency_atrib) {
+    if (auto transparency_atrib = xml.GetAttrib("transparency")) {
+        Char_t transparency = 0;
         if (transparency_atrib->GetValue().Length()) {
             transparency = transparency_atrib->GetValue().Atoi();
             node.GetVolume()->SetTransparency(transparency);
         }
     }
 
-    auto color_atrib = xml.GetAttrib("color");
-    if (color_atrib) {
+    if (auto color_atrib = xml.GetAttrib("color")) {
         TString color = xml.GetAttrib("color")->GetValue();
         if (!color.EqualTo("")) {
             node.GetVolume()->SetFillColor(FairXMLEveConf::StringToColor(color));
@@ -42,8 +40,7 @@ Int_t FairXMLDetectorColor::ApplyToNode(TGeoNode& node, const FairXMLNode& xml) 
         }
     }
 
-    auto rec_atrib = xml.GetAttrib("recursive");
-    if (rec_atrib) {
+    if (auto rec_atrib = xml.GetAttrib("recursive")) {
         TString rec = xml.GetAttrib("recursive")->GetValue();
         if (rec.Length() == 0)
             return 0;
@@ -61,27 +58,14 @@ void FairXMLDetectorColor::ColorizeNode(TGeoNode& node, const FairXMLNode& xml, 
         case -1: {   // standard mode
             Int_t newDepth = ApplyToNode(node, xml);
             if (newDepth) {
-                for (int i = 0; i < node.GetNdaughters(); i++) {
-                    ColorizeNode(*node.GetDaughter(i), xml, newDepth);
-                }
+                ColorizeDaughters(node, xml, newDepth);
             } else {
-                for (int i = 0; i < node.GetNdaughters(); i++) {
-                    TString subdetector_name = node.GetDaughter(i)->GetName();
-                    for (int j = 0; j < xml.GetNChildren(); j++) {
-                        FairXMLNode* subnode = xml.GetChild(j);
-                        TString subnode_name = subnode->GetAttrib("name")->GetValue();
-                        if (subnode_name.EqualTo(subdetector_name)) {
-                            ColorizeNode(*node.GetDaughter(i), *subnode, -1);
-                        }
-                    }
-                }
+                ColorizeDaughters(node, xml, -1);
             }
         } break;
         default: {   // recusrive mode
             ApplyToNode(node, xml);
-            for (int i = 0; i < node.GetNdaughters(); i++) {
-                ColorizeNode(*node.GetDaughter(i), xml, depth - 1);
-            }
+            ColorizeDaughters(node, xml, depth);
         } break;
     }
 }
@@ -97,4 +81,24 @@ void FairXMLDetectorColor::Colorize(TGeoNode* node)
     if (!node)
         return;
     ColorizeNode(*node, fNode, -1);
+}
+
+void FairXMLDetectorColor::ColorizeDaughters(TGeoNode& node, const FairXMLNode& xml, Int_t depth) const
+{
+    if (depth == -1) {
+        for (int i = 0; i < node.GetNdaughters(); i++) {
+            TString subdetector_name = node.GetDaughter(i)->GetName();
+            for (int j = 0; j < xml.GetNChildren(); j++) {
+                FairXMLNode* subnode = xml.GetChild(j);
+                TString subnode_name = subnode->GetAttrib("name")->GetValue();
+                if (subnode_name.EqualTo(subdetector_name)) {
+                    ColorizeNode(*node.GetDaughter(i), *subnode, -1);
+                }
+            }
+        }
+    } else {
+        for (int i = 0; i < node.GetNdaughters(); i++) {
+            ColorizeNode(*node.GetDaughter(i), xml, depth - 1);
+        }
+    }
 }
