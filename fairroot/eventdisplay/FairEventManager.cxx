@@ -176,8 +176,8 @@ void FairEventManager::Open() {}
 
 void FairEventManager::SetXMLConfig(TString xml_config)
 {
-    if (xml_config.Length() && xml_config.EndsWith(".xml"))
-        fXMLFile.reset(new FairXMLFile(xml_config));
+    if (xml_config.Length())
+        fXMLFile = std::make_unique<FairXMLFile>(xml_config);
 }
 void FairEventManager::GotoEvent(Int_t event)
 {

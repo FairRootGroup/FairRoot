@@ -30,14 +30,14 @@ class FairXMLDetectorColor : public FairXMLEveConf
      * @param xml xml node
      * @param depth depth of node (used in recursion mode)
      */
-    void ColorizeNode(TGeoNode* node, FairXMLNode* xml, Int_t depth) const;
+    void ColorizeNode(TGeoNode& node, const FairXMLNode& xml, Int_t depth) const;
     /**
      * applies settings to node without any cross-checks
      * @param node
      * @param xml
      * @return recurency value, return 0 if recursive atribute has not been found
      */
-    Int_t ApplyToNode(TGeoNode* node, FairXMLNode* xml) const;
+    Int_t ApplyToNode(TGeoNode& node, const FairXMLNode& xml) const;
 
   public:
     explicit FairXMLDetectorColor(FairXMLNode* node = nullptr);

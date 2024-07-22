@@ -4,6 +4,17 @@ All notable changes to FairRoot will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
+## 19.0.1 - 2024-07-22
+
+### Breaking Changes
+* Event display
+  * Removed     void FairEventManager::LoadXMLDetector(TGeoNode* node, FairXMLNode* xml, Int_t depth = 0)
+
+### Deprecations
+* Event display
+  * Deprecated FairEventManager::LoadXMLSettings
+
+
 ## 19.0.0 - 2024-05-17
 
 ### Breaking Changes
