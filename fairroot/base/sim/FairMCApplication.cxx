@@ -92,7 +92,6 @@ FairMCApplication::FairMCApplication(const char* name, const char* title, TObjAr
     , fMC(nullptr)
     , fRun(FairRunSim::Instance())
     , fSaveCurrentEvent(kTRUE)
-    , fState(FairMCApplicationState::kUnknownState)
     , fRunInfo()
     , fGeometryIsInitialized(kFALSE)
     , fOwnedModules()
@@ -153,7 +152,6 @@ FairMCApplication::FairMCApplication(const FairMCApplication& rhs, std::unique_p
     , listDetectors()
     , fMC(nullptr)
     , fSaveCurrentEvent(kTRUE)
-    , fState(FairMCApplicationState::kUnknownState)
     , fRunInfo()
     , fGeometryIsInitialized(kFALSE)
     , fOwnedModules()
@@ -227,7 +225,6 @@ FairMCApplication::FairMCApplication()
     , listDetectors()
     , fMC(nullptr)
     , fSaveCurrentEvent(kTRUE)
-    , fState(FairMCApplicationState::kUnknownState)
     , fRunInfo()
     , fGeometryIsInitialized(kFALSE)
     , fOwnedModules()
@@ -284,6 +281,7 @@ void FairMCApplication::InitMC(const char*, const char*)
     }
 
     InitFinalizer();
+    fState = FairMCApplicationState::kPostInit;
 
     LOG(info) << "Monte Carlo Engine Initialisation with: " << MCName.Data();
 }
@@ -291,6 +289,8 @@ void FairMCApplication::InitMC(const char*, const char*)
 //_____________________________________________________________________________
 void FairMCApplication::RunMC(Int_t nofEvents)
 {
+    fState = FairMCApplicationState::kRun;
+
     // Reset the time for FairRunInfo. Otherwise the time of the
     // first event will include the time needed for initilization.
     fRunInfo.Reset();
@@ -637,8 +637,8 @@ void FairMCApplication::FinishEvent()
     LOG(debug) << "[" << fRootManager->GetInstanceId()
                << " FairMCMCApplication::FinishEvent: " << fMCEventHeader->GetEventID() << " (MC "
                << gMC->CurrentEvent() << ")";
-    if (gMC->IsMT()
-        && fRun->GetSink()->GetSinkType() == kONLINESINK) {   // fix the rare case when running G4 multithreaded on MQ
+    if (gMC->IsMT() && fRun->GetSink()->GetSinkType() == kONLINESINK)
+    {   // fix the rare case when running G4 multithreaded on MQ
         fMCEventHeader->SetEventID(gMC->CurrentEvent() + 1);
     }
 
@@ -820,7 +820,7 @@ void FairMCApplication::ConstructGeometry()
 
     gGeoManager->RefreshPhysicalNodes(kFALSE);
 
-    fState = FairMCApplicationState::kUnknownState;
+    fState = FairMCApplicationState::kInit;
 }
 
 // ____________________________________________________________________________
@@ -834,6 +834,8 @@ Bool_t FairMCApplication::MisalignGeometry()
 //_____________________________________________________________________________
 void FairMCApplication::InitGeometry()
 {
+    if (FairMCApplicationState::kInit != fState)
+        LOG(fatal) << "InitGeometry possible in kInit state only";
     fState = FairMCApplicationState::kInitGeometry;
 
     LOG(info) << "FairMCApplication::InitGeometry: " << fRootManager->GetInstanceId();
@@ -917,7 +919,7 @@ void FairMCApplication::InitGeometry()
 
     fGeometryIsInitialized = kTRUE;
 
-    fState = FairMCApplicationState::kUnknownState;
+    fState = FairMCApplicationState::kInit;
 }
 
 //_____________________________________________________________________________
