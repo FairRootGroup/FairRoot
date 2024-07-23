@@ -46,9 +46,12 @@ class TTask;
 
 enum class FairMCApplicationState
 {
-    kUnknownState,
+    kPreInit,
     kConstructGeometry,
-    kInitGeometry
+    kInit,
+    kInitGeometry,
+    kPostInit,
+    kRun
 };
 
 /**
@@ -323,7 +326,7 @@ class FairMCApplication : public TVirtualMCApplication
     Bool_t fSaveCurrentEvent;
 
     /** Current state */
-    FairMCApplicationState fState;   //!
+    FairMCApplicationState fState{FairMCApplicationState::kPreInit};   //!
 
     ClassDefOverride(FairMCApplication, 5);
 
