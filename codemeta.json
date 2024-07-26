@@ -237,6 +237,12 @@
     },
     {
       "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-2088-0346",
+      "givenName": "Cristovao",
+      "familyName": "Vilela"
+    },
+    {
+      "@type": "Person",
       "givenName": "Barth\u00e9l\u00e9my",
       "familyName": "von Haller"
     },
