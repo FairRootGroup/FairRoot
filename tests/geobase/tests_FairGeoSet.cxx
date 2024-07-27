@@ -76,13 +76,13 @@ TEST_CASE("FairTestGeo")
     volu->setPoint(6, -20000., 20000., 20000.);
     volu->setPoint(7, -20000., -20000., 20000.);
 
-    auto masterNodes = std::make_unique<TList>();
-    masterNodes->Add(new FairGeoNode(*volu));
+    TList masterNodes{};
+    masterNodes.Add(new FairGeoNode(*volu));
 
     INFO("Master volume created");
 
     FairTestGeo geo;
-    geo.setMasterNodes(masterNodes.get());
+    geo.setMasterNodes(&masterNodes);
     geo.setShapes(new FairGeoShapes());
 
     //    fairroot::tests::checkGeoSetNamingConventions(geo, "testdet", 10);
