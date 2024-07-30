@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2020-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2020-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -28,8 +28,9 @@ class FairXMLPdgColor : public FairXMLEveConf
     void SetDefColor();
 
   public:
-    explicit FairXMLPdgColor(FairXMLNode* node = nullptr);
+    explicit FairXMLPdgColor(const FairXMLNode* node = nullptr);
     ~FairXMLPdgColor() override = default;
+    void SetColorsFromXML(const FairXMLNode& node);
     void SetColor(Int_t pdg, Int_t color) { fPDGToColor[pdg] = color; }
     Int_t GetColor(Int_t pdg) const;
 };

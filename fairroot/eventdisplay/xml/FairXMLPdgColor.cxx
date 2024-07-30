@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2020-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2020-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -20,7 +20,7 @@
 
 #include <TString.h>
 
-FairXMLPdgColor::FairXMLPdgColor(FairXMLNode* node)
+FairXMLPdgColor::FairXMLPdgColor(const FairXMLNode* node)
 {
     if (!node) {
         SetDefColor();
@@ -32,8 +32,13 @@ FairXMLPdgColor::FairXMLPdgColor(FairXMLNode* node)
         return;
     }
 
-    for (int i = 0; i < node->GetNChildren(); i++) {
-        FairXMLNode* colors = node->GetChild(i);
+    SetColorsFromXML(*node);
+}
+
+void FairXMLPdgColor::SetColorsFromXML(const FairXMLNode& node)
+{
+    for (int i = 0; i < node.GetNChildren(); i++) {
+        const FairXMLNode* colors = node.GetChild(i);
         TString pgd_code = colors->GetAttrib("pdg")->GetValue();
         TString color_code = colors->GetAttrib("color")->GetValue();
         fPDGToColor[pgd_code.Atoi()] = StringToColor(color_code);
