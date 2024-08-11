@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -45,7 +45,10 @@ class FairRootFileSink : public FairSink
 
     virtual void FillEventHeader(FairEventHeader* feh);
 
-    virtual TFile* OpenRootFile(TString fileName = "");
+    /**
+     * \deprecated Just use TFile::Open directly
+     */
+    [[deprecated("Use TFile::Open")]] virtual TFile* OpenRootFile(TString fileName = "");
     TFile* GetRootFile() { return fRootFile.get(); }
     TString GetFileName() override { return (fRootFile ? fRootFile->GetName() : ""); }
 
