@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -36,12 +36,14 @@ Bool_t FairMbsSource::Unpack(Int_t* data,
 
         if (unpack->GetSubCrate() < 0) {   // All sub-crates
             if (type != unpack->GetType() || subType != unpack->GetSubType() || procId != unpack->GetProcId()
-                || control != unpack->GetControl()) {
+                || control != unpack->GetControl())
+            {
                 continue;
             }
         } else {   // specified sub-crate
             if (type != unpack->GetType() || subType != unpack->GetSubType() || procId != unpack->GetProcId()
-                || subCrate != unpack->GetSubCrate() || control != unpack->GetControl()) {
+                || subCrate != unpack->GetSubCrate() || control != unpack->GetControl())
+            {
                 continue;
             }
         }

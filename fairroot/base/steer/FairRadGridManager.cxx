@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -143,7 +143,8 @@ Bool_t FairRadGridManager::IsTrackInside(TLorentzVector& pos, FairMesh* aMesh)
 {
     // check if inside volume
     if ((pos.X() >= aMesh->GetXmin()) && (pos.X() <= aMesh->GetXmax()) && (pos.Y() >= aMesh->GetYmin())
-        && (pos.Y() <= aMesh->GetYmax()) && (pos.Z() >= aMesh->GetZmin()) && (pos.Z() <= aMesh->GetZmax())) {
+        && (pos.Y() <= aMesh->GetYmax()) && (pos.Z() >= aMesh->GetZmin()) && (pos.Z() <= aMesh->GetZmax()))
+    {
         /*       cout << " inside Xpos: " << pos.X() << " Xmin: " << aMesh->GetXmin()
           << " Xmax: " << aMesh->GetXmax()  << endl;
            cout << " inside Ypos: " << pos.Y() << " Ymin: " << aMesh->GetYmin()
