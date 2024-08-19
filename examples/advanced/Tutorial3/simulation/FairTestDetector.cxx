@@ -85,7 +85,8 @@ Bool_t FairTestDetector::ProcessHits(FairVolume* vol)
 
     // Create FairTestDetectorPoint at exit of active volume
     if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
-        || TVirtualMC::GetMC()->IsTrackDisappeared()) {
+        || TVirtualMC::GetMC()->IsTrackDisappeared())
+    {
         fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
         fVolumeID = vol->getMCid();
         TVirtualMC::GetMC()->TrackPosition(fPosOut);

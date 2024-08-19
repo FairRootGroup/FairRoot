@@ -175,7 +175,8 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
             // PrintDeadTimeMap();
             for (DTMapIter it = fDeadTime_map.lower_bound(currentdeadtime);
                  it != fDeadTime_map.upper_bound(currentdeadtime);
-                 ++it) {
+                 ++it)
+            {
                 oldData = it->second;
                 if (fVerbose > 1) {
                     std::cout << "Check Data: " << it->first << " : " << oldData << std::endl;
@@ -195,8 +196,8 @@ void FairWriteoutBuffer::FillDataToDeadTimeMap(FairTimeStamp* data, double activ
             }
 
             if (dataFound) {
-                if (timeOfOldData
-                    > startTime) {   // if older active data can interference with the new data call modify function
+                if (timeOfOldData > startTime)
+                {   // if older active data can interference with the new data call modify function
                     std::vector<std::pair<double, FairTimeStamp*>> modifiedData =
                         Modify(std::pair<double, FairTimeStamp*>(currentdeadtime, oldData),
                                std::pair<double, FairTimeStamp*>(activeTime, data));

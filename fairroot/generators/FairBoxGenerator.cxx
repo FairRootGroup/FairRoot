@@ -161,8 +161,8 @@ Bool_t FairBoxGenerator::Init()
     if (fPRangeIsSet && fYRangeIsSet) {
         LOG(fatal) << "FairBoxGenerator:Init():  Cannot set P and Y ranges simultaneously";
     }
-    if ((fThetaRangeIsSet && fYRangeIsSet) || (fThetaRangeIsSet && fEtaRangeIsSet)
-        || (fYRangeIsSet && fEtaRangeIsSet)) {
+    if ((fThetaRangeIsSet && fYRangeIsSet) || (fThetaRangeIsSet && fEtaRangeIsSet) || (fYRangeIsSet && fEtaRangeIsSet))
+    {
         LOG(fatal) << "FairBoxGenerator:Init():  Cannot set Y, Theta or Eta ranges simultaneously";
     }
     return kTRUE;

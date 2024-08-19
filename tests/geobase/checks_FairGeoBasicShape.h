@@ -105,7 +105,8 @@ auto check_FairGeoShape_ReadWrite(FairGeoBasicShape& shape,
             CHECK_THAT(test->Y(), Catch::Matchers::WithinRel(parameters.at(1).at(i), 0.001f));
             CHECK_THAT(test->Z(), Catch::Matchers::WithinRel(parameters.at(2).at(i), 0.001f));
         } else if ("CONE" == shapeName || "CONS" == shapeName || "ELTU" == shapeName || "TUBE" == shapeName
-                   || "TUBS" == shapeName) {
+                   || "TUBS" == shapeName)
+        {
             if (0 == i || 2 == i) {
                 CHECK_THAT(test->X(), Catch::Matchers::WithinRel(parameters.at(0).at(i), 0.001f));
                 CHECK_THAT(test->Y(), Catch::Matchers::WithinRel(parameters.at(1).at(i), 0.001f));

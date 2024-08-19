@@ -107,7 +107,8 @@ Bool_t NewDetector::ProcessHits(FairVolume* vol)
 
     // Create NewDetectorPoint at exit of active volume
     if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
-        || TVirtualMC::GetMC()->IsTrackDisappeared()) {
+        || TVirtualMC::GetMC()->IsTrackDisappeared())
+    {
         fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
         fVolumeID = vol->getMCid();
         if (fELoss == 0.) {

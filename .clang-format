@@ -26,6 +26,7 @@ BraceWrapping:
   SplitEmptyFunction: false
   SplitEmptyRecord: false
   SplitEmptyNamespace: false
+  AfterControlStatement: MultiLine
 BreakConstructorInitializers: BeforeComma
 ColumnLimit: 120
 ConstructorInitializerIndentWidth: 4

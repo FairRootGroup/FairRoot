@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -144,7 +144,8 @@ void PixelDigitize::ActivatePixel(Int_t index,
     for (Int_t ipixel = 0; ipixel < fNDigis; ipixel++) {
         tempPixel = static_cast<PixelDigi*>(fDigis->At(ipixel));
         if (tempPixel->GetDetectorID() == detId && tempPixel->GetFeID() == feId && tempPixel->GetCol() == col
-            && tempPixel->GetRow() == row) {
+            && tempPixel->GetRow() == row)
+        {
             pixelAlreadyFired = kTRUE;
             tempPixel->SetCharge(tempPixel->GetCharge() + charge);
         }

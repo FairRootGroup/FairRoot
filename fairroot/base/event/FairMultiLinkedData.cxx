@@ -132,7 +132,8 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
 
     if (!fPersistanceCheck || link.GetIndex() < 0
         || (link.GetType() != ioman->GetMCTrackBranchId()
-            && ioman->CheckBranch(ioman->GetBranchName(link.GetType())) == 0)) {
+            && ioman->CheckBranch(ioman->GetBranchName(link.GetType())) == 0))
+    {
         InsertLink(link);
         if (fInsertHistory)
             InsertHistory(link);
@@ -145,7 +146,8 @@ void FairMultiLinkedData::AddLink(FairLink link, Bool_t bypass, Float_t mult)
                       << " checkStatus: " << ioman->CheckBranch(ioman->GetBranchName(link.GetType())) << std::endl;
         }
         if (link.GetType() > ioman->GetMCTrackBranchId()
-            && ioman->CheckBranch(ioman->GetBranchName(link.GetType())) != 1) {
+            && ioman->CheckBranch(ioman->GetBranchName(link.GetType())) != 1)
+        {
             if (fVerbose > 1) {
                 std::cout << "BYPASS!" << std::endl;
             }
