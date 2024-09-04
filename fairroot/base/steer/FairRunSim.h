@@ -234,6 +234,11 @@ class FairRunSim : public FairRun
      */
     auto const& RangeAllSensitiveVolumes() const { return fAllSensitiveVolumes; }
 
+    /**
+     * \brief Internal helper for FairDetector
+     */
+    void UpdateSensitiveVolumesForModule(FairModule& mod);
+
   private:
     FairRunSim(const FairRunSim& M);
     FairRunSim& operator=(const FairRunSim&) { return *this; }

@@ -94,25 +94,7 @@ void FairDetector::Initialize()
         DefineSensitiveVolumes();
     }
 
-    Int_t fMCid;
-    FairGeoNode* fN;
-    TString cutName;
-    TString copysign = "#";
-    for (auto aVol : GetRunSim().RangeAllSensitiveVolumes()) {
-        cutName = aVol->GetName();
-        Ssiz_t pos = cutName.Index(copysign, 1);
-        if (pos > 1) {
-            cutName.Resize(pos);
-        }
-        if (aVol->getModId() == GetModId()) {
-            fMCid = TVirtualMC::GetMC()->VolId(cutName.Data());
-            aVol->setMCid(fMCid);
-            fN = aVol->getGeoNode();
-            if (fN) {
-                fN->setMCid(fMCid);
-            }
-        }
-    }
+    GetRunSim().UpdateSensitiveVolumesForModule(*this);
 
     // Initialize cached pointer to MC (on master in sequential mode)
     fMC = TVirtualMC::GetMC();
