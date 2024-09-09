@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -40,6 +40,13 @@ class FairGenericStack : public TVirtualMCStack
 
     /** Destructor  **/
     ~FairGenericStack() override;
+
+    /**
+     * \brief Get the Track ID of the current track
+     *
+     * Separate the calling from the customization of this API
+     */
+    Int_t GetCurrentTrackID() const { return GetCurrentTrackNumber(); }
 
     /** Virtual method PushTrack.
      ** Add a TParticle to the stack.

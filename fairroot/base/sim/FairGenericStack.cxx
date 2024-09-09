@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -120,7 +120,7 @@ void FairGenericStack::FastSimMoveParticleTo(Double_t xx,
 
     PushTrack(tobedone, parent, pdg, px, py, pz, en, xx, yy, zz, tt, polx, poly, polz, proc, ntr, weight, status, -1);
     fFSMovedIndex = GetListOfParticles()->GetEntries() - 1;
-    Int_t trackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
+    Int_t trackID = GetCurrentTrackID();
     fFSTrackIter = fFSTrackMap.find(trackID);   // check if this track is not already created by FastSimulation
     if (fFSTrackIter != fFSTrackMap.end())      // indeed the track has been created by the FastSimulation mechanism
         trackID = fFSTrackIter->second;         // use the ID of the original track
