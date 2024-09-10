@@ -874,7 +874,7 @@ void FairMCApplication::InitGeometry()
     if (fRootManager && !fParent) {
         RegisterOutput();
         if (GetIsMT()) {
-            fRootManager->WriteFolder();
+            fRootManager->RemoveOutputFolderForMtMode();
         }
     }
     fMCEventHeader->SetRunID(runId);
@@ -937,6 +937,7 @@ void FairMCApplication::InitFinalizer()
     {
         std::lock_guard guard(mtx);
         fRootManager->WriteFolder();
+        fRootManager->RemoveOutputFolderForMtMode();
     }
 }
 

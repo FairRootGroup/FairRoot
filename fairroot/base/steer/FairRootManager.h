@@ -18,12 +18,12 @@
 #include <TRefArray.h>   // for TRefArray
 #include <TString.h>     // for TString, operator<
 #include <fairlogger/Logger.h>
+#include <list>
 #include <map>   // for map, multimap, etc
 #include <memory>
 #include <string>
 #include <type_traits>   // is_pointer, remove_pointer, is_const, remove...
 #include <typeinfo>
-#include <list>
 
 class BinaryFunctor;
 class FairEventHeader;
@@ -218,6 +218,11 @@ class FairRootManager : public TObject
     void WriteFileHeader(FairFileHeader* f);
     /**Write the folder structure used to create the tree to the output file */
     void WriteFolder();
+    /**
+     * \brief Internal: Remove the folder describing the output tree structure from gROOT, called in TGeant4 MT
+     * simulation mode
+     */
+    void RemoveOutputFolderForMtMode();
 
     /**Check the maximum event number we can run to*/
     Int_t CheckMaxEventNo(Int_t EvtEnd = 0);
