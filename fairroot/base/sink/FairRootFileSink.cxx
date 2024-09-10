@@ -245,9 +245,6 @@ void FairRootFileSink::WriteFolder()
         fOutTree = new TTree(FairRootManager::GetTreeName(), Form("/%s", FairRootManager::GetFolderName()), 99);
         TruncateBranchNames();
         CreatePersistentBranchesAny();
-
-        // Delete the folder to make place in the gROOT for fOutFolder created by the Geant4MT threads
-        gROOT->GetRootFolder()->Remove(fOutFolder);
     }
 }
 

@@ -38,6 +38,7 @@
 #include <TNamed.h>
 #include <TObjArray.h>    // for TObjArray
 #include <TObjString.h>   // for TObjString
+#include <TROOT.h>        // for gROOT
 #include <TTree.h>        // for TTree
 #include <algorithm>      // for find
 #include <atomic>
@@ -221,8 +222,8 @@ TClonesArray* FairRootManager::Register(TString branchName, TString className, T
 
 TClonesArray* FairRootManager::GetEmptyTClonesArray(TString branchName)
 {
-    if (fActiveContainer.find(branchName)
-        != fActiveContainer.end()) {               // if a TClonesArray is registered in the active container
+    if (fActiveContainer.find(branchName) != fActiveContainer.end())
+    {                                              // if a TClonesArray is registered in the active container
         if (fActiveContainer[branchName] == 0) {   // the address of the TClonesArray is still valid
             std::cout << "-E- FairRootManager::GetEmptyTClonesArray: Container deleted outside FairRootManager!"
                       << std::endl;
@@ -381,6 +382,12 @@ void FairRootManager::WriteFolder()
         fSink->WriteObject(&fBranchNameList, "BranchList", TObject::kSingleKey);
         fSink->WriteObject(fTimeBasedBranchNameList, "TimeBasedBranchList", TObject::kSingleKey);
     }
+}
+
+void FairRootManager::RemoveOutputFolderForMtMode()
+{
+    auto rootFolder = static_cast<TFolder*>(gROOT->GetRootFolder());
+    rootFolder->Remove(rootFolder->FindObject(GetFolderName()));
 }
 
 Bool_t FairRootManager::SpecifyRunId()
