@@ -98,7 +98,7 @@ class FairGenericStack : public TVirtualMCStack
     virtual void FinishPrimary() {}
 
     /** Resets arrays and stack and deletes particles and tracks **/
-    virtual void Reset() {}
+    virtual void Reset() { fFSTrackMap.clear(); }
 
     /** Register the MCTrack array to the Root Manager  **/
     virtual void Register() {}

@@ -309,8 +309,8 @@ void FairStack::Reset()
     }
     fParticles->Clear();
     fTracks->Clear();
-    fFSTrackMap.clear();
     fPointsMap.clear();
+    FairGenericStack::Reset();
 }
 
 void FairStack::Register()
