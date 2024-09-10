@@ -172,7 +172,7 @@ class FairGenericStack : public TVirtualMCStack
     }
 
     template<typename T>
-    void FastSimUpdateTrackIndex(T* point, Int_t& iTrack);
+    void FastSimUpdateTrackIndex(T* point, Int_t& iTrack) const;
 
   protected:
     /** Copy constructor */
@@ -191,20 +191,37 @@ class FairGenericStack : public TVirtualMCStack
 
     /** FastSimulation: STL map from new track index to original track index  **/
     std::map<Int_t, Int_t> fFSTrackMap;              //!
-    std::map<Int_t, Int_t>::iterator fFSTrackIter;   //!
+
+    /**
+     * \deprecated Use a local variable
+     */
+    [[deprecated("Use a local variable")]] std::map<Int_t, Int_t>::iterator fFSTrackIter;   //!
+
     Int_t fFSMovedIndex;                             //!
     Int_t fFSFirstSecondary;                         //!
     Int_t fFSNofSecondaries;                         //!
+
+    Int_t FSTrackMapLookup(Int_t track) const
+    {
+        // check if this track is not already created by FastSimulation
+        if (auto it = fFSTrackMap.find(track);   // force line-break
+            it != fFSTrackMap.end())
+        {                        // indeed the track has been created by the FastSimulation mechanism
+            return it->second;   // use the ID of the original track
+        }
+        return track;
+    }
 
     ClassDefOverride(FairGenericStack, 1);
 };
 
 template<typename T>
-void FairGenericStack::FastSimUpdateTrackIndex(T* point, Int_t& iTrack)
+void FairGenericStack::FastSimUpdateTrackIndex(T* point, Int_t& iTrack) const
 {
-    fFSTrackIter = fFSTrackMap.find(iTrack);   // check if point created by FastSimulation
-    if (fFSTrackIter != fFSTrackMap.end()) {   // indeed the point has been created by the FastSimulation mechanism
-        iTrack = fFSTrackIter->second;
+    if (auto it = fFSTrackMap.find(iTrack);   // force line-break
+        it != fFSTrackMap.end())
+    {
+        iTrack = it->second;
         point->SetTrackID(iTrack);   // set proper TrackID
     }
 }

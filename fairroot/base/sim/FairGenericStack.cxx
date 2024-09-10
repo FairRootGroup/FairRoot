@@ -20,6 +20,8 @@
 #include <cstring>   // strcmp
 #include <fairlogger/Logger.h>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 FairGenericStack::FairGenericStack()
     : TVirtualMCStack()
     , fDetList(0)
@@ -31,8 +33,11 @@ FairGenericStack::FairGenericStack()
     , fFSFirstSecondary(-2)
     , fFSNofSecondaries(0)
 {}
+#pragma GCC diagnostic pop
 
 // -----   Constructor with estimated array dimension   --------------------
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 FairGenericStack::FairGenericStack(Int_t)
     : TVirtualMCStack()
     , fDetList(0)
@@ -44,15 +49,20 @@ FairGenericStack::FairGenericStack(Int_t)
     , fFSFirstSecondary(-2)
     , fFSNofSecondaries(0)
 {}
+#pragma GCC diagnostic pop
 
 FairGenericStack::~FairGenericStack() { delete fDetIter; }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 FairGenericStack::FairGenericStack(const FairGenericStack& rhs)
     : TVirtualMCStack(rhs)
     , fDetList(rhs.fDetList)
     , fDetIter(0)
     , fVerbose(rhs.fVerbose)
+    , fFSTrackIter()
 {}
+#pragma GCC diagnostic pop
 
 FairGenericStack& FairGenericStack::operator=(const FairGenericStack& rhs)
 {
@@ -120,10 +130,7 @@ void FairGenericStack::FastSimMoveParticleTo(Double_t xx,
 
     PushTrack(tobedone, parent, pdg, px, py, pz, en, xx, yy, zz, tt, polx, poly, polz, proc, ntr, weight, status, -1);
     fFSMovedIndex = GetListOfParticles()->GetEntries() - 1;
-    Int_t trackID = GetCurrentTrackID();
-    fFSTrackIter = fFSTrackMap.find(trackID);   // check if this track is not already created by FastSimulation
-    if (fFSTrackIter != fFSTrackMap.end())      // indeed the track has been created by the FastSimulation mechanism
-        trackID = fFSTrackIter->second;         // use the ID of the original track
+    Int_t const trackID = FSTrackMapLookup(GetCurrentTrackID());
     fFSTrackMap[ntr] = trackID;
 
     LOG(debug) << "FairStack::FastSimMoveParticleTo() created track number " << ntr << " to replace track number "

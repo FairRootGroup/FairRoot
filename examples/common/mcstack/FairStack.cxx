@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -239,12 +239,7 @@ void FairStack::FillTrackArray()
 
 Int_t FairStack::GetCurrentTrackNumber() const
 {
-    std::map<Int_t, Int_t>::const_iterator tempIter =
-        fFSTrackMap.find(fCurrentTrack);   // check if the track was created by FastSimulation
-    if (tempIter != fFSTrackMap.end()) {
-        return tempIter->second;
-    }
-    return fCurrentTrack;
+    return FSTrackMapLookup(fCurrentTrack);
 }
 
 void FairStack::UpdateTrackIndex(TRefArray* detList)
@@ -342,11 +337,7 @@ void FairStack::Print(Option_t*) const
 void FairStack::AddPoint(DetectorId detId)
 {
     Int_t iDet = detId;
-    Int_t iTr = fCurrentTrack;
-    fFSTrackIter = fFSTrackMap.find(iTr);      // check if this track is not already created by FastSimulation
-    if (fFSTrackIter != fFSTrackMap.end()) {   // indeed the track has been created by the FastSimulation mechanism
-        iTr = fFSTrackIter->second;            // use the ID of the original track
-    }
+    const Int_t iTr = GetCurrentTrackID();
 
     pair<Int_t, Int_t> a(iTr, iDet);
     if (fPointsMap.find(a) == fPointsMap.end()) {
@@ -362,11 +353,8 @@ void FairStack::AddPoint(DetectorId detId, Int_t iTrack)
         return;
     }
     Int_t iDet = detId;
-    Int_t iTr = iTrack;
-    fFSTrackIter = fFSTrackMap.find(iTr);      // check if this track is not already created by FastSimulation
-    if (fFSTrackIter != fFSTrackMap.end()) {   // indeed the track has been created by the FastSimulation mechanism
-        iTr = fFSTrackIter->second;            // use the ID of the original track
-    }
+    const Int_t iTr = FSTrackMapLookup(iTrack);
+
     pair<Int_t, Int_t> a(iTr, iDet);
     if (fPointsMap.find(a) == fPointsMap.end()) {
         fPointsMap[a] = 1;
@@ -395,16 +383,15 @@ TParticle* FairStack::GetParticle(Int_t trackID) const
 
 void FairStack::SelectTracks()
 {
-
     // --> Clear storage map
     fStoreMap.clear();
 
     // loop over tracks created by FastSim to order the tracks
-    for (fFSTrackIter = fFSTrackMap.begin(); fFSTrackIter != fFSTrackMap.end(); ++fFSTrackIter) {
+    for (auto tmentry : fFSTrackMap) {
         for (Int_t i = 0; i < fNParticles; i++) {
             TParticle* thisPart = GetParticle(i);
-            if (thisPart->GetMother(0) == fFSTrackIter->first)
-                thisPart->SetMother(0, fFSTrackIter->second);
+            if (thisPart->GetMother(0) == tmentry.first)
+                thisPart->SetMother(0, tmentry.second);
         }
     }
 
@@ -433,10 +420,7 @@ void FairStack::SelectTracks()
         }
 
         // check if the track was created by the FastSim mechanism. Do not store such tracks
-        Bool_t fastSimTrack = kFALSE;
-        fFSTrackIter = fFSTrackMap.find(i);
-        if (fFSTrackIter != fFSTrackMap.end())
-            fastSimTrack = kTRUE;
+        const bool fastSimTrack = (fFSTrackMap.count(i) > 0);
 
         // --> Check for cuts (store primaries in any case)
         if (iMother < 0) {
