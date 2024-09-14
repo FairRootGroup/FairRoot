@@ -125,12 +125,6 @@ class MyProjStack : public FairGenericStack
      **/
     virtual TParticle* PopPrimaryForTracking(Int_t iPrim);
 
-    /** Set the current track number
-     ** Declared in TVirtualMCStack
-     *@param iTrack  track number
-     **/
-    virtual void SetCurrentTrack(Int_t iTrack) { fCurrentTrack = iTrack; }
-
     /** Get total number of tracks
      ** Declared in TVirtualMCStack
      **/
@@ -145,11 +139,6 @@ class MyProjStack : public FairGenericStack
      ** Declared in TVirtualMCStack
      **/
     virtual TParticle* GetCurrentTrack() const;
-
-    /** Get the number of the current track
-     ** Declared in TVirtualMCStack
-     **/
-    virtual Int_t GetCurrentTrackNumber() const { return fCurrentTrack; }
 
     /** Get the track number of the parent of the current track
      ** Declared in TVirtualMCStack
@@ -224,7 +213,6 @@ class MyProjStack : public FairGenericStack
     std::map<std::pair<Int_t, Int_t>, Int_t> fPointsMap;   //!
 
     /** Some indizes and counters **/
-    Int_t fCurrentTrack;   //! Index of current track
     Int_t fNPrimaries;     //! Number of primary particles
     Int_t fNParticles;     //! Number of entries in fParticles
     Int_t fNTracks;        //! Number of entries in fTracks

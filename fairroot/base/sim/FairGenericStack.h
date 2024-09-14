@@ -48,6 +48,17 @@ class FairGenericStack : public TVirtualMCStack
      */
     Int_t GetCurrentTrackID() const { return GetCurrentTrackNumber(); }
 
+    /** Set the current track number
+     ** Declared in TVirtualMCStack
+     *@param iTrack  track number
+     **/
+    void SetCurrentTrack(Int_t iTrack) override { fCurrentTrack = iTrack; }
+
+    /** Get the number of the current track
+     ** Declared in TVirtualMCStack
+     **/
+    Int_t GetCurrentTrackNumber() const override { return fCurrentTrack; }
+
     /** Virtual method PushTrack.
      ** Add a TParticle to the stack.
      ** This function has an extra argument wrt to the function defined in the base class.
@@ -98,7 +109,11 @@ class FairGenericStack : public TVirtualMCStack
     virtual void FinishPrimary() {}
 
     /** Resets arrays and stack and deletes particles and tracks **/
-    virtual void Reset() { fFSTrackMap.clear(); }
+    virtual void Reset()
+    {
+        fCurrentTrack = -1;
+        fFSTrackMap.clear();
+    }
 
     /** Register the MCTrack array to the Root Manager  **/
     virtual void Register() {}
@@ -211,6 +226,9 @@ class FairGenericStack : public TVirtualMCStack
         }
         return track;
     }
+
+  private:
+    Int_t fCurrentTrack{-1};   //!< Index of current track
 
     ClassDefOverride(FairGenericStack, 1);
 };

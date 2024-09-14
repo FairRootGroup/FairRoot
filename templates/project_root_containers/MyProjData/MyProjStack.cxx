@@ -45,7 +45,6 @@ MyProjStack::MyProjStack(Int_t size)
     , fIndexMap()
     , fIndexIter()
     , fPointsMap()
-    , fCurrentTrack(-1)
     , fNPrimaries(0)
     , fNParticles(0)
     , fNTracks(0)
@@ -68,7 +67,6 @@ MyProjStack::MyProjStack(const MyProjStack& right)
     , fIndexMap()
     , fIndexIter()
     , fPointsMap()
-    , fCurrentTrack()
     , fNPrimaries()
     , fNParticles()
     , fNTracks()
@@ -187,8 +185,9 @@ TParticle* MyProjStack::PopNextTrack(Int_t& iTrack)
         return NULL;
     }
 
-    fCurrentTrack = thisParticle->GetStatusCode();
-    iTrack = fCurrentTrack;
+    const auto currentTrack = thisParticle->GetStatusCode();
+    SetCurrentTrack(currentTrack);
+    iTrack = currentTrack;
 
     return thisParticle;
 }
@@ -220,7 +219,7 @@ TParticle* MyProjStack::PopPrimaryForTracking(Int_t iPrim)
 // -----   Virtual public method GetCurrentTrack   -------------------------
 TParticle* MyProjStack::GetCurrentTrack() const
 {
-    TParticle* currentPart = GetParticle(fCurrentTrack);
+    TParticle* currentPart = GetParticle(GetCurrentTrackNumber());
     if (!currentPart) {
         LOG(warning) << "MyProjStack: Current track not found in stack!";
     }
@@ -342,7 +341,6 @@ void MyProjStack::UpdateTrackIndex(TRefArray* detList)
 void MyProjStack::Reset()
 {
     fIndex = 0;
-    fCurrentTrack = -1;
     fNPrimaries = fNParticles = fNTracks = 0;
     while (!fStack.empty()) {
         fStack.pop();
@@ -384,7 +382,7 @@ void MyProjStack::AddPoint(DetectorId detId)
 {
     Int_t iDet = detId;
     // cout << "Add point for Detektor" << iDet << endl;
-    pair<Int_t, Int_t> a(fCurrentTrack, iDet);
+    pair<Int_t, Int_t> a(GetCurrentTrackID(), iDet);
     if (fPointsMap.find(a) == fPointsMap.end()) {
         fPointsMap[a] = 1;
     } else {

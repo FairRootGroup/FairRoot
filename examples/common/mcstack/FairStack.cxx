@@ -35,7 +35,6 @@ FairStack::FairStack(Int_t size)
     , fStoreMap()
     , fIndexMap()
     , fPointsMap()
-    , fCurrentTrack(-1)
     , fNPrimaries(0)
     , fNParticles(0)
     , fNTracks(0)
@@ -149,8 +148,9 @@ TParticle* FairStack::PopNextTrack(Int_t& iTrack)
         return nullptr;
     }
 
-    fCurrentTrack = thisParticle->GetStatusCode();
-    iTrack = fCurrentTrack;
+    const auto currentTrack = thisParticle->GetStatusCode();
+    SetCurrentTrack(currentTrack);
+    iTrack = currentTrack;
 
     return thisParticle;
 }
@@ -177,7 +177,7 @@ TParticle* FairStack::PopPrimaryForTracking(Int_t iPrim)
 
 TParticle* FairStack::GetCurrentTrack() const
 {
-    TParticle* currentPart = GetParticle(fCurrentTrack);
+    TParticle* currentPart = GetParticle(FairGenericStack::GetCurrentTrackNumber());
     if (!currentPart) {
         LOG(warn) << "Current track not found in stack!";
     }
@@ -239,7 +239,7 @@ void FairStack::FillTrackArray()
 
 Int_t FairStack::GetCurrentTrackNumber() const
 {
-    return FSTrackMapLookup(fCurrentTrack);
+    return FSTrackMapLookup(FairGenericStack::GetCurrentTrackNumber());
 }
 
 void FairStack::UpdateTrackIndex(TRefArray* detList)
@@ -302,7 +302,6 @@ void FairStack::UpdateTrackIndex(TRefArray* detList)
 void FairStack::Reset()
 {
     fIndex = 0;
-    fCurrentTrack = -1;
     fNPrimaries = fNParticles = fNTracks = 0;
     while (!fStack.empty()) {
         fStack.pop();
