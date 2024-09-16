@@ -216,6 +216,12 @@ class FairRootManager : public TObject
     void WriteGeometry();
     /**Write the file header object to the output file*/
     void WriteFileHeader(FairFileHeader* f);
+
+    /**
+     * \brief Internal: Create the folder describing the output tree structure from gROOT
+     */
+    TFolder* CreateOutputFolder();
+
     /**Write the folder structure used to create the tree to the output file */
     void WriteFolder();
     /**
