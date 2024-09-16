@@ -375,6 +375,11 @@ void FairRootManager::CreateGeometryFile(const char* geofile)
     file->Close();
 }
 
+TFolder* FairRootManager::CreateOutputFolder()
+{
+    return gROOT->GetRootFolder()->AddFolder(GetFolderName(), "Main Folder");
+}
+
 void FairRootManager::WriteFolder()
 {
     if (fSink) {
@@ -386,7 +391,7 @@ void FairRootManager::WriteFolder()
 
 void FairRootManager::RemoveOutputFolderForMtMode()
 {
-    auto rootFolder = static_cast<TFolder*>(gROOT->GetRootFolder());
+    auto rootFolder = gROOT->GetRootFolder();
     rootFolder->Remove(rootFolder->FindObject(GetFolderName()));
 }
 

@@ -167,7 +167,7 @@ Bool_t FairFileSource::Init()
         if (!fCbmroot) {
             fCbmroot = fRootFile->Get<TFolder>("cbmout");
             if (!fCbmroot) {
-                fCbmroot = gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
+                fCbmroot = FairRootManager::Instance()->CreateOutputFolder();
             } else {
                 fCbmroot->SetName(FairRootManager::GetFolderName());
             }

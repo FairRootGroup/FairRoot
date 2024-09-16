@@ -212,7 +212,7 @@ Bool_t FairMixedSource::Init()
         if (!fCbmroot) {
             fCbmroot = fRootFile->Get<TFolder>("cbmout");
             if (!fCbmroot) {
-                fCbmroot = gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
+                fCbmroot = fRootManager->CreateOutputFolder();
             } else {
                 fCbmroot->SetName(FairRootManager::GetFolderName());
             }
@@ -475,7 +475,7 @@ Bool_t FairMixedSource::OpenBackgroundChain()
         if (!fCbmroot) {
             fCbmroot = fRootFile->Get<TFolder>("cbmout");
             if (!fCbmroot) {
-                fCbmroot = gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
+                fCbmroot = fRootManager->CreateOutputFolder();
             } else {
                 fCbmroot->SetName(FairRootManager::GetFolderName());
             }

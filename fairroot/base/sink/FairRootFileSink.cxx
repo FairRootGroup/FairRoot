@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *         GNU Lesser General Public Licence version 3 (LGPL) version 3,        *
@@ -87,7 +87,7 @@ Bool_t FairRootFileSink::InitSink()
 
     // FairRun* fRun = FairRun::Instance();
     /**Check if a simulation run!*/
-    fOutFolder = gROOT->GetRootFolder()->AddFolder(FairRootManager::GetFolderName(), "Main Folder");
+    fOutFolder = FairRootManager::Instance()->CreateOutputFolder();
     gROOT->GetListOfBrowsables()->Add(fOutFolder);
 
     LOG(info) << "FairRootFileSink initialized.";
