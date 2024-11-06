@@ -86,7 +86,7 @@ class FairModule : public TNamed
     virtual void ConstructGDMLGeometry(__attribute__((unused)) TGeoMatrix* posrot);
     /** custom settings of processes and cuts for media to be forwarded to the
      ** detector simulation */
-    virtual void SetSpecialPhysicsCuts() { ; }
+    virtual void SetSpecialPhysicsCuts() {}
     /** Clone this object (used in MT mode only)*/
     virtual FairModule* CloneModule() const;
     /** Init worker run (used in MT mode only) */

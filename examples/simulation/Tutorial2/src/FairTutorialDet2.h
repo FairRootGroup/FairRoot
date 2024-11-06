@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -63,16 +63,7 @@ class FairTutorialDet2 : public FairDetector
      *  any optional action in your detector during the transport.
      */
 
-    //    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
-    //                               Int_t offset) {;}
-    virtual void SetSpecialPhysicsCuts() { ; }
     virtual void EndOfEvent();
-    virtual void FinishPrimary() { ; }
-    virtual void FinishRun() { ; }
-    virtual void BeginPrimary() { ; }
-    virtual void PostTrack() { ; }
-    virtual void PreTrack() { ; }
-    virtual void BeginEvent() { ; }
 
     virtual FairModule* CloneModule() const;
 
