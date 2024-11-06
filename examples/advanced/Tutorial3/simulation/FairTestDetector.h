@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -70,20 +70,7 @@ class FairTestDetector : public FairDetector
      *  any optional action in your detector during the transport.
      */
 
-    /*
-    virtual void CopyClones(TClonesArray* cl1, TClonesArray* cl2, Int_t offset)
-    {
-        ;
-    }
-*/
-    void SetSpecialPhysicsCuts() override { ; }
     void EndOfEvent() override;
-    void FinishPrimary() override { ; }
-    void FinishRun() override { ; }
-    void BeginPrimary() override { ; }
-    void PostTrack() override { ; }
-    void PreTrack() override { ; }
-    void BeginEvent() override { ; }
 
   private:
     /** Track information to be stored until the track leaves the

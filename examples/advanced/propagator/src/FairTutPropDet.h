@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2019-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2019-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -18,7 +18,6 @@ class TClonesArray;
 
 class FairTutPropDet : public FairDetector
 {
-
   public:
     /**      Name :  Detector Name
      *       Active: kTRUE for active detectors (ProcessHits() will be called)
@@ -59,16 +58,7 @@ class FairTutPropDet : public FairDetector
      *  any optional action in your detector during the transport.
      */
 
-    //    virtual void   CopyClones( TClonesArray* cl1,  TClonesArray* cl2 ,
-    //                               Int_t offset) {;}
-    void SetSpecialPhysicsCuts() override { ; }
     void EndOfEvent() override;
-    void FinishPrimary() override { ; }
-    void FinishRun() override { ; }
-    void BeginPrimary() override { ; }
-    void PostTrack() override { ; }
-    void PreTrack() override { ; }
-    void BeginEvent() override { ; }
 
     void SetPointsArrayName(const std::string& tempName) { fPointsArrayName = tempName; };
 
