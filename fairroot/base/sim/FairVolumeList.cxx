@@ -12,6 +12,9 @@
 
 #include "FairVolumeList.h"
 
+#include "FairDetector.h"
+#include "FairVolume.h"
+
 FairVolume* FairVolumeList::getVolume(const TString& name)
 {
     auto obj = findObject(name);
@@ -35,8 +38,13 @@ FairVolume* FairVolumeList::addVolume(std::unique_ptr<FairVolume> vol)
     auto vol_found = findObject(vol->GetName());
 
     if (vol_found) {
-        LOG(error) << "FairVolumeList element: " << vol->GetName() << " VolId : " << vol->getVolumeId()
-                   << " already defined " << vol_found->getVolumeId();
+        // FATAL: The same volume name for different detectors
+        if (vol->GetDetector() != vol_found->GetDetector()) {
+            LOG(fatal) << "FairVolumeList Trying to register element: " << vol->GetName()
+                       << " (VolId=" << vol->getVolumeId() << ") for detector " << vol->GetDetector()->GetName()
+                       << ", but it was already defined (VolId=" << vol_found->getVolumeId() << ") for detector "
+                       << vol_found->GetDetector()->GetName();
+        }
         return nullptr;
     }
 
