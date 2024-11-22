@@ -216,8 +216,6 @@ void FairModule::SetGeometryFileName(TString fname, TString)
 
 void FairModule::RegisterSensitiveVolume(FairVolume& vol)
 {
-    vol.setModId(fModId);
-    vol.SetModule(this);
     fAllSensitiveVolumes.push_back(&vol);
     ++fNbOfSensitiveVol;
 }
@@ -249,7 +247,7 @@ void FairModule::ProcessNodes(TList* nodes)
         std::ignore = node->calcLabTransform();
 
         auto nodeTruncName = node->getTruncName();
-        auto volume = std::make_unique<FairVolume>(nodeTruncName, fNbOfVolumes);
+        auto volume = std::make_unique<FairVolume>(nodeTruncName, fNbOfVolumes, fModId, this);
         volume->setRealName(node->GetName());
 
         auto addedVol = vList->addVolume(std::move(volume));
@@ -280,8 +278,10 @@ void FairModule::AddSensitiveVolume(TGeoVolume* vol)
     auto volName = vol->GetName();
     LOG(debug2) << "AddSensitiveVolume " << volName;
 
-    auto addedVol = vList->addVolume(std::make_unique<FairVolume>(volName, fNbOfVolumes));
+    auto addedVol = vList->addVolume(std::make_unique<FairVolume>(volName, fNbOfVolumes, fModId, this));
     if (!addedVol) {
+        LOG(debug) << "FairModule: Trying to register element " << vol->GetName() << " for detector " << GetName()
+                   << " failed, beacuse it was already defined";
         return;
     }
     ++fNbOfVolumes;
