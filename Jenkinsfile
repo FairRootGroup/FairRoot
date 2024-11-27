@@ -1,9 +1,9 @@
 #!groovy
 
 def macos_builds = [
-  [os: "macos",  ver: "13", arch: "x86_64", compiler: "apple-clang-15", fairsoft: "24.01"],
-  [os: "macos",  ver: "14", arch: "x86_64", compiler: "apple-clang-15", fairsoft: "24.01"],
-  [os: "macos",  ver: "14", arch: "arm64",  compiler: "apple-clang-15", fairsoft: "24.01"],
+  [os: "macos",  ver: "14", arch: "x86_64", compiler: "apple-clang-16", fairsoft: "24.01p4"],
+  [os: "macos",  ver: "15", arch: "x86_64", compiler: "apple-clang-16", fairsoft: "24.01p4-macos15", extra: "-DBUILD_PROOF_SUPPORT=OFF"],
+  [os: "macos",  ver: "15", arch: "arm64",  compiler: "apple-clang-16", fairsoft: "24.01p4-macos15", extra: "-DBUILD_PROOF_SUPPORT=OFF"],
 ]
 
 def linux_builds = [
