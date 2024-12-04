@@ -5,7 +5,7 @@
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
  #                  copied verbatim in the file "LICENSE"                       #
  ################################################################################
-cmake_minimum_required(VERSION 3.18...3.30 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.18...3.31 FATAL_ERROR)
 
 set(PROJECT_MIN_CXX_STANDARD 17)
 
