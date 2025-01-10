@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -657,7 +657,7 @@ void FairModule::AssignMediumAtImport(TGeoVolume* v)
              * it*/
             FairGeoMedium* FairMedium = Media->getMedium(mat1->GetName());
             if (!FairMedium) {
-                LOG(fatal) << "Material " << mat1->GetName() << "is not defined in ASCII file nor in Root file.";
+                LOG(fatal) << "Material " << mat1->GetName() << " is not defined in ASCII file nor in Root file.";
                 //     FairMedium=new FairGeoMedium(mat1->GetName());
                 //      Media->addMedium(FairMedium);
             } else {
@@ -675,7 +675,7 @@ void FairModule::AssignMediumAtImport(TGeoVolume* v)
         if (strcmp(v->ClassName(), "TGeoVolumeAssembly") != 0) {
             //[R.K.-3.3.08]  // When there is NO material defined, set it to avoid conflicts in Geant
             LOG(fatal) << "The volume " << v->GetName()
-                       << "has no medium information and not an Assembly so we have to quit";
+                       << " has no medium information and not an Assembly so we have to quit";
         }
     }
 }
