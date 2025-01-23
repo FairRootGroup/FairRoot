@@ -217,6 +217,12 @@
     },
     {
       "@type": "Person",
+      "@id": "https://orcid.org/0000-0002-4702-5294",
+      "givenName": "Jose Luis",
+      "familyName": "Rodriguez S\u00e1nchez"
+    },
+    {
+      "@type": "Person",
       "givenName": "David",
       "familyName": "Rohr"
     },
