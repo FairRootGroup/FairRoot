@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -207,7 +207,7 @@ TParticle* MyProjStack::PopPrimaryForTracking(Int_t iPrim)
 
     // Return the iPrim-th TParticle from the fParticle array. This should be
     // a primary.
-    TParticle* part = (TParticle*)fParticles->At(iPrim);
+    TParticle* part = GetParticle(iPrim);
     if (!(part->GetMother(0) < 0)) {
         LOG(fatal) << "MyProjStack:: Not a primary track! " << iPrim;
     }
@@ -241,7 +241,6 @@ void MyProjStack::AddParticle(TParticle* oldPart)
 // -----   Public method FillTrackArray   ----------------------------------
 void MyProjStack::FillTrackArray()
 {
-
     LOG(debug) << "MyProjStack: Filling MCTrack array...";
 
     // --> Reset index map and number of output tracks
@@ -430,14 +429,13 @@ TParticle* MyProjStack::GetParticle(Int_t trackID) const
     if (trackID < 0 || trackID >= fNParticles) {
         LOG(fatal) << "MyProjStack: Particle index " << trackID << " out of range.";
     }
-    return (TParticle*)fParticles->At(trackID);
+    return static_cast<TParticle*>(fParticles->At(trackID));
 }
 // -------------------------------------------------------------------------
 
 // -----   Private method SelectTracks   -----------------------------------
 void MyProjStack::SelectTracks()
 {
-
     // --> Clear storage map
     fStoreMap.clear();
 
