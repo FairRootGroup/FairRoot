@@ -54,6 +54,14 @@ class FairFileSourceBase : public FairSource
     /** list of folders from all input (and friends) files*/
     TObjArray fListFolder{16};   //!
 
+    // private virtual methods:
+    void Close() override
+    {
+        if (fRootFile != nullptr) {
+            fRootFile->Close();
+        }
+    }
+
     ClassDefOverride(FairFileSourceBase, 0);
 };
 

@@ -34,7 +34,6 @@ class FairOnlineSource : public FairSource
 
     Bool_t Init() override = 0;
     Int_t ReadEvent(UInt_t = 0) override = 0;
-    void Close() override = 0;
 
     void SetParUnpackers() override;
 

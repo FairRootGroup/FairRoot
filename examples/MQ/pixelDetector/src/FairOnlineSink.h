@@ -33,7 +33,6 @@ class FairOnlineSink : public FairSink
     FairOnlineSink& operator=(const FairOnlineSink&) = delete;
 
     Bool_t InitSink() override { return kTRUE; }
-    void Close() override {}
     void Reset() override {}
 
     Sink_Type GetSinkType() override { return kONLINESINK; }

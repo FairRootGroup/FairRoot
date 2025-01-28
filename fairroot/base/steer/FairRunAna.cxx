@@ -558,7 +558,6 @@ void FairRunAna::TerminateRun()
     //   cout << ">>>------------------------------------------------<<<" << endl;
     fRootManager->LastFill();
     fRootManager->Write();
-    fRootManager->CloseSink();
 }
 //_____________________________________________________________________________
 
