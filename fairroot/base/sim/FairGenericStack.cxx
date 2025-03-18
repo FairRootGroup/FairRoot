@@ -51,7 +51,10 @@ FairGenericStack::FairGenericStack(Int_t)
 {}
 #pragma GCC diagnostic pop
 
-FairGenericStack::~FairGenericStack() { delete fDetIter; }
+FairGenericStack::~FairGenericStack()
+{
+    delete fDetIter;
+}
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -114,7 +117,8 @@ void FairGenericStack::FastSimMoveParticleTo(Double_t xx,
         LOG(fatal) << "FairStack::FastSimMoveParticleTo(" << xx << "," << yy << "," << zz << ": " << curVolName << " = "
                    << targetVolName << ") crashes the simulation.";
     } else {
-        LOG(debug) << "gMC says track is in \"" << curVolName << "\" moving particle to \"" << targetVolName << "\".";
+        LOG(debug) << "TVirtualMC::GetMC() says track is in \"" << curVolName << "\" moving particle to \""
+                   << targetVolName << "\".";
     }
 
     Int_t tobedone = 1;

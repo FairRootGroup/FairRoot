@@ -107,7 +107,8 @@ Bool_t NewDetector::ProcessHits(FairVolume* vol)
 
     // Create NewDetectorPoint at exit of active volume
     if (TVirtualMC::GetMC()->IsTrackExiting() || TVirtualMC::GetMC()->IsTrackStop()
-        || TVirtualMC::GetMC()->IsTrackDisappeared()) {
+        || TVirtualMC::GetMC()->IsTrackDisappeared())
+    {
         fTrackID = TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber();
         fVolumeID = vol->getMCid();
         if (fELoss == 0.) {
@@ -145,7 +146,7 @@ void NewDetector::Register()
       only during the simulation.
   */
 
-    if (!gMC->IsMT()) {
+    if (!TVirtualMC::GetMC()->IsMT()) {
         GetRootManager().Register("NewDetectorPoint", "NewDetector", fNewDetectorPointCollection, kTRUE);
     } else {
         GetRootManager().RegisterAny("NewDetectorPoint", fNewDetectorPointCollection, kTRUE);
@@ -161,7 +162,10 @@ TClonesArray* NewDetector::GetCollection(Int_t iColl) const
     }
 }
 
-void NewDetector::Reset() { fNewDetectorPointCollection->Clear(); }
+void NewDetector::Reset()
+{
+    fNewDetectorPointCollection->Clear();
+}
 
 void NewDetector::ConstructGeometry()
 {
@@ -231,7 +235,10 @@ NewDetectorPoint* NewDetector::AddHit(Int_t trackID,
     return new (clref[size]) NewDetectorPoint(trackID, detID, pos, mom, time, length, eLoss);
 }
 
-FairModule* NewDetector::CloneModule() const { return new NewDetector(*this); }
+FairModule* NewDetector::CloneModule() const
+{
+    return new NewDetector(*this);
+}
 
 void NewDetector::DefineSensitiveVolumes()
 {
