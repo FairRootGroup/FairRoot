@@ -25,7 +25,7 @@
 #include <TLorentzVector.h>   // for TLorentzVector
 #include <TParticle.h>        // for TParticle
 #include <TRefArray.h>        // for TRefArray
-#include <TVirtualMC.h>       // for gMC
+#include <TVirtualMC.h>       // for TVirtualMC
 #include <iosfwd>             // for ostream
 #include <iostream>           // for operator<<, etc
 #include <stddef.h>           // for NULL
@@ -360,7 +360,7 @@ void MyProjStack::Reset()
 // -----   Public method Register   ----------------------------------------
 void MyProjStack::Register()
 {
-    if (gMC && (!gMC->IsMT())) {
+    if (TVirtualMC::GetMC() && (!TVirtualMC::GetMC()->IsMT())) {
         FairRootManager::Instance()->Register("MCTrack", "Stack", fTracks, kTRUE);
     } else {
         FairRootManager::Instance()->RegisterAny("MCTrack", fTracks, kTRUE);

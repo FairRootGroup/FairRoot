@@ -23,7 +23,7 @@
 #include <TLorentzVector.h>   // for TLorentzVector
 #include <TParticle.h>        // for TParticle
 #include <TRefArray.h>        // for TRefArray
-#include <TVirtualMC.h>       // for gMC
+#include <TVirtualMC.h>       // for TVirtualMC
 
 using std::pair;
 
@@ -314,7 +314,7 @@ void FairStack::Reset()
 
 void FairStack::Register()
 {
-    if (gMC) {
+    if (TVirtualMC::GetMC()) {
         FairRootManager::Instance()->Register("MCTrack", "Stack", fTracks, kTRUE);
     } else {
         FairRootManager::Instance()->RegisterAny("MCTrack", fTracks, kTRUE);

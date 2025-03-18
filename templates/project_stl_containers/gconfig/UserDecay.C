@@ -9,8 +9,8 @@
 void UserDecayConfig()
 {
     cout << "Loading User Decay Config from macro" << endl;
-    TDatabasePDG *db = TDatabasePDG::Instance();
-    TParticlePDG *p = 0;
+    TDatabasePDG* db = TDatabasePDG::Instance();
+    TParticlePDG* p = 0;
 
     Int_t mode[6][3];
     Float_t bratio[6];
@@ -38,5 +38,5 @@ void UserDecayConfig()
    mode[1][1] =AlphaPDG  ;
 
   */
-    gMC->SetDecayMode(He5PDG, bratio, mode);
+    TVirtualMC::GetMC()->SetDecayMode(He5PDG, bratio, mode);
 }

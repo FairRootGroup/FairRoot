@@ -74,13 +74,13 @@ void FairFastSimModel::DoIt(const G4FastTrack& fastTrack, G4FastStep& fastStep)
     int nofSecondaries(0);
     int movedParticleIndex(0);
     std::tie(movedParticleIndex, firstSecondary, nofSecondaries) =
-        ((FairGenericStack*)(gMC->GetStack()))->FastSimGetMovedIndex();
+        ((FairGenericStack*)(TVirtualMC::GetMC()->GetStack()))->FastSimGetMovedIndex();
     if (movedParticleIndex == -2) {
         FairMCApplication::Instance()->Stepping();
         std::tie(movedParticleIndex, firstSecondary, nofSecondaries) =
-            ((FairGenericStack*)(gMC->GetStack()))->FastSimGetMovedIndex();
+            ((FairGenericStack*)(TVirtualMC::GetMC()->GetStack()))->FastSimGetMovedIndex();
     }
-    TClonesArray* particles = ((FairGenericStack*)(gMC->GetStack()))->GetListOfParticles();
+    TClonesArray* particles = ((FairGenericStack*)(TVirtualMC::GetMC()->GetStack()))->GetListOfParticles();
     if (nofSecondaries != 0) {
         fastStep.SetNumberOfSecondaryTracks(nofSecondaries);
 
@@ -110,8 +110,8 @@ void FairFastSimModel::DoIt(const G4FastTrack& fastTrack, G4FastStep& fastStep)
         }
     }
 
-    LOG(debug) << "FairFastSimModel::DoIt() moving particle " << gMC->GetStack()->GetCurrentTrackNumber() << " (pos #"
-               << movedParticleIndex << ").";
+    LOG(debug) << "FairFastSimModel::DoIt() moving particle "
+               << TVirtualMC::GetMC()->GetStack()->GetCurrentTrackNumber() << " (pos #" << movedParticleIndex << ").";
     if (movedParticleIndex != -1) {
         TParticle* particle = (TParticle*)particles->At(movedParticleIndex);
 
@@ -143,5 +143,5 @@ void FairFastSimModel::DoIt(const G4FastTrack& fastTrack, G4FastStep& fastStep)
 
         gGeoManager->SetCurrentPoint(particle->Vx(), particle->Vy(), particle->Vz());
     }
-    ((FairGenericStack*)(gMC->GetStack()))->FastSimClearMovedIndex();
+    ((FairGenericStack*)(TVirtualMC::GetMC()->GetStack()))->FastSimClearMovedIndex();
 }
