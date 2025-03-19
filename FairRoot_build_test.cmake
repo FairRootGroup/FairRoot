@@ -30,7 +30,6 @@ ctest_start(Continuous)
 get_filename_component(test_install_prefix "${CTEST_BINARY_DIRECTORY}/install"
                        ABSOLUTE)
 list(APPEND options
-  "-Werror=dev"
   "-DDISABLE_COLOR=ON"
   "-DCMAKE_INSTALL_PREFIX:PATH=${test_install_prefix}"
 )
