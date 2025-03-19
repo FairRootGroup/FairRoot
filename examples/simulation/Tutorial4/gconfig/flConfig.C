@@ -14,10 +14,10 @@ void Config()
 
     cout << "GConfig: Fluka has been created." << endl;
 
-    FairStack *st = new FairStack();
+    FairStack* st = new FairStack();
     st->SetMinPoints(0);
-    gMC->SetStack(st);
-    gMC->SetProcess("CKOV", 1);
+    TVirtualMC::GetMC()->SetStack(st);
+    TVirtualMC::GetMC()->SetProcess("CKOV", 1);
 
     // set the common cuts
     TString configm(gSystem->Getenv("VMCWORKDIR"));

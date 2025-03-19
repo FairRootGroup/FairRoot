@@ -42,7 +42,10 @@ FairDetector::FairDetector(const FairDetector& rhs)
     , fDetId(rhs.fDetId)
 {}
 
-FairDetector::~FairDetector() { delete flGeoPar; }
+FairDetector::~FairDetector()
+{
+    delete flGeoPar;
+}
 
 FairDetector& FairDetector::operator=(const FairDetector& rhs)
 {
@@ -88,7 +91,7 @@ void FairDetector::Initialize()
     // ---
 
     // Define sensitive volumes if in MT
-    if (gMC->IsMT()) {
+    if (TVirtualMC::GetMC()->IsMT()) {
         std::cout << "Define sensitive volume " << std::endl;
         DefineSensitiveVolumes();
     }
