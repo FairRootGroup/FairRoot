@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -218,6 +218,12 @@ class FairMCApplication : public TVirtualMCApplication
      * the event.
      */
     void SetSaveCurrentEvent(Bool_t set) { fSaveCurrentEvent = set; }
+
+    /**
+     * Returns the state of the flag deciding whether the current event
+     * is goint to be stored.
+     */
+    bool GetSaveCurrentEvent() { return fSaveCurrentEvent; }
 
     /**
      * Get the current application state.
