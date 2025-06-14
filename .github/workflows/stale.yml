@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: 2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH, Darmstadt, Germany
+#
+# SPDX-License-Identifier: CC0-1.0
+
+name: Mark stale issues and PRs
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'  # At 02:00 on Monday
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          days-before-stale: 365
+          days-before-close: -1
+          ascending: true
+          operations-per-run: 2
