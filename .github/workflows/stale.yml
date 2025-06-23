@@ -22,3 +22,11 @@ jobs:
           days-before-close: -1
           ascending: true
           operations-per-run: 5
+          stale-issue-message: >-
+            This issue has been automatically marked as stale
+            because it has not had recent activity.
+            It will not be closed.
+          stale-pr-message: >-
+            This PR has been automatically marked as stale
+            because it has not had recent activity.
+            It will not be closed.
