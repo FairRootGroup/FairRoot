@@ -1,3 +1,4 @@
+---
 # SPDX-FileCopyrightText: 2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH, Darmstadt, Germany
 #
 # SPDX-License-Identifier: CC0-1.0
@@ -11,6 +12,10 @@ on:
 permissions:
   issues: write
   pull-requests: write
+
+  # For managing the operation state cache
+  # https://github.com/actions/stale/issues/1159
+  actions: write
 
 jobs:
   stale:
