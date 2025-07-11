@@ -125,10 +125,19 @@ function(fairroot_target_root_dictionary target)
   # add a custom command to generate the dictionary using rootcling
   # cmake-format: off
   set(space " ")
+
+  if (APPLE AND CMAKE_OSX_SYSROOT)
+    set(_sysroot_arg "SDKROOT=${CMAKE_OSX_SYSROOT}")
+  else()
+    set(_sysroot_arg)
+  endif()
+
   add_custom_command(
     OUTPUT ${dictionaryFile} ${pcmFile} ${rootmapFile}
     VERBATIM
-    COMMAND ${CMAKE_COMMAND} -E env "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$ENV{LD_LIBRARY_PATH}"
+    COMMAND ${CMAKE_COMMAND} -E env
+      "LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:$ENV{LD_LIBRARY_PATH}"
+      ${_sysroot_arg}
       $<TARGET_FILE:ROOT::rootcling>
       -f ${dictionaryFile}
       -inlineInputHeader
