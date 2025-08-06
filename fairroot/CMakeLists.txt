@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2023-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2023-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -14,13 +14,18 @@ add_subdirectory(mcsteplogger)
 add_subdirectory(alignment)
 add_subdirectory(base)
 
-if(Geant4_FOUND AND Geant4VMC_FOUND)
-  add_subdirectory(fastsim)
-endif()
-
 add_subdirectory(geobase)
 add_subdirectory(parbase)
 add_subdirectory(generators)
+add_subdirectory(trackbase)
+
+if(Geant3_FOUND)
+ add_subdirectory(geane)
+endIf()
+
+if(Geant4_FOUND AND Geant4VMC_FOUND)
+  add_subdirectory(fastsim)
+endif()
 
 if(BUILD_MBS)
   add_subdirectory(mbsapi)
@@ -28,11 +33,6 @@ endif()
 if(BUILD_ONLINE)
   add_subdirectory(online)
 endif()
-
-if(Geant3_FOUND)
- add_subdirectory(geane)
- add_subdirectory(trackbase)
-endIf()
 
 if(ROOT_opengl_FOUND)
   add_subdirectory(eventdisplay)
