@@ -7,7 +7,8 @@ name: Mark stale issues and PRs
 
 on:
   schedule:
-    - cron: '0 2 * * 1'  # At 02:00 on Monday
+    # At 02:17 UTC on every 5th day-of-month from 3
+    - cron: '17 2 3,8,13,18,23,28 * *'
 
 permissions:
   issues: write
