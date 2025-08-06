@@ -31,8 +31,9 @@ endif()
 
 if(Geant3_FOUND)
  add_subdirectory(geane)
- add_subdirectory(trackbase)
 endIf()
+
+add_subdirectory(trackbase)
 
 if(ROOT_opengl_FOUND)
   add_subdirectory(eventdisplay)
