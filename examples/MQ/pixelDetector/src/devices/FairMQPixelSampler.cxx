@@ -15,6 +15,7 @@
 #include "FairMQPixelSampler.h"
 
 #include "FairFileSource.h"
+#include "FairRootManager.h"
 #include "FairRunAna.h"
 #include "FairSource.h"
 #include "RootSerializer.h"
@@ -59,18 +60,31 @@ void FairMQPixelSampler::InitTask()
     }
 
     fSource->Init();
-    LOG(info) << "Going to request " << fBranchNames.size() << "  branches:";
-    for (unsigned int ibrn = 0; ibrn < fBranchNames.size(); ibrn++) {
-        LOG(info) << " requesting branch \"" << fBranchNames[ibrn] << "\"";
-        int branchStat = fSource->ActivateObject((TObject**)&fInputObjects[fNObjects],
-                                                 fBranchNames[ibrn].c_str());   // should check the status...
-        if (fInputObjects[fNObjects]) {
-            LOG(info) << "Activated object \"" << fInputObjects[fNObjects] << "\" with name \"" << fBranchNames[ibrn]
-                      << "\" (" << branchStat << "), it got name: \"" << fInputObjects[fNObjects]->GetName() << "\"";
-            if (strcmp(fInputObjects[fNObjects]->GetName(), fBranchNames[ibrn].c_str()))
-                if (strcmp(fInputObjects[fNObjects]->ClassName(), "TClonesArray") == 0)
-                    ((TClonesArray*)fInputObjects[fNObjects])->SetName(fBranchNames[ibrn].c_str());
-            fNObjects++;
+
+    auto* frm = FairRootManager::Instance();
+    if (!frm) {
+        LOG(error) << "FairRootManager instance is null after fSource->Init(). ";
+    }
+    else {
+        LOG(info) << "Going to request " << fBranchNames.size() << "  branches:";
+        for (unsigned int ibrn = 0; ibrn < fBranchNames.size(); ibrn++) {
+            LOG(info) << " - requesting branch \"" << fBranchNames[ibrn] << "\"";
+            fInputObjects[fNObjects] = frm->GetObject(fBranchNames[ibrn].c_str());
+            if (fInputObjects[fNObjects]) {
+                LOG(info) << "Retrieved object ptr=" << fInputObjects[fNObjects] << " for branch \"" << fBranchNames[ibrn]
+                          << "\", object name: \"" << fInputObjects[fNObjects]->GetName() << "\"";
+                if (std::strcmp(fInputObjects[fNObjects]->GetName(), fBranchNames[ibrn].c_str()) != 0) {
+                    if (auto* tca = dynamic_cast<TClonesArray*>(fInputObjects[fNObjects])) {
+                        LOG(info) << "Renaming \"" << fInputObjects[fNObjects]->GetName() << "\" to \""
+                                  << fBranchNames[ibrn].c_str() << "\"";
+                        tca->SetName(fBranchNames[ibrn].c_str());
+                    }
+                }
+                fNObjects++;
+            } else {
+                LOG(warn) << "Branch \"" << fBranchNames[ibrn]
+                          << "\" not found via FairRootManager::GetObject() at Init.";
+            }
         }
     }
 
