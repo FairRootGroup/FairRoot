@@ -1,5 +1,5 @@
  ################################################################################
- # Copyright (C) 2019-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+ # Copyright (C) 2019-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
  #                                                                              #
  #              This software is distributed under the terms of the             #
  #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -19,10 +19,16 @@ set(sources
   FairTutPropHitProducer.cxx
   FairTutPropTrack.cxx
   FairTutPropTrackFinder.cxx
-  FairEveRecoTracksExample.cxx
-  FairEveRecoTracksExampleEditor.cxx
-  FairRecoTracksDraw.cxx
 )
+
+if(TARGET FairRoot::EventDisplay)
+  list(APPEND sources
+    FairEveRecoTracksExample.cxx
+    FairEveRecoTracksExampleEditor.cxx
+    FairRecoTracksDraw.cxx
+  )
+endif()
+
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)
 
@@ -45,7 +51,8 @@ target_link_libraries(${target}
   FairRoot::GeoBase # FairGeoSet
   FairRoot::ParBase # FairRuntimeDb, FairContFact, FairParamList
   FairRoot::TrackBase # FairPropagator
-  FairRoot::EventDisplay
+
+  $<IF:$<TARGET_EXISTS:FairRoot::EventDisplay>,FairRoot::EventDisplay,>
 
   Boost::serialization
 
@@ -57,6 +64,7 @@ target_link_libraries(${target}
   PRIVATE
   FairRoot::Tools # FairLogger
   FairRoot::ExMCStack
+  FairRoot::ExPassive
 
   ROOT::MathCore # TRandom
   ROOT::EG
