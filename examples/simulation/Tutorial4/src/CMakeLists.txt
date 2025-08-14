@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -27,7 +27,7 @@ set(sources
   tools/Mille.cc
 )
 
-if(ROOT_opengl_FOUND)
+if(TARGET FairRoot::EventDisplay)
   list(APPEND sources
     display/FairTutorialDet4PointDraw.cxx
   )
@@ -60,9 +60,8 @@ target_link_libraries(${target}
 
   PRIVATE
   FairRoot::ExMCStack
-  $<$<BOOL:${ROOT_HAS_OPENGL}>:FairRoot::EventDisplay>
   FairRoot::Tools # FairLogger
-  FairRoot::EventDisplay
+  $<IF:$<TARGET_EXISTS:FairRoot::EventDisplay>,FairRoot::EventDisplay,>
 
   ROOT::Geom
   ${VMCLIB}
