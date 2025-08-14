@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2019-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2019-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -64,8 +64,10 @@ int runProp(std::string propName = "rk")
 
     // -----   Set propagator and run   ---------------------------------------
     if (propName == "geane") {
+#ifdef Geant3_FOUND
         FairGeane* Geane = new FairGeane();
         fRun->AddTask(Geane);
+#endif
     }
 
     FairTutPropTr* propTask = new FairTutPropTr();
@@ -78,8 +80,10 @@ int runProp(std::string propName = "rk")
     fRun->Init();
 
     if (propName == "geane") {
+#ifdef Geant3_FOUND
         FairGeanePro* GeaneProp = new FairGeanePro();
         propTask->SetPropagator(GeaneProp);
+#endif
     }
 
     timer.Start();
