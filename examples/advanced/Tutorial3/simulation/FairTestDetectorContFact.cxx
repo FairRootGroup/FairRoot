@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -7,7 +7,6 @@
  ********************************************************************************/
 #include "FairTestDetectorContFact.h"
 
-#include "FairConstPar.h"             // for FairConstPar
 #include "FairTestDetectorGeoPar.h"   // for FairTestDetectorGeoPar
 
 #include <TList.h>     // for TList
@@ -28,9 +27,6 @@ FairTestDetectorContFact::FairTestDetectorContFact()
 
     auto p = new FairContainer("FairTestDetectorGeoPar", "FairTestDetector Geometry Parameters", "TestDefaultContext");
     AddContainer(p);
-
-    auto p1 = new FairContainer("FairConstPar", "Constant Field Parameters", "TestDefaultContext");
-    AddContainer(p1);
 }
 
 FairParSet* FairTestDetectorContFact::createContainer(FairContainer* c)
@@ -44,9 +40,6 @@ FairParSet* FairTestDetectorContFact::createContainer(FairContainer* c)
     FairParSet* p = nullptr;
     if (strcmp(name, "FairTestDetectorGeoPar") == 0) {
         p = new FairTestDetectorGeoPar(c->getConcatName().Data(), c->GetTitle(), c->getContext());
-    }
-    if (strcmp(name, "FairConstPar") == 0) {
-        p = new FairConstPar(c->getConcatName().Data(), c->GetTitle(), c->getContext());
     }
 
     return p;

@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -18,6 +18,7 @@
 #include "FairPassiveContFact.h"
 
 #include "FairGeoPassivePar.h"   // for FairGeoPassivePar
+#include "FairConstPar.h"             // for FairConstPar
 
 #include <TList.h>     // for TList
 #include <TString.h>   // for TString
@@ -35,6 +36,9 @@ FairPassiveContFact::FairPassiveContFact()
 
     auto p = new FairContainer("FairGeoPassivePar", "Passive Geometry Parameters", "TestDefaultContext");
     AddContainer(p);
+
+    auto p1 = new FairContainer("FairConstPar", "Constant Field Parameters", "TestDefaultContext");
+    AddContainer(p1);
 }
 
 FairParSet* FairPassiveContFact::createContainer(FairContainer* c)
@@ -47,5 +51,9 @@ FairParSet* FairPassiveContFact::createContainer(FairContainer* c)
     if (strcmp(name, "FairGeoPassivePar") == 0) {
         p = new FairGeoPassivePar(c->getConcatName().Data(), c->GetTitle(), c->getContext());
     }
+    if (strcmp(name, "FairConstPar") == 0) {
+        p = new FairConstPar(c->getConcatName().Data(), c->GetTitle(), c->getContext());
+    }
+
     return p;
 }

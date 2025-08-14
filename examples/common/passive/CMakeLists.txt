@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -19,6 +19,11 @@ set(sources
   FairPassiveContFact.cxx
   FairPipe.cxx
   FairTarget.cxx
+
+  FairMapPar.cxx
+  FairConstPar.cxx
+  FairConstField.cxx
+  FairConstFieldCreator.cxx
 )
 
 fair_change_extensions_if_exists(.cxx .h FILES "${sources}" OUTVAR headers)

@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             * 
  *              GNU Lesser General Public Licence (LGPL) version 3,             *  
@@ -24,6 +24,11 @@
 #pragma link C++ class FairGeoMagnet;
 #pragma link C++ class FairGeoPassivePar;
 #pragma link C++ class FairPassiveContFact;
+
+#pragma link C++ class FairMapPar+;
+#pragma link C++ class FairConstPar+;
+#pragma link C++ class FairConstField+;
+#pragma link C++ class FairConstFieldCreator+;
 
 #endif
 
