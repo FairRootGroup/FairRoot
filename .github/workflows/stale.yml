@@ -1,0 +1,38 @@
+---
+# SPDX-FileCopyrightText: 2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH, Darmstadt, Germany
+#
+# SPDX-License-Identifier: CC0-1.0
+
+name: Mark stale issues and PRs
+
+on:
+  schedule:
+    # At 02:17 UTC on every 5th day-of-month from 3
+    - cron: '17 2 3,8,13,18,23,28 * *'
+
+permissions:
+  issues: write
+  pull-requests: write
+
+  # For managing the operation state cache
+  # https://github.com/actions/stale/issues/1159
+  actions: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          days-before-stale: 365
+          days-before-close: -1
+          ascending: true
+          operations-per-run: 5
+          stale-issue-message: >-
+            This issue has been automatically marked as stale
+            because it has not had recent activity.
+            It will not be closed.
+          stale-pr-message: >-
+            This PR has been automatically marked as stale
+            because it has not had recent activity.
+            It will not be closed.
