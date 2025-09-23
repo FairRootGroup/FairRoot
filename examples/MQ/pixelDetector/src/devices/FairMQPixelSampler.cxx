@@ -61,30 +61,25 @@ void FairMQPixelSampler::InitTask()
 
     fSource->Init();
 
-    auto* frm = FairRootManager::Instance();
-    if (!frm) {
-        LOG(error) << "FairRootManager instance is null after fSource->Init(). ";
-    }
-    else {
-        LOG(info) << "Going to request " << fBranchNames.size() << "  branches:";
-        for (unsigned int ibrn = 0; ibrn < fBranchNames.size(); ibrn++) {
-            LOG(info) << " - requesting branch \"" << fBranchNames[ibrn] << "\"";
-            fInputObjects[fNObjects] = frm->GetObject(fBranchNames[ibrn].c_str());
-            if (fInputObjects[fNObjects]) {
-                LOG(info) << "Retrieved object ptr=" << fInputObjects[fNObjects] << " for branch \"" << fBranchNames[ibrn]
-                          << "\", object name: \"" << fInputObjects[fNObjects]->GetName() << "\"";
-                if (std::strcmp(fInputObjects[fNObjects]->GetName(), fBranchNames[ibrn].c_str()) != 0) {
-                    if (auto* tca = dynamic_cast<TClonesArray*>(fInputObjects[fNObjects])) {
-                        LOG(info) << "Renaming \"" << fInputObjects[fNObjects]->GetName() << "\" to \""
-                                  << fBranchNames[ibrn].c_str() << "\"";
-                        tca->SetName(fBranchNames[ibrn].c_str());
-                    }
+    auto& frm = fRunAna->GetRootManager();
+    LOG(info) << "Going to request " << fBranchNames.size() << "  branches:";
+    for (auto const& branchName : fBranchNames) {
+        LOG(info) << " - requesting branch \"" << branchName << "\"";
+        fInputObjects[fNObjects] = frm.GetObject(branchName.c_str());
+        if (fInputObjects[fNObjects]) {
+            LOG(info) << "Retrieved object ptr=" << fInputObjects[fNObjects] << " for branch \"" << branchName
+                      << "\", object name: \"" << fInputObjects[fNObjects]->GetName() << "\"";
+            if (std::strcmp(fInputObjects[fNObjects]->GetName(), branchName.c_str()) != 0) {
+                if (auto* tca = dynamic_cast<TClonesArray*>(fInputObjects[fNObjects])) {
+                    LOG(info) << "Renaming \"" << fInputObjects[fNObjects]->GetName() << "\" to \""
+                              << branchName.c_str() << "\"";
+                    tca->SetName(branchName.c_str());
                 }
-                fNObjects++;
-            } else {
-                LOG(warn) << "Branch \"" << fBranchNames[ibrn]
-                          << "\" not found via FairRootManager::GetObject() at Init.";
             }
+            fNObjects++;
+        } else {
+            LOG(warn) << "Branch \"" << branchName
+                      << "\" not found via FairRootManager::GetObject() at Init.";
         }
     }
 
