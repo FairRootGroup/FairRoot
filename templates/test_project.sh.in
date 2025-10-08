@@ -1,57 +1,87 @@
 #!/bin/bash
 
-set -x -e
+set -e -u -o pipefail
+[[ "${DEBUG:-0}" == "1" ]] && set -x
 
-# Usage: test_project.sh <container_type> [--double-configure]
-# where container_type is either 'root' or 'stl'
+usage() {
+    echo "Usage: $0 <container_type> [--double-configure]" >&2
+    echo "  container_type: 'root' or 'stl'" >&2
+    exit 1
+}
 
-if [ $# -lt 1 ]; then
-    echo "Usage: $0 <container_type> [--double-configure]"
-    echo "  container_type: 'root' or 'stl'"
+# Parse arguments
+CONTAINER_TYPE=""
+DOUBLE_CONFIGURE=0
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --double-configure)
+            DOUBLE_CONFIGURE=1
+            shift
+            ;;
+        root|stl)
+            if [[ -n "$CONTAINER_TYPE" ]]; then
+                echo "Error: container_type specified multiple times" >&2
+                usage
+            fi
+            CONTAINER_TYPE=$1
+            shift
+            ;;
+        -h|--help)
+            usage
+            ;;
+        *)
+            echo "Error: Unknown argument '$1'" >&2
+            usage
+            ;;
+    esac
+done
+
+if [[ -z "$CONTAINER_TYPE" ]]; then
+    echo "Error: container_type is required" >&2
+    usage
+fi
+
+readonly CONTAINER_TYPE
+readonly DOUBLE_CONFIGURE
+
+readonly CURRENT_DIR=$(pwd)
+readonly SOURCE_DIR=@CMAKE_SOURCE_DIR@
+readonly MYTMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir')
+
+# Ensure cleanup on exit
+trap 'cd "$CURRENT_DIR" && rm -rf "$MYTMPDIR"' EXIT
+
+readonly TEMPLATE_DIR="$SOURCE_DIR/templates/project_${CONTAINER_TYPE}_containers"
+if [[ ! -d "$TEMPLATE_DIR" ]]; then
+    echo "Error: Template directory not found: $TEMPLATE_DIR" >&2
     exit 1
 fi
 
-CONTAINER_TYPE=$1
-DOUBLE_CONFIGURE_FLAG=$2
-
-if [[ "$CONTAINER_TYPE" != "root" && "$CONTAINER_TYPE" != "stl" ]]; then
-    echo "Error: container_type must be 'root' or 'stl'"
-    exit 1
-fi
-
-CURRENT_DIR=`pwd`
-SOURCE_DIR=@CMAKE_SOURCE_DIR@
-MYTMPDIR=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
-
-cd $MYTMPDIR
-cp -a $SOURCE_DIR/templates/project_${CONTAINER_TYPE}_containers .
-cd project_${CONTAINER_TYPE}_containers
+cd "$MYTMPDIR"
+cp -a "$TEMPLATE_DIR" .
+cd "project_${CONTAINER_TYPE}_containers"
 ./rename.sh TestProj Tst det
-mkdir build
-cd build
 
 export SIMPATH=@SIMPATH@
 export FAIRROOTPATH=@CMAKE_INSTALL_PREFIX@
 
-parameters="-DCMAKE_CXX_STANDARD=@CMAKE_CXX_STANDARD@"
+# Use array for proper argument handling
+parameters=(-DCMAKE_CXX_STANDARD=@CMAKE_CXX_STANDARD@)
 
 if [[ -n "@CMAKE_OSX_SYSROOT@" ]]; then
-  parameters="$parameters -DCMAKE_OSX_SYSROOT=@CMAKE_OSX_SYSROOT@"
+  parameters+=(-DCMAKE_OSX_SYSROOT=@CMAKE_OSX_SYSROOT@)
 fi
 
-cmake $parameters ..
+cmake -S . -B build "${parameters[@]}"
 
-if [[ "$DOUBLE_CONFIGURE_FLAG" = "--double-configure" ]]; then
+if [[ "$DOUBLE_CONFIGURE" == "1" ]]; then
   echo "*** Calling cmake configure again:"
   # Check if all the cache variables
   # are good for a reconfiguration step
-  cmake ..
+  cmake -S . -B build
 fi
 
-make
-if [ $? -eq 0 ]; then
-    echo 'Test successful.'
-fi
+cmake --build build
 
-cd $CURRENT_DIR
-rm -rf $MYTMPDIR
+echo "Test successful."
