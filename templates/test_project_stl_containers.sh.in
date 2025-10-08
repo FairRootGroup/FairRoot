@@ -12,16 +12,23 @@ cd project_stl_containers
 ./rename.sh TestProj Tst det
 mkdir build
 cd build
-export CMAKE_PREFIX_PATH="@SIMPATH@${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
-export FAIRROOTPATH=@CMAKE_INSTALL_PREFIX@
-cmake -DCMAKE_CXX_STANDARD=@CMAKE_CXX_STANDARD@ ..
 
-if [ "$1" = "--double-configure" ]
-then
-    echo "*** Calling cmake configure again:"
-    # Check if all the cache variables
-    # are good for a reconfiguration step
-    cmake ..
+export SIMPATH=@SIMPATH@
+export FAIRROOTPATH=@CMAKE_INSTALL_PREFIX@
+
+parameters="-DCMAKE_CXX_STANDARD=@CMAKE_CXX_STANDARD@"
+
+if [[ -n "@CMAKE_OSX_SYSROOT@" ]]; then
+  parameters="$parameters -DCMAKE_OSX_SYSROOT=@CMAKE_OSX_SYSROOT@"
+fi
+
+cmake $parameters ..
+
+if [[ "$1" = "--double-configure" ]]; then
+  echo "*** Calling cmake configure again:"
+  # Check if all the cache variables
+  # are good for a reconfiguration step
+  cmake ..
 fi
 
 make
