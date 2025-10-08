@@ -1,12 +1,31 @@
 #!/bin/bash
 
+set -x -e
+
+# Usage: test_project.sh <container_type> [--double-configure]
+# where container_type is either 'root' or 'stl'
+
+if [ $# -lt 1 ]; then
+    echo "Usage: $0 <container_type> [--double-configure]"
+    echo "  container_type: 'root' or 'stl'"
+    exit 1
+fi
+
+CONTAINER_TYPE=$1
+DOUBLE_CONFIGURE_FLAG=$2
+
+if [[ "$CONTAINER_TYPE" != "root" && "$CONTAINER_TYPE" != "stl" ]]; then
+    echo "Error: container_type must be 'root' or 'stl'"
+    exit 1
+fi
+
 CURRENT_DIR=`pwd`
 SOURCE_DIR=@CMAKE_SOURCE_DIR@
 MYTMPDIR=`mktemp -d 2>/dev/null || mktemp -d -t 'mytmpdir'`
 
 cd $MYTMPDIR
-cp -a $SOURCE_DIR/templates/project_stl_containers .
-cd project_stl_containers
+cp -a $SOURCE_DIR/templates/project_${CONTAINER_TYPE}_containers .
+cd project_${CONTAINER_TYPE}_containers
 ./rename.sh TestProj Tst det
 mkdir build
 cd build
@@ -22,14 +41,13 @@ fi
 
 cmake $parameters ..
 
-if [[ "$1" = "--double-configure" ]]; then
+if [[ "$DOUBLE_CONFIGURE_FLAG" = "--double-configure" ]]; then
   echo "*** Calling cmake configure again:"
   # Check if all the cache variables
   # are good for a reconfiguration step
   cmake ..
 fi
 
->>>>>>> 676fb3b2d (fix(tests): Fix template tests for macosx)
 make
 if [ $? -eq 0 ]; then
     echo 'Test successful.'
@@ -37,4 +55,3 @@ fi
 
 cd $CURRENT_DIR
 rm -rf $MYTMPDIR
-
