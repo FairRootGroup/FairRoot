@@ -10,9 +10,26 @@ cd project_stl_containers
 ./rename.sh TestProj Tst det
 mkdir build
 cd build
+
 export SIMPATH=@SIMPATH@
 export FAIRROOTPATH=@CMAKE_INSTALL_PREFIX@
-cmake -DUSE_DIFFERENT_COMPILER=true ..
+
+parameters="-DCMAKE_CXX_STANDARD=@CMAKE_CXX_STANDARD@"
+
+if [[ -n "@CMAKE_OSX_SYSROOT@" ]]; then
+  parameters="$parameters -DCMAKE_OSX_SYSROOT=@CMAKE_OSX_SYSROOT@"
+fi
+
+cmake $parameters ..
+
+if [[ "$1" = "--double-configure" ]]; then
+  echo "*** Calling cmake configure again:"
+  # Check if all the cache variables
+  # are good for a reconfiguration step
+  cmake ..
+fi
+
+>>>>>>> 676fb3b2d (fix(tests): Fix template tests for macosx)
 make
 if [ $? -eq 0 ]; then
     echo 'Test successful.'
