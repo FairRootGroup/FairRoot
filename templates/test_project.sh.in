@@ -59,7 +59,7 @@ if [[ ! -d "$TEMPLATE_DIR" ]]; then
 fi
 
 cd "$MYTMPDIR"
-cp -a "$TEMPLATE_DIR" .
+cp -RP "$TEMPLATE_DIR" .
 cd "project_${CONTAINER_TYPE}_containers"
 ./rename.sh TestProj Tst det
 
