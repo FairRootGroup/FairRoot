@@ -149,7 +149,7 @@ void NewDetector::Register()
   */
 
     if (!TVirtualMC::GetMC()->IsMT()) {
-        GetRootManager().Register("NewDetectorPoint", "NewDetector", fNewDetectorPointCollection, kTRUE);
+        FairRootManager::Instance()->Register("NewDetectorPoint", "NewDetector", fNewDetectorPointCollection, kTRUE);
     } else {
         FairRootManager::Instance()->RegisterAny("NewDetectorPoint", fNewDetectorPointCollection, kTRUE);
     }

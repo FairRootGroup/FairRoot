@@ -40,7 +40,12 @@ NewDetectorPoint.cxx
 Set(LINKDEF NewDetectorLinkDef.h)
 Set(LIBRARY_NAME NewDetector)
 Set(DEPENDENCIES
+    MyProjData
     Base
+    GeoBase
+    ParBase
+    Core
+    ${VMCLIB}
 )
 
 GENERATE_LIBRARY()

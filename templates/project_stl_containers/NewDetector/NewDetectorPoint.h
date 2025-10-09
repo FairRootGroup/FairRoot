@@ -41,7 +41,6 @@ class NewDetectorPoint
     virtual void Print(const Option_t* opt) const;
 
     /** Accessors */
-    uint32_t GetEventID() const { return fEventId; }   /// event identifier
     int GetTrackID() const { return fTrackID; }
     double GetPx() const { return fPx; }
     double GetPy() const { return fPy; }
@@ -57,7 +56,6 @@ class NewDetectorPoint
     void Position(TVector3& pos) const { pos.SetXYZ(fX, fY, fZ); }
 
     /** Modifiers **/
-    void SetEventID(uint32_t eventId) { fEventId = eventId; }
     virtual void SetTrackID(int id) { fTrackID = id; }
     void SetTime(double time) { fTime = time; }
     void SetLength(double length) { fLength = length; }
@@ -72,7 +70,6 @@ class NewDetectorPoint
 
   protected:
     int fTrackID;           ///< Track index
-    uint32_t fEventId;      ///< MC Event id
     double fPx, fPy, fPz;   ///< Momentum components [GeV]
     double fTime;           ///< Time since event start [ns]
     double fLength;         ///< Track length since creation [cm]

@@ -28,6 +28,9 @@ set(LINKDEF FieldLinkDef.h)
 Set(LIBRARY_NAME Field)
 Set(DEPENDENCIES
     Base 
+    ParBase
+    FairLogger
+    Core
 )
 
 GENERATE_LIBRARY()
