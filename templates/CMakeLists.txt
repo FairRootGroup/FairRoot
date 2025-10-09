@@ -1,7 +1,8 @@
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/test_project.sh.in
                ${CMAKE_CURRENT_BINARY_DIR}/test_project.sh
-               @ONLY)
+               @ONLY
+               USE_SOURCE_PERMISSIONS)
 
 foreach(container_type IN ITEMS root stl)
   add_test(NAME project_${container_type}_containers
