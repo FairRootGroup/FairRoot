@@ -87,8 +87,6 @@ class FairTutorialDet4 : public FairDetector
 
     virtual void RegisterAlignmentMatrices();
 
-    virtual Bool_t IsSensitive(const std::string& name);
-
   private:
     /** Track information to be stored until the track leaves the
     active volume.

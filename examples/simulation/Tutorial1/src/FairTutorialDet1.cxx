@@ -115,11 +115,6 @@ TClonesArray* FairTutorialDet1::GetCollection(Int_t iColl) const
 
 void FairTutorialDet1::Reset() { fFairTutorialDet1PointCollection->Clear(); }
 
-Bool_t FairTutorialDet1::IsSensitive(const std::string& name)
-{
-    return name.find("tutdet") != std::string::npos;
-}
-
 void FairTutorialDet1::ConstructGeometry()
 {
     /** If you are using the standard ASCII input for the geometry

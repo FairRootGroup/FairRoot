@@ -162,11 +162,6 @@ void Pixel::ConstructGeometry()
     ConstructASCIIGeometry<PixelGeo, PixelGeoPar>("PixelGeoPar");
 }
 
-Bool_t Pixel::IsSensitive(const std::string& name)
-{
-    return name.find("Pixel") != std::string::npos;
-}
-
 PixelPoint* Pixel::AddHit(Int_t trackID,
                           Int_t detID,
                           TVector3 pos,

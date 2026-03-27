@@ -17,6 +17,7 @@
 #include "FairRuntimeDb.h"   // for FairRuntimeDb
 
 #include <TCollection.h>   // for TRangeDynCast
+#include <TGeoManager.h>
 #include <TGeoMatrix.h>
 #include <TGeoNode.h>
 #include <TGeoVolume.h>
@@ -103,9 +104,14 @@ class FairModule : public TNamed
     template<class T, class U>
     void ConstructASCIIGeometry(TString containerName = "");
 
+    /** Check volume sensitivity by probing medium sensitivity flag. */
+    virtual Bool_t IsSensitive(TGeoVolume* vol) { return (vol->GetMedium()->GetParam(0) == 1.0); }
+
     /**Set the sensitivity flag for volumes, called from ConstructASCIIRootGeometry(), and has to be implimented for
      * detectors which use ConstructASCIIRootGeometry() to build the geometry */
-    virtual Bool_t IsSensitive(const std::string& name);
+    virtual Bool_t IsSensitive(const std::string& name) __attribute__((deprecated(
+        "The method IfSensitive(const std::string& name) is deprecated and may be removed in the future releases.")));
+
     /**The function below is depracated, please change to the new method above */
     virtual Bool_t CheckIfSensitive(__attribute__((unused)) std::string name) __attribute__((
         deprecated("The method CheckIfSensitive is deprecated. Implement IsSensitive in the detector classes.")))

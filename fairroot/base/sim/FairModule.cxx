@@ -459,7 +459,7 @@ void FairModule::ExpandNodeForGDML(TGeoNode* curNode)
     AssignMediumAtImport(curVol);
 
     // Check if the volume is sensitive
-    if ((this->InheritsFrom("FairDetector")) && IsSensitive(curVol->GetName())) {
+    if ((this->InheritsFrom("FairDetector")) && IsSensitive(curVol)) {
         LOG(debug2) << "Sensitive Volume " << curVol->GetName();
         AddSensitiveVolume(curVol);
     }
@@ -564,7 +564,7 @@ void FairModule::ExpandNode(TGeoNode* fN)
             LOG(debug2) << "Register Volume " << v->GetName();
             v->RegisterYourself();
         }
-        if ((this->InheritsFrom("FairDetector")) && IsSensitive(v->GetName())) {
+        if ((this->InheritsFrom("FairDetector")) && IsSensitive(v)) {
             LOG(debug2) << "Sensitive Volume " << v->GetName();
             AddSensitiveVolume(v);
         }

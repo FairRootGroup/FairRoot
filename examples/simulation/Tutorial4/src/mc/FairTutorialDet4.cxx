@@ -248,11 +248,6 @@ void FairTutorialDet4::ConstructGeometry()
     }
 }
 
-Bool_t FairTutorialDet4::IsSensitive(const std::string& name)
-{
-    return name.find("tut4") != std::string::npos;
-}
-
 void FairTutorialDet4::ConstructASCIIGeometry()
 {
     /** If you are using the standard ASCII input for the geometry

@@ -70,8 +70,6 @@ class FairTutorialDet1 : public FairDetector
 
     FairModule* CloneModule() const override;
 
-    Bool_t IsSensitive(const std::string& name) override;
-
   private:
     /** Track information to be stored until the track leaves the
     active volume.

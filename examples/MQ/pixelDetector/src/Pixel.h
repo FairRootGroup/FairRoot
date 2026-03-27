@@ -62,7 +62,6 @@ class Pixel : public FairDetector
 
     void EndOfEvent() override;
 
-    Bool_t IsSensitive(const std::string& name) override;
     FairModule* CloneModule() const override;
 
   private:

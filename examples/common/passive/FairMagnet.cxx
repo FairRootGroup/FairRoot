@@ -41,12 +41,6 @@ void FairMagnet::ConstructGeometry()
     }
 }
 
-Bool_t FairMagnet::IsSensitive(const std::string& /*name*/)
-{
-    // just to get rid of the warrning during run, not need this is a passive element!
-    return kFALSE;
-}
-
 void FairMagnet::ConstructASCIIGeometry()
 {
     FairModule::ConstructASCIIGeometry<FairGeoMagnet, FairGeoPassivePar>("FairGeoPassivePar");
