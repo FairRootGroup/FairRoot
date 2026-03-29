@@ -104,17 +104,28 @@ class FairModule : public TNamed
     template<class T, class U>
     void ConstructASCIIGeometry(TString containerName = "");
 
-    /** Check volume sensitivity by probing medium sensitivity flag. */
-    virtual Bool_t IsSensitive(TGeoVolume* vol) { return (vol->GetMedium()->GetParam(0) == 1.0); }
+    /**
+     * Check volume sensitivity by probing medium sensitivity flag.
+     *
+     * Function checks the sensitivity property of the medium. This is generic approach and should work for any volume.
+     * Override this _only_ in case of specific customisation.
+     *
+     * See Bool_t IsSensitive(const std::string& name) for deprecation notice.
+     */
+    virtual bool IsSensitive(TGeoVolume* vol) { return (vol->GetMedium()->GetParam(0) == 1.0); }
 
-    /**Set the sensitivity flag for volumes, called from ConstructASCIIRootGeometry(), and has to be implimented for
-     * detectors which use ConstructASCIIRootGeometry() to build the geometry */
-    virtual Bool_t IsSensitive(const std::string& name) __attribute__((deprecated(
-        "The method IfSensitive(const std::string& name) is deprecated and may be removed in the future releases.")));
+    /**
+     * Set the sensitivity flag for volumes, called from ConstructASCIIRootGeometry(), and has to be implimented for
+     * detectors which use ConstructASCIIRootGeometry() to build the geometry
+     */
+    [[deprecated("Remove override of this function. Use override of IsSensitive(TGeoVolume* vol) only if customisation "
+                 "required. This function will be removed in the future releases.")]]
+    virtual Bool_t IsSensitive(const std::string& name) final;
 
     /**The function below is depracated, please change to the new method above */
-    virtual Bool_t CheckIfSensitive(__attribute__((unused)) std::string name) __attribute__((
-        deprecated("The method CheckIfSensitive is deprecated. Implement IsSensitive in the detector classes.")))
+    [[deprecated("The method CheckIfSensitive is deprecated. Implement IsSensitive in the detector "
+                 "classes. To be removed in the future.")]]
+    virtual Bool_t CheckIfSensitive(__attribute__((unused)) std::string name) final
     {
         return kFALSE;
     }
