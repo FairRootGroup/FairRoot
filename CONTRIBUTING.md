@@ -13,7 +13,10 @@ Create a [Github Pull Request](https://github.com/FairRootGroup/FairRoot/compare
    * In rare cases (e.g. backports, some hotfixes) base against the appropriate
      branch.
 2. If you are a first time contributor, add a separate commit in your PR which
-   adds your name to the [`CONTRIBUTORS`](CONTRIBUTORS) file.
+   adds your name to the:
+   * [`CONTRIBUTORS`](CONTRIBUTORS) file,
+   * [`.zenodo.json`](.zenodo.json) file, and
+   * [`codemeta.json`](codemeta.json) file.
 3. Follow our [Coding Guidelines](#coding-guidelines).
 4. Expect that a reviewer will ask you for restructuring your commits! This
    usually happens towards the end of the lifetime of a PR when it matured
@@ -53,7 +56,15 @@ This shall be an evolving list of explicitely adopted C++ Core Guidelines:
    * If an owning raw pointer cannot be avoided for legacy reasons,
      **you must add a comment documenting the ownership semantics!**
 
-### G.3 Write a good Git history
+### G.3 Other C++ Guidelines
+
+1. Use of ROOT types:
+   1. The data which are intended to be stored in the ROOT files should use ROOT data type.
+   2. Variables which control execution logic should use standard types.
+
+## V - Version control
+
+### V.1 Write a good Git history
 
 * Follow [the seven rules of a great Git commit message](https://cbea.ms/git-commit/#seven-rules)!
 * Use a meaningful commit granularity, e.g. do not mix
@@ -65,7 +76,7 @@ This shall be an evolving list of explicitely adopted C++ Core Guidelines:
 * Utilize [reference keywords](https://docs.github.com/en/issues/tracking-your-work-with-issues/linking-a-pull-request-to-an-issue#linking-a-pull-request-to-an-issue-using-a-keyword)
   both in commit messages as well as in PR comments if applicable.
 
-### G.4 Conventional Commits
+### V.2 Conventional Commits
 
 * Follow the [Conventional Commits Specification](https://www.conventionalcommits.org/en/v1.0.0/)
 * Adopted `type`s: `fix:`, `feat:`, `build:`, `chore:`, `ci:`, `docs:`,
@@ -73,7 +84,7 @@ This shall be an evolving list of explicitely adopted C++ Core Guidelines:
 * If a `scope` is used, prefer the library name (first directory level below
   `fairroot/`), e.g. `fix(base):` or `feat(geobase):`
 
-### G.5 Signed Commits and Tags
+### V.3 Signed Commits and Tags
 
 You may use any signature format Git and Github support (SSH e.g. may be more
 convenient, if one does not have a GPG key yet).
