@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION 3.18...3.31 FATAL_ERROR)
 
 set(PROJECT_MIN_CXX_STANDARD 17)
 
-project(FairRoot VERSION 19.0.0)
+project(FairRoot VERSION 19.0.1)
 
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/private")
