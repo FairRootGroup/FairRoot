@@ -281,7 +281,7 @@ bool FairRootFileSink::CreatePersistentBranchesAny()
         // create the branch
         auto obj = iter.second->ptraddr;
 
-        LOG(info) << "Creating branch for " << iter.first.c_str() << " with address " << obj;
+        LOG(debug) << "Creating branch for " << iter.first.c_str() << " with address " << obj;
         fOutTree->Branch(iter.first.c_str(), tname.c_str(), obj);
     }
     fPersistentBranchesDone = true;
