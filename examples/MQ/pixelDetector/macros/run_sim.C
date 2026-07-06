@@ -1,10 +1,22 @@
 /********************************************************************************
- * Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include "FairExampleRunSim.h"
+
+#if !defined(__CLING__) || defined(__ROOTCLING__)
+#include "FairBoxGenerator.h"
+#include "FairCave.h"
+#include "FairParRootFileIo.h"
+#include "FairPrimaryGenerator.h"
+#include "FairRootFileSink.h"
+#include "FairSystemInfo.h"
+#include "Pixel.h"
+#endif
 
 #include <TFile.h>
 #include <TH1F.h>
@@ -59,8 +71,7 @@ void run_sim(Int_t nEvents = 10, TString mcEngine = "TGeant3", Int_t fileId = 0,
     // ------------------------------------------------------------------------
 
     // -----   Create simulation run   ----------------------------------------
-    auto run = std::make_unique<FairRunSim>();
-    run->SetName(mcEngine);   // Transport engine
+    auto run = std::make_unique<FairExampleRunSim>(mcEngine.Data());
     run->SetIsMT(isMT);       // Multi-threading mode (Geant4 only)
     run->SetSink(std::make_unique<FairRootFileSink>(outFile));
     FairRuntimeDb* rtdb = run->GetRuntimeDb();

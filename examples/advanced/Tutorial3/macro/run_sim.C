@@ -1,10 +1,12 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
+
+#include "FairExampleRunSim.h"
 
 #if !defined(__CLING__) || defined(__ROOTCLING__)
 #include "FairBoxGenerator.h"
@@ -14,7 +16,6 @@
 #include "FairParRootFileIo.h"
 #include "FairPrimaryGenerator.h"
 #include "FairRootFileSink.h"
-#include "FairRunSim.h"
 #include "FairSystemInfo.h"
 #include "FairTestDetector.h"
 #endif
@@ -45,13 +46,9 @@ void run_sim(Int_t nEvents = 100, TString mcEngine = "TGeant4")
     gSystem->Setenv("CONFIG_DIR", tut_configdir.Data());
 
     // create Instance of Run Manager class
-    FairRunSim run{};
+    FairExampleRunSim run{mcEngine.Data()};
     run.SetUseFairLinks(kTRUE);
     //  FairLinkManager::Instance()->AddIncludeType(0);
-    // set the MC version used
-    // ------------------------
-
-    run.SetName(mcEngine);
 
     TString outFile = "data/testrun_";
     outFile = outFile + mcEngine + ".root";

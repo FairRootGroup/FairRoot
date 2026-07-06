@@ -1,15 +1,34 @@
 /********************************************************************************
- * Copyright (C) 2012-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2012-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
  *                  copied verbatim in the file "LICENSE"                       *
  ********************************************************************************/
 
+#include "FairExampleRunSim.h"
+
+#if !defined(__CLING__) || defined(__ROOTCLING__)
+#include "FairBoxGenerator.h"
+#include "FairCave.h"
+#include "FairConstField.h"
+#include "FairMagnet.h"
+#include "FairParRootFileIo.h"
+#include "FairPrimaryGenerator.h"
+#include "FairRootFileSink.h"
+#include "FairRuntimeDb.h"
+#include "FairSystemInfo.h"
+#include "FairTestDetector.h"
+#endif
+
 #include <TRandom.h>
 #include <TStopwatch.h>
 #include <TString.h>
 #include <TSystem.h>
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 void run_sim_sep(Int_t fileId, Int_t nEvents = 1000, TString mcEngine = "TGeant3")
 {
@@ -30,12 +49,7 @@ void run_sim_sep(Int_t fileId, Int_t nEvents = 1000, TString mcEngine = "TGeant3
     gSystem->Setenv("CONFIG_DIR", tut_configdir.Data());
 
     // create Instance of Run Manager class
-    FairRunSim run{};
-
-    // set the MC version used
-    // ------------------------
-
-    run.SetName(mcEngine);
+    FairExampleRunSim run{mcEngine};
 
     TString outfile = Form("data/testrun_%s_f%d.root", mcEngine.Data(), fileId);
     TString outparam = Form("data/testpar_%s_f%d.root", mcEngine.Data(), fileId);
