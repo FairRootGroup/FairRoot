@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2024 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -167,7 +167,7 @@ TParticle* FairStack::PopPrimaryForTracking(Int_t iPrim)
 
     // Return the iPrim-th TParticle from the fParticle array. This should be
     // a primary.
-    TParticle* part = static_cast<TParticle*>(fParticles->At(iPrim));
+    TParticle* part = GetParticle(iPrim);
     if (!(part->GetMother(0) < 0)) {
         LOG(fatal) << "Not a primary track!" << iPrim;
     }
@@ -195,7 +195,6 @@ void FairStack::AddParticle(TParticle* oldPart)
 
 void FairStack::FillTrackArray()
 {
-
     LOG(debug) << "Filling MCTrack array...";
 
     // --> Reset index map and number of output tracks

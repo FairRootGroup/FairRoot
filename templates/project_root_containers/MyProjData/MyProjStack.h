@@ -1,5 +1,5 @@
 /********************************************************************************
- *    Copyright (C) 2014 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH    *
+ * Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -55,7 +55,7 @@ class MyProjStack : public FairGenericStack
     MyProjStack(Int_t size = 100);
 
     /** Destructor  **/
-    virtual ~MyProjStack();
+    ~MyProjStack() override;
 
     /** Add a TParticle to the stack.
      ** Declared in TVirtualMCStack
@@ -72,93 +72,93 @@ class MyProjStack : public FairGenericStack
      *@param weight    Particle weight
      *@param is        Generation status code (whatever that means)
      **/
-    virtual void PushTrack(Int_t toBeDone,
-                           Int_t parentID,
-                           Int_t pdgCode,
-                           Double_t px,
-                           Double_t py,
-                           Double_t pz,
-                           Double_t e,
-                           Double_t vx,
-                           Double_t vy,
-                           Double_t vz,
-                           Double_t time,
-                           Double_t polx,
-                           Double_t poly,
-                           Double_t polz,
-                           TMCProcess proc,
-                           Int_t& ntr,
-                           Double_t weight,
-                           Int_t is);
+    void PushTrack(Int_t toBeDone,
+                   Int_t parentID,
+                   Int_t pdgCode,
+                   Double_t px,
+                   Double_t py,
+                   Double_t pz,
+                   Double_t e,
+                   Double_t vx,
+                   Double_t vy,
+                   Double_t vz,
+                   Double_t time,
+                   Double_t polx,
+                   Double_t poly,
+                   Double_t polz,
+                   TMCProcess proc,
+                   Int_t& ntr,
+                   Double_t weight,
+                   Int_t is) override;
 
-    virtual void PushTrack(Int_t toBeDone,
-                           Int_t parentID,
-                           Int_t pdgCode,
-                           Double_t px,
-                           Double_t py,
-                           Double_t pz,
-                           Double_t e,
-                           Double_t vx,
-                           Double_t vy,
-                           Double_t vz,
-                           Double_t time,
-                           Double_t polx,
-                           Double_t poly,
-                           Double_t polz,
-                           TMCProcess proc,
-                           Int_t& ntr,
-                           Double_t weight,
-                           Int_t is,
-                           Int_t secondParentId);
+    void PushTrack(Int_t toBeDone,
+                   Int_t parentID,
+                   Int_t pdgCode,
+                   Double_t px,
+                   Double_t py,
+                   Double_t pz,
+                   Double_t e,
+                   Double_t vx,
+                   Double_t vy,
+                   Double_t vz,
+                   Double_t time,
+                   Double_t polx,
+                   Double_t poly,
+                   Double_t polz,
+                   TMCProcess proc,
+                   Int_t& ntr,
+                   Double_t weight,
+                   Int_t is,
+                   Int_t secondParentId) override;
 
     /** Get next particle for tracking from the stack.
      ** Declared in TVirtualMCStack
      *@param  iTrack  index of popped track (return)
      *@return Pointer to the TParticle of the track
      **/
-    virtual TParticle* PopNextTrack(Int_t& iTrack);
+    TParticle* PopNextTrack(Int_t& iTrack) override;
 
     /** Get primary particle by index for tracking from stack
      ** Declared in TVirtualMCStack
      *@param  iPrim   index of primary particle
      *@return Pointer to the TParticle of the track
      **/
-    virtual TParticle* PopPrimaryForTracking(Int_t iPrim);
+    TParticle* PopPrimaryForTracking(Int_t iPrim) override;
 
     /** Get total number of tracks
      ** Declared in TVirtualMCStack
      **/
-    virtual Int_t GetNtrack() const { return fNParticles; }
+    Int_t GetNtrack() const override { return fNParticles; }
 
     /** Get number of primary tracks
      ** Declared in TVirtualMCStack
      **/
-    virtual Int_t GetNprimary() const { return fNPrimaries; }
+    Int_t GetNprimary() const override { return fNPrimaries; }
 
     /** Get the current track's particle
      ** Declared in TVirtualMCStack
      **/
-    virtual TParticle* GetCurrentTrack() const;
+    TParticle* GetCurrentTrack() const override;
 
     /** Get the track number of the parent of the current track
      ** Declared in TVirtualMCStack
      **/
-    virtual Int_t GetCurrentParentTrackNumber() const;
+    Int_t GetCurrentParentTrackNumber() const override;
 
     /** Add a TParticle to the fParticles array **/
     virtual void AddParticle(TParticle* part);
 
     /** Fill the MCTrack output array, applying filter criteria **/
-    virtual void FillTrackArray();
+    void FillTrackArray() override;
 
     /** Update the track index in the MCTracks and MCPoints **/
-    virtual void UpdateTrackIndex(TRefArray* detArray = 0);
+    void UpdateTrackIndex(TRefArray* detArray = 0) override;
 
     /** Resets arrays and stack and deletes particles and tracks **/
-    virtual void Reset();
+    void Reset() override;
 
     /** Register the MCTrack array to the Root Manager  **/
-    virtual void Register();
+    void Register() override;
 
     /** Output to screen
      **@param iVerbose: 0=events summary, 1=track info
@@ -184,10 +184,10 @@ class MyProjStack : public FairGenericStack
 
     /** Accessors **/
     TParticle* GetParticle(Int_t trackId) const;
-    TClonesArray* GetListOfParticles() { return fParticles; }
+    TClonesArray* GetListOfParticles() override { return fParticles; }
 
     /** Clone this object (used in MT mode only) */
-    virtual FairGenericStack* CloneStack() const { return new MyProjStack(*this); }
+    FairGenericStack* CloneStack() const override { return new MyProjStack(*this); }
 
   private:
     /** STL stack (FILO) used to handle the TParticles for tracking **/
@@ -230,7 +230,7 @@ class MyProjStack : public FairGenericStack
     MyProjStack(const MyProjStack&);
     MyProjStack& operator=(const MyProjStack&);
 
-    ClassDef(MyProjStack, 1);
+    ClassDefOverride(MyProjStack, 1);
 };
 
 #endif
