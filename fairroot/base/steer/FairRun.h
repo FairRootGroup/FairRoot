@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -153,6 +153,9 @@ class FairRun : public TNamed
 
     //** Mark/Unmark event to be filled into output. Default is TRUE. */
     void MarkFill(Bool_t flag) { fMarkFill = flag; }
+
+    //** Get the state of the flag deciding whether the current event is goint to be stored. */
+    bool GetMarkFill() { return fMarkFill; }
 
     //** Get option string */
     TString GetOptions() { return fOptions; };
