@@ -152,6 +152,12 @@
     },
     {
       "@type": "Person",
+      "@id": "https://orcid.org/0000-0003-1313-3729",
+      "givenName": "Rafa\u0142",
+      "familyName": "Lalik"
+    },
+    {
+      "@type": "Person",
       "givenName": "Lia",
       "familyName": "Lavezzi"
     },
