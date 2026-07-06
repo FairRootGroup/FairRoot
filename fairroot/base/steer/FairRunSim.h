@@ -21,6 +21,7 @@
 #include <functional>
 #include <memory>
 #include <utility>
+#include <vector>
 
 class FairField;
 class FairGeoLoader;
@@ -28,6 +29,7 @@ class FairMCEventHeader;
 class FairMesh;
 class FairModule;
 class FairPrimaryGenerator;
+class FairVolume;
 
 /**
  * \brief Configure the Simulation session
@@ -223,6 +225,20 @@ class FairRunSim : public FairRun
 
     void ls(Option_t* option = "") const override;
 
+    /**
+     * \brief Internal: Add Sensitive Volume
+     */
+    void RegisterSensitiveVolume(FairVolume& vol) { fAllSensitiveVolumes.push_back(&vol); }
+    /**
+     * \brief Internal: Iterate over all sensitive Volumes
+     */
+    auto const& RangeAllSensitiveVolumes() const { return fAllSensitiveVolumes; }
+
+    /**
+     * \brief Internal helper for FairDetector
+     */
+    void UpdateSensitiveVolumesForModule(FairModule& mod);
+
   private:
     FairRunSim(const FairRunSim& M);
     FairRunSim& operator=(const FairRunSim&) { return *this; }
@@ -238,6 +254,11 @@ class FairRunSim : public FairRun
     bool fWasMT{false};   //!                              /** Actual MT mode used */
 
     std::unique_ptr<FairGeoLoader> fGeoLoader;   //!
+
+    /**
+     * For internal use only: list of all sensitive volumes in a simulaion session
+     */
+    std::vector<FairVolume*> fAllSensitiveVolumes;   //!
 
   protected:
     Int_t count{0};                     //!< Internal counter

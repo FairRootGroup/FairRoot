@@ -52,8 +52,6 @@
 #include <memory>
 #include <tuple>   // for std::ignore
 
-thread_local std::vector<FairVolume*> FairModule::fAllSensitiveVolumes;
-
 void FairModule::ConstructGeometry()
 {
     LOG(warn)
@@ -216,9 +214,10 @@ void FairModule::SetGeometryFileName(TString fname, TString)
 
 void FairModule::RegisterSensitiveVolume(FairVolume& vol)
 {
+    assert(fRunSim);
     vol.setModId(fModId);
     vol.SetModule(this);
-    fAllSensitiveVolumes.push_back(&vol);
+    fRunSim->RegisterSensitiveVolume(vol);
     ++fNbOfSensitiveVol;
 }
 
@@ -277,6 +276,7 @@ void FairModule::ProcessNodes(TList* nodes)
 
 void FairModule::AddSensitiveVolume(TGeoVolume* vol)
 {
+    assert(vol);
     auto volName = vol->GetName();
     LOG(debug2) << "AddSensitiveVolume " << volName;
 

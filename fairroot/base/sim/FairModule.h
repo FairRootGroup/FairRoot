@@ -23,9 +23,9 @@
 #include <TList.h>       // for TList (ptr only), TListIter
 #include <TNamed.h>      // for TNamed
 #include <TObjArray.h>   // for TObjArray
-#include <TRefArray.h>   // for TRefArray
 #include <TString.h>     // for TString, operator!=
 #include <TVirtualMC.h>
+#include <cassert>
 #include <fairlogger/Logger.h>
 #include <string>
 #include <type_traits>
@@ -144,10 +144,6 @@ class FairModule : public TNamed
     static thread_local inline FairVolumeList* vList{nullptr};   //!
     /**total number of volumes in a simulaion session*/
     static thread_local inline Int_t fNbOfVolumes{0};   //!
-    /**
-     * For internal use only: list of all sensitive volumes in a simulaion session
-     */
-    static thread_local std::vector<FairVolume*> fAllSensitiveVolumes;   //!
 
     TString fMotherVolumeName{""};   //!
     /**
@@ -194,6 +190,16 @@ class FairModule : public TNamed
      * \note Only valid after being added to a FairRunSim
      */
     FairRootManager& GetRootManager();
+
+    /**
+     * \brief Get RunSim of this Module
+     * \note Only valid after being added to a RunSim
+     */
+    FairRunSim& GetRunSim()
+    {
+        assert(fRunSim);
+        return *fRunSim;
+    }
 
     /**
      * \brief Get Geometry Loader

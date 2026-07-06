@@ -28,6 +28,7 @@
 #include "FairRunIdGenerator.h"     // for FairRunIdGenerator
 #include "FairRuntimeDb.h"          // for FairRuntimeDb
 #include "FairTask.h"               // for FairTask
+#include "FairVolume.h"
 
 #include <TCollection.h>   // for TIter
 #include <TGeoManager.h>   // for gGeoManager
@@ -431,3 +432,24 @@ void FairRunSim::ls(Option_t* option) const
 }
 
 TMCThreadLocal FairRunSim* FairRunSim::fginstance = nullptr;
+
+void FairRunSim::UpdateSensitiveVolumesForModule(FairModule& mod)
+{
+    TString copysign = "#";
+    for (auto aVol : fAllSensitiveVolumes) {
+        if (aVol->getModId() != mod.GetModId()) {
+            continue;
+        }
+        TString cutName{aVol->GetName()};
+        Ssiz_t pos = cutName.Index(copysign, 1);
+        if (pos > 1) {
+            cutName.Resize(pos);
+        }
+        Int_t mcid = TVirtualMC::GetMC()->VolId(cutName.Data());
+        aVol->setMCid(mcid);
+        FairGeoNode* node = aVol->getGeoNode();
+        if (node) {
+            node->setMCid(mcid);
+        }
+    }
+}
