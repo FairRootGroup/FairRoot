@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -11,6 +11,10 @@ add_subdirectory(common/mcstack)
 
 set(mcEngine_list TGeant4)
 
+if(TARGET MCConfigurator)
+  add_subdirectory(common/gconfig)
+endif()
+
 if(Geant3_FOUND)
   if(ENABLE_GEANT3_TESTING)
     list(APPEND mcEngine_list TGeant3)
@@ -18,10 +22,6 @@ if(Geant3_FOUND)
   if(TARGET FairRoot::EventDisplay)
     add_subdirectory(common/eventdisplay)
   endif()
-  if(TARGET MCConfigurator)
-    add_subdirectory(common/gconfig)
-  endif()
-
 endif()
 
 if(TARGET FairRoot::FastSim AND TARGET Boost::program_options)

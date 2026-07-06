@@ -1,5 +1,5 @@
 ################################################################################
-# Copyright (C) 2014-2022 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
+# Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  #
 #                                                                              #
 #              This software is distributed under the terms of the             #
 #              GNU Lesser General Public Licence (LGPL) version 3,             #
@@ -22,6 +22,17 @@ target_include_directories(${target} PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+# Set compile definition
+if(Geant3_FOUND)
+    target_compile_definitions(${target} PUBLIC FAIRROOT_HAS_GEANT3)
+endif()
+if(Geant4VMC_FOUND)
+    target_compile_definitions(${target} PUBLIC FAIRROOT_HAS_GEANT4)
+endif()
+if(TARGET FairRoot::FastSim)
+    target_compile_definitions(${target} PUBLIC FAIRROOT_HAS_FASTSIM)
+endif()
+
 target_link_libraries(${target}
   PUBLIC
   FairRoot::Base # FairGenericVMCConfig
@@ -29,14 +40,25 @@ target_link_libraries(${target}
 
   PRIVATE
   FairRoot::Tools
-  FairRoot::FastSim # FairFastSimRunConfiguration
-
-  geant321
-  geant4vmc
 
   ROOT::Core
   ${VMCLIB}
 )
+
+if(Geant3_FOUND)
+  target_link_libraries(${target}
+    PUBLIC
+      geant321
+  )
+endif()
+
+if(Geant4VMC_FOUND)
+  target_link_libraries(${target}
+    PUBLIC
+      geant4vmc
+      $<IF:$<TARGET_EXISTS:FairRoot::FastSim>,FairRoot::FastSim,>  # FairFastSimRunConfiguration
+  )
+endif()
 
 fairroot_target_root_dictionary(${target}
   HEADERS ${headers}

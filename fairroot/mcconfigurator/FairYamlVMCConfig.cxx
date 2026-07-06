@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright (C) 2014-2023 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
+ * Copyright (C) 2014-2025 GSI Helmholtzzentrum fuer Schwerionenforschung GmbH  *
  *                                                                              *
  *              This software is distributed under the terms of the             *
  *              GNU Lesser General Public Licence (LGPL) version 3,             *
@@ -11,15 +11,11 @@
 // -------------------------------------------------------------------------
 #include "FairYamlVMCConfig.h"
 
-#include "FairFastSimRunConfiguration.h"
 #include "FairLogger.h"
 #include "FairRunSim.h"
 #include "FairSink.h"   // for FairSink
 
 #include <Rtypes.h>
-#include <TGeant3.h>
-#include <TGeant3TGeo.h>
-#include <TGeant4.h>
 #include <TObjString.h>   // for TObjString
 #include <TObject.h>      // for TObject, TObject::kSingleKey
 #include <TString.h>
@@ -32,11 +28,21 @@
 #include <string>         // for string, basic_string, cha...
 #include <vector>         // for vector
 
+#ifdef FAIRROOT_HAS_FASTSIM
+#include "FairFastSimRunConfiguration.h"
+#endif
+#ifdef FAIRROOT_HAS_GEANT3
+#include <TGeant3.h>
+#include <TGeant3TGeo.h>
+#endif
+#ifdef FAIRROOT_HAS_GEANT4
+#include <TGeant4.h>
+#endif
+
 FairYamlVMCConfig::FairYamlVMCConfig()
     : FairGenericVMCConfig()
     , fMCEngine("")
-{
-}
+{}
 
 void FairYamlVMCConfig::Setup(const char* mcEngine)
 {
@@ -61,7 +67,8 @@ void FairYamlVMCConfig::Setup(const char* mcEngine)
 
 void FairYamlVMCConfig::SetupPostInit(const char* mcEngine)
 {
-    if ( !fPostInitFlag ) {
+#ifdef FAIRROOT_HAS_GEANT4
+    if (!fPostInitFlag) {
         LOG(info) << "FairYamlVMCConfig::SetupPostInit() OFF." << fPostInitName;
         return;
     }
@@ -85,7 +92,7 @@ void FairYamlVMCConfig::SetupPostInit(const char* mcEngine)
         g4Macro = "g4ConfigPostInit.C";
         fPostInitName = g4Macro;
     } else {
-        if (fPostInitName.find("/")!=std::string::npos) {
+        if (fPostInitName.find("/") != std::string::npos) {
             AbsPath = kTRUE;
         }
         g4Macro = fPostInitName;
@@ -105,8 +112,9 @@ void FairYamlVMCConfig::SetupPostInit(const char* mcEngine)
     fYamlConfigPostInit = YAML::LoadFile(ConfigMacro.Data());
 
     if (fYamlConfigPostInit["Geant4_PostInit_Commands"]) {
-        std::vector<std::string> g4commands = fYamlConfigPostInit["Geant4_PostInit_Commands"].as<std::vector<std::string>>();
-        for ( const auto& value: g4commands ) {
+        std::vector<std::string> g4commands =
+            fYamlConfigPostInit["Geant4_PostInit_Commands"].as<std::vector<std::string>>();
+        for (const auto& value : g4commands) {
             LOG(info) << " execute command \"" << value << "\"";
             TGeant4* geant4 = dynamic_cast<TGeant4*>(TVirtualMC::GetMC());
             geant4->ProcessGeantCommand(value.c_str());
@@ -114,10 +122,17 @@ void FairYamlVMCConfig::SetupPostInit(const char* mcEngine)
     }
 
     LOG(info) << "got info from " << fPostInitName;
+#else
+    LOG(fatal) << "FairYamlVMCConfig::SetupPostInit() - Geant4 support is not available! "
+               << "FairRoot was compiled without Geant4. "
+               << "Please use TGeant3 or recompile FairRoot with Geant4 support.";
+
+#endif
 }
 
 void FairYamlVMCConfig::SetupGeant3()
 {
+#ifdef FAIRROOT_HAS_GEANT3
     LOG(info) << "FairYamlVMCConfig::SetupGeant3() called";
     FairRunSim* fRun = FairRunSim::Instance();
     TString* gModel = fRun->GetGeoModel();
@@ -156,10 +171,18 @@ void FairYamlVMCConfig::SetupGeant3()
         geant3->SetERAN(fYamlConfig["G3_ERAN"].as<double>());
     if (fYamlConfig["G3_CKOV"])
         geant3->SetCKOV(fYamlConfig["G3_CKOV"].as<int>());
+
+    LOG(info) << geant3->GetName() << " MonteCarlo engine created!.";
+#else
+    LOG(fatal) << "FairYamlVMCConfig::SetupGeant3() - Geant3 support is not available! "
+               << "FairRoot was compiled without Geant3. "
+               << "Please use TGeant4 or recompile FairRoot with Geant3 support.";
+#endif
 }
 
 void FairYamlVMCConfig::SetupGeant4()
 {
+#ifdef FAIRROOT_HAS_GEANT4
     LOG(info) << "FairYamlVMCConfig::SetupGeant4() called";
 
     if (!fYamlConfig["Geant4_UserGeometry"]) {
@@ -191,13 +214,22 @@ void FairYamlVMCConfig::SetupGeant4()
 
     auto const useFastSim(fYamlConfig["UseFastSim"] ? fYamlConfig["UseFastSim"].as<bool>() : fUseFastSimDefault);
     std::unique_ptr<TG4RunConfiguration> runConfiguration;
+#ifdef FAIRROOT_HAS_FASTSIM
     if (useFastSim) {
         runConfiguration = std::make_unique<FairFastSimRunConfiguration>(
             g4UserGeometry, g4PhysicsList, g4SpecialProcess, specialStacking, mtMode);
-    } else {
+    } else
+#endif
+    {
         runConfiguration = std::make_unique<TG4RunConfiguration>(
             g4UserGeometry, g4PhysicsList, g4SpecialProcess, specialStacking, mtMode);
     }
+#ifndef FAIRROOT_HAS_FASTSIM
+    if (useFastSim) {
+        LOG(warning) << "UseFastSim is enabled but FairRoot was compiled without FastSim support. "
+                     << "Using standard TG4RunConfiguration instead.";
+    }
+#endif
 
     // Instantiate a singleton like object, "leaking" it is the current API
     TGeant4* geant4 = new TGeant4("TGeant4", "The Geant4 Monte Carlo", runConfiguration.release());
@@ -215,6 +247,11 @@ void FairYamlVMCConfig::SetupGeant4()
     }
 
     LOG(info) << geant4->GetName() << " MonteCarlo engine created!.";
+#else
+    LOG(fatal) << "FairYamlVMCConfig::SetupGeant4() - Geant4 support is not available! "
+               << "FairRoot was compiled without Geant4. "
+               << "Please use TGeant3 or recompile FairRoot with Geant4 support.";
+#endif
 }
 
 void FairYamlVMCConfig::SetCuts()

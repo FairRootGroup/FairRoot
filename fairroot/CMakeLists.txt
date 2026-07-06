@@ -40,8 +40,7 @@ else()
   message(STATUS "eventdisplay will not be built, because ROOT has no opengl support.")
 endif()
 
-if(Geant3_FOUND AND Geant4VMC_FOUND AND yaml-cpp_FOUND
-   AND TARGET FairRoot::FastSim)
+if(yaml-cpp_FOUND)
   add_subdirectory(mcconfigurator)
 endif()
 
