@@ -35,7 +35,7 @@ class FairSource : public TObject
     virtual Bool_t Init() = 0;
     virtual Int_t ReadEvent(UInt_t = 0) = 0;
     virtual Bool_t SpecifyRunId() = 0;
-    virtual void Close() = 0;
+    virtual void Close() {}
     virtual void Reset() = 0;
     virtual Bool_t ActivateObject(TObject**, const char*) { return kFALSE; }
     virtual Bool_t ActivateObjectAny(void**, const std::type_info&, const char*) { return kFALSE; }

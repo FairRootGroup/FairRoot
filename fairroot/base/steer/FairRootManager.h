@@ -69,7 +69,7 @@ class FairRootManager : public TObject
 
     void CloseSink()
     {
-        if (fSink) {
+        if (fSink != nullptr) {
             fSink->Close();
         }
     }

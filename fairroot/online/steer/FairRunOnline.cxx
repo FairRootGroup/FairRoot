@@ -309,9 +309,6 @@ void FairRunOnline::Finish()
     fTask->FinishTask();
     fRootManager->LastFill();
     fRootManager->Write();
-    GetSource()->Close();
-
-    fRootManager->CloseSink();
 }
 
 void FairRunOnline::ActivateHttpServer(Int_t refreshRate, Int_t httpServer)

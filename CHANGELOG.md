@@ -82,6 +82,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * `virtual bool operator<(const FairTimeStamp* rValue) const` changed to `bool operator<(const FairTimeStamp& rValue) const`
   * FairModule::svList is gone. This was never intended as a public
     API.
+  * Remove calling `Close()`
+    * `FairSink::Close()` and `FairSource::Close()` are no longer called in FairRoot.
+    * Derived classes from `FairSink` and `FairSource` should close the resources automatically in their destructors.
 
 ### Deprecations
 

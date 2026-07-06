@@ -40,7 +40,7 @@ class FairSink
     virtual ~FairSink();
 
     virtual Bool_t InitSink() = 0;
-    virtual void Close() = 0;
+    virtual void Close() {}
     virtual void Reset() = 0;
 
     virtual Sink_Type GetSinkType() = 0;
