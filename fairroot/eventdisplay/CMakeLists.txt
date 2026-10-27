@@ -14,6 +14,8 @@ set(sources
   FairBoxSet.cxx
   FairBoxSetDraw.cxx
   FairBoxSetEditor.cxx
+  FairShapeSet.cxx
+  FairShapeSetDraw.cxx
   FairEventManager.cxx
   FairEventManagerEditor.cxx
   FairHitDraw.cxx

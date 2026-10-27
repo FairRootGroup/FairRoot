@@ -14,9 +14,11 @@
 #pragma link C++ class FairEventManager;
 #pragma link C++ class FairEventManagerEditor;
 #pragma link C++ class FairBoxSetDraw;
+#pragma link C++ class FairShapeSetDraw;
 #pragma link C++ class FairPointSetDraw;
 #pragma link C++ class FairHitDraw;
 #pragma link C++ class FairBoxSet;
+#pragma link C++ class FairShapeSet;
 #pragma link C++ class FairBoxSetEditor;
 #pragma link C++ class FairHitPointSetDraw;
 #pragma link C++ class FairMCPointDraw;
